@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
 /**
  * @typedef {object} Member
@@ -9,7 +9,7 @@ import { defineStore } from 'pinia'
  */
 
 /** Group data: the raw names and the structured members. */
-export const useSociogramStore = defineStore('sociogram', {
+export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
     /** @type {string[]} */
     membersNames: [],
@@ -29,12 +29,12 @@ export const useSociogramStore = defineStore('sociogram', {
   actions: {
     /** @param {string[]} names */
     setMembersNames(names) {
-      this.membersNames = names
+      this.membersNames = names;
     },
 
     /** @param {Member[]} members */
     setMembersObjects(members) {
-      this.membersObjects = members
+      this.membersObjects = members;
     },
   },
-})
+});

@@ -1,4 +1,4 @@
-import { routes } from '@/router'
+import { routes } from "@/router";
 
 /**
  * Menu items: the labeled routes, excluding home (reached via the logo).
@@ -6,10 +6,12 @@ import { routes } from '@/router'
  *
  * The list is static, so it's computed once at module import.
  */
-const menuRoutes = routes.filter((item) => item.meta?.inMenu)
+const menuRoutes = routes.filter((item) => item.meta?.inMenu);
 
 export function useNavItems(typeOfMenu) {
-  const navItems = menuRoutes.filter((item) => item.meta.typeOfMenu.includes(typeOfMenu))
+  const navItems = menuRoutes.filter((item) =>
+    item.meta.typeOfMenu.includes(typeOfMenu),
+  );
 
-  return { navItems }
+  return { navItems };
 }

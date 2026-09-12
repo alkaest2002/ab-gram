@@ -9,7 +9,6 @@ const steps = sociogramRoutes.filter((item) => item.meta?.label);
 
 <template>
     <div class="page">
-
         <h1>Costruisci il sociogramma</h1>
 
         <nav class="step-nav" aria-label="Passaggi dell'app">
