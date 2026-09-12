@@ -1,0 +1,303 @@
+@import 'tailwindcss';
+
+/* Semantic tokens: the whole site re-themes by changing these values;
+   no component ever names a default Tailwind color. */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', var(--font-sans);
+
+  --color-canvas: #fbfbfa;
+  --color-ink: #17171b;
+  --color-muted: #6f6f78;
+  --color-line: #e6e6e3;
+  --color-accent: #4338ca;
+  --color-accent-soft: #eeecff;
+  --color-glow: #d926a9;
+
+  /* Rejection is red — the only warm color in the palette. It appears only in
+     sociograms, where a negative preference must read at a glance. */
+  --color-reject: #dc2626;
+  --color-reject-soft: #fee2e2;
+}
+
+@layer base {
+  /* Header height: the menu panel opens just below. */
+  :root {
+    --header-h: 4.25rem;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+
+  /* Typography lives here, so the templates stay nearly class-free. */
+  h1 {
+    @apply font-display text-3xl font-medium tracking-tight sm:text-4xl;
+  }
+
+  h2 {
+    @apply font-display text-xl font-medium tracking-tight;
+  }
+
+  h3 {
+    @apply font-medium;
+  }
+
+  p,
+  li {
+    @apply text-[0.975rem] leading-relaxed text-muted;
+  }
+
+  /* Preflight resets link styles: we restore them only on plain text links;
+     those with classes (RouterLink, .btn) stay unstyled. */
+  a:not([class]) {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+@layer components {
+  /* Every view covers the viewport and extends beyond it when needed. */
+  .page {
+    @apply mx-auto w-full max-w-3xl space-y-8 px-6 py-14;
+  }
+
+  .card {
+    @apply space-y-3 rounded-xl border border-line bg-white p-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2 text-sm
+      font-medium text-canvas transition-opacity hover:opacity-80
+      disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  .btn-soft {
+    @apply bg-accent-soft text-accent;
+  }
+
+  /* Text link inside prose (RouterLinks don't inherit the base style). */
+  .link {
+    @apply text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent;
+  }
+
+  /* Home: the landing page breathes more than the others — few sections,
+     spaced apart. */
+  .home {
+    @apply space-y-9 py-9 sm:space-y-12 sm:py-12;
+  }
+
+  /* The only place where the type scale rises. The title sits at a light weight
+     and only the key phrase goes medium, underlined by the brand gradient. */
+  .hero-title {
+    @apply font-display text-[2.125rem] leading-[1.08] font-light tracking-tight text-ink
+      sm:text-[3.125rem];
+  }
+
+  .hero-title em {
+    @apply relative font-medium not-italic;
+  }
+
+  .hero-title em::after {
+    @apply absolute inset-x-0 -bottom-1 h-0.5 rounded-full
+      bg-linear-to-r from-accent/70 via-accent/50 to-glow/40;
+    content: '';
+  }
+
+  .lede {
+    @apply max-w-[46ch] text-base sm:text-[1.0625rem];
+  }
+
+  /* Graph legend: the mark on the left, the explanation on the right. */
+  .readings {
+    @apply divide-y divide-line border-y border-line;
+  }
+
+  .reading {
+    @apply flex items-start gap-5 py-5;
+  }
+
+  .reading-glyph {
+    @apply mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg;
+
+    svg {
+      @apply size-5 fill-none stroke-current stroke-[1.75];
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Rejections and isolation are dashed here too, as in the sociogram. */
+    .is-dashed {
+      stroke-dasharray: 4.5 4.5;
+    }
+
+    circle.is-dashed {
+      stroke-dasharray: 3 4;
+    }
+  }
+
+  .glyph-accent {
+    @apply bg-accent-soft/50 text-accent;
+  }
+
+  .glyph-glow {
+    @apply bg-glow/10 text-glow;
+  }
+
+  .glyph-reject {
+    @apply bg-reject-soft text-reject;
+  }
+
+  .glyph-muted {
+    @apply bg-line/50 text-muted;
+  }
+
+  /* Closing band: the app's path in three words and a single call to action. */
+  .band {
+    @apply flex flex-col gap-5 rounded-2xl border border-line bg-accent-soft/40 p-6
+      sm:flex-row sm:items-center sm:justify-between;
+  }
+
+  .flow {
+    @apply flex flex-wrap items-center gap-2 font-display text-sm text-ink;
+  }
+
+  .flow-sep {
+    @apply text-accent/60;
+  }
+
+  /* Eyebrow: small, letter-spaced, uppercase. */
+  .eyebrow {
+    @apply text-xs tracking-widest text-muted uppercase;
+  }
+
+  /* Social icons: color and background light up only on hover. */
+  .social {
+    @apply flex gap-1;
+
+    a {
+      @apply rounded-lg p-2 text-muted transition-colors hover:bg-accent-soft hover:text-accent;
+    }
+
+    svg {
+      @apply size-5;
+    }
+  }
+
+  .tag {
+    @apply rounded-md bg-accent-soft px-2 py-0.5 text-xs text-accent;
+  }
+
+  .tag-off {
+    @apply bg-line/60 text-muted;
+  }
+
+  /* Sociogram workspace: the steps sit on a shared baseline and the current one
+     is underlined, so the nav reads as tabs rather than a stepped widget. */
+  .step-nav {
+    @apply flex flex-wrap gap-x-6 gap-y-1;
+  }
+
+  .step-link {
+    @apply shrink-0 border-b-2 border-transparent pb-2 text-sm text-muted
+      transition-colors hover:text-ink;
+  }
+
+  .step-link.is-active {
+    @apply border-accent text-accent;
+  }
+
+  /* Header: the blur sits on a ::before layer, not on the header itself —
+     a backdrop-filter would create a containing block for fixed children
+     (the overlay and menu panel), which must anchor to the viewport instead. */
+  .site-header {
+    @apply sticky top-0 z-20 border-b border-line;
+  }
+
+  .site-header::before {
+    @apply pointer-events-none absolute inset-0 -z-10 bg-canvas/85 backdrop-blur;
+    content: '';
+  }
+
+  /* Darkened, blurred overlay under the menu panel (mobile only). */
+  .nav-backdrop {
+    @apply fixed inset-0 z-30 bg-ink/25 opacity-0 backdrop-blur-sm transition-opacity
+      duration-200 sm:hidden;
+    visibility: hidden;
+  }
+
+  .nav-backdrop[data-open='true'] {
+    @apply opacity-100;
+    visibility: visible;
+  }
+
+  /* Navigation: a drop-down panel under the header on mobile, an inline row from
+     sm up. No display:none, so opening and closing can be animated. */
+  .site-nav {
+    @apply fixed inset-x-3 top-(--header-h) z-40 flex origin-top flex-col gap-0.5
+      overflow-y-auto rounded-2xl border border-line bg-canvas/95 p-2 opacity-0
+      backdrop-blur-md transition-[opacity,transform] duration-200 ease-out;
+    max-height: calc(100dvh - var(--header-h) - 0.75rem);
+    box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--color-ink) 35%, transparent);
+    transform: translateY(-0.5rem) scale(0.98);
+    visibility: hidden;
+  }
+
+  .site-nav[data-open='true'] {
+    @apply opacity-100;
+    transform: none;
+    visibility: visible;
+  }
+
+  @media (width >= 40rem) {
+    .site-nav {
+      @apply static inset-auto z-auto w-auto max-h-none flex-row items-center gap-1
+        overflow-visible rounded-none border-0 bg-transparent p-0 opacity-100 shadow-none
+        backdrop-blur-none;
+      transform: none;
+      visibility: visible;
+    }
+  }
+
+  /* On mobile the items are full, tappable rows; from sm they become compact pills. */
+  .nav-link {
+    @apply rounded-xl px-4 py-3 text-base text-muted transition-colors
+      hover:bg-accent-soft/60 hover:text-ink;
+  }
+
+  .nav-link.is-active {
+    @apply bg-accent-soft text-accent;
+  }
+
+  @media (width >= 40rem) {
+    .nav-link {
+      @apply rounded-md px-3 py-1.5 text-sm hover:bg-transparent;
+    }
+  }
+
+  /* Above the overlay, so it stays clickable to close. */
+  .nav-toggle {
+    @apply relative z-50 rounded-md p-2 text-ink transition-colors hover:bg-accent-soft/60
+      sm:hidden;
+  }
+
+  /* Logo: "AB" in a gradient clipped to the text, "Grid" in light weight. */
+  .logo {
+    @apply font-display text-2xl tracking-tighter;
+  }
+
+  .logo-mark {
+    @apply bg-linear-to-br from-accent via-accent to-glow bg-clip-text font-bold text-transparent;
+  }
+
+  .logo-sep {
+    @apply mx-0.5 font-light text-line;
+  }
+
+  .logo-word {
+    @apply font-light text-ink;
+  }
+}
