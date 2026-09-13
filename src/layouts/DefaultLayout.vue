@@ -1,9 +1,6 @@
 <script setup>
-import { RouterView } from "vue-router";
-
 import AppFooter from "@/components/layout/AppFooter.vue";
 import AppHeader from "@/components/layout/AppHeader.vue";
-import PageTransition from "@/components/ui/PageTransition.vue";
 </script>
 
 <template>
@@ -15,11 +12,7 @@ import PageTransition from "@/components/ui/PageTransition.vue";
 
         <!-- Content -->
         <main class="flex-1">
-            <RouterView v-slot="{ Component }">
-                <PageTransition>
-                    <component :is="Component" />
-                </PageTransition>
-            </RouterView>
+            <slot />
         </main>
 
         <!-- Footer -->

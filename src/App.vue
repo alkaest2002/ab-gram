@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from "vue";
+import { RouterView } from "vue-router";
 
+import PageTransition from "@/components/ui/PageTransition.vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import NotFoundLayout from "@/layouts/NotFoundLayout.vue";
 import { useAppStore } from "@/stores/app";
@@ -17,5 +19,11 @@ const currentLayout = computed(() => layouts[appStore.layout] ?? DefaultLayout);
 </script>
 
 <template>
-    <component :is="currentLayout" />
+    <component :is="currentLayout">
+        <RouterView v-slot="{ Component }">
+            <PageTransition>
+                <component :is="Component" />
+            </PageTransition>
+        </RouterView>
+    </component>
 </template>
