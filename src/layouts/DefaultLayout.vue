@@ -9,9 +9,12 @@ import PageTransition from "@/components/ui/PageTransition.vue";
 <template>
     <!-- min-h-dvh + flex-1 on main: every page covers the viewport and overflows when needed. -->
     <div class="flex min-h-dvh flex-col">
+
+        <!-- Header -->
         <AppHeader />
 
-        <main class="flex-1 relative">
+        <!-- Content -->
+        <main class="flex-1">
             <RouterView v-slot="{ Component }">
                 <PageTransition>
                     <component :is="Component" />
@@ -19,6 +22,7 @@ import PageTransition from "@/components/ui/PageTransition.vue";
             </RouterView>
         </main>
 
+        <!-- Footer -->
         <AppFooter />
     </div>
 </template>
