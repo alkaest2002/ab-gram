@@ -69,7 +69,7 @@ export const routes = [
     path: "/sociogram",
     component: () => import("@/views/SociogramView.vue"),
     meta: {
-      title: "Costruisci il sociogramma",
+      title: "App",
       inMenu: true,
       typeOfMenu: ["header"],
       layout: "DefaultLayout",
