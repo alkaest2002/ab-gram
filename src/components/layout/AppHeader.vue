@@ -59,7 +59,7 @@ onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
                     :to="item.path"
                     class="nav-link"
                 >
-                    {{ item.meta.label }}
+                    {{ item.meta.title}}
                 </RouterLink>
             </nav>
         </div>

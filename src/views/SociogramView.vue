@@ -4,7 +4,7 @@ import { RouterLink, RouterView } from "vue-router";
 import PageTransition from "@/components/ui/PageTransition.vue";
 import { sociogramRoutes } from "@/router";
 
-const steps = sociogramRoutes.filter((item) => item.meta?.label);
+const steps = sociogramRoutes;
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const steps = sociogramRoutes.filter((item) => item.meta?.label);
                 active-class="is-ancestor"
                 exact-active-class="is-active"
             >
-                {{ step.meta.label }}
+                {{ step.meta.title }}
             </RouterLink>
         </nav>
 

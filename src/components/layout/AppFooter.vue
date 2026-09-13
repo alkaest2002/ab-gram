@@ -32,7 +32,7 @@ const { navItems } = useNavItems("footer");
                         :to="item.path"
                         class="nav-link"
                     >
-                        {{ item.meta.label }}
+                        {{ item.meta.title }}
                     </RouterLink>
                 </div>
             </nav>

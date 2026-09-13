@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import HomeView from "@/views/HomeView.vue";
 import { waitForPageTransition } from "@/router/scroll";
+import { useAppStore } from "@/stores/app";
 
 const SITE_NAME = "AB-Grid";
 
@@ -14,7 +15,6 @@ export const sociogramRoutes = [
     name: "app-start",
     component: () => import("@/views/sociogram/SociogramStartView.vue"),
     meta: {
-      label: "Inizia",
       title: "Da dove iniziare",
       inMenu: true,
       typeOfMenu: ["header"],
@@ -25,7 +25,6 @@ export const sociogramRoutes = [
     name: "load-members",
     component: () => import("@/views/sociogram/SociogramLoadMembersView.vue"),
     meta: {
-      label: "Membri",
       title: "Carica i membri",
       inMenu: true,
       typeOfMenu: ["header"],
@@ -37,7 +36,6 @@ export const sociogramRoutes = [
     component: () =>
       import("@/views/sociogram/SociogramSetPreferencesView.vue"),
     meta: {
-      label: "Preferenze",
       title: "Imposta le preferenze",
       inMenu: true,
       typeOfMenu: ["header"],
@@ -49,7 +47,6 @@ export const sociogramRoutes = [
     component: () =>
       import("@/views/sociogram/SociogramGenerateReportView.vue"),
     meta: {
-      label: "Report",
       title: "Genera il report",
       inMenu: true,
       typeOfMenu: ["header"],
@@ -62,16 +59,20 @@ export const routes = [
     path: "/",
     name: "home",
     component: HomeView,
-    meta: { label: "Home", title: "Sociogrammi di gruppo", inMenu: false },
+    meta: {
+      title: "Sociogrammi di gruppo",
+      inMenu: false,
+      layout: "DefaultLayout",
+    },
   },
   {
     path: "/sociogram",
     component: () => import("@/views/SociogramView.vue"),
     meta: {
-      label: "App",
       title: "Costruisci il sociogramma",
       inMenu: true,
       typeOfMenu: ["header"],
+      layout: "DefaultLayout",
     },
     children: sociogramRoutes,
   },
@@ -80,10 +81,10 @@ export const routes = [
     name: "docs",
     component: () => import("@/views/DocsView.vue"),
     meta: {
-      label: "Docs",
       title: "Docs",
       inMenu: true,
       typeOfMenu: ["header"],
+      layout: "DefaultLayout",
     },
   },
   {
@@ -91,10 +92,10 @@ export const routes = [
     name: "about",
     component: () => import("@/views/AboutView.vue"),
     meta: {
-      label: "About",
       title: "About",
       inMenu: true,
       typeOfMenu: ["header", "footer"],
+      layout: "DefaultLayout",
     },
   },
   {
@@ -102,17 +103,17 @@ export const routes = [
     name: "privacy",
     component: () => import("@/views/PrivacyView.vue"),
     meta: {
-      label: "Privacy",
       title: "Informativa privacy",
       inMenu: true,
       typeOfMenu: ["footer"],
+      layout: "DefaultLayout",
     },
   },
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: () => import("@/views/NotFoundView.vue"),
-    meta: { title: "Pagina non trovata" },
+    meta: { title: "Pagina non trovata", layout: "NotFoundLayout" },
   },
 ];
 
@@ -131,6 +132,11 @@ const router = createRouter({
     await waitForPageTransition();
     return savedPosition ?? { top: 0 };
   },
+});
+
+// Keep the app store's layout in sync with the route being navigated to.
+router.beforeEach((to) => {
+  useAppStore().setLayout(to.meta.layout ?? "DefaultLayout");
 });
 
 router.afterEach((to) => {
