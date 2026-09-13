@@ -1,5 +1,4 @@
 <script setup>
-import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/ui/StepHeader.vue";
 import { useSociogramStore } from "@/stores/sociogram";
 
@@ -16,9 +15,7 @@ const sociogram = useSociogramStore();
         </StepHeader>
 
         <div class="flex flex-wrap gap-2">
-            <BaseButton variant="soft" to="/docs"
-                >Leggi la documentazione</BaseButton
-            >
+            <router-link to="/docs" class="link text-sm">Leggi la documentazione</router-link>
         </div>
     </section>
 </template>

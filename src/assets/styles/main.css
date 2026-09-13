@@ -57,6 +57,10 @@
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent;
   }
+
+  button {
+    @apply cursor-pointer;
+  }
 }
 
 @layer components {
@@ -272,7 +276,7 @@
     @apply bg-accent-soft text-accent;
   }
 
-  @media (width >= 40rem) {
+  @media (width >= 0rem) {
     .nav-link {
       @apply rounded-md px-3 py-1.5 text-sm hover:bg-transparent;
     }
