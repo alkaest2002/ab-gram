@@ -3,8 +3,11 @@
 /* Semantic tokens: the whole site re-themes by changing these values;
    no component ever names a default Tailwind color. */
 @theme {
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Space Grotesk', var(--font-sans);
+  /* Humanist sans for prose and headings; the mono is not decoration — it marks
+     everything that is a label or a reading rather than a sentence. */
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   /* Two accents only — blue ("A") and red ("B") — over a white canvas and
      near-black ink. No pastel tints. */
@@ -29,11 +32,11 @@
   /* Typography lives here, so the templates stay nearly class-free.
      This is a tool: hierarchy is set with bold weight, not light weight. */
   h1 {
-    @apply font-display text-3xl font-bold tracking-tight sm:text-4xl;
+    @apply font-display text-3xl font-bold tracking-[-0.015em] sm:text-4xl;
   }
 
   h2 {
-    @apply font-display text-xl font-bold tracking-tight;
+    @apply font-display text-xl font-bold tracking-[-0.01em];
   }
 
   h3 {
@@ -102,8 +105,8 @@
   /* The key phrase sits in the same bold weight and is underlined by the brand
      pair: blue fading to red. */
   .hero-title {
-    @apply font-display text-[2.125rem] leading-[1.08] font-bold tracking-tight text-ink
-      sm:text-[3.125rem];
+    @apply font-display text-[2.125rem] leading-[1.08] font-bold tracking-[-0.02em]
+      text-ink sm:text-[3.125rem];
   }
 
   .hero-title em {
@@ -167,20 +170,22 @@
   }
 
   .flow {
-    @apply flex flex-wrap items-center gap-2 font-display text-sm font-medium text-ink;
+    @apply flex flex-wrap items-center gap-2 font-mono text-[0.8125rem]
+      font-medium text-ink;
   }
 
   .flow-sep {
     @apply text-accent;
   }
 
-  /* Eyebrow: small, letter-spaced, uppercase. */
+  /* Eyebrow: small, letter-spaced, uppercase — mono, like a column header. */
   .eyebrow {
-    @apply text-xs font-semibold tracking-widest text-muted uppercase;
+    @apply font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase;
   }
 
   .tag {
-    @apply rounded-md border border-accent px-2 py-0.5 text-xs font-medium text-accent;
+    @apply rounded-md border border-accent px-2 py-0.5 font-mono text-xs
+      font-medium text-accent;
   }
 
   .tag-off {
@@ -253,25 +258,49 @@
       sm:hidden;
   }
 
-  /* Logo lockup: a two-node sociogram mark (A blue, B red, joined by a
-     blue-to-red edge) beside a spaced, uppercase "GRID". */
+  /* Logo lockup: "AB" reversed out of the two brand colours, then "Grid" in
+     ink. Everything below is sized in em off this one font-size, so the whole
+     lockup scales from a single value. */
   .logo {
-    @apply inline-flex items-center gap-2.5 font-display;
+    @apply inline-flex items-center text-[1.375rem] leading-none font-bold
+      tracking-[-0.035em];
+    transform-origin: left center;
+    transition: transform 200ms ease;
   }
 
-  .logo-mark {
-    @apply h-7 w-auto;
+  .logo-ab {
+    @apply inline-flex overflow-hidden;
+    border-radius: 0.14em;
   }
 
-  .logo-initial {
-    font-family: var(--font-display);
-    font-size: 13px;
-    font-weight: 700;
-    fill: var(--color-canvas);
-    text-anchor: middle;
+  /* Equal widths, so the blue/red seam sits at the centre of the block and not
+     wherever the "A" happens to end. Tracking is reset: these are two single
+     letters, each optically centred in its own field. */
+  .logo-a,
+  .logo-b {
+    @apply text-canvas;
+    width: 1em;
+    padding-block: 0.1em 0.14em;
+    text-align: center;
+    letter-spacing: normal;
+  }
+
+  .logo-a {
+    @apply bg-accent;
+  }
+
+  .logo-b {
+    @apply bg-reject;
   }
 
   .logo-word {
-    @apply text-sm font-semibold uppercase tracking-[0.25em] text-ink;
+    @apply text-ink;
+    margin-left: 0.16em;
+  }
+
+  /* Hovering swells the lockup a touch — the only movement it needs. */
+  .logo:hover,
+  .logo:focus-visible {
+    transform: scale(1.03);
   }
 }

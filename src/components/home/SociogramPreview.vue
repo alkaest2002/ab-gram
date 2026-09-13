@@ -291,8 +291,8 @@
 }
 
 .initial {
-    font-family: var(--font-display);
-    font-size: 16px;
+    font-family: var(--font-mono);
+    font-size: 15px;
     font-weight: 500;
     text-anchor: middle;
     fill: var(--color-ink);
