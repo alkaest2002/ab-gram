@@ -8,12 +8,18 @@ const props = defineProps({
     variant: {
         type: String,
         default: "solid",
-        validator: (value) => ["solid", "soft"].includes(value),
+        validator: (value) => ["solid", "outline", "red"].includes(value),
     },
 });
 
 // Classes written out in full: Tailwind doesn't see ones built by interpolation.
-const classes = computed(() => ["btn", props.variant === "soft" && "btn-soft"]);
+const variantClasses = {
+    solid: "btn-solid",
+    outline: "btn-outline",
+    red: "btn-red",
+};
+
+const classes = computed(() => ["btn", variantClasses[props.variant]]);
 </script>
 
 <template>

@@ -36,12 +36,12 @@ const currentComponent = computed(() => stateComponents[currentState.value]);
         </PageTransition>
 
         <div class="flex flex-wrap gap-2">
-            <BaseButton variant="soft" @click="sociogram.reset()">
+            <BaseButton variant="outline" @click="sociogram.reset()">
                 Ricomincia
             </BaseButton>
 
             <BaseButton
-                variant="soft"
+                variant="outline"
                 :disabled="!hasPreviousState"
                 @click="sociogram.goToPreviousState()"
             >

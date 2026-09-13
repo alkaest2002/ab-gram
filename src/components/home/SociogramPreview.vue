@@ -211,29 +211,17 @@
     padding: 1rem 1.25rem 0.5rem;
 }
 
-.graph-stage::before,
-.graph-stage::after {
+.graph-stage::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: -1;
-}
-
-.graph-stage::before {
     background-image: radial-gradient(
         color-mix(in oklab, var(--color-accent) 22%, transparent) 1px,
         transparent 1px
     );
     background-size: 22px 22px;
     mask-image: radial-gradient(ellipse at 50% 45%, #000 55%, transparent 88%);
-}
-
-.graph-stage::after {
-    background: radial-gradient(
-        ellipse 36% 44% at 50% 45%,
-        color-mix(in oklab, var(--color-accent-soft) 80%, transparent),
-        transparent 72%
-    );
 }
 
 /* Beyond 560px the drawing doesn't grow: at its natural size one

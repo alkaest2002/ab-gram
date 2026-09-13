@@ -123,7 +123,7 @@ const readings = [
                 </p>
                 <p class="max-w-[52ch] text-sm">
                     Tre passaggi, nessun account. I dati restano sul tuo
-                    dispositivo: il calcolo avviene nel browser.Leggi
+                    dispositivo: il calcolo avviene nel browser. Leggi
                     <RouterLink to="/privacy" class="link"
                         >l'informativa privacy</RouterLink
                     >
@@ -136,42 +136,9 @@ const readings = [
 </template>
 
 <style scoped>
-/* The hero borrows the sociogram's lattice — the dotted grid of the sociometric
-   matrix — as a faint backdrop, so the opening text and the drawing read as one
-   system rather than two stacked blocks. It stays near-invisible: an atmosphere,
-   not a pattern to look at. */
+/* The hero is plain type on white: the bold headline and its blue-to-red
+   underline carry it, with no background pattern behind. */
 .hero {
-    position: relative;
-    isolation: isolate;
     padding-block: 1.5rem 0.5rem;
-}
-
-.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-image: radial-gradient(
-        color-mix(in oklab, var(--color-accent) 15%, transparent) 1px,
-        transparent 1px
-    );
-    background-size: 26px 26px;
-    mask-image: radial-gradient(
-        ellipse 90% 100% at 50% 0%,
-        #000 25%,
-        transparent 78%
-    );
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background: radial-gradient(
-        ellipse 55% 90% at 50% 0%,
-        color-mix(in oklab, var(--color-accent-soft) 90%, transparent),
-        transparent 72%
-    );
 }
 </style>

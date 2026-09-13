@@ -6,18 +6,14 @@
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Space Grotesk', var(--font-sans);
 
-  --color-canvas: #fbfbfa;
-  --color-ink: #17171b;
-  --color-muted: #6f6f78;
-  --color-line: #e6e6e3;
-  --color-accent: #4338ca;
-  --color-accent-soft: #eeecff;
-  --color-glow: #d926a9;
-
-  /* Rejection is red — the only warm color in the palette. It appears only in
-     sociograms, where a negative preference must read at a glance. */
+  /* Two accents only — blue ("A") and red ("B") — over a white canvas and
+     near-black ink. No pastel tints. */
+  --color-canvas: #ffffff;
+  --color-ink: #0a0a0a;
+  --color-muted: #5b5a63;
+  --color-line: #e3e3e6;
+  --color-accent: #2563eb;
   --color-reject: #dc2626;
-  --color-reject-soft: #fee2e2;
 }
 
 @layer base {
@@ -30,17 +26,18 @@
     @apply bg-canvas font-sans text-ink antialiased;
   }
 
-  /* Typography lives here, so the templates stay nearly class-free. */
+  /* Typography lives here, so the templates stay nearly class-free.
+     This is a tool: hierarchy is set with bold weight, not light weight. */
   h1 {
-    @apply font-display text-3xl font-medium tracking-tight sm:text-4xl;
+    @apply font-display text-3xl font-bold tracking-tight sm:text-4xl;
   }
 
   h2 {
-    @apply font-display text-xl font-medium tracking-tight;
+    @apply font-display text-xl font-bold tracking-tight;
   }
 
   h3 {
-    @apply font-medium;
+    @apply font-bold;
   }
 
   p,
@@ -51,7 +48,7 @@
   /* Preflight resets link styles: we restore them only on plain text links;
      those with classes (RouterLink, .btn) stay unstyled. */
   a:not([class]) {
-    @apply text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent;
+    @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
   }
 
   :focus-visible {
@@ -70,22 +67,30 @@
   }
 
   .card {
-    @apply space-y-3 rounded-xl border border-line bg-white p-6;
+    @apply space-y-3 rounded-lg border border-line bg-white p-6;
   }
 
+  /* Buttons are black, outline-black, or red — never a tint. */
   .btn {
-    @apply inline-flex items-center gap-2 rounded-lg bg-ink px-4 py-2 text-sm
-      font-medium text-canvas transition-opacity hover:opacity-80
-      disabled:pointer-events-none disabled:opacity-40;
+    @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold
+      transition-colors disabled:pointer-events-none disabled:opacity-40;
   }
 
-  .btn-soft {
-    @apply bg-accent-soft text-accent;
+  .btn-solid {
+    @apply bg-ink text-white hover:bg-ink/85;
+  }
+
+  .btn-outline {
+    @apply border border-ink bg-transparent text-ink hover:bg-ink hover:text-white;
+  }
+
+  .btn-red {
+    @apply bg-reject text-white hover:bg-reject/90;
   }
 
   /* Text link inside prose (RouterLinks don't inherit the base style). */
   .link {
-    @apply text-accent underline decoration-accent/30 underline-offset-4 hover:decoration-accent;
+    @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
   }
 
   /* Home: the landing page breathes more than the others — few sections,
@@ -94,20 +99,20 @@
     @apply space-y-9 py-9 sm:space-y-12 sm:py-12;
   }
 
-  /* The only place where the type scale rises. The title sits at a light weight
-     and only the key phrase goes medium, underlined by the brand gradient. */
+  /* The key phrase sits in the same bold weight and is underlined by the brand
+     pair: blue fading to red. */
   .hero-title {
-    @apply font-display text-[2.125rem] leading-[1.08] font-light tracking-tight text-ink
+    @apply font-display text-[2.125rem] leading-[1.08] font-bold tracking-tight text-ink
       sm:text-[3.125rem];
   }
 
   .hero-title em {
-    @apply relative font-medium not-italic;
+    @apply relative not-italic;
   }
 
   .hero-title em::after {
     @apply absolute inset-x-0 -bottom-1 h-0.5 rounded-full
-      bg-linear-to-r from-accent/70 via-accent/50 to-glow/40;
+      bg-linear-to-r from-accent to-reject;
     content: '';
   }
 
@@ -125,7 +130,7 @@
   }
 
   .reading-glyph {
-    @apply mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg;
+    @apply mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg border border-line;
 
     svg {
       @apply size-5 fill-none stroke-current stroke-[1.75];
@@ -144,74 +149,42 @@
   }
 
   .glyph-accent {
-    @apply bg-accent-soft/50 text-accent;
-  }
-
-  .glyph-glow {
-    @apply bg-glow/10 text-glow;
+    @apply text-accent;
   }
 
   .glyph-reject {
-    @apply bg-reject-soft text-reject;
+    @apply text-reject;
   }
 
   .glyph-muted {
-    @apply bg-line/50 text-muted;
+    @apply text-muted;
   }
 
   /* Closing band: the app's path in three words and a single call to action. */
   .band {
-    @apply flex flex-col gap-5 rounded-2xl border border-line bg-accent-soft/40 p-6
+    @apply flex flex-col gap-5 rounded-lg border border-line p-6
       sm:flex-row sm:items-center sm:justify-between;
   }
 
   .flow {
-    @apply flex flex-wrap items-center gap-2 font-display text-sm text-ink;
+    @apply flex flex-wrap items-center gap-2 font-display text-sm font-medium text-ink;
   }
 
   .flow-sep {
-    @apply text-accent/60;
+    @apply text-accent;
   }
 
   /* Eyebrow: small, letter-spaced, uppercase. */
   .eyebrow {
-    @apply text-xs tracking-widest text-muted uppercase;
-  }
-
-  /* Social icons: color and background light up only on hover. */
-  .social {
-    @apply flex gap-1;
-
-    a {
-      @apply rounded-lg p-2 text-muted transition-colors hover:bg-accent-soft hover:text-accent;
-    }
-
-    svg {
-      @apply size-5;
-    }
+    @apply text-xs font-semibold tracking-widest text-muted uppercase;
   }
 
   .tag {
-    @apply rounded-md bg-accent-soft px-2 py-0.5 text-xs text-accent;
+    @apply rounded-md border border-accent px-2 py-0.5 text-xs font-medium text-accent;
   }
 
   .tag-off {
-    @apply bg-line/60 text-muted;
-  }
-
-  /* Sociogram workspace: the steps sit on a shared baseline and the current one
-     is underlined, so the nav reads as tabs rather than a stepped widget. */
-  .step-nav {
-    @apply flex flex-wrap gap-x-6 gap-y-1;
-  }
-
-  .step-link {
-    @apply shrink-0 border-b-2 border-transparent pb-2 text-sm text-muted
-      transition-colors hover:text-ink;
-  }
-
-  .step-link.is-active {
-    @apply border-accent text-accent;
+    @apply border-line text-muted;
   }
 
   /* Header: the blur sits on a ::before layer, not on the header itself —
@@ -266,42 +239,39 @@
     }
   }
 
-  /* On mobile the items are full, tappable rows; from sm they become compact pills. */
   .nav-link {
-    @apply rounded-xl px-4 py-3 text-base text-muted transition-colors
-      hover:bg-accent-soft/60 hover:text-ink;
+    @apply rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:text-ink;
   }
 
   .nav-link.is-active {
-    @apply bg-accent-soft text-accent;
-  }
-
-  @media (width >= 0rem) {
-    .nav-link {
-      @apply rounded-md px-3 py-1.5 text-sm hover:bg-transparent;
-    }
+    @apply text-accent;
   }
 
   /* Above the overlay, so it stays clickable to close. */
   .nav-toggle {
-    @apply relative z-50 rounded-md p-2 text-ink transition-colors hover:bg-accent-soft/60
+    @apply relative z-50 rounded-md p-2 text-ink transition-colors hover:bg-ink/5
       sm:hidden;
   }
 
-  /* Logo: "AB" in a gradient clipped to the text, "Grid" in light weight. */
+  /* Logo lockup: a two-node sociogram mark (A blue, B red, joined by a
+     blue-to-red edge) beside a spaced, uppercase "GRID". */
   .logo {
-    @apply font-display text-2xl tracking-tighter;
+    @apply inline-flex items-center gap-2.5 font-display;
   }
 
   .logo-mark {
-    @apply bg-linear-to-br from-accent via-accent to-glow bg-clip-text font-bold text-transparent;
+    @apply h-7 w-auto;
   }
 
-  .logo-sep {
-    @apply mx-0.5 font-light text-line;
+  .logo-initial {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--color-canvas);
+    text-anchor: middle;
   }
 
   .logo-word {
-    @apply font-light text-ink;
+    @apply text-sm font-semibold uppercase tracking-[0.25em] text-ink;
   }
 }
