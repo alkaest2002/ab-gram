@@ -36,24 +36,28 @@ const currentComponent = computed(() => stateComponents[currentSociogramStep.val
             <component :is="currentComponent" :key="currentSociogramStep" />
         </PageTransition>
 
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2 justify-between">
+
+            <div class="flex flex-wrap gap-2">
+
+                <BaseButton
+                    variant="outline"
+                    :disabled="!hasPreviousSociogramStep"
+                    @click="sociogram.goToPreviousSociogramStep()"
+                >
+                    Indietro
+                </BaseButton>
+
+                <BaseButton
+                    :disabled="!hasNextSociogramStep"
+                    @click="sociogram.goToNextSociogramStep()"
+                >
+                    Avanti
+                </BaseButton>
+            </div>
+
             <BaseButton variant="outline" @click="sociogram.reset()">
                 Ricomincia
-            </BaseButton>
-
-            <BaseButton
-                variant="outline"
-                :disabled="!hasPreviousSociogramStep"
-                @click="sociogram.goToPreviousSociogramStep()"
-            >
-                Indietro
-            </BaseButton>
-
-            <BaseButton
-                :disabled="!hasNextSociogramStep"
-                @click="sociogram.goToNextSociogramStep()"
-            >
-                Avanti
             </BaseButton>
         </div>
     </div>
