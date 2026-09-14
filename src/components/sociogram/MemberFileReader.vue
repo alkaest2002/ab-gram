@@ -46,7 +46,7 @@ async function onFileChange(event) {
 </script>
 
 <template>
-  <div class="space-y-2">
+  <div class="space-y-3">
     <input
       ref="fileInput"
       type="file"
@@ -56,15 +56,22 @@ async function onFileChange(event) {
       @change="onFileChange"
     />
 
-    <div class="flex flex-wrap items-center gap-2">
-      <BaseButton variant="outline" :disabled="isReading" @click="pick">
-        {{ isReading ? "Lettura in corso…" : "Scegli file" }}
-      </BaseButton>
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="eyebrow">Carica il file</p>
+        <p class="mt-1 text-sm text-muted">
+          Un nome per riga. Le righe vuote vengono ignorate.
+        </p>
+      </div>
 
-      <span v-if="fileName" class="font-mono text-xs text-muted">
-        {{ fileName }}
-      </span>
+      <BaseButton variant="solid" :disabled="isReading" @click="pick">
+        {{ isReading ? "Lettura…" : "Scegli file" }}
+      </BaseButton>
     </div>
+
+    <p v-if="fileName" class="truncate font-mono text-xs text-muted">
+      {{ fileName }}
+    </p>
 
     <p v-if="error" class="text-sm text-reject" role="alert">
       {{ error.message }}
