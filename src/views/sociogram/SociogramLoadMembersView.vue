@@ -14,9 +14,8 @@ const sociogram = useSociogramStore();
 
         <p class="flex flex-wrap gap-2">
             <span class="tag"
-                >Membri del gruppo: {{ sociogram.membersData.length }}</span
+                >Membri del gruppo: {{ sociogram.membersCount }}</span
             >
-
         </p>
     </section>
 </template>

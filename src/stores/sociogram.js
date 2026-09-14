@@ -1,55 +1,81 @@
 import { defineStore } from "pinia";
 
 /**
+ * A single participant in the sociogram.
+ *
  * @typedef {object} Member
- * @property {string} id
- * @property {string} name
- * @property {string[]} likes     id of the preferred members
- * @property {string[]} dislikes  id of the rejected members
+ * @property {string} id - Unique member id.
+ * @property {string} name - Display name.
+ * @property {string[]} likes - Ids of the members this member prefers.
+ * @property {string[]} dislikes - Ids of the members this member rejects.
  */
 
-/** Ordered list of the sociogram states. */
-export const SOCIOGRAM_STATES = [
+/**
+ * One of the ordered sociogram steps.
+ *
+ * @typedef {'start' | 'loadMembers' | 'setPreferences' | 'generateReport'} SociogramStep
+ */
+
+/**
+ * Ordered list of the sociogram steps.
+ * @type {SociogramStep[]}
+ */
+export const SOCIOGRAM_STEPS = [
   "start",
   "loadMembers",
   "setPreferences",
   "generateReport",
 ];
 
-/** Group data: the raw names and the structured members. */
+/**
+ * Sociogram flow data and navigation.
+ *
+ * Holds the raw member names (`dataLoaded`), the parsed members
+ * (`dataMembers`), and the current wizard step (`currentSociogramStep`).
+ */
 export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
-    /** @type {string[]} */
-    textLoaded: [],
-    /** @type {Member[]} */
-    membersData: [],
-    /** @type {string} Current sociogram state (see `SOCIOGRAM_STATES`). */
+    /** @type {string[]} Raw member names loaded from user input. */
+    dataLoaded: [],
+    /** @type {Member[]} Parsed sociogram members. */
+    dataMembers: [],
+    /** @type {SociogramStep} Current sociogram step (see `SOCIOGRAM_STEPS`). */
     currentSociogramStep: "start",
   }),
 
   getters: {
-    hasMembers: (state) => state.membersData.length > 0,
-    membersCount: (state) => state.membersData.length,
+    /** @returns {boolean} Whether at least one member has been loaded. */
+    hasMembers: (state) => state.dataMembers.length > 0,
+    /** @returns {number} Number of loaded members. */
+    membersCount: (state) => state.dataMembers.length,
+    /** @returns {boolean} Whether there is a step before the current one. */
     hasPreviousSociogramStep: (state) =>
-      SOCIOGRAM_STATES.indexOf(state.currentSociogramStep) > 0,
+      SOCIOGRAM_STEPS.indexOf(state.currentSociogramStep) > 0,
+    /** @returns {boolean} Whether there is a step after the current one. */
     hasNextSociogramStep: (state) =>
-      SOCIOGRAM_STATES.indexOf(state.currentSociogramStep) < SOCIOGRAM_STATES.length - 1,
+      SOCIOGRAM_STEPS.indexOf(state.currentSociogramStep) < SOCIOGRAM_STEPS.length - 1,
   },
 
   actions: {
-    /** @param {string[]} data */
+    /** Replace the raw member names.
+     * @param {string[]} data
+     */
     setTextLoaded(data) {
-      this.textLoaded = data;
+      this.dataLoaded = data;
     },
 
-    /** @param {Member[]} data */
+    /** Replace the parsed members.
+     * @param {Member[]} data
+     */
     setMembersData(data) {
-      this.membersData= data;
+      this.dataMembers = data;
     },
 
-    /** @param {string} step One of `SOCIOGRAM_STATES`. */
+    /** Set the current step, ignoring values outside `SOCIOGRAM_STEPS`.
+     * @param {SociogramStep} step
+     */
     setCurrentSociogramStep(step) {
-      if (SOCIOGRAM_STATES.includes(step)) {
+      if (SOCIOGRAM_STEPS.includes(step)) {
         this.currentSociogramStep = step;
       }
     },
@@ -57,22 +83,22 @@ export const useSociogramStore = defineStore("sociogram", {
     /** Advance to the next step, if there is one. */
     goToNextSociogramStep() {
       if (this.hasNextSociogramStep) {
-        this.currentSociogramStep = SOCIOGRAM_STATES[SOCIOGRAM_STATES.indexOf(this.currentSociogramStep) + 1];
+        this.currentSociogramStep = SOCIOGRAM_STEPS[SOCIOGRAM_STEPS.indexOf(this.currentSociogramStep) + 1];
       }
     },
 
     /** Move back to the previous step, if there is one. */
     goToPreviousSociogramStep() {
       if (this.hasPreviousSociogramStep) {
-        this.currentSociogramStep = SOCIOGRAM_STATES[SOCIOGRAM_STATES.indexOf(this.currentSociogramStep) - 1];
+        this.currentSociogramStep = SOCIOGRAM_STEPS[SOCIOGRAM_STEPS.indexOf(this.currentSociogramStep) - 1];
       }
     },
 
-    /** Clear all sociogram data and return to the starting state. */
+    /** Clear all sociogram data and return to the first step. */
     reset() {
-      this.textLoaded = [];
-      this.membersData = [];
-      this.currentSociogramStep = SOCIOGRAM_STATES[0] ;
+      this.dataLoaded = [];
+      this.dataMembers = [];
+      this.currentSociogramStep = SOCIOGRAM_STEPS[0];
     },
   },
 });
