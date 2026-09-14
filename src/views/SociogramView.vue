@@ -14,7 +14,7 @@ import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateRepo
 const sociogram = useSociogramStore();
 
 // Reactive references to state/getters (Composition API equivalent of mapState).
-const { currentState, hasPreviousState, hasNextState } = storeToRefs(sociogram);
+const { currentSociogramStep, hasPreviousSociogramStep, hasNextSociogramStep } = storeToRefs(sociogram);
 
 // The sub-components, indexed by `currentState`.
 const stateComponents = {
@@ -24,7 +24,8 @@ const stateComponents = {
     generateReport: SociogramGenerateReportView,
 };
 
-const currentComponent = computed(() => stateComponents[currentState.value]);
+const currentComponent = computed(() => stateComponents[currentSociogramStep.value]);
+
 </script>
 
 <template>
@@ -32,7 +33,7 @@ const currentComponent = computed(() => stateComponents[currentState.value]);
         <h1>Costruisci il sociogramma</h1>
 
         <PageTransition>
-            <component :is="currentComponent" :key="currentState" />
+            <component :is="currentComponent" :key="currentSociogramStep" />
         </PageTransition>
 
         <div class="flex flex-wrap gap-2">
@@ -42,15 +43,15 @@ const currentComponent = computed(() => stateComponents[currentState.value]);
 
             <BaseButton
                 variant="outline"
-                :disabled="!hasPreviousState"
-                @click="sociogram.goToPreviousState()"
+                :disabled="!hasPreviousSociogramStep"
+                @click="sociogram.goToPreviousSociogramStep()"
             >
                 Indietro
             </BaseButton>
 
             <BaseButton
-                :disabled="!hasNextState"
-                @click="sociogram.goToNextState()"
+                :disabled="!hasNextSociogramStep"
+                @click="sociogram.goToNextSociogramStep()"
             >
                 Avanti
             </BaseButton>

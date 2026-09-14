@@ -20,66 +20,59 @@ export const SOCIOGRAM_STATES = [
 export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
     /** @type {string[]} */
-    membersNames: [],
+    textLoaded: [],
     /** @type {Member[]} */
-    membersObjects: [],
-    /** @type {boolean} */
-    isReportBeingGenerated: false,
-    /** @type {boolean} */
-    isReportReady: false,
+    membersData: [],
     /** @type {string} Current sociogram state (see `SOCIOGRAM_STATES`). */
-    currentState: "start",
+    currentSociogramStep: "start",
   }),
 
   getters: {
-    membersCount: (state) => state.membersObjects.length,
-    hasMembers: (state) => state.membersObjects.length > 0,
-    currentStateIndex: (state) => SOCIOGRAM_STATES.indexOf(state.currentState),
-    hasPreviousState: (state) =>
-      SOCIOGRAM_STATES.indexOf(state.currentState) > 0,
-    hasNextState: (state) =>
-      SOCIOGRAM_STATES.indexOf(state.currentState) < SOCIOGRAM_STATES.length - 1,
+    hasMembers: (state) => state.membersData.length > 0,
+    membersCount: (state) => state.membersData.length,
+    hasPreviousSociogramStep: (state) =>
+      SOCIOGRAM_STATES.indexOf(state.currentSociogramStep) > 0,
+    hasNextSociogramStep: (state) =>
+      SOCIOGRAM_STATES.indexOf(state.currentSociogramStep) < SOCIOGRAM_STATES.length - 1,
   },
 
   actions: {
-    /** @param {string[]} names */
-    setMembersNames(names) {
-      this.membersNames = names;
+    /** @param {string[]} data */
+    setTextLoaded(data) {
+      this.textLoaded = data;
     },
 
-    /** @param {Member[]} members */
-    setMembersObjects(members) {
-      this.membersObjects = members;
+    /** @param {Member[]} data */
+    setMembersData(data) {
+      this.membersData= data;
     },
 
-    /** @param {string} state One of `SOCIOGRAM_STATES`. */
-    setCurrentState(state) {
-      if (SOCIOGRAM_STATES.includes(state)) {
-        this.currentState = state;
+    /** @param {string} step One of `SOCIOGRAM_STATES`. */
+    setCurrentSociogramStep(step) {
+      if (SOCIOGRAM_STATES.includes(step)) {
+        this.currentSociogramStep = step;
       }
     },
 
-    /** Advance to the next state, if there is one. */
-    goToNextState() {
-      if (this.hasNextState) {
-        this.currentState = SOCIOGRAM_STATES[this.currentStateIndex + 1];
+    /** Advance to the next step, if there is one. */
+    goToNextSociogramStep() {
+      if (this.hasNextSociogramStep) {
+        this.currentSociogramStep = SOCIOGRAM_STATES[SOCIOGRAM_STATES.indexOf(this.currentSociogramStep) + 1];
       }
     },
 
-    /** Move back to the previous state, if there is one. */
-    goToPreviousState() {
-      if (this.hasPreviousState) {
-        this.currentState = SOCIOGRAM_STATES[this.currentStateIndex - 1];
+    /** Move back to the previous step, if there is one. */
+    goToPreviousSociogramStep() {
+      if (this.hasPreviousSociogramStep) {
+        this.currentSociogramStep = SOCIOGRAM_STATES[SOCIOGRAM_STATES.indexOf(this.currentSociogramStep) - 1];
       }
     },
 
     /** Clear all sociogram data and return to the starting state. */
     reset() {
-      this.membersNames = [];
-      this.membersObjects = [];
-      this.isReportBeingGenerated = false;
-      this.isReportReady = false;
-      this.currentState = "start";
+      this.textLoaded = [];
+      this.membersData = [];
+      this.currentSociogramStep = SOCIOGRAM_STATES[0] ;
     },
   },
 });
