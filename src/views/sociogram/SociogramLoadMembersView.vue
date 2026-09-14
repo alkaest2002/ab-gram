@@ -20,8 +20,10 @@ const members = ref(
     : dataMembers.value.map((member) => member.name)
 );
 
+// Flag for editor mode and member list state.
 const isEditing = ref(false);
 
+// Computed values for editor mode and member list state.
 const editorMode = computed(() => (isEditing.value ? "edit" : "view"));
 const hasMembers = computed(() => members.value.length > 0);
 const membersLabel = computed(() =>
@@ -51,7 +53,7 @@ function toggleEditing() {
 <template>
   <section class="card space-y-6">
     <StepHeader eyebrow="Passaggio 1 di 3" title="Carica i membri">
-      Carica un file di testo con un nome per riga, poi rivedi o modifica
+      Carica un file di testo con un nome per riga, poi &mdash; se necessario &mdash; rivedi o modifica
       l'elenco prima di proseguire.
     </StepHeader>
 
