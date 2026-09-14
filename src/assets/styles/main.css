@@ -23,6 +23,8 @@
   /* Header height: the menu panel opens just below. */
   :root {
     --header-h: 4.25rem;
+    /* Root font size: every rem-based size in the site scales off this. */
+    font-size: 1.125rem;
   }
 
   body {
