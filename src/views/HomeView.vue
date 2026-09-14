@@ -45,7 +45,7 @@ const readings = [
         kind: "alone",
         tone: "muted",
         title: "Isolamento",
-        text: "Chi esprime preferenze senza riceverne. Iris, Luca e Marta, nel grafo qui sopra.",
+        text: "Chi esprime preferenze senza riceverne. Iris, Luca e Marta, nel grafico qui sopra.",
     },
 ];
 </script>
@@ -130,14 +130,12 @@ const readings = [
                 </p>
             </div>
 
-            <BaseButton to="/app">Apri l'app</BaseButton>
+            <BaseButton to="/sociogram">Apri l'app</BaseButton>
         </section>
     </div>
 </template>
 
 <style scoped>
-/* The hero is plain type on white: the bold headline and its blue-to-red
-   underline carry it, with no background pattern behind. */
 .hero {
     padding-block: 1.5rem 0.5rem;
 }
