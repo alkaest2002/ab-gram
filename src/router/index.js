@@ -3,63 +3,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import { waitForPageTransition } from "@/router/scroll";
 import { useAppStore } from "@/stores/app";
-import { useSociogramStore } from "@/stores/sociogram";
 
 const SITE_NAME = "AB-Grid";
-
-// Routes of /app, exported separately: the sub-navigation reads them from here and
-// shows only those with `meta.label`. The first is the entry page: without
-// a label it stays out of the sub-navigation, which keeps showing the three steps.
-export const sociogramRoutes = [
-  {
-    path: "",
-    name: "sociogram-start",
-    component: () => import("@/views/sociogram/SociogramStartView.vue"),
-    meta: {
-      title: "Da dove iniziare",
-      inMenu: true,
-      typeOfMenu: ["header"],
-    },
-  },
-  {
-    path: "sociogram-load-members",
-    name: "sociogram-load-members",
-    component: () => import("@/views/sociogram/SociogramLoadMembersView.vue"),
-    meta: {
-      title: "Carica i membri",
-      inMenu: true,
-      typeOfMenu: ["header"],
-    },
-  },
-  {
-    path: "sociogram-preferences",
-    name: "sociogram-preferences",
-    component: () =>
-      import("@/views/sociogram/SociogramSetPreferencesView.vue"),
-    meta: {
-      title: "Imposta le preferenze",
-      inMenu: true,
-      typeOfMenu: ["header"],
-      requiresMembers: true,
-    },
-  },
-  {
-    path: "sociogram-generate-report",
-    name: "sociogram-generate-report",
-    component: () =>
-      import("@/views/sociogram/SociogramGenerateReportView.vue"),
-    meta: {
-      title: "Genera il report",
-      inMenu: true,
-      typeOfMenu: ["header"],
-      requiresMembers: true,
-    },
-  },
-];
-
-// Ordered sociogram step names, matching the order of `sociogramRoutes`.
-// Used by SociogramView to derive prev/next from the current route.
-export const sociogramSteps = sociogramRoutes.map((route) => route.name);
 
 export const routes = [
   {
@@ -81,7 +26,6 @@ export const routes = [
       typeOfMenu: ["header"],
       layout: "DefaultLayout",
     },
-    children: sociogramRoutes,
   },
   {
     path: "/docs",
@@ -144,13 +88,6 @@ const router = createRouter({
 // Keep the app store's layout in sync with the route being navigated to.
 router.beforeEach((to) => {
   useAppStore().setLayout(to.meta.layout ?? "DefaultLayout");
-});
-
-// Keep users from jumping ahead in the sociogram wizard before loading members.
-router.beforeEach((to) => {
-  if (to.meta.requiresMembers && !useSociogramStore().hasMembers) {
-    return { name: "sociogram-load-members" };
-  }
 });
 
 router.afterEach((to) => {

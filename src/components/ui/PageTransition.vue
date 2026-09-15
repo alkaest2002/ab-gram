@@ -9,7 +9,7 @@ import { resolvePageTransition } from "@/router/scroll";
         mode="out-in"
         enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
         enter-from-class="opacity-0 motion-safe:translate-y-1"
-        leave-active-class="transition duration-100 ease-in motion-reduce:transition-none"
+        leave-active-class="transition duration-200 ease-in motion-reduce:transition-none"
         leave-to-class="opacity-0"
         @after-enter="resolvePageTransition"
     >

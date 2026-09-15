@@ -11,16 +11,35 @@ import { defineStore } from "pinia";
  */
 
 /**
- * Sociogram flow data.
+ * One of the ordered sociogram steps.
  *
- * Holds the parsed members. The current wizard step is owned by the router
- * (see `sociogramSteps` in `src/router/index.js`), not here, so the two can't
- * drift out of sync.
+ * @typedef {'start' | 'loadMembers' | 'setPreferences' | 'generateReport'} SociogramStep
+ */
+
+/**
+ * Ordered list of the sociogram steps.
+ * @type {SociogramStep[]}
+ */
+export const SOCIOGRAM_STEPS = [
+  "start",
+  "loadMembers",
+  "setPreferences",
+  "generateReport",
+];
+
+/**
+ * Sociogram flow data and navigation.
+ *
+ * Holds the parsed members and the current wizard step. Steps are switched by
+ * swapping components in `SociogramView` (component-based), so this store is the
+ * single source of truth for "which step".
  */
 export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
     /** @type {Member[]} Parsed sociogram members. */
     members: [],
+    /** @type {SociogramStep} Current sociogram step (see `SOCIOGRAM_STEPS`). */
+    currentSociogramStep: "start",
   }),
 
   getters: {
@@ -52,9 +71,19 @@ export const useSociogramStore = defineStore("sociogram", {
       this.members = this.members.filter((m) => m.id !== memberId);
     },
 
-    /** Clear all sociogram data. */
+    /** Set the current step, ignoring values outside `SOCIOGRAM_STEPS`.
+     * @param {SociogramStep} step
+     */
+    setCurrentSociogramStep(step) {
+      if (SOCIOGRAM_STEPS.includes(step)) {
+        this.currentSociogramStep = step;
+      }
+    },
+
+    /** Clear all sociogram data and return to the first step. */
     reset() {
       this.members = [];
+      this.currentSociogramStep = SOCIOGRAM_STEPS[0];
     },
   },
 });
