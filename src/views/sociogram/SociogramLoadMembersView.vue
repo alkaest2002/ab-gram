@@ -1,13 +1,15 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 
 import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/ui/StepHeader.vue";
+import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
 import MemberFileReader from "@/components/sociogram/MemberFileReader.vue";
 import MemberListEditor from "@/components/sociogram/MemberListEditor.vue";
 import { useSociogramStore } from "@/stores/sociogram";
-import { buildMembers, normalizeNames } from "@/utils/members";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+import { getMembersNameIssues } from "@/utils/members";
 
 // Get the sociogram store and its state.
 const sociogram = useSociogramStore();
@@ -24,11 +26,23 @@ const membersCountLabel = computed(() =>
     : `${membersCount.value} nomi caricati`
 );
 
+// The load step can only advance when there are members, none of them are
+// blank, and no two members share the same name.
+const nameIssues = computed(() => getMembersNameIssues(members.value));
+const canGoNext = computed(
+  () =>
+    hasMembers.value &&
+    nameIssues.value.emptyNamesCount === 0 &&
+    nameIssues.value.duplicateNamesCount === 0
+);
+
+const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
+  useSociogramNavigation("loadMembers", canGoNext);
+
 // Toggle the editing mode.
 function toggleEditing() {
   isEditing.value = !isEditing.value;
 }
-
 </script>
 
 <template>
@@ -70,4 +84,16 @@ function toggleEditing() {
       />
     </div>
   </section>
+
+  <SociogramNavigation
+    :show-previous="showPrevious"
+    :show-next="showNext"
+    :show-restart="showRestart"
+    :enable-previous="true"
+    :enable-next="canGoNext"
+    :enable-restart="true"
+    @sociogram-step-previous="goPrevious"
+    @sociogram-step-next="goNext"
+    @sociogram-step-restart="restart"
+  />
 </template>

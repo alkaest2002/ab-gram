@@ -1,8 +1,13 @@
 <script setup>
 import { useAppStore } from "@/stores/app";
+import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
 import StepHeader from "@/components/ui/StepHeader.vue";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
 const app = useAppStore();
+
+const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
+    useSociogramNavigation("generateReport", false);
 </script>
 
 <template>
@@ -18,4 +23,16 @@ const app = useAppStore();
             >
         </p>
     </section>
+
+    <SociogramNavigation
+        :show-previous="showPrevious"
+        :show-next="showNext"
+        :show-restart="showRestart"
+        :enable-previous="true"
+        :enable-next="false"
+        :enable-restart="true"
+        @sociogram-step-previous="goPrevious"
+        @sociogram-step-next="goNext"
+        @sociogram-step-restart="restart"
+    />
 </template>

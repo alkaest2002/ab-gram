@@ -1,5 +1,10 @@
 <script setup>
+import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
 import StepHeader from "@/components/ui/StepHeader.vue";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+
+const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
+    useSociogramNavigation("start", true);
 </script>
 
 <template>
@@ -18,4 +23,16 @@ import StepHeader from "@/components/ui/StepHeader.vue";
             >
         </div>
     </section>
+
+    <SociogramNavigation
+        :show-previous="showPrevious"
+        :show-next="showNext"
+        :show-restart="showRestart"
+        :enable-previous="true"
+        :enable-next="true"
+        :enable-restart="true"
+        @sociogram-step-previous="goPrevious"
+        @sociogram-step-next="goNext"
+        @sociogram-step-restart="restart"
+    />
 </template>

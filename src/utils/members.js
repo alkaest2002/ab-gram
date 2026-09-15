@@ -45,3 +45,24 @@ export function buildMembers(names) {
     dislikes: [],
   }));
 }
+
+/**
+ * Count name issues across the loaded members.
+ *
+ * Names are trimmed once before counting, so both figures below compare the
+ * same value. Empty (blank) names and duplicated non-empty names are reported
+ * separately: a group may legitimately contain two members with the same name,
+ * but that must be reviewed before advancing.
+ *
+ * @param {Array<{ name?: string }>} members
+ * @returns {{ emptyNamesCount: number, duplicateNamesCount: number }}
+ */
+export function getMembersNameIssues(members) {
+  const names = members.map((member) => String(member?.name ?? "").trim());
+  const nonEmptyNames = names.filter(Boolean);
+
+  return {
+    emptyNamesCount: names.filter((name) => name === "").length,
+    duplicateNamesCount: nonEmptyNames.length - new Set(nonEmptyNames).size,
+  };
+}

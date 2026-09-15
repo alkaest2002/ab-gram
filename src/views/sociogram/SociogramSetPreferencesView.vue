@@ -1,5 +1,16 @@
 <script setup>
+import { computed } from "vue";
+
+import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
 import StepHeader from "@/components/ui/StepHeader.vue";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+
+// TODO: replace this with the real preferences validation (e.g. every member
+// has provided their likes/dislikes) once collection is wired up.
+const canGoNext = computed(() => true);
+
+const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
+    useSociogramNavigation("setPreferences", canGoNext);
 </script>
 
 <template>
@@ -13,4 +24,16 @@ import StepHeader from "@/components/ui/StepHeader.vue";
             Nessuna logica di raccolta è ancora collegata.
         </p>
     </section>
+
+    <SociogramNavigation
+        :show-previous="showPrevious"
+        :show-next="showNext"
+        :show-restart="showRestart"
+        :enable-previous="true"
+        :enable-next="canGoNext"
+        :enable-restart="true"
+        @sociogram-step-previous="goPrevious"
+        @sociogram-step-next="goNext"
+        @sociogram-step-restart="restart"
+    />
 </template>

@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from "vue";
+import { getMembersNameIssues } from "@/utils/members";
 
 const props = defineProps({
   /**
@@ -30,27 +31,13 @@ const inputClass = computed(() =>
     : "w-full rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm text-ink transition-colors outline-none"
 );
 
-// Names trimmed once, so every stat below compares the same value.
-const trimmedNames = computed(() =>
-  props.members.map((member) => String(member.name ?? "").trim())
-);
-
 /** Total number of members. */
 const membersCount = computed(() => props.members.length);
 
-/**
- * Number of duplicated names: extra occurrences beyond the first for each
- * non-empty name. Empty names are reported separately below.
- */
-const duplicatedNamesCount = computed(() => {
-  const nonEmptyNames = trimmedNames.value.filter(Boolean);
-  return nonEmptyNames.length - new Set(nonEmptyNames).size;
-});
-
-/** Number of members with an empty (or blank) name. */
-const emptyNamesCount = computed(
-  () => trimmedNames.value.filter((name) => name === "").length
-);
+/** Empty and duplicated names, derived from the shared member helpers. */
+const nameIssues = computed(() => getMembersNameIssues(props.members));
+const duplicatedNamesCount = computed(() => nameIssues.value.duplicateNamesCount);
+const emptyNamesCount = computed(() => nameIssues.value.emptyNamesCount);
 
 function updateMember(memberId, key, value) {
   emit("update:member", { memberId, key, value });
