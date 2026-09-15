@@ -1,3 +1,4 @@
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
 /**
@@ -17,44 +18,51 @@ import { defineStore } from "pinia";
  * navigation live in `useSociogramNavigation`; this store only keeps the
  * current step value, so it remains the single source of truth for "which step".
  */
-export const useSociogramStore = defineStore("sociogram", {
-  state: () => ({
-    /** @type {Member[]} Parsed sociogram members. */
-    members: [],
-  }),
+export const useSociogramStore = defineStore("sociogram", () => {
+  /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
+  const members = ref([]);
 
-  getters: {
-    /** @returns {boolean} Whether at least one member has been loaded. */
-    hasMembers: (state) => state.members.length > 0,
-    /** @returns {number} Number of loaded members. */
-    membersCount: (state) => state.members.length,
-  },
+  /** @type {import("vue").ComputedRef<boolean>} Whether at least one member has been loaded. */
+  const hasMembers = computed(() => members.value.length > 0);
 
-  actions: {
-    /** Replace the parsed members.
-     * @param {Member[]} data
-     */
-    setMembers(membersData) {
-      this.members = membersData;
-    },
+  /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
+  const membersCount = computed(() => members.value.length);
 
-    updateMember({ memberId, key, value }) {
-      const memberIndex = this.members.findIndex((m) => m.id === memberId);
-      if (memberIndex !== -1) {
-        this.members[memberIndex][key] = value;
-      }
-    },
+  /**
+   * Replace the parsed members.
+   * @param {Member[]} membersData
+   */
+  function setMembers(membersData) {
+    members.value = membersData;
+  }
 
-    /** Remove a single member by id.
-     * @param {string} memberId
-     */
-    removeMember(memberId) {
-      this.members = this.members.filter((m) => m.id !== memberId);
-    },
+  function updateMember({ memberId, key, value }) {
+    const memberIndex = members.value.findIndex((m) => m.id === memberId);
+    if (memberIndex !== -1) {
+      members.value[memberIndex][key] = value;
+    }
+  }
 
-    /** Clear all loaded members. */
-    resetMembers() {
-      this.members = [];
-    },
-  },
+  /**
+   * Remove a single member by id.
+   * @param {string} memberId
+   */
+  function removeMember(memberId) {
+    members.value = members.value.filter((m) => m.id !== memberId);
+  }
+
+  /** Clear all loaded members. */
+  function resetMembers() {
+    members.value = [];
+  }
+
+  return {
+    members,
+    hasMembers,
+    membersCount,
+    setMembers,
+    updateMember,
+    removeMember,
+    resetMembers,
+  };
 });
