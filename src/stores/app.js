@@ -1,8 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-/** Cross-cutting application state. */
 export const useAppStore = defineStore("app", () => {
+
   /** @type {import("vue").Ref<boolean>} */
   const shouldLockUi = ref(true);
 

@@ -19,6 +19,7 @@ import { defineStore } from "pinia";
  * current step value, so it remains the single source of truth for "which step".
  */
 export const useSociogramStore = defineStore("sociogram", () => {
+
   /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
   const members = ref([]);
 
