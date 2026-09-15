@@ -67,6 +67,8 @@ export const useSociogramStore = defineStore("sociogram", () => {
     members,
     hasMembers,
     membersCount,
+    maxMemberNameLength,
+    maxMembersCount,
     setMembers,
     updateMember,
     removeMember,

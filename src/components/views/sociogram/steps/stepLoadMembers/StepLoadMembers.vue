@@ -55,6 +55,13 @@ function toggleEditing() {
             necessario &mdash; rivedi o modifica l'elenco prima di proseguire.
         </StepHeader>
 
+        <p class="text-xs text-muted">
+            Ogni nome &egrave; limitato a
+            {{ sociogram.maxMemberNameLength }} caratteri (spazi inclusi);
+            possono essere caricati al massimo
+            {{ sociogram.maxMembersCount }} nomi.
+        </p>
+
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
         <StepLoadMembersFileReader
