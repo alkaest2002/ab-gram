@@ -4,18 +4,12 @@ import { defineStore } from "pinia";
 export const useAppStore = defineStore("app", {
   state: () => ({
     /** @type {boolean} */
-    shouldLockUI: true,
-    /** @type {string} Name of the active layout (see `src/components/layouts`). */
-    layout: "DefaultLayout",
+    shouldLockUi: true,
   }),
 
   actions: {
-    setLoading(value) {
-      this.shouldLockUI = Boolean(value);
-    },
-
-    setLayout(name) {
-      this.layout = name;
+    lockUi(value) {
+      this.shouldLockUi = Boolean(value);
     },
   },
 });
