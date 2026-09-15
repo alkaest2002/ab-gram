@@ -31,9 +31,7 @@ const currentComponent = computed(
         <h1>Costruisci il sociogramma</h1>
         <PageTransition>
             <div :key="currentSociogramStep">
-                <KeepAlive>
-                    <component :is="currentComponent" />
-                </KeepAlive>
+                <component :is="currentComponent" />
             </div>
         </PageTransition>
     </div>
