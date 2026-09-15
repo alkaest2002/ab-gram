@@ -1,14 +1,26 @@
 import { computed, unref } from "vue";
 
-import { useSociogramStore, SOCIOGRAM_STEPS } from "@/stores/sociogram";
+import { useSociogramStore } from "@/stores/sociogram";
+
+/**
+ * Ordered list of the sociogram steps.
+ * @type {import('@/stores/sociogram').SociogramStep[]}
+ */
+export const SOCIOGRAM_STEPS = [
+  "start",
+  "loadMembers",
+  "setPreferences",
+  "generateReport",
+];
 
 /**
  * Shared sociogram step navigation.
  *
  * Each step view owns its own "can I go next?" logic (the part that varies
  * between steps) and passes it here as a ref/computed or plain boolean.
- * Everything else — which buttons are visible and how to move between steps —
- * is identical for every step, so it lives here instead of in `SociogramView`.
+ * Everything else — the step order, which buttons are visible, and how to move
+ * between steps — is the stepper system and lives here instead of in
+ * `SociogramView` or the sociogram store.
  *
  * @param {import('@/stores/sociogram').SociogramStep} step The step this view represents.
  * @param {import('vue').Ref<boolean> | boolean} canGoNext Whether the user may advance from this step.
@@ -39,7 +51,8 @@ export function useSociogramNavigation(step, canGoNext) {
   }
 
   function restart() {
-    sociogram.reset();
+    sociogram.resetMembers();
+    sociogram.setCurrentSociogramStep(SOCIOGRAM_STEPS[0]);
   }
 
   return {

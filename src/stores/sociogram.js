@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 /**
  * A single participant in the sociogram.
@@ -11,35 +12,18 @@ import { defineStore } from "pinia";
  */
 
 /**
- * One of the ordered sociogram steps.
+ * Sociogram flow data.
  *
- * @typedef {'start' | 'loadMembers' | 'setPreferences' | 'generateReport'} SociogramStep
- */
-
-/**
- * Ordered list of the sociogram steps.
- * @type {SociogramStep[]}
- */
-export const SOCIOGRAM_STEPS = [
-  "start",
-  "loadMembers",
-  "setPreferences",
-  "generateReport",
-];
-
-/**
- * Sociogram flow data and navigation.
- *
- * Holds the parsed members and the current wizard step. Steps are switched by
- * swapping components in `SociogramView` (component-based), so this store is the
- * single source of truth for "which step".
+ * Holds the parsed members and the current wizard step. Step ordering and
+ * navigation live in `useSociogramNavigation`; this store only keeps the
+ * current step value, so it remains the single source of truth for "which step".
  */
 export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
     /** @type {Member[]} Parsed sociogram members. */
     members: [],
-    /** @type {SociogramStep} Current sociogram step (see `SOCIOGRAM_STEPS`). */
-    currentSociogramStep: "start",
+    /** @type {SociogramStep} Current sociogram step. */
+    currentSociogramStep: SOCIOGRAM_STEPS[0],
   }),
 
   getters: {
@@ -71,19 +55,16 @@ export const useSociogramStore = defineStore("sociogram", {
       this.members = this.members.filter((m) => m.id !== memberId);
     },
 
-    /** Set the current step, ignoring values outside `SOCIOGRAM_STEPS`.
+    /** Set the current step.
      * @param {SociogramStep} step
      */
     setCurrentSociogramStep(step) {
-      if (SOCIOGRAM_STEPS.includes(step)) {
-        this.currentSociogramStep = step;
-      }
+      this.currentSociogramStep = step;
     },
 
-    /** Clear all sociogram data and return to the first step. */
-    reset() {
+    /** Clear all loaded members. */
+    resetMembers() {
       this.members = [];
-      this.currentSociogramStep = SOCIOGRAM_STEPS[0];
     },
   },
 });
