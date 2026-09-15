@@ -7,10 +7,10 @@ import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";
 
 import BaseButton from "@/components/ui/BaseButton.vue";
-import StepHeader from "@/components/views/sociogram/StepHeader.vue";
+import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import StepLoadMembersFileReader from "@/components/views/sociogram/StepLoadMembersFileReader.vue";
-import StepLoadMembersListEditor from "@/components/views/sociogram/StepLoadMembersListEditor.vue";
+import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
+import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 

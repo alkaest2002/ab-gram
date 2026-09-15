@@ -4,10 +4,10 @@ import { useSociogramStore } from "@/stores/sociogram";
 import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 import PageTransition from "@/components/ui/PageTransition.vue";
-import StepStart from "@/components/views/sociogram/StepStart.vue";
-import StepLoadMembers from "@/components/views/sociogram/StepLoadMembers.vue";
-import StepSetPreferences from "@/components/views/sociogram/StepSetPreferences.vue";
-import StepGenerateReport from "@/components/views/sociogram/StepGenerateReport.vue";
+import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
+import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
+import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
+import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
 
 const sociogramStore = useSociogramStore();
 

@@ -2,7 +2,7 @@
 import { useAppStore } from "@/stores/app";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
-import StepHeader from "@/components/views/sociogram/StepHeader.vue";
+import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
