@@ -16,7 +16,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // Get the sociogram store and its state.
 const sociogram = useSociogramStore();
-const { hasMembers, membersCount, members } = storeToRefs(sociogram);
+const { maxMemberNameLength, maxMembersCount, hasMembers, membersCount, members } = storeToRefs(sociogram);
 
 // Flag for editor mode and member list state.
 const isEditing = ref(false);
@@ -57,7 +57,11 @@ function toggleEditing() {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <StepLoadMembersFileReader v-model="members" />
+        <StepLoadMembersFileReader
+            :max-row-length="maxMemberNameLength"
+            :max-rows="maxMembersCount"
+            v-model="members"
+        />
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 

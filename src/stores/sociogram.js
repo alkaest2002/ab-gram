@@ -20,6 +20,12 @@ import { defineStore } from "pinia";
  */
 export const useSociogramStore = defineStore("sociogram", () => {
 
+  /** @type {number} Maximum length of a member's name. */
+  const maxMemberNameLength = 150;
+
+  /** @type {number} Maximum number of members. */
+  const maxMembersCount = 35;
+
   /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
   const members = ref([]);
 

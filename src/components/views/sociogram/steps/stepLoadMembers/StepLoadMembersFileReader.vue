@@ -6,11 +6,12 @@ import { buildMembers, normalizeNames } from "@/utils/members";
 
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+
 const props = defineProps({
   /** Maximum rows read from the file (see `useTextReader`). */
   maxRows: { type: Number, default: 35 },
   /** Maximum characters kept per row (see `useTextReader`). */
-  rowLength: { type: Number, default: 150 },
+  maxRowLength: { type: Number, default: 150 },
 });
 
 // v-model: the clean member-name list owned by the parent view.
@@ -21,8 +22,8 @@ const fileName = ref("");
 
 const { rows, error, isReading, read } = useTextReader(
   null,
-  props.rowLength,
-  props.maxRows
+  props.maxRows,
+  props.maxRowLength,
 );
 
 function pick() {

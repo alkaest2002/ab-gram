@@ -19,7 +19,7 @@ import { ref } from "vue";
  *   read: (file?: File | Blob) => Promise<void>
  * }}
  */
-export function useTextReader(textFileToRead, rowLength = 150, maxRows = 35) {
+export function useTextReader(textFileToRead, maxRows = 35, maxRowLength = 150) {
   /** @type {import('vue').Ref<string[]>} */
   const rows = ref([]);
   const error = ref(null);
@@ -61,13 +61,13 @@ export function useTextReader(textFileToRead, rowLength = 150, maxRows = 35) {
     }
 
     if (
-      !Number.isInteger(rowLength) ||
-      rowLength <= 0 ||
+      !Number.isInteger(maxRowLength) ||
+      maxRowLength <= 0 ||
       !Number.isInteger(maxRows) ||
       maxRows <= 0
     ) {
       error.value = new Error(
-        `Invalid parameters: rowLength (${rowLength}) and maxRows (${maxRows}) must be positive integers.`
+        `Invalid parameters: rowLength (${maxRowLength}) and maxRows (${maxRows}) must be positive integers.`
       );
       isReading.value = false;
       return;
@@ -105,14 +105,14 @@ export function useTextReader(textFileToRead, rowLength = 150, maxRows = 35) {
 
         for (const line of lines) {
           // Use character-aware truncation to avoid breaking multi-byte sequences
-          rows.value.push(truncateRow(line, rowLength));
+          rows.value.push(truncateRow(line, maxRowLength));
           if (rows.value.length >= maxRows) break;
         }
 
         // Guard against unbounded growth of remainder with a very long single line.
         // Still character-aware to avoid corruption.
-        if (Array.from(remainder).length > rowLength) {
-          remainder = truncateRow(remainder, rowLength);
+        if (Array.from(remainder).length > maxRowLength) {
+          remainder = truncateRow(remainder, maxRowLength);
         }
       }
 
@@ -124,7 +124,7 @@ export function useTextReader(textFileToRead, rowLength = 150, maxRows = 35) {
 
       // Only add remainder if it's not empty and we haven't hit maxRows.
       if (remainder && rows.value.length < maxRows) {
-        rows.value.push(truncateRow(remainder, rowLength));
+        rows.value.push(truncateRow(remainder, maxRowLength));
       }
     } catch (err) {
       error.value = err;
