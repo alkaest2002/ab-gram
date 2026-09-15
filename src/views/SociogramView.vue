@@ -4,6 +4,7 @@ import { storeToRefs } from "pinia";
 
 import BaseButton from "@/components/ui/BaseButton.vue";
 import PageTransition from "@/components/ui/PageTransition.vue";
+import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
 import { useSociogramStore } from "@/stores/sociogram";
 
 import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
@@ -14,7 +15,7 @@ import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateRepo
 const sociogram = useSociogramStore();
 
 // Reactive references to state/getters (Composition API equivalent of mapState).
-const { currentSociogramStep, hasPreviousSociogramStep, hasNextSociogramStep } = storeToRefs(sociogram);
+const { currentSociogramStep } = storeToRefs(sociogram);
 
 // The sub-components, indexed by `currentState`.
 const stateComponents = {
@@ -38,23 +39,7 @@ const currentComponent = computed(() => stateComponents[currentSociogramStep.val
 
         <div class="flex flex-wrap gap-2 justify-between">
 
-            <div class="flex flex-wrap gap-2">
-
-                <BaseButton
-                    variant="outline"
-                    :disabled="!hasPreviousSociogramStep"
-                    @click="sociogram.goToPreviousSociogramStep()"
-                >
-                    Indietro
-                </BaseButton>
-
-                <BaseButton
-                    :disabled="!hasNextSociogramStep"
-                    @click="sociogram.goToNextSociogramStep()"
-                >
-                    Avanti
-                </BaseButton>
-            </div>
+            <SociogramNavigation />
 
             <BaseButton variant="outline" @click="sociogram.reset()">
                 Ricomincia
