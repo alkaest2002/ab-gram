@@ -1,5 +1,5 @@
 <script setup>
-import BaseButton from "@/components/common/ui/BaseButton.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 
 defineProps({
     showPrevious: { type: Boolean, default: false },

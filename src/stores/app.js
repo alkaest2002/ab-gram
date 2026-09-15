@@ -5,7 +5,7 @@ export const useAppStore = defineStore("app", {
   state: () => ({
     /** @type {boolean} */
     shouldLockUI: true,
-    /** @type {string} Name of the active layout (see `src/layouts`). */
+    /** @type {string} Name of the active layout (see `src/components/layouts`). */
     layout: "DefaultLayout",
   }),
 

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAppStore } from "@/stores/app";
 import { waitForPageTransition } from "@/router/scroll";
 
-import Home from "@/views/Home.vue";
+import Home from "@/components/views/home/Home.vue";
 
 const SITE_NAME = "AB-Grid";
 
@@ -20,7 +20,7 @@ export const routes = [
   },
   {
     path: "/sociogram",
-    component: () => import("@/views/Sociogram.vue"),
+    component: () => import("@/components/views/sociogram/Sociogram.vue"),
     meta: {
       title: "App",
       inMenu: true,
@@ -31,7 +31,7 @@ export const routes = [
   {
     path: "/docs",
     name: "docs",
-    component: () => import("@/views/Docs.vue"),
+    component: () => import("@/components/views/Docs.vue"),
     meta: {
       title: "Docs",
       inMenu: true,
@@ -42,7 +42,7 @@ export const routes = [
   {
     path: "/about",
     name: "about",
-    component: () => import("@/views/About.vue"),
+    component: () => import("@/components/views/About.vue"),
     meta: {
       title: "About",
       inMenu: true,
@@ -53,7 +53,7 @@ export const routes = [
   {
     path: "/privacy",
     name: "privacy",
-    component: () => import("@/views/Privacy.vue"),
+    component: () => import("@/components/views/Privacy.vue"),
     meta: {
       title: "Informativa privacy",
       inMenu: true,
@@ -64,7 +64,7 @@ export const routes = [
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
-    component: () => import("@/views/NotFound.vue"),
+    component: () => import("@/components/views/NotFound.vue"),
     meta: { title: "Pagina non trovata", layout: "NotFoundLayout" },
   },
 ];

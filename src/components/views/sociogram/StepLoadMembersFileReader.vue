@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { useTextReader } from "@/composables/useTextReader";
 import { buildMembers, normalizeNames } from "@/utils/members";
 
-import BaseButton from "@/components/common/ui/BaseButton.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 
 const props = defineProps({
   /** Maximum rows read from the file (see `useTextReader`). */

@@ -3,8 +3,8 @@ import { computed } from "vue";
 
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
-import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
-import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
+import StepHeader from "@/components/views/sociogram/StepHeader.vue";
+import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 // TODO: replace this with the real preferences validation (e.g. every member

@@ -6,11 +6,11 @@ import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";
 
-import BaseButton from "@/components/common/ui/BaseButton.vue";
-import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
-import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
-import MemberFileReader from "@/components/specific/sociogram/MemberFileReader.vue";
-import MemberListEditor from "@/components/specific/sociogram/MemberListEditor.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
+import StepHeader from "@/components/views/sociogram/StepHeader.vue";
+import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
+import StepLoadMembersFileReader from "@/components/views/sociogram/StepLoadMembersFileReader.vue";
+import StepLoadMembersListEditor from "@/components/views/sociogram/StepLoadMembersListEditor.vue";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
@@ -57,7 +57,7 @@ function toggleEditing() {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <MemberFileReader v-model="members" />
+        <StepLoadMembersFileReader v-model="members" />
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
@@ -82,7 +82,7 @@ function toggleEditing() {
                 </BaseButton>
             </div>
 
-            <MemberListEditor
+            <StepLoadMembersListEditor
                 :members="members"
                 :mode="editorMode"
                 @update:member="sociogram.updateMember"
