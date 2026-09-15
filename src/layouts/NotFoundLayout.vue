@@ -1,5 +1,4 @@
 <template>
-    <!-- Minimal chrome for error pages: no header or footer, just centered content. -->
     <main class="grid min-h-dvh place-items-center px-6">
         <slot />
     </main>

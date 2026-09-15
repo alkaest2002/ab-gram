@@ -18,7 +18,7 @@ export const SOCIOGRAM_STEPS = [
  * between steps) and passes it here as a ref/computed or plain boolean.
  * Everything else — the step order, which buttons are visible, and how to move
  * between steps — is the stepper system and lives here instead of in
- * `SociogramView` or the sociogram store.
+ * `Sociogram` or the sociogram store.
  *
  * @param {import('@/stores/sociogram').SociogramStep} step The step this view represents.
  * @param {import('vue').Ref<boolean> | boolean} canGoNext Whether the user may advance from this step.

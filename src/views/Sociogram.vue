@@ -4,19 +4,18 @@ import { useSociogramStore } from "@/stores/sociogram";
 import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 import PageTransition from "@/components/common/ui/PageTransition.vue";
-
-import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
-import SociogramLoadMembersView from "@/views/sociogram/SociogramLoadMembersView.vue";
-import SociogramSetPreferencesView from "@/views/sociogram/SociogramSetPreferencesView.vue";
-import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateReportView.vue";
+import SociogramStart from "@/views/sociogram/SociogramStart.vue";
+import SociogramLoadMembers from "@/views/sociogram/SociogramLoadMembers.vue";
+import SociogramSetPreferences from "@/views/sociogram/SociogramSetPreferences.vue";
+import SociogramGenerateReport from "@/views/sociogram/SociogramGenerateReport.vue";
 
 const sociogramStore = useSociogramStore();
 
 const stateComponents ={
-    start: SociogramStartView,
-    loadMembers: SociogramLoadMembersView,
-    setPreferences: SociogramSetPreferencesView,
-    generateReport: SociogramGenerateReportView,
+    start: SociogramStart,
+    loadMembers: SociogramLoadMembers,
+    setPreferences: SociogramSetPreferences,
+    generateReport: SociogramGenerateReport,
 };
 
 const currentComponentName = ref(SOCIOGRAM_STEPS[0]);

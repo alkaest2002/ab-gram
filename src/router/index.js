@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomeView from "@/views/HomeView.vue";
-import { waitForPageTransition } from "@/router/scroll";
 import { useAppStore } from "@/stores/app";
+import { waitForPageTransition } from "@/router/scroll";
+
+import Home from "@/views/Home.vue";
 
 const SITE_NAME = "AB-Grid";
 
@@ -10,7 +11,7 @@ export const routes = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    component: Home,
     meta: {
       title: "Sociogrammi di gruppo",
       inMenu: false,
@@ -19,7 +20,7 @@ export const routes = [
   },
   {
     path: "/sociogram",
-    component: () => import("@/views/SociogramView.vue"),
+    component: () => import("@/views/Sociogram.vue"),
     meta: {
       title: "App",
       inMenu: true,
@@ -30,7 +31,7 @@ export const routes = [
   {
     path: "/docs",
     name: "docs",
-    component: () => import("@/views/DocsView.vue"),
+    component: () => import("@/views/Docs.vue"),
     meta: {
       title: "Docs",
       inMenu: true,
@@ -41,7 +42,7 @@ export const routes = [
   {
     path: "/about",
     name: "about",
-    component: () => import("@/views/AboutView.vue"),
+    component: () => import("@/views/About.vue"),
     meta: {
       title: "About",
       inMenu: true,
@@ -52,7 +53,7 @@ export const routes = [
   {
     path: "/privacy",
     name: "privacy",
-    component: () => import("@/views/PrivacyView.vue"),
+    component: () => import("@/views/Privacy.vue"),
     meta: {
       title: "Informativa privacy",
       inMenu: true,
@@ -63,7 +64,7 @@ export const routes = [
   {
     path: "/:pathMatch(.*)*",
     name: "not-found",
-    component: () => import("@/views/NotFoundView.vue"),
+    component: () => import("@/views/NotFound.vue"),
     meta: { title: "Pagina non trovata", layout: "NotFoundLayout" },
   },
 ];

@@ -2,10 +2,11 @@
 import { computed } from "vue";
 import { RouterView } from "vue-router";
 
+import { useAppStore } from "@/stores/app";
+
 import PageTransition from "@/components/common/ui/PageTransition.vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import NotFoundLayout from "@/layouts/NotFoundLayout.vue";
-import { useAppStore } from "@/stores/app";
 
 // Register every layout here under the name stored in `app.layout`.
 const layouts = {

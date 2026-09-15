@@ -1,29 +1,30 @@
 <script setup>
-import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
-import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
+import { computed } from "vue";
+
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
+import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
+import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
+
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+// TODO: replace this with the real preferences validation (e.g. every member
+// has provided their likes/dislikes) once collection is wired up.
+const canGoNext = computed(() => true);
 
 const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("start", true, emit);
+    useSociogramNavigation("setPreferences", canGoNext, emit);
 </script>
 
 <template>
     <section class="card space-y-5">
-        <StepHeader
-            eyebrow="Punto di partenza"
-            title="È la prima volta che usi l'app?"
-        >
-            Se è la prima volta che usi l'app, ti consigliamo di leggere la
-            documentazione.
+        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze">
+            Qui ogni membro indicherà le proprie preferenze positive
+            (<code>likes</code>) e negative (<code>dislikes</code>).
         </StepHeader>
 
-        <div class="flex flex-wrap gap-2">
-            <router-link to="/docs" class="link text-sm"
-                >Leggi la documentazione</router-link
-            >
-        </div>
+        <p class="text-sm text-muted">
+            Nessuna logica di raccolta è ancora collegata.
+        </p>
     </section>
 
     <SociogramNavigation
@@ -31,7 +32,7 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
         :show-next="showNext"
         :show-restart="showRestart"
         :enable-previous="true"
-        :enable-next="true"
+        :enable-next="canGoNext"
         :enable-restart="true"
         @sociogram-step-previous="goPrevious"
         @sociogram-step-next="goNext"

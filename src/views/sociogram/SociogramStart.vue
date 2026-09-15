@@ -1,29 +1,30 @@
 <script setup>
-import { useAppStore } from "@/stores/app";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+
 import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
 import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
-const app = useAppStore();
-
 const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("generateReport", false, emit);
+    useSociogramNavigation("start", true, emit);
 </script>
 
 <template>
     <section class="card space-y-5">
-        <StepHeader eyebrow="Passaggio 3 di 3" title="Genera il report">
-            Il calcolo della rete e la sua rappresentazione grafica arriveranno
-            qui.
+        <StepHeader
+            eyebrow="Punto di partenza"
+            title="È la prima volta che usi l'app?"
+        >
+            Se è la prima volta che usi l'app, ti consigliamo di leggere la
+            documentazione.
         </StepHeader>
 
-        <p>
-            <span class="tag tag-off"
-                >shouldLockUI: {{ app.shouldLockUI }}</span
+        <div class="flex flex-wrap gap-2">
+            <router-link to="/docs" class="link text-sm"
+                >Leggi la documentazione</router-link
             >
-        </p>
+        </div>
     </section>
 
     <SociogramNavigation
@@ -31,7 +32,7 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
         :show-next="showNext"
         :show-restart="showRestart"
         :enable-previous="true"
-        :enable-next="false"
+        :enable-next="true"
         :enable-restart="true"
         @sociogram-step-previous="goPrevious"
         @sociogram-step-next="goNext"
