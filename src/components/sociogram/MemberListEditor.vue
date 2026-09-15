@@ -39,6 +39,15 @@ const nameIssues = computed(() => getMembersNameIssues(props.members));
 const duplicatedNamesCount = computed(() => nameIssues.value.duplicateNamesCount);
 const emptyNamesCount = computed(() => nameIssues.value.emptyNamesCount);
 
+// Issue counts read red when they need attention, muted once they're resolved.
+// Members is the baseline and always reads ink.
+const duplicatedTone = computed(() =>
+  duplicatedNamesCount.value > 0 ? "text-reject" : "text-muted"
+);
+const emptyTone = computed(() =>
+  emptyNamesCount.value > 0 ? "text-reject" : "text-muted"
+);
+
 function updateMember(memberId, key, value) {
   emit("update:member", { memberId, key, value });
 }
@@ -52,26 +61,65 @@ function removeMember(memberId) {
   <div class="space-y-6">
     <dl
       v-if="members.length > 0"
-      class="grid grid-cols-1 gap-3 sm:grid-cols-3"
+      class="grid grid-cols-1 divide-y divide-line rounded-lg border border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
     >
-      <div class="rounded-lg border border-line px-4 py-3">
-        <dt class="eyebrow">Membri</dt>
-        <dd class="mt-1 font-mono text-xl font-semibold text-ink">
-          {{ membersCount }}
+      <!-- Membri: a filled dot, the baseline reading of the group's size. -->
+      <div class="flex flex-col px-5 py-4">
+        <dt class="eyebrow order-2 mt-2">Membri</dt>
+        <dd class="order-1 flex items-center gap-2.5 text-ink">
+          <svg
+            class="size-5 shrink-0"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="6.5" fill="currentColor" />
+          </svg>
+          <span class="font-mono text-2xl leading-none font-semibold">
+            {{ membersCount }}
+          </span>
         </dd>
       </div>
 
-      <div class="rounded-lg border border-line px-4 py-3">
-        <dt class="eyebrow">Nomi duplicati</dt>
-        <dd class="mt-1 font-mono text-xl font-semibold text-ink">
-          {{ duplicatedNamesCount }}
+      <!-- Nomi duplicati: two overlapping marks — the same name twice. -->
+      <div class="flex flex-col px-5 py-4">
+        <dt class="eyebrow order-2 mt-2">Nomi duplicati</dt>
+        <dd class="order-1 flex items-center gap-2.5" :class="duplicatedTone">
+          <svg
+            class="size-5 shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            aria-hidden="true"
+          >
+            <circle cx="10" cy="12" r="5.5" />
+            <circle cx="14" cy="12" r="5.5" />
+          </svg>
+          <span class="font-mono text-2xl leading-none font-semibold">
+            {{ duplicatedNamesCount }}
+          </span>
         </dd>
       </div>
 
-      <div class="rounded-lg border border-line px-4 py-3">
-        <dt class="eyebrow">Nomi vuoti</dt>
-        <dd class="mt-1 font-mono text-xl font-semibold text-ink">
-          {{ emptyNamesCount }}
+      <!-- Nomi vuoti: a dashed, hollow circle — the graph's mark for absence. -->
+      <div class="flex flex-col px-5 py-4">
+        <dt class="eyebrow order-2 mt-2">Nomi vuoti</dt>
+        <dd class="order-1 flex items-center gap-2.5" :class="emptyTone">
+          <svg
+            class="size-5 shrink-0"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-dasharray="3 3.5"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="6.5" />
+          </svg>
+          <span class="font-mono text-2xl leading-none font-semibold">
+            {{ emptyNamesCount }}
+          </span>
         </dd>
       </div>
     </dl>
