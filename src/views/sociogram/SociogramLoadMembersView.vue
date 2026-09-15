@@ -11,6 +11,9 @@ import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";
 
+
+const emit = defineEmits(["sociogram-change-component"])
+
 // Get the sociogram store and its state.
 const sociogram = useSociogramStore();
 const { hasMembers, membersCount, members } = storeToRefs(sociogram);
@@ -37,7 +40,7 @@ const canGoNext = computed(
 );
 
 const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-  useSociogramNavigation("loadMembers", canGoNext);
+  useSociogramNavigation("loadMembers", canGoNext, emit);
 
 // Toggle the editing mode.
 function toggleEditing() {

@@ -1,19 +1,14 @@
 <script setup>
-import { computed } from "vue";
-import { storeToRefs } from "pinia";
+import { ref } from "vue";
+import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 import PageTransition from "@/components/ui/PageTransition.vue";
-import { useSociogramStore } from "@/stores/sociogram";
 
 import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
 import SociogramLoadMembersView from "@/views/sociogram/SociogramLoadMembersView.vue";
 import SociogramSetPreferencesView from "@/views/sociogram/SociogramSetPreferencesView.vue";
 import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateReportView.vue";
 
-const sociogram = useSociogramStore();
-const { currentSociogramStep } = storeToRefs(sociogram);
-
-// The sub-components, indexed by the current step.
 const stateComponents = {
     start: SociogramStartView,
     loadMembers: SociogramLoadMembersView,
@@ -21,17 +16,22 @@ const stateComponents = {
     generateReport: SociogramGenerateReportView,
 };
 
-const currentComponent = computed(
-    () => stateComponents[currentSociogramStep.value],
-);
+const currentComponentName = ref(SOCIOGRAM_STEPS[0]);
+
+function changeComponent(componentName) {
+  currentComponentName.value = componentName;
+}
 </script>
 
 <template>
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
         <PageTransition>
-            <div :key="currentSociogramStep">
-                <component :is="currentComponent" />
+            <div :key="currentComponentName">
+                <component
+                    :is="stateComponents[currentComponentName]"
+                    @sociogram-change-component="changeComponent"
+                />
             </div>
         </PageTransition>
     </div>

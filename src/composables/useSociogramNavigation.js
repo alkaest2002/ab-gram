@@ -1,7 +1,5 @@
 import { computed, unref } from "vue";
 
-import { useSociogramStore } from "@/stores/sociogram";
-
 /**
  * Ordered list of the sociogram steps.
  * @type {import('@/stores/sociogram').SociogramStep[]}
@@ -25,34 +23,34 @@ export const SOCIOGRAM_STEPS = [
  * @param {import('@/stores/sociogram').SociogramStep} step The step this view represents.
  * @param {import('vue').Ref<boolean> | boolean} canGoNext Whether the user may advance from this step.
  */
-export function useSociogramNavigation(step, canGoNext) {
-  const sociogram = useSociogramStore();
+export function useSociogramNavigation(step, canGoNext, emit) {
 
-  const index = SOCIOGRAM_STEPS.indexOf(step);
+  const stepIndex = SOCIOGRAM_STEPS.indexOf(step);
 
-  const showPrevious = computed(() => index > 0);
-  const showNext = computed(() => index < SOCIOGRAM_STEPS.length - 1);
-  const showRestart = computed(() => index > 0);
+  const showPrevious = computed(() => stepIndex > 0);
+  const showNext = computed(() => stepIndex < SOCIOGRAM_STEPS.length - 1);
+  const showRestart = computed(() => stepIndex > 0);
 
   const canGoNextValue = computed(() => unref(canGoNext));
 
-  function goToStep(target) {
-    if (target) sociogram.setCurrentSociogramStep(target);
+  function goToStep(componentName) {
+    Object.values(SOCIOGRAM_STEPS).includes(componentName)
+      && emit("sociogram-change-component", componentName);
   }
 
   function goPrevious() {
-    goToStep(SOCIOGRAM_STEPS[index - 1]);
+    goToStep(SOCIOGRAM_STEPS[stepIndex - 1]);
   }
 
   function goNext() {
     if (canGoNextValue.value) {
-      goToStep(SOCIOGRAM_STEPS[index + 1]);
+      goToStep(SOCIOGRAM_STEPS[stepIndex + 1]);
     }
   }
 
   function restart() {
     sociogram.resetMembers();
-    sociogram.setCurrentSociogramStep(SOCIOGRAM_STEPS[0]);
+    goToStep(SOCIOGRAM_STEPS[0]);
   }
 
   return {

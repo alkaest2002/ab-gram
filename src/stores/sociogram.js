@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 /**
  * A single participant in the sociogram.
@@ -22,8 +21,6 @@ export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
     /** @type {Member[]} Parsed sociogram members. */
     members: [],
-    /** @type {SociogramStep} Current sociogram step. */
-    currentSociogramStep: SOCIOGRAM_STEPS[0],
   }),
 
   getters: {
@@ -53,13 +50,6 @@ export const useSociogramStore = defineStore("sociogram", {
      */
     removeMember(memberId) {
       this.members = this.members.filter((m) => m.id !== memberId);
-    },
-
-    /** Set the current step.
-     * @param {SociogramStep} step
-     */
-    setCurrentSociogramStep(step) {
-      this.currentSociogramStep = step;
     },
 
     /** Clear all loaded members. */

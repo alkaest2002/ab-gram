@@ -4,10 +4,12 @@ import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue"
 import StepHeader from "@/components/ui/StepHeader.vue";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
+const emit = defineEmits(["sociogram-change-component"])
+
 const app = useAppStore();
 
 const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("generateReport", false);
+    useSociogramNavigation("generateReport", false, emit);
 </script>
 
 <template>
