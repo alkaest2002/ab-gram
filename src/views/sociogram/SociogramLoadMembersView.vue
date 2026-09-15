@@ -66,6 +66,7 @@ function toggleEditing() {
         :members="members"
         :mode="editorMode"
         @update:member="sociogram.updateMember"
+        @remove:member="sociogram.removeMember"
       />
     </div>
   </section>

@@ -69,6 +69,13 @@ export const useSociogramStore = defineStore("sociogram", {
       }
     },
 
+    /** Remove a single member by id.
+     * @param {string} memberId
+     */
+    removeMember(memberId) {
+      this.members = this.members.filter((m) => m.id !== memberId);
+    },
+
     /** Set the current step, ignoring values outside `SOCIOGRAM_STEPS`.
      * @param {SociogramStep} step
      */
