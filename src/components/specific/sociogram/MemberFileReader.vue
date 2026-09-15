@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseButton from "@/components/common/ui/BaseButton.vue";
 import { useTextReader } from "@/composables/useTextReader";
 import { buildMembers, normalizeNames } from "@/utils/members";
 

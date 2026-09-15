@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { RouterView } from "vue-router";
 
-import PageTransition from "@/components/ui/PageTransition.vue";
+import PageTransition from "@/components/common/ui/PageTransition.vue";
 import DefaultLayout from "@/layouts/DefaultLayout.vue";
 import NotFoundLayout from "@/layouts/NotFoundLayout.vue";
 import { useAppStore } from "@/stores/app";

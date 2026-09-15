@@ -1,5 +1,5 @@
 <script setup>
-import AppLogo from "@/components/layout/AppLogo.vue";
+import AppLogo from "@/components/common/layout/AppLogo.vue";
 
 // Hand-drawn SVG paths: no icon dependency, no files to load.
 const links = [

@@ -1,8 +1,8 @@
 <script setup>
 import { RouterLink } from "vue-router";
 
-import SociogramPreview from "@/components/home/SociogramPreview.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import SociogramPreview from "@/components/specific/home/SociogramPreview.vue";
+import BaseButton from "@/components/common/ui/BaseButton.vue";
 
 /**
  * The five readings are the vocabulary of the graph above: each entry reuses the

@@ -2,11 +2,11 @@
 import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 
-import BaseButton from "@/components/ui/BaseButton.vue";
-import StepHeader from "@/components/ui/StepHeader.vue";
-import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
-import MemberFileReader from "@/components/sociogram/MemberFileReader.vue";
-import MemberListEditor from "@/components/sociogram/MemberListEditor.vue";
+import BaseButton from "@/components/common/ui/BaseButton.vue";
+import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
+import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
+import MemberFileReader from "@/components/specific/sociogram/MemberFileReader.vue";
+import MemberListEditor from "@/components/specific/sociogram/MemberListEditor.vue";
 import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";

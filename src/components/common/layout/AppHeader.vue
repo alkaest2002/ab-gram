@@ -2,7 +2,7 @@
 import { onBeforeUnmount, watch } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
-import AppLogo from "@/components/layout/AppLogo.vue";
+import AppLogo from "@/components/common/layout/AppLogo.vue";
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 

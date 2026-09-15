@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from "vue";
 
-import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
-import StepHeader from "@/components/ui/StepHeader.vue";
+import StepHeader from "@/components/specific/sociogram/StepHeader.vue";
+import SociogramNavigation from "@/components/specific/sociogram/SociogramNavigation.vue";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);

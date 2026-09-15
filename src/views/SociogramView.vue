@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useSociogramStore } from "@/stores/sociogram";
 import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
-import PageTransition from "@/components/ui/PageTransition.vue";
+import PageTransition from "@/components/common/ui/PageTransition.vue";
 
 import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
 import SociogramLoadMembersView from "@/views/sociogram/SociogramLoadMembersView.vue";
@@ -12,7 +12,7 @@ import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateRepo
 
 const sociogramStore = useSociogramStore();
 
-const stateComponents = {
+const stateComponents ={
     start: SociogramStartView,
     loadMembers: SociogramLoadMembersView,
     setPreferences: SociogramSetPreferencesView,
