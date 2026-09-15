@@ -12,7 +12,7 @@ const SITE_NAME = "AB-Grid";
 export const sociogramRoutes = [
   {
     path: "",
-    name: "app-start",
+    name: "sociogram-start",
     component: () => import("@/views/sociogram/SociogramStartView.vue"),
     meta: {
       title: "Da dove iniziare",
@@ -21,8 +21,8 @@ export const sociogramRoutes = [
     },
   },
   {
-    path: "load-members",
-    name: "load-members",
+    path: "sociogram-load-members",
+    name: "sociogram-load-members",
     component: () => import("@/views/sociogram/SociogramLoadMembersView.vue"),
     meta: {
       title: "Carica i membri",
@@ -31,8 +31,8 @@ export const sociogramRoutes = [
     },
   },
   {
-    path: "set-preferences",
-    name: "set-preferences",
+    path: "sociogram-preferences",
+    name: "sociogram-preferences",
     component: () =>
       import("@/views/sociogram/SociogramSetPreferencesView.vue"),
     meta: {
@@ -42,8 +42,8 @@ export const sociogramRoutes = [
     },
   },
   {
-    path: "generate-report",
-    name: "generate-report",
+    path: "sociogram-generate-report",
+    name: "sociogram-generate-report",
     component: () =>
       import("@/views/sociogram/SociogramGenerateReportView.vue"),
     meta: {

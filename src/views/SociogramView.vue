@@ -32,18 +32,8 @@ const currentComponent = computed(() => stateComponents[currentSociogramStep.val
 <template>
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
-
         <PageTransition>
             <component :is="currentComponent" :key="currentSociogramStep" />
         </PageTransition>
-
-        <div class="flex flex-wrap gap-2 justify-between">
-
-            <SociogramNavigation />
-
-            <BaseButton variant="outline" @click="sociogram.reset()">
-                Ricomincia
-            </BaseButton>
-        </div>
     </div>
 </template>

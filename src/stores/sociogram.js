@@ -85,24 +85,9 @@ export const useSociogramStore = defineStore("sociogram", {
       }
     },
 
-    /** Advance to the next step, if there is one. */
-    goToNextSociogramStep() {
-      if (this.hasNextSociogramStep) {
-        this.currentSociogramStep = SOCIOGRAM_STEPS[SOCIOGRAM_STEPS.indexOf(this.currentSociogramStep) + 1];
-      }
-    },
-
-    /** Move back to the previous step, if there is one. */
-    goToPreviousSociogramStep() {
-      if (this.hasPreviousSociogramStep) {
-        this.currentSociogramStep = SOCIOGRAM_STEPS[SOCIOGRAM_STEPS.indexOf(this.currentSociogramStep) - 1];
-      }
-    },
-
     /** Clear all sociogram data and return to the first step. */
     reset() {
-      this.dataLoaded = [];
-      this.dataMembers = [];
+      this.Members = [];
       this.currentSociogramStep = SOCIOGRAM_STEPS[0];
     },
   },
