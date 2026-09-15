@@ -28,6 +28,7 @@ const membersCountLabel = computed(() =>
 function toggleEditing() {
   isEditing.value = !isEditing.value;
 }
+
 </script>
 
 <template>
@@ -61,7 +62,11 @@ function toggleEditing() {
         </BaseButton>
       </div>
 
-      <MemberListEditor v-model="members" :mode="editorMode" />
+      <MemberListEditor
+        :members="members"
+        :mode="editorMode"
+        @update:member="sociogram.updateMember"
+      />
     </div>
   </section>
 </template>

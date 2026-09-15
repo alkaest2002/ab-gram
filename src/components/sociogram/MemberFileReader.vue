@@ -3,7 +3,7 @@ import { ref } from "vue";
 
 import BaseButton from "@/components/ui/BaseButton.vue";
 import { useTextReader } from "@/composables/useTextReader";
-import { normalizeNames } from "@/utils/members";
+import { buildMembers, normalizeNames } from "@/utils/members";
 
 const props = defineProps({
   /** Maximum rows read from the file (see `useTextReader`). */
@@ -41,7 +41,8 @@ async function onFileChange(event) {
 
   if (error.value) return;
 
-  model.value = normalizeNames(rows.value);
+  const normalizedNames = normalizeNames(rows.value);
+  model.value = buildMembers(normalizedNames);
 }
 </script>
 
