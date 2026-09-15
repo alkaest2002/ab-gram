@@ -4,7 +4,7 @@ import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue"
 import StepHeader from "@/components/ui/StepHeader.vue";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
-const emit = defineEmits(["sociogram-change-component"])
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 const app = useAppStore();
 

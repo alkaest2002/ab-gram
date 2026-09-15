@@ -26,11 +26,9 @@ export const SOCIOGRAM_STEPS = [
 export function useSociogramNavigation(step, canGoNext, emit) {
 
   const stepIndex = SOCIOGRAM_STEPS.indexOf(step);
-
   const showPrevious = computed(() => stepIndex > 0);
   const showNext = computed(() => stepIndex < SOCIOGRAM_STEPS.length - 1);
   const showRestart = computed(() => stepIndex > 0);
-
   const canGoNextValue = computed(() => unref(canGoNext));
 
   function goToStep(componentName) {
@@ -49,7 +47,7 @@ export function useSociogramNavigation(step, canGoNext, emit) {
   }
 
   function restart() {
-    sociogram.resetMembers();
+    emit("sociogram-restart");
     goToStep(SOCIOGRAM_STEPS[0]);
   }
 

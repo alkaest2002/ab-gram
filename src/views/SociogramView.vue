@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { useSociogramStore } from "@/stores/sociogram";
 import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
 import PageTransition from "@/components/ui/PageTransition.vue";
@@ -8,6 +9,8 @@ import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
 import SociogramLoadMembersView from "@/views/sociogram/SociogramLoadMembersView.vue";
 import SociogramSetPreferencesView from "@/views/sociogram/SociogramSetPreferencesView.vue";
 import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateReportView.vue";
+
+const sociogramStore = useSociogramStore();
 
 const stateComponents = {
     start: SociogramStartView,
@@ -31,6 +34,7 @@ function changeComponent(componentName) {
                 <component
                     :is="stateComponents[currentComponentName]"
                     @sociogram-change-component="changeComponent"
+                    @sociogram-restart="sociogramStore.resetMembers"
                 />
             </div>
         </PageTransition>

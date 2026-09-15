@@ -49,7 +49,7 @@ function removeMember(memberId) {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-6">
     <dl
       v-if="members.length > 0"
       class="grid grid-cols-1 gap-3 sm:grid-cols-3"
@@ -80,7 +80,7 @@ function removeMember(memberId) {
       Nessun membro caricato.
     </p>
 
-    <ol v-else class="list-none space-y-2">
+    <ol v-else class="list-none">
       <li
         v-for="(member, index) in members"
         :key="member.id"

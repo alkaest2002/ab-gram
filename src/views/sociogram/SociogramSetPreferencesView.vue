@@ -5,9 +5,7 @@ import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue"
 import StepHeader from "@/components/ui/StepHeader.vue";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
-
-const emit = defineEmits(["sociogram-change-component"])
-
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 // TODO: replace this with the real preferences validation (e.g. every member
 // has provided their likes/dislikes) once collection is wired up.
 const canGoNext = computed(() => true);
