@@ -1,3 +1,6 @@
+// Derived members indices
+const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+
 /**
  * Sociogram member helpers shared by the "load members" step.
  *
@@ -36,7 +39,7 @@ export function normalizeNames(rows) {
  */
 export function buildMembers(names) {
   return names.map((name, index) => ({
-    id: `member-${index + 1}`,
+    id: MEMBERS_INDICES[index],
     name,
     likes: [],
     dislikes: [],

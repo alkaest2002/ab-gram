@@ -9,42 +9,22 @@ import MemberListEditor from "@/components/sociogram/MemberListEditor.vue";
 import { useSociogramStore } from "@/stores/sociogram";
 import { buildMembers, normalizeNames } from "@/utils/members";
 
+// Get the sociogram store and its state.
 const sociogram = useSociogramStore();
-const { dataLoaded, dataMembers, membersCount } = storeToRefs(sociogram);
-
-// Local source of truth for this step. Seed it from the store so a revisit
-// keeps showing what was already loaded.
-const members = ref(
-  dataLoaded.value.length
-    ? [...dataLoaded.value]
-    : dataMembers.value.map((member) => member.name)
-);
+const { hasMembers, membersCount, members } = storeToRefs(sociogram);
 
 // Flag for editor mode and member list state.
 const isEditing = ref(false);
 
-// Computed values for editor mode and member list state.
+// Computed values.
 const editorMode = computed(() => (isEditing.value ? "edit" : "view"));
-const hasMembers = computed(() => members.value.length > 0);
-const membersLabel = computed(() =>
+const membersCountLabel = computed(() =>
   membersCount.value === 1
     ? "1 nome caricato"
     : `${membersCount.value} nomi caricati`
 );
 
-// Push every local change into the store, keeping raw names and parsed members
-// in sync. No `immediate`: merely revisiting the step must not rebuild members
-// (and drop any data a later step may have added).
-watch(
-  members,
-  (names) => {
-    const clean = normalizeNames(names);
-    sociogram.setTextLoaded(clean);
-    sociogram.setMembersData(buildMembers(clean));
-  },
-  { deep: true }
-);
-
+// Toggle the editing mode.
 function toggleEditing() {
   isEditing.value = !isEditing.value;
 }
@@ -68,7 +48,7 @@ function toggleEditing() {
         <div>
           <p class="eyebrow">Elenco membri</p>
           <p v-if="membersCount > 0" class="mt-1 font-mono text-xs text-muted">
-            {{ membersLabel }}
+            {{ membersCountLabel }}
           </p>
         </div>
 

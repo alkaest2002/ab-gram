@@ -35,19 +35,17 @@ export const SOCIOGRAM_STEPS = [
  */
 export const useSociogramStore = defineStore("sociogram", {
   state: () => ({
-    /** @type {string[]} Raw member names loaded from user input. */
-    dataLoaded: [],
     /** @type {Member[]} Parsed sociogram members. */
-    dataMembers: [],
+    members: [],
     /** @type {SociogramStep} Current sociogram step (see `SOCIOGRAM_STEPS`). */
     currentSociogramStep: "start",
   }),
 
   getters: {
     /** @returns {boolean} Whether at least one member has been loaded. */
-    hasMembers: (state) => state.dataMembers.length > 0,
+    hasMembers: (state) => state.members.length > 0,
     /** @returns {number} Number of loaded members. */
-    membersCount: (state) => state.dataMembers.length,
+    membersCount: (state) => state.members.length,
     /** @returns {boolean} Whether there is a step before the current one. */
     hasPreviousSociogramStep: (state) =>
       SOCIOGRAM_STEPS.indexOf(state.currentSociogramStep) > 0,
@@ -57,18 +55,18 @@ export const useSociogramStore = defineStore("sociogram", {
   },
 
   actions: {
-    /** Replace the raw member names.
-     * @param {string[]} data
-     */
-    setTextLoaded(data) {
-      this.dataLoaded = data;
-    },
-
     /** Replace the parsed members.
      * @param {Member[]} data
      */
-    setMembersData(data) {
-      this.dataMembers = data;
+    setMembers(membersData) {
+      this.members = membersData;
+    },
+
+    updateMember({ memberId, key, value }) {
+      const memberIndex = this.members.findIndex((m) => m.id === memberId);
+      if (memberIndex !== -1) {
+        this.members[memberIndex][key] = value;
+      }
     },
 
     /** Set the current step, ignoring values outside `SOCIOGRAM_STEPS`.
