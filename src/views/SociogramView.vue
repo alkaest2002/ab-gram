@@ -1,39 +1,37 @@
 <script setup>
-import { computed } from "vue";
-import { storeToRefs } from "pinia";
-
-import BaseButton from "@/components/ui/BaseButton.vue";
 import PageTransition from "@/components/ui/PageTransition.vue";
 import SociogramNavigation from "@/components/sociogram/SociogramNavigation.vue";
-import { useSociogramStore } from "@/stores/sociogram";
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
-import SociogramStartView from "@/views/sociogram/SociogramStartView.vue";
-import SociogramLoadMembersView from "@/views/sociogram/SociogramLoadMembersView.vue";
-import SociogramSetPreferencesView from "@/views/sociogram/SociogramSetPreferencesView.vue";
-import SociogramGenerateReportView from "@/views/sociogram/SociogramGenerateReportView.vue";
-
-const sociogram = useSociogramStore();
-
-// Reactive references to state/getters (Composition API equivalent of mapState).
-const { currentSociogramStep } = storeToRefs(sociogram);
-
-// The sub-components, indexed by `currentState`.
-const stateComponents = {
-    start: SociogramStartView,
-    loadMembers: SociogramLoadMembersView,
-    setPreferences: SociogramSetPreferencesView,
-    generateReport: SociogramGenerateReportView,
-};
-
-const currentComponent = computed(() => stateComponents[currentSociogramStep.value]);
-
+const {
+    currentIndex,
+    hasPrevious,
+    hasNext,
+    canGoNext,
+    goPrevious,
+    goNext,
+    restart,
+} = useSociogramNavigation();
 </script>
 
 <template>
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
-        <PageTransition>
-            <component :is="currentComponent" :key="currentSociogramStep" />
-        </PageTransition>
+        <router-view v-slot="{ Component }">
+            <PageTransition>
+                <component :is="Component" />
+            </PageTransition>
+        </router-view>
+        <SociogramNavigation
+            :show-previous="hasPrevious"
+            :show-next="hasNext"
+            :show-restart="currentIndex > 0"
+            :enable-previous="true"
+            :enable-next="canGoNext"
+            :enable-restart="true"
+            @sociogram-step-previous="goPrevious"
+            @sociogram-step-next="goNext"
+            @sociogram-step-restart="restart"
+        />
     </div>
 </template>

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import { waitForPageTransition } from "@/router/scroll";
 import { useAppStore } from "@/stores/app";
+import { useSociogramStore } from "@/stores/sociogram";
 
 const SITE_NAME = "AB-Grid";
 
@@ -39,6 +40,7 @@ export const sociogramRoutes = [
       title: "Imposta le preferenze",
       inMenu: true,
       typeOfMenu: ["header"],
+      requiresMembers: true,
     },
   },
   {
@@ -50,9 +52,14 @@ export const sociogramRoutes = [
       title: "Genera il report",
       inMenu: true,
       typeOfMenu: ["header"],
+      requiresMembers: true,
     },
   },
 ];
+
+// Ordered sociogram step names, matching the order of `sociogramRoutes`.
+// Used by SociogramView to derive prev/next from the current route.
+export const sociogramSteps = sociogramRoutes.map((route) => route.name);
 
 export const routes = [
   {
@@ -137,6 +144,13 @@ const router = createRouter({
 // Keep the app store's layout in sync with the route being navigated to.
 router.beforeEach((to) => {
   useAppStore().setLayout(to.meta.layout ?? "DefaultLayout");
+});
+
+// Keep users from jumping ahead in the sociogram wizard before loading members.
+router.beforeEach((to) => {
+  if (to.meta.requiresMembers && !useSociogramStore().hasMembers) {
+    return { name: "sociogram-load-members" };
+  }
 });
 
 router.afterEach((to) => {
