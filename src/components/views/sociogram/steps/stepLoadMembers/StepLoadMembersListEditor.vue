@@ -128,7 +128,7 @@ function removeMember(memberId) {
       Nessun membro caricato.
     </p>
 
-    <ol v-else class="list-none">
+    <ol v-else class="list-none space-y-1">
       <li
         v-for="(member, index) in members"
         :key="member.id"

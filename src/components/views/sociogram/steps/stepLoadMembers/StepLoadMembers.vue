@@ -29,6 +29,12 @@ const membersCountLabel = computed(() =>
         : `${membersCount.value} nomi caricati`,
 );
 
+// Data URL for downloading the loaded names, one per line.
+const membersFileHref = computed(() => {
+    const content = members.value.map((member) => member.name).join("\n");
+    return `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
+});
+
 // The load step can only advance when there are members, none of them are
 // blank, and no two members share the same name.
 const nameIssues = computed(() => getMembersNameIssues(members.value));
@@ -100,6 +106,15 @@ function toggleEditing() {
             />
         </div>
     </section>
+
+    <a
+        v-if="hasMembers"
+        :href="membersFileHref"
+        download="membri.txt"
+        class="link inline-block mt-3 mb-3 text-xs"
+    >
+        Scarica elenco membri (.txt)
+    </a>
 
     <SociogramNavigation
         :show-previous="true"
