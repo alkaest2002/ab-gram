@@ -13,43 +13,28 @@ import SelectPreferences from "@/components/views/sociogram/steps/stepSetPrefere
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 const sociogram = useSociogramStore();
-const { members } = storeToRefs(sociogram);
+const { members, hasMembers } = storeToRefs(sociogram);
 
 // The member whose preferences are being collected. Preferences live directly
-// on each member in the store, so there is nothing to save or reload on move:
-// the writable computeds below are the store's own arrays.
+// on each member in the store, so there is nothing to save or reload on move.
 const currentIndex = ref(0);
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 
-const currentLikes = computed({
-    get: () => currentMember.value?.likes ?? [],
-    set: (value) => {
-        if (currentMember.value) currentMember.value.likes = value;
-    },
-});
+// Two-way binding to a field on the current member, falling back to an empty
+// value while there is no member to edit.
+function writableMemberField(field, fallback) {
+    return computed({
+        get: () => currentMember.value?.[field] ?? fallback,
+        set: (value) => {
+            if (currentMember.value) currentMember.value[field] = value;
+        },
+    });
+}
 
-const currentDislikes = computed({
-    get: () => currentMember.value?.dislikes ?? [],
-    set: (value) => {
-        if (currentMember.value) currentMember.value.dislikes = value;
-    },
-});
-
-const currentNoLikes = computed({
-    get: () => currentMember.value?.noLikes ?? false,
-    set: (value) => {
-        if (currentMember.value) currentMember.value.noLikes = value;
-    },
-});
-
-const currentNoDislikes = computed({
-    get: () => currentMember.value?.noDislikes ?? false,
-    set: (value) => {
-        if (currentMember.value) currentMember.value.noDislikes = value;
-    },
-});
-
-const hasMembers = computed(() => members.value.length > 0);
+const currentLikes = writableMemberField("likes", []);
+const currentDislikes = writableMemberField("dislikes", []);
+const currentNoLikes = writableMemberField("noLikes", false);
+const currentNoDislikes = writableMemberField("noDislikes", false);
 
 // A member's answer is complete once both categories are resolved: either by
 // selecting at least one entry or by declaring "no answer" for that category.
@@ -65,15 +50,15 @@ function isMemberComplete(member) {
 
 const isComplete = computed(() => isMemberComplete(currentMember.value));
 
-const allComplete = computed(
+const canGoNext = computed(
     () => hasMembers.value && members.value.every(isMemberComplete),
 );
 
 const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
 
-const carouselCanGoNextMember = computed(() => isComplete.value && currentIndex.value < members.value.length - 1);
-
-const canGoNext = computed(() => allComplete.value);
+const carouselCanGoNextMember = computed(
+    () => isComplete.value && currentIndex.value < members.value.length - 1,
+);
 
 function carouselGoPreviousMember() {
     if (carouselCanGoPreviousMember.value) {
@@ -87,7 +72,7 @@ function carouselGoNextMember() {
     }
 }
 
-const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences", true, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences", canGoNext, emit);
 </script>
 
 <template>
