@@ -76,13 +76,12 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 </script>
 
 <template>
-    <section class="card space-y-6">
+    <section class="card space-y-3">
         <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze/rifiuti">
             Scegli il membro con il carosello, indica le sue preferenze e i suoi rifiuti.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
 
         <p v-if="!hasMembers" class="text-sm text-muted">
             Nessun membro caricato.
@@ -102,6 +101,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                 :can-go-next="carouselCanGoNextMember"
                 @previous="carouselGoPreviousMember"
                 @next="carouselGoNextMember"
+                class="mb-9"
             />
 
             <!-- The subject's likes and dislikes. -->
