@@ -39,8 +39,7 @@ const canGoNext = computed(
         nameIssues.value.duplicateNamesCount === 0,
 );
 
-const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("loadMembers", canGoNext, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation("loadMembers", canGoNext, emit);
 
 // Toggle the editing mode.
 function toggleEditing() {
@@ -103,9 +102,9 @@ function toggleEditing() {
     </section>
 
     <SociogramNavigation
-        :show-previous="showPrevious"
-        :show-next="showNext"
-        :show-restart="showRestart"
+        :show-previous="true"
+        :show-next="true"
+        :show-restart="true"
         :enable-previous="true"
         :enable-next="canGoNext"
         :enable-restart="true"

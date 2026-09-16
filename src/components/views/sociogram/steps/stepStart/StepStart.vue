@@ -6,8 +6,7 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
-const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("start", true, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation("start", true, emit);
 </script>
 
 <template>
@@ -28,12 +27,12 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
     </section>
 
     <SociogramNavigation
-        :show-previous="showPrevious"
-        :show-next="showNext"
-        :show-restart="showRestart"
-        :enable-previous="true"
-        :enable-next="true"
+        :show-previous="true"
+        :show-next="true"
+        :show-restart="true"
+        :enable-previous="false"
         :enable-restart="false"
+        :enable-next="true"
         @sociogram-step-previous="goPrevious"
         @sociogram-step-next="goNext"
         @sociogram-step-restart="restart"

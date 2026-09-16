@@ -64,30 +64,30 @@ function isMemberComplete(member) {
 }
 
 const isComplete = computed(() => isMemberComplete(currentMember.value));
+
 const allComplete = computed(
     () => hasMembers.value && members.value.every(isMemberComplete),
 );
 
-const canGoPrevious = computed(
-    () => isComplete.value && currentIndex.value > 0,
-);
-const canGoNext = computed(
-    () =>
-        isComplete.value && currentIndex.value < members.value.length - 1,
-);
+const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
 
-function goPreviousMember() {
-    if (!canGoPrevious.value) return;
-    currentIndex.value -= 1;
+const carouselCanGoNextMember = computed(() => isComplete.value && currentIndex.value < members.value.length - 1);
+
+const canGoNext = computed(() => allComplete.value);
+
+function carouselGoPreviousMember() {
+    if (carouselCanGoPreviousMember.value) {
+        currentIndex.value--;
+    }
 }
 
-function goNextMember() {
-    if (!canGoNext.value) return;
-    currentIndex.value += 1;
+function carouselGoNextMember() {
+    if (carouselCanGoNextMember.value) {
+        currentIndex.value++;
+    }
 }
 
-const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("setPreferences", allComplete, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences", true, emit);
 </script>
 
 <template>
@@ -108,14 +108,15 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
             <div>
                 <p class="eyebrow">CAROSELLO</p>
             </div>
+
             <MemberCarousel
                 :current-member="currentMember"
                 :current-index="currentIndex"
                 :total="members.length"
-                :can-go-previous="canGoPrevious"
-                :can-go-next="canGoNext"
-                @previous="goPreviousMember"
-                @next="goNextMember"
+                :can-go-previous="carouselCanGoPreviousMember"
+                :can-go-next="carouselCanGoNextMember"
+                @previous="carouselGoPreviousMember"
+                @next="carouselGoNextMember"
             />
 
             <!-- The subject's likes and dislikes. -->
@@ -182,11 +183,11 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
     </section>
 
     <SociogramNavigation
-        :show-previous="showPrevious"
-        :show-next="showNext"
-        :show-restart="showRestart"
+        :show-previous="true"
+        :show-next="true"
+        :show-restart="true"
         :enable-previous="true"
-        :enable-next="allComplete"
+        :enable-next="canGoNext"
         :enable-restart="true"
         @sociogram-step-previous="goPrevious"
         @sociogram-step-next="goNext"

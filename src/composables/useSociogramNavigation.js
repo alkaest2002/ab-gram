@@ -22,18 +22,15 @@ export const SOCIOGRAM_STEPS = [
  *
  * @param {import('@/stores/sociogram').SociogramStep} step The step this view represents.
  * @param {import('vue').Ref<boolean> | boolean} canGoNext Whether the user may advance from this step.
+ * @param {Function} emit The Vue emit function.
  */
 export function useSociogramNavigation(step, canGoNext, emit) {
-
   const stepIndex = SOCIOGRAM_STEPS.indexOf(step);
-  const showPrevious = computed(() => stepIndex > 0);
-  const showNext = computed(() => stepIndex < SOCIOGRAM_STEPS.length - 1);
-  const showRestart = computed(() => stepIndex > 0);
-  const canGoNextValue = computed(() => unref(canGoNext));
 
   function goToStep(componentName) {
-    Object.values(SOCIOGRAM_STEPS).includes(componentName)
-      && emit("sociogram-change-component", componentName);
+    if (SOCIOGRAM_STEPS.includes(componentName)) {
+      emit("sociogram-change-component", componentName);
+    }
   }
 
   function goPrevious() {
@@ -41,7 +38,8 @@ export function useSociogramNavigation(step, canGoNext, emit) {
   }
 
   function goNext() {
-    if (canGoNextValue.value) {
+    // Unwrap ref/computed values to get the boolean
+    if (unref(canGoNext)) {
       goToStep(SOCIOGRAM_STEPS[stepIndex + 1]);
     }
   }
@@ -52,11 +50,8 @@ export function useSociogramNavigation(step, canGoNext, emit) {
   }
 
   return {
-    showPrevious,
-    showNext,
-    showRestart,
-    goPrevious,
     goNext,
+    goPrevious,
     restart,
   };
 }

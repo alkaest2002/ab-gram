@@ -9,8 +9,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 const app = useAppStore();
 
-const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("generateReport", false, emit);
+const { goPrevious, goNext, restart } = useSociogramNavigation("generateReport", false, emit);
 </script>
 
 <template>
@@ -22,15 +21,15 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
 
         <p>
             <span class="tag tag-off"
-                >shouldLockUI: {{ app.shouldLockUI }}</span
+                >shouldLockUI: {{ app.shouldLockUi }}</span
             >
         </p>
     </section>
 
     <SociogramNavigation
-        :show-previous="showPrevious"
-        :show-next="showNext"
-        :show-restart="showRestart"
+        :show-previous="true"
+        :show-next="true"
+        :show-restart="true"
         :enable-previous="true"
         :enable-next="false"
         :enable-restart="true"
