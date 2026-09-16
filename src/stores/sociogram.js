@@ -9,6 +9,8 @@ import { defineStore } from "pinia";
  * @property {string} name - Display name.
  * @property {string[]} likes - Ids of the members this member prefers.
  * @property {string[]} dislikes - Ids of the members this member rejects.
+ * @property {boolean} noLikes - Whether the member declared no likes.
+ * @property {boolean} noDislikes - Whether the member declared no dislikes.
  */
 
 /**

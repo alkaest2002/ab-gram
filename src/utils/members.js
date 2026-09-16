@@ -35,7 +35,7 @@ export function normalizeNames(rows) {
  * step, so there is nothing to preserve across rebuilds yet.
  *
  * @param {string[]} names
- * @returns {Array<{ id: string, name: string, likes: string[], dislikes: string[] }>}
+ * @returns {Array<{ id: string, name: string, likes: string[], dislikes: string[], noLikes: boolean, noDislikes: boolean }>}
  */
 export function buildMembers(names) {
   return names.map((name, index) => ({
@@ -43,6 +43,8 @@ export function buildMembers(names) {
     name,
     likes: [],
     dislikes: [],
+    noLikes: false,
+    noDislikes: false,
   }));
 }
 

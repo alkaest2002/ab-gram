@@ -35,38 +35,46 @@ const currentDislikes = computed({
     },
 });
 
-// Members whose preferences have been explicitly confirmed as complete.
-const acknowledgedIds = ref([]);
+const currentNoLikes = computed({
+    get: () => currentMember.value?.noLikes ?? false,
+    set: (value) => {
+        if (currentMember.value) currentMember.value.noLikes = value;
+    },
+});
+
+const currentNoDislikes = computed({
+    get: () => currentMember.value?.noDislikes ?? false,
+    set: (value) => {
+        if (currentMember.value) currentMember.value.noDislikes = value;
+    },
+});
 
 const hasMembers = computed(() => members.value.length > 0);
-const isAcknowledged = computed(
-    () =>
-        Boolean(currentMember.value) &&
-        acknowledgedIds.value.includes(currentMember.value.id),
-);
-const allAcknowledged = computed(
-    () =>
-        hasMembers.value &&
-        members.value.every((member) =>
-            acknowledgedIds.value.includes(member.id),
-        ),
+
+// A member's answer is complete once both categories are resolved: either by
+// selecting at least one entry or by declaring "no answer" for that category.
+function isMemberComplete(member) {
+    if (!member) return false;
+
+    const hasLikes = (member.likes?.length ?? 0) > 0 || Boolean(member.noLikes);
+    const hasDislikes =
+        (member.dislikes?.length ?? 0) > 0 || Boolean(member.noDislikes);
+
+    return hasLikes && hasDislikes;
+}
+
+const isComplete = computed(() => isMemberComplete(currentMember.value));
+const allComplete = computed(
+    () => hasMembers.value && members.value.every(isMemberComplete),
 );
 
 const canGoPrevious = computed(
-    () => isAcknowledged.value && currentIndex.value > 0,
+    () => isComplete.value && currentIndex.value > 0,
 );
 const canGoNext = computed(
-    () => isAcknowledged.value && currentIndex.value < members.value.length - 1,
+    () =>
+        isComplete.value && currentIndex.value < members.value.length - 1,
 );
-
-function toggleAcknowledgment() {
-    const member = currentMember.value;
-    if (!member) return;
-
-    acknowledgedIds.value = isAcknowledged.value
-        ? acknowledgedIds.value.filter((id) => id !== member.id)
-        : [...acknowledgedIds.value, member.id];
-}
 
 function goPreviousMember() {
     if (!canGoPrevious.value) return;
@@ -79,15 +87,13 @@ function goNextMember() {
 }
 
 const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
-    useSociogramNavigation("setPreferences", allAcknowledged, emit);
+    useSociogramNavigation("setPreferences", allComplete, emit);
 </script>
 
 <template>
     <section class="card space-y-6">
         <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze/rifiuti">
-            Scegli il membro con il carosello, indica chi gli piace
-            (<code>likes</code>) e chi no (<code>dislikes</code>), poi conferma
-            per passare al successivo.
+            Scegli il membro con il carosello, indica le sue preferenze e i suoi rifiuti.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -132,24 +138,45 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
                 />
             </div>
 
-            <!-- Acknowledgment: required to move the carousel in either direction. -->
-            <div class="rounded-lg border border-line p-4">
-                <p class="text-xs text-muted mb-3">
-                    Conferma per sbloccare i pulsanti del carosello.
-                </p>
-                <label class="flex items-start gap-3">
-                    <input
-                        type="checkbox"
-                        class="mt-0.5 size-4 shrink-0 accent-accent"
-                        :checked="isAcknowledged"
-                        @change="toggleAcknowledgment"
-                    />
-                    <span class="text-sm text-ink">
-                        Ho completato le preferenze di
-                        <strong>{{ currentMember?.name }}</strong
-                        >.
-                    </span>
-                </label>
+            <!-- Declared "not answered" states: unlock the carousel when the
+                 member has no likes/dislikes to record. -->
+            <div class="grid gap-6 md:grid-cols-2">
+                <div class="rounded-lg border border-line p-4">
+                    <p class="text-xs text-muted mb-3">
+                        Se
+                        <strong>{{ currentMember?.name }}</strong>
+                        non ha espresso preferenze, seleziona la voce
+                        corrispondente per sbloccare i pulsanti del carosello.
+                    </p>
+                    <label class="flex items-start gap-3">
+                        <input
+                            type="checkbox"
+                            class="mt-0.5 size-4 shrink-0 accent-accent"
+                            v-model="currentNoLikes"
+                        />
+                        <span class="text-sm text-ink">
+                            Non ha espresso preferenze.
+                        </span>
+                    </label>
+                </div>
+                <div class="rounded-lg border border-line p-4">
+                    <p class="text-xs text-muted mb-3">
+                        Se
+                        <strong>{{ currentMember?.name }}</strong>
+                        non ha espresso rifiuti, seleziona la voce
+                        corrispondente per sbloccare i pulsanti del carosello.
+                    </p>
+                    <label class="flex items-start gap-3">
+                        <input
+                            type="checkbox"
+                            class="mt-0.5 size-4 shrink-0 accent-accent"
+                            v-model="currentNoDislikes"
+                        />
+                        <span class="text-sm text-ink">
+                            Non ha espresso rifiuti.
+                        </span>
+                    </label>
+                </div>
             </div>
         </template>
     </section>
@@ -159,7 +186,7 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
         :show-next="showNext"
         :show-restart="showRestart"
         :enable-previous="true"
-        :enable-next="allAcknowledged"
+        :enable-next="allComplete"
         :enable-restart="true"
         @sociogram-step-previous="goPrevious"
         @sociogram-step-next="goNext"
