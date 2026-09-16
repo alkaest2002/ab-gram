@@ -89,7 +89,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 
         <template v-else>
             <!-- Carousel: select the subject, one member at a time. -->
-            <div>
+            <div class="mt-6">
                 <p class="eyebrow">CAROSELLO</p>
             </div>
 
