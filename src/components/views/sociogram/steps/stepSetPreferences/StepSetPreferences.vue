@@ -47,7 +47,9 @@ const isAcknowledged = computed(
 const allAcknowledged = computed(
     () =>
         hasMembers.value &&
-        members.value.every((member) => acknowledgedIds.value.includes(member.id)),
+        members.value.every((member) =>
+            acknowledgedIds.value.includes(member.id),
+        ),
 );
 
 const canGoPrevious = computed(
@@ -82,7 +84,7 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze">
+        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze/rifiuti">
             Scegli il membro con il carosello, indica chi gli piace
             (<code>likes</code>) e chi no (<code>dislikes</code>), poi conferma
             per passare al successivo.
@@ -90,12 +92,16 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
+
         <p v-if="!hasMembers" class="text-sm text-muted">
             Nessun membro caricato.
         </p>
 
         <template v-else>
             <!-- Carousel: select the subject, one member at a time. -->
+            <div>
+                <p class="eyebrow">CAROSELLO</p>
+            </div>
             <MemberCarousel
                 :current-member="currentMember"
                 :current-index="currentIndex"
@@ -111,39 +117,40 @@ const { showPrevious, showNext, showRestart, goPrevious, goNext, restart } =
                 <SelectPreferences
                     v-model="currentLikes"
                     preference="likes"
-                    label="Mi piacciono"
+                    label="Preferenze"
+                    :members="members"
                     :excluded-ids="currentDislikes"
                     :self-id="currentMember?.id"
                 />
                 <SelectPreferences
                     v-model="currentDislikes"
                     preference="dislikes"
-                    label="Non mi piacciono"
+                    label="Rifiuti"
+                    :members="members"
                     :excluded-ids="currentLikes"
                     :self-id="currentMember?.id"
                 />
             </div>
 
             <!-- Acknowledgment: required to move the carousel in either direction. -->
-            <label
-                class="flex items-start gap-3 rounded-lg border border-line p-4"
-            >
-                <input
-                    type="checkbox"
-                    class="mt-0.5 size-4 shrink-0 accent-accent"
-                    :checked="isAcknowledged"
-                    @change="toggleAcknowledgment"
-                />
-                <span class="text-sm text-ink">
-                    Ho completato le preferenze di
-                    <strong>{{ currentMember?.name }}</strong
-                    >.
-                </span>
-            </label>
-
-            <p v-if="!isAcknowledged" class="text-xs text-muted">
-                Conferma per sbloccare i pulsanti del carosello.
-            </p>
+            <div class="rounded-lg border border-line p-4">
+                <p class="text-xs text-muted mb-3">
+                    Conferma per sbloccare i pulsanti del carosello.
+                </p>
+                <label class="flex items-start gap-3">
+                    <input
+                        type="checkbox"
+                        class="mt-0.5 size-4 shrink-0 accent-accent"
+                        :checked="isAcknowledged"
+                        @change="toggleAcknowledgment"
+                    />
+                    <span class="text-sm text-ink">
+                        Ho completato le preferenze di
+                        <strong>{{ currentMember?.name }}</strong
+                        >.
+                    </span>
+                </label>
+            </div>
         </template>
     </section>
 

@@ -21,27 +21,26 @@ defineEmits([
     <div class="flex flex-wrap gap-2 justify-between mt-4">
         <div class="flex flex-wrap gap-2">
             <BaseButton
+                variant="outline"
+                :disabled="!enableRestart"
+                @click="$emit('sociogram-step-restart')"
+            >
+                Ricomincia
+            </BaseButton>
+            <BaseButton
                 v-show="showPrevious"
                 variant="outline"
                 :disabled="!enablePrevious"
                 @click="$emit('sociogram-step-previous')"
                 >Indietro
             </BaseButton>
-            <BaseButton
-                v-show="showNext"
-                variant="outline"
-                :disabled="!enableNext"
-                @click="$emit('sociogram-step-next')"
-                >Avanti
-            </BaseButton>
         </div>
         <BaseButton
-            v-show="showRestart"
+            v-show="showNext"
             variant="outline"
-            :disabled="!enableRestart"
-            @click="$emit('sociogram-step-restart')"
-        >
-            Ricomincia
+            :disabled="!enableNext"
+            @click="$emit('sociogram-step-next')"
+            >Avanti
         </BaseButton>
     </div>
 </template>

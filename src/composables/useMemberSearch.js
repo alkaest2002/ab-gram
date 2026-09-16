@@ -191,8 +191,6 @@ export function useMemberSearch(members) {
             .map((entry) => {
                 const primaryScore = scoreNormalizedName(entry.normalized, normalizedTerm);
                 const containsAllChars = hasAllCharacters(normalizedTerm, entry.normalized);
-
-                // Compute all criteria
                 const isExactMatch = primaryScore !== null && primaryScore <= 1;
                 const nameLengthPenalty = entry.normalized.length * 0.001;
                 const alphabetical = entry.member.name.toLowerCase();
