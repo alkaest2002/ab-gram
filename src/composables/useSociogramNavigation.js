@@ -6,6 +6,7 @@ import { computed, unref } from "vue";
  */
 export const SOCIOGRAM_STEPS = [
   "start",
+  "importMembers",
   "loadMembers",
   "setPreferences",
   "generateReport",

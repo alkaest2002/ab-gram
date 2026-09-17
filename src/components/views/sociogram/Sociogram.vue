@@ -10,6 +10,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import PageTransition from "@/components/ui/PageTransition.vue";
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
+import StepImportMembers from "@/components/views/sociogram/steps/stepImportMembers/StepImportMembers.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
@@ -24,8 +25,9 @@ import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 // --- State --------------
 const sociogramStore = useSociogramStore();
 
-const stateComponents ={
+const stateComponents = {
     start: StepStart,
+    importMembers: StepImportMembers,
     loadMembers: StepLoadMembers,
     setPreferences: StepSetPreferences,
     generateReport: StepGenerateReport,
@@ -41,25 +43,25 @@ const memberIdToEdit = ref(null);
 // --- Computed -----------
 // Pass the target id only to the preferences step; the other steps ignore it.
 const stepProps = computed(() =>
-  currentComponentName.value === "setPreferences"
-    ? { targetMemberId: memberIdToEdit.value }
-    : {},
+    currentComponentName.value === "setPreferences"
+        ? { targetMemberId: memberIdToEdit.value }
+        : {},
 );
 
 // Only the report step emits "sociogram-edit-member"; binding it to every step
 // makes Vue try to fall through the listener on the others (e.g. StepStart,
 // which renders a fragment root) and triggers a warning. Attach it conditionally.
 const stepListeners = computed(() => {
-  const listeners = {
-    "sociogram-change-component": changeComponent,
-    "sociogram-restart": sociogramStore.resetMembers,
-  };
+    const listeners = {
+        "sociogram-change-component": changeComponent,
+        "sociogram-restart": sociogramStore.resetMembers,
+    };
 
-  if (currentComponentName.value === "generateReport") {
-    listeners["sociogram-edit-member"] = editMember;
-  }
+    if (currentComponentName.value === "generateReport") {
+        listeners["sociogram-edit-member"] = editMember;
+    }
 
-  return listeners;
+    return listeners;
 });
 
 // --- Watchers -----------
@@ -68,13 +70,13 @@ const stepListeners = computed(() => {
 
 // --- Methods ------------
 function changeComponent(componentName) {
-  memberIdToEdit.value = null;
-  currentComponentName.value = componentName;
+    memberIdToEdit.value = null;
+    currentComponentName.value = componentName;
 }
 
 function editMember(memberId) {
-  memberIdToEdit.value = memberId;
-  currentComponentName.value = "setPreferences";
+    memberIdToEdit.value = memberId;
+    currentComponentName.value = "setPreferences";
 }
 </script>
 

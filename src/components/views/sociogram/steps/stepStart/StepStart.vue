@@ -8,7 +8,6 @@
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Utilities ----------
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
