@@ -204,7 +204,7 @@ function removeMember(memberId) {
           @click="removeMember(member.id)"
         >
           <svg
-            class="size-5"
+            class="size-4"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
