@@ -46,6 +46,22 @@ const stepProps = computed(() =>
     : {},
 );
 
+// Only the report step emits "sociogram-edit-member"; binding it to every step
+// makes Vue try to fall through the listener on the others (e.g. StepStart,
+// which renders a fragment root) and triggers a warning. Attach it conditionally.
+const stepListeners = computed(() => {
+  const listeners = {
+    "sociogram-change-component": changeComponent,
+    "sociogram-restart": sociogramStore.resetMembers,
+  };
+
+  if (currentComponentName.value === "generateReport") {
+    listeners["sociogram-edit-member"] = editMember;
+  }
+
+  return listeners;
+});
+
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -71,9 +87,7 @@ function editMember(memberId) {
                     <component
                         :is="stateComponents[currentComponentName]"
                         v-bind="stepProps"
-                        @sociogram-change-component="changeComponent"
-                        @sociogram-edit-member="editMember"
-                        @sociogram-restart="sociogramStore.resetMembers"
+                        v-on="stepListeners"
                     />
                 </keep-alive>
             </div>
