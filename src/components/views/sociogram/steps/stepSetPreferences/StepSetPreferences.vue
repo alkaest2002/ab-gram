@@ -14,6 +14,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 const sociogram = useSociogramStore();
 const { members, hasMembers } = storeToRefs(sociogram);
+const { updateMember } = sociogram;
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
@@ -26,7 +27,11 @@ function writableMemberField(field, fallback) {
     return computed({
         get: () => currentMember.value?.[field] ?? fallback,
         set: (value) => {
-            if (currentMember.value) currentMember.value[field] = value;
+            if (currentMember.value) {
+                const memberId = currentMember.value.id;
+                const key = field;
+                updateMember({ memberId, key, value });
+            }
         },
     });
 }
@@ -72,13 +77,21 @@ function carouselGoNextMember() {
     }
 }
 
-const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences", canGoNext, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation(
+    "setPreferences",
+    canGoNext,
+    emit,
+);
 </script>
 
 <template>
     <section class="card space-y-3">
-        <StepHeader eyebrow="Passaggio 2 di 3" title="Indica le scelte e i rifiuti di ogni membro del gruppo">
-            Seleziona una persona con i comandi del carosello, indica le sue scelte e i suoi rifiuti.
+        <StepHeader
+            eyebrow="Passaggio 2 di 3"
+            title="Indica le scelte e i rifiuti di ogni membro del gruppo"
+        >
+            Seleziona una persona con i comandi del carosello, indica le sue
+            scelte e i suoi rifiuti.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -99,14 +112,13 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                 :total="members.length"
                 :can-go-previous="carouselCanGoPreviousMember"
                 :can-go-next="carouselCanGoNextMember"
-                @previous="carouselGoPreviousMember"
-                @next="carouselGoNextMember"
+                @carousel-previous="carouselGoPreviousMember"
+                @carousel-next="carouselGoNextMember"
                 class="mb-9"
             />
 
             <!-- The subject's likes and dislikes. -->
             <div class="grid gap-6 md:grid-cols-2">
-
                 <!-- Likes -->
                 <SelectMembers
                     v-model="currentLikes"
@@ -135,8 +147,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                     <p class="text-xs text-muted mb-3">
                         Se
                         <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso scelte, seleziona la voce
-                        corrispondente per sbloccare i pulsanti del carosello.
+                        non ha espresso scelte, seleziona la voce corrispondente
+                        per sbloccare i pulsanti del carosello.
                     </p>
                     <label class="flex items-start gap-3">
                         <input
