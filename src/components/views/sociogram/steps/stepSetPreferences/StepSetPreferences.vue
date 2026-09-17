@@ -77,8 +77,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 
 <template>
     <section class="card space-y-3">
-        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze e rifiuti">
-            Scegli la persona con i comandi del carosello, indica le sue preferenze e i suoi rifiuti.
+        <StepHeader eyebrow="Passaggio 2 di 3" title="Indica le scelte e i rifiuti di ogni membro del gruppo">
+            Seleziona una persona con i comandi del carosello, indica le sue scelte e i suoi rifiuti.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>

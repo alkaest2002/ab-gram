@@ -172,11 +172,11 @@ function removeMember(memberId) {
       Nessun membro caricato.
     </p>
 
-    <ol v-else class="list-none space-y-1">
+    <ol v-else class="list-none divide-y divide-line rounded-lg border border-line">
       <li
         v-for="member in members"
         :key="member.id"
-        class="flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-ink/5"
+        class="flex items-center gap-3 px-3 transition-colors hover:bg-ink/5"
       >
         <span
           class="w-6 shrink-0 text-right font-mono text-xs text-muted"
