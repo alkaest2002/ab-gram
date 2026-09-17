@@ -6,11 +6,10 @@
 // --- Stores -------------
 
 // --- Components ---------
+import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
-import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 // --- Utilities ----------
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
 // --- Props --------------
 
@@ -18,24 +17,6 @@ import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // --- State --------------
-/**
- * The three wizard steps, in order: the start screen is the one place where the
- * whole path is laid out before the user commits to it.
- */
-const steps = [
-    {
-        label: "Carica i nomi",
-        text: "Un nome per riga; correggi l'elenco prima di continuare.",
-    },
-    {
-        label: "Preferenze e rifiuti",
-        text: "Indica chi sceglie chi, una persona alla volta.",
-    },
-    {
-        label: "Report",
-        text: "Il grafo e gli indici sociometrici della tua rete.",
-    },
-];
 
 // --- Computed -----------
 
@@ -44,72 +25,68 @@ const steps = [
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goNext, goPrevious, restart } = useSociogramNavigation("start", true, emit);
 
-// Zero-padded mono index: 01, 02, 03.
 const stepNumber = (index) => String(index + 1).padStart(2, "0");
+
+// The two entry points live as their own steps; from the start screen we jump
+// straight to whichever path the user chooses.
+const goToLoadMembers = () =>
+    emit("sociogram-change-component", "loadMembers");
+
+const goToImportMembers = () =>
+    emit("sociogram-change-component", "importMembers");
 </script>
 
 <template>
-    <section class="card space-y-6">
-        <StepHeader
-            eyebrow="Punto di partenza"
-            title="È la prima volta che usi l'app?"
-        >
-            ABGrid analizza le dinamiche relazionali del tuo gruppo — chi
-            preferisce stare con chi, come si formano i sottogruppi, quali sono i
-            ruoli chiave — e le restituisce come mappa visiva e numerica.
-        </StepHeader>
-
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
-        <div class="space-y-4">
-            <p class="eyebrow">Come funziona</p>
-            <ol class="grid gap-4">
-                <li
-                    v-for="(step, i) in steps"
-                    :key="step.label"
-                    class="flex items-start gap-4"
-                >
-                    <span
-                        class="w-9 shrink-0 pt-0.5 font-mono text-[0.8125rem] font-medium tracking-[0.08em] text-muted"
-                        aria-hidden="true"
-                        >{{ stepNumber(i) }}</span
-                    >
-                    <div class="space-y-1">
-                        <h3>{{ step.label }}</h3>
-                        <p class="text-sm">{{ step.text }}</p>
-                    </div>
-                </li>
-            </ol>
-        </div>
-
-        <aside class="rounded-lg border border-line p-4">
-            <p class="eyebrow">Analisi locale</p>
-            <p class="mt-2 text-sm">
-                Non raccogliamo i dati: li inserisci tu, restano sul dispositivo
-                e il calcolo avviene nel browser. Ideale per ricerche, classi e
-                indagini organizzative, dove la privacy dei partecipanti è
-                fondamentale.
-            </p>
-        </aside>
-
-        <div class="flex flex-wrap items-center gap-4">
-            <router-link to="/docs" class="link text-sm"
-                >Leggi la documentazione</router-link
+    <div class="space-y-6">
+        <section class="card space-y-6">
+            <StepHeader
+                eyebrow="Punto di partenza"
+                title="È la prima volta che usi l'app?"
             >
-        </div>
-    </section>
+                ABGrid analizza le dinamiche relazionali del tuo gruppo — chi
+                preferisce stare con chi, come si formano i sottogruppi, quali
+                sono i ruoli chiave — e le restituisce come mappa visiva e
+                numerica.
+            </StepHeader>
 
-    <SociogramNavigation
-        :show-previous="true"
-        :show-next="true"
-        :show-restart="true"
-        :enable-previous="false"
-        :enable-restart="false"
-        :enable-next="true"
-        @sociogram-step-previous="goPrevious"
-        @sociogram-step-next="goNext"
-        @sociogram-step-restart="restart"
-    />
+            <aside class="rounded-lg border border-line p-4">
+                <p class="eyebrow">Analisi locale</p>
+                <p class="mt-2 text-sm">
+                    Non raccogliamo i dati: li inserisci tu, restano sul
+                    dispositivo e il calcolo avviene nel browser. Ideale per
+                    ricerche, classi e indagini organizzative, dove la privacy
+                    dei partecipanti è fondamentale.
+                </p>
+            </aside>
+        </section>
+
+        <section class="card space-y-4">
+            <div class="space-y-1">
+                <p class="eyebrow">Nuovo progetto</p>
+                <h3>Carica i nomi</h3>
+                <p class="text-sm">
+                    Crea un nuovo sociogramma a partire da un file di testo con
+                    un nome per riga.
+                </p>
+            </div>
+            <BaseButton variant="solid" @click="goToLoadMembers">
+                Crea progetto
+            </BaseButton>
+        </section>
+
+        <section class="card space-y-4">
+            <div class="space-y-1">
+                <p class="eyebrow">Progetto archiviato</p>
+                <h3>Importa un archivio</h3>
+                <p class="text-sm">
+                    Riprendi un progetto salvato in precedenza, esattamente da
+                    dove lo avevi lasciato.
+                </p>
+            </div>
+            <BaseButton variant="outline" @click="goToImportMembers">
+                Importa progetto
+            </BaseButton>
+        </section>
+    </div>
 </template>
