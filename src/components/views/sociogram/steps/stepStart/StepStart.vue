@@ -10,6 +10,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 
 // --- Utilities ----------
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation.js";
 
 // --- Props --------------
 
@@ -25,16 +26,8 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 // --- Lifecycle ----------
 
 // --- Methods ------------
+const { goToStep } = useSociogramNavigation(emit);
 
-const stepNumber = (index) => String(index + 1).padStart(2, "0");
-
-// The two entry points live as their own steps; from the start screen we jump
-// straight to whichever path the user chooses.
-const goToLoadMembers = () =>
-    emit("sociogram-change-component", "loadMembers");
-
-const goToImportMembers = () =>
-    emit("sociogram-change-component", "importMembers");
 </script>
 
 <template>
@@ -70,7 +63,7 @@ const goToImportMembers = () =>
                     un nome per riga.
                 </p>
             </div>
-            <BaseButton variant="solid" @click="goToLoadMembers">
+            <BaseButton variant="solid" @click="goToStep('loadMembers')">
                 Crea progetto
             </BaseButton>
         </section>
@@ -84,7 +77,7 @@ const goToImportMembers = () =>
                     dove lo avevi lasciato.
                 </p>
             </div>
-            <BaseButton variant="outline" @click="goToImportMembers">
+            <BaseButton variant="outline" @click="goToStep('importMembers')">
                 Importa progetto
             </BaseButton>
         </section>

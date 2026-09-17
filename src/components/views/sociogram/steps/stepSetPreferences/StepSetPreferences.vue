@@ -112,11 +112,7 @@ function carouselGoNextMember() {
     }
 }
 
-const { goNext, goPrevious, restart } = useSociogramNavigation(
-    "setPreferences",
-    canGoNext,
-    emit,
-);
+const { goToStep, restart } = useSociogramNavigation(emit);
 </script>
 
 <template>
@@ -225,8 +221,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
         :enable-previous="true"
         :enable-next="canGoNext"
         :enable-restart="true"
-        @sociogram-step-previous="goPrevious"
-        @sociogram-step-next="goNext"
+        @sociogram-step-previous="goToStep('loadMembers')"
+        @sociogram-step-next="goToStep('generateReport')"
         @sociogram-step-restart="restart"
     />
 </template>

@@ -50,11 +50,7 @@ const canGoNext = computed(
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goNext, goPrevious, restart } = useSociogramNavigation(
-    "loadMembers",
-    canGoNext,
-    emit,
-);
+const { goToStep, restart } = useSociogramNavigation(emit);
 </script>
 
 <template>
@@ -97,8 +93,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
         :enable-previous="true"
         :enable-next="canGoNext"
         :enable-restart="true"
-        @sociogram-step-previous="goPrevious"
-        @sociogram-step-next="goNext"
+        @sociogram-step-previous="goToStep('start')"
+        @sociogram-step-next="goToStep('setPreferences')"
         @sociogram-step-restart="restart"
     />
 </template>

@@ -46,7 +46,7 @@ const importedSummary = computed(() => {
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goNext, goPrevious, restart } = useSociogramNavigation("start", true, emit);
+const { goToStep, restart } = useSociogramNavigation(emit);
 
 function pick() {
     fileInput.value?.click();
@@ -148,25 +148,17 @@ async function onFileChange(event) {
             </p>
         </div>
 
-        <aside class="rounded-lg border border-line p-4">
-            <p class="eyebrow">Come funziona</p>
-            <p class="mt-2 text-sm">
-                Il file .txt scaricato alla fine del flusso ("Archivia i dati")
-                contiene uno snapshot del progetto. Caricandolo qui riprendi
-                esattamente da dove avevi lasciato.
-            </p>
-        </aside>
     </section>
 
     <SociogramNavigation
         :show-previous="true"
         :show-next="true"
         :show-restart="true"
-        :enable-previous="false"
-        :enable-restart="false"
+        :enable-previous="true"
+        :enable-restart="true"
         :enable-next="true"
-        @sociogram-step-previous="goPrevious"
-        @sociogram-step-next="goNext"
+        @sociogram-step-previous="goToStep('start')"
+        @sociogram-step-next="goToStep('generateReport')"
         @sociogram-step-restart="restart"
     />
 </template>

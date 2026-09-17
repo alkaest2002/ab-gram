@@ -11,7 +11,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import StepDownloadLink from "@/components/views/sociogram/steps/StepDownloadLink.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 // --- Utilities ----------
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
@@ -35,10 +35,7 @@ const membersLabel = computed(() =>
 );
 
 const totalChoices = computed(() =>
-    members.value.reduce(
-        (sum, member) => sum + (member.likes?.length ?? 0),
-        0,
-    ),
+    members.value.reduce((sum, member) => sum + (member.likes?.length ?? 0), 0),
 );
 
 const totalRejections = computed(() =>
@@ -92,18 +89,14 @@ function encodeBase64(value) {
     return btoa(binary);
 }
 
-// Back and restart still work here; "next" is replaced by the report link.
-const { goPrevious, restart } = useSociogramNavigation(
-    "generateReport",
-    false,
-    emit,
-);
+const { goToStep, restart } = useSociogramNavigation(emit);
 </script>
 
 <template>
     <section class="card space-y-8">
         <StepHeader eyebrow="Passaggio 3 di 3" title="Riepilogo">
-            Controlla i dati raccolti nei passaggi precedenti prima di generare il report.
+            Controlla i dati raccolti nei passaggi precedenti prima di generare
+            il report.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -147,14 +140,18 @@ const { goPrevious, restart } = useSociogramNavigation(
                                 {{ member.id }}
                             </text>
                         </svg>
-                        <p class="min-w-0 font-display text-base font-bold leading-snug tracking-[-0.01em] text-ink">
+                        <p
+                            class="min-w-0 font-display text-base font-bold leading-snug tracking-[-0.01em] text-ink"
+                        >
                             {{ member.name }}
                         </p>
                     </div>
 
                     <div class="space-y-3 pl-12">
                         <div class="space-y-1.5">
-                            <div class="flex items-center justify-between gap-3">
+                            <div
+                                class="flex items-center justify-between gap-3"
+                            >
                                 <span class="eyebrow flex items-center gap-1.5">
                                     <svg
                                         viewBox="0 0 22 6"
@@ -171,9 +168,16 @@ const { goPrevious, restart } = useSociogramNavigation(
                                             class="stroke-accent"
                                         />
                                     </svg>
-                                    <span>{{ member.likes.length == 1 ? "Scelta" : "Scelte" }}</span>
+                                    <span>{{
+                                        member.likes.length == 1
+                                            ? "Scelta"
+                                            : "Scelte"
+                                    }}</span>
                                 </span>
-                                <span class="font-mono text-sm font-medium leading-none tabular-nums text-accent">{{ member.likes.length }}</span>
+                                <span
+                                    class="font-mono text-sm font-medium leading-none tabular-nums text-accent"
+                                    >{{ member.likes.length }}</span
+                                >
                             </div>
                             <p
                                 v-if="member.likes.length"
@@ -181,13 +185,18 @@ const { goPrevious, restart } = useSociogramNavigation(
                             >
                                 {{ member.likesText }}
                             </p>
-                            <p v-else class="text-[13px] leading-[1.45] text-muted">
+                            <p
+                                v-else
+                                class="text-[13px] leading-[1.45] text-muted"
+                            >
                                 Nessuna scelta
                             </p>
                         </div>
 
                         <div class="space-y-1.5">
-                            <div class="flex items-center justify-between gap-3">
+                            <div
+                                class="flex items-center justify-between gap-3"
+                            >
                                 <span class="eyebrow flex items-center gap-1.5">
                                     <svg
                                         viewBox="0 0 22 6"
@@ -205,9 +214,16 @@ const { goPrevious, restart } = useSociogramNavigation(
                                             class="stroke-reject"
                                         />
                                     </svg>
-                                    <span>{{ member.dislikes.length == 1 ? "Rifiuto" : "Rifiuti" }}</span>
+                                    <span>{{
+                                        member.dislikes.length == 1
+                                            ? "Rifiuto"
+                                            : "Rifiuti"
+                                    }}</span>
                                 </span>
-                                <span class="font-mono text-sm font-medium leading-none tabular-nums text-reject">{{ member.dislikes.length }}</span>
+                                <span
+                                    class="font-mono text-sm font-medium leading-none tabular-nums text-reject"
+                                    >{{ member.dislikes.length }}</span
+                                >
                             </div>
                             <p
                                 v-if="member.dislikes.length"
@@ -215,7 +231,10 @@ const { goPrevious, restart } = useSociogramNavigation(
                             >
                                 {{ member.dislikesText }}
                             </p>
-                            <p v-else class="text-[13px] leading-[1.45] text-muted">
+                            <p
+                                v-else
+                                class="text-[13px] leading-[1.45] text-muted"
+                            >
                                 Nessun rifiuto
                             </p>
                         </div>
@@ -233,25 +252,19 @@ const { goPrevious, restart } = useSociogramNavigation(
             filename="dati.txt"
             label="dati (.txt)"
         >
-            Puoi scaricare i dati raccolti per conservarli e ricaricarli nell'app in seguito.
+            Puoi scaricare i dati raccolti per conservarli e ricaricarli
+            nell'app in seguito.
         </StepDownloadLink>
     </section>
 
-    <div class="mt-4 flex flex-wrap items-center justify-between gap-2">
-        <div class="flex flex-wrap gap-2">
-            <BaseButton variant="outline" @click="restart">
-                Ricomincia
-            </BaseButton>
-            <BaseButton variant="outline" @click="goPrevious">
-                Indietro
-            </BaseButton>
-        </div>
-
-        <BaseButton to="/report" variant="solid">
-            Genera il report
-            <span aria-hidden="true">&rarr;</span>
-        </BaseButton>
-    </div>
+    <SociogramNavigation
+        :show-previous="true"
+        :show-next="true"
+        :show-restart="true"
+        :enable-previous="true"
+        :enable-restart="true"
+        :enable-next="false"
+        @sociogram-step-previous="goToStep('setPreferences')"
+        @sociogram-step-restart="restart"
+    />
 </template>
-
-
