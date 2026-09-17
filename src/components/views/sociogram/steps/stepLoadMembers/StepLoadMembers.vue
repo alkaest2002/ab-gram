@@ -10,6 +10,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
+import StepDownloadLink from "@/components/views/sociogram/steps/StepDownloadLink.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
@@ -104,22 +105,15 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
 
         </div>
 
-        <div v-if="hasMembers">
-            <div>
-                <p class="eyebrow">Scarica l'elenco</p>
-                <p class="mt-1 text-xs text-muted">
-                    Puoi scaricare l'elenco aggiornato, se hai apportato delle modifiche.
-                </p>
-            </div>
-
-            <a
-                :href="membersFileHref"
-                download="elenco_nomi.txt"
-                class="badge mt-3 mb-3 font-xs px-3"
-            >
-                elenco (.txt)
-            </a>
-        </div>
+        <StepDownloadLink
+            v-if="hasMembers"
+            title="Scarica l'elenco"
+            :href="membersFileHref"
+            filename="elenco_nomi.txt"
+            label="elenco (.txt)"
+        >
+            Puoi scaricare l'elenco aggiornato, se hai apportato delle modifiche.
+        </StepDownloadLink>
 
     </section>
 
