@@ -103,43 +103,14 @@ const { goPrevious, restart } = useSociogramNavigation(
 <template>
     <section class="card space-y-8">
         <StepHeader eyebrow="Passaggio 3 di 3" title="Riepilogo">
-            Controlla i dati raccolti nei passaggi precedenti: quando sei
-            pronto, AB-Grid calcola la rete e prepara il report.
+            Controlla i dati raccolti nei passaggi precedenti prima di generare il report.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <!-- 1 · the people, drawn as the nodes they will become. -->
+        <!-- 1 · each person's choices and rejections. -->
         <section class="space-y-4">
-            <p class="eyebrow">1 · Nomi caricati</p>
-            <ul class="flex flex-wrap gap-x-6 gap-y-4">
-                <li
-                    v-for="member in members"
-                    :key="member.id"
-                    class="flex items-center gap-2.5"
-                >
-                    <svg viewBox="0 0 32 32" class="size-8" aria-hidden="true">
-                        <circle cx="16" cy="16" r="14.3" class="node-circle" />
-                        <text
-                            x="16"
-                            y="16"
-                            dy="0.34em"
-                            text-anchor="middle"
-                            class="node-initial"
-                        >
-                            {{ member.id }}
-                        </text>
-                    </svg>
-                    <span class="text-sm text-ink">{{ member.name }}</span>
-                </li>
-            </ul>
-        </section>
-
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
-        <!-- 2 · each person's choices and rejections. -->
-        <section class="space-y-4">
-            <p class="eyebrow">2 · Scelte e rifiuti</p>
+            <p class="eyebrow">1 · Scelte e rifiuti</p>
 
             <ul class="grid gap-x-8 gap-y-7 md:grid-cols-2">
                 <li
@@ -245,13 +216,12 @@ const { goPrevious, restart } = useSociogramNavigation(
 
         <!-- 3 · export the current state for later reuse. -->
         <StepDownloadLink
-            title="Scarica lo stato"
+            title="2. Archivia i dati"
             :href="stateFileHref"
-            filename="sociogram-state.txt"
-            label="stato (.txt)"
+            filename="dati.txt"
+            label="dati (.txt)"
         >
-            Puoi scaricare lo stato attuale per conservarlo e ricaricarlo
-            nell'app in seguito.
+            Puoi scaricare i dati raccolti per conservarli e ricaricarli nell'app in seguito.
         </StepDownloadLink>
     </section>
 

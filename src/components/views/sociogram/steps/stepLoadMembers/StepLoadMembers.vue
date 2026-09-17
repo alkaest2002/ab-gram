@@ -10,7 +10,6 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
-import StepDownloadLink from "@/components/views/sociogram/steps/StepDownloadLink.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
@@ -36,19 +35,6 @@ const {
 } = storeToRefs(sociogram);
 
 // --- Computed -----------
-// Computed values.
-const membersCountLabel = computed(() =>
-    membersCount.value === 1
-        ? "1 nome caricato"
-        : `${membersCount.value} nomi caricati`,
-);
-
-// Data URL for downloading the loaded names, one per line.
-const membersFileHref = computed(() => {
-    const content = members.value.map((member) => member.name).join("\n");
-    return `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
-});
-
 // The load step can only advance when there are members, none of them are
 // blank, and no two members share the same name.
 const nameIssues = computed(() => getMembersNameIssues(members.value));
@@ -101,20 +87,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
                 @remove:member="sociogram.removeMember"
             />
 
-            <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
         </div>
-
-        <StepDownloadLink
-            v-if="hasMembers"
-            title="Scarica l'elenco"
-            :href="membersFileHref"
-            filename="elenco_nomi.txt"
-            label="elenco (.txt)"
-        >
-            Puoi scaricare l'elenco aggiornato, se hai apportato delle modifiche.
-        </StepDownloadLink>
-
     </section>
 
     <SociogramNavigation
