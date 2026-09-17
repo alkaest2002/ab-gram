@@ -1,12 +1,11 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";
 
-import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
@@ -24,11 +23,7 @@ const {
     members,
 } = storeToRefs(sociogram);
 
-// Flag for editor mode and member list state.
-const isEditing = ref(false);
-
 // Computed values.
-const editorMode = computed(() => (isEditing.value ? "edit" : "view"));
 const membersCountLabel = computed(() =>
     membersCount.value === 1
         ? "1 nome caricato"
@@ -57,10 +52,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
     emit,
 );
 
-// Toggle the editing mode.
-function toggleEditing() {
-    isEditing.value = !isEditing.value;
-}
+
 </script>
 
 <template>
@@ -87,19 +79,8 @@ function toggleEditing() {
 
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-            <div class="flex flex-wrap items-center justify-between gap-3">
-
-                <BaseButton
-                    variant="outline"
-                    @click="toggleEditing"
-                >
-                    {{ isEditing ? "Fine modifica" : "Modifica nomi" }}
-                </BaseButton>
-            </div>
-
             <StepLoadMembersListEditor
                 :members="members"
-                :mode="editorMode"
                 @update:member="sociogram.updateMember"
                 @remove:member="sociogram.removeMember"
             />
@@ -110,9 +91,9 @@ function toggleEditing() {
 
         <div v-if="hasMembers">
             <div>
-                <p class="eyebrow">Elenco membri</p>
+                <p class="eyebrow">Scarica l'elenco</p>
                 <p class="mt-1 text-xs text-muted">
-                    Puoi scaricare il file aggiornato, se hai apportato delle modifiche ai dati caricati.
+                    Puoi scaricare l'elenco aggiornato, se hai apportato delle modifiche.
                 </p>
             </div>
 

@@ -1,18 +1,11 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
+
 import { getMembersNameIssues } from "@/utils/members";
 
-const props = defineProps({
-  /**
-   * "edit" shows editable input boxes; "view" renders the same boxes read-only
-   * with a muted, borderless appearance.
-   */
-  mode: {
-    type: String,
-    default: "edit",
-    validator: (value) => ["view", "edit"].includes(value),
-  },
+import BaseButton from "@/components/ui/BaseButton.vue";
 
+const props = defineProps({
   /** The members. */
   members: {
     type: Array,
@@ -22,7 +15,13 @@ const props = defineProps({
 
 const emit = defineEmits(["update:member", "remove:member"]);
 
-const isEditing = computed(() => props.mode === "edit");
+// Starts read-only: the list is a preview of what was loaded. The button below
+// switches to editing, where each name becomes an input and can be removed.
+const isEditing = ref(false);
+
+function toggleEditing() {
+  isEditing.value = !isEditing.value;
+}
 
 // Full class strings (not interpolated) so Tailwind can see every utility.
 const inputClass = computed(() =>
@@ -59,6 +58,26 @@ function removeMember(memberId) {
 
 <template>
   <div class="space-y-6">
+    <div
+      v-if="members.length > 0"
+      class="flex flex-wrap items-center justify-between gap-3"
+    >
+      <div>
+        <p class="eyebrow">Elenco membri</p>
+        <p class="mt-1 text-sm text-muted">
+          {{
+            isEditing
+              ? "Modifica o rimuovi i nomi prima di proseguire."
+              : "Anteprima dell'elenco caricato."
+          }}
+        </p>
+      </div>
+
+      <BaseButton variant="outline" @click="toggleEditing">
+        {{ isEditing ? "Fine modifica" : "Modifica nomi" }}
+      </BaseButton>
+    </div>
+
     <dl
       v-if="members.length > 0"
       class="grid grid-cols-1 divide-y divide-line rounded-lg border border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
@@ -67,13 +86,13 @@ function removeMember(memberId) {
       <div class="flex flex-col px-5 py-4">
         <dt class="eyebrow order-2 mt-2">Membri</dt>
         <dd class="order-1 flex items-center gap-2.5 text-ink">
-          <svg
-            class="size-5 shrink-0"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <span
+            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line text-ink"
           >
-            <circle cx="12" cy="12" r="6.5" fill="currentColor" />
-          </svg>
+            <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="6.5" fill="currentColor" />
+            </svg>
+          </span>
           <span class="font-mono text-2xl leading-none font-semibold">
             {{ membersCount }}
           </span>
@@ -84,17 +103,21 @@ function removeMember(memberId) {
       <div class="flex flex-col px-5 py-4">
         <dt class="eyebrow order-2 mt-2">Nomi duplicati</dt>
         <dd class="order-1 flex items-center gap-2.5" :class="duplicatedTone">
-          <svg
-            class="size-5 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            aria-hidden="true"
+          <span
+            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
           >
-            <circle cx="10" cy="12" r="5.5" />
-            <circle cx="14" cy="12" r="5.5" />
-          </svg>
+            <svg
+              class="size-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              aria-hidden="true"
+            >
+              <circle cx="10" cy="12" r="5.5" />
+              <circle cx="14" cy="12" r="5.5" />
+            </svg>
+          </span>
           <span class="font-mono text-2xl leading-none font-semibold">
             {{ duplicatedNamesCount }}
           </span>
@@ -105,18 +128,22 @@ function removeMember(memberId) {
       <div class="flex flex-col px-5 py-4">
         <dt class="eyebrow order-2 mt-2">Nomi vuoti</dt>
         <dd class="order-1 flex items-center gap-2.5" :class="emptyTone">
-          <svg
-            class="size-5 shrink-0"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.75"
-            stroke-linecap="round"
-            stroke-dasharray="3 3.5"
-            aria-hidden="true"
+          <span
+            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
           >
-            <circle cx="12" cy="12" r="6.5" />
-          </svg>
+            <svg
+              class="size-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-dasharray="3 3.5"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="6.5" />
+            </svg>
+          </span>
           <span class="font-mono text-2xl leading-none font-semibold">
             {{ emptyNamesCount }}
           </span>
@@ -130,9 +157,10 @@ function removeMember(memberId) {
 
     <ol v-else class="list-none space-y-1">
       <li
-        v-for="(member, index) in members"
+        v-for="member in members"
         :key="member.id"
-        class="flex items-center gap-3"
+        class="flex items-center gap-3 rounded-lg px-2 py-1 transition-colors"
+        :class="isEditing ? 'hover:bg-ink/5' : ''"
       >
         <span
           class="w-6 shrink-0 text-right font-mono text-xs text-muted"
@@ -145,7 +173,7 @@ function removeMember(memberId) {
           :value="member.name"
           :readonly="!isEditing"
           :class="inputClass"
-          :aria-label="`Nome del membro ${index + 1}`"
+          :aria-label="`Nome del membro ${member.id}`"
           @input="updateMember(member.id, 'name', $event.target.value)"
         />
 
