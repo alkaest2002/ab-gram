@@ -20,8 +20,8 @@ const { goPrevious, restart } = useSociogramNavigation(
     emit,
 );
 
-const membersCountLabel = computed(() =>
-    membersCount.value === 1 ? "1 membro" : `${membersCount.value} membri`,
+const membersLabel = computed(() =>
+    membersCount.value === 1 ? "membro" : "membri",
 );
 
 const totalChoices = computed(() =>
@@ -51,13 +51,16 @@ const summary = computed(() =>
             name: member.name,
             likes: (member.likes ?? []).map(resolve),
             dislikes: (member.dislikes ?? []).map(resolve),
+            likesText: (member.likes ?? []).map(resolve).join(" · "),
+            dislikesText: (member.dislikes ?? []).map(resolve).join(" · "),
         };
     }),
 );
+
 </script>
 
 <template>
-    <section class="card space-y-6">
+    <section class="card space-y-8">
         <StepHeader eyebrow="Passaggio 3 di 3" title="Riepilogo">
             Controlla i dati raccolti nei passaggi precedenti: quando sei
             pronto, AB-Grid calcola la rete e prepara il report.
@@ -65,119 +68,126 @@ const summary = computed(() =>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <!-- At a glance: people, choices and rejections recorded so far. -->
-        <dl
-            class="grid grid-cols-1 divide-y divide-line rounded-lg border border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-        >
-            <div class="flex flex-col px-5 py-4">
-                <dt class="eyebrow order-2 mt-2">Persone</dt>
-                <dd
-                    class="order-1 font-mono text-2xl leading-none font-semibold text-ink"
-                >
-                    {{ membersCount }}
-                </dd>
-            </div>
-            <div class="flex flex-col px-5 py-4">
-                <dt class="eyebrow order-2 mt-2 text-accent">Scelte</dt>
-                <dd
-                    class="order-1 font-mono text-2xl leading-none font-semibold text-accent"
-                >
-                    {{ totalChoices }}
-                </dd>
-            </div>
-            <div class="flex flex-col px-5 py-4">
-                <dt class="eyebrow order-2 mt-2 text-reject">Rifiuti</dt>
-                <dd
-                    class="order-1 font-mono text-2xl leading-none font-semibold text-reject"
-                >
-                    {{ totalRejections }}
-                </dd>
-            </div>
-        </dl>
-
-        <!-- Step 1: the loaded names. -->
-        <section class="space-y-3">
-            <div class="flex items-baseline justify-between gap-3">
-                <p class="eyebrow">1 · Nomi caricati</p>
-                <p class="font-mono text-xs text-muted">
-                    {{ membersCountLabel }}
-                </p>
-            </div>
-            <ul class="flex flex-wrap gap-2">
+        <!-- 1 · the people, drawn as the nodes they will become. -->
+        <section class="space-y-4">
+            <p class="eyebrow">1 · Nomi caricati</p>
+            <ul class="flex flex-wrap gap-x-6 gap-y-4">
                 <li
                     v-for="member in members"
                     :key="member.id"
-                    class="rounded-md border border-line px-2.5 py-1 text-sm text-ink"
+                    class="flex items-center gap-2.5"
                 >
-                    {{ member.name }}
+                    <svg viewBox="0 0 32 32" class="size-8" aria-hidden="true">
+                        <circle cx="16" cy="16" r="14.3" class="node-circle" />
+                        <text
+                            x="16"
+                            y="16"
+                            dy="0.34em"
+                            text-anchor="middle"
+                            class="node-initial"
+                        >
+                            {{ member.id }}
+                        </text>
+                    </svg>
+                    <span class="text-sm text-ink">{{ member.name }}</span>
                 </li>
             </ul>
         </section>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <!-- Step 2: each member's choices and rejections. -->
+        <!-- 2 · each person's choices and rejections. -->
         <section class="space-y-4">
-            <div class="flex items-baseline justify-between gap-3">
-                <p class="eyebrow">2 · Scelte e rifiuti</p>
-                <p class="font-mono text-xs text-muted">
-                    {{ membersCountLabel }}
-                </p>
-            </div>
+            <p class="eyebrow">2 · Scelte e rifiuti</p>
 
-            <ul class="grid gap-3 md:grid-cols-2">
+            <ul class="grid gap-x-8 gap-y-7 md:grid-cols-2">
                 <li
                     v-for="member in summary"
                     :key="member.id"
-                    class="space-y-2.5 rounded-lg border border-line p-4"
+                    class="space-y-3 card"
                 >
-                    <p class="font-semibold text-ink">{{ member.name }}</p>
-
-                    <div class="space-y-2">
-                        <div
-                            class="flex flex-wrap items-start gap-x-3 gap-y-1.5"
+                    <div class="flex items-center gap-2.5">
+                        <svg
+                            viewBox="0 0 32 32"
+                            class="size-8"
+                            aria-hidden="true"
                         >
-                            <span
-                                class="w-16 shrink-0 pt-0.5 font-mono text-xs text-muted"
-                                >Scelte</span
+                            <circle
+                                cx="16"
+                                cy="16"
+                                r="14.3"
+                                class="node-circle"
+                            />
+                            <text
+                                x="16"
+                                y="16"
+                                dy="0.34em"
+                                text-anchor="middle"
+                                class="node-initial"
                             >
-                            <span
-                                v-if="member.likes.length"
-                                class="flex flex-wrap gap-1.5"
-                            >
-                                <span
-                                    v-for="name in member.likes"
-                                    :key="name"
-                                    class="rounded-md border border-accent px-2 py-0.5 font-mono text-xs font-medium text-accent"
-                                    >{{ name }}</span
+                                {{ member.id }}
+                            </text>
+                        </svg>
+                        <p class="font-semibold text-ink">{{ member.name }}</p>
+                    </div>
+
+                    <div class="member-fields space-y-2.5">
+                        <div class="space-y-1">
+                            <span class="eyebrow flex items-center gap-1.5">
+                                <svg
+                                    viewBox="0 0 22 6"
+                                    class="mark"
+                                    aria-hidden="true"
                                 >
+                                    <line
+                                        x1="1"
+                                        y1="3"
+                                        x2="21"
+                                        y2="3"
+                                        class="mark-line mark-choice"
+                                    />
+                                </svg>
+                                <span v-if="member.likes.length == 1" class="eyebrow">{{ member.likes.length }} Scelta</span>
+                                <span v-else class="eyebrow">{{ member.likes.length }} Scelte</span>
                             </span>
-                            <span v-else class="text-sm text-muted"
-                                >Nessuna scelta</span
+                            <p
+                                v-if="member.likes.length"
+                                class="text-sm font-medium leading-relaxed text-accent"
                             >
+                                {{ member.likesText }}
+                            </p>
+                            <p v-else class="text-sm leading-relaxed text-muted">
+                                Nessuna scelta
+                            </p>
                         </div>
 
-                        <div
-                            class="flex flex-wrap items-start gap-x-3 gap-y-1.5"
-                        >
-                            <span
-                                class="w-16 shrink-0 pt-0.5 font-mono text-xs text-muted"
-                                >Rifiuti</span
-                            >
-                            <span
-                                v-if="member.dislikes.length"
-                                class="flex flex-wrap gap-1.5"
-                            >
-                                <span
-                                    v-for="name in member.dislikes"
-                                    :key="name"
-                                    class="rounded-md border border-reject px-2 py-0.5 font-mono text-xs font-medium text-reject"
-                                    >{{ name }}</span
+                        <div class="space-y-1">
+                            <span class="eyebrow flex items-center gap-1.5">
+                                <svg
+                                    viewBox="0 0 22 6"
+                                    class="mark"
+                                    aria-hidden="true"
                                 >
+                                    <line
+                                        x1="1"
+                                        y1="3"
+                                        x2="21"
+                                        y2="3"
+                                        class="mark-line mark-reject"
+                                    />
+                                </svg>
+                                <span v-if="member.dislikes.length == 1" class="eyebrow">{{ member.dislikes.length }} Rifiuto</span>
+                                <span v-else class="eyebrow">{{ member.dislikes.length }} Rifiuti</span>
                             </span>
-                            <span v-else class="text-sm text-muted"
-                                >Nessun rifiuto</span
+                            <p
+                                v-if="member.dislikes.length"
+                                class="text-sm font-medium leading-relaxed text-reject"
                             >
+                                {{ member.dislikesText }}
+                            </p>
+                            <p v-else class="text-sm leading-relaxed text-muted">
+                                Nessun rifiuto
+                            </p>
                         </div>
                     </div>
                 </li>
@@ -201,3 +211,55 @@ const summary = computed(() =>
         </BaseButton>
     </div>
 </template>
+
+<style scoped>
+/* A person, drawn as in the sociogram: white node, ink ring, mono initial. */
+.node-circle {
+    fill: #fff;
+    stroke: var(--color-ink);
+    stroke-width: 1.4;
+}
+
+.node-initial {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--color-ink);
+}
+
+/* The numbers up top: readings, so they're set in mono like the rest of the data. */
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+/* Choice vs rejection, as edge swatches: solid blue vs dashed red. */
+.mark {
+    width: 1.375rem;
+    height: 0.375rem;
+    flex: none;
+}
+
+.mark-line {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+}
+
+.mark-choice {
+    stroke: var(--color-accent);
+}
+
+.mark-reject {
+    stroke: var(--color-reject);
+    stroke-dasharray: 5 5;
+}
+
+/* Align each member's data under their name, past the node (size-8 + gap-2.5). */
+.member-fields {
+    padding-left: 2.625rem;
+}
+</style>
