@@ -46,7 +46,6 @@ export const useSociogramStore = defineStore("sociogram", () => {
   }
 
   function updateMember({ memberId, key, value }) {
-    console.log(memberId, key, value);
     const memberIndex = members.value.findIndex((m) => m.id === memberId);
     if (memberIndex !== -1) {
       members.value[memberIndex][key] = value;
