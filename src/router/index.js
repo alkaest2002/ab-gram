@@ -29,6 +29,16 @@ export const routes = [
     },
   },
   {
+    path: "/report",
+    component: () => import("@/components/views/Report.vue"),
+    meta: {
+      title: "Report",
+      inMenu: true,
+      typeOfMenu: ["header"],
+      layout: "EmptyLayout",
+    },
+  },
+  {
     path: "/docs",
     name: "docs",
     component: () => import("@/components/views/Docs.vue"),
@@ -65,7 +75,11 @@ export const routes = [
     path: "/:pathMatch(.*)*",
     name: "not-found",
     component: () => import("@/components/views/NotFound.vue"),
-    meta: { title: "Pagina non trovata", layout: "NotFoundLayout" },
+    meta: {
+      title: "Pagina non trovata",
+      inMenu: false,
+      layout: "EmptyLayout",
+    },
   },
 ];
 
