@@ -63,7 +63,7 @@ async function onFileChange(event) {
       <div>
         <p class="eyebrow">Carica il file</p>
         <p class="mt-1 text-sm text-muted">
-          Un nome per riga. Le righe vuote vengono ignorate.
+          Le righe vuote vengono ignorate.
         </p>
       </div>
 
@@ -71,10 +71,6 @@ async function onFileChange(event) {
         {{ isReading ? "Lettura…" : "Scegli file" }}
       </BaseButton>
     </div>
-
-    <p v-if="fileName" class="truncate font-mono text-xs text-muted">
-      {{ fileName }}
-    </p>
 
     <p v-if="error" class="text-sm text-reject" role="alert">
       {{ error.message }}

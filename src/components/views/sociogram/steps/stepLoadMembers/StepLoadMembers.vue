@@ -16,7 +16,13 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // Get the sociogram store and its state.
 const sociogram = useSociogramStore();
-const { maxMemberNameLength, maxMembersCount, hasMembers, membersCount, members } = storeToRefs(sociogram);
+const {
+    maxMemberNameLength,
+    maxMembersCount,
+    hasMembers,
+    membersCount,
+    members,
+} = storeToRefs(sociogram);
 
 // Flag for editor mode and member list state.
 const isEditing = ref(false);
@@ -45,7 +51,11 @@ const canGoNext = computed(
         nameIssues.value.duplicateNamesCount === 0,
 );
 
-const { goNext, goPrevious, restart } = useSociogramNavigation("loadMembers", canGoNext, emit);
+const { goNext, goPrevious, restart } = useSociogramNavigation(
+    "loadMembers",
+    canGoNext,
+    emit,
+);
 
 // Toggle the editing mode.
 function toggleEditing() {
@@ -55,17 +65,15 @@ function toggleEditing() {
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica i membri">
-            Carica un file di testo con un nome per riga, poi &mdash; se
-            necessario &mdash; rivedi o modifica l'elenco prima di proseguire.
-        </StepHeader>
 
-        <p class="text-xs text-muted">
+        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica i membri">
+            Carica un file di testo con un nome per riga, puoi &mdash; se
+            necessario &mdash; modificare l'elenco prima di proseguire.
             Ogni nome &egrave; limitato a
-            {{ sociogram.maxMemberNameLength }} caratteri (spazi inclusi);
+            {{ sociogram.maxMemberNameLength }} caratteri;
             possono essere caricati al massimo
             {{ sociogram.maxMembersCount }} nomi.
-        </p>
+        </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
@@ -75,22 +83,13 @@ function toggleEditing() {
             v-model="members"
         />
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+        <div v-if="hasMembers" class="space-y-4">
 
-        <div class="space-y-4">
+            <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
             <div class="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                    <p class="eyebrow">Elenco membri</p>
-                    <p
-                        v-if="membersCount > 0"
-                        class="mt-1 font-mono text-xs text-muted"
-                    >
-                        {{ membersCountLabel }}
-                    </p>
-                </div>
 
                 <BaseButton
-                    v-if="hasMembers"
                     variant="outline"
                     @click="toggleEditing"
                 >
@@ -104,17 +103,29 @@ function toggleEditing() {
                 @update:member="sociogram.updateMember"
                 @remove:member="sociogram.removeMember"
             />
-        </div>
-    </section>
 
-    <a
-        v-if="hasMembers"
-        :href="membersFileHref"
-        download="membri.txt"
-        class="link inline-block mt-3 mb-3 text-xs"
-    >
-        Scarica elenco membri (.txt)
-    </a>
+            <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
+        </div>
+
+        <div v-if="hasMembers">
+            <div>
+                <p class="eyebrow">Elenco membri</p>
+                <p class="mt-1 text-xs text-muted">
+                    Puoi scaricare il file aggiornato, se hai apportato delle modifiche ai dati caricati.
+                </p>
+            </div>
+
+            <a
+                :href="membersFileHref"
+                download="membri.txt"
+                class="badge mt-3 mb-3 font-xs px-3"
+            >
+                elenco (.txt)
+            </a>
+        </div>
+
+    </section>
 
     <SociogramNavigation
         :show-previous="true"

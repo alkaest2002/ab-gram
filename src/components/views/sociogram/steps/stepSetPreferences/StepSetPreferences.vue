@@ -106,6 +106,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 
             <!-- The subject's likes and dislikes. -->
             <div class="grid gap-6 md:grid-cols-2">
+
+                <!-- Likes -->
                 <SelectMembers
                     v-model="currentLikes"
                     preference="likes"
@@ -114,6 +116,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                     :excluded-ids="currentDislikes"
                     :self-id="currentMember?.id"
                 />
+
+                <!-- Dislikes-->
                 <SelectMembers
                     v-model="currentDislikes"
                     preference="dislikes"

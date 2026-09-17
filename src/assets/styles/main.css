@@ -208,6 +208,15 @@
     @apply border-line text-muted;
   }
 
+  /* Solid blue pill for compact, tappable download links. */
+  .badge {
+    @apply inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs
+      font-medium text-white transition-colors;
+  }
+  .badge:hover {
+    @apply bg-accent/90;
+  }
+
   /* Header: the blur sits on a ::before layer, not on the header itself —
      a backdrop-filter would create a containing block for fixed children
      (the overlay and menu panel), which must anchor to the viewport instead. */
