@@ -1,7 +1,6 @@
 <script setup>
 import { computed } from "vue";
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
 
 import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
@@ -9,18 +8,18 @@ import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+const emit = defineEmits([
+    "sociogram-change-component",
+    "sociogram-restart",
+    "sociogram-edit-member",
+]);
 
 const sociogram = useSociogramStore();
 const { members, membersCount } = storeToRefs(sociogram);
 
-const router = useRouter();
-
-// Jump back to the preferences step for a single member. The target id rides
-// in the URL query so StepSetPreferences can point its carousel at it.
-async function openMember(memberId) {
-    await router.replace({ query: { memberId } });
-    emit("sociogram-change-component", "setPreferences");
+// Ask the parent to open the preferences step for a single member.
+function openMember(memberId) {
+    emit("sociogram-edit-member", memberId);
 }
 
 // Back and restart still work here; "next" is replaced by the report link.

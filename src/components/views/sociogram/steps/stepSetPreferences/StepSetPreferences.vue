@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
 
 import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
@@ -13,22 +12,24 @@ import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
+const props = defineProps({
+    /** Member to point the carousel at when the step opens (set by the summary). */
+    targetMemberId: { type: String, default: null },
+});
+
 const sociogram = useSociogramStore();
 const { members, hasMembers } = storeToRefs(sociogram);
 const { updateMember } = sociogram;
-
-const route = useRoute();
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
 const currentIndex = ref(0);
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 
-// When arriving from the report summary, the target member id travels in the
-// URL query (`?memberId=…`). Point the carousel at it; ids that match no
-// member are ignored, leaving the carousel wherever it was.
+// When arriving from the report summary, `targetMemberId` identifies the member
+// to edit. Point the carousel at it; ids that match no member are ignored.
 watch(
-    () => route.query.memberId,
+    () => props.targetMemberId,
     (memberId) => {
         if (typeof memberId !== "string") return;
         const index = members.value.findIndex((member) => member.id === memberId);
