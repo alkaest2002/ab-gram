@@ -1,6 +1,7 @@
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 import { useSociogramStore } from "@/stores/sociogram";
 import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
@@ -16,10 +17,25 @@ const sociogram = useSociogramStore();
 const { members, hasMembers } = storeToRefs(sociogram);
 const { updateMember } = sociogram;
 
+const route = useRoute();
+
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
 const currentIndex = ref(0);
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
+
+// When arriving from the report summary, the target member id travels in the
+// URL query (`?memberId=…`). Point the carousel at it; ids that match no
+// member are ignored, leaving the carousel wherever it was.
+watch(
+    () => route.query.memberId,
+    (memberId) => {
+        if (typeof memberId !== "string") return;
+        const index = members.value.findIndex((member) => member.id === memberId);
+        if (index !== -1) currentIndex.value = index;
+    },
+    { immediate: true },
+);
 
 // Two-way binding to a field on the current member, falling back to an empty
 // value while there is no member to edit.
