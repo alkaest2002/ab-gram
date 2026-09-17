@@ -34,7 +34,7 @@ import { resolvePageTransition } from "@/router/scroll";
         enter-from-class="opacity-0 motion-safe:translate-y-1"
         leave-active-class="transition duration-200 ease-in motion-reduce:transition-none"
         leave-to-class="opacity-0"
-        @after-enter="resolvePageTransition"
+        @before-enter="resolvePageTransition"
     >
         <slot />
     </Transition>

@@ -8,7 +8,6 @@ import { computed, ref } from "vue";
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
-import PageTransition from "@/components/ui/PageTransition.vue";
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
 import StepImportFromArchive from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchive.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
@@ -83,7 +82,17 @@ function editMember(memberId) {
 <template>
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
-        <PageTransition>
+        <!-- Fade between steps. This is a local state change, not a route
+             navigation, so it deliberately has no `@before-enter` scroll hook and
+             must not touch the router's scroll coordination. -->
+        <Transition
+            appear
+            mode="out-in"
+            enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
+            enter-from-class="opacity-0 motion-safe:translate-y-1"
+            leave-active-class="transition duration-200 ease-in motion-reduce:transition-none"
+            leave-to-class="opacity-0"
+        >
             <div :key="currentComponentName">
                 <keep-alive>
                     <component
@@ -93,6 +102,6 @@ function editMember(memberId) {
                     />
                 </keep-alive>
             </div>
-        </PageTransition>
+        </Transition>
     </div>
 </template>
