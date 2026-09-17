@@ -1,8 +1,17 @@
 <script setup>
+// --- Vue ----------------
 import { computed, ref } from "vue";
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Utilities ----------
 import { getMembersNameIssues } from "@/utils/members";
 
+// --- Props --------------
 const props = defineProps({
   /** The members. */
   members: {
@@ -11,14 +20,39 @@ const props = defineProps({
   },
 });
 
+// --- Emits --------------
 const emit = defineEmits(["update:member", "remove:member"]);
 
+// --- State --------------
 // Inline editing state. The list is a preview: clicking a name makes it
 // editable. Enter commits the change, Esc (or clicking away) cancels it by restoring the previous
 // name.
 const editingId = ref(null);
 const originalName = ref(null);
 
+// --- Computed -----------
+/** Total number of members. */
+const membersCount = computed(() => props.members.length);
+
+/** Empty and duplicated names, derived from the shared member helpers. */
+const nameIssues = computed(() => getMembersNameIssues(props.members));
+const duplicatedNamesCount = computed(() => nameIssues.value.duplicateNamesCount);
+const emptyNamesCount = computed(() => nameIssues.value.emptyNamesCount);
+
+// Issue counts read red when they need attention, muted once they're resolved.
+// Members is the baseline and always reads ink.
+const duplicatedTone = computed(() =>
+  duplicatedNamesCount.value > 0 ? "text-reject" : "text-muted"
+);
+const emptyTone = computed(() =>
+  emptyNamesCount.value > 0 ? "text-reject" : "text-muted"
+);
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 function isEditing(member) {
   return editingId.value === member.id;
 }
@@ -52,23 +86,6 @@ function inputClass(member) {
     ? "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink transition-colors focus:border-accent outline-none"
     : "w-full rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm text-ink transition-colors outline-none";
 }
-
-/** Total number of members. */
-const membersCount = computed(() => props.members.length);
-
-/** Empty and duplicated names, derived from the shared member helpers. */
-const nameIssues = computed(() => getMembersNameIssues(props.members));
-const duplicatedNamesCount = computed(() => nameIssues.value.duplicateNamesCount);
-const emptyNamesCount = computed(() => nameIssues.value.emptyNamesCount);
-
-// Issue counts read red when they need attention, muted once they're resolved.
-// Members is the baseline and always reads ink.
-const duplicatedTone = computed(() =>
-  duplicatedNamesCount.value > 0 ? "text-reject" : "text-muted"
-);
-const emptyTone = computed(() =>
-  emptyNamesCount.value > 0 ? "text-reject" : "text-muted"
-);
 
 function updateMember(memberId, key, value) {
   emit("update:member", { memberId, key, value });

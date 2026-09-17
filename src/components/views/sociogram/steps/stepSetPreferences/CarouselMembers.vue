@@ -1,6 +1,16 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+// --- Utilities ----------
+
+// --- Props --------------
 defineProps({
     /** Member currently shown as the subject. */
     currentMember: { type: Object, default: null },
@@ -14,7 +24,18 @@ defineProps({
     canGoNext: { type: Boolean, default: false },
 });
 
+// --- Emits --------------
 defineEmits(["carousel-previous", "carousel-next"]);
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

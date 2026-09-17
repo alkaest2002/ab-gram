@@ -1,34 +1,34 @@
 <script setup>
+// --- Vue ----------------
 import { computed } from "vue";
+
+// --- Routers ------------
+
+// --- Stores -------------
 import { storeToRefs } from "pinia";
-
 import { useSociogramStore } from "@/stores/sociogram";
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
+// --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+// --- Utilities ----------
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+
+// --- Props --------------
+
+// --- Emits --------------
 const emit = defineEmits([
     "sociogram-change-component",
     "sociogram-restart",
     "sociogram-edit-member",
 ]);
 
+// --- State --------------
 const sociogram = useSociogramStore();
 const { members, membersCount } = storeToRefs(sociogram);
 
-// Ask the parent to open the preferences step for a single member.
-function openMember(memberId) {
-    emit("sociogram-edit-member", memberId);
-}
-
-// Back and restart still work here; "next" is replaced by the report link.
-const { goPrevious, restart } = useSociogramNavigation(
-    "generateReport",
-    false,
-    emit,
-);
-
+// --- Computed -----------
 const membersLabel = computed(() =>
     membersCount.value === 1 ? "membro" : "membri",
 );
@@ -66,6 +66,22 @@ const summary = computed(() =>
     }),
 );
 
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+// Ask the parent to open the preferences step for a single member.
+function openMember(memberId) {
+    emit("sociogram-edit-member", memberId);
+}
+
+// Back and restart still work here; "next" is replaced by the report link.
+const { goPrevious, restart } = useSociogramNavigation(
+    "generateReport",
+    false,
+    emit,
+);
 </script>
 
 <template>

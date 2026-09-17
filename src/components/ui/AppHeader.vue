@@ -1,15 +1,31 @@
 <script setup>
+// --- Vue ----------------
 import { onBeforeUnmount, watch } from "vue";
+
+// --- Routers ------------
 import { RouterLink, useRoute } from "vue-router";
 
+// --- Stores -------------
+
+// --- Components ---------
 import AppLogo from "@/components/ui/AppLogo.vue";
+
+// --- Utilities ----------
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 const route = useRoute();
 const { isOpen, close, toggle } = useDisclosure();
 const { navItems } = useNavItems("header");
 
+// --- Computed -----------
+
+// --- Watchers -----------
 // Navigating closes the collapsed menu.
 watch(() => route.fullPath, close);
 
@@ -18,7 +34,10 @@ watch(isOpen, (open) =>
     document.body.classList.toggle("overflow-hidden", open),
 );
 
+// --- Lifecycle ----------
 onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
+
+// --- Methods ------------
 </script>
 
 <template>

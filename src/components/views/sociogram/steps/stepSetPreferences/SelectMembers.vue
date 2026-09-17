@@ -1,8 +1,17 @@
 <script setup>
+// --- Vue ----------------
 import { computed } from "vue";
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Utilities ----------
 import { useMemberSearch } from "@/composables/useMemberSearch";
 
+// --- Props --------------
 const props = defineProps({
     /**
      * The member ids currently selected in this preference. Bound with
@@ -40,8 +49,12 @@ const props = defineProps({
     excludedIds: { type: Array, default: () => [] },
 });
 
+// --- Emits --------------
 const emit = defineEmits(["update:modelValue"]);
 
+// --- State --------------
+
+// --- Computed -----------
 // v-model: read the ids from `modelValue` and write them back by emitting
 // `update:modelValue`, so the parent stays the single source of truth.
 const selectedIds = computed({
@@ -65,6 +78,11 @@ const selectedCountLabel = computed(() => {
     return count === 1 ? "1 selezionato" : `${count} selezionati`;
 });
 
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 function isChecked(member) {
     return selected.value.has(member.id);
 }
@@ -82,13 +100,6 @@ function toggle(member) {
         : [...current, member.id];
 }
 
-/**
- * Enter flips every visible (filtered) member's checkbox: checked ones are
- * unchecked and unchecked ones are checked. Members locked by the opposite
- * preference are skipped, so the like/dislike constraint can't be bypassed
- * from the keyboard. On a successful toggle the search is cleared so the full
- * list — and its checked/unchecked state — is visible again.
- */
 function handleEnter() {
     const targets = filteredMembers.value.filter(
         (member) => !isDisabled(member),

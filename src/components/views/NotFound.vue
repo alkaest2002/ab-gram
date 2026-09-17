@@ -1,5 +1,28 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+
+// --- Utilities ----------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

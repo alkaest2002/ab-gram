@@ -1,12 +1,19 @@
 <script setup>
+// --- Vue ----------------
 import { ref } from "vue";
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+import BaseButton from "@/components/ui/BaseButton.vue";
+
+// --- Utilities ----------
 import { useTextReader } from "@/composables/useTextReader";
 import { buildMembers, normalizeNames } from "@/utils/members";
 
-import BaseButton from "@/components/ui/BaseButton.vue";
-
-
+// --- Props --------------
 const props = defineProps({
   /** Maximum rows read from the file (see `useTextReader`). */
   maxRows: { type: Number, default: 35 },
@@ -17,6 +24,9 @@ const props = defineProps({
 // v-model: the clean member-name list owned by the parent view.
 const model = defineModel({ type: Array, default: () => [] });
 
+// --- Emits --------------
+
+// --- State --------------
 const fileInput = ref(null);
 const fileName = ref("");
 
@@ -26,6 +36,13 @@ const { rows, error, isReading, read } = useTextReader(
   props.maxRowLength,
 );
 
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 function pick() {
   fileInput.value?.click();
 }

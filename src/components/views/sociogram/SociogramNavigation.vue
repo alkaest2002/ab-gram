@@ -1,6 +1,16 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+// --- Utilities ----------
+
+// --- Props --------------
 defineProps({
     showPrevious: { type: Boolean, default: false },
     showNext: { type: Boolean, default: false },
@@ -10,11 +20,22 @@ defineProps({
     enableNext: { type: Boolean, default: false },
 });
 
+// --- Emits --------------
 defineEmits([
     "sociogram-step-previous",
     "sociogram-step-next",
     "sociogram-step-restart",
 ]);
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

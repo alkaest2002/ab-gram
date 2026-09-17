@@ -1,9 +1,22 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
 import { RouterLink } from "vue-router";
 
+// --- Stores -------------
+
+// --- Components ---------
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+// --- Utilities ----------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 /**
  * The five readings are the vocabulary of the graph above: each entry reuses the
  * same mark that appears in the sociogram, so the legend isn't decoration
@@ -48,6 +61,14 @@ const readings = [
         text: "Chi esprime preferenze senza riceverne. Iris, Luca e Marta, nel grafico qui sopra.",
     },
 ];
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

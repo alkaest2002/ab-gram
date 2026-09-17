@@ -1,6 +1,20 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
 import AppLogo from "@/components/ui/AppLogo.vue";
 
+// --- Utilities ----------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 // Hand-drawn SVG paths: no icon dependency, no files to load.
 const links = [
     {
@@ -19,6 +33,14 @@ const links = [
         ],
     },
 ];
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

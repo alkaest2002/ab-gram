@@ -1,14 +1,27 @@
 <script setup>
+// --- Vue ----------------
 import { computed, ref } from "vue";
-import { useSociogramStore } from "@/stores/sociogram";
-import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
 
+// --- Routers ------------
+
+// --- Stores -------------
+import { useSociogramStore } from "@/stores/sociogram";
+
+// --- Components ---------
 import PageTransition from "@/components/ui/PageTransition.vue";
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
 
+// --- Utilities ----------
+import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 const sociogramStore = useSociogramStore();
 
 const stateComponents ={
@@ -25,6 +38,19 @@ const currentComponentName = ref(SOCIOGRAM_STEPS[0]);
 // other step navigation so a stale target can't re-apply later.
 const memberIdToEdit = ref(null);
 
+// --- Computed -----------
+// Pass the target id only to the preferences step; the other steps ignore it.
+const stepProps = computed(() =>
+  currentComponentName.value === "setPreferences"
+    ? { targetMemberId: memberIdToEdit.value }
+    : {},
+);
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 function changeComponent(componentName) {
   memberIdToEdit.value = null;
   currentComponentName.value = componentName;
@@ -34,13 +60,6 @@ function editMember(memberId) {
   memberIdToEdit.value = memberId;
   currentComponentName.value = "setPreferences";
 }
-
-// Pass the target id only to the preferences step; the other steps ignore it.
-const stepProps = computed(() =>
-  currentComponentName.value === "setPreferences"
-    ? { targetMemberId: memberIdToEdit.value }
-    : {},
-);
 </script>
 
 <template>

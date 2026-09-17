@@ -1,7 +1,17 @@
 <script setup>
+// --- Vue ----------------
 import { computed } from "vue";
+
+// --- Routers ------------
 import { RouterLink } from "vue-router";
 
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Utilities ----------
+
+// --- Props --------------
 const props = defineProps({
     /** If present, the button becomes a route link. */
     to: { type: [String, Object], default: null },
@@ -12,6 +22,9 @@ const props = defineProps({
     },
 });
 
+// --- Emits --------------
+
+// --- State --------------
 // Classes written out in full: Tailwind doesn't see ones built by interpolation.
 const variantClasses = {
     solid: "btn-solid",
@@ -19,7 +32,14 @@ const variantClasses = {
     red: "btn-red",
 };
 
+// --- Computed -----------
 const classes = computed(() => ["btn", variantClasses[props.variant]]);
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

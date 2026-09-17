@@ -1,5 +1,28 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
 import { resolvePageTransition } from "@/router/scroll";
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Utilities ----------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

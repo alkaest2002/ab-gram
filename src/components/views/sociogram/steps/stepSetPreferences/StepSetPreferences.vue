@@ -1,21 +1,31 @@
 <script setup>
+// --- Vue ----------------
 import { computed, ref, watch, onActivated } from "vue";
+
+// --- Routers ------------
+
+// --- Stores -------------
 import { storeToRefs } from "pinia";
-
 import { useSociogramStore } from "@/stores/sociogram";
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
+// --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/CarouselMembers.vue";
 import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
 
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+// --- Utilities ----------
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
+// --- Props --------------
 const props = defineProps({
     targetMemberId: { type: String, default: null },
 });
 
+// --- Emits --------------
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+
+// --- State --------------
 const sociogram = useSociogramStore();
 const { members, hasMembers } = storeToRefs(sociogram);
 const { updateMember } = sociogram;
@@ -23,20 +33,46 @@ const { updateMember } = sociogram;
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
 const currentIndex = ref(0);
+
+// --- Computed -----------
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 
+const currentLikes = writableMemberField("likes", []);
+const currentDislikes = writableMemberField("dislikes", []);
+const currentNoLikes = writableMemberField("noLikes", false);
+const currentNoDislikes = writableMemberField("noDislikes", false);
+
+const isComplete = computed(() => isMemberComplete(currentMember.value));
+
+const canGoNext = computed(
+    () => hasMembers.value && members.value.every(isMemberComplete),
+);
+
+const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
+
+const carouselCanGoNextMember = computed(
+    () => isComplete.value && currentIndex.value < members.value.length - 1,
+);
+
+// --- Watchers -----------
 // When arriving from the report summary, `targetMemberId` identifies the member
 // to edit. Point the carousel at it; ids that match no member are ignored.
 watch(
     () => props.targetMemberId,
     (memberId) => {
         if (typeof memberId !== "string") return;
-        const index = members.value.findIndex((member) => member.id === memberId);
+        const index = members.value.findIndex(
+            (member) => member.id === memberId,
+        );
         if (index !== -1) currentIndex.value = index;
     },
     { immediate: true },
 );
 
+// --- Lifecycle ----------
+onActivated(() => window.scrollTo(0, 0));
+
+// --- Methods ------------
 // Two-way binding to a field on the current member, falling back to an empty
 // value while there is no member to edit.
 function writableMemberField(field, fallback) {
@@ -52,11 +88,6 @@ function writableMemberField(field, fallback) {
     });
 }
 
-const currentLikes = writableMemberField("likes", []);
-const currentDislikes = writableMemberField("dislikes", []);
-const currentNoLikes = writableMemberField("noLikes", false);
-const currentNoDislikes = writableMemberField("noDislikes", false);
-
 // A member's answer is complete once both categories are resolved: either by
 // selecting at least one entry or by declaring "no answer" for that category.
 function isMemberComplete(member) {
@@ -68,18 +99,6 @@ function isMemberComplete(member) {
 
     return hasLikes && hasDislikes;
 }
-
-const isComplete = computed(() => isMemberComplete(currentMember.value));
-
-const canGoNext = computed(
-    () => hasMembers.value && members.value.every(isMemberComplete),
-);
-
-const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
-
-const carouselCanGoNextMember = computed(
-    () => isComplete.value && currentIndex.value < members.value.length - 1,
-);
 
 function carouselGoPreviousMember() {
     if (carouselCanGoPreviousMember.value) {
@@ -98,12 +117,6 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
     canGoNext,
     emit,
 );
-
-onActivated(() => {
-    // scroll to top
-    window.scrollTo(0, 0);
-});
-
 </script>
 
 <template>

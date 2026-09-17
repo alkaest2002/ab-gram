@@ -1,5 +1,28 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
 import { RouterLink } from "vue-router";
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Utilities ----------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

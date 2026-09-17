@@ -1,14 +1,24 @@
 <script setup>
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+// --- Vue ----------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
+// --- Utilities ----------
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+
+// --- Props --------------
+
+// --- Emits --------------
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
-const { goNext, goPrevious, restart } = useSociogramNavigation("start", true, emit);
-
+// --- State --------------
 /**
  * The three wizard steps, in order: the start screen is the one place where the
  * whole path is laid out before the user commits to it.
@@ -27,6 +37,15 @@ const steps = [
         text: "Il grafo e gli indici sociometrici della tua rete.",
     },
 ];
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+const { goNext, goPrevious, restart } = useSociogramNavigation("start", true, emit);
 
 // Zero-padded mono index: 01, 02, 03.
 const stepNumber = (index) => String(index + 1).padStart(2, "0");

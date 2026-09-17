@@ -1,18 +1,29 @@
 <script setup>
+// --- Vue ----------------
 import { computed } from "vue";
+
+// --- Routers ------------
+
+// --- Stores -------------
 import { storeToRefs } from "pinia";
-
 import { useSociogramStore } from "@/stores/sociogram";
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
-import { getMembersNameIssues } from "@/utils/members";
 
+// --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
 
+// --- Utilities ----------
+import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+import { getMembersNameIssues } from "@/utils/members";
+
+// --- Props --------------
+
+// --- Emits --------------
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
+// --- State --------------
 // Get the sociogram store and its state.
 const sociogram = useSociogramStore();
 const {
@@ -23,6 +34,7 @@ const {
     members,
 } = storeToRefs(sociogram);
 
+// --- Computed -----------
 // Computed values.
 const membersCountLabel = computed(() =>
     membersCount.value === 1
@@ -46,13 +58,16 @@ const canGoNext = computed(
         nameIssues.value.duplicateNamesCount === 0,
 );
 
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 const { goNext, goPrevious, restart } = useSociogramNavigation(
     "loadMembers",
     canGoNext,
     emit,
 );
-
-
 </script>
 
 <template>
