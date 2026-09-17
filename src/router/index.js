@@ -33,8 +33,8 @@ export const routes = [
     component: () => import("@/components/views/Report.vue"),
     meta: {
       title: "Report",
-      inMenu: true,
-      typeOfMenu: ["header"],
+      inMenu: false,
+      typeOfMenu: null,
       layout: "EmptyLayout",
     },
   },
