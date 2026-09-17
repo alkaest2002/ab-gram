@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, onActivated } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useSociogramStore } from "@/stores/sociogram";
@@ -13,7 +13,6 @@ import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 const props = defineProps({
-    /** Member to point the carousel at when the step opens (set by the summary). */
     targetMemberId: { type: String, default: null },
 });
 
@@ -99,6 +98,12 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
     canGoNext,
     emit,
 );
+
+onActivated(() => {
+    // scroll to top
+    window.scrollTo(0, 0);
+});
+
 </script>
 
 <template>
