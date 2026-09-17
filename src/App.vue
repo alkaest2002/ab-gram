@@ -4,11 +4,11 @@ import { useRoute, RouterView } from "vue-router";
 
 import PageTransition from "@/components/ui/PageTransition.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
-import NotFoundLayout from "@/components/layouts/NotFoundLayout.vue";
+import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 
 const layouts = {
     DefaultLayout,
-    NotFoundLayout,
+    EmptyLayout,
 };
 
 const route = useRoute();
