@@ -10,7 +10,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import PageTransition from "@/components/ui/PageTransition.vue";
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
-import StepImportMembers from "@/components/views/sociogram/steps/stepImportMembers/StepImportMembers.vue";
+import StepImportFromArchive from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchive.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
@@ -27,7 +27,7 @@ const sociogramStore = useSociogramStore();
 
 const stateComponents = {
     start: StepStart,
-    importMembers: StepImportMembers,
+    importFromArchive: StepImportFromArchive,
     loadMembers: StepLoadMembers,
     setPreferences: StepSetPreferences,
     generateReport: StepGenerateReport,

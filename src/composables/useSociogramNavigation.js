@@ -4,7 +4,7 @@
  */
 export const SOCIOGRAM_STEPS = [
   "start",
-  "importMembers",
+  "importFromArchive",
   "loadMembers",
   "setPreferences",
   "generateReport",

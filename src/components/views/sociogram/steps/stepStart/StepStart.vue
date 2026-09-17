@@ -43,15 +43,6 @@ const { goToStep } = useSociogramNavigation(emit);
                 numerica.
             </StepHeader>
 
-            <aside class="rounded-lg border border-line p-4">
-                <p class="eyebrow">Analisi locale</p>
-                <p class="mt-2 text-sm">
-                    Non raccogliamo i dati: li inserisci tu, restano sul
-                    dispositivo e il calcolo avviene nel browser. Ideale per
-                    ricerche, classi e indagini organizzative, dove la privacy
-                    dei partecipanti è fondamentale.
-                </p>
-            </aside>
         </section>
 
         <section class="card space-y-4">
@@ -77,7 +68,7 @@ const { goToStep } = useSociogramNavigation(emit);
                     dove lo avevi lasciato.
                 </p>
             </div>
-            <BaseButton variant="outline" @click="goToStep('importMembers')">
+            <BaseButton variant="outline" @click="goToStep('importFromArchive')">
                 Importa progetto
             </BaseButton>
         </section>
