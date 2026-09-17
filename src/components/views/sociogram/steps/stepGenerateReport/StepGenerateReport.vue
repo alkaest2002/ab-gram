@@ -112,11 +112,11 @@ const { goPrevious, restart } = useSociogramNavigation(
         <section class="space-y-4">
             <p class="eyebrow">1 · Scelte e rifiuti</p>
 
-            <ul class="grid gap-x-8 gap-y-7 md:grid-cols-2">
+            <ul class="grid gap-x-8 gap-y-5 md:grid-cols-2">
                 <li
                     v-for="member in summary"
                     :key="member.id"
-                    class="space-y-3 card cursor-pointer transition-colors hover:border-accent"
+                    class="card p-4 cursor-pointer transition-colors hover:border-accent"
                     role="button"
                     tabindex="0"
                     :aria-label="`Modifica le preferenze di ${member.name}`"
@@ -124,86 +124,98 @@ const { goPrevious, restart } = useSociogramNavigation(
                     @keydown.enter.prevent="openMember(member.id)"
                     @keydown.space.prevent="openMember(member.id)"
                 >
-                    <div class="flex items-center gap-2.5">
+                    <div class="flex items-center gap-3">
                         <svg
                             viewBox="0 0 32 32"
-                            class="size-8"
+                            class="size-9 shrink-0"
                             aria-hidden="true"
                         >
                             <circle
                                 cx="16"
                                 cy="16"
                                 r="14.3"
-                                class="node-circle"
+                                class="fill-canvas stroke-ink"
+                                stroke-width="1.4"
                             />
                             <text
                                 x="16"
                                 y="16"
                                 dy="0.34em"
                                 text-anchor="middle"
-                                class="node-initial"
+                                class="fill-ink font-mono text-[13px] font-medium"
                             >
                                 {{ member.id }}
                             </text>
                         </svg>
-                        <p class="font-semibold text-ink">{{ member.name }}</p>
+                        <p class="min-w-0 font-display text-base font-bold leading-snug tracking-[-0.01em] text-ink">
+                            {{ member.name }}
+                        </p>
                     </div>
 
-                    <div class="member-fields space-y-2.5">
-                        <div class="space-y-1">
-                            <span class="eyebrow flex items-center gap-1.5">
-                                <svg
-                                    viewBox="0 0 22 6"
-                                    class="mark"
-                                    aria-hidden="true"
-                                >
-                                    <line
-                                        x1="1"
-                                        y1="3"
-                                        x2="21"
-                                        y2="3"
-                                        class="mark-line mark-choice"
-                                    />
-                                </svg>
-                                <span v-if="member.likes.length == 1" class="eyebrow">{{ member.likes.length }} Scelta</span>
-                                <span v-else class="eyebrow">{{ member.likes.length }} Scelte</span>
-                            </span>
+                    <div class="space-y-3 pl-12">
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="eyebrow flex items-center gap-1.5">
+                                    <svg
+                                        viewBox="0 0 22 6"
+                                        class="h-1.5 w-5.5 shrink-0"
+                                        aria-hidden="true"
+                                    >
+                                        <line
+                                            x1="1"
+                                            y1="3"
+                                            x2="21"
+                                            y2="3"
+                                            stroke-width="2.5"
+                                            stroke-linecap="round"
+                                            class="stroke-accent"
+                                        />
+                                    </svg>
+                                    <span>{{ member.likes.length == 1 ? "Scelta" : "Scelte" }}</span>
+                                </span>
+                                <span class="font-mono text-sm font-medium leading-none tabular-nums text-accent">{{ member.likes.length }}</span>
+                            </div>
                             <p
                                 v-if="member.likes.length"
-                                class="text-sm font-medium leading-relaxed text-accent"
+                                class="font-mono text-[13px] font-medium leading-[1.45] text-accent"
                             >
                                 {{ member.likesText }}
                             </p>
-                            <p v-else class="text-sm leading-relaxed text-muted">
+                            <p v-else class="text-[13px] leading-[1.45] text-muted">
                                 Nessuna scelta
                             </p>
                         </div>
 
-                        <div class="space-y-1">
-                            <span class="eyebrow flex items-center gap-1.5">
-                                <svg
-                                    viewBox="0 0 22 6"
-                                    class="mark"
-                                    aria-hidden="true"
-                                >
-                                    <line
-                                        x1="1"
-                                        y1="3"
-                                        x2="21"
-                                        y2="3"
-                                        class="mark-line mark-reject"
-                                    />
-                                </svg>
-                                <span v-if="member.dislikes.length == 1" class="eyebrow">{{ member.dislikes.length }} Rifiuto</span>
-                                <span v-else class="eyebrow">{{ member.dislikes.length }} Rifiuti</span>
-                            </span>
+                        <div class="space-y-1.5">
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="eyebrow flex items-center gap-1.5">
+                                    <svg
+                                        viewBox="0 0 22 6"
+                                        class="h-1.5 w-5.5 shrink-0"
+                                        aria-hidden="true"
+                                    >
+                                        <line
+                                            x1="1"
+                                            y1="3"
+                                            x2="21"
+                                            y2="3"
+                                            stroke-width="2.5"
+                                            stroke-linecap="round"
+                                            stroke-dasharray="5 5"
+                                            class="stroke-reject"
+                                        />
+                                    </svg>
+                                    <span>{{ member.dislikes.length == 1 ? "Rifiuto" : "Rifiuti" }}</span>
+                                </span>
+                                <span class="font-mono text-sm font-medium leading-none tabular-nums text-reject">{{ member.dislikes.length }}</span>
+                            </div>
                             <p
                                 v-if="member.dislikes.length"
-                                class="text-sm font-medium leading-relaxed text-reject"
+                                class="font-mono text-[13px] font-medium leading-[1.45] text-reject"
                             >
                                 {{ member.dislikesText }}
                             </p>
-                            <p v-else class="text-sm leading-relaxed text-muted">
+                            <p v-else class="text-[13px] leading-[1.45] text-muted">
                                 Nessun rifiuto
                             </p>
                         </div>
@@ -242,54 +254,4 @@ const { goPrevious, restart } = useSociogramNavigation(
     </div>
 </template>
 
-<style scoped>
-/* A person, drawn as in the sociogram: white node, ink ring, mono initial. */
-.node-circle {
-    fill: #fff;
-    stroke: var(--color-ink);
-    stroke-width: 1.4;
-}
 
-.node-initial {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 500;
-    fill: var(--color-ink);
-}
-
-/* The numbers up top: readings, so they're set in mono like the rest of the data. */
-.stat-value {
-    font-family: var(--font-mono);
-    font-size: 1.75rem;
-    line-height: 1;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-}
-
-/* Choice vs rejection, as edge swatches: solid blue vs dashed red. */
-.mark {
-    width: 1.375rem;
-    height: 0.375rem;
-    flex: none;
-}
-
-.mark-line {
-    fill: none;
-    stroke-width: 2.5;
-    stroke-linecap: round;
-}
-
-.mark-choice {
-    stroke: var(--color-accent);
-}
-
-.mark-reject {
-    stroke: var(--color-reject);
-    stroke-dasharray: 5 5;
-}
-
-/* Align each member's data under their name, past the node (size-8 + gap-2.5). */
-.member-fields {
-    padding-left: 2.625rem;
-}
-</style>
