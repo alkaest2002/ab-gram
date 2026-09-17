@@ -3,8 +3,6 @@ import { computed, ref } from "vue";
 
 import { getMembersNameIssues } from "@/utils/members";
 
-import BaseButton from "@/components/ui/BaseButton.vue";
-
 const props = defineProps({
   /** The members. */
   members: {
@@ -15,20 +13,45 @@ const props = defineProps({
 
 const emit = defineEmits(["update:member", "remove:member"]);
 
-// Starts read-only: the list is a preview of what was loaded. The button below
-// switches to editing, where each name becomes an input and can be removed.
-const isEditing = ref(false);
+// Inline editing state. The list is a preview: clicking a name makes it
+// editable. Enter commits the change, Esc (or clicking away) cancels it by restoring the previous
+// name.
+const editingId = ref(null);
+const originalName = ref(null);
 
-function toggleEditing() {
-  isEditing.value = !isEditing.value;
+function isEditing(member) {
+  return editingId.value === member.id;
+}
+
+function startEditing(member) {
+  if (isEditing(member)) return;
+  editingId.value = member.id;
+  originalName.value = member.name;
+}
+
+function commitEditing() {
+  editingId.value = null;
+  originalName.value = null;
+}
+
+function cancelEditing() {
+  if (editingId.value !== null) {
+    emit("update:member", {
+      memberId: editingId.value,
+      key: "name",
+      value: originalName.value,
+    });
+  }
+  editingId.value = null;
+  originalName.value = null;
 }
 
 // Full class strings (not interpolated) so Tailwind can see every utility.
-const inputClass = computed(() =>
-  isEditing.value
+function inputClass(member) {
+  return isEditing(member)
     ? "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink transition-colors focus:border-accent outline-none"
-    : "w-full rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm text-ink transition-colors outline-none"
-);
+    : "w-full rounded-lg border border-transparent bg-transparent px-3 py-2 text-sm text-ink transition-colors outline-none";
+}
 
 /** Total number of members. */
 const membersCount = computed(() => props.members.length);
@@ -52,30 +75,24 @@ function updateMember(memberId, key, value) {
 }
 
 function removeMember(memberId) {
+  if (editingId.value === memberId) {
+    commitEditing();
+  }
   emit("remove:member", memberId);
 }
 </script>
 
 <template>
   <div class="space-y-6">
-    <div
-      v-if="members.length > 0"
-      class="flex flex-wrap items-center justify-between gap-3"
-    >
-      <div>
-        <p class="eyebrow">Elenco membri</p>
-        <p class="mt-1 text-sm text-muted">
-          {{
-            isEditing
-              ? "Modifica o rimuovi i nomi prima di proseguire."
-              : "Anteprima dell'elenco caricato."
-          }}
-        </p>
-      </div>
-
-      <BaseButton variant="outline" @click="toggleEditing">
-        {{ isEditing ? "Fine modifica" : "Modifica nomi" }}
-      </BaseButton>
+    <div v-if="members.length > 0">
+      <p class="eyebrow">Elenco membri</p>
+      <p class="mt-1 text-sm text-muted">
+        {{
+          editingId !== null
+            ? "Premi Invio per confermare, Esc per annullare."
+            : "Clicca su un nome per modificarlo."
+        }}
+      </p>
     </div>
 
     <dl
@@ -159,8 +176,7 @@ function removeMember(memberId) {
       <li
         v-for="member in members"
         :key="member.id"
-        class="flex items-center gap-3 rounded-lg px-2 py-1 transition-colors"
-        :class="isEditing ? 'hover:bg-ink/5' : ''"
+        class="flex items-center gap-3 rounded-lg px-2 py-1 transition-colors hover:bg-ink/5"
       >
         <span
           class="w-6 shrink-0 text-right font-mono text-xs text-muted"
@@ -171,14 +187,17 @@ function removeMember(memberId) {
 
         <input
           :value="member.name"
-          :readonly="!isEditing"
-          :class="inputClass"
+          :readonly="!isEditing(member)"
+          :class="[inputClass(member), isEditing(member) ? 'cursor-text' : 'cursor-pointer']"
           :aria-label="`Nome del membro ${member.id}`"
           @input="updateMember(member.id, 'name', $event.target.value)"
+          @click="startEditing(member)"
+          @keydown.enter.prevent="commitEditing"
+          @keydown.esc.prevent="cancelEditing"
+          @blur="commitEditing"
         />
 
         <button
-          v-if="isEditing"
           type="button"
           class="shrink-0 rounded-md p-2 text-muted transition-colors hover:bg-reject/10 hover:text-reject"
           :aria-label="`Elimina il membro ${member.name?.trim() || member.id}`"
