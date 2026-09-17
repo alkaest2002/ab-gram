@@ -210,6 +210,13 @@ export function useMemberSearch(members) {
         // OPTIMIZED: Single-pass scoring, filtering, and sorting
         const scored = normalizedCache.value
             .reduce((results, entry) => {
+                // Initial check: exclude names that do not contain every query
+                // character before running the scoring mechanism.
+                if (!hasAllCharacters(normalizedTerm, entry.charSet)) {
+                    return results;
+                }
+
+                // Score the name against the normalized term
                 const primaryScore = scoreNormalizedName(
                     entry.normalized,
                     normalizedTerm,

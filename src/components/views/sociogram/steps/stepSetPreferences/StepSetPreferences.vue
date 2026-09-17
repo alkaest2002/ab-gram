@@ -7,8 +7,8 @@ import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
 
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import MemberCarousel from "@/components/views/sociogram/steps/stepSetPreferences/MemberCarousel.vue";
-import SelectPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SelectPreferences.vue";
+import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/CarouselMembers.vue";
+import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
 
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
@@ -93,7 +93,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                 <p class="eyebrow">CAROSELLO</p>
             </div>
 
-            <MemberCarousel
+            <CarouselMembers
                 :current-member="currentMember"
                 :current-index="currentIndex"
                 :total="members.length"
@@ -106,7 +106,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 
             <!-- The subject's likes and dislikes. -->
             <div class="grid gap-6 md:grid-cols-2">
-                <SelectPreferences
+                <SelectMembers
                     v-model="currentLikes"
                     preference="likes"
                     label="Preferenze"
@@ -114,7 +114,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                     :excluded-ids="currentDislikes"
                     :self-id="currentMember?.id"
                 />
-                <SelectPreferences
+                <SelectMembers
                     v-model="currentDislikes"
                     preference="dislikes"
                     label="Rifiuti"
