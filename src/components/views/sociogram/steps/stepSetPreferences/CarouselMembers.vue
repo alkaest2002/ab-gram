@@ -14,7 +14,7 @@ defineProps({
     canGoNext: { type: Boolean, default: false },
 });
 
-defineEmits(["previous", "next"]);
+defineEmits(["carousel-previous", "carousel-next"]);
 </script>
 
 <template>
@@ -23,7 +23,7 @@ defineEmits(["previous", "next"]);
             variant="outline"
             :disabled="!canGoPrevious"
             aria-label="Membro precedente"
-            @click="$emit('previous')"
+            @click="$emit('carousel-previous')"
         >
             &#8249;
         </BaseButton>
@@ -39,7 +39,7 @@ defineEmits(["previous", "next"]);
             variant="outline"
             :disabled="!canGoNext"
             aria-label="Membro successivo"
-            @click="$emit('next')"
+            @click="$emit('carousel-next')"
         >
             &#8250;
         </BaseButton>
