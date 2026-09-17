@@ -11,7 +11,7 @@
  * the caller.
  */
 
-export function useSociogramImportArchive() {
+export function useSociogramArchiveValidation() {
   /**
    * Validate a decoded, parsed snapshot.
    *

@@ -30,7 +30,6 @@ const {
     maxMemberNameLength,
     maxMembersCount,
     hasMembers,
-    membersCount,
     members,
 } = storeToRefs(sociogram);
 

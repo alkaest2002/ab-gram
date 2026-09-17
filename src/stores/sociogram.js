@@ -7,8 +7,8 @@ import { defineStore } from "pinia";
  * @typedef {object} Member
  * @property {string} id - Unique member id.
  * @property {string} name - Display name.
- * @property {string[]} likes - Ids of the members this member prefers.
- * @property {string[]} dislikes - Ids of the members this member rejects.
+ * @property {string[]} likes - Ids of the members this member prefers (each Id = single character A,B,C,...Z,0,1,2,3,..9).
+ * @property {string[]} dislikes - Ids of the members this member rejects (each Id = single character A,B,C,...Z,0,1,2,3,..9).
  * @property {boolean} noLikes - Whether the member declared no likes.
  * @property {boolean} noDislikes - Whether the member declared no dislikes.
  */
