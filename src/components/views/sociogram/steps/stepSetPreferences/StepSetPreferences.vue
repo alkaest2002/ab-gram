@@ -77,8 +77,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
 
 <template>
     <section class="card space-y-3">
-        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze/rifiuti">
-            Scegli il membro con il carosello, indica le sue preferenze e i suoi rifiuti.
+        <StepHeader eyebrow="Passaggio 2 di 3" title="Imposta le preferenze e rifiuti">
+            Scegli la persona con i comandi del carosello, indica le sue preferenze e i suoi rifiuti.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -111,7 +111,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                 <SelectMembers
                     v-model="currentLikes"
                     preference="likes"
-                    label="Preferenze"
+                    label="Scelte"
                     :members="members"
                     :excluded-ids="currentDislikes"
                     :self-id="currentMember?.id"
@@ -135,7 +135,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation("setPreferences",
                     <p class="text-xs text-muted mb-3">
                         Se
                         <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso preferenze, seleziona la voce
+                        non ha espresso scelte, seleziona la voce
                         corrispondente per sbloccare i pulsanti del carosello.
                     </p>
                     <label class="flex items-start gap-3">

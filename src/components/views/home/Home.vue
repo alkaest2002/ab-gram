@@ -115,7 +115,7 @@ const readings = [
         <section class="band">
             <div class="space-y-2.5">
                 <p class="flow">
-                    <span>Membri</span>
+                    <span>Persone</span>
                     <span class="flow-sep" aria-hidden="true">→</span>
                     <span>Preferenze</span>
                     <span class="flow-sep" aria-hidden="true">→</span>

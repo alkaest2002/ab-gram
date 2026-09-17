@@ -85,7 +85,7 @@ function removeMember(memberId) {
 <template>
   <div class="space-y-6">
     <div v-if="members.length > 0">
-      <p class="eyebrow">Elenco membri</p>
+      <p class="eyebrow">Elenco dei nomi</p>
       <p class="mt-1 text-sm text-muted">
         {{
           editingId !== null
@@ -99,9 +99,9 @@ function removeMember(memberId) {
       v-if="members.length > 0"
       class="grid grid-cols-1 divide-y divide-line rounded-lg border border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
     >
-      <!-- Membri: a filled dot, the baseline reading of the group's size. -->
+      <!-- Persone: a filled dot, the baseline reading of the group's size. -->
       <div class="flex flex-col px-5 py-4">
-        <dt class="eyebrow order-2 mt-2">Membri</dt>
+        <dt class="eyebrow order-2 mt-2">Persone</dt>
         <dd class="order-1 flex items-center gap-2.5 text-ink">
           <span
             class="grid size-9 shrink-0 place-items-center rounded-lg border border-line text-ink"

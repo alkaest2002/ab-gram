@@ -58,8 +58,8 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
 <template>
     <section class="card space-y-6">
 
-        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica i membri">
-            Carica un file di testo con un nome per riga, puoi &mdash; se
+        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nomi">
+            Il file di testo deve contenere un nome per riga, puoi &mdash; se
             necessario &mdash; modificare l'elenco prima di proseguire.
             Ogni nome &egrave; limitato a
             {{ sociogram.maxMemberNameLength }} caratteri;
@@ -99,7 +99,7 @@ const { goNext, goPrevious, restart } = useSociogramNavigation(
 
             <a
                 :href="membersFileHref"
-                download="membri.txt"
+                download="elenco_nomi.txt"
                 class="badge mt-3 mb-3 font-xs px-3"
             >
                 elenco (.txt)

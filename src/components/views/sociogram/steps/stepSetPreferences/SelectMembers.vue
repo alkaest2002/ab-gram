@@ -126,7 +126,7 @@ function handleEnter() {
         />
 
         <p v-if="!hasMembers" class="text-sm text-muted">
-            Nessun membro caricato.
+            Nessuna persona caricata.
         </p>
 
         <ul
@@ -161,11 +161,11 @@ function handleEnter() {
         </ul>
 
         <p v-else-if="!hasSelectableMembers" class="text-sm text-muted">
-            Nessun altro membro da selezionare.
+            Nessun altro membro del gruppo da selezionare.
         </p>
 
         <p v-else class="text-sm text-muted">
-            Nessun membro corrisponde alla ricerca.
+            Nessun membro del gruppo corrisponde alla ricerca.
         </p>
     </div>
 </template>
