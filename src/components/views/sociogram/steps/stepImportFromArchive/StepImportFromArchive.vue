@@ -135,17 +135,92 @@ async function onFileChange(event) {
                 </BaseButton>
             </div>
 
-            <p v-if="fileName" class="text-sm text-muted">
-                File selezionato: {{ fileName }}
-            </p>
+            <div
+                v-if="fileName"
+                class="inline-flex max-w-full items-center gap-2 rounded-md border border-line px-2.5 py-1.5"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    class="size-4 shrink-0 fill-none stroke-current stroke-[1.75] text-muted"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M7 3.5h7l4 4v13H7z"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                    <path
+                        d="M14 3.5V8h4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+                <span class="truncate font-mono text-xs font-medium text-ink">
+                    {{ fileName }}
+                </span>
+            </div>
 
-            <p v-if="hasImported" class="text-sm text-accent" role="status">
-                {{ importedSummary }}.
-            </p>
+            <div
+                v-if="hasImported"
+                class="flex items-start gap-3 rounded-lg border border-line p-3"
+                role="status"
+            >
+                <span
+                    class="grid size-8 shrink-0 place-items-center rounded-md border border-line text-accent"
+                    aria-hidden="true"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        class="size-4 fill-none stroke-current stroke-[1.75]"
+                    >
+                        <path
+                            d="M5 12.5l4.5 4.5L19 7.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </span>
+                <div class="min-w-0 pt-0.5">
+                    <p class="text-sm font-medium text-ink">Caricamento riuscito</p>
+                    <p class="text-sm text-muted">{{ importedSummary }}.</p>
+                </div>
+            </div>
 
-            <p v-if="importError" class="text-sm text-reject" role="alert">
-                {{ importError }}
-            </p>
+            <div
+                v-if="importError"
+                class="flex items-start gap-3 rounded-lg border border-line p-3"
+                role="alert"
+            >
+                <span
+                    class="grid size-8 shrink-0 place-items-center rounded-md border border-line text-reject"
+                    aria-hidden="true"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        class="size-4 fill-none stroke-current stroke-[1.75]"
+                    >
+                        <circle cx="12" cy="12" r="9" />
+                        <line
+                            x1="12"
+                            y1="8"
+                            x2="12"
+                            y2="13"
+                            stroke-linecap="round"
+                        />
+                        <circle
+                            cx="12"
+                            cy="16"
+                            r="0.5"
+                            fill="currentColor"
+                            stroke="none"
+                        />
+                    </svg>
+                </span>
+                <div class="min-w-0 pt-0.5">
+                    <p class="text-sm font-medium text-ink">Caricamento non riuscito</p>
+                    <p class="text-sm text-muted">{{ importError }}</p>
+                </div>
+            </div>
         </div>
 
     </section>
