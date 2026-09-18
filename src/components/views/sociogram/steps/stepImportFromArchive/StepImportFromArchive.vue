@@ -22,7 +22,7 @@ import { useSociogramValidateData } from "@/composables/sociogram/useSociogramVa
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // --- State --------------
-const sociogram = useSociogramStore();
+const sociogramStore = useSociogramStore();
 
 const fileInput = ref(null);
 const fileName = ref("");
@@ -82,10 +82,10 @@ async function onFileChange(event) {
 
         // Replace the store state with the validated snapshot: reset first, then
         // copy each known state key out of the loaded json.
-        sociogram.resetMembers();
-        for (const key of Object.keys(sociogram.$state)) {
+        sociogramStore.resetMembers();
+        for (const key of Object.keys(sociogramStore.$state)) {
             if (key in result.data) {
-                sociogram.$state[key] = result.data[key];
+                sociogramStore.$state[key] = result.data[key];
             }
         }
 

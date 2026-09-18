@@ -11,10 +11,10 @@ import { useSociogramStore } from "@/stores/sociogram";
  * can be stopped on any step and resumed later.
  */
 export function useSociogramDownloadArchive() {
-  const sociogram = useSociogramStore();
+  const sociogramStore = useSociogramStore();
 
   const archiveHref = computed(() => {
-    const json = JSON.stringify(sociogram.$state);
+    const json = JSON.stringify(sociogramStore.$state);
     const blob = new Blob([json], { type: "text/plain;charset=utf-8" });
     return URL.createObjectURL(blob);
   });

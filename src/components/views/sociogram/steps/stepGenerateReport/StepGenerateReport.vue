@@ -28,8 +28,8 @@ const emit = defineEmits([
 ]);
 
 // --- State --------------
-const sociogram = useSociogramStore();
-const { members } = storeToRefs(sociogram);
+const sociogramStore = useSociogramStore();
+const { members } = storeToRefs(sociogramStore);
 const { validate } = useSociogramValidateData(true);
 
 // --- Computed -----------

@@ -25,13 +25,13 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // --- State --------------
 // Get the sociogram store and its state.
-const sociogram = useSociogramStore();
+const sociogramStore = useSociogramStore();
 const {
     maxMemberNameLength,
     maxMembersCount,
     hasMembers,
     members,
-} = storeToRefs(sociogram);
+} = storeToRefs(sociogramStore);
 
 // --- Computed -----------
 // The load step can only advance when there are members, none of them are
@@ -58,9 +58,9 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nomi">
             Il file di testo deve contenere un elenco di nomi, non necessariamente in ordine alfabetico.
             Ogni nome &egrave; limitato a
-            {{ sociogram.maxMemberNameLength }} caratteri;
+            {{ sociogramStore.maxMemberNameLength }} caratteri;
             possono essere caricati al massimo
-            {{ sociogram.maxMembersCount }} nomi.
+            {{ sociogramStore.maxMembersCount }} nomi.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -77,8 +77,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 
             <StepLoadMembersListEditor
                 :members="members"
-                @update:member="sociogram.updateMember"
-                @remove:member="sociogram.removeMember"
+                @update:member="sociogramStore.updateMember"
+                @remove:member="sociogramStore.removeMember"
             />
 
         </div>

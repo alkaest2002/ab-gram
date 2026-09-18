@@ -26,9 +26,9 @@ const props = defineProps({
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // --- State --------------
-const sociogram = useSociogramStore();
-const { members, hasMembers } = storeToRefs(sociogram);
-const { updateMember } = sociogram;
+const sociogramStore = useSociogramStore();
+const { members, hasMembers } = storeToRefs(sociogramStore);
+const { updateMember } = sociogramStore;
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
