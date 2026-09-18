@@ -33,10 +33,8 @@ const { goToStep } = useSociogramNavigation(emit);
     <div class="space-y-6">
         <section class="card space-y-6">
             <StepHeader title="È la prima volta che usi l'app?">
-                ABGrid analizza le dinamiche relazionali del tuo gruppo — chi
-                preferisce stare con chi, come si formano i sottogruppi, quali
-                sono i ruoli chiave — e le restituisce come mappa visiva e
-                numerica.
+                ABGrid misura e visualizza le dinamiche relazionali dei gruppi sociali
+                attraverso indici sociometrici e mappe visive.
             </StepHeader>
 
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
