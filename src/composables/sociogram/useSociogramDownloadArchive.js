@@ -15,7 +15,8 @@ export function useSociogramDownloadArchive() {
 
   const archiveHref = computed(() => {
     const json = JSON.stringify(sociogramStore.$state);
-    const blob = new Blob([json], { type: "text/plain;charset=utf-8" });
+    const encodedJson = btoa(json);
+    const blob = new Blob([encodedJson], { type: "text/plain;charset=utf-8" });
     return URL.createObjectURL(blob);
   });
 
