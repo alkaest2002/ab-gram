@@ -64,7 +64,7 @@ export function invalid(error) {
 export function SnapshotShouldBeAnObject(parsed) {
   return isPlainObject(parsed)
     ? null
-    : "Il file non contiene un archivio sociogramma valido.";
+    : "Il file non contiene un dati sociometrici validi.";
 }
 
 /**
@@ -74,7 +74,7 @@ export function SnapshotShouldBeAnObject(parsed) {
 export function SnapshotShouldHaveMembers(parsed) {
   return Array.isArray(parsed.members)
     ? null
-    : "L'archivio non contiene un elenco di membri.";
+    : "L'archivio non contiene un elenco di nomi valido.";
 }
 
 /**
@@ -84,7 +84,7 @@ export function SnapshotShouldHaveMembers(parsed) {
 export function MembersShouldNotExceedMaxCount(parsed) {
   return parsed.members.length <= MAX_MEMBERS_COUNT
     ? null
-    : `L'archivio non può contenere più di ${MAX_MEMBERS_COUNT} membri.`;
+    : `L'archivio non può contenere più di ${MAX_MEMBERS_COUNT} nomi.`;
 }
 
 /**
@@ -96,7 +96,7 @@ export function MembersShouldNotExceedMaxCount(parsed) {
 export function MembersShouldHaveAtLeastMinCount(parsed) {
   return parsed.members.length >= MIN_MEMBERS_COUNT
     ? null
-    : `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} membri.`;
+    : `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`;
 }
 
 /**
@@ -106,7 +106,7 @@ export function MembersShouldHaveAtLeastMinCount(parsed) {
 export function MemberShouldBeAnObject(member) {
   return isPlainObject(member)
     ? null
-    : "L'archivio contiene un membro non valido.";
+    : "I dati di un membro del gruppo non sono validi.";
 }
 
 /**
@@ -116,7 +116,7 @@ export function MemberShouldBeAnObject(member) {
 export function MemberShouldHaveAnId(member) {
   return typeof member.id === "string" && member.id.length > 0
     ? null
-    : "Ogni membro deve avere un identificativo valido.";
+    : "Ogni membro del gruppo deve possedere un identificativo valido.";
 }
 
 /**
@@ -126,7 +126,7 @@ export function MemberShouldHaveAnId(member) {
 export function MemberShouldHaveAName(member) {
   return typeof member.name === "string"
     ? null
-    : "Ogni membro deve avere un nome.";
+    : "Ogni membro del gruppo deve avere un nome.";
 }
 
 /**
@@ -136,7 +136,7 @@ export function MemberShouldHaveAName(member) {
 export function LikesShouldNotExceedMemberCount(member) {
   const exceeds =
     Array.isArray(member.likes) && member.likes.length > MAX_MEMBERS_COUNT;
-  return exceeds ? "Un membro ha troppe preferenze." : null;
+  return exceeds ? "Un membro del gruppo ha espresso troppe scelte." : null;
 }
 
 /**
@@ -147,7 +147,7 @@ export function DislikesShouldNotExceedMemberCount(member) {
   const exceeds =
     Array.isArray(member.dislikes) &&
     member.dislikes.length > MAX_MEMBERS_COUNT;
-  return exceeds ? "Un membro ha troppi rifiuti." : null;
+  return exceeds ? "Un membro del gruppo ha espresso troppi rifiuti." : null;
 }
 
 /**
@@ -157,7 +157,7 @@ export function DislikesShouldNotExceedMemberCount(member) {
 export function MemberShouldHaveValidLikes(member) {
   return isIdList(member.likes)
     ? null
-    : "Le preferenze di un membro non sono valide.";
+    : "Le scelte di un membro del gruppo non sono valide.";
 }
 
 /**
@@ -167,7 +167,7 @@ export function MemberShouldHaveValidLikes(member) {
 export function MemberShouldHaveValidDislikes(member) {
   return isIdList(member.dislikes)
     ? null
-    : "I rifiuti di un membro non sono validi.";
+    : "I rifiuti di un membro del gruppo non sono validi.";
 }
 
 /**
@@ -177,7 +177,7 @@ export function MemberShouldHaveValidDislikes(member) {
 export function MemberShouldHaveANoLikesFlag(member) {
   return typeof member.noLikes === "boolean"
     ? null
-    : "Il flag \"nessuna preferenza\" di un membro non è valido.";
+    : "Il flag \"nessuna scelta\" di un membro del gruppo non è valido.";
 }
 
 /**
@@ -187,7 +187,7 @@ export function MemberShouldHaveANoLikesFlag(member) {
 export function MemberShouldHaveANoDislikesFlag(member) {
   return typeof member.noDislikes === "boolean"
     ? null
-    : "Il flag \"nessun rifiuto\" di un membro non è valido.";
+    : "Il flag \"nessun rifiuto\" di un membro del gruppo non è valido.";
 }
 
 /**
@@ -196,7 +196,7 @@ export function MemberShouldHaveANoDislikesFlag(member) {
  */
 export function MemberShouldNotLikeSelf(member) {
   return member.likes.includes(member.id)
-    ? "Un membro non può scegliere sé stesso."
+    ? "Un membro del gruppo non può scegliere sé stesso."
     : null;
 }
 
@@ -206,7 +206,7 @@ export function MemberShouldNotLikeSelf(member) {
  */
 export function MemberShouldNotDislikeSelf(member) {
   return member.dislikes.includes(member.id)
-    ? "Un membro non può rifiutare sé stesso."
+    ? "Un membro del gruppo non può rifiutare sé stesso."
     : null;
 }
 
@@ -220,7 +220,7 @@ export function MemberShouldNotDislikeSelf(member) {
 export function MemberShouldHaveLikesUnlessNoLikes(member) {
   return member.noLikes || member.likes.length > 0
     ? null
-    : "Un membro deve avere almeno una preferenza.";
+    : "Un membro del gruppo deve avere almeno una preferenza.";
 }
 
 /**
@@ -244,7 +244,7 @@ export function MemberIdsShouldBeUnique(parsed) {
   const ids = parsed.members.map((member) => member.id);
   return new Set(ids).size === ids.length
     ? null
-    : "Gli identificativi dei membri devono essere univoci.";
+    : "Gli identificativi dei membri del gruppo devono essere univoci.";
 }
 
 /**
@@ -257,7 +257,7 @@ export function LikesShouldReferenceExistingMembers(parsed) {
 
   for (const id of likedIds) {
     if (!memberIds.has(id)) {
-      return "Le preferenze fanno riferimento a un membro inesistente.";
+      return "Tra le scelte espresse, almeno uno fa riferimento a un soggetto inesistente.";
     }
   }
 
@@ -274,7 +274,7 @@ export function DislikesShouldReferenceExistingMembers(parsed) {
 
   for (const id of dislikedIds) {
     if (!memberIds.has(id)) {
-      return "I rifiuti fanno riferimento a un membro inesistente.";
+      return "Tra i rifiuti espressi, almeno uno fa riferimento a un soggetto inesistente.";
     }
   }
 
