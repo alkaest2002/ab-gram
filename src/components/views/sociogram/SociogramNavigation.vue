@@ -9,12 +9,14 @@
 import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Utilities ----------
+import { useSociogramArchive } from "@/composables/useSociogramArchive";
 
 // --- Props --------------
 defineProps({
     showPrevious: { type: Boolean, default: false },
     showNext: { type: Boolean, default: false },
     showRestart: { type: Boolean, default: false },
+    showArchive: { type: Boolean, default: true },
     enableRestart: { type: Boolean, default: false },
     enablePrevious: { type: Boolean, default: false },
     enableNext: { type: Boolean, default: false },
@@ -28,6 +30,7 @@ defineEmits([
 ]);
 
 // --- State --------------
+const { archiveHref } = useSociogramArchive();
 
 // --- Computed -----------
 
@@ -42,26 +45,89 @@ defineEmits([
     <div class="flex flex-wrap gap-2 justify-between mt-4">
         <div class="flex flex-wrap gap-2">
             <BaseButton
+                v-show="showRestart"
                 variant="outline"
                 :disabled="!enableRestart"
                 @click="$emit('sociogram-step-restart')"
             >
-                Ricomincia
+                <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                    <path d="M21 3v6h-6" />
+                </svg>
             </BaseButton>
+
+            <a
+                v-show="showArchive"
+                class="btn btn-outline"
+                :href="archiveHref"
+                download="dati.txt"
+            >
+                <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <rect x="2" y="3" width="20" height="5" rx="1" />
+                    <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+                    <path d="M10 12h4" />
+                </svg>
+            </a>
+
             <BaseButton
                 v-show="showPrevious"
                 variant="outline"
                 :disabled="!enablePrevious"
                 @click="$emit('sociogram-step-previous')"
-                >Indietro
+            >
+                <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                Indietro
             </BaseButton>
         </div>
+
         <BaseButton
             v-show="showNext"
             variant="outline"
             :disabled="!enableNext"
             @click="$emit('sociogram-step-next')"
-            >Avanti
+        >
+            <svg
+                class="size-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M9 6l6 6-6 6" />
+            </svg>
+            Avanti
         </BaseButton>
     </div>
 </template>

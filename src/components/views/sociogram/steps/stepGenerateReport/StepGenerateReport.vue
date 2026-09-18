@@ -10,7 +10,6 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
-import StepDownloadLink from "@/components/views/sociogram/steps/StepDownloadLink.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 // --- Utilities ----------
@@ -64,13 +63,6 @@ const summary = computed(() =>
     }),
 );
 
-// Data URL for downloading the current store state, base64-encoded.
-const stateFileHref = computed(() => {
-    const json = JSON.stringify(sociogram.$state);
-    const base64 = encodeBase64(json);
-    return `data:text/plain;charset=utf-8,${base64}`;
-});
-
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -79,14 +71,6 @@ const stateFileHref = computed(() => {
 // Ask the parent to open the preferences step for a single member.
 function openMember(memberId) {
     emit("sociogram-edit-member", memberId);
-}
-
-// Base64-encode a string without dropping non-ASCII characters.
-function encodeBase64(value) {
-    const bytes = new TextEncoder().encode(value);
-    let binary = "";
-    for (const byte of bytes) binary += String.fromCharCode(byte);
-    return btoa(binary);
 }
 
 const { goToStep, restart } = useSociogramNavigation(emit);
@@ -242,19 +226,6 @@ const { goToStep, restart } = useSociogramNavigation(emit);
                 </li>
             </ul>
         </section>
-
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
-        <!-- 3 · export the current state for later reuse. -->
-        <StepDownloadLink
-            title="2. Archivia i dati"
-            :href="stateFileHref"
-            filename="dati.txt"
-            label="dati (.txt)"
-        >
-            Puoi scaricare i dati raccolti per conservarli e ricaricarli
-            nell'app in seguito.
-        </StepDownloadLink>
     </section>
 
     <SociogramNavigation

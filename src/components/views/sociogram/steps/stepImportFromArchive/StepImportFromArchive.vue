@@ -52,7 +52,7 @@ function pick() {
     fileInput.value?.click();
 }
 
-// Base64-decode a UTF-8 string, mirroring `encodeBase64` in StepGenerateReport.
+// Base64-decode a UTF-8 string, mirroring `encodeBase64` in useSociogramArchive.
 function decodeBase64(value) {
     const binary = atob(value);
     const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
