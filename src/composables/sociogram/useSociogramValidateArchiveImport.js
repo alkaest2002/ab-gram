@@ -3,7 +3,7 @@ import {
   MEMBER_CHECKS,
   CROSS_MEMBER_CHECKS,
   invalid,
-} from "@/composables/sociogram/archiveValidation";
+} from "@/composables/sociogram/archiveValidationFunctions";
 
 /**
  * Validate a decoded, parsed sociogram archive snapshot for import.
