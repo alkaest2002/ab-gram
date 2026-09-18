@@ -80,7 +80,7 @@ async function onFileChange(event) {
       <div>
         <p class="eyebrow">Carica il file</p>
         <p class="mt-1 text-sm text-muted">
-          Le righe vuote vengono ignorate.
+          Il file deve contenere un elenco di nomi, uno per riga.
         </p>
       </div>
 

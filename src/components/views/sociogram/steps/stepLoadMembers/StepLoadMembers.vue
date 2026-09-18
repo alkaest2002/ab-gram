@@ -56,8 +56,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
     <section class="card space-y-6">
 
         <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nomi">
-            Il file di testo deve contenere un nome per riga, puoi &mdash; se
-            necessario &mdash; modificare l'elenco prima di proseguire.
+            Il file di testo deve contenere un elenco di nomi, non necessariamente in ordine alfabetico.
             Ogni nome &egrave; limitato a
             {{ sociogram.maxMemberNameLength }} caratteri;
             possono essere caricati al massimo

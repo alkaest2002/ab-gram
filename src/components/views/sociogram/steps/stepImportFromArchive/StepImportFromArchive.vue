@@ -103,7 +103,7 @@ async function onFileChange(event) {
 <template>
     <section class="card space-y-6">
         <StepHeader
-            eyebrow="Importa un progetto"
+            eyebrow="Passaggio 1 di 3"
             title="Vuoi riprendere un progetto archiviato?"
         >
             Se hai già salvato un sociogramma, puoi ricaricarlo da un file
@@ -126,7 +126,7 @@ async function onFileChange(event) {
                 <div>
                     <p class="eyebrow">Importa da file</p>
                     <p class="mt-1 text-sm text-muted">
-                        Il file contiene i dati codificati del progetto.
+                        Il file deve contenere un archivio valido.
                     </p>
                 </div>
 
@@ -152,7 +152,7 @@ async function onFileChange(event) {
 
     <SociogramNavigation
         :enable-previous="true"
-        :enable-next="!importError"
+        :enable-next="hasImported"
         @sociogram-step-previous="goToStep('start')"
         @sociogram-step-next="goToStep('generateReport')"
         @sociogram-step-restart="restart"
