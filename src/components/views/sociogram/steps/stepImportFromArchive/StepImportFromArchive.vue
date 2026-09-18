@@ -228,6 +228,7 @@ async function onFileChange(event) {
     <SociogramNavigation
         :enable-previous="true"
         :enable-next="hasImported"
+        :enable-archive="hasImported"
         @sociogram-step-previous="goToStep('start')"
         @sociogram-step-next="goToStep('generateReport')"
         @sociogram-step-restart="restart"
