@@ -37,7 +37,7 @@ const {
 // The load step can only advance when there are members, none of them are
 // blank, and no two members share the same name.
 const nameIssues = computed(() => getMembersNameIssues(members.value));
-const dataWasLoaded = computed(
+const hasLoaded = computed(
     () =>
         hasMembers.value &&
         nameIssues.value.emptyNamesCount === 0 &&
@@ -85,9 +85,10 @@ const { goToStep, restart } = useSociogramNavigation(emit);
     </section>
 
     <SociogramNavigation
-        :enable-previous="dataWasLoaded"
-        :enable-next="dataWasLoaded"
-        :enable-archive="dataWasLoaded"
+        :enable-previous="hasLoaded"
+        :enable-next="hasLoaded"
+        :enable-archive="hasLoaded"
+        :enable-restart="hasLoaded"
         @sociogram-step-previous="goToStep('start')"
         @sociogram-step-next="goToStep('setPreferences')"
         @sociogram-step-restart="restart"
