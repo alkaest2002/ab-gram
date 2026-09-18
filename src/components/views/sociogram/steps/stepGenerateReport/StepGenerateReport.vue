@@ -4,6 +4,7 @@ import { computed } from "vue";
 import { useRouter } from "vue-router";
 
 // --- Routers ------------
+const router = useRouter();
 
 // --- Stores -------------
 import { storeToRefs } from "pinia";
@@ -51,13 +52,23 @@ const summary = computed(() =>
     }),
 );
 
-function goNext() {
-  const { valid, errors } = validate(members.value);
+async function generateReport() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("Report generated");
+      resolve();
+    }, 0);
+  });
+}
+
+async function  goNext() {
+  const { valid } = validate(members.value);
   if (!valid) {
-    console.error(errors);
+    router.push({ name: "sociogramValidatioError" });
     return;
   }
-
+  await generateReport();
+  router.push({ name: "report" });
 }
 
 // --- Watchers -----------
