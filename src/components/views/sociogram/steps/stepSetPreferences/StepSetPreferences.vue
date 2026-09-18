@@ -69,6 +69,15 @@ watch(
     { immediate: true },
 );
 
+watch(currentNoLikes, (newValue) => {
+  newValue && resetLikes();
+});
+
+watch(currentNoDislikes, (newValue) => {
+  newValue && resetDislikes();
+});
+
+
 // --- Lifecycle ----------
 onActivated(() => window.scrollTo(0, 0));
 
@@ -110,6 +119,14 @@ function carouselGoNextMember() {
     if (carouselCanGoNextMember.value) {
         currentIndex.value++;
     }
+}
+
+function resetLikes() {
+    currentLikes.value = [];
+}
+
+function resetDislikes() {
+    currentDislikes.value = [];
 }
 
 const { goToStep, restart } = useSociogramNavigation(emit);
