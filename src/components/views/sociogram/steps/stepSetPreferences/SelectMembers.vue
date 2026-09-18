@@ -172,7 +172,7 @@ function handleEnter() {
         </ul>
 
         <p v-else-if="!hasSelectableMembers" class="text-sm text-muted">
-            Nessun altro membro del gruppo da selezionare.
+            Nessun membro del gruppo da selezionare.
         </p>
 
         <p v-else class="text-sm text-muted">
