@@ -39,6 +39,42 @@ export const routes = [
     },
   },
   {
+    path: "/notify",
+    name: "notfy",
+    component: "",
+    redirect: "/notify/generic-error",
+    meta: {
+      title: "Notify",
+      inMenu: false,
+      typeOfMenu: null,
+      layout: "DefaultLayout",
+    },
+    children: [
+      {
+        path: "generic-error",
+        name: "genericError",
+        component: () => import("@/components/views/notify/GenericError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "DefaultLayout",
+        },
+      },
+      {
+        path: "sociogram-validation-error",
+        name: "sociogramValidatioError",
+        component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "DefaultLayout",
+        },
+      }
+    ]
+  },
+  {
     path: "/docs",
     name: "docs",
     component: () => import("@/components/views/Docs.vue"),
