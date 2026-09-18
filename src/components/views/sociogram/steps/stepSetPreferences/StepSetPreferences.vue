@@ -27,7 +27,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
 
 // --- State --------------
 const sociogramStore = useSociogramStore();
-const { members, hasMembers } = storeToRefs(sociogramStore);
+const { members, hasMembers, membersCount } = storeToRefs(sociogramStore);
 const { updateMember } = sociogramStore;
 
 // The member whose preferences are being collected. Preferences live directly
@@ -190,7 +190,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 
             <!-- Declared "not answered" states: unlock the carousel when the
                  member has no likes/dislikes to record. -->
-            <div class="grid gap-6 md:grid-cols-2">
+            <div class="grid gap-6 md:grid-cols-2" v-show="membersCount > 1">
                 <div class="rounded-lg border border-line p-4">
                     <p class="text-xs text-muted mb-3">
                         Se
