@@ -32,7 +32,11 @@ const stateComponents = {
     generateReport: StepGenerateReport,
 };
 
-const currentComponentName = ref(SOCIOGRAM_STEPS[0]);
+const currentComponentName = ref(
+  sociogramStore.hasMembers
+    ? SOCIOGRAM_STEPS[2]
+    : SOCIOGRAM_STEPS[0]
+);
 
 // UI state: the member to point the preferences carousel at when it opens.
 // Set only by the report summary's "edit this member" cards; cleared on any
