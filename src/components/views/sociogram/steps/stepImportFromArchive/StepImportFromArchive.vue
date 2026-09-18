@@ -229,8 +229,9 @@ async function onFileChange(event) {
         :enable-previous="true"
         :enable-next="hasImported"
         :enable-archive="hasImported"
+        :enable-restart="hasImported"
         @sociogram-step-previous="goToStep('start')"
-        @sociogram-step-next="goToStep('generateReport')"
+        @sociogram-step-next="goToStep('loadMembers')"
         @sociogram-step-restart="restart"
     />
 </template>
