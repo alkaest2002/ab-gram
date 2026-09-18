@@ -13,7 +13,7 @@
  *   }
  *
  * Checks are grouped into three ordered lists so new rules can be added without
- * touching the `validate` orchestration in `useSociogramValidateArchiveImport`:
+ * touching the `validate` orchestration in `useSociogramValidateData`:
  *
  *   - SNAPSHOT_CHECKS: run once against the whole snapshot.
  *   - MEMBER_CHECKS: run against every member.
@@ -26,6 +26,9 @@ export const MEMBER_ID_PATTERN = /^[A-Z0-9]$/;
 
 /** Maximum number of members (mirrors `maxMembersCount` in the store). */
 export const MAX_MEMBERS_COUNT = 35;
+
+/** Minimum number of members required for a complete sociogram. */
+export const MIN_MEMBERS_COUNT = 5;
 
 export function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
@@ -82,6 +85,18 @@ export function MembersShouldNotExceedMaxCount(parsed) {
   return parsed.members.length <= MAX_MEMBERS_COUNT
     ? null
     : `L'archivio non può contenere più di ${MAX_MEMBERS_COUNT} membri.`;
+}
+
+/**
+ * Complete-data rule: a finished sociogram needs at least `MIN_MEMBERS_COUNT`.
+ *
+ * @param {object} parsed
+ * @returns {string | null} Error message, or null when the check passes.
+ */
+export function MembersShouldHaveAtLeastMinCount(parsed) {
+  return parsed.members.length >= MIN_MEMBERS_COUNT
+    ? null
+    : `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} membri.`;
 }
 
 /**
@@ -196,6 +211,32 @@ export function MemberShouldNotDislikeSelf(member) {
 }
 
 /**
+ * Complete-data rule: a member must record at least one like, unless they
+ * declared they have none via the `noLikes` flag.
+ *
+ * @param {object} member
+ * @returns {string | null} Error message, or null when the check passes.
+ */
+export function MemberShouldHaveLikesUnlessNoLikes(member) {
+  return member.noLikes || member.likes.length > 0
+    ? null
+    : "Un membro deve avere almeno una preferenza.";
+}
+
+/**
+ * Complete-data rule: a member must record at least one dislike, unless they
+ * declared they have none via the `noDislikes` flag.
+ *
+ * @param {object} member
+ * @returns {string | null} Error message, or null when the check passes.
+ */
+export function MemberShouldHaveDislikesUnlessNoDislikes(member) {
+  return member.noDislikes || member.dislikes.length > 0
+    ? null
+    : "Un membro deve avere almeno un rifiuto.";
+}
+
+/**
  * @param {object} parsed
  * @returns {string | null} Error message, or null when the check passes.
  */
@@ -269,4 +310,15 @@ export const CROSS_MEMBER_CHECKS = [
   MemberIdsShouldBeUnique,
   LikesShouldReferenceExistingMembers,
   DislikesShouldReferenceExistingMembers,
+];
+
+// Complete-data checks. Applied on top of the default checks only when the
+// importer declares the snapshot is a finished sociogram (`dataIsComplete`).
+export const COMPLETE_SNAPSHOT_CHECKS = [
+  MembersShouldHaveAtLeastMinCount,
+];
+
+export const COMPLETE_MEMBER_CHECKS = [
+  MemberShouldHaveLikesUnlessNoLikes,
+  MemberShouldHaveDislikesUnlessNoDislikes,
 ];

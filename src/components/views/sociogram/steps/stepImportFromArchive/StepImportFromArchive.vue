@@ -14,7 +14,7 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 
 // --- Utilities ----------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
-import { useSociogramValidateArchiveImport } from "@/composables/sociogram/useSociogramValidateArchiveImport";
+import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 
 // --- Props --------------
 
@@ -30,7 +30,7 @@ const isReading = ref(false);
 const importError = ref(null);
 const importedCount = ref(null);
 
-const { validate } = useSociogramValidateArchiveImport();
+const { validate } = useSociogramValidateData();
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);
