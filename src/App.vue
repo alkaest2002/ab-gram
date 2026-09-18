@@ -12,7 +12,7 @@ import PageTransition from "@/components/ui/PageTransition.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 

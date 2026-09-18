@@ -9,7 +9,7 @@ import { ref } from "vue";
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 import { useSociogramTextReader } from "@/composables/sociogram/useSociogramTextReader";
 import { buildMembers, normalizeNames } from "@/utils/members";
 

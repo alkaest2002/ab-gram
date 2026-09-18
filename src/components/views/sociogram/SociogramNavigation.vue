@@ -8,7 +8,7 @@
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 import { useSociogramDownloadArchive } from "@/composables/sociogram/useSociogramDownloadArchive";
 
 // --- Props --------------

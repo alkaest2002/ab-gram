@@ -8,7 +8,7 @@
 // --- Components ---------
 import AppLogo from "@/components/ui/AppLogo.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 

@@ -8,7 +8,7 @@ import { resolvePageTransition } from "@/router/scroll";
 
 // --- Components ---------
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 

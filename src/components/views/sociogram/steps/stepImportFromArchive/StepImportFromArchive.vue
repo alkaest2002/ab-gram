@@ -12,7 +12,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 

@@ -8,7 +8,7 @@ import { computed, ref } from "vue";
 
 // --- Components ---------
 
-// --- Utilities ----------
+// --- Composables --------
 import { getMembersNameIssues } from "@/utils/members";
 
 // --- Props --------------

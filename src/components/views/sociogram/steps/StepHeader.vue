@@ -7,7 +7,7 @@
 
 // --- Components ---------
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 defineProps({

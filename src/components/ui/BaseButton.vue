@@ -9,7 +9,7 @@ import { RouterLink } from "vue-router";
 
 // --- Components ---------
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({

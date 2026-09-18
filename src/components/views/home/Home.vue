@@ -10,7 +10,7 @@ import { RouterLink } from "vue-router";
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 

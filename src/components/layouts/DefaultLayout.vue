@@ -9,7 +9,7 @@
 import AppHeader from "@/components/ui/AppHeader.vue";
 import AppFooter from "@/components/ui/AppFooter.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 
 // --- Props --------------
 

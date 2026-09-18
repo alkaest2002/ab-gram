@@ -10,7 +10,7 @@ import { RouterLink, useRoute } from "vue-router";
 // --- Components ---------
 import AppLogo from "@/components/ui/AppLogo.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 

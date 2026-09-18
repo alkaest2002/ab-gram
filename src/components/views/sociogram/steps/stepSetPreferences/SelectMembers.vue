@@ -8,7 +8,7 @@ import { computed } from "vue";
 
 // --- Components ---------
 
-// --- Utilities ----------
+// --- Composables --------
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
 
 // --- Props --------------

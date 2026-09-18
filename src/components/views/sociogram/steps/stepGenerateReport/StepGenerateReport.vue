@@ -1,6 +1,7 @@
 <script setup>
 // --- Vue ----------------
 import { computed } from "vue";
+import { useRouter } from "vue-router";
 
 // --- Routers ------------
 
@@ -12,8 +13,9 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
-// --- Utilities ----------
+// --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 
 // --- Props --------------
 
@@ -26,24 +28,10 @@ const emit = defineEmits([
 
 // --- State --------------
 const sociogram = useSociogramStore();
-const { members, membersCount } = storeToRefs(sociogram);
+const { members } = storeToRefs(sociogram);
+const { validate } = useSociogramValidateData(true);
 
 // --- Computed -----------
-const membersLabel = computed(() =>
-    membersCount.value === 1 ? "membro" : "membri",
-);
-
-const totalChoices = computed(() =>
-    members.value.reduce((sum, member) => sum + (member.likes?.length ?? 0), 0),
-);
-
-const totalRejections = computed(() =>
-    members.value.reduce(
-        (sum, member) => sum + (member.dislikes?.length ?? 0),
-        0,
-    ),
-);
-
 // Resolve the member ids stored on likes/dislikes to display names.
 const namesById = computed(
     () => new Map(members.value.map((member) => [member.id, member.name])),
@@ -62,6 +50,15 @@ const summary = computed(() =>
         };
     }),
 );
+
+function goNext() {
+  const { valid, errors } = validate(members.value);
+  if (!valid) {
+    console.error(errors);
+    return;
+  }
+
+}
 
 // --- Watchers -----------
 
@@ -234,8 +231,9 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         :show-restart="true"
         :enable-previous="true"
         :enable-restart="true"
-        :enable-next="false"
+        :enable-next="true"
         @sociogram-step-previous="goToStep('setPreferences')"
         @sociogram-step-restart="restart"
+        @sociogram-step-next="goNext"
     />
 </template>
