@@ -19,7 +19,7 @@ import { ref } from "vue";
  *   read: (file?: File | Blob) => Promise<void>
  * }}
  */
-export function useTextReader(textFileToRead, maxRows = 35, maxRowLength = 150) {
+export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLength = 150) {
   /** @type {import('vue').Ref<string[]>} */
   const rows = ref([]);
   const error = ref(null);

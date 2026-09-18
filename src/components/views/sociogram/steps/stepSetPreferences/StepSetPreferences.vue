@@ -15,7 +15,7 @@ import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferenc
 import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
 
 // --- Utilities ----------
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
 // --- Props --------------
 const props = defineProps({

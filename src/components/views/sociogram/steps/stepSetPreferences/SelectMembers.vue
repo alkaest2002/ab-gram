@@ -9,7 +9,7 @@ import { computed } from "vue";
 // --- Components ---------
 
 // --- Utilities ----------
-import { useMemberSearch } from "@/composables/useMemberSearch";
+import { useSociogramMemberSearch } from "@/composables/sociogram/useSociogramMemberSearch";
 
 // --- Props --------------
 const props = defineProps({
@@ -66,7 +66,7 @@ const selectedIds = computed({
 const selectableMembers = computed(() => props.members.filter((member) => member.id !== props.selfId));
 
 // Search state and the ranked result list, shared via the search composable.
-const { query, filteredMembers } = useMemberSearch(selectableMembers);
+const { query, filteredMembers } = useSociogramMemberSearch(selectableMembers);
 
 const selected = computed(() => new Set(selectedIds.value));
 const excluded = computed(() => new Set(props.excludedIds));

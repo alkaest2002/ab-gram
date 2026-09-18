@@ -15,7 +15,7 @@ import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPrefer
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
 
 // --- Utilities ----------
-import { SOCIOGRAM_STEPS } from "@/composables/useSociogramNavigation";
+import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation";
 
 // --- Props --------------
 

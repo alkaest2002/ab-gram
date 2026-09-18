@@ -13,8 +13,8 @@ import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 
 // --- Utilities ----------
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
-import { useSociogramArchiveValidation } from "@/composables/useSociogramArchiveValidation";
+import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+import { useSociogramValidateArchiveImport } from "@/composables/sociogram/useSociogramValidateArchiveImport";
 
 // --- Props --------------
 
@@ -30,7 +30,7 @@ const isReading = ref(false);
 const importError = ref(null);
 const importedCount = ref(null);
 
-const { validate } = useSociogramArchiveValidation();
+const { validate } = useSociogramValidateArchiveImport();
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);

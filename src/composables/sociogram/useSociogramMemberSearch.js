@@ -185,7 +185,7 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharSet) {
  *   filteredMembers: import('vue').ComputedRef<Array<{ id: string, name: string }>>
  * }}
  */
-export function useMemberSearch(members) {
+export function useSociogramMemberSearch(members) {
     const query = ref("");
 
     // OPTIMIZED: Pre-compute normalized names and character sets

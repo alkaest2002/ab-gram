@@ -10,14 +10,14 @@ import { ref } from "vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Utilities ----------
-import { useTextReader } from "@/composables/useTextReader";
+import { useSociogramTextReader } from "@/composables/sociogram/useSociogramTextReader";
 import { buildMembers, normalizeNames } from "@/utils/members";
 
 // --- Props --------------
 const props = defineProps({
-  /** Maximum rows read from the file (see `useTextReader`). */
+  /** Maximum rows read from the file (see `useSociogramTextReader`). */
   maxRows: { type: Number, default: 35 },
-  /** Maximum characters kept per row (see `useTextReader`). */
+  /** Maximum characters kept per row (see `useSociogramTextReader`). */
   maxRowLength: { type: Number, default: 150 },
 });
 
@@ -30,7 +30,7 @@ const model = defineModel({ type: Array, default: () => [] });
 const fileInput = ref(null);
 const fileName = ref("");
 
-const { rows, error, isReading, read } = useTextReader(
+const { rows, error, isReading, read } = useSociogramTextReader(
   null,
   props.maxRows,
   props.maxRowLength,

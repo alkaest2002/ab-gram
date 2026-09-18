@@ -9,7 +9,7 @@
 import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Utilities ----------
-import { useSociogramArchive } from "@/composables/useSociogramArchive";
+import { useSociogramArchive } from "@/composables/sociogram/useSociogramArchive";
 
 // --- Props --------------
 defineProps({

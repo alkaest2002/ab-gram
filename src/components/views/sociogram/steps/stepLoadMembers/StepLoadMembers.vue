@@ -15,7 +15,7 @@ import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLo
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
 
 // --- Utilities ----------
-import { useSociogramNavigation } from "@/composables/useSociogramNavigation";
+import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { getMembersNameIssues } from "@/utils/members";
 
 // --- Props --------------
