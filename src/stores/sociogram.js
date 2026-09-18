@@ -1,6 +1,8 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
+import { MEMBERS_INDICES } from "@/utils/members";
+
 /**
  * A single participant in the sociogram.
  *
@@ -25,8 +27,8 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {number} Maximum length of a member's name. */
   const maxMemberNameLength = 150;
 
-  /** @type {number} Maximum number of members. */
-  const maxMembersCount = 35;
+  /** @type {number} Maximum number of members (one per shared id). */
+  const maxMembersCount = MEMBERS_INDICES.length;
 
   /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
   const members = ref([]);
@@ -60,6 +62,20 @@ export const useSociogramStore = defineStore("sociogram", () => {
     members.value = members.value.filter((m) => m.id !== memberId);
   }
 
+  /**
+   * Append a member with the next id from the shared index sequence.
+   * Does nothing once every index is in use.
+   */
+  function addMember() {
+    const id = MEMBERS_INDICES[members.value.length];
+    if (id === undefined) return;
+
+    members.value = [
+      ...members.value,
+      { id, name: "", likes: [], dislikes: [], noLikes: false, noDislikes: false },
+    ];
+  }
+
   /** Clear all loaded members. */
   function resetMembers() {
     members.value = [];
@@ -73,6 +89,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
     maxMembersCount,
     setMembers,
     updateMember,
+    addMember,
     removeMember,
     resetMembers,
   };

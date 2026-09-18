@@ -77,8 +77,9 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 
             <StepLoadMembersListEditor
                 :members="members"
-                @update:member="sociogramStore.updateMember"
-                @remove:member="sociogramStore.removeMember"
+                @sociogram-update-member="sociogramStore.updateMember"
+                @sociogram-add-member="sociogramStore.addMember"
+                @sociogram-remove-member="sociogramStore.removeMember"
             />
 
         </div>

@@ -1,5 +1,5 @@
 // Derived members indices
-const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
+export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
 
 /**
  * Sociogram member helpers shared by the "load members" step.
