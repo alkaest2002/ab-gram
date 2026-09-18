@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed, ref } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 
 // --- Routers ------------
 
@@ -33,6 +33,10 @@ const emit = defineEmits([
 // name.
 const editingId = ref(null);
 const originalName = ref(null);
+// Maps each member id to its input element so a freshly added member can be focused.
+const nameInputs = new Map();
+// Set when a member is added; the watcher focuses its input once it renders.
+const pendingFocusId = ref(null);
 
 // --- Computed -----------
 /** Total number of members. */
@@ -64,6 +68,12 @@ const emptyTone = computed(() =>
 );
 
 // --- Watchers -----------
+watch(pendingFocusId, async (memberId) => {
+  if (memberId === null) return;
+  await nextTick();
+  nameInputs.get(memberId)?.focus();
+  pendingFocusId.value = null;
+});
 
 // --- Lifecycle ----------
 
@@ -118,8 +128,19 @@ function removeMember(memberId) {
   emit("sociogram-remove-member", memberId);
 }
 
+function setInputRef(memberId, element) {
+  if (element) {
+    nameInputs.set(memberId, element);
+  } else {
+    nameInputs.delete(memberId);
+  }
+}
+
 function addMember() {
   if (!canAddMember.value) return;
+  editingId.value = nextMemberId.value;
+  originalName.value = "";
+  pendingFocusId.value = nextMemberId.value;
   emit("sociogram-add-member");
 }
 </script>
@@ -229,6 +250,7 @@ function addMember() {
           </span>
 
           <input
+            :ref="(el) => setInputRef(member.id, el)"
             :value="member.name"
             :readonly="!isEditing(member)"
             :class="[inputClass(member), isEditing(member) ? 'cursor-text' : 'cursor-pointer']"
