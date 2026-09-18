@@ -51,7 +51,7 @@ const stepProps = computed(() =>
         : {},
 );
 
-// Only the report step emits "sociogram-edit-member"; binding it to every step
+// Only "sociogram-edit-member" is emitted; binding it to every step
 // makes Vue try to fall through the listener on the others (e.g. StepStart,
 // which renders a fragment root) and triggers a warning. Attach it conditionally.
 const stepListeners = computed(() => {
