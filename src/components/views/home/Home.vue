@@ -135,19 +135,14 @@ const readings = [
 
         <section class="band">
             <div class="space-y-2.5">
-                <p class="flow">
-                    <span>Persone</span>
-                    <span class="flow-sep" aria-hidden="true">→</span>
-                    <span>Preferenze</span>
-                    <span class="flow-sep" aria-hidden="true">→</span>
-                    <span>Report</span>
-                </p>
                 <p class="max-w-[52ch] text-sm">
-                    Tre passaggi, nessun account. I dati restano sul tuo
-                    dispositivo: il calcolo avviene nel browser. Leggi
-                    <RouterLink to="/privacy" class="link"
-                        >l'informativa privacy</RouterLink
-                    >
+                    ABGrid è un'app sviluppata con
+                    <a href="https://github.com/vuejs/core" target="_blank" rel="noreferrer">Vue</a>,
+                    il suo ecosistema
+                    (<a href="https://github.com/vuejs/router" target="_blank" rel="noreferrer">Vue Router</a>
+                    e <a href="https://github.com/vuejs/pinia" target="_blank" rel="noreferrer">Pinia</a>)
+                    e <a href="https://github.com/graphology/graphology" target="_blank" rel="noreferrer">graphology</a>.
+                    Lavora in locale: i dati restano sul tuo dispositivo e i calcoli avvengono nel browser.
                 </p>
             </div>
 
