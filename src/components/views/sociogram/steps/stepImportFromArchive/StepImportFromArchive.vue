@@ -52,7 +52,7 @@ function pick() {
     fileInput.value?.click();
 }
 
-// Base64-decode a UTF-8 string, mirroring `encodeBase64` in useSociogramArchive.
+// Base64-decode a UTF-8 string, mirroring `encodeBase64` in useSociogramDownloadArchive.
 function decodeBase64(value) {
     const binary = atob(value);
     const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
@@ -151,12 +151,8 @@ async function onFileChange(event) {
     </section>
 
     <SociogramNavigation
-        :show-previous="true"
-        :show-next="true"
-        :show-restart="true"
         :enable-previous="true"
-        :enable-restart="true"
-        :enable-next="true"
+        :enable-next="!importError"
         @sociogram-step-previous="goToStep('start')"
         @sociogram-step-next="goToStep('generateReport')"
         @sociogram-step-restart="restart"

@@ -9,17 +9,18 @@
 import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Utilities ----------
-import { useSociogramArchive } from "@/composables/sociogram/useSociogramArchive";
+import { useSociogramDownloadArchive } from "@/composables/sociogram/useSociogramDownloadArchive";
 
 // --- Props --------------
 defineProps({
-    showPrevious: { type: Boolean, default: false },
-    showNext: { type: Boolean, default: false },
-    showRestart: { type: Boolean, default: false },
+    showPrevious: { type: Boolean, default: true },
+    showNext: { type: Boolean, default: true },
+    showRestart: { type: Boolean, default: true },
     showArchive: { type: Boolean, default: true },
-    enableRestart: { type: Boolean, default: false },
     enablePrevious: { type: Boolean, default: false },
     enableNext: { type: Boolean, default: false },
+    enableRestart: { type: Boolean, default: false },
+    enableArchive: { type: Boolean, default: false },
 });
 
 // --- Emits --------------
@@ -27,10 +28,11 @@ defineEmits([
     "sociogram-step-previous",
     "sociogram-step-next",
     "sociogram-step-restart",
+    "sociogram-step-archive",
 ]);
 
 // --- State --------------
-const { archiveHref } = useSociogramArchive();
+const { downloadArchive } = useSociogramDownloadArchive();
 
 // --- Computed -----------
 
@@ -65,11 +67,11 @@ const { archiveHref } = useSociogramArchive();
                 </svg>
             </BaseButton>
 
-            <a
+            <BaseButton
                 v-show="showArchive"
-                class="btn btn-outline"
-                :href="archiveHref"
-                download="dati.txt"
+                variant="outline"
+                :disabled="!enableArchive"
+                @click="downloadArchive"
             >
                 <svg
                     class="size-4"
@@ -85,7 +87,7 @@ const { archiveHref } = useSociogramArchive();
                     <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
                     <path d="M10 12h4" />
                 </svg>
-            </a>
+            </BaseButton>
 
             <BaseButton
                 v-show="showPrevious"

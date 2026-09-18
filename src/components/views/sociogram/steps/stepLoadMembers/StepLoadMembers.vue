@@ -86,12 +86,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
     </section>
 
     <SociogramNavigation
-        :show-previous="true"
-        :show-next="true"
-        :show-restart="true"
         :enable-previous="true"
         :enable-next="canGoNext"
-        :enable-restart="true"
         @sociogram-step-previous="goToStep('start')"
         @sociogram-step-next="goToStep('setPreferences')"
         @sociogram-step-restart="restart"

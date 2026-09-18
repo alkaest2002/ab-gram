@@ -2,7 +2,7 @@
  * Validation rules for an archived sociogram snapshot.
  *
  * An archived file is the base64-encoded JSON of the sociogram store state
- * (produced by `useSociogramArchive`). Once decoded and parsed, the payload is
+ * (produced by `useSociogramDownloadArchive`). Once decoded and parsed, the payload is
  * a plain object mirroring that state — a snapshot:
  *
  *   {
