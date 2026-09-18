@@ -38,9 +38,9 @@ const { goToStep } = useSociogramNavigation(emit);
                 sono i ruoli chiave — e le restituisce come mappa visiva e
                 numerica.
             </StepHeader>
-        </section>
 
-        <section class="card space-y-4">
+            <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
             <div class="space-y-1">
                 <p class="eyebrow">Nuovo progetto</p>
                 <h3>Carica una nuova lista dei nomi</h3>
