@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
-import { MEMBERS_INDICES } from "@/composables/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
 
 /**
  * A single participant in the sociogram.

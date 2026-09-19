@@ -11,7 +11,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Composables --------
 import { useSociogramTextReader } from "@/composables/sociogram/useSociogramTextReader";
-import { buildMembers, normalizeNames } from "@/utils/members";
+import { buildMembers, normalizeNames } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 const props = defineProps({

@@ -16,7 +16,7 @@ import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLo
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
-import { getMembersNameIssues } from "@/utils/members";
+import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 

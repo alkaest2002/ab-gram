@@ -3,8 +3,8 @@
 import { computed, nextTick, ref, watch } from "vue";
 
 // --- Composables --------
-import { getMembersNameIssues } from "@/utils/members";
-import { MEMBERS_INDICES } from "@/composables/sociogram/sociogramValidationFunctions";
+import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
+import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
 
 // --- Props --------------
 const props = defineProps({

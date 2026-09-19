@@ -1,4 +1,4 @@
-import { MEMBERS_INDICES } from "@/composables/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
 
 /**
  * Sociogram member helpers shared by the "load members" step.
