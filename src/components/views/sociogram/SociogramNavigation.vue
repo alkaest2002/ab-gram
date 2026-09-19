@@ -7,6 +7,7 @@
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseTooltip from "@/components/ui/BaseTooltip.vue";
 
 // --- Composables --------
 import { useSociogramDownloadArchive } from "@/composables/sociogram/useSociogramDownloadArchive";
@@ -46,90 +47,108 @@ const { downloadArchive } = useSociogramDownloadArchive();
 <template>
     <div class="flex flex-wrap gap-2 justify-between mt-4">
         <div class="flex flex-wrap gap-2">
-            <BaseButton
+            <BaseTooltip
                 v-show="showRestart"
-                variant="outline"
-                :disabled="!enableRestart"
-                @click="$emit('sociogram-step-restart')"
+                label="Ricomincia da capo"
             >
-                <svg
-                    class="size-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
+                <BaseButton
+                    variant="outline"
+                    :disabled="!enableRestart"
+                    aria-label="Ricomincia da capo"
+                    @click="$emit('sociogram-step-restart')"
                 >
-                    <path d="M21 12a9 9 0 1 1-2.64-6.36" />
-                    <path d="M21 3v6h-6" />
-                </svg>
-            </BaseButton>
+                    <svg
+                        class="size-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                        <path d="M21 3v6h-6" />
+                    </svg>
+                </BaseButton>
+            </BaseTooltip>
 
-            <BaseButton
+            <BaseTooltip
                 v-show="showArchive"
-                variant="outline"
-                :disabled="!enableArchive"
-                @click="downloadArchive"
+                label="Scarica archivio"
             >
-                <svg
-                    class="size-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
+                <BaseButton
+                    variant="outline"
+                    :disabled="!enableArchive"
+                    aria-label="Scarica archivio"
+                    @click="downloadArchive"
                 >
-                    <rect x="2" y="3" width="20" height="5" rx="1" />
-                    <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
-                    <path d="M10 12h4" />
-                </svg>
-            </BaseButton>
+                    <svg
+                        class="size-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <rect x="2" y="3" width="20" height="5" rx="1" />
+                        <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+                        <path d="M10 12h4" />
+                    </svg>
+                </BaseButton>
+            </BaseTooltip>
 
-            <BaseButton
+            <BaseTooltip
                 v-show="showPrevious"
-                variant="outline"
-                :disabled="!enablePrevious"
-                @click="$emit('sociogram-step-previous')"
+                label="Passaggio precedente"
             >
-                <svg
-                    class="size-4"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
+                <BaseButton
+                    variant="outline"
+                    :disabled="!enablePrevious"
+                    @click="$emit('sociogram-step-previous')"
                 >
-                    <path d="M15 18l-6-6 6-6" />
-                </svg>
-                Indietro
-            </BaseButton>
+                    <svg
+                        class="size-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                    Indietro
+                </BaseButton>
+            </BaseTooltip>
         </div>
 
-        <BaseButton
+        <BaseTooltip
             v-show="showNext"
-            variant="outline"
-            :disabled="!enableNext"
-            @click="$emit('sociogram-step-next')"
+            label="Passaggio successivo"
         >
-            <svg
-                class="size-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+            <BaseButton
+                variant="outline"
+                :disabled="!enableNext"
+                @click="$emit('sociogram-step-next')"
             >
-                <path d="M9 6l6 6-6 6" />
-            </svg>
-            Avanti
-        </BaseButton>
+                <svg
+                    class="size-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M9 6l6 6-6 6" />
+                </svg>
+                Avanti
+            </BaseButton>
+        </BaseTooltip>
     </div>
 </template>

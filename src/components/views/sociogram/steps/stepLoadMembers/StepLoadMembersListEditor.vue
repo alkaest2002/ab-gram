@@ -2,12 +2,6 @@
 // --- Vue ----------------
 import { computed, nextTick, ref, watch } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
 // --- Composables --------
 import { getMembersNameIssues, MEMBERS_INDICES } from "@/utils/members";
 
@@ -29,14 +23,9 @@ const emit = defineEmits([
 
 // --- State --------------
 // Inline editing state. The list is a preview: clicking a name makes it
-// editable. Enter commits the change, Esc (or clicking away) cancels it by restoring the previous
-// name.
+// editable. Enter commits the change, Esc (or clicking away) cancels it by restoring the previous name.
 const editingId = ref(null);
 const originalName = ref(null);
-// Maps each member id to its input element so a freshly added member can be focused.
-const nameInputs = new Map();
-// Set when a member is added; the watcher focuses its input once it renders.
-const pendingFocusId = ref(null);
 
 // --- Computed -----------
 /** Total number of members. */
@@ -68,23 +57,22 @@ const emptyTone = computed(() =>
 );
 
 // --- Watchers -----------
-watch(pendingFocusId, async (memberId) => {
-  if (memberId === null) return;
-  await nextTick();
-  nameInputs.get(memberId)?.focus();
-  pendingFocusId.value = null;
-});
-
-// --- Lifecycle ----------
+// Focus the newly added member's input when it renders.
+watch(
+  () => props.members.length,
+  async (newLength, oldLength) => {
+    if (newLength > oldLength) {
+      await nextTick();
+      const addedMember = props.members[props.members.length - 1];
+      const input = document.querySelector(`[data-member-id="${addedMember.id}"]`);
+      input?.focus();
+    }
+  }
+);
 
 // --- Methods ------------
 function isEditing(member) {
   return editingId.value === member.id;
-}
-
-function isLastMember(member) {
-  const last = props.members[props.members.length - 1];
-  return last !== undefined && last.id === member.id;
 }
 
 function startEditing(member) {
@@ -122,25 +110,16 @@ function updateMember(memberId, key, value) {
 }
 
 function removeMember(memberId) {
-  if (editingId.value === memberId) {
+  if (isEditing({ id: memberId })) {
     commitEditing();
   }
   emit("sociogram-remove-member", memberId);
-}
-
-function setInputRef(memberId, element) {
-  if (element) {
-    nameInputs.set(memberId, element);
-  } else {
-    nameInputs.delete(memberId);
-  }
 }
 
 function addMember() {
   if (!canAddMember.value) return;
   editingId.value = nextMemberId.value;
   originalName.value = "";
-  pendingFocusId.value = nextMemberId.value;
   emit("sociogram-add-member");
 }
 </script>
@@ -250,7 +229,7 @@ function addMember() {
           </span>
 
           <input
-            :ref="(el) => setInputRef(member.id, el)"
+            :data-member-id="member.id"
             :value="member.name"
             :readonly="!isEditing(member)"
             :class="[inputClass(member), isEditing(member) ? 'cursor-text' : 'cursor-pointer']"
