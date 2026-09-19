@@ -5,7 +5,7 @@ import {
   COMPLETE_SNAPSHOT_CHECKS,
   COMPLETE_MEMBER_CHECKS,
   invalid,
-} from "@/composables/sociogram/archiveValidationFunctions";
+} from "@/composables/sociogram/sociogramValidationFunctions";
 
 /**
  * Validate a decoded, parsed sociogram archive snapshot for import.

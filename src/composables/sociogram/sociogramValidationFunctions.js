@@ -21,6 +21,9 @@
  *     that compare members against each other.
  */
 
+/** Shared id sequence used to label members in order of addition. */
+export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
+
 /** Member ids are single characters drawn from A–Z and 0–9. */
 export const MEMBER_ID_PATTERN = /^[A-Z0-9]$/;
 

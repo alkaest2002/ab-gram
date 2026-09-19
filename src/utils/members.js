@@ -1,5 +1,4 @@
-// Derived members indices
-export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
+import { MEMBERS_INDICES } from "@/composables/sociogram/sociogramValidationFunctions";
 
 /**
  * Sociogram member helpers shared by the "load members" step.
