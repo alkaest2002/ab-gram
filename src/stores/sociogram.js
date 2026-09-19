@@ -61,10 +61,15 @@ export const useSociogramStore = defineStore("sociogram", () => {
   function removeMember(memberId) {
     members.value = members.value.filter((m) => m.id !== memberId);
     members.value.forEach((m) => {
-      m.likes = m.likes.filter((id) => id !== memberId);
-      m.noLikes = m.likes.length === 0;
-      m.dislikes = m.dislikes.filter((id) => id !== memberId);
-      m.noDislikes = m.dislikes.length === 0;
+      if (m.likes.includes(memberId)) {
+        m.likes = m.likes.filter((id) => id !== memberId);
+        m.noLikes = m.likes.length === 0;
+      }
+
+      if (m.dislikes.includes(memberId)) {
+        m.dislikes = m.dislikes.filter((id) => id !== memberId);
+        m.noDislikes = m.dislikes.length === 0;
+      }
     });
   }
 
