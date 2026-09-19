@@ -236,8 +236,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         :enable-next="canGoNext"
         :enable-restart="true"
         :enable-archive="true"
-        @sociogram-step-previous="goToStep('loadMembers')"
-        @sociogram-step-next="goToStep('generateReport')"
-        @sociogram-step-restart="restart"
+        @sociogram-navigation-previous="goToStep('loadMembers')"
+        @sociogram-navigation-next="goToStep('generateReport')"
+        @sociogram-navigation-restart="restart"
     />
 </template>

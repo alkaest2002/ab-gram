@@ -26,10 +26,10 @@ defineProps({
 
 // --- Emits --------------
 defineEmits([
-    "sociogram-step-previous",
-    "sociogram-step-next",
-    "sociogram-step-restart",
-    "sociogram-step-archive",
+    "sociogram-navigation-archive",
+    "sociogram-navigation-next",
+    "sociogram-navigation-previous",
+    "sociogram-navigation-restart",
 ]);
 
 // --- State --------------
@@ -55,7 +55,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
                     variant="outline"
                     :disabled="!enableRestart"
                     aria-label="Ricomincia da capo"
-                    @click="$emit('sociogram-step-restart')"
+                    @click="$emit('sociogram-navigation-restart')"
                 >
                     <svg
                         class="size-4"
@@ -107,7 +107,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
                 <BaseButton
                     variant="outline"
                     :disabled="!enablePrevious"
-                    @click="$emit('sociogram-step-previous')"
+                    @click="$emit('sociogram-navigation-previous')"
                 >
                     <svg
                         class="size-4"
@@ -133,7 +133,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
             <BaseButton
                 variant="outline"
                 :disabled="!enableNext"
-                @click="$emit('sociogram-step-next')"
+                @click="$emit('sociogram-navigation-next')"
             >
                 <svg
                     class="size-4"

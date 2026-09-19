@@ -243,8 +243,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         :enable-previous="true"
         :enable-restart="true"
         :enable-next="true"
-        @sociogram-step-previous="goToStep('setPreferences')"
-        @sociogram-step-restart="restart"
-        @sociogram-step-next="goNext"
+        @sociogram-navigation-previous="goToStep('setPreferences')"
+        @sociogram-navigation-restart="restart"
+        @sociogram-navigation-next="goNext"
     />
 </template>

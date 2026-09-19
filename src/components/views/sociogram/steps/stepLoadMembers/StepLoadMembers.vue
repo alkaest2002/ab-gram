@@ -90,8 +90,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         :enable-next="hasLoaded"
         :enable-archive="hasLoaded"
         :enable-restart="hasLoaded"
-        @sociogram-step-previous="goToStep('start')"
-        @sociogram-step-next="goToStep('setPreferences')"
-        @sociogram-step-restart="restart"
+        @sociogram-navigation-previous="goToStep('start')"
+        @sociogram-navigation-next="goToStep('setPreferences')"
+        @sociogram-navigation-restart="restart"
     />
 </template>
