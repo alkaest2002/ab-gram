@@ -13,6 +13,7 @@ import StepImportFromArchive from "@/components/views/sociogram/steps/stepImport
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
+import TransitionComponent from "@/components/ui/TransitionComponent.vue";
 
 // --- Composables --------
 import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation";
@@ -89,14 +90,7 @@ function editMember(memberId) {
         <!-- Fade between steps. This is a local state change, not a route
              navigation, so it deliberately has no `@before-enter` scroll hook and
              must not touch the router's scroll coordination. -->
-        <Transition
-            appear
-            mode="out-in"
-            enter-active-class="transition duration-200 ease-out motion-reduce:transition-none"
-            enter-from-class="opacity-0 motion-safe:translate-y-1"
-            leave-active-class="transition duration-200 ease-in motion-reduce:transition-none"
-            leave-to-class="opacity-0"
-        >
+        <TransitionComponent>
             <div :key="currentComponentName">
                 <keep-alive>
                     <component
@@ -106,6 +100,6 @@ function editMember(memberId) {
                     />
                 </keep-alive>
             </div>
-        </Transition>
+        </TransitionComponent>
     </div>
 </template>

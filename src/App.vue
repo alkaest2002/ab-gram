@@ -8,7 +8,7 @@ import { useRoute, RouterView } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
-import PageTransition from "@/components/ui/PageTransition.vue";
+import TransitionRouter from "@/components/ui/TransitionRouter.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 
@@ -39,9 +39,9 @@ const layout = computed(() => layouts[route.meta.layout] ?? DefaultLayout);
 <template>
     <component :is="layout">
         <RouterView v-slot="{ Component }">
-            <PageTransition>
+            <TransitionRouter>
                 <component :is="Component" />
-            </PageTransition>
+            </TransitionRouter>
         </RouterView>
     </component>
 </template>

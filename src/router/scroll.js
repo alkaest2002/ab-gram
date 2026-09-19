@@ -8,7 +8,7 @@
 // The sweet spot is the entering element's `before-enter` hook: with
 // `mode="out-in"` it fires after the outgoing page has fully left but before the
 // incoming page is inserted, so the scroll change is never visible. `scrollBehavior`
-// therefore returns a promise and we resolve it from `PageTransition` on
+// therefore returns a promise and we resolve it from `TransitionRouter` on
 // `@before-enter`.
 
 let resolveScroll = null;
@@ -45,7 +45,7 @@ export function waitForPageTransition() {
 }
 
 /**
- * Resolve the pending scroll. Called by `PageTransition` on `@before-enter`.
+ * Resolve the pending scroll. Called by `TransitionRouter` on `@before-enter`.
  */
 export function resolvePageTransition() {
   if (resolveScroll) {
