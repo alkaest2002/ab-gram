@@ -21,7 +21,7 @@ import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- State --------------
 // Get the sociogram store and its state.

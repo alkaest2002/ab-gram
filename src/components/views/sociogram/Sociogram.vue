@@ -58,7 +58,7 @@ const stepProps = computed(() =>
 const stepListeners = computed(() => {
     const listeners = {
         "sociogram-change-component": changeComponent,
-        "sociogram-restart": sociogramStore.resetMembers,
+        "sociogram-restart-app": sociogramStore.resetMembers,
     };
 
     if (currentComponentName.value === "generateReport") {

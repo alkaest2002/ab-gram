@@ -23,7 +23,7 @@ import { useSociogramValidateData } from "@/composables/sociogram/useSociogramVa
 // --- Emits --------------
 const emit = defineEmits([
     "sociogram-change-component",
-    "sociogram-restart",
+    "sociogram-restart-app",
     "sociogram-edit-member",
 ]);
 

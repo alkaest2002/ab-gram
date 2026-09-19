@@ -15,7 +15,7 @@ import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavi
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- State --------------
 

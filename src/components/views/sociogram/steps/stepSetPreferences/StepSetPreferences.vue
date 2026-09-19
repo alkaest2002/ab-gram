@@ -23,7 +23,7 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart"]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- State --------------
 const sociogramStore = useSociogramStore();

@@ -24,7 +24,7 @@ export function useSociogramNavigation(emit) {
   }
 
   function restart() {
-    emit("sociogram-restart");
+    emit("sociogram-restart-app");
     goToStep(SOCIOGRAM_STEPS[0]);
   }
 
