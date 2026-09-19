@@ -63,8 +63,8 @@ const readings = [
     },
 ];
 
-// Placeholder until a real donation link exists.
-const paypalUrl = "https://www.paypal.com/paypalme/ab-grid";
+// Stripe donation link.
+const donationUrl = "https://donate.stripe.com/4gM6oH21z5ov7Yq59pcV201";
 const siteUrl = window.location.origin;
 const copied = ref(false);
 let copyTimer = null;
@@ -81,17 +81,9 @@ async function copyLink() {
     try {
         await navigator.clipboard.writeText(siteUrl);
     } catch {
-        // Clipboard API needs a secure context (https or localhost). Fall back to
-        // a temporary textarea for older browsers or file:// previews.
-        const textarea = document.createElement("textarea");
-        textarea.value = siteUrl;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textarea);
+        // Clipboard API needs a secure context (https or localhost). Without it
+        // there's no reliable fallback, so leave the button label unchanged.
+        return;
     }
 
     copied.value = true;
@@ -191,14 +183,14 @@ async function copyLink() {
                     </p>
                     <h2 class="text-white">Ti è stato utile?</h2>
                     <p class="text-white/90">
-                        Offrici un caffè con una piccola donazione su PayPal, oppure
+                        Offrici un caffè con una piccola donazione, oppure
                         copia il link e condividilo con chi potrebbe trovarla utile.
                     </p>
                 </div>
 
                 <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
                     <a
-                        :href="paypalUrl"
+                        :href="donationUrl"
                         target="_blank"
                         rel="noreferrer"
                         class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-white/90 sm:w-auto"
@@ -215,7 +207,7 @@ async function copyLink() {
                         >
                             <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z" />
                         </svg>
-                        Dona con PayPal
+                        Dona con Stripe
                     </a>
 
                     <button
@@ -251,7 +243,20 @@ async function copyLink() {
                             <rect width="14" height="14" x="8" y="8" rx="2" />
                             <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
                         </svg>
-                        {{ copied ? "Copiato!" : "Copia il link" }}
+                        <span class="grid place-items-center">
+                            <span
+                                class="col-start-1 row-start-1"
+                                :class="copied ? 'invisible' : 'visible'"
+                            >
+                                Copia il link
+                            </span>
+                            <span
+                                class="col-start-1 row-start-1"
+                                :class="copied ? 'visible' : 'invisible'"
+                            >
+                                Copiato!
+                            </span>
+                        </span>
                     </button>
                 </div>
             </div>
