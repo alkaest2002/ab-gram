@@ -270,7 +270,8 @@
   }
 
   .nav-link {
-    @apply rounded-md px-3 py-1.5 text-sm text-muted transition-colors hover:text-ink;
+    @apply inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-semibold
+      text-muted transition-colors hover:text-ink;
   }
 
   .nav-link.is-active {
