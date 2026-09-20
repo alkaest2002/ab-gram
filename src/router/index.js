@@ -66,7 +66,7 @@ export const routes = [
           title: "Informazione",
           inMenu: false,
           typeOfMenu: null,
-          layout: "DefaultLayout",
+          layout: "EmptyLayout",
         },
       },
       {
@@ -77,7 +77,18 @@ export const routes = [
           title: "Informazione",
           inMenu: false,
           typeOfMenu: null,
-          layout: "DefaultLayout",
+          layout: "EmptyLayout",
+        },
+      },
+      {
+        path: "report-no-data-error",
+        name: "reportNoDataError",
+        component: () => import("@/components/views/notify/ReportNoDataError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "EmptyLayout",
         },
       }
     ]
