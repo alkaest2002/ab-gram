@@ -24,8 +24,8 @@
 /** Shared id sequence used to label members in order of addition. */
 export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
 
-/** Member ids are single characters drawn from A–Z and 0–9. */
-export const MEMBER_ID_PATTERN = /^[A-Z0-9]$/;
+/** Member ids are single characters drawn from MEMBERS_INDICES */
+export const MEMBER_ID_PATTERN = /^[A-Z2468#@%$&]$/;
 
 /** Maximum number of members (mirrors `maxMembersCount` in the store). */
 export const MAX_MEMBERS_COUNT = 35;
