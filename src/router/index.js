@@ -38,7 +38,7 @@ export const routes = [
   },
   {
     path: "/report",
-    component: () => import("@/components/views/Report.vue"),
+    component: () => import("@/components/views/report/Report.vue"),
     meta: {
       title: "Report",
       inMenu: false,
