@@ -11,13 +11,6 @@ export const MAX_FILE_SIZE_LIMIT = 10 * 1024 * 1024; // 10 MiB
 /** Allowed MIME types for text files. Add more as needed. */
 export const ALLOWED_MIME_TYPES = [
   "text/plain",
-  "text/csv",
-  "text/tab-separated-values",
-  "text/html",
-  "text/xml",
-  "application/json",
-  "application/x-ndjson",
-  // Add custom types
 ];
 
 /**
