@@ -35,12 +35,11 @@ const model = defineModel({ type: Array, default: () => [] });
 const fileInput = ref(null);
 const fileName = ref("");
 
-const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(
-  null,
-  props.maxFileSize,
-  props.maxLines,
-  props.maxLineLength,
-);
+const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(null, {
+  maxFileSize: props.maxFileSize,
+  maxLines: props.maxLines,
+  maxLineLength: props.maxLineLength,
+});
 
 // --- Computed -----------
 

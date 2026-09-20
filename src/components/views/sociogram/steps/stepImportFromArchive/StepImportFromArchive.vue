@@ -38,12 +38,9 @@ const { validate } = useSociogramValidateData();
 // Streams the archive instead of loading it all at once. The archive is a single
 // base64 line, so lines and line length stay uncapped (`null`) — the byte ceiling
 // (1 MiB) is the safety limit.
-const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(
-    null,
-    DEFAULT_MAX_FILE_SIZE,
-    null,
-    null,
-);
+const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(null, {
+    maxFileSize: DEFAULT_MAX_FILE_SIZE,
+});
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);
