@@ -139,46 +139,6 @@
     @apply max-w-[46ch] text-base sm:text-[1.0625rem];
   }
 
-  /* Graph legend: the mark on the left, the explanation on the right. */
-  .readings {
-    @apply divide-y divide-line border-y border-line;
-  }
-
-  .reading {
-    @apply flex items-start gap-5 py-5;
-  }
-
-  .reading-glyph {
-    @apply mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg border border-line;
-
-    svg {
-      @apply size-5 fill-none stroke-current stroke-[1.75];
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Rejections and isolation are dashed here too, as in the sociogram. */
-    .is-dashed {
-      stroke-dasharray: 4.5 4.5;
-    }
-
-    circle.is-dashed {
-      stroke-dasharray: 3 4;
-    }
-  }
-
-  .glyph-accent {
-    @apply text-accent;
-  }
-
-  .glyph-reject {
-    @apply text-reject;
-  }
-
-  .glyph-muted {
-    @apply text-muted;
-  }
-
   /* Closing band: the app's path in three words and a single call to action. */
   .band {
     @apply flex flex-col gap-5 rounded-lg border border-line p-6

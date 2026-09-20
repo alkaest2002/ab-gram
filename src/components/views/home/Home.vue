@@ -8,6 +8,7 @@ import { RouterLink } from "vue-router";
 
 // --- Components ---------
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
+import SociogramLegend from "@/components/views/home/SociogramLegend.vue";
 import DonationCard from "@/components/views/home/DonationCard.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
@@ -18,50 +19,6 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 // --- Emits --------------
 
 // --- State --------------
-/**
- * The five readings are the vocabulary of the graph above: each entry reuses the
- * same mark that appears in the sociogram, so the legend isn't decoration
- * but the key to reading the drawing.
- *
- * `tone` chooses the mark's color, `double` adds the tip at the start too,
- * `dashed` dashes it: the same three variables as the drawing.
- */
-const readings = [
-    {
-        kind: "choice",
-        tone: "accent",
-        title: "Preferenze",
-        text: "Chi indica chi. La freccia parte da chi sceglie e arriva a chi è stato scelto.",
-    },
-    {
-        kind: "mutual",
-        tone: "accent",
-        double: true,
-        title: "Preferenze reciproche",
-        text: "Le coppie che si scelgono a vicenda: il legame più stabile del gruppo.",
-    },
-    {
-        kind: "reject",
-        tone: "reject",
-        dashed: true,
-        title: "Rifiuti",
-        text: "Le preferenze negative: dicono con chi una persona preferirebbe non lavorare.",
-    },
-    {
-        kind: "reject-mutual",
-        tone: "reject",
-        dashed: true,
-        double: true,
-        title: "Rifiuti reciproci",
-        text: "Due persone che si escludono a vicenda: la tensione da sciogliere per prima.",
-    },
-    {
-        kind: "alone",
-        tone: "muted",
-        title: "Isolamento",
-        text: "Chi esprime preferenze senza riceverne. Iris, Luca e Marta, nel grafico qui sopra.",
-    },
-];
 
 // --- Computed -----------
 
@@ -88,51 +45,7 @@ const readings = [
 
         <SociogramPreview />
 
-        <section class="space-y-6">
-            <div class="space-y-3">
-                <h2>Legenda</h2>
-            </div>
-
-            <ul class="readings">
-                <li
-                    v-for="reading in readings"
-                    :key="reading.kind"
-                    class="reading"
-                >
-                    <span
-                        class="reading-glyph"
-                        :class="`glyph-${reading.tone}`"
-                        aria-hidden="true"
-                    >
-                        <svg viewBox="0 0 32 32">
-                            <circle
-                                v-if="reading.kind === 'alone'"
-                                class="is-dashed"
-                                cx="16"
-                                cy="16"
-                                r="10.5"
-                            />
-                            <template v-else>
-                                <path
-                                    :class="{ 'is-dashed': reading.dashed }"
-                                    d="M5 16h22"
-                                />
-                                <path d="M22 11l5 5-5 5" />
-                                <path
-                                    v-if="reading.double"
-                                    d="M10 11l-5 5 5 5"
-                                />
-                            </template>
-                        </svg>
-                    </span>
-
-                    <div class="space-y-1.5">
-                        <h3>{{ reading.title }}</h3>
-                        <p class="text-sm">{{ reading.text }}</p>
-                    </div>
-                </li>
-            </ul>
-        </section>
+        <SociogramLegend />
 
         <section class="band">
             <div class="space-y-2.5">
