@@ -69,6 +69,14 @@ watch(
     { immediate: true },
 );
 
+watch(currentLikes, (newValue) => {
+  if (newValue.length > 0) currentNoLikes.value = false;
+})
+
+watch(currentDislikes, (newValue) => {
+  if (newValue.length > 0) currentNoDislikes.value = false;
+})
+
 watch(currentNoLikes, (newValue) => {
   newValue && resetLikes();
 });
@@ -219,7 +227,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
                     <label class="flex items-start gap-3">
                         <input
                             type="checkbox"
-                            class="mt-0.5 size-4 shrink-0 accent-accent"
+                            class="mt-0.5 size-4 shrink-0 accent-reject"
                             v-model="currentNoDislikes"
                         />
                         <span class="text-sm text-ink">
