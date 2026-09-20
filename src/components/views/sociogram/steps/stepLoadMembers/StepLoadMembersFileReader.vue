@@ -60,7 +60,7 @@ async function onFileChange(event) {
 
   if (error.value) return;
 
-  const normalizedNames = normalizeNames(rows.value);
+  const normalizedNames = normalizeNames(rows.value).sort();
   model.value = buildMembers(normalizedNames);
 }
 </script>
