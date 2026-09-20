@@ -58,6 +58,23 @@ export function buildMembers(names) {
  * @param {Array<{ name?: string }>} members
  * @returns {{ emptyNamesCount: number, duplicateNamesCount: number }}
  */
+/**
+ * Whether a member has completed both preference categories: each must be
+ * resolved by selecting at least one entry or by declaring "no answer" for it.
+ *
+ * @param {{ likes?: string[], dislikes?: string[], noLikes?: boolean, noDislikes?: boolean } | null} member
+ * @returns {boolean}
+ */
+export function isMemberComplete(member) {
+  if (!member) return false;
+
+  const hasLikes = (member.likes?.length ?? 0) > 0 || Boolean(member.noLikes);
+  const hasDislikes =
+    (member.dislikes?.length ?? 0) > 0 || Boolean(member.noDislikes);
+
+  return hasLikes && hasDislikes;
+}
+
 export function getMembersNameIssues(members) {
   const names = members.map((member) => String(member?.name ?? "").trim());
   const nonEmptyNames = names.filter(Boolean);

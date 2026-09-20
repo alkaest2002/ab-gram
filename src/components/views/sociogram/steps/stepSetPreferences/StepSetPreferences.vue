@@ -13,9 +13,13 @@ import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/CarouselMembers.vue";
 import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
+import MembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/MembersPreferencesProgress.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+
+// --- Utils -------------
+import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 const props = defineProps({
@@ -105,18 +109,6 @@ function writableMemberField(field, fallback) {
     });
 }
 
-// A member's answer is complete once both categories are resolved: either by
-// selecting at least one entry or by declaring "no answer" for that category.
-function isMemberComplete(member) {
-    if (!member) return false;
-
-    const hasLikes = (member.likes?.length ?? 0) > 0 || Boolean(member.noLikes);
-    const hasDislikes =
-        (member.dislikes?.length ?? 0) > 0 || Boolean(member.noDislikes);
-
-    return hasLikes && hasDislikes;
-}
-
 function carouselGoPreviousMember() {
     if (carouselCanGoPreviousMember.value) {
         currentIndex.value--;
@@ -157,6 +149,9 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         </p>
 
         <template v-else>
+            <!-- Progress: percentage of members whose data has been collected. -->
+            <MembersPreferencesProgress :members="members" class="mt-6" />
+
             <!-- Carousel: select the subject, one member at a time. -->
             <div class="mt-6">
                 <p class="eyebrow">CAROSELLO</p>
