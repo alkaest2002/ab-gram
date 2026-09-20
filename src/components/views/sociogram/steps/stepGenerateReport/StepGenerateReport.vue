@@ -62,8 +62,7 @@ async function generateReport() {
 }
 
 function goNext() {
-  const { valid, error } = validate(members.value);
-  console.log(error)
+  const { valid } = validate(members.value);
   if (!valid) {
     router.push({ name: "sociogramValidatioError" });
     return;
