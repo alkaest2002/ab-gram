@@ -1,31 +1,43 @@
 import { ref } from "vue";
 
+/** Default ceiling on how many bytes are read from a file. */
+export const DEFAULT_MAX_FILE_SIZE = 1024 * 1024; // 1 MiB
+
 /**
  * Streaming text reader. Reads `textFileToRead` in chunks — so a huge file is
- * never held fully in memory — returns at most `maxRows` rows, and truncates
- * each row to `rowLength` characters (safely handling multi-byte UTF-8).
+ * never held fully in memory — and stops as soon as `maxFileSize` bytes have
+ * been read. If `maxLines` is set (not `null`), at most that many lines are
+ * returned; if `maxLineLength` is set (not `null`), each line is truncated to
+ * that many characters (safely handling multi-byte UTF-8). Both limits are
+ * optional: pass `null` to leave them uncapped.
  *
- * The browser stays responsive because reading stops as soon as `maxRows` is
+ * The browser stays responsive because reading stops as soon as a limit is
  * reached (the stream is then cancelled) and each awaited `reader.read()` yields
  * to the event loop between chunks, so only a small slice is processed at a time.
  *
  * @param {File | Blob | null} textFileToRead
- * @param {number} rowLength Max characters kept per row (default 150). Must be > 0.
- * @param {number} maxRows    Max rows returned (default 35). Must be > 0.
+ * @param {number} maxFileSize Max bytes read from the file (default 1 MiB). Must be > 0.
+ * @param {number | null} maxLines Max lines returned, or `null` for no limit (default `null`).
+ * @param {number | null} maxLineLength Max characters kept per line, or `null` for no limit (default `null`).
  * @returns {{
- *   rows: import('vue').Ref<string[]>,
- *   error: import('vue').Ref<Error | null>,
- *   isReading: import('vue').Ref<boolean>,
- *   read: (file?: File | Blob) => Promise<void>
+ *   lines: import('vue').Ref<string[]>,
+ *   readError: import('vue').Ref<Error | null>,
+ *   isReadingFile: import('vue').Ref<boolean>,
+ *   readFile: (file?: File | Blob) => Promise<void>
  * }}
  */
-export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLength = 150) {
+export function useSociogramTextReader(
+  textFileToRead,
+  maxFileSize = DEFAULT_MAX_FILE_SIZE,
+  maxLines = null,
+  maxLineLength = null,
+) {
   /** @type {import('vue').Ref<string[]>} */
-  const rows = ref([]);
-  const error = ref(null);
-  const isReading = ref(false);
+  const lines = ref([]);
+  const readError = ref(null);
+  const isReadingFile = ref(false);
 
-  // Tracks the reader for the in-flight read so a new read() can cancel it.
+  // Tracks the reader for the in-flight read so a new readFile() can cancel it.
   let activeReader = null;
 
   /**
@@ -36,12 +48,22 @@ export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLengt
    * @param {number} length Max characters
    * @returns {string} Truncated text
    */
-  function truncateRow(text, length) {
+  function truncateLine(text, length) {
     if (length <= 0) return "";
     return Array.from(text).slice(0, length).join("");
   }
 
-  async function read(file = textFileToRead) {
+  /**
+   * A limit is valid when it's a positive integer; `null` means "no limit".
+   *
+   * @param {number | null} value
+   * @returns {boolean}
+   */
+  function isPositiveInteger(value) {
+    return Number.isInteger(value) && value > 0;
+  }
+
+  async function readFile(file = textFileToRead) {
     // Cancel any in-flight read before starting a new one, so concurrent calls
     // don't interleave and corrupt the shared refs.
     if (activeReader) {
@@ -55,64 +77,88 @@ export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLengt
 
     // Input validation
     if (!file) {
-      error.value = new Error("No file provided.");
-      isReading.value = false;
+      readError.value = new Error("No file provided.");
+      isReadingFile.value = false;
       return;
     }
 
-    if (
-      !Number.isInteger(maxRowLength) ||
-      maxRowLength <= 0 ||
-      !Number.isInteger(maxRows) ||
-      maxRows <= 0
-    ) {
-      error.value = new Error(
-        `Invalid parameters: rowLength (${maxRowLength}) and maxRows (${maxRows}) must be positive integers.`
+    if (!isPositiveInteger(maxFileSize)) {
+      readError.value = new Error(
+        `Invalid parameters: maxFileSize (${maxFileSize}) must be a positive integer.`
       );
-      isReading.value = false;
+      isReadingFile.value = false;
+      return;
+    }
+
+    if (maxLines !== null && !isPositiveInteger(maxLines)) {
+      readError.value = new Error(
+        `Invalid parameters: maxLines (${maxLines}) must be a positive integer or null.`
+      );
+      isReadingFile.value = false;
+      return;
+    }
+
+    if (maxLineLength !== null && !isPositiveInteger(maxLineLength)) {
+      readError.value = new Error(
+        `Invalid parameters: maxLineLength (${maxLineLength}) must be a positive integer or null.`
+      );
+      isReadingFile.value = false;
       return;
     }
 
     if (typeof file.stream !== "function") {
-      error.value = new Error("This file cannot be streamed.");
-      isReading.value = false;
+      readError.value = new Error("This file cannot be streamed.");
+      isReadingFile.value = false;
       return;
     }
 
-    isReading.value = true;
-    error.value = null;
-    rows.value = [];
+    isReadingFile.value = true;
+    readError.value = null;
+    lines.value = [];
 
     // Trailing characters of the previous chunk that don't end with a newline.
     // Will be finalized once a newline is encountered or stream ends.
     let remainder = "";
     let reader = null;
+    let bytesRead = 0;
+
+    // Each limit is applied only when it's enabled (not `null`).
+    const hasLineLimit = maxLines !== null;
+    const hasLineLengthLimit = maxLineLength !== null;
 
     try {
       const decoder = new TextDecoder();
       reader = file.stream().getReader();
       activeReader = reader;
 
-      while (rows.value.length < maxRows) {
+      // Read until the line limit is met or `maxFileSize` bytes have been read.
+      while (
+        (!hasLineLimit || lines.value.length < maxLines) &&
+        bytesRead < maxFileSize
+      ) {
         const { done, value } = await reader.read();
         if (done) break;
 
+        bytesRead += value.byteLength;
+
         const chunk = decoder.decode(value, { stream: true });
-        const lines = (remainder + chunk).split(/\r\n|\r|\n/);
+        const chunkLines = (remainder + chunk).split(/\r\n|\r|\n/);
 
         // The last element has no trailing newline: carry it to the next chunk.
-        remainder = lines.pop();
+        remainder = chunkLines.pop();
 
-        for (const line of lines) {
-          // Use character-aware truncation to avoid breaking multi-byte sequences
-          rows.value.push(truncateRow(line, maxRowLength));
-          if (rows.value.length >= maxRows) break;
+        for (const line of chunkLines) {
+          // Use character-aware truncation to avoid breaking multi-byte sequences.
+          lines.value.push(
+            hasLineLengthLimit ? truncateLine(line, maxLineLength) : line
+          );
+          if (hasLineLimit && lines.value.length >= maxLines) break;
         }
 
         // Guard against unbounded growth of remainder with a very long single line.
         // Still character-aware to avoid corruption.
-        if (Array.from(remainder).length > maxRowLength) {
-          remainder = truncateRow(remainder, maxRowLength);
+        if (hasLineLengthLimit && Array.from(remainder).length > maxLineLength) {
+          remainder = truncateLine(remainder, maxLineLength);
         }
       }
 
@@ -122,12 +168,14 @@ export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLengt
         remainder = remainder + tail;
       }
 
-      // Only add remainder if it's not empty and we haven't hit maxRows.
-      if (remainder && rows.value.length < maxRows) {
-        rows.value.push(truncateRow(remainder, maxRowLength));
+      // Only add remainder if it's not empty and we haven't hit the line limit.
+      if (remainder && (!hasLineLimit || lines.value.length < maxLines)) {
+        lines.value.push(
+          hasLineLengthLimit ? truncateLine(remainder, maxLineLength) : remainder
+        );
       }
     } catch (err) {
-      error.value = err;
+      readError.value = err;
     } finally {
       // Release the underlying stream, whether we finished or stopped early.
       activeReader = null;
@@ -138,9 +186,9 @@ export function useSociogramTextReader(textFileToRead, maxRows = 35, maxRowLengt
           // Silently ignore errors during cancellation
         }
       }
-      isReading.value = false;
+      isReadingFile.value = false;
     }
   }
 
-  return { rows, error, isReading, read };
+  return { lines, readError, isReadingFile, readFile };
 }

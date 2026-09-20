@@ -14,6 +14,10 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+import {
+    useSociogramTextReader,
+    DEFAULT_MAX_FILE_SIZE,
+} from "@/composables/sociogram/useSociogramTextReader";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 
 // --- Props --------------
@@ -26,11 +30,20 @@ const sociogramStore = useSociogramStore();
 
 const fileInput = ref(null);
 const fileName = ref("");
-const isReading = ref(false);
 const importError = ref(null);
 const importedCount = ref(null);
 
 const { validate } = useSociogramValidateData();
+
+// Streams the archive instead of loading it all at once. The archive is a single
+// base64 line, so lines and line length stay uncapped (`null`) — the byte ceiling
+// (1 MiB) is the safety limit.
+const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(
+    null,
+    DEFAULT_MAX_FILE_SIZE,
+    null,
+    null,
+);
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);
@@ -67,10 +80,15 @@ async function onFileChange(event) {
 
     if (!file) return;
 
-    isReading.value = true;
-
     try {
-        const base64 = (await file.text()).trim();
+        await readFile(file);
+
+        if (readError.value) {
+            importError.value = readError.value.message;
+            return;
+        }
+
+        const base64 = lines.value.join("").trim();
         const json = decodeBase64(base64);
         const parsed = JSON.parse(json);
 
@@ -93,7 +111,6 @@ async function onFileChange(event) {
     } catch {
         importError.value = "Il file non è un archivio sociogramma valido.";
     } finally {
-        isReading.value = false;
         // Reset the input so selecting the same file again fires `change` again.
         if (fileInput.value) fileInput.value.value = "";
     }
@@ -130,8 +147,8 @@ async function onFileChange(event) {
                     </p>
                 </div>
 
-                <BaseButton variant="solid" :disabled="isReading" @click="pick">
-                    {{ isReading ? "Lettura…" : "Scegli file" }}
+                <BaseButton variant="solid" :disabled="isReadingFile" @click="pick">
+                    {{ isReadingFile ? "Lettura…" : "Scegli file" }}
                 </BaseButton>
             </div>
 

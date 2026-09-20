@@ -66,8 +66,8 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
         <StepLoadMembersFileReader
-            :max-row-length="maxMemberNameLength"
-            :max-rows="maxMembersCount"
+            :max-line-length="maxMemberNameLength"
+            :max-lines="maxMembersCount"
             v-model="members"
         />
 

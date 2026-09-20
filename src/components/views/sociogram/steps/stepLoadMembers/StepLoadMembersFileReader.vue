@@ -10,15 +10,20 @@ import { ref } from "vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Composables --------
-import { useSociogramTextReader } from "@/composables/sociogram/useSociogramTextReader";
+import {
+    useSociogramTextReader,
+    DEFAULT_MAX_FILE_SIZE,
+} from "@/composables/sociogram/useSociogramTextReader";
 import { buildMembers, normalizeNames } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 const props = defineProps({
-  /** Maximum rows read from the file (see `useSociogramTextReader`). */
-  maxRows: { type: Number, default: 35 },
-  /** Maximum characters kept per row (see `useSociogramTextReader`). */
-  maxRowLength: { type: Number, default: 150 },
+  /** Maximum bytes read from the file (see `useSociogramTextReader`). */
+  maxFileSize: { type: Number, default: DEFAULT_MAX_FILE_SIZE },
+  /** Maximum lines read from the file (see `useSociogramTextReader`). */
+  maxLines: { type: Number, default: 35 },
+  /** Maximum characters kept per line (see `useSociogramTextReader`). */
+  maxLineLength: { type: Number, default: 150 },
 });
 
 // v-model: the clean member-name list owned by the parent view.
@@ -30,10 +35,11 @@ const model = defineModel({ type: Array, default: () => [] });
 const fileInput = ref(null);
 const fileName = ref("");
 
-const { rows, error, isReading, read } = useSociogramTextReader(
+const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(
   null,
-  props.maxRows,
-  props.maxRowLength,
+  props.maxFileSize,
+  props.maxLines,
+  props.maxLineLength,
 );
 
 // --- Computed -----------
@@ -53,14 +59,14 @@ async function onFileChange(event) {
 
   if (!file) return;
 
-  await read(file);
+  await readFile(file);
 
   // Reset the input so selecting the same file again fires `change` again.
   if (fileInput.value) fileInput.value.value = "";
 
-  if (error.value) return;
+  if (readError.value) return;
 
-  const normalizedNames = normalizeNames(rows.value).sort();
+  const normalizedNames = normalizeNames(lines.value).sort();
   model.value = buildMembers(normalizedNames);
 }
 </script>
@@ -84,13 +90,13 @@ async function onFileChange(event) {
         </p>
       </div>
 
-      <BaseButton variant="solid" :disabled="isReading" @click="pick">
-        {{ isReading ? "Lettura…" : "Scegli file" }}
+      <BaseButton variant="solid" :disabled="isReadingFile" @click="pick">
+        {{ isReadingFile ? "Lettura…" : "Scegli file" }}
       </BaseButton>
     </div>
 
-    <p v-if="error" class="text-sm text-reject" role="alert">
-      {{ error.message }}
+    <p v-if="readError" class="text-sm text-reject" role="alert">
+      {{ readError.message }}
     </p>
   </div>
 </template>
