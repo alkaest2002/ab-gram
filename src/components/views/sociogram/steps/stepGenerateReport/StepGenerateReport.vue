@@ -61,13 +61,13 @@ async function generateReport() {
   });
 }
 
-async function  goNext() {
-  const { valid } = validate(members.value);
+function goNext() {
+  const { valid, error } = validate(members.value);
+  console.log(error)
   if (!valid) {
     router.push({ name: "sociogramValidatioError" });
     return;
-  }
-  await generateReport();
+  };
   router.push({ name: "report" });
 }
 
@@ -241,7 +241,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
         :show-next="true"
         :show-restart="true"
         :enable-previous="true"
-        :enable-restart="true"
+        :enable-archive="true"
         :enable-next="true"
         @sociogram-navigation-previous="goToStep('setPreferences')"
         @sociogram-navigation-restart="restart"
