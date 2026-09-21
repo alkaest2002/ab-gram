@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 // --- Routers ------------
 
@@ -11,12 +11,13 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import StepLoadMembersFileReader from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersFileReader.vue";
+import TextFileReader from "@/components/ui/TextFileReader.vue";
+import StepLoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersResult.vue";
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
-import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
+import { buildMembers, getMembersNameIssues, normalizeNames } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 
@@ -32,6 +33,9 @@ const {
     hasMembers,
     members,
 } = storeToRefs(sociogramStore);
+
+const loadError = ref(null);
+const loadedCount = ref(null);
 
 // --- Computed -----------
 // The load step can only advance when there are members, none of them are
@@ -50,6 +54,23 @@ const hasLoaded = computed(
 
 // --- Methods ------------
 const { goToStep, restart } = useSociogramNavigation(emit);
+
+function onFileSelected() {
+    loadError.value = null;
+    loadedCount.value = null;
+}
+
+function onFileRead({ lines }) {
+    const normalizedNames = normalizeNames(lines).sort();
+    const loadedMembers = buildMembers(normalizedNames);
+
+    sociogramStore.setMembers(loadedMembers);
+    loadedCount.value = loadedMembers.length;
+}
+
+function onFileReadError({ message }) {
+    loadError.value = message;
+}
 </script>
 
 <template>
@@ -65,10 +86,20 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <StepLoadMembersFileReader
+        <TextFileReader
             :max-line-length="maxMemberNameLength"
             :max-lines="maxMembersCount"
-            v-model="members"
+            @file-selected="onFileSelected"
+            @file-read="onFileRead"
+            @file-read-error="onFileReadError"
+        >
+            <template #label>Carica il file</template>
+            Il file deve contenere un elenco di nomi, uno per riga.
+        </TextFileReader>
+
+        <StepLoadMembersResult
+            :error="loadError"
+            :loaded-count="loadedCount"
         />
 
         <div v-if="hasMembers" class="space-y-4">
