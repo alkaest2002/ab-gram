@@ -74,11 +74,12 @@ export const useSociogramStore = defineStore("sociogram", () => {
   }
 
   /**
-   * Append a member with the next id from the shared index sequence.
-   * Does nothing once every index is in use.
+   * Append a member with the first id from the shared index sequence that is
+   * not yet in use. Does nothing once every index is in use.
    */
   function addMember() {
-    const id = MEMBERS_INDICES[members.value.length];
+    const usedIds = new Set(members.value.map((m) => m.id));
+    const id = MEMBERS_INDICES.find((candidate) => !usedIds.has(candidate));
     if (id === undefined) return;
 
     members.value = [

@@ -37,8 +37,11 @@ const nameIssues = computed(() => getMembersNameIssues(props.members));
 const duplicatedNamesCount = computed(() => nameIssues.value.duplicateNamesCount);
 const emptyNamesCount = computed(() => nameIssues.value.emptyNamesCount);
 
-/** Next id from the shared sequence, or null once every index is used. */
-const nextMemberId = computed(() => MEMBERS_INDICES[membersCount.value] ?? null);
+/** First id from the shared sequence not yet used by any member, or null once every index is used. */
+const nextMemberId = computed(() => {
+  const usedIds = new Set(props.members.map((member) => member.id));
+  return MEMBERS_INDICES.find((id) => !usedIds.has(id)) ?? null;
+});
 
 /** Whether another member can still be added from the index sequence. */
 const hasAvailableIndices = computed(() => nextMemberId.value !== null);
