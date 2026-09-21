@@ -27,20 +27,13 @@ export const routes = [
   },
   {
     path: "/sociogram",
+    name: "sociogram",
     component: () => import("@/components/views/sociogram/Sociogram.vue"),
     meta: {
       title: "App",
       inMenu: true,
       typeOfMenu: ["header"],
       layout: "DefaultLayout",
-      // Hand-drawn SVG paths: no icon dependency, no files to load.
-      icon: [
-        "M18 2a3 3 0 1 0 0 6a3 3 0 1 0 0-6",
-        "M6 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6",
-        "M18 16a3 3 0 1 0 0 6a3 3 0 1 0 0-6",
-        "M8.59 13.51l6.83 3.98",
-        "M15.41 6.51l-6.82 3.98",
-      ],
     },
   },
   {
@@ -56,7 +49,7 @@ export const routes = [
   },
   {
     path: "/notify",
-    name: "notfy",
+    name: "notify",
     component: "",
     redirect: "/notify/generic-error",
     meta: {
@@ -149,13 +142,6 @@ export const routes = [
       inMenu: true,
       typeOfMenu: ["header"],
       layout: "DefaultLayout",
-      icon: [
-        "M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z",
-        "M14 2v4a2 2 0 0 0 2 2h4",
-        "M10 9H8",
-        "M16 13H8",
-        "M16 17H8",
-      ],
     },
   },
   {
@@ -167,11 +153,6 @@ export const routes = [
       inMenu: true,
       typeOfMenu: ["header", "footer"],
       layout: "DefaultLayout",
-      icon: [
-        "M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20",
-        "M12 16v-4",
-        "M12 8h.01",
-      ],
     },
   },
   {

@@ -9,6 +9,10 @@ import { RouterLink, useRoute } from "vue-router";
 
 // --- Components ---------
 import AppLogo from "@/components/ui/AppLogo.vue";
+import MenuIcon from "@/components/ui/icons/MenuIcon.vue";
+import NavAppIcon from "@/components/ui/icons/NavAppIcon.vue";
+import NavDocsIcon from "@/components/ui/icons/NavDocsIcon.vue";
+import NavAboutIcon from "@/components/ui/icons/NavAboutIcon.vue";
 
 // --- Composables --------
 import { useDisclosure } from "@/composables/useDisclosure";
@@ -22,6 +26,13 @@ import { useNavItems } from "@/composables/useNavItems";
 const route = useRoute();
 const { isOpen, close, toggle } = useDisclosure();
 const { navItems } = useNavItems("header");
+
+// Each menu entry maps to its hand-drawn icon (see src/components/ui/icons/).
+const navIcons = {
+    sociogram: NavAppIcon,
+    docs: NavDocsIcon,
+    about: NavAboutIcon,
+};
 
 // --- Computed -----------
 
@@ -54,16 +65,7 @@ onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
                 :aria-label="isOpen ? 'Chiudi il menu' : 'Apri il menu'"
                 @click="toggle"
             >
-                <svg
-                    class="size-5"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    fill="none"
-                    stroke-width="1.5"
-                >
-                    <path v-if="isOpen" d="M6 6l12 12M18 6L6 18" />
-                    <path v-else d="M4 7h16M4 12h16M4 17h16" />
-                </svg>
+                <MenuIcon :open="isOpen" />
             </button>
 
             <nav
@@ -78,22 +80,7 @@ onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
                     :to="item.path"
                     class="nav-link"
                 >
-                    <svg
-                        class="size-4 shrink-0"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path
-                            v-for="path in item.meta.icon"
-                            :key="path"
-                            :d="path"
-                        />
-                    </svg>
+                    <component :is="navIcons[item.name]" />
                     <span>{{ item.meta.title }}</span>
                 </RouterLink>
             </nav>
