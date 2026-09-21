@@ -60,7 +60,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
         <div
             class="mt-10 flex w-full flex-col items-center gap-4 border-t border-line pt-8"
         >
-            <p class="max-w-[46ch] text-sm">
+            <p class="max-w-[52ch] text-sm">
                 Riprova tra poco. Se il problema persiste, segnalalo a chi
                 gestisce l'applicazione.
             </p>
