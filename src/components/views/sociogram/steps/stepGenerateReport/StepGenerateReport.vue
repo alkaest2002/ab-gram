@@ -53,8 +53,9 @@ const summary = computed(() =>
 );
 
 function goNext() {
-  const { valid } = validate(members.value);
+  const { valid, error } = validate(members.value);
   if (!valid) {
+    console.log(error)
     router.push({ name: "sociogramValidatioError" });
     return;
   };
