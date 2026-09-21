@@ -11,10 +11,6 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
 // --- Composables --------
 
 // --- Props --------------
-defineProps({
-    /** Where the button links to; passed down by the router. */
-    to: { type: [String, Object], default: null },
-});
 
 // --- Emits --------------
 
@@ -30,7 +26,7 @@ defineProps({
 </script>
 
 <template>
-    <BaseNotify :to="to">
+    <BaseNotify to="/docs">
         <template #title> Errore di validazione </template>
         <template #text>
             Controlla che i dati rispettino i requisiti e i vincoli richiesti,

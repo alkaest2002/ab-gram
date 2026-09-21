@@ -11,10 +11,6 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
 // --- Composables --------
 
 // --- Props --------------
-defineProps({
-    /** Where the button links to; passed down by the router. */
-    to: { type: [String, Object], default: null },
-});
 
 // --- Emits --------------
 
@@ -30,12 +26,12 @@ defineProps({
 </script>
 
 <template>
-    <BaseNotify :to="to">
+    <BaseNotify to="/sociogram">
         <template #title> Il file non può essere caricato </template>
         <template #text>
             Controlla che il file-archivio sia un sociogramma valido, poi
             riprova.
         </template>
-        <template #buttonLabel> Riprova </template>
+        <template #buttonLabel> Torna al sociogramma </template>
     </BaseNotify>
 </template>

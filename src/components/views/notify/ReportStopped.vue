@@ -11,10 +11,6 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
 // --- Composables --------
 
 // --- Props --------------
-defineProps({
-    /** Where the button links to; passed down by the router. */
-    to: { type: [String, Object], default: null },
-});
 
 // --- Emits --------------
 
@@ -30,7 +26,7 @@ defineProps({
 </script>
 
 <template>
-    <BaseNotify :to="to">
+    <BaseNotify to="/sociogram">
         <template #title>Generazione interrotta</template>
         <template>
             I dati inseriti non sono andati persi. Puoi tornare al sociogramma e
