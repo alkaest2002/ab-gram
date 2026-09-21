@@ -16,6 +16,14 @@ import {
 } from "@/composables/sociogram/useSociogramTextReader";
 
 // --- Props --------------
+const props = defineProps({
+    /** Maximum bytes read from the file (see `useSociogramTextReader`). */
+    maxFileSize: { type: Number, default: DEFAULT_MAX_FILE_SIZE },
+    /** Maximum lines read from the file, or `null` for no limit. */
+    maxLines: { type: Number, default: null },
+    /** Maximum characters kept per line, or `null` for no limit. */
+    maxLineLength: { type: Number, default: null },
+});
 
 // --- Emits --------------
 const emit = defineEmits([
@@ -29,9 +37,11 @@ const fileInput = ref(null);
 const fileName = ref("");
 
 // Streams the file instead of loading it all at once, so a huge file is never
-// held fully in memory — the byte ceiling (1 MiB) is the safety limit.
+// held fully in memory — the byte ceiling is the safety limit.
 const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(null, {
-    maxFileSize: DEFAULT_MAX_FILE_SIZE,
+    maxFileSize: props.maxFileSize,
+    maxLines: props.maxLines,
+    maxLineLength: props.maxLineLength,
 });
 
 // --- Computed -----------
@@ -61,7 +71,7 @@ async function onFileChange(event) {
             return;
         }
 
-        emit("file-read", { content: lines.value.join("") });
+        emit("file-read", { lines: lines.value });
     } finally {
         // Reset the input so selecting the same file again fires `change` again.
         if (fileInput.value) fileInput.value.value = "";
@@ -82,7 +92,9 @@ async function onFileChange(event) {
 
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
-                <p class="eyebrow">Importa da file</p>
+                <p class="eyebrow">
+                    <slot name="label">Carica un file</slot>
+                </p>
                 <p class="mt-1 text-sm text-muted">
                     <slot>
                         Il file deve contenere dati validi.
