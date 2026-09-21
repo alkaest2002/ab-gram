@@ -7,6 +7,7 @@
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+import NotifyStopIcon from "@/components/ui/icons/NotifyStopIcon.vue"
 
 // --- Composables --------
 
@@ -33,10 +34,20 @@ defineProps({
     <div
         class="mx-auto flex w-full max-w-xl flex-col items-center px-6 py-14 text-center"
     >
-        <slot name="icon" />
+        <slot name="icon">
+            <NotifyStopIcon />
+        </slot>
 
         <div class="mt-6 space-y-3">
-            <slot name="text" />
+            <p class="eyebrow">Errore</p>
+            <h1 class="text-balance">
+                <slot name="title"> Ooops! Qualcosa è andato storto </slot>
+            </h1>
+            <p class="mx-auto max-w-[52ch] text-sm">
+                <slot name="text">
+                    Segnala il problema al gestore del sito
+                </slot>
+            </p>
         </div>
 
         <div

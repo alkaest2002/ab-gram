@@ -7,7 +7,6 @@
 
 // --- Components ---------
 import BaseNotify from "@/components/ui/BaseNotify.vue";
-import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 // --- Composables --------
 
@@ -32,24 +31,7 @@ defineProps({
 
 <template>
     <BaseNotify :to="to">
-        <template #icon>
-            <WarningIcon />
-        </template>
-
-        <template #text>
-            <p class="eyebrow">Errore</p>
-            <h1 class="text-balance">Ooops! Qualcosa è andato storto</h1>
-            <p class="lede mx-auto">
-                Si è verificato un problema imprevisto.
-            </p>
-            <p class="mx-auto max-w-[52ch] text-sm">
-                Riprova tra poco. Se il problema persiste, segnalalo a chi
-                gestisce l'applicazione.
-            </p>
-        </template>
-
-        <template #buttonLabel>
-            Torna alla home
-        </template>
+        <template #title> Si è verificato un problema imprevisto </template>
+        <template #buttonLabel> Torna alla home </template>
     </BaseNotify>
 </template>

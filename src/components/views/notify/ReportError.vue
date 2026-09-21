@@ -7,7 +7,6 @@
 
 // --- Components ---------
 import BaseNotify from "@/components/ui/BaseNotify.vue";
-import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 // --- Composables --------
 
@@ -32,24 +31,7 @@ defineProps({
 
 <template>
     <BaseNotify :to="to">
-        <template #icon>
-            <WarningIcon />
-        </template>
-
-        <template #text>
-            <p class="eyebrow">Errore</p>
-            <h1 class="text-balance">Impossibile generare il report</h1>
-            <p class="lede mx-auto">
-                Si è verificato un problema durante la generazione del report.
-            </p>
-            <p class="mx-auto max-w-[52ch] text-sm">
-                Riprova tra poco. Se il problema persiste, segnalalo a chi
-                gestisce l'applicazione.
-            </p>
-        </template>
-
-        <template #buttonLabel>
-            Riprova
-        </template>
+        <template #title>Impossibile generare il report</template>
+        <template #buttonLabel> Riprova </template>
     </BaseNotify>
 </template>

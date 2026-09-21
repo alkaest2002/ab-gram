@@ -7,7 +7,6 @@
 
 // --- Components ---------
 import BaseNotify from "@/components/ui/BaseNotify.vue";
-import StopIcon from "@/components/ui/icons/StopIcon.vue";
 
 // --- Composables --------
 
@@ -32,24 +31,11 @@ defineProps({
 
 <template>
     <BaseNotify :to="to">
-        <template #icon>
-            <StopIcon />
+        <template #title>Generazione interrotta</template>
+        <template>
+            I dati inseriti non sono andati persi. Puoi tornare al sociogramma e
+            riprovare quando vuoi
         </template>
-
-        <template #text>
-            <p class="eyebrow">Report</p>
-            <h1 class="text-balance">Generazione interrotta</h1>
-            <p class="lede mx-auto">
-                Hai interrotto la generazione del report.
-            </p>
-            <p class="mx-auto max-w-[52ch] text-sm">
-                I dati inseriti non sono andati persi. Puoi tornare al
-                sociogramma e riprovare quando vuoi.
-            </p>
-        </template>
-
-        <template #buttonLabel>
-            Torna al sociogramma
-        </template>
+        <template #buttonLabel> Torna al sociogramma </template>
     </BaseNotify>
 </template>

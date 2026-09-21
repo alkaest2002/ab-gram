@@ -7,7 +7,6 @@
 
 // --- Components ---------
 import BaseNotify from "@/components/ui/BaseNotify.vue";
-import FileErrorIcon from "@/components/ui/icons/FileErrorIcon.vue";
 
 // --- Composables --------
 
@@ -32,24 +31,11 @@ defineProps({
 
 <template>
     <BaseNotify :to="to">
-        <template #icon>
-            <FileErrorIcon />
-        </template>
-
+        <template #title> Il file non può essere caricato </template>
         <template #text>
-            <p class="eyebrow">Errore file</p>
-            <h1 class="text-balance">Il file non può essere caricato</h1>
-            <p class="lede mx-auto">
-                Il file selezionato non è un archivio sociogramma valido.
-            </p>
-            <p class="mx-auto max-w-[52ch] text-sm">
-                Controlla che il file sia un archivio sociogramma valido e che
-                non superi la dimensione massima consentita, poi riprova.
-            </p>
+            Controlla che il file-archivio sia un sociogramma valido, poi
+            riprova.
         </template>
-
-        <template #buttonLabel>
-            Riprova
-        </template>
+        <template #buttonLabel> Riprova </template>
     </BaseNotify>
 </template>
