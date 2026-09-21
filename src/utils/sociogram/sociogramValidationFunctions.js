@@ -34,7 +34,7 @@ export const MAX_MEMBERS_COUNT = 35;
 export const MIN_MEMBERS_COUNT = 5;
 
 export function isPlainObject(value) {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+  return Boolean(value) && typeof value === "object";
 }
 
 export function isIdList(value) {
