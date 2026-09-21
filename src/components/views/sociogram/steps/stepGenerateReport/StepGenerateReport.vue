@@ -56,7 +56,7 @@ function goNext() {
   const { valid, error } = validate({ members: toRaw(members.value) });
   if (!valid) {
     console.log(error)
-    router.push({ name: "sociogramValidatioError" });
+    router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
     return;
   };
   router.push({ name: "report" });

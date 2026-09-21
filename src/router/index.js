@@ -7,6 +7,13 @@ import Home from "@/components/views/home/Home.vue";
 
 const SITE_NAME = "AB-Grid";
 
+// Notify views get their button destination from the router: the caller passes
+// `to` as a query param and the route hands it down to the view as a `to` prop.
+// Each view keeps a sensible fallback for direct visits.
+const notifyProps = (fallbackTo) => (route) => ({
+    to: route.query.to ?? fallbackTo,
+});
+
 export const routes = [
   {
     path: "/",
@@ -63,6 +70,7 @@ export const routes = [
         path: "generic-error",
         name: "genericError",
         component: () => import("@/components/views/notify/GenericError.vue"),
+        props: notifyProps("/"),
         meta: {
           title: "Informazione",
           inMenu: false,
@@ -74,6 +82,7 @@ export const routes = [
         path: "sociogram-validation-error",
         name: "sociogramValidatioError",
         component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
+        props: notifyProps("/docs"),
         meta: {
           title: "Informazione",
           inMenu: false,
@@ -85,6 +94,7 @@ export const routes = [
         path: "report-no-data-error",
         name: "reportNoDataError",
         component: () => import("@/components/views/notify/ReportNoDataError.vue"),
+        props: notifyProps("/sociogram"),
         meta: {
           title: "Informazione",
           inMenu: false,
@@ -96,6 +106,7 @@ export const routes = [
         path: "report-error",
         name: "reportError",
         component: () => import("@/components/views/notify/ReportError.vue"),
+        props: notifyProps("/sociogram"),
         meta: {
           title: "Informazione",
           inMenu: false,
@@ -107,6 +118,7 @@ export const routes = [
         path: "report-stopped",
         name: "reportStopped",
         component: () => import("@/components/views/notify/ReportStopped.vue"),
+        props: notifyProps("/sociogram"),
         meta: {
           title: "Informazione",
           inMenu: false,
@@ -118,6 +130,7 @@ export const routes = [
         path: "file-input-error",
         name: "fileInputError",
         component: () => import("@/components/views/notify/FileInputError.vue"),
+        props: notifyProps("/sociogram"),
         meta: {
           title: "Informazione",
           inMenu: false,

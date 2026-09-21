@@ -48,7 +48,7 @@ const currentComponent = computed(() => statusComponents[status.value] ?? null);
 // the user over to the notify view.
 onBeforeMount(() => {
     if (!sociogramStore.hasMembers) {
-        router.replace({ name: "reportNoDataError" });
+        router.replace({ name: "reportNoDataError", query: { to: "/sociogram" } });
         return;
     }
 
@@ -90,13 +90,13 @@ function startGeneration() {
 
 function failGeneration() {
     reportStore.setStatus("error");
-    router.replace({ name: "reportError" });
+    router.replace({ name: "reportError", query: { to: "/sociogram" } });
 }
 
 function stopGeneration() {
     stopWorker();
     reportStore.setStatus("idle");
-    router.replace({ name: "reportStopped" });
+    router.replace({ name: "reportStopped", query: { to: "/sociogram" } });
 }
 
 function stopWorker() {

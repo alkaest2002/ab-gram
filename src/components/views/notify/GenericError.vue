@@ -6,11 +6,16 @@
 // --- Stores -------------
 
 // --- Components ---------
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseNotify from "@/components/ui/BaseNotify.vue";
+import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 // --- Composables --------
 
 // --- Props --------------
+defineProps({
+    /** Where the button links to; passed down by the router. */
+    to: { type: [String, Object], default: null },
+});
 
 // --- Emits --------------
 
@@ -26,45 +31,25 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 </script>
 
 <template>
-    <div
-        class="mx-auto flex w-full max-w-xl flex-col items-center px-6 py-14 text-center"
-    >
-        <!-- Warning triangle: the universal "something went wrong" mark,
-             in the app's red error colour. -->
-        <svg
-            viewBox="0 0 64 64"
-            class="size-14 shrink-0"
-            aria-hidden="true"
-        >
-            <path
-                d="M32 8 59 55 H5 Z"
-                class="fill-none stroke-reject stroke-[1.5]"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M32 27v14"
-                class="stroke-reject stroke-[1.5]"
-                stroke-linecap="round"
-            />
-            <circle cx="32" cy="49" r="1.6" class="fill-reject" />
-        </svg>
+    <BaseNotify :to="to">
+        <template #icon>
+            <WarningIcon />
+        </template>
 
-        <div class="mt-6 space-y-3">
+        <template #text>
             <p class="eyebrow">Errore</p>
             <h1 class="text-balance">Ooops! Qualcosa è andato storto</h1>
             <p class="lede mx-auto">
                 Si è verificato un problema imprevisto.
             </p>
-        </div>
-
-        <div
-            class="mt-10 flex w-full flex-col items-center gap-4 border-t border-line pt-8"
-        >
-            <p class="max-w-[52ch] text-sm">
+            <p class="mx-auto max-w-[52ch] text-sm">
                 Riprova tra poco. Se il problema persiste, segnalalo a chi
                 gestisce l'applicazione.
             </p>
-            <BaseButton to="/" variant="outline">Torna alla home</BaseButton>
-        </div>
-    </div>
+        </template>
+
+        <template #buttonLabel>
+            Torna alla home
+        </template>
+    </BaseNotify>
 </template>
