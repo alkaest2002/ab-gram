@@ -38,7 +38,7 @@ defineProps({
             <NotifyStopIcon />
         </slot>
 
-        <div class="mt-6 space-y-3">
+        <div class="mt-3 space-y-3">
             <p class="eyebrow">Errore</p>
             <h1 class="text-balance">
                 <slot name="title"> Ooops! Qualcosa è andato storto </slot>
