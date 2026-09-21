@@ -4,6 +4,7 @@
 // --- Routers ------------
 
 // --- Stores -------------
+import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
@@ -18,6 +19,7 @@ import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavi
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- State --------------
+const sociogramStore = useSociogramStore();
 
 // --- Computed -----------
 
@@ -27,6 +29,15 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 
 // --- Methods ------------
 const { goToStep } = useSociogramNavigation(emit);
+
+/**
+ * Clear any previously loaded sociogram data, then move to the given step.
+ * @param {string} step
+ */
+function startFromScratch(step) {
+    sociogramStore.resetMembers();
+    goToStep(step);
+}
 </script>
 
 <template>
@@ -46,7 +57,7 @@ const { goToStep } = useSociogramNavigation(emit);
                     Crea un nuovo sociogramma a partire da una lista di nomi.
                 </p>
             </div>
-            <BaseButton variant="solid" @click="goToStep('loadMembers')">
+            <BaseButton variant="solid" @click="startFromScratch('loadMembers')">
                 Crea progetto
             </BaseButton>
         </section>
@@ -62,7 +73,7 @@ const { goToStep } = useSociogramNavigation(emit);
             </div>
             <BaseButton
                 variant="outline"
-                @click="goToStep('importFromArchive')"
+                @click="startFromScratch('importFromArchive')"
             >
                 Importa progetto
             </BaseButton>
