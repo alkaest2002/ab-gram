@@ -1,11 +1,3 @@
-<!--
-  The five readings are the vocabulary of the sociogram above: each entry reuses
-  the same mark that appears in the drawing, so the legend isn't decoration but
-  the key to reading the drawing.
-
-  `tone` chooses the mark's color, `double` adds the tip at the start too,
-  `dashed` dashes it: the same three variables as the drawing.
--->
 <script setup>
 // --- Vue ----------------
 

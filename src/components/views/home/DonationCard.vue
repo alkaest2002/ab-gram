@@ -1,8 +1,3 @@
-<!--
-  Support card: a small, optional ask — donate or share. The blue-to-red gradient
-  is the same signature the hero title uses, so the card reads as the brand's own
-  voice rather than an off-the-shelf banner.
--->
 <script setup>
 // --- Vue ----------------
 import { onBeforeUnmount, ref } from "vue";

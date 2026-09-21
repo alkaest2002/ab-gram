@@ -1,17 +1,3 @@
-<!--
-  Example sociogram, drawn by hand: the graph is the subject the site talks about,
-  so on the home page we show a real one instead of describing it.
-
-  It's a static illustration, not a generated chart: coordinates and edges are
-  written here once and for all. The group tells the four cases the report
-  highlights — a star (Carla, three preferences), two mutual pairs, three one-way
-  rejections, one pair that rejects each other (Anna and Bruno), and three isolated
-  people (Iris and Luca, who choose without being chosen and are rejected; Marta,
-  who chooses without being chosen and is ignored).
-
-  Drawing conventions: solid arrow = preference, double arrow = mutual pair,
-  red dashed = rejection, double dashed = mutual rejection, dashed circle = isolated.
--->
 <template>
     <figure class="graph">
         <div class="graph-stage">
