@@ -90,6 +90,17 @@ export const routes = [
           typeOfMenu: null,
           layout: "EmptyLayout",
         },
+      },
+      {
+        path: "file-input-error",
+        name: "fileInputError",
+        component: () => import("@/components/views/notify/FileInputError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "EmptyLayout",
+        },
       }
     ]
   },
