@@ -10,7 +10,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import StepImportFromArchiveFilePicker from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchiveFilePicker.vue";
+import FilePicker from "@/components/ui/FilePicker.vue";
 import StepImportFromArchiveResult from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchiveResult.vue";
 
 // --- Composables --------
@@ -95,7 +95,7 @@ function onFileReadError({ message }) {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <StepImportFromArchiveFilePicker
+        <FilePicker
             @file-selected="onFileSelected"
             @file-read="onFileRead"
             @file-read-error="onFileReadError"
