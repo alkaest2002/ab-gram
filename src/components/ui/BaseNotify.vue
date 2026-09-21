@@ -45,7 +45,7 @@ defineProps({
             </h1>
             <p class="mx-auto max-w-[52ch] text-sm">
                 <slot name="text">
-                    Segnala il problema al gestore del sito
+                    Se persiste, segnala il problema al gestore del sito.
                 </slot>
             </p>
         </div>

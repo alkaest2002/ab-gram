@@ -30,7 +30,7 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
         <template #title> Errore di validazione </template>
         <template #text>
             Controlla che i dati rispettino i requisiti e i vincoli richiesti,
-            poi riprova
+            poi riprova.
         </template>
         <template #buttonLabel> Consulta la documentazione </template>
     </BaseNotify>

@@ -27,7 +27,7 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
 
 <template>
     <BaseNotify to="/sociogram">
-        <template #title>Impossibile generare il report</template>
+        <template #title> Impossibile generare il report </template>
         <template #buttonLabel> Torna al sociogramma </template>
     </BaseNotify>
 </template>

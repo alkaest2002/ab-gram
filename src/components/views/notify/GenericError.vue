@@ -27,7 +27,7 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
 
 <template>
     <BaseNotify to="/">
-        <template #title> Si è verificato un problema imprevisto </template>
+        <template #title> Si è verificato un problema imprevisto. </template>
         <template #buttonLabel> Torna alla home </template>
     </BaseNotify>
 </template>

@@ -29,8 +29,7 @@ import BaseNotify from "@/components/ui/BaseNotify.vue";
     <BaseNotify to="/sociogram">
         <template #title> Il file non può essere caricato </template>
         <template #text>
-            Controlla che il file-archivio sia un sociogramma valido, poi
-            riprova.
+            Controlla che il dati archiviati siano validi, poi riprova.
         </template>
         <template #buttonLabel> Torna al sociogramma </template>
     </BaseNotify>
