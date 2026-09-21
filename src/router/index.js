@@ -38,6 +38,7 @@ export const routes = [
   },
   {
     path: "/report",
+    name: "report",
     component: () => import("@/components/views/report/Report.vue"),
     meta: {
       title: "Report",
@@ -84,6 +85,28 @@ export const routes = [
         path: "report-no-data-error",
         name: "reportNoDataError",
         component: () => import("@/components/views/notify/ReportNoDataError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "EmptyLayout",
+        },
+      },
+      {
+        path: "report-error",
+        name: "reportError",
+        component: () => import("@/components/views/notify/ReportError.vue"),
+        meta: {
+          title: "Informazione",
+          inMenu: false,
+          typeOfMenu: null,
+          layout: "EmptyLayout",
+        },
+      },
+      {
+        path: "report-stopped",
+        name: "reportStopped",
+        component: () => import("@/components/views/notify/ReportStopped.vue"),
         meta: {
           title: "Informazione",
           inMenu: false,

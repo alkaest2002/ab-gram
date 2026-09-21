@@ -1,3 +1,31 @@
+<script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+import BaseButton from "@/components/ui/BaseButton.vue";
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+const emit = defineEmits(["report-generating-stop"]);
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+</script>
+
 <template>
     <div
         role="status"
@@ -32,6 +60,10 @@
                 qualche istante.
             </p>
         </div>
+
+        <BaseButton variant="outline" @click="emit('report-generating-stop')">
+            Interrompi
+        </BaseButton>
 
         <span class="sr-only">Generazione del report in corso</span>
     </div>

@@ -52,15 +52,6 @@ const summary = computed(() =>
     }),
 );
 
-async function generateReport() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("Report generated");
-      resolve();
-    }, 0);
-  });
-}
-
 function goNext() {
   const { valid } = validate(members.value);
   if (!valid) {

@@ -8,7 +8,25 @@ export const useReportStore = defineStore("report", () => {
   const status = ref("idle");
 
   /** @type {import("vue").Ref<object>} Generated report data. */
-  const data = ref({});
+  const tabularData = ref({});
 
-  return { status, data };
+  /** @type {import("vue").Ref<object>} SVGs */
+  const graphs = ref({});
+
+  /** @param {string} value */
+  function setStatus(value) {
+    status.value = value;
+  }
+
+  /** @param {object} value */
+  function setTabularData(value) {
+    tabularData.value = value;
+  }
+
+  /** @param {object} value */
+  function setGraphs(value) {
+    graphs.value = value;
+  }
+
+  return { status, tabularData, graphs, setStatus, setTabularData, setGraphs };
 });
