@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
+import { computed, toRaw } from "vue";
 import { useRouter } from "vue-router";
 
 // --- Routers ------------
@@ -53,7 +53,7 @@ const summary = computed(() =>
 );
 
 function goNext() {
-  const { valid, error } = validate(members.value);
+  const { valid, error } = validate({ members: toRaw(members.value) });
   if (!valid) {
     console.log(error)
     router.push({ name: "sociogramValidatioError" });

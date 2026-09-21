@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, toRaw } from "vue";
 
 // --- Stores -------------
 import { useSociogramStore } from "@/stores/sociogram";
@@ -14,18 +14,18 @@ export function useSociogramDownloadArchive() {
   const sociogramStore = useSociogramStore();
 
   const archiveHref = computed(() => {
-    const json = JSON.stringify(sociogramStore.$state);
+    const json = JSON.stringify(toRaw(sociogramStore.$state));
     const encodedJson = btoa(json);
     const blob = new Blob([encodedJson], { type: "text/plain;charset=utf-8" });
     return URL.createObjectURL(blob);
   });
 
   function downloadArchive() {
-
     // Generate ISO timestamp for filename
-    const timestamp = new Date().toISOString()
-      .replace(/[:.]/g, "-")  // Replace colons with hyphens (invalid in filenames)
-      .slice(0, -5);          // Remove milliseconds and Z
+    const timestamp = new Date()
+      .toISOString()
+      .replace(/[:.]/g, "-") // Replace colons with hyphens (invalid in filenames)
+      .slice(0, -5); // Remove milliseconds and Z
 
     const filename = `dati-${timestamp}.txt`;
 
