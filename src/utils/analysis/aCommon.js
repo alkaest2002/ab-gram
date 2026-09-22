@@ -16,24 +16,31 @@ import * as np from "numpy-ts";
  * @throws {Error} When `scores` has more than 2 dimensions.
  */
 export const getRankedScores = (scores) => {
+  // Throw if array with more than 2 dimensions.
   if (scores.ndim > 2) {
     throw new Error(
-      `getRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`
+      `getRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
     );
   }
 
+  // Flag for 1 dimensionaly array.
   const is1D = scores.ndim === 1;
 
-  // Normalize 1-D input to a single-column 2-D matrix so the column loop below
-  // is shared for both cases.
+  // Normalize 1-D input to a single-column 2-D matrix.
   const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
 
+  // Get matrix shape
   const [rows, cols] = matrix.shape;
+
+  // If no rows return empty results.
   if (rows === 0) {
     return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
   }
 
+  // Initialize results
   const rankedColumns = [];
+
+  // Iterate over columns
   for (let col = 0; col < cols; col += 1) {
     // Copy the column so `unique_inverse` reads a contiguous 1-D array.
     const column = matrix.slice(":", col).copy();
