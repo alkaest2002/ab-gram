@@ -6,9 +6,10 @@ MORENO CLASSIC
 - "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
 - "mp": Mutual positive connections (bidirectional positive edges)
 - "mr": Mutual negative connections (bidirectional negative edges)
-- "bl": Balance index (rp - rr)
-- "or": Orientation index (gp - gr)
 - "im": Impact index (rp + rr)
+- "bl": Balance index (rp - rr)
+- "ei": Expressivity index (gp + gr)
+- "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
 */
@@ -16,6 +17,42 @@ MORENO CLASSIC
 import * as np from "numpy-ts";
 
 import { createAdjacencyMatrices } from "@/utils/analysis/adjacencyMatrix";
+
+/**
+ * The Moreno classic metric keys, in the order they appear as columns of the
+ * result matrix. Column `i` of a Moreno result holds the metric named by
+ * `METRIC_KEYS[i]`.
+ */
+const METRIC_KEYS = [
+  "rp",
+  "rr",
+  "gp",
+  "gr",
+  "mp",
+  "mr",
+  "im",
+  "bl",
+  "ei",
+  "or",
+  "ai",
+  "ii",
+];
+
+/**
+ * Build an object with one empty array per metric key.
+ * @returns {Record<string, number[]>}
+ */
+const emptyMetrics = () => {
+  const metrics = {};
+  for (const key of METRIC_KEYS) metrics[key] = [];
+  return metrics;
+};
+
+/**
+ * Empty result shapes returned when there are no members to analyze.
+ */
+const EMPTY_RAW_METRICS = Object.freeze(emptyMetrics());
+const EMPTY_RANKED_METRICS = Object.freeze(emptyMetrics());
 
 /**
  * Stable cache key for a group of members. Serializing only the fields the
@@ -46,7 +83,7 @@ const adjacencyMatricesCache = new Map();
  * @param {import("@/stores/sociogram").Member[]} members
  * @returns {{ adjLikes: number[][], adjDislikes: number[][] }}
  */
-export const getAdjacencyMatrices = (members) => {
+const getAdjacencyMatrices = (members) => {
   const key = membersCacheKey(members);
 
   const cached = adjacencyMatricesCache.get(key);
@@ -57,41 +94,6 @@ export const getAdjacencyMatrices = (members) => {
 
   return matrices;
 };
-
-/**
- * The Moreno classic metric keys, in the order they appear as columns of the
- * result matrix. Column `i` of a Moreno result holds the metric named by
- * `METRIC_KEYS[i]`.
- */
-export const METRIC_KEYS = [
-  "rp",
-  "rr",
-  "gp",
-  "gr",
-  "mp",
-  "mr",
-  "bl",
-  "or",
-  "im",
-  "ai",
-  "ii",
-];
-
-/**
- * Build an object with one empty array per metric key.
- * @returns {Record<string, number[]>}
- */
-const emptyMetrics = () => {
-  const metrics = {};
-  for (const key of METRIC_KEYS) metrics[key] = [];
-  return metrics;
-};
-
-/**
- * Empty result shapes returned when there are no members to analyze.
- */
-const EMPTY_RAW_METRICS = Object.freeze(emptyMetrics());
-const EMPTY_RANKED_METRICS = Object.freeze(emptyMetrics());
 
 /**
  * Compute Moreno's classic sociometric indices for every member.
@@ -106,7 +108,7 @@ const EMPTY_RANKED_METRICS = Object.freeze(emptyMetrics());
  *   A `size` x `METRIC_KEYS.length` matrix. Rows are members (aligned with the
  *   matrix row/column order) and columns are the metrics in `METRIC_KEYS` order.
  */
-export const morenoClassic = (adjA, adjB) => {
+const morenoClassic = (adjA, adjB) => {
   const size = adjA.length;
   if (size === 0) return np.empty([0, METRIC_KEYS.length]);
 
@@ -126,9 +128,10 @@ export const morenoClassic = (adjA, adjB) => {
   const mr = dislikes.multiply(dislikes.T).sum(1);
 
   // Derived indices.
-  const balance = rp.subtract(rr);
-  const orientation = gp.subtract(gr);
   const impact = rp.add(rr);
+  const balance = rp.subtract(rr);
+  const expressivity = gp.add(gr);
+  const orientation = gp.subtract(gr);
   const affiliation = balance.add(orientation);
   const influence = rp.add(mp);
 
@@ -140,25 +143,36 @@ export const morenoClassic = (adjA, adjB) => {
     gr,
     mp,
     mr,
-    balance,
-    orientation,
     impact,
+    balance,
+    expressivity,
+    orientation,
     affiliation,
     influence,
   ]);
 };
 
 /**
- * Export a Moreno classic result to a standard (nested) JavaScript array.
+ * Compute Moreno's classic sociometric indices and return them as a plain
+ * object mirroring a pandas DataFrame.
  *
- * This is the only place the numpy array is converted back to a plain array,
- * so keep the NDArray returned by {@link morenoClassic} (or its ranked variant)
- * for as long as possible and call this only when a plain array is required
- * (rendering, serialization, JSON output, ...).
+ * This is the module's single entry point: it builds the adjacency matrices,
+ * computes the indices, and converts the resulting NDArray to plain data only
+ * at this final boundary.
  *
- * @param {import("numpy-ts").NDArray} result - A result from {@link morenoClassic}
- *   or a ranked version of it.
- * @returns {number[][]} Rows are members and columns are the metrics in
- *   `METRIC_KEYS` order.
+ * @param {import("@/stores/sociogram").Member[]} members
+ * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
+ *   column (in `METRIC_KEYS` order), and `values[i][j]` is the score of member
+ *   `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const exportMorenoClassic = (result) => result.tolist();
+export const getMorenoClassic = (members) => {
+  const { adjLikes, adjDislikes } = getAdjacencyMatrices(members);
+  const result = morenoClassic(adjLikes, adjDislikes);
+
+  return {
+    rowIndex: members.map((member) => member.id),
+    columnIndex: [...METRIC_KEYS],
+    values: result.tolist(),
+  };
+};
