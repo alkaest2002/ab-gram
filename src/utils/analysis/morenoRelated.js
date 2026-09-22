@@ -16,7 +16,7 @@ MORENO CLASSIC
 
 import * as np from "numpy-ts";
 
-import { createAdjacencyMatrices } from "@/utils/analysis/adjacencyMatrix";
+import { createAdjacencyMatrices } from "@/utils/analysis/adjacencyMatrixRelated";
 
 /**
  * The Moreno classic metric keys, in the order they appear as columns of the
