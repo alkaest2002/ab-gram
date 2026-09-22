@@ -52,7 +52,7 @@ function startFromScratch(step) {
 
             <div class="space-y-1">
                 <p class="eyebrow">Nuovo progetto</p>
-                <h3>Carica una nuova lista dei nomi</h3>
+                <h3>Carica una nuova lista di nomi</h3>
                 <p class="text-sm">
                     Crea un nuovo sociogramma a partire da una lista di nomi.
                 </p>
