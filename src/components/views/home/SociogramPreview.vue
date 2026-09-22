@@ -176,8 +176,7 @@
         </div>
 
         <figcaption class="graph-caption">
-            Dieci persone, tredici preferenze e cinque rifiuti: Carla ne
-            raccoglie tre, Iris, Luca e Marta nessuna.
+            10 persone, 13 scelte e 5 rifiuti.
         </figcaption>
     </figure>
 </template>

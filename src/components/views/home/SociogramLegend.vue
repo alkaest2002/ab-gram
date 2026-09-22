@@ -18,14 +18,14 @@ const readings = [
     {
         kind: "choice",
         tone: "accent",
-        title: "Preferenze",
+        title: "Scelte",
         text: "Chi indica chi. La freccia parte da chi sceglie e arriva a chi è stato scelto.",
     },
     {
         kind: "mutual",
         tone: "accent",
         double: true,
-        title: "Preferenze reciproche",
+        title: "Scelte reciproche",
         text: "Le coppie che si scelgono a vicenda: il legame più stabile del gruppo.",
     },
     {
@@ -33,7 +33,7 @@ const readings = [
         tone: "reject",
         dashed: true,
         title: "Rifiuti",
-        text: "Le preferenze negative: dicono con chi una persona preferirebbe non lavorare.",
+        text: "Le preferenze negative: dicono con chi una persona preferirebbe non interagire.",
     },
     {
         kind: "reject-mutual",
@@ -47,7 +47,7 @@ const readings = [
         kind: "alone",
         tone: "muted",
         title: "Isolamento",
-        text: "Chi esprime preferenze senza riceverne. Iris, Luca e Marta, nel grafico qui sopra.",
+        text: "Chi non riceve aluna scelta e rimane ai margini del gruppo.",
     },
 ];
 
@@ -99,7 +99,7 @@ const readings = [
                     </svg>
                 </span>
 
-                <div class="space-y-1.5">
+                <div>
                     <h3>{{ reading.title }}</h3>
                     <p class="text-sm">{{ reading.text }}</p>
                 </div>
@@ -134,6 +134,7 @@ const readings = [
     margin-top: 0.125rem;
     border: 1px solid var(--color-line);
     border-radius: 0.5rem;
+    background-color: #fafafa;
 }
 
 .reading-glyph svg {
@@ -146,7 +147,6 @@ const readings = [
     stroke-linejoin: round;
 }
 
-/* Rejections and isolation are dashed here too, as in the sociogram. */
 .is-dashed {
     stroke-dasharray: 4.5 4.5;
 }

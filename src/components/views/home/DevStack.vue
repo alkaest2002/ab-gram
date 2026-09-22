@@ -1,4 +1,7 @@
 <script setup>
+// --- Json ---------------
+import packages from "../../../../package.json"
+
 // --- Vue ----------------
 
 // --- Routers ------------
@@ -18,9 +21,30 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 // The build stack, read like a manifest: package name, what it does, and the
 // version pinned in package.json.
 const stack = [
-    { name: "Vue.js", role: "framework e il suo eco-sistema", version: "3.5", href: "https://github.com/vuejs/core" },
-    { name: "Numpy-ts", role: "calcoli numerici", version: "1.7", href: "https://github.com/dupontcyborg/numpy-ts" },
-    { name: "Graphology", role: "grafi", version: "0.26", href: "https://github.com/graphology/graphology" },
+    {
+        name: "Vue",
+        role: "app",
+        version: packages.dependencies.vue.substring(1),
+        href: "https://github.com/vuejs/core",
+    },
+    {
+        name: "Pinia",
+        role: "data store",
+        version: packages.dependencies.pinia.substring(1),
+        href: "https://github.com/vuejs/pinia",
+    },
+    {
+        name: "Numpy-ts",
+        role: "calcoli numerici",
+        version: packages.dependencies["numpy-ts"].substring(1),
+        href: "https://github.com/dupontcyborg/numpy-ts",
+    },
+    {
+        name: "Graphology",
+        role: "grafi",
+        version: packages.dependencies.graphology.substring(1),
+        href: "https://github.com/graphology/graphology",
+    },
 ];
 
 // --- Computed -----------
@@ -33,7 +57,9 @@ const stack = [
 </script>
 
 <template>
-    <section class="relative overflow-hidden rounded-lg border border-line bg-white">
+    <section
+        class="relative overflow-hidden rounded-lg border border-line bg-white"
+    >
         <!-- The brand pair as a top rule: the same blue→red underline as the hero. -->
         <div
             class="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-accent to-reject"
@@ -60,15 +86,22 @@ const stack = [
                     >
                         {{ item.name }}
                     </a>
-                    <span class="font-mono text-xs text-muted">{{ item.role }}</span>
-                    <span class="font-mono text-xs tabular-nums text-accent">{{ item.version }}</span>
+                    <span class="font-mono text-xs text-muted">{{
+                        item.role
+                    }}</span>
+                    <span class="font-mono text-xs tabular-nums text-accent">{{
+                        item.version
+                    }}</span>
                 </li>
             </ul>
 
-            <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div
+                class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
                 <p class="max-w-[44ch] text-sm">
-                    <span class="font-bold">AB-Grid</span> lavora in locale: i dati restano sul tuo dispositivo e i
-                    calcoli avvengono nel browser.
+                    <span class="font-bold">AB-Grid</span> lavora in locale: i
+                    calcoli avvengono nel browser e i dati restano sul tuo
+                    dispositivo.
                 </p>
                 <BaseButton to="/sociogram">Apri l'app</BaseButton>
             </div>
