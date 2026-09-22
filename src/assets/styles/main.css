@@ -136,7 +136,7 @@
   }
 
   .lede {
-    @apply max-w-[46ch] text-base sm:text-[1.0625rem];
+    @apply text-base sm:text-[1.0625rem];
   }
 
   /* Closing band: the app's path in three words and a single call to action. */
