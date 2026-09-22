@@ -49,12 +49,6 @@ const emptyMetrics = () => {
 };
 
 /**
- * Empty result shapes returned when there are no members to analyze.
- */
-const EMPTY_RAW_METRICS = Object.freeze(emptyMetrics());
-const EMPTY_RANKED_METRICS = Object.freeze(emptyMetrics());
-
-/**
  * Stable cache key for a group of members. Serializing only the fields the
  * adjacency matrices depend on (id, likes, dislikes) keeps the key cheap while
  * still distinguishing every member ordering and preference change.
