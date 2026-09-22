@@ -23,17 +23,23 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 const stack = [
     {
         name: "Vue",
-        role: "app",
+        role: "applicazione",
         version: packages.dependencies.vue.substring(1),
         href: "https://github.com/vuejs/core",
     },
     {
-        name: "Pinia",
-        role: "data store",
-        version: packages.dependencies.pinia.substring(1),
-        href: "https://github.com/vuejs/pinia",
+        name: "Vue-router",
+        role: "routing",
+        version: packages.dependencies["vue-router"].substring(1),
+        href: "https://github.com/vuejs/router",
     },
     {
+        name: "Pinia",
+        role: "store dati",
+        version: packages.dependencies.pinia.substring(1),
+        href: "https://github.com/vuejs/pinia",
+  },
+  {
         name: "Numpy-ts",
         role: "calcoli numerici",
         version: packages.dependencies["numpy-ts"].substring(1),
