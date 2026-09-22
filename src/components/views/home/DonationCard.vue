@@ -45,27 +45,30 @@ async function copyLink() {
 </script>
 
 <template>
-    <section
-        class="relative overflow-hidden rounded-2xl bg-linear-to-r from-accent to-reject p-6 text-white shadow-xl shadow-accent/20 sm:p-8"
-    >
-        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div class="max-w-[52ch] space-y-3">
-                <p class="font-mono text-xs font-medium tracking-[0.14em] text-white/80 uppercase">
-                    Sostieni il progetto
-                </p>
-                <h2 class="text-white">Ti è stato utile?</h2>
-                <p class="text-white/90">
-                    Offrici un caffè con una piccola donazione, oppure
-                    copia il link e condividilo con chi potrebbe trovarla utile.
-                </p>
-            </div>
+    <section class="relative overflow-hidden rounded-lg border border-line bg-white">
+        <!-- The brand pair as a top rule: the same blue→red underline as the hero. -->
+        <div
+            class="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-accent to-reject"
+            aria-hidden="true"
+        ></div>
 
-            <div class="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
+        <div class="p-6 sm:p-8">
+            <header class="space-y-2">
+                <p class="eyebrow">Sostieni il progetto</p>
+                <h2>Ti è stato utile?</h2>
+            </header>
+
+            <p class="mt-4 max-w-[52ch]">
+                Offrici un caffè con una piccola donazione, oppure copia il
+                link e condividilo con chi potrebbe trovarla utile.
+            </p>
+
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <a
                     :href="donationUrl"
                     target="_blank"
                     rel="noreferrer"
-                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-white/90 sm:w-auto"
+                    class="btn btn-solid w-full sm:w-auto"
                 >
                     <svg
                         class="size-4"
@@ -84,7 +87,7 @@ async function copyLink() {
 
                 <button
                     type="button"
-                    class="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/20 sm:w-auto"
+                    class="btn btn-outline w-full sm:w-auto"
                     aria-live="polite"
                     @click="copyLink"
                 >
