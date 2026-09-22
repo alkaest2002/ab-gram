@@ -19,14 +19,14 @@ const readings = [
         kind: "choice",
         tone: "accent",
         title: "Scelte",
-        text: "Chi indica chi. La freccia parte da chi sceglie e arriva a chi è stato scelto.",
+        text: "Chi vuole interagire con chi: la freccia parte da chi sceglie e arriva a chi è stato scelto.",
     },
     {
         kind: "mutual",
         tone: "accent",
         double: true,
         title: "Scelte reciproche",
-        text: "Le coppie che si scelgono a vicenda: il legame più stabile del gruppo.",
+        text: "Le coppie che si scelgono a vicenda: il legame diadico più stabile del gruppo.",
     },
     {
         kind: "reject",
@@ -47,7 +47,7 @@ const readings = [
         kind: "alone",
         tone: "muted",
         title: "Isolamento",
-        text: "Chi non riceve aluna scelta e rimane ai margini del gruppo.",
+        text: "Chi non riceve alcuna scelta positiva e rimane ai margini del gruppo.",
     },
 ];
 
