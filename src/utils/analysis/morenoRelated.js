@@ -94,21 +94,6 @@ const EMPTY_RAW_METRICS = Object.freeze(emptyMetrics());
 const EMPTY_RANKED_METRICS = Object.freeze(emptyMetrics());
 
 /**
- * Assign 1-based dense ranks, ordering by descending value.
- *
- * Ties share the same rank and the next distinct value continues at the
- * following rank: `[10, 10, 5, 5, 1]` becomes `[1, 1, 2, 2, 3]`.
- *
- * @param {number[]} values
- * @returns {number[]}
- */
-const denseRank = (values) => {
-  const unique = [...new Set(values)].sort((a, b) => b - a);
-  const rankByValue = new Map(unique.map((value, index) => [value, index + 1]));
-  return values.map((value) => rankByValue.get(value));
-};
-
-/**
  * Compute Moreno's classic sociometric indices for every member.
  *
  * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
@@ -167,11 +152,12 @@ export const morenoClassic = (adjA, adjB) => {
  * Export a Moreno classic result to a standard (nested) JavaScript array.
  *
  * This is the only place the numpy array is converted back to a plain array,
- * so keep the NDArray returned by {@link morenoClassic} for as long as possible
- * and call this only when a plain array is required (rendering, serialization,
- * JSON output, ...).
+ * so keep the NDArray returned by {@link morenoClassic} (or its ranked variant)
+ * for as long as possible and call this only when a plain array is required
+ * (rendering, serialization, JSON output, ...).
  *
- * @param {import("numpy-ts").NDArray} result - A result from {@link morenoClassic}.
+ * @param {import("numpy-ts").NDArray} result - A result from {@link morenoClassic}
+ *   or a ranked version of it.
  * @returns {number[][]} Rows are members and columns are the metrics in
  *   `METRIC_KEYS` order.
  */
