@@ -15,7 +15,7 @@ import ReportLoading from "@/components/views/report/ReportLoading.vue";
 import ReportDoc from "@/components/views/report/ReportDoc.vue";
 
 // --- Workers ------------
-import ReportWorker from "@/workers/report.worker.js?worker";
+import ReportWorker from "@/workers/reportWorker.js?worker";
 
 // --- Composables --------
 
