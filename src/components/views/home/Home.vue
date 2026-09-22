@@ -31,15 +31,14 @@ import DevStack from "@/components/views/home/DevStack.vue";
 <template>
     <div class="page home">
         <section class="space-y-5 pt-6 pb-2">
-            <h1 class="hero-title">
-                Analizza le <em>dinamiche dei gruppi</em>
-            </h1>
+            <h1 class="hero-title">Analizza le dinamiche dei gruppi</h1>
 
-            <p class="lede">
-                Registra preferenze e rifiuti dei membri di un gruppo: AB-Grid
-                costruisce il sociogramma, calcola gli indici sociometrici e
-                prepara il report da interpretare.
-            </p>
+            <p class="lede"></p>
+            <span class="block mb-0">Registra scelte e rifiuti dei membri di un gruppo.</span>
+            <span>
+                AB-Grid costruisce il sociogramma, calcola gli indici
+                sociometrici, i grafici e prepara il report
+            </span>
         </section>
 
         <SociogramPreview />
