@@ -74,33 +74,3 @@ export const createDislikesGraph = (members) => {
 
   return graph;
 };
-
-/**
- * Build a square adjacency matrix for a preference type.
- *
- * Rows and columns follow the order of `members`, so `matrix[i][j]` is `1`
- * when `members[i]` chose `members[j]` for the given preference and `0`
- * otherwise.
- *
- * @param {Member[]} members
- * @param {"likes" | "dislikes"} preference
- * @returns {number[][]} A `members.length` x `members.length` adjacency matrix.
- */
-export const createAdjacencyMatrix = (members, preference) => {
-  if (preference !== "likes" && preference !== "dislikes") {
-    throw new Error(`Unknown preference "${preference}". Expected "likes" or "dislikes".`);
-  }
-
-  const indexById = new Map(members.map((member, index) => [member.id, index]));
-  const size = members.length;
-  const matrix = Array.from({ length: size }, () => new Array(size).fill(0));
-
-  members.forEach((member, i) => {
-    for (const chosenId of member[preference]) {
-      const j = indexById.get(chosenId);
-      if (j !== undefined) matrix[i][j] = 1;
-    }
-  });
-
-  return matrix;
-};
