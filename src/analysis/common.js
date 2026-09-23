@@ -23,7 +23,7 @@ export const getRankedScores = (scores) => {
     );
   }
 
-  // Flag for 1 dimensionaly array.
+  // Flag for 1 dimensional array.
   const is1D = scores.ndim === 1;
 
   // Normalize 1-D input to a single-column 2-D matrix.
