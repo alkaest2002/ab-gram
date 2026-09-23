@@ -1,17 +1,53 @@
 /*
-MORENO RELATED
+MORENO RELATED INDICES
 - "rp": Received positive nominations (in-degree from likes adjacency matrix)
 - "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
 - "gp": Given positive nominations (out-degree likes adjacency matrix)
 - "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
 - "mp": Mutual positive connections (bidirectional positive edges)
 - "mr": Mutual negative connections (bidirectional negative edges)
-- "im": Impact index (rp + rr):
+- "im": Impact index (rp + rr)
 - "bl": Balance index (rp - rr)
 - "ei": Expressivity index (gp + gr)
 - "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
+- "ss": Sociometric status (0-7, see APPROACH 1 below)
+
+SOCIOMETRIC STATUS CODES (Approach 1: Proportion + Confidence Band)
+====================================================================
+
+Approach 1 defines "neutral balance" not as balance=0, but as a confidence band around
+50/50 opinion, scaled by sample size:
+  - neutral_band = 0.5 ± 1σ * sqrt(p(1-p) / n)
+
+Where:
+  - p = proportion of positive opinions received (rp / (rp + rr))
+  - n = total opinions received (rp + rr)
+  - σ = 1 standard error (confidence margin)
+
+This means:
+  - Small sample (few opinions) → wide neutral band → harder to escape neutral status
+  - Large sample (many opinions) → narrow neutral band → strong consensus needed
+
+Example: "3L + 1D" vs "17L + 15D"
+  - 3L + 1D: p=0.75, SE≈0.22, band=[0.53, 0.97] → outside band → POSITIVE
+  - 17L + 15D: p=0.53, SE≈0.09, band=[0.44, 0.62] → inside band → NEUTRAL
+
+Impact band (relative to the sample's impact distribution):
+  - Low impact     = below the 20th percentile
+  - High impact    = at or above the 80th percentile
+  - Average impact = in between the two
+
+STATUS CODES:
+  0: Isolated       – no opinions received (rp + rr = 0)
+  1: Marginal       – low impact (impact < 20th percentile)
+  2: Appreciated    – average impact, positive balance (outside upper band)
+  3: Popular        – high impact, positive balance
+  4: Disliked       – average impact, negative balance (outside lower band)
+  5: Rejected       – high impact, negative balance
+  6: Ambitendent    – average impact, neutral balance (inside confidence band)
+  7: Controversial  – high impact, neutral balance (polarizing)
 */
 
 import * as np from "numpy-ts";
@@ -34,6 +70,7 @@ const METRIC_KEYS = [
   "or",
   "ai",
   "ii",
+  "ss",
 ];
 
 /**
@@ -75,6 +112,7 @@ const computeMorenoRelatedMetrics = (adjA, adjB) => {
   const orientation = gp.subtract(gr);
   const affiliation = balance.add(orientation);
   const influence = rp.add(mp);
+  const sociometricStatus = getSociometricStatus(rp, rr, impact)
 
   // Stack every metric as a column, keeping the numpy array until export.
   return np.column_stack([
@@ -90,7 +128,76 @@ const computeMorenoRelatedMetrics = (adjA, adjB) => {
     orientation,
     affiliation,
     influence,
+    sociometricStatus
   ]);
+};
+
+/**
+ * Classify members into sociometric status using impact percentiles and
+ * proportion + confidence band for balance classification.
+ *
+ * Note: Neutral balance is defined relative to a confidence band around 50/50 opinion.
+ * A person's balance is "neutral" if their proportion of positive opinions falls within
+ * 0.5 ± 1σ (one standard error), accounting for sample size and variance.
+ *
+ * Large samples (more opinions received) require stronger consensus to escape the neutral band.
+ * Small samples with few opinions are more likely to be classified as "neutral".
+ *
+ * @param {NDArray} rp - Received positive nominations (likes received)
+ * @param {NDArray} rr - Received negative nominations (dislikes received)
+ * @param {NDArray} impact - Impact index (rp + rr)
+ * @returns {NDArray} Array of status codes (0-7)
+ */
+const getSociometricStatus = (rp, rr, impact) => {
+  const LOW_IMPACT_PERCENTILE = 20;
+  const HIGH_IMPACT_PERCENTILE = 80;
+  const size = impact.size;
+
+  // Total opinions received per member.
+  const totalOpinions = rp.add(rr);
+
+  // Impact percentiles (nearest-rank: floor of the sorted position).
+  const impactSorted = impact.flatten().sort();
+  const lowImpactThreshold = impactSorted.get([Math.floor((size * LOW_IMPACT_PERCENTILE) / 100)]);
+  const highImpactThreshold = impactSorted.get([Math.floor((size * HIGH_IMPACT_PERCENTILE) / 100)]);
+
+  // Impact bands. `isolated` short-circuits in the select below before any of
+  // the impact classification is consulted.
+  const isolated = totalOpinions.equal(0);
+  const isLowImpact = impact.less(lowImpactThreshold);
+  const isHighImpact = impact.greater_equal(highImpactThreshold);
+  const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
+
+  // Approach 1: proportion of positive opinions + 1σ confidence band.
+  // The denominator is floored at 1 so isolated members (0 opinions) avoid a
+  // 0/0 division; their status is already decided by `isolated`.
+  const safeTotal = np.maximum(totalOpinions, 1);
+  const proportion = rp.divide(safeTotal);
+  const variance = proportion.multiply(proportion.multiply(-1).add(1)); // p(1 - p)
+  const standardError = variance.divide(safeTotal).sqrt();
+  const bandLower = standardError.multiply(-1).add(0.5);
+  const bandUpper = standardError.add(0.5);
+
+  // Balance classification against the confidence band.
+  const isPositiveBalance = proportion.greater(bandUpper);
+  const isNegativeBalance = proportion.less(bandLower);
+  const isNeutralBalance = isPositiveBalance.logical_or(isNegativeBalance).logical_not();
+
+  // Classify into sociometric status (0-7). First matching condition wins.
+  return np.select(
+    [
+      isolated,                                       // 0: isolated
+      isLowImpact,                                    // 1: marginal
+      isHighImpact.logical_and(isPositiveBalance),    // 3: popular
+      isHighImpact.logical_and(isNegativeBalance),    // 5: rejected
+      isHighImpact.logical_and(isNeutralBalance),     // 7: controversial
+      isAverageImpact.logical_and(isPositiveBalance), // 2: appreciated
+      isAverageImpact.logical_and(isNegativeBalance), // 4: disliked
+      isAverageImpact.logical_and(isNeutralBalance),  // 6: ambivalent
+    ],
+    [0, 1, 3, 5, 7, 2, 4, 6],
+    0,
+  );
 };
 
 /**
