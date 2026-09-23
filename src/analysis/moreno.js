@@ -1,5 +1,87 @@
 /*
-MORENO RELATED INDICES
+MORENO GROUP LEVEL METRICS
+- "cohesion": Group cohesion coefficient (total reciprocal like pairs / total choices)
+- "tension": Group tension coefficient (total dislikes / total choices)
+
+Where, summed over the whole group:
+  - total likes       = sum of the likes adjacency matrix (every "like" nomination)
+  - total dislikes    = sum of the dislikes adjacency matrix (every "dislike" nomination)
+  - total choices     = total likes + total dislikes (every nomination)
+  - reciprocal pairs  = number of mutual like pairs (A likes B AND B likes A),
+                        each distinct pair counted once
+
+So:
+  - cohesion = reciprocal pairs / (total likes + total dislikes)
+  - tension  = total dislikes   / (total likes + total dislikes)
+
+Both coefficients range in [0, 1], and an empty group (no nominations) yields
+0 for both.
+*/
+
+/**
+ * Compute Moreno's group-level sociometric coefficients.
+ *
+ * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
+ * following the `members` ordering produced by `createAdjacencyMatrices`, so
+ * `matrix[i][j] === 1` means member `i` chose member `j`.
+ *
+ * @param {number[][]} adjA - Likes adjacency matrix.
+ * @param {number[][]} adjB - Dislikes adjacency matrix.
+ * @returns {import("numpy-ts").NDArray}
+ *   A `1` x `GROUP_METRIC_KEYS.length` matrix holding, in column order, the
+ *   cohesion and tension coefficients.
+ */
+const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
+  const likes = np.array(adjA);
+  const dislikes = np.array(adjB);
+
+  // Total directed nominations of each preference kind.
+  const totalLikes = likes.sum();
+  const totalDislikes = dislikes.sum();
+
+  // Number of mutual (reciprocal) like pairs. `likes * likes.T` is non-zero
+  // exactly where both directions of a like exist; its sum counts each mutual
+  // pair twice (once per direction), so halve it to count distinct pairs.
+  const totalReciprocalLikes = likes.multiply(likes.T).sum() / 2;
+
+  // Every nomination (like or dislike). Floored at 1 so an empty group yields
+  // 0 for both coefficients instead of NaN.
+  const totalChoices = Math.max(totalLikes + totalDislikes, 1);
+
+  const cohesion = totalReciprocalLikes / totalChoices;
+  const tension = totalDislikes / totalChoices;
+
+  return np.array([[cohesion, tension]]);
+};
+
+/**
+ * Compute Moreno's group-level sociometric coefficients and return them as a
+ * plain object mirroring a pandas DataFrame.
+ *
+ * This mirrors `getMorenoIndividualLevelMetrics`, but the group is a single
+ * observation: there is exactly one row (the group) and one column per metric
+ * in `GROUP_METRIC_KEYS`.
+ *
+ * @param {number[][]} adjLikes - Likes adjacency matrix, where
+ *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
+ * @param {number[][]} adjDislikes - Dislikes adjacency matrix, where
+ *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
+ * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
+ *   (in `GROUP_METRIC_KEYS` order), and `values` holds the single group row.
+ */
+export const getMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
+  const result = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
+
+  return {
+    rowIndex: ["group"],
+    columnIndex: [...GROUP_METRIC_KEYS],
+    values: result.tolist(),
+  };
+};
+
+/*
+MORENO INDIVIDUAL LEVEL METRICS
 - "rp": Received positive nominations (in-degree from likes adjacency matrix)
 - "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
 - "gp": Given positive nominations (out-degree likes adjacency matrix)
@@ -74,6 +156,17 @@ const METRIC_KEYS = [
 ];
 
 /**
+ * The Moreno group-level metric keys, in the order they appear as columns of
+ * the group-level result row.
+ *
+ * - "cohesion": group cohesion coefficient — total reciprocal likes over every
+ *   nomination (likes + dislikes).
+ * - "tension": group tension coefficient — total dislikes over every nomination
+ *   (likes + dislikes).
+ */
+const GROUP_METRIC_KEYS = ["cohesion", "tension"];
+
+/**
  * Compute Moreno's sociometric indices for every member.
  *
  * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
@@ -86,7 +179,7 @@ const METRIC_KEYS = [
  *   A `size` x `METRIC_KEYS.length` matrix. Rows are members (aligned with the
  *   matrix row/column order) and columns are the metrics in `METRIC_KEYS` order.
  */
-const computeMorenoRelatedMetrics = (adjA, adjB) => {
+const computeIndividualLevelMetrics = (adjA, adjB) => {
   const size = adjA.length;
   if (size === 0) return np.empty([0, METRIC_KEYS.length]);
 
@@ -219,8 +312,8 @@ const getSociometricStatus = (rp, rr, impact) => {
  *   column (in `METRIC_KEYS` order), and `values[i][j]` is the score of member
  *   `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const getMorenoRelatedResults = (adjLikes, adjDislikes, MemberIndices) => {
-  const result = computeMorenoRelatedMetrics(adjLikes, adjDislikes);
+export const getMorenoIndividualLevelMetrics = (adjLikes, adjDislikes, MemberIndices) => {
+  const result = computeIndividualLevelMetrics(adjLikes, adjDislikes);
 
   return {
     rowIndex: MemberIndices,
