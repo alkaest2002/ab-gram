@@ -9,7 +9,8 @@ import * as np from "numpy-ts";
  *
  * @param {Member[]} members
  * @param {"likes" | "dislikes"} preference
- * @returns {number[][]} A `members.length` x `members.length` adjacency matrix.
+ * @returns {import("numpy-ts").NDArray} A `members.length` x `members.length`
+ *   adjacency matrix.
  */
 export const createAdjacencyMatrix = (members, preference) => {
   if (preference !== "likes" && preference !== "dislikes") {
@@ -27,7 +28,7 @@ export const createAdjacencyMatrix = (members, preference) => {
     }
   });
 
-  return matrix;
+  return np.array(matrix);
 };
 
 /**
@@ -36,8 +37,8 @@ export const createAdjacencyMatrix = (members, preference) => {
  * `adjLikes` captures who likes whom, while `adjDislikes` captures who dislikes whom.
  *
  * @param {Member[]} members
- * @returns {{ adjLikes: number[][], adjDislikes: number[][] }} The likes matrix as `adjLikes`
- *   and the dislikes matrix as `adjB`.
+ * @returns {{ adjLikes: import("numpy-ts").NDArray, adjDislikes: import("numpy-ts").NDArray }}
+ *   The likes matrix as `adjLikes` and the dislikes matrix as `adjDislikes`.
  */
 export const createAdjacencyMatrices = (members) => {
   const adjLikes = createAdjacencyMatrix(members, "likes");
@@ -67,9 +68,9 @@ export const getMemberIndices = (members) => members.map((member) => member.id);
  * where `aId` is the id of the choosing member and `bId` the id of the chosen
  * one.
  *
- * @param {number[][]} adjLikes - Likes adjacency matrix (`adjLikes[i][j] === 1`
- *   means member `i` likes member `j`).
- * @param {number[][]} adjDislikes - Dislikes adjacency matrix
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix
+ *   (`adjLikes[i][j] === 1` means member `i` likes member `j`).
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix
  *   (`adjDislikes[i][j] === 1` means member `i` dislikes member `j`).
  * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
  *   order (see `getMemberIndices`).
@@ -80,8 +81,8 @@ export const getMemberIndices = (members) => members.map((member) => member.id);
  *   but never twice within the same list.
  */
 export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
-  const likes = np.array(adjLikes);
-  const dislikes = np.array(adjDislikes);
+  const likes = adjLikes;
+  const dislikes = adjDislikes;
 
   const and = np.logical_and;
   const not = np.logical_not;

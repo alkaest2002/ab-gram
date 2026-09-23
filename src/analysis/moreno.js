@@ -49,33 +49,31 @@ const GROUP_LEVEL_METRIC_KEYS = [
 /**
  * Compute Moreno's group-level sociometric metrics.
  *
- * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
- * following the `members` ordering produced by `createAdjacencyMatrices`, so
- * `matrix[i][j] === 1` means member `i` chose member `j`.
+ * `adjLikes` is the "likes" adjacency matrix and `adjDislikes` the "dislikes"
+ * one, both following the `members` ordering produced by
+ * `createAdjacencyMatrices`, so `matrix[i][j] === 1` means member `i` chose
+ * member `j`.
  *
- * @param {number[][]} adjA - Likes adjacency matrix.
- * @param {number[][]} adjB - Dislikes adjacency matrix.
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray}
  *   A `1` x `GROUP_LEVEL_METRIC_KEYS.length` matrix holding, in column order, the
  *   cohesion, conflict, positive-reciprocity and negative-reciprocity metrics.
  */
-const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
-  const likes = np.array(adjA);
-  const dislikes = np.array(adjB);
-
-  const size = adjA.length;
+const computeMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
+  const size = adjLikes.shape[0];
 
   // Total directed nominations of each preference kind.
-  const totalLikes = likes.sum();
-  const totalDislikes = dislikes.sum();
+  const totalLikes = adjLikes.sum();
+  const totalDislikes = adjDislikes.sum();
 
-  // Number of mutual (reciprocal) like pairs. `likes * likes.T` is non-zero
-  // exactly where both directions of a like exist; its sum counts each mutual
-  // pair twice (once per direction), so halve it to count distinct pairs.
-  const totalReciprocalLikes = likes.multiply(likes.T).sum() / 2;
+  // Number of mutual (reciprocal) like pairs. `adjLikes * adjLikes.T` is
+  // non-zero exactly where both directions of a like exist; its sum counts each
+  // mutual pair twice (once per direction), so halve it to count distinct pairs.
+  const totalReciprocalLikes = adjLikes.multiply(adjLikes.T).sum() / 2;
 
   // Number of mutual (reciprocal) dislike pairs, counted the same way.
-  const totalReciprocalDislikes = dislikes.multiply(dislikes.T).sum() / 2;
+  const totalReciprocalDislikes = adjDislikes.multiply(adjDislikes.T).sum() / 2;
 
   // Every unordered pair of members, floored at 1 so groups smaller than two
   // members avoid a division by zero.
@@ -99,9 +97,9 @@ const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
  * observation: there is exactly one row (the group) and one column per metric
  * in `GROUP_LEVEL_METRIC_KEYS`.
  *
- * @param {number[][]} adjLikes - Likes adjacency matrix, where
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix, where
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
- * @param {number[][]} adjDislikes - Dislikes adjacency matrix, where
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
@@ -195,35 +193,33 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
 /**
  * Compute Moreno's sociometric indices for every member.
  *
- * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
- * following the `members` ordering produced by `createAdjacencyMatrices`, so
- * `matrix[i][j] === 1` means member `i` chose member `j`.
+ * `adjLikes` is the "likes" adjacency matrix and `adjDislikes` the "dislikes"
+ * one, both following the `members` ordering produced by
+ * `createAdjacencyMatrices`, so `matrix[i][j] === 1` means member `i` chose
+ * member `j`.
  *
- * @param {number[][]} adjA - Likes adjacency matrix.
- * @param {number[][]} adjB - Dislikes adjacency matrix.
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray}
  *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are members
  *   (aligned with the matrix row/column order) and columns are the metrics in
  *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order.
  */
-const computeIndividualLevelMetrics = (adjA, adjB) => {
-  const size = adjA.length;
+const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
+  const size = adjLikes.shape[0];
   if (size === 0) return np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]);
 
-  const likes = np.array(adjA);
-  const dislikes = np.array(adjB);
-
   // Received nominations: column sums (how many members chose me).
-  const rp = likes.sum(0);
-  const rr = dislikes.sum(0);
+  const rp = adjLikes.sum(0);
+  const rr = adjDislikes.sum(0);
 
   // Given nominations: row sums (how many members I chose).
-  const gp = likes.sum(1);
-  const gr = dislikes.sum(1);
+  const gp = adjLikes.sum(1);
+  const gr = adjDislikes.sum(1);
 
   // Mutual connections: A[i][j] && A[j][i] === elementwise A * A^T.
-  const mp = likes.multiply(likes.T).sum(1);
-  const mr = dislikes.multiply(dislikes.T).sum(1);
+  const mp = adjLikes.multiply(adjLikes.T).sum(1);
+  const mr = adjDislikes.multiply(adjDislikes.T).sum(1);
 
   // Derived indices.
   const impact = rp.add(rr);
@@ -334,11 +330,11 @@ const getSociometricStatus = (rp, rr, impact) => {
  * the already-built adjacency matrices, computes the indices, and converts the
  * resulting NDArray to plain data only at this final boundary.
  *
- * @param {number[][]} adjLikes - Likes adjacency matrix, where
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix, where
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
- * @param {number[][]} adjDislikes - Dislikes adjacency matrix, where
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
- * @param {string[]} MemberIndices - Member ids aligned with the matrix row/column
+ * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
  *   order.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
@@ -348,12 +344,12 @@ const getSociometricStatus = (rp, rr, impact) => {
 export const getMorenoIndividualLevelMetrics = (
   adjLikes,
   adjDislikes,
-  MemberIndices,
+  memberIndices,
 ) => {
   const result = computeIndividualLevelMetrics(adjLikes, adjDislikes);
 
   return {
-    rowIndex: MemberIndices,
+    rowIndex: memberIndices,
     columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
     values: result.tolist(),
   };
