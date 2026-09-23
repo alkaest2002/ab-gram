@@ -114,8 +114,8 @@ export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
   const toEdges = (mask) =>
     np.argwhere(mask).tolist().map(([i, j]) => [memberIndices[i], memberIndices[j]]);
 
-  // Sort edges to ensure consistent ordering across types (e.g. [a, b] should
-  // always come before [b, a]).
+  // Sort edges to ensure consistent ordering across types (e.g. [a, b] and [b, a]
+  // should come one after the other, not interspersed).
   const sortEdges = (edges) =>
     edges.sort(([a1, b1], [a2, b2]) => {
       const pair1 = [a1, b1].sort().join('|');
