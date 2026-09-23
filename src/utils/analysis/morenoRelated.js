@@ -16,8 +16,6 @@ MORENO CLASSIC
 
 import * as np from "numpy-ts";
 
-import { createAdjacencyMatrices } from "@/utils/analysis/adjacencyMatrixRelated";
-
 /**
  * The Moreno classic metric keys, in the order they appear as columns of the
  * result matrix. Column `i` of a Moreno result holds the metric named by
@@ -37,57 +35,6 @@ const METRIC_KEYS = [
   "ai",
   "ii",
 ];
-
-/**
- * Build an object with one empty array per metric key.
- * @returns {Record<string, number[]>}
- */
-const emptyMetrics = () => {
-  const metrics = {};
-  for (const key of METRIC_KEYS) metrics[key] = [];
-  return metrics;
-};
-
-/**
- * Stable cache key for a group of members. Serializing only the fields the
- * adjacency matrices depend on (id, likes, dislikes) keeps the key cheap while
- * still distinguishing every member ordering and preference change.
- *
- * @param {import("@/stores/sociogram").Member[]} members
- * @returns {string}
- */
-const membersCacheKey = (members) =>
-  JSON.stringify(
-    members.map(({ id, likes, dislikes }) => [id, likes, dislikes])
-  );
-
-/**
- * Cache of adjacency matrices keyed by a serialized snapshot of the members.
- * @type {Map<string, { adjLikes: number[][], adjDislikes: number[][] }>}
- */
-const adjacencyMatricesCache = new Map();
-
-/**
- * Build (or reuse) the likes/dislikes adjacency matrices for a group.
- *
- * The matrices are memoized so repeated computations over the same members do
- * not rebuild the same structures. Callers must treat the returned matrices as
- * read-only.
- *
- * @param {import("@/stores/sociogram").Member[]} members
- * @returns {{ adjLikes: number[][], adjDislikes: number[][] }}
- */
-const getAdjacencyMatrices = (members) => {
-  const key = membersCacheKey(members);
-
-  const cached = adjacencyMatricesCache.get(key);
-  if (cached) return cached;
-
-  const matrices = createAdjacencyMatrices(members);
-  adjacencyMatricesCache.set(key, matrices);
-
-  return matrices;
-};
 
 /**
  * Compute Moreno's classic sociometric indices for every member.
@@ -150,22 +97,26 @@ const morenoClassic = (adjA, adjB) => {
  * Compute Moreno's classic sociometric indices and return them as a plain
  * object mirroring a pandas DataFrame.
  *
- * This is the module's single entry point: it builds the adjacency matrices,
- * computes the indices, and converts the resulting NDArray to plain data only
- * at this final boundary.
+ * This is the module's single entry point: it receives the already-built
+ * adjacency matrices, computes the indices, and converts the resulting NDArray
+ * to plain data only at this final boundary.
  *
- * @param {import("@/stores/sociogram").Member[]} members
+ * @param {number[][]} adjLikes - Likes adjacency matrix, where
+ *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
+ * @param {number[][]} adjDislikes - Dislikes adjacency matrix, where
+ *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
+ * @param {string[]} rowIndex - Member ids aligned with the matrix row/column
+ *   order.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
  *   column (in `METRIC_KEYS` order), and `values[i][j]` is the score of member
  *   `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const getMorenoClassic = (members) => {
-  const { adjLikes, adjDislikes } = getAdjacencyMatrices(members);
+export const getMorenoClassic = (adjLikes, adjDislikes, rowIndex) => {
   const result = morenoClassic(adjLikes, adjDislikes);
 
   return {
-    rowIndex: members.map((member) => member.id),
+    rowIndex,
     columnIndex: [...METRIC_KEYS],
     values: result.tolist(),
   };
