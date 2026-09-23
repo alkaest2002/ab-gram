@@ -129,7 +129,7 @@ MORENO INDIVIDUAL LEVEL METRICS
 - "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
-- "ss": Sociometric status (0-7, see APPROACH 1 below)
+- "ss": Sociometric status (0-8, see APPROACH 1 below)
 
 SOCIOMETRIC STATUS CODES (Approach 1: Proportion + Confidence Band)
 ====================================================================
@@ -157,14 +157,16 @@ Impact band (relative to the sample's impact distribution):
   - Average impact = in between the two
 
 STATUS CODES:
-  0: Isolated       – no opinions received (rp + rr = 0)
-  1: Marginal       – low impact (impact < 20th percentile)
-  2: Appreciated    – average impact, positive balance (outside upper band)
-  3: Popular        – high impact, positive balance
-  4: Disliked       – average impact, negative balance (outside lower band)
-  5: Rejected       – high impact, negative balance
-  6: Ambivalent     – average impact, neutral balance (inside confidence band)
-  7: Controversial  – high impact, neutral balance (polarizing)
+  -1: Not classified
+   0: Isolated       – no opinions received (rp + rr = 0), no opinions given (gp + gr = 0)
+   1: Ignored        – no opinions received (rp + rr = 0), but not isolated (gp + gr > 0)
+   2: Marginal       – low impact (impact < 20th percentile)
+   3: Appreciated    – average impact, positive balance (outside upper band)
+   4: Popular        – high impact, positive balance
+   5: Disliked       – average impact, negative balance (outside lower band)
+   6: Rejected       – high impact, negative balance
+   7: Ambivalent     – average impact, neutral balance (inside confidence band)
+   8: Controversial  – high impact, neutral balance (polarizing)
 */
 
 import * as np from "numpy-ts";
@@ -228,7 +230,7 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
   const orientation = gp.subtract(gr);
   const affiliation = balance.add(orientation);
   const influence = rp.add(mp);
-  const sociometricStatus = getSociometricStatus(rp, rr, impact);
+  const sociometricStatus = getSociometricStatus(rp, rr, expressivity, impact);
 
   // Stack every metric as a column, keeping the numpy array until export.
   return np.column_stack([
@@ -261,10 +263,11 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *
  * @param {NDArray} rp - Received positive nominations (likes received)
  * @param {NDArray} rr - Received negative nominations (dislikes received)
+ * @param {NDArray} expressivity - Expressivity index (gp + gr, opinions given)
  * @param {NDArray} impact - Impact index (rp + rr)
- * @returns {NDArray} Array of status codes (0-7)
+ * @returns {NDArray} Array of status codes (0-8)
  */
-const getSociometricStatus = (rp, rr, impact) => {
+const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const LOW_IMPACT_PERCENTILE = 20;
   const HIGH_IMPACT_PERCENTILE = 80;
   const size = impact.size;
@@ -281,16 +284,19 @@ const getSociometricStatus = (rp, rr, impact) => {
     Math.floor((size * HIGH_IMPACT_PERCENTILE) / 100),
   ]);
 
-  // Impact bands. `isolated` short-circuits in the select below before any of
-  // the impact classification is consulted.
-  const isolated = totalOpinions.equal(0);
+  // Impact bands. Members with no opinions received (`isolated`/`ignored`)
+  // short-circuit in the select below before the impact classification is
+  // consulted.
+  const noOpinionsReceived = totalOpinions.equal(0);
+  const isolated = noOpinionsReceived.logical_and(expressivity.equal(0));
+  const ignored = noOpinionsReceived.logical_and(expressivity.greater(0));
   const isLowImpact = impact.less(lowImpactThreshold);
   const isHighImpact = impact.greater_equal(highImpactThreshold);
   const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
   // Approach 1: proportion of positive opinions + 1σ confidence band.
-  // The denominator is floored at 1 so isolated members (0 opinions) avoid a
-  // 0/0 division; their status is already decided by `isolated`.
+  // The denominator is floored at 1 so isolated/ignored members (0 opinions)
+  // avoid a 0/0 division; their status is already decided above.
   const safeTotal = np.maximum(totalOpinions, 1);
   const proportion = rp.divide(safeTotal);
   const variance = proportion.multiply(proportion.multiply(-1).add(1)); // p(1 - p)
@@ -305,20 +311,21 @@ const getSociometricStatus = (rp, rr, impact) => {
     .logical_or(isNegativeBalance)
     .logical_not();
 
-  // Classify into sociometric status (0-7). First matching condition wins.
+  // Classify into sociometric status (0-8). First matching condition wins.
   return np.select(
     [
-      isolated, // 0: isolated
-      isLowImpact, // 1: marginal
-      isHighImpact.logical_and(isPositiveBalance), // 3: popular
-      isHighImpact.logical_and(isNegativeBalance), // 5: rejected
-      isHighImpact.logical_and(isNeutralBalance), // 7: controversial
-      isAverageImpact.logical_and(isPositiveBalance), // 2: appreciated
-      isAverageImpact.logical_and(isNegativeBalance), // 4: disliked
-      isAverageImpact.logical_and(isNeutralBalance), // 6: ambivalent
+      isolated, // 0: isolated — no opinions received, none given
+      ignored, // 1: ignored — no opinions received, but gave opinions
+      isLowImpact, // 2: marginal — low impact
+      isHighImpact.logical_and(isPositiveBalance), // 4: popular
+      isHighImpact.logical_and(isNegativeBalance), // 6: rejected
+      isHighImpact.logical_and(isNeutralBalance), // 8: controversial
+      isAverageImpact.logical_and(isPositiveBalance), // 3: appreciated
+      isAverageImpact.logical_and(isNegativeBalance), // 5: disliked
+      isAverageImpact.logical_and(isNeutralBalance), // 7: ambivalent
     ],
-    [0, 1, 3, 5, 7, 2, 4, 6],
-    0,
+    [0, 1, 2, 4, 6, 8, 3, 5, 7],
+    -1,
   );
 };
 
