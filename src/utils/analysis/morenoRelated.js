@@ -1,12 +1,12 @@
 /*
-MORENO CLASSIC
+MORENO RELATED
 - "rp": Received positive nominations (in-degree from likes adjacency matrix)
 - "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
 - "gp": Given positive nominations (out-degree likes adjacency matrix)
 - "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
 - "mp": Mutual positive connections (bidirectional positive edges)
 - "mr": Mutual negative connections (bidirectional negative edges)
-- "im": Impact index (rp + rr)
+- "im": Impact index (rp + rr):
 - "bl": Balance index (rp - rr)
 - "ei": Expressivity index (gp + gr)
 - "or": Orientation index (gp - gr)
@@ -37,7 +37,7 @@ const METRIC_KEYS = [
 ];
 
 /**
- * Compute Moreno's classic sociometric indices for every member.
+ * Compute Moreno's sociometric indices for every member.
  *
  * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
  * following the `members` ordering produced by `createAdjacencyMatrices`, so
@@ -49,7 +49,7 @@ const METRIC_KEYS = [
  *   A `size` x `METRIC_KEYS.length` matrix. Rows are members (aligned with the
  *   matrix row/column order) and columns are the metrics in `METRIC_KEYS` order.
  */
-const morenoClassic = (adjA, adjB) => {
+const computeMorenoRelatedMetrics = (adjA, adjB) => {
   const size = adjA.length;
   if (size === 0) return np.empty([0, METRIC_KEYS.length]);
 
@@ -105,18 +105,18 @@ const morenoClassic = (adjA, adjB) => {
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
  * @param {number[][]} adjDislikes - Dislikes adjacency matrix, where
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
- * @param {string[]} rowIndex - Member ids aligned with the matrix row/column
+ * @param {string[]} MemberIndices - Member ids aligned with the matrix row/column
  *   order.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
  *   column (in `METRIC_KEYS` order), and `values[i][j]` is the score of member
  *   `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const getMorenoClassic = (adjLikes, adjDislikes, rowIndex) => {
-  const result = morenoClassic(adjLikes, adjDislikes);
+export const getMorenoRelatedResults = (adjLikes, adjDislikes, MemberIndices) => {
+  const result = computeMorenoRelatedMetrics(adjLikes, adjDislikes);
 
   return {
-    rowIndex,
+    rowIndex: MemberIndices,
     columnIndex: [...METRIC_KEYS],
     values: result.tolist(),
   };
