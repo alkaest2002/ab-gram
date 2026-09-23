@@ -1,3 +1,5 @@
+import * as np from "numpy-ts";
+
 /**
  * Build a square adjacency matrix for a preference type [either likes or dislikes].
  *
@@ -47,21 +49,75 @@ export const createAdjacencyMatrices = (members) => {
 }
 
 /**
- * Member ids in the order they occupy the rows of an adjacency matrix.
+ * Member ids in the order they occupy the rows/columns of an adjacency matrix.
  *
  * Row `i` belongs to the member whose id sits at position `i` in this array.
  *
  * @param {Member[]} members
  * @returns {string[]} Member ids aligned with the matrix row order.
  */
-export const getRowIndices = (members) => members.map((member) => member.id);
+export const getMemberIndices = (members) => members.map((member) => member.id);
+
 
 /**
- * Member ids in the order they occupy the columns of an adjacency matrix.
+ * Classify every directed preference edge into one of seven types.
  *
- * Column `j` belongs to the member whose id sits at position `j` in this array.
+ * An edge runs from the choosing member `A` (row `i`) to the chosen member `B`
+ * (column `j`). Each edge is returned as a `[aId, bId]` pair of member ids,
+ * where `aId` is the id of the choosing member and `bId` the id of the chosen
+ * one.
  *
- * @param {Member[]} members
- * @returns {string[]} Member ids aligned with the matrix column order.
+ * @param {number[][]} adjLikes - Likes adjacency matrix (`adjLikes[i][j] === 1`
+ *   means member `i` likes member `j`).
+ * @param {number[][]} adjDislikes - Dislikes adjacency matrix
+ *   (`adjDislikes[i][j] === 1` means member `i` dislikes member `j`).
+ * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
+ *   order (see `getMemberIndices`).
+ * @returns {{ typeI: string[][], typeII: string[][], typeIII: string[][],
+ *   typeIV: string[][], typeV: string[][], typeVI: string[][], typeVII: string[][] }}
+ *   Seven edge lists, each holding `[aId, bId]` member-id pairs.
  */
-export const getColIndices = (members) => members.map((member) => member.id);
+export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
+  const likes = np.array(adjLikes);
+  const dislikes = np.array(adjDislikes);
+
+  const and = np.logical_and;
+  const not = np.logical_not;
+
+  // Forward (A -> B) preference, expressed as three mutually exclusive states.
+  const likesOnly = and(likes, not(dislikes));    // A likes B, does not dislike B
+  const dislikesOnly = and(dislikes, not(likes)); // A dislikes B, does not like B
+  const both = and(likes, dislikes);              // A likes and dislikes B
+
+  // Reverse (B -> A) preference, read through the transpose.
+  const likesBack = likesOnly.T;                  // B likes A, does not dislike A
+  const dislikesBack = dislikesOnly.T;            // B dislikes A, does not like A
+  const noneBack = and(not(likes.T), not(dislikes.T)); // B neither likes nor dislikes A
+
+  // NON PROBLEMATIC EDGES
+  const typeI = and(likesOnly, noneBack);      // one-sided like
+  const typeII = and(likesOnly, likesBack);    // mutual like
+
+  // PROBLEMATIC EDGES
+  const typeIII = and(dislikesOnly, noneBack); // one-sided dislike
+  const typeIV = and(dislikesOnly, dislikesBack); // mutual dislike
+
+  // EDGES THAT NEED INQUIRY
+  const typeV = and(likesOnly, dislikesBack);  // A likes B, B dislikes A
+  const typeVI = and(dislikesOnly, likesBack); // A dislikes B, B likes A
+  const typeVII = both;                        // A likes and dislikes B
+
+  // Translate matrix coordinates [i, j] into the matching member-id pair.
+  const toEdges = (mask) =>
+    np.argwhere(mask).tolist().map(([i, j]) => [memberIndices[i], memberIndices[j]]);
+
+  return {
+    typeI: toEdges(typeI),
+    typeII: toEdges(typeII),
+    typeIII: toEdges(typeIII),
+    typeIV: toEdges(typeIV),
+    typeV: toEdges(typeV),
+    typeVI: toEdges(typeVI),
+    typeVII: toEdges(typeVII),
+  };
+};
