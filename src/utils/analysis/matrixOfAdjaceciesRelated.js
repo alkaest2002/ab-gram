@@ -75,7 +75,9 @@ export const getMemberIndices = (members) => members.map((member) => member.id);
  *   order (see `getMemberIndices`).
  * @returns {{ typeI: string[][], typeII: string[][], typeIII: string[][],
  *   typeIV: string[][], typeV: string[][], typeVI: string[][], typeVII: string[][] }}
- *   Seven edge lists, each holding `[aId, bId]` member-id pairs.
+ *   Seven edge lists, each holding `[aId, bId]` member-id pairs. An edge may
+ *   appear in more than one list (e.g. when `B` both likes and dislikes `A`),
+ *   but never twice within the same list.
  */
 export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
   const likes = np.array(adjLikes);
@@ -89,9 +91,12 @@ export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
   const dislikesOnly = and(dislikes, not(likes)); // A dislikes B, does not like B
   const both = and(likes, dislikes);              // A likes and dislikes B
 
-  // Reverse (B -> A) preference, read through the transpose.
-  const likesBack = likesOnly.T;                  // B likes A, does not dislike A
-  const dislikesBack = dislikesOnly.T;            // B dislikes A, does not like A
+  // Reverse (B -> A) preference, read through the transpose. A "both" reverse
+  // feeling (B likes AND dislikes A) counts as both a like and a dislike, so the
+  // same edge may land in two different types (e.g. II and V) — but never twice
+  // within one type.
+  const likesBack = likes.T;                  // B likes A
+  const dislikesBack = dislikes.T;            // B dislikes A
   const noneBack = and(not(likes.T), not(dislikes.T)); // B neither likes nor dislikes A
 
   // NON PROBLEMATIC EDGES
@@ -101,23 +106,32 @@ export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
   // PROBLEMATIC EDGES
   const typeIII = and(dislikesOnly, noneBack); // one-sided dislike
   const typeIV = and(dislikesOnly, dislikesBack); // mutual dislike
-
-  // EDGES THAT NEED INQUIRY
   const typeV = and(likesOnly, dislikesBack);  // A likes B, B dislikes A
   const typeVI = and(dislikesOnly, likesBack); // A dislikes B, B likes A
+
+  // EDGES THAT NEED INQUIRY
   const typeVII = both;                        // A likes and dislikes B
 
   // Translate matrix coordinates [i, j] into the matching member-id pair.
   const toEdges = (mask) =>
     np.argwhere(mask).tolist().map(([i, j]) => [memberIndices[i], memberIndices[j]]);
 
+  // Sort edges to ensure consistent ordering across types (e.g. [a, b] should
+  // always come before [b, a]).
+  const sortEdges = (edges) =>
+    edges.sort(([a1, b1], [a2, b2]) => {
+      const pair1 = [a1, b1].sort().join('|');
+      const pair2 = [a2, b2].sort().join('|');
+      return pair1.localeCompare(pair2);
+    });
+
   return {
-    typeI: toEdges(typeI),
-    typeII: toEdges(typeII),
-    typeIII: toEdges(typeIII),
-    typeIV: toEdges(typeIV),
-    typeV: toEdges(typeV),
-    typeVI: toEdges(typeVI),
-    typeVII: toEdges(typeVII),
+    typeI: sortEdges(toEdges(typeI)),
+    typeII: sortEdges(toEdges(typeII)),
+    typeIII: sortEdges(toEdges(typeIII)),
+    typeIV: sortEdges(toEdges(typeIV)),
+    typeV: sortEdges(toEdges(typeV)),
+    typeVI: sortEdges(toEdges(typeVI)),
+    typeVII: sortEdges(toEdges(typeVII)),
   };
 };
