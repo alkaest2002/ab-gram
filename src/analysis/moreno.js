@@ -1,25 +1,53 @@
 /*
 MORENO GROUP LEVEL METRICS
-- "cohesion": Group cohesion coefficient (total reciprocal like pairs / total choices)
-- "tension": Group tension coefficient (total dislikes / total choices)
+- "cohesion":            Group cohesion index (mutual like pairs / total possible pairs)
+- "conflict":            Group conflict index (mutual dislike pairs / total possible pairs)
+- "positiveReciprocity": Positive reciprocity index (mutual like pairs / total likes)
+- "negativeReciprocity": Negative reciprocity index (mutual dislike pairs / total dislikes)
 
-Where, summed over the whole group:
-  - total likes       = sum of the likes adjacency matrix (every "like" nomination)
-  - total dislikes    = sum of the dislikes adjacency matrix (every "dislike" nomination)
-  - total choices     = total likes + total dislikes (every nomination)
-  - reciprocal pairs  = number of mutual like pairs (A likes B AND B likes A),
-                        each distinct pair counted once
+Where, summed over the whole group of N members:
+  - total likes          = sum of the likes adjacency matrix (every "like" nomination)
+  - total dislikes       = sum of the dislikes adjacency matrix (every "dislike" nomination)
+  - mutual like pairs    = number of reciprocal like pairs (A likes B AND B likes A),
+                           each distinct pair counted once
+  - mutual dislike pairs = number of reciprocal dislike pairs (A dislikes B AND
+                           B dislikes A), each distinct pair counted once
+  - total possible pairs = N(N - 1) / 2 (every unordered pair of members)
 
 So:
-  - cohesion = reciprocal pairs / (total likes + total dislikes)
-  - tension  = total dislikes   / (total likes + total dislikes)
+  - cohesion            = mutual like pairs / total possible pairs
+  - conflict            = mutual dislike pairs / total possible pairs
+  - positiveReciprocity = mutual like pairs / total likes
+  - negativeReciprocity = mutual dislike pairs / total dislikes
 
-Both coefficients range in [0, 1], and an empty group (no nominations) yields
-0 for both.
+Cohesion and conflict fall in [0, 1] and are 0 when there are no possible pairs
+(N < 2). Each reciprocity index divides mutual pairs by the number of like (or
+dislike) nominations, so it falls in [0, 0.5] and is undefined (NaN) when its
+denominator — total likes for positive, total dislikes for negative — is 0.
 */
 
 /**
- * Compute Moreno's group-level sociometric coefficients.
+ * The Moreno group-level metric keys, in the order they appear as columns of
+ * the group-level result row.
+ *
+ * - "cohesion": group cohesion index — mutual like pairs over total possible
+ *   pairs (N(N-1)/2).
+ * - "conflict": group conflict index — mutual dislike pairs over total possible
+ *   pairs (N(N-1)/2).
+ * - "positiveReciprocity": positive reciprocity index — mutual like pairs over
+ *   total likes.
+ * - "negativeReciprocity": negative reciprocity index — mutual dislike pairs
+ *   over total dislikes.
+ */
+const GROUP_LEVEL_METRIC_KEYS = [
+  "cohesion",
+  "conflict",
+  "positiveReciprocity",
+  "negativeReciprocity",
+];
+
+/**
+ * Compute Moreno's group-level sociometric metrics.
  *
  * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
  * following the `members` ordering produced by `createAdjacencyMatrices`, so
@@ -28,12 +56,14 @@ Both coefficients range in [0, 1], and an empty group (no nominations) yields
  * @param {number[][]} adjA - Likes adjacency matrix.
  * @param {number[][]} adjB - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray}
- *   A `1` x `GROUP_METRIC_KEYS.length` matrix holding, in column order, the
- *   cohesion and tension coefficients.
+ *   A `1` x `GROUP_LEVEL_METRIC_KEYS.length` matrix holding, in column order, the
+ *   cohesion, conflict, positive-reciprocity and negative-reciprocity metrics.
  */
 const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
   const likes = np.array(adjA);
   const dislikes = np.array(adjB);
+
+  const size = adjA.length;
 
   // Total directed nominations of each preference kind.
   const totalLikes = likes.sum();
@@ -44,23 +74,30 @@ const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
   // pair twice (once per direction), so halve it to count distinct pairs.
   const totalReciprocalLikes = likes.multiply(likes.T).sum() / 2;
 
-  // Every nomination (like or dislike). Floored at 1 so an empty group yields
-  // 0 for both coefficients instead of NaN.
-  const totalChoices = Math.max(totalLikes + totalDislikes, 1);
+  // Number of mutual (reciprocal) dislike pairs, counted the same way.
+  const totalReciprocalDislikes = dislikes.multiply(dislikes.T).sum() / 2;
 
-  const cohesion = totalReciprocalLikes / totalChoices;
-  const tension = totalDislikes / totalChoices;
+  // Every unordered pair of members, floored at 1 so groups smaller than two
+  // members avoid a division by zero.
+  const totalPossiblePairs = Math.max((size * (size - 1)) / 2, 1);
 
-  return np.array([[cohesion, tension]]);
+  const cohesion = totalReciprocalLikes / totalPossiblePairs;
+  const conflict = totalReciprocalDislikes / totalPossiblePairs;
+  const positiveReciprocity = totalReciprocalLikes / totalLikes;
+  const negativeReciprocity = totalReciprocalDislikes / totalDislikes;
+
+  return np.array([
+    [cohesion, conflict, positiveReciprocity, negativeReciprocity],
+  ]);
 };
 
 /**
- * Compute Moreno's group-level sociometric coefficients and return them as a
+ * Compute Moreno's group-level sociometric metrics and return them as a
  * plain object mirroring a pandas DataFrame.
  *
  * This mirrors `getMorenoIndividualLevelMetrics`, but the group is a single
  * observation: there is exactly one row (the group) and one column per metric
- * in `GROUP_METRIC_KEYS`.
+ * in `GROUP_LEVEL_METRIC_KEYS`.
  *
  * @param {number[][]} adjLikes - Likes adjacency matrix, where
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
@@ -68,14 +105,14 @@ const computeMorenoGroupLevelMetrics = (adjA, adjB) => {
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
- *   (in `GROUP_METRIC_KEYS` order), and `values` holds the single group row.
+ *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `values` holds the single group row.
  */
 export const getMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
   const result = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
 
   return {
     rowIndex: ["group"],
-    columnIndex: [...GROUP_METRIC_KEYS],
+    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
     values: result.tolist(),
   };
 };
@@ -101,12 +138,12 @@ SOCIOMETRIC STATUS CODES (Approach 1: Proportion + Confidence Band)
 
 Approach 1 defines "neutral balance" not as balance=0, but as a confidence band around
 50/50 opinion, scaled by sample size:
-  - neutral_band = 0.5 ± 1σ * sqrt(p(1-p) / n)
+  - neutral_band = 0.5 ± σ
 
 Where:
   - p = proportion of positive opinions received (rp / (rp + rr))
   - n = total opinions received (rp + rr)
-  - σ = 1 standard error (confidence margin)
+  - σ = standard error = sqrt(p(1-p) / n)
 
 This means:
   - Small sample (few opinions) → wide neutral band → harder to escape neutral status
@@ -128,18 +165,18 @@ STATUS CODES:
   3: Popular        – high impact, positive balance
   4: Disliked       – average impact, negative balance (outside lower band)
   5: Rejected       – high impact, negative balance
-  6: Ambitendent    – average impact, neutral balance (inside confidence band)
+  6: Ambivalent     – average impact, neutral balance (inside confidence band)
   7: Controversial  – high impact, neutral balance (polarizing)
 */
 
 import * as np from "numpy-ts";
 
 /**
- * The Moreno classic metric keys, in the order they appear as columns of the
- * result matrix. Column `i` of a Moreno result holds the metric named by
- * `METRIC_KEYS[i]`.
+ * The Moreno individual-level metric keys, in the order they appear as columns
+ * of the result matrix. Column `i` of a Moreno result holds the metric named
+ * by `INDIVIDUAL_LEVEL_METRIC_KEYS[i]`.
  */
-const METRIC_KEYS = [
+const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "rp",
   "rr",
   "gp",
@@ -156,17 +193,6 @@ const METRIC_KEYS = [
 ];
 
 /**
- * The Moreno group-level metric keys, in the order they appear as columns of
- * the group-level result row.
- *
- * - "cohesion": group cohesion coefficient — total reciprocal likes over every
- *   nomination (likes + dislikes).
- * - "tension": group tension coefficient — total dislikes over every nomination
- *   (likes + dislikes).
- */
-const GROUP_METRIC_KEYS = ["cohesion", "tension"];
-
-/**
  * Compute Moreno's sociometric indices for every member.
  *
  * `adjA` is the "likes" adjacency matrix and `adjB` the "dislikes" one, both
@@ -176,12 +202,13 @@ const GROUP_METRIC_KEYS = ["cohesion", "tension"];
  * @param {number[][]} adjA - Likes adjacency matrix.
  * @param {number[][]} adjB - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray}
- *   A `size` x `METRIC_KEYS.length` matrix. Rows are members (aligned with the
- *   matrix row/column order) and columns are the metrics in `METRIC_KEYS` order.
+ *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are members
+ *   (aligned with the matrix row/column order) and columns are the metrics in
+ *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order.
  */
 const computeIndividualLevelMetrics = (adjA, adjB) => {
   const size = adjA.length;
-  if (size === 0) return np.empty([0, METRIC_KEYS.length]);
+  if (size === 0) return np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]);
 
   const likes = np.array(adjA);
   const dislikes = np.array(adjB);
@@ -205,7 +232,7 @@ const computeIndividualLevelMetrics = (adjA, adjB) => {
   const orientation = gp.subtract(gr);
   const affiliation = balance.add(orientation);
   const influence = rp.add(mp);
-  const sociometricStatus = getSociometricStatus(rp, rr, impact)
+  const sociometricStatus = getSociometricStatus(rp, rr, impact);
 
   // Stack every metric as a column, keeping the numpy array until export.
   return np.column_stack([
@@ -221,7 +248,7 @@ const computeIndividualLevelMetrics = (adjA, adjB) => {
     orientation,
     affiliation,
     influence,
-    sociometricStatus
+    sociometricStatus,
   ]);
 };
 
@@ -251,8 +278,12 @@ const getSociometricStatus = (rp, rr, impact) => {
 
   // Impact percentiles (nearest-rank: floor of the sorted position).
   const impactSorted = impact.flatten().sort();
-  const lowImpactThreshold = impactSorted.get([Math.floor((size * LOW_IMPACT_PERCENTILE) / 100)]);
-  const highImpactThreshold = impactSorted.get([Math.floor((size * HIGH_IMPACT_PERCENTILE) / 100)]);
+  const lowImpactThreshold = impactSorted.get([
+    Math.floor((size * LOW_IMPACT_PERCENTILE) / 100),
+  ]);
+  const highImpactThreshold = impactSorted.get([
+    Math.floor((size * HIGH_IMPACT_PERCENTILE) / 100),
+  ]);
 
   // Impact bands. `isolated` short-circuits in the select below before any of
   // the impact classification is consulted.
@@ -274,19 +305,21 @@ const getSociometricStatus = (rp, rr, impact) => {
   // Balance classification against the confidence band.
   const isPositiveBalance = proportion.greater(bandUpper);
   const isNegativeBalance = proportion.less(bandLower);
-  const isNeutralBalance = isPositiveBalance.logical_or(isNegativeBalance).logical_not();
+  const isNeutralBalance = isPositiveBalance
+    .logical_or(isNegativeBalance)
+    .logical_not();
 
   // Classify into sociometric status (0-7). First matching condition wins.
   return np.select(
     [
-      isolated,                                       // 0: isolated
-      isLowImpact,                                    // 1: marginal
-      isHighImpact.logical_and(isPositiveBalance),    // 3: popular
-      isHighImpact.logical_and(isNegativeBalance),    // 5: rejected
-      isHighImpact.logical_and(isNeutralBalance),     // 7: controversial
+      isolated, // 0: isolated
+      isLowImpact, // 1: marginal
+      isHighImpact.logical_and(isPositiveBalance), // 3: popular
+      isHighImpact.logical_and(isNegativeBalance), // 5: rejected
+      isHighImpact.logical_and(isNeutralBalance), // 7: controversial
       isAverageImpact.logical_and(isPositiveBalance), // 2: appreciated
       isAverageImpact.logical_and(isNegativeBalance), // 4: disliked
-      isAverageImpact.logical_and(isNeutralBalance),  // 6: ambivalent
+      isAverageImpact.logical_and(isNeutralBalance), // 6: ambivalent
     ],
     [0, 1, 3, 5, 7, 2, 4, 6],
     0,
@@ -297,9 +330,9 @@ const getSociometricStatus = (rp, rr, impact) => {
  * Compute Moreno's classic sociometric indices and return them as a plain
  * object mirroring a pandas DataFrame.
  *
- * This is the module's single entry point: it receives the already-built
- * adjacency matrices, computes the indices, and converts the resulting NDArray
- * to plain data only at this final boundary.
+ * This is the module's entry point for individual-level indices: it receives
+ * the already-built adjacency matrices, computes the indices, and converts the
+ * resulting NDArray to plain data only at this final boundary.
  *
  * @param {number[][]} adjLikes - Likes adjacency matrix, where
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
@@ -309,15 +342,19 @@ const getSociometricStatus = (rp, rr, impact) => {
  *   order.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
  *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
- *   column (in `METRIC_KEYS` order), and `values[i][j]` is the score of member
- *   `rowIndex[i]` for metric `columnIndex[j]`.
+ *   column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the
+ *   score of member `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const getMorenoIndividualLevelMetrics = (adjLikes, adjDislikes, MemberIndices) => {
+export const getMorenoIndividualLevelMetrics = (
+  adjLikes,
+  adjDislikes,
+  MemberIndices,
+) => {
   const result = computeIndividualLevelMetrics(adjLikes, adjDislikes);
 
   return {
     rowIndex: MemberIndices,
-    columnIndex: [...METRIC_KEYS],
+    columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
     values: result.tolist(),
   };
 };
