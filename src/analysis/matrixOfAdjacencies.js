@@ -81,24 +81,21 @@ export const getMemberIndices = (members) => members.map((member) => member.id);
  *   but never twice within the same list.
  */
 export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
-  const likes = adjLikes;
-  const dislikes = adjDislikes;
-
   const and = np.logical_and;
   const not = np.logical_not;
 
   // Forward (A -> B) preference, expressed as three mutually exclusive states.
-  const likesOnly = and(likes, not(dislikes));    // A likes B, does not dislike B
-  const dislikesOnly = and(dislikes, not(likes)); // A dislikes B, does not like B
-  const both = and(likes, dislikes);              // A likes and dislikes B
+  const likesOnly = and(adjLikes, not(adjDislikes));    // A likes B, does not dislike B
+  const dislikesOnly = and(adjDislikes, not(adjLikes)); // A dislikes B, does not like B
+  const both = and(adjLikes, adjDislikes);              // A likes and dislikes B
 
   // Reverse (B -> A) preference, read through the transpose. A "both" reverse
   // feeling (B likes AND dislikes A) counts as both a like and a dislike, so the
   // same edge may land in two different types (e.g. II and V) — but never twice
   // within one type.
-  const likesBack = likes.T;                  // B likes A
-  const dislikesBack = dislikes.T;            // B dislikes A
-  const noneBack = and(not(likes.T), not(dislikes.T)); // B neither likes nor dislikes A
+  const likesBack = adjLikes.T;                  // B likes A
+  const dislikesBack = adjDislikes.T;            // B dislikes A
+  const noneBack = and(not(adjLikes.T), not(adjDislikes.T)); // B neither likes nor dislikes A
 
   // NON PROBLEMATIC EDGES
   const typeI = and(likesOnly, noneBack);      // one-sided like
