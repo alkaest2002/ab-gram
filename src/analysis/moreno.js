@@ -163,7 +163,7 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *
  * Dynamic threshold scales with sample size:
  * - Few opinions (n≤3):  threshold = 2.0:1 ratio (strict, uncertain)
- * - Many opinions (n≥30): threshold = 1.75:1 ratio (lenient, confident)
+ * - Many opinions (n≥30): threshold = 1.5:1 ratio (lenient, confident)
  * - Linear interpolation between 3 and 30 opinions
  *
  * STATUS CODES (9 categories):
@@ -226,6 +226,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const MORE_LENIENT_RATIO = 1.5; // Ratio threshold when many opinions
   const MIN_OPINIONS_FOR_THRESHOLD = 3; // Opinion count where MIN_RATIO applies
   const MAX_OPINIONS_FOR_THRESHOLD = 15; // Opinion count where MAX_RATIO applies
+  const MAX_OPINIONS_FOR_THRESHOLD = 30; // Opinion count where MAX_RATIO applies
 
   // Compute dynamic threshold per member (vectorized)
   // Formula: threshold(n) = LESS_LENIENT_RATIO + (MORE_LENIENT_RATIO - LESS_LENIENT_RATIO) × (n - minN) / (maxN - minN)
@@ -243,7 +244,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const normalizedOffset = clampedOffset.divide(opinionSpan);
   const thresholdAdjustment = normalizedOffset.multiply(ratioSpan);
 
-  // Final per-member threshold (ranges 2.0 to 1.75 as opinions increase)
+  // Final per-member threshold (ranges 2.0 to 1.5 as opinions increase)
   const dynamicThreshold = np
     .full([size], LESS_LENIENT_RATIO)
     .add(thresholdAdjustment);
