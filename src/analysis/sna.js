@@ -1,5 +1,5 @@
 import { DirectedGraph } from "graphology";
-
+import { random } from 'graphology-layout';
 /**
  * Graph helpers for the sociogram report.
  *
@@ -50,7 +50,7 @@ export const createLikesGraph = (members) => {
     }
   }
 
-  return graph;
+  return random.assign(graph);
 };
 
 /**
@@ -72,7 +72,7 @@ export const createDislikesGraph = (members) => {
     }
   }
 
-  return graph;
+  return random.assign(graph);
 };
 
 
@@ -82,7 +82,7 @@ export const createDislikesGraph = (members) => {
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of group metrics
  */
-export const computeMorenoGroupLevelMetrics = (graph) => {
+export const getGroupLevelMetrics = (graph) => {
 
 };
 
@@ -92,6 +92,6 @@ export const computeMorenoGroupLevelMetrics = (graph) => {
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of node metrics
  */
-export const computeIndividualLevelMetrics = (graph) => {
+export const getIndividualLevelMetrics = (graph) => {
 
 };
