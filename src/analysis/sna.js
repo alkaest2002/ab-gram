@@ -74,3 +74,24 @@ export const createDislikesGraph = (members) => {
 
   return graph;
 };
+
+
+/**
+ * Compute group-level metrics for the graph.
+ *
+ * @param {import("graphology").DirectedGraph} graph
+ * @returns {Record<string, number>} A dictionary of group metrics
+ */
+export const computeMorenoGroupLevelMetrics = (graph) => {
+
+};
+
+/**
+ * Compute individual metrics for each node in the graph.
+ *
+ * @param {import("graphology").DirectedGraph} graph
+ * @returns {Record<string, number>} A dictionary of node metrics
+ */
+export const computeIndividualLevelMetrics = (graph) => {
+
+};

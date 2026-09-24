@@ -80,7 +80,7 @@ export const getMemberIndices = (members) => members.map((member) => member.id);
  *   appear in more than one list (e.g. when `B` both likes and dislikes `A`),
  *   but never twice within the same list.
  */
-export const getEdgesTypes = (adjLikes, adjDislikes, memberIndices) => {
+export const getEdgeTypes = (adjLikes, adjDislikes, memberIndices) => {
   const and = np.logical_and;
   const not = np.logical_not;
 
