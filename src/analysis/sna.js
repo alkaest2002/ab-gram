@@ -82,8 +82,8 @@ export const createDislikesGraph = (members) => {
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of group metrics
  */
-export const getGroupLevelMetrics = (graph) => {
-
+export const computeGroupLevelMetrics = (graph) => {
+  return
 };
 
 /**
