@@ -226,7 +226,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const MORE_LENIENT_RATIO = 1.5; // Ratio threshold when many opinions
   const MIN_OPINIONS_FOR_THRESHOLD = 3; // Opinion count where MIN_RATIO applies
   const MAX_OPINIONS_FOR_THRESHOLD = 15; // Opinion count where MAX_RATIO applies
-  const MAX_OPINIONS_FOR_THRESHOLD = 30; // Opinion count where MAX_RATIO applies
 
   // Compute dynamic threshold per member (vectorized)
   // Formula: threshold(n) = LESS_LENIENT_RATIO + (MORE_LENIENT_RATIO - LESS_LENIENT_RATIO) × (n - minN) / (maxN - minN)
