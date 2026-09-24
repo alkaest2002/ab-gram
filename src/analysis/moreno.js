@@ -1,49 +1,49 @@
+import * as np from "numpy-ts";
+
 /*
 MORENO GROUP LEVEL METRICS
 - "cohesion":            Group cohesion index (mutual like pairs / total possible pairs)
 - "conflict":            Group conflict index (mutual dislike pairs / total possible pairs)
 - "positiveReciprocity": Positive reciprocity index (mutual like pairs / total likes)
 - "negativeReciprocity": Negative reciprocity index (mutual dislike pairs / total dislikes)
-
-Where, summed over the whole group of N members:
-  - total likes          = sum of the likes adjacency matrix (every "like" nomination)
-  - total dislikes       = sum of the dislikes adjacency matrix (every "dislike" nomination)
-  - mutual like pairs    = number of reciprocal like pairs (A likes B AND B likes A),
-                           each distinct pair counted once
-  - mutual dislike pairs = number of reciprocal dislike pairs (A dislikes B AND
-                           B dislikes A), each distinct pair counted once
-  - total possible pairs = N(N - 1) / 2 (every unordered pair of members)
-
-So:
-  - cohesion            = mutual like pairs / total possible pairs
-  - conflict            = mutual dislike pairs / total possible pairs
-  - positiveReciprocity = mutual like pairs / total likes
-  - negativeReciprocity = mutual dislike pairs / total dislikes
-
-Cohesion and conflict fall in [0, 1] and are 0 when there are no possible pairs
-(N < 2). Each reciprocity index divides mutual pairs by the number of like (or
-dislike) nominations, so it falls in [0, 0.5] and is undefined (NaN) when its
-denominator — total likes for positive, total dislikes for negative — is 0.
-*/
-
-/**
- * The Moreno group-level metric keys, in the order they appear as columns of
- * the group-level result row.
- *
- * - "cohesion": group cohesion index — mutual like pairs over total possible
- *   pairs (N(N-1)/2).
- * - "conflict": group conflict index — mutual dislike pairs over total possible
- *   pairs (N(N-1)/2).
- * - "positiveReciprocity": positive reciprocity index — mutual like pairs over
- *   total likes.
- * - "negativeReciprocity": negative reciprocity index — mutual dislike pairs
- *   over total dislikes.
  */
 const GROUP_LEVEL_METRIC_KEYS = [
   "cohesion",
   "conflict",
   "positiveReciprocity",
   "negativeReciprocity",
+];
+
+/*
+MORENO INDIVIDUAL LEVEL METRICS
+- "rp": Received positive nominations (in-degree from likes adjacency matrix)
+- "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
+- "gp": Given positive nominations (out-degree likes adjacency matrix)
+- "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
+- "mp": Mutual positive connections (bidirectional positive edges)
+- "mr": Mutual negative connections (bidirectional negative edges)
+- "im": Impact index (rp + rr)
+- "bl": Balance index (rp - rr)
+- "ei": Expressivity index (gp + gr)
+- "or": Orientation index (gp - gr)
+- "ai": Affiliation index (bl + or)
+- "ii": Influence index (rp + mp)
+- "ss": Sociometric status (-1 to 8, see SOCIOMETRIC STATUS CODES below)
+*/
+const INDIVIDUAL_LEVEL_METRIC_KEYS = [
+  "rp",
+  "rr",
+  "gp",
+  "gr",
+  "mp",
+  "mr",
+  "im",
+  "bl",
+  "ei",
+  "or",
+  "ai",
+  "ii",
+  "ss",
 ];
 
 /**
@@ -89,71 +89,6 @@ const computeMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
   ]);
 };
 
-/**
- * Compute Moreno's group-level sociometric metrics and return them as a
- * plain object mirroring a pandas DataFrame.
- *
- * This mirrors `getMorenoIndividualLevelMetrics`, but the group is a single
- * observation: there is exactly one row (the group) and one column per metric
- * in `GROUP_LEVEL_METRIC_KEYS`.
- *
- * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix, where
- *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
- * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
- *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
- * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
- *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
- *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `values` holds the single group row.
- */
-export const getMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
-  const result = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
-
-  return {
-    rowIndex: ["group"],
-    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    values: result.tolist(),
-  };
-};
-
-/*
-MORENO INDIVIDUAL LEVEL METRICS
-- "rp": Received positive nominations (in-degree from likes adjacency matrix)
-- "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
-- "gp": Given positive nominations (out-degree likes adjacency matrix)
-- "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
-- "mp": Mutual positive connections (bidirectional positive edges)
-- "mr": Mutual negative connections (bidirectional negative edges)
-- "im": Impact index (rp + rr)
-- "bl": Balance index (rp - rr)
-- "ei": Expressivity index (gp + gr)
-- "or": Orientation index (gp - gr)
-- "ai": Affiliation index (bl + or)
-- "ii": Influence index (rp + mp)
-- "ss": Sociometric status (-1 to 8, see SOCIOMETRIC STATUS CODES below)
-*/
-
-import * as np from "numpy-ts";
-
-/**
- * The Moreno individual-level metric keys, in the order they appear as columns
- * of the result matrix. Column `i` of a Moreno result holds the metric named
- * by `INDIVIDUAL_LEVEL_METRIC_KEYS[i]`.
- */
-const INDIVIDUAL_LEVEL_METRIC_KEYS = [
-  "rp",
-  "rr",
-  "gp",
-  "gr",
-  "mp",
-  "mr",
-  "im",
-  "bl",
-  "ei",
-  "or",
-  "ai",
-  "ii",
-  "ss",
-];
 
 /**
  * Compute Moreno's sociometric indices for every member.
@@ -252,7 +187,6 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
 const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const size = impact.size;
 
-  // ============================================================================
   // GUARD: Impact variance check
   // ============================================================================
   // If all members have identical impact, no relative ranking is possible
@@ -261,7 +195,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     return np.full([size], -1); // Not classified
   }
 
-  // ============================================================================
   // VISIBILITY CLASSIFICATION: Isolation and Ignorance
   // ============================================================================
   // Members with no opinions received are isolated or ignored (can't be ranked).
@@ -275,7 +208,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     hasNoOpinionsGiven.logical_not(),
   );
 
-  // ============================================================================
   // IMPACT CLASSIFICATION: Relative to group mean
   // ============================================================================
   // Simple approach: low = below mean, high = above mean, average = at mean
@@ -284,7 +216,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const isHighImpact = impact.greater(meanImpact);
   const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
-  // ============================================================================
   // BALANCE CLASSIFICATION: Dynamic ratio threshold
   // ============================================================================
   // Intuition: fewer opinions received → we're less certain → require stronger ratio
@@ -327,7 +258,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     .logical_or(isNegativeBalance)
     .logical_not();
 
-  // ============================================================================
   // STATUS ASSIGNMENT: Decision tree
   // ============================================================================
   // Priority order (first match wins):
@@ -364,6 +294,34 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   );
 };
 
+///////////// EXPORTS
+
+/**
+ * Compute Moreno's group-level sociometric metrics and return them as a
+ * plain object mirroring a pandas DataFrame.
+ *
+ * This mirrors `getMorenoIndividualLevelMetrics`, but the group is a single
+ * observation: there is exactly one row (the group) and one column per metric
+ * in `GROUP_LEVEL_METRIC_KEYS`.
+ *
+ * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix, where
+ *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
+ * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
+ *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
+ * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
+ *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `values` holds the single group row.
+ */
+export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
+  const result = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
+
+  return {
+    rowIndex: ["group"],
+    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
+    values: result.tolist(),
+  };
+};
+
 /**
  * Compute Moreno's classic sociometric indices and return them as a plain
  * object mirroring a pandas DataFrame.
@@ -383,7 +341,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
  *   column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the
  *   score of member `rowIndex[i]` for metric `columnIndex[j]`.
  */
-export const getMorenoIndividualLevelMetrics = (
+export const getIndividualLevelMetrics = (
   adjLikes,
   adjDislikes,
   memberIndices,
