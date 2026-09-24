@@ -1,5 +1,6 @@
 <script setup>
 // --- Vue ----------------
+import { onMounted } from "vue";
 
 // --- Routers ------------
 
@@ -12,6 +13,7 @@ import DonationCard from "@/components/views/home/DonationCard.vue";
 import DevStack from "@/components/views/home/DevStack.vue";
 
 // --- Composables --------
+import { preloadWorker } from "@/utils/workerLoader";
 
 // --- Props --------------
 
@@ -24,6 +26,15 @@ import DevStack from "@/components/views/home/DevStack.vue";
 // --- Watchers -----------
 
 // --- Lifecycle ----------
+onMounted(() => {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      preloadWorker().catch((err) => {
+        console.warn('Worker preload failed, will load on-demand:', err);
+      });
+    });
+  }
+});
 
 // --- Methods ------------
 </script>
@@ -31,7 +42,6 @@ import DevStack from "@/components/views/home/DevStack.vue";
 <template>
     <div class="page home">
         <section>
-
             <h1
                 class="mt-2 text-[2.125rem] font-bold leading-[1.08] tracking-[-0.02em] text-ink sm:text-[3.125rem]"
             >
@@ -45,11 +55,12 @@ import DevStack from "@/components/views/home/DevStack.vue";
                 </span>
             </h1>
 
-            <p class="mt-6 max-w-[58ch] text-base leading-relaxed text-muted sm:text-[1.0625rem]">
-                Registra scelte e rifiuti dei membri di un gruppo. AB-Grid pensa a tutto il resto.
+            <p
+                class="mt-6 max-w-[58ch] text-base leading-relaxed text-muted sm:text-[1.0625rem]"
+            >
+                Registra scelte e rifiuti dei membri di un gruppo. AB-Grid pensa
+                a tutto il resto.
             </p>
-
-
         </section>
 
         <SociogramPreview />

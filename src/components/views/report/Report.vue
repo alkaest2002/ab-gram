@@ -18,6 +18,8 @@ import ReportDoc from "@/components/views/report/ReportDoc.vue";
 import ReportWorker from "@/workers/reportWorker.js?worker";
 
 // --- Composables --------
+import { createReportWorker } from "@/utils/workerLoader";
+
 
 // --- Props --------------
 
@@ -62,8 +64,7 @@ onBeforeUnmount(() => {
 
 // --- Methods ------------
 function startGeneration() {
-    worker = new ReportWorker();
-
+    worker = createReportWorker();
     worker.onmessage = (event) => {
         const { data } = event;
         stopWorker();
