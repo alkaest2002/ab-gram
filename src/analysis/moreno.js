@@ -272,25 +272,39 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const HIGH_IMPACT_PERCENTILE = 80;
   const size = impact.size;
 
-  // Total opinions received per member.
-  const totalOpinions = rp.add(rr);
+  // Get unique impact values.
+  const { values: uniqueImpacts } = np.unique_all(impact);
 
-  // Impact percentiles (nearest-rank: floor of the sorted position).
+  // Guard I: when every member has the same impact, the percentile-based impact
+  // bands collapse into a single threshold and no member can be ranked relative
+  // to the group. Mark the whole group as "not classified" (-1).
+  if (uniqueImpacts.size <= 1) {
+    return np.full([size], -1);
+  }
+
+  // Compute impact cut-offs for low and high impact members.
   const impactSorted = impact.flatten().sort();
-  const lowImpactThreshold = impactSorted.get([
-    Math.floor((size * LOW_IMPACT_PERCENTILE) / 100),
-  ]);
-  const highImpactThreshold = impactSorted.get([
-    Math.floor((size * HIGH_IMPACT_PERCENTILE) / 100),
-  ]);
+  const getPercentileIndex = (percentile) => Math.floor((size * percentile) / 100);
+  const LowImpactIndex = getPercentileIndex(LOW_IMPACT_PERCENTILE);
+  const HighImpactIndex = getPercentileIndex(HIGH_IMPACT_PERCENTILE);
+  let lowImpactThreshold = impactSorted.get([LowImpactIndex]);
+  let highImpactThreshold = impactSorted.get([HighImpactIndex]);
+
+  // Guard II: if lowImpactThreshold is equal to highImpactThreshold
+  // use a strategy other than percentiles to set cut-offs
+  if (lowImpactThreshold === highImpactThreshold) {
+    lowImpactThreshold = uniqueImpacts.max();
+    highImpactThreshold = uniqueImpacts.min();
+  }
 
   // Impact bands. Members with no opinions received (`isolated`/`ignored`)
   // short-circuit in the select below before the impact classification is
   // consulted.
+  const totalOpinions = rp.add(rr);
   const noOpinionsReceived = totalOpinions.equal(0);
   const isolated = noOpinionsReceived.logical_and(expressivity.equal(0));
   const ignored = noOpinionsReceived.logical_and(expressivity.greater(0));
-  const isLowImpact = impact.less(lowImpactThreshold);
+  const isLowImpact = impact.less_equal(lowImpactThreshold);
   const isHighImpact = impact.greater_equal(highImpactThreshold);
   const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
