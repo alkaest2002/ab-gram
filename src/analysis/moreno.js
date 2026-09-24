@@ -129,30 +129,22 @@ MORENO INDIVIDUAL LEVEL METRICS
 - "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
-- "ss": Sociometric status (0-8, see APPROACH 1 below)
+- "ss": Sociometric status (-1 to 8, see SOCIOMETRIC STATUS CODES below)
 
-SOCIOMETRIC STATUS CODES (Approach 1: Proportion + Confidence Band)
-====================================================================
+SOCIOMETRIC STATUS CODES (Impact percentile + 2:1 balance ratio)
+================================================================
 
-Approach 1 defines "neutral balance" not as balance=0, but as a confidence band around
-50/50 opinion, scaled by sample size:
-  - neutral_band = 0.5 ± σ
+Balance is classified with a fixed 2:1 ratio, not a confidence band:
+  - positive = rp > 2 * rr   (likes outnumber dislikes by more than 2:1)
+  - negative = rr > 2 * rp   (dislikes outnumber likes by more than 2:1)
+  - neutral  = everything else (ratio within [1/2, 2], or too few opinions)
 
-Where:
-  - p = proportion of positive opinions received (rp / (rp + rr))
-  - n = total opinions received (rp + rr)
-  - σ = standard error = sqrt(p(1-p) / n)
-
-This means:
-  - Small sample (few opinions) → wide neutral band → harder to escape neutral status
-  - Large sample (many opinions) → narrow neutral band → strong consensus needed
-
-Example: "3L + 1D" vs "17L + 15D"
-  - 3L + 1D: p=0.75, SE≈0.22, band=[0.53, 0.97] → outside band → POSITIVE
-  - 17L + 15D: p=0.53, SE≈0.09, band=[0.44, 0.62] → inside band → NEUTRAL
+A member must receive at least MIN_OPINIONS_FOR_CLASSIFICATION (= 3) opinions
+before balance is classified as positive or negative; below that, balance
+falls back to neutral.
 
 Impact band (relative to the sample's impact distribution):
-  - Low impact     = below the 20th percentile
+  - Low impact     = at or below the 20th percentile
   - High impact    = at or above the 80th percentile
   - Average impact = in between the two
 
@@ -160,13 +152,13 @@ STATUS CODES:
   -1: Not classified
    0: Isolated       – no opinions received (rp + rr = 0), no opinions given (gp + gr = 0)
    1: Ignored        – no opinions received (rp + rr = 0), but not isolated (gp + gr > 0)
-   2: Marginal       – low impact (impact < 20th percentile)
-   3: Appreciated    – average impact, positive balance (outside upper band)
-   4: Popular        – high impact, positive balance
-   5: Disliked       – average impact, negative balance (outside lower band)
-   6: Rejected       – high impact, negative balance
-   7: Ambivalent     – average impact, neutral balance (inside confidence band)
-   8: Controversial  – high impact, neutral balance (polarizing)
+   2: Marginal       – low impact (impact <= 20th percentile)
+   3: Appreciated    – average impact, positive balance (rp > 2 * rr)
+   4: Popular        – high impact, positive balance (rp > 2 * rr)
+   5: Disliked       – average impact, negative balance (rr > 2 * rp)
+   6: Rejected       – high impact, negative balance (rr > 2 * rp)
+   7: Ambivalent     – average impact, neutral balance
+   8: Controversial  – high impact, neutral balance
 */
 
 import * as np from "numpy-ts";
@@ -251,95 +243,119 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
 };
 
 /**
- * Classify members into sociometric status using impact percentiles and
- * proportion + confidence band for balance classification.
+ * Classify members into sociometric status using impact percentiles and a
+ * fixed 2:1 balance ratio.
  *
- * Note: Neutral balance is defined relative to a confidence band around 50/50 opinion.
- * A person's balance is "neutral" if their proportion of positive opinions falls within
- * 0.5 ± 1σ (one standard error), accounting for sample size and variance.
+ * Approach:
+ * - Impact: 20th/80th percentile relative to group distribution
+ * - Balance: fixed 2:1 ratio (rp > 2*rr / rr > 2*rp), neutral otherwise
  *
- * Large samples (more opinions received) require stronger consensus to escape the neutral band.
- * Small samples with few opinions are more likely to be classified as "neutral".
- *
- * @param {NDArray} rp - Received positive nominations (likes received)
- * @param {NDArray} rr - Received negative nominations (dislikes received)
- * @param {NDArray} expressivity - Expressivity index (gp + gr, opinions given)
- * @param {NDArray} impact - Impact index (rp + rr)
- * @returns {NDArray} Array of status codes (0-8)
+ * @param {import("numpy-ts").NDArray} rp - Received positive nominations (likes received)
+ * @param {import("numpy-ts").NDArray} rr - Received negative nominations (dislikes received)
+ * @param {import("numpy-ts").NDArray} expressivity - Expressivity index (gp + gr, opinions given)
+ * @param {import("numpy-ts").NDArray} impact - Impact index (rp + rr, total opinions received)
+ * @returns {import("numpy-ts").NDArray} Array of status codes (-1 to 8)
  */
 const getSociometricStatus = (rp, rr, expressivity, impact) => {
+  const size = impact.size;
   const LOW_IMPACT_PERCENTILE = 20;
   const HIGH_IMPACT_PERCENTILE = 80;
-  const size = impact.size;
+  const BALANCE_RATIO_THRESHOLD = 2;  // 2:1 ratio for clear classification
+  const MIN_OPINIONS_FOR_CLASSIFICATION = 3;  // Need at least 3 to classify
 
-  // Get unique impact values.
+  // ============================================================================
+  // GUARD I: Check if impact variance exists
+  // ============================================================================
   const { values: uniqueImpacts } = np.unique_all(impact);
-
-  // Guard I: when every member has the same impact, the percentile-based impact
-  // bands collapse into a single threshold and no member can be ranked relative
-  // to the group. Mark the whole group as "not classified" (-1).
   if (uniqueImpacts.size <= 1) {
+    // Everyone has identical impact → no meaningful ranking possible
     return np.full([size], -1);
   }
 
-  // Compute impact cut-offs for low and high impact members.
+  // ============================================================================
+  // IMPACT BANDS: Calculate 20th and 80th percentiles
+  // ============================================================================
   const impactSorted = impact.flatten().sort();
-  const getPercentileIndex = (percentile) => Math.floor((size * percentile) / 100);
-  const LowImpactIndex = getPercentileIndex(LOW_IMPACT_PERCENTILE);
-  const HighImpactIndex = getPercentileIndex(HIGH_IMPACT_PERCENTILE);
-  let lowImpactThreshold = impactSorted.get([LowImpactIndex]);
-  let highImpactThreshold = impactSorted.get([HighImpactIndex]);
+  const percentileIndex = (percentile) => Math.floor((size * percentile) / 100);
 
-  // Guard II: if lowImpactThreshold is equal to highImpactThreshold
-  // use a strategy other than percentiles to set cut-offs
+  let lowImpactThreshold = impactSorted.get([
+    percentileIndex(LOW_IMPACT_PERCENTILE),
+  ]);
+  let highImpactThreshold = impactSorted.get([
+    percentileIndex(HIGH_IMPACT_PERCENTILE),
+  ]);
+
+  // ============================================================================
+  // GUARD II: Handle collapsed percentile thresholds
+  // ============================================================================
+  // If 20th and 80th percentiles point to the same value, use min/max instead
   if (lowImpactThreshold === highImpactThreshold) {
-    lowImpactThreshold = uniqueImpacts.max();
-    highImpactThreshold = uniqueImpacts.min();
+    lowImpactThreshold = uniqueImpacts.min();
+    highImpactThreshold = uniqueImpacts.max();
   }
 
-  // Impact bands. Members with no opinions received (`isolated`/`ignored`)
-  // short-circuit in the select below before the impact classification is
-  // consulted.
+  // ============================================================================
+  // ISOLATION & VISIBILITY: Classify members with no opinions received
+  // ============================================================================
   const totalOpinions = rp.add(rr);
-  const noOpinionsReceived = totalOpinions.equal(0);
-  const isolated = noOpinionsReceived.logical_and(expressivity.equal(0));
-  const ignored = noOpinionsReceived.logical_and(expressivity.greater(0));
+  const hasNoOpinionsReceived = totalOpinions.equal(0);
+  const hasNoOpinionsGiven = expressivity.equal(0);
+
+  const isolated = hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven);
+  const ignored = hasNoOpinionsReceived.logical_and(
+    hasNoOpinionsGiven.logical_not(),
+  );
+
+  // ============================================================================
+  // IMPACT CLASSIFICATION: Low / Average / High relative to group
+  // ============================================================================
   const isLowImpact = impact.less_equal(lowImpactThreshold);
   const isHighImpact = impact.greater_equal(highImpactThreshold);
   const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
-  // Approach 1: proportion of positive opinions + 1σ confidence band.
-  // The denominator is floored at 1 so isolated/ignored members (0 opinions)
-  // avoid a 0/0 division; their status is already decided above.
-  const safeTotal = np.maximum(totalOpinions, 1);
-  const proportion = rp.divide(safeTotal);
-  const variance = proportion.multiply(proportion.multiply(-1).add(1)); // p(1 - p)
-  const standardError = variance.divide(safeTotal).sqrt();
-  const bandLower = standardError.multiply(-1).add(0.5);
-  const bandUpper = standardError.add(0.5);
+  // ============================================================================
+  // BALANCE CLASSIFICATION: Fixed 2:1 ratio (rp > 2*rr / rr > 2*rp)
+  // ============================================================================
+  // Too few opinions fall back to neutral balance instead of positive/negative.
+  const canClassify = totalOpinions.greater_equal(MIN_OPINIONS_FOR_CLASSIFICATION);
 
-  // Balance classification against the confidence band.
-  const isPositiveBalance = proportion.greater(bandUpper);
-  const isNegativeBalance = proportion.less(bandLower);
-  const isNeutralBalance = isPositiveBalance
-    .logical_or(isNegativeBalance)
-    .logical_not();
+  // Explicit ratios
+  const isPositiveBalance = canClassify.logical_and(
+    rp.greater(rr.multiply(BALANCE_RATIO_THRESHOLD))
+  );
+  const isNegativeBalance = canClassify.logical_and(
+    rr.greater(rp.multiply(BALANCE_RATIO_THRESHOLD))
+  );
+  const isNeutralBalance = canClassify.logical_not()
+    .logical_or(
+      isPositiveBalance.logical_or(isNegativeBalance).logical_not()
+    );
 
-  // Classify into sociometric status (0-8). First matching condition wins.
+  // ============================================================================
+  // STATUS ASSIGNMENT: Combine isolation + impact + balance
+  // ============================================================================
+  // Conditions are evaluated in order; first match wins
   return np.select(
     [
-      isolated, // 0: isolated — no opinions received, none given
-      ignored, // 1: ignored — no opinions received, but gave opinions
-      isLowImpact, // 2: marginal — low impact
+      // Tier 1: Isolation (overrides everything)
+      isolated, // 0: isolated
+      ignored, // 1: ignored
+
+      // Tier 2: Low impact (overrides balance)
+      isLowImpact, // 2: marginal
+
+      // Tier 3: High impact + balance
       isHighImpact.logical_and(isPositiveBalance), // 4: popular
       isHighImpact.logical_and(isNegativeBalance), // 6: rejected
       isHighImpact.logical_and(isNeutralBalance), // 8: controversial
+
+      // Tier 4: Average impact + balance
       isAverageImpact.logical_and(isPositiveBalance), // 3: appreciated
       isAverageImpact.logical_and(isNegativeBalance), // 5: disliked
       isAverageImpact.logical_and(isNeutralBalance), // 7: ambivalent
     ],
     [0, 1, 2, 4, 6, 8, 3, 5, 7],
-    -1,
+    -1, // Default: not classified
   );
 };
 
