@@ -10,6 +10,11 @@
   },
   "dependencies": {
     "graphology": "^0.26.0",
+    "graphology-components": "^1.5.4",
+    "graphology-layout": "^0.6.1",
+    "graphology-layout-force": "^0.2.4",
+    "graphology-metrics": "^2.4.2",
+    "graphology-operators": "^1.6.1",
     "numpy-ts": "^1.7.0",
     "pinia": "^4.0.3",
     "vue": "^3.5.43",
