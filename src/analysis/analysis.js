@@ -1,6 +1,5 @@
 import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matrixOfAdjs.js";
-import { computeGroupLevelMetrics as morenoGroupLevel, computeIndividualLevelMetrics as morenoIndividualLevel } from "./moreno.js";
-import { computeGroupLevelMetrics as snaGroupLevel, computeIndividualLevelMetrics as snaIndividualLevel } from "./sna.js";
+import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno.js";
 
 /**
  * Run the full sociogram analysis over a set of members.
@@ -30,22 +29,15 @@ export const getSociogramAnalysis = (members) => {
   const edgeTypes = getEdgeTypes(adjLikes, adjDislikes, memberIndices);
 
   // Group-level Moreno metrics: cohesion, conflict, and positive/negative reciprocity.
-  const morenoGroupLevelMetrics = morenoGroupLevel(adjLikes, adjDislikes);
+  const morenoGroupLevelMetrics = morGroupLevel(adjLikes, adjDislikes);
 
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
-  const morenoIndividualLevelMetrics = morenoIndividualLevel(adjLikes, adjDislikes, memberIndices);
+  const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
-  // Group-level social network analysis metrics.
-  const snaGroupLevelMetrics = snaGroupLevel(adjLikes, adjDislikes);
-
-  // Individual-level social network analysis metrics, one row per member.
-  const snaIndividualLevelMetrics = snaIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
   return {
     edgeTypes,
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
-    snaGroupLevelMetrics,
-    snaIndividualLevelMetrics,
   };
 };
