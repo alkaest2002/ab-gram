@@ -213,7 +213,6 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
   ]);
 };
 
-
 /**
  * Classify members into sociometric status (0-8) using:
  *
@@ -259,7 +258,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   // If all members have identical impact, no relative ranking is possible
   const { values: uniqueImpacts } = np.unique_all(impact);
   if (uniqueImpacts.size <= 1) {
-    return np.full([size], -1);  // Not classified
+    return np.full([size], -1); // Not classified
   }
 
   // ============================================================================
@@ -272,7 +271,9 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const hasNoOpinionsGiven = expressivity.equal(0);
 
   const isolated = hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven);
-  const ignored = hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven.logical_not());
+  const ignored = hasNoOpinionsReceived.logical_and(
+    hasNoOpinionsGiven.logical_not(),
+  );
 
   // ============================================================================
   // IMPACT CLASSIFICATION: Relative to group mean
@@ -281,9 +282,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const meanImpact = impact.mean();
   const isLowImpact = impact.less(meanImpact);
   const isHighImpact = impact.greater(meanImpact);
-  const isAverageImpact = isLowImpact
-    .logical_or(isHighImpact)
-    .logical_not();
+  const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
   // ============================================================================
   // BALANCE CLASSIFICATION: Dynamic ratio threshold
@@ -292,29 +291,31 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   //           more opinions received → we're more certain → accept weaker ratio
   //
   // Parameters (tune these based on social context)
-  const MIN_RATIO = 2.0;                      // Ratio threshold when few opinions
-  const MAX_RATIO = 1.5;                      // Ratio threshold when many opinions
-  const MIN_OPINIONS_FOR_THRESHOLD = 3;       // Opinion count where MIN_RATIO applies
-  const MAX_OPINIONS_FOR_THRESHOLD = 10;      // Opinion count where MAX_RATIO applies
+  const LESS_LENIENT_RATIO = 2.0; // Ratio threshold when few opinions
+  const MORE_LENIENT_RATIO = 1.5; // Ratio threshold when many opinions
+  const MIN_OPINIONS_FOR_THRESHOLD = 3; // Opinion count where MIN_RATIO applies
+  const MAX_OPINIONS_FOR_THRESHOLD = 15; // Opinion count where MAX_RATIO applies
 
   // Compute dynamic threshold per member (vectorized)
-  // Formula: threshold(n) = MIN_RATIO + (MAX_RATIO - MIN_RATIO) × (n - minN) / (maxN - minN)
-  const ratioSpan = MAX_RATIO - MIN_RATIO;
+  // Formula: threshold(n) = LESS_LENIENT_RATIO + (MORE_LENIENT_RATIO - LESS_LENIENT_RATIO) × (n - minN) / (maxN - minN)
+  const ratioSpan = MORE_LENIENT_RATIO - LESS_LENIENT_RATIO;
   const opinionSpan = MAX_OPINIONS_FOR_THRESHOLD - MIN_OPINIONS_FOR_THRESHOLD;
 
   // Offset: how far above minimum opinion count
   const opinionOffset = totalOpinions.subtract(MIN_OPINIONS_FOR_THRESHOLD);
 
   // Clamp offset to valid range [0, opinionSpan]
-  const clampedLower = np.maximum(opinionOffset, 0);  // Floor at 0 (below minN)
-  const clampedOffset = np.minimum(clampedLower, opinionSpan);  // Cap at opinionSpan (above maxN)
+  const clampedLower = np.maximum(opinionOffset, 0); // Floor at 0 (below minN)
+  const clampedOffset = np.minimum(clampedLower, opinionSpan); // Cap at opinionSpan (above maxN)
 
   // Normalize to [0, 1] and interpolate the ratio adjustment
   const normalizedOffset = clampedOffset.divide(opinionSpan);
   const thresholdAdjustment = normalizedOffset.multiply(ratioSpan);
 
   // Final per-member threshold (ranges 2.0 to 1.75 as opinions increase)
-  const dynamicThreshold = np.full([size], MIN_RATIO).add(thresholdAdjustment);
+  const dynamicThreshold = np
+    .full([size], LESS_LENIENT_RATIO)
+    .add(thresholdAdjustment);
 
   // Balance classification using the dynamic threshold
   // Positive:  "I have lots of likes relative to dislikes"
@@ -342,24 +343,24 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   return np.select(
     [
       // Tier 1: Visibility (short-circuit before impact/balance)
-      isolated,                                               // 0: isolated
-      ignored,                                                // 1: ignored
+      isolated, // 0: isolated
+      ignored, // 1: ignored
 
       // Tier 2: Low impact (short-circuit before balance nuance)
-      isLowImpact,                                           // 2: marginal
+      isLowImpact, // 2: marginal
 
       // Tier 3: High impact × balance combinations
-      isHighImpact.logical_and(isPositiveBalance),           // 4: popular
-      isHighImpact.logical_and(isNegativeBalance),           // 6: rejected
-      isHighImpact.logical_and(isNeutralBalance),            // 8: controversial
+      isHighImpact.logical_and(isPositiveBalance), // 4: popular
+      isHighImpact.logical_and(isNegativeBalance), // 6: rejected
+      isHighImpact.logical_and(isNeutralBalance), // 8: controversial
 
       // Tier 4: Average impact × balance combinations
-      isAverageImpact.logical_and(isPositiveBalance),        // 3: appreciated
-      isAverageImpact.logical_and(isNegativeBalance),        // 5: disliked
-      isAverageImpact.logical_and(isNeutralBalance),         // 7: ambivalent
+      isAverageImpact.logical_and(isPositiveBalance), // 3: appreciated
+      isAverageImpact.logical_and(isNegativeBalance), // 5: disliked
+      isAverageImpact.logical_and(isNeutralBalance), // 7: ambivalent
     ],
-    [0, 1, 2, 4, 6, 8, 3, 5, 7],  // Status codes (order matches conditions)
-    -1,  // Default: not classified (shouldn't happen after guard check)
+    [0, 1, 2, 4, 6, 8, 3, 5, 7], // Status codes (order matches conditions)
+    -1, // Default: not classified (shouldn't happen after guard check)
   );
 };
 
