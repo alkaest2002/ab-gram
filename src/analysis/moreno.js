@@ -193,9 +193,12 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   // Get unique Impact Values and Count.
   const { values: impactUniqueValues } = np.unique_all(impact);
 
+  const uniqueCount = impactUniqueValues.shape
+    ? impactUniqueValues.shape[0]
+    : impactUniqueValues.length;
+
   // If there are fewer than 2 unique impact values, return -1 (not classified).
-  if (impactUniqueValues.size < 2) {
-    // Impact cannot be ranked, return -1.
+  if (uniqueCount < 2) {
     return np.full([impact.size], -1);
   }
 
@@ -245,8 +248,10 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     // If Gini coefficient is moderately high (i.e., inequality)
     // use min/max impact values for classification.
     if (computeGiniCoefficient(impact) >= 0.4) {
-      isLowImpact = impact.less_equal(impactUniqueValues.min());
-      isHighImpact = impact.greater_equal(impactUniqueValues.max());
+      const minVal = np.min(impactUniqueValues);
+      const maxVal = np.max(impactUniqueValues);
+      isLowImpact = impact.less_equal(minVal);
+      isHighImpact = impact.greater_equal(maxVal);
       isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
     }
   } else {
