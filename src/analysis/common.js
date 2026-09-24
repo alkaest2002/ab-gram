@@ -54,3 +54,47 @@ export const getRankedScores = (scores) => {
   // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
   return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
 };
+
+/**
+ * Compute the Gini coefficient of a 1-D array of values.
+ *
+ * The Gini coefficient measures how unequally a distribution is spread, from 0
+ * (perfect equality, all values identical) up to 1 (maximum inequality). Values
+ * are sorted ascending and weighted by their rank (`2 * i - n + 1`), then the
+ * weighted sum is normalized by the element count and total sum.
+ *
+ * @param {import("numpy-ts").NDArray} data - A 1-D array of non-negative values.
+ * @returns {number} The Gini coefficient in the range `[0, 1]`.
+ * @throws {Error} When `data` contains negative values.
+ */
+export const computeGiniCoefficient = (data) => {
+  // Handle edge cases: falsy input or fewer than two values is perfectly equal.
+  if (!data || data.size <= 1) return 0;
+
+  // Sort the array
+  const sortedData = np.sort(data);
+  const n = sortedData.size;
+
+  // Check for negative values
+  if (sortedData.min() < 0) {
+    throw new Error("Gini coefficient calculation requires non-negative values.");
+  }
+
+  // Calculate total sum
+  const totalSum = sortedData.sum();
+
+  // Handle zero case
+  if (totalSum === 0) return 0;
+
+  // Create index array [0, 1, 2, ..., n-1]
+  const indices = np.arange(n);
+
+  // Calculate weights: 2*i - n + 1
+  const weights = indices.mul(2).sub(n).add(1);
+
+  // Calculate weighted sum: Σ(value * weight)
+  const sumOfDifferences = sortedData.mul(weights).sum();
+
+  // Return Gini coefficient
+  return sumOfDifferences / (n * totalSum);
+}
