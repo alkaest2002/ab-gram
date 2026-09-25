@@ -245,9 +245,10 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
 
   // If low and high impact thresholds are equal.
   if (lowImpactThreshold === highImpactThreshold) {
-    // If Gini coefficient is moderately high (i.e., inequality)
-    // use min/max impact values for classification.
-    if (computeGiniCoefficient(impact) >= 0.4) {
+    // Use min/max impact values for classification
+    // if Gini shows enough inequality and
+    // if peak-to-peak (maximumn-minimum) is greater than 2
+    if (computeGiniCoefficient(impact) >= 0.15 && np.ptp(impact) > 2) {
       const minVal = np.min(impactUniqueValues);
       const maxVal = np.max(impactUniqueValues);
       isLowImpact = impact.less_equal(minVal);
