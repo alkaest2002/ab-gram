@@ -1,5 +1,7 @@
 import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matrixOfAdjs.js";
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno.js";
+import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./sna.js";
+
 
 /**
  * Run the full sociogram analysis over a set of members.
@@ -34,10 +36,18 @@ export const getSociogramAnalysis = (members) => {
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
   const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
+  // Group-level SNA metrics.
+  const snaGroupLevelMetric = snaGroupLevel(members);
+
+  // Individual-level SNA metrics, one row per member (aligned with `memberIndices`).
+  const snaIndividualLevelMetric = snaIndividualLevel(members);
+
 
   return {
     edgeTypes,
     morenoGroupLevelMetrics,
+    snaGroupLevelMetric,
     morenoIndividualLevelMetrics,
+    snaIndividualLevelMetric,
   };
 };
