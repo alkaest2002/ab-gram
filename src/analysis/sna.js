@@ -1,12 +1,12 @@
 import { DirectedGraph } from "graphology";
 import { random } from 'graphology-layout';
+
 /**
  * Graph helpers for the sociogram report.
  *
  * The group is represented as two directed graphs, one per preference type.
  * In both, each node is a member (keyed by the member id) and each edge points
- * from the choosing member to the chosen one. The same choices can also be
- * expressed as an adjacency matrix for numeric analysis.
+ * from the choosing member to the chosen one.
  */
 
 /**
@@ -32,49 +32,36 @@ function addMemberNodes(graph, members) {
 }
 
 /**
- * Build the directed graph of the members' likes.
+ * Build the directed graph of the members' type of preference.
  *
- * @param {Member[]} members
+ * @param {Member[]} members - Members to include in the graph.
+ * @param {string} typeOfPreference - The type of relationship to build (e.g. "likes", "dislikes").
  * @returns {import("graphology").DirectedGraph} A directed graph whose nodes
- *   are the members and whose edges connect each member to the members they
- *   like.
+ *   are the members and whose edges connect each member to the members they link to
  */
-export const createLikesGraph = (members) => {
+export const createLikesGraph = (members, typeOfPreference) => {
+  // Create directed graph.
   const graph = new DirectedGraph();
+
+  // Add nodes to graph.
   addMemberNodes(graph, members);
 
-  for (const member of members) {
-    for (const likedId of member.likes) {
-      if (graph.hasDirectedEdge(member.id, likedId)) continue;
-      graph.addDirectedEdge(member.id, likedId);
-    }
-  }
+  // Add edges to graph.
+  members.forEach(member => {
+    member[typeOfPreference].forEach(typedId => {
+      graph.mergeDirectedEdge(member.id, typedId);
+    });
+  });
 
+  // Mark edges as mutual or unilateral.
+  graph.forEachDirectedEdge((edge, source, target) => {
+    const isMutual = graph.hasDirectedEdge(target, source);
+    graph.setEdgeAttribute(edge, "isMutual", isMutual);
+  });
+
+  // Assign random layout to graph and return it.
   return random.assign(graph);
 };
-
-/**
- * Build the directed graph of the members' dislikes.
- *
- * @param {Member[]} members
- * @returns {import("graphology").DirectedGraph} A directed graph whose nodes
- *   are the members and whose edges connect each member to the members they
- *   dislike.
- */
-export const createDislikesGraph = (members) => {
-  const graph = new DirectedGraph();
-  addMemberNodes(graph, members);
-
-  for (const member of members) {
-    for (const dislikedId of member.dislikes) {
-      if (graph.hasDirectedEdge(member.id, dislikedId)) continue;
-      graph.addDirectedEdge(member.id, dislikedId);
-    }
-  }
-
-  return random.assign(graph);
-};
-
 
 /**
  * Compute group-level metrics for the graph.
@@ -83,7 +70,6 @@ export const createDislikesGraph = (members) => {
  * @returns {Record<string, number>} A dictionary of group metrics
  */
 export const computeGroupLevelMetrics = (graph) => {
-  return
 };
 
 /**
@@ -93,5 +79,4 @@ export const computeGroupLevelMetrics = (graph) => {
  * @returns {Record<string, number>} A dictionary of node metrics
  */
 export const getIndividualLevelMetrics = (graph) => {
-
 };
