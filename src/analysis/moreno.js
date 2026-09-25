@@ -233,7 +233,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const percentileIndex = (percentile) =>
     Math.floor((impact.size * percentile) / 100);
 
-  // Calculate low impact thresholds.
+  // Calculate low impact threshold.
   const lowImpactThreshold = impactSorted.get([
     percentileIndex(LOW_IMPACT_PERCENTILE),
   ]);
@@ -243,14 +243,21 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     percentileIndex(HIGH_IMPACT_PERCENTILE),
   ]);
 
-  // If low and high impact thresholds are equal.
+  // If low and high impact thresholds are equal...
+  // do not use percentile-based thresholds; use min/max instead
+  // under certain conditions, otherwise everyone is considered
+  // to have average impact.
   if (lowImpactThreshold === highImpactThreshold) {
-    // Use min/max impact values for classification
-    // if Gini shows enough inequality and
-    // if peak-to-peak (maximumn-minimum) is greater than 2
-    if (computeGiniCoefficient(impact) >= 0.15 && np.ptp(impact) > 2) {
-      const minVal = np.min(impactUniqueValues);
-      const maxVal = np.max(impactUniqueValues);
+
+    // Compute once and reuse.
+    const gini = computeGiniCoefficient(impact);
+    const ptp = np.ptp(impact);
+
+    // If Gini coefficient is high or PTP is large, use min/max thresholds.
+    if (gini >= 0.3 || (gini >= 0.15 && ptp >= 3)) {
+      const minVal = np.min(impact);
+      const maxVal = np.max(impact);
+
       isLowImpact = impact.less_equal(minVal);
       isHighImpact = impact.greater_equal(maxVal);
       isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
