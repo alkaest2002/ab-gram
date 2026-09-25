@@ -39,7 +39,7 @@ function addMemberNodes(graph, members) {
  * @returns {import("graphology").DirectedGraph} A directed graph whose nodes
  *   are the members and whose edges connect each member to the members they link to
  */
-export const createLikesGraph = (members, typeOfPreference) => {
+const createLikesGraph = (members, typeOfPreference) => {
   // Create directed graph.
   const graph = new DirectedGraph();
 
@@ -53,7 +53,7 @@ export const createLikesGraph = (members, typeOfPreference) => {
     });
   });
 
-  // Mark edges as mutual or unilateral.
+  // Mark edges as mutual if it's the case.
   graph.forEachDirectedEdge((edge, source, target) => {
     const isMutual = graph.hasDirectedEdge(target, source);
     graph.setEdgeAttribute(edge, "isMutual", isMutual);
@@ -63,13 +63,17 @@ export const createLikesGraph = (members, typeOfPreference) => {
   return random.assign(graph);
 };
 
+
+///////////// EXPORTS
+
 /**
  * Compute group-level metrics for the graph.
  *
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of group metrics
  */
-export const computeGroupLevelMetrics = (graph) => {
+export const getGroupLevelMetrics = (members) => {
+  return members
 };
 
 /**
@@ -78,5 +82,6 @@ export const computeGroupLevelMetrics = (graph) => {
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of node metrics
  */
-export const getIndividualLevelMetrics = (graph) => {
+export const getIndividualLevelMetrics = (members) => {
+  return members
 };
