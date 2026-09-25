@@ -29,7 +29,7 @@ MORENO INDIVIDUAL LEVEL METRICS
 - "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
-- "ss": Sociometric status (-1 to 8, see SOCIOMETRIC STATUS CODES below)
+- "ss": Sociometric status (0 to 8, see SOCIOMETRIC STATUS CODES below)
 */
 const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "rp",
@@ -181,7 +181,6 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *   6: Rejected     – high impact, negative balance
  *   7: Ambivalent   – average impact, neutral balance
  *   8: Controversial– high impact, neutral balance
- *  -1: Not classified – cannot rank (e.g., everyone has identical impact)
  *
  * @param {NDArray} rp - Received positive nominations (in-degree from likes)
  * @param {NDArray} rr - Received negative nominations (in-degree from dislikes)
@@ -190,17 +189,8 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  * @returns {NDArray} Status codes, shape matches input arrays
  */
 const getSociometricStatus = (rp, rr, expressivity, impact) => {
-  // Get unique Impact Values and Count.
-  const { values: impactUniqueValues } = np.unique_all(impact);
-
-  const uniqueCount = impactUniqueValues.shape
-    ? impactUniqueValues.shape[0]
-    : impactUniqueValues.length;
-
-  // If there are fewer than 2 unique impact values, return -1 (not classified).
-  if (uniqueCount < 2) {
-    return np.full([impact.size], -1);
-  }
+  // Get impact size
+  const impactSize = impact.size;
 
   // VISIBILITY CLASSIFICATION: Isolation and Ignorance
   // ============================================================================
@@ -221,17 +211,17 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   const HIGH_IMPACT_PERCENTILE = 80;
 
   // Define initial isLowImpact, isAverageImpact, isHighImpact
-  // So that every impact is considered average.
-  let isLowImpact = np.full([impact.size], 0);
-  let isHighImpact = np.full([impact.size], 0);
-  let isAverageImpact = np.full([impact.size], 1);
+  // So that every member is considered having average impact.
+  let isLowImpact = np.full([impactSize], 0);
+  let isHighImpact = np.full([impactSize], 0);
+  let isAverageImpact = np.full([impactSize], 1);
 
   // Calculate 20th and 80th percentiles
   // -------------------------------------------------
   // Sort impact values and define percentile index function.
   const impactSorted = impact.flatten().sort();
   const percentileIndex = (percentile) =>
-    Math.floor((impact.size * percentile) / 100);
+    Math.floor((impactSize * percentile) / 100);
 
   // Calculate low impact threshold.
   const lowImpactThreshold = impactSorted.get([
@@ -246,9 +236,8 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   // If low and high impact thresholds are equal...
   // do not use percentile-based thresholds; use min/max instead
   // under certain conditions, otherwise everyone is considered
-  // to have average impact.
+  // as having average impact.
   if (lowImpactThreshold === highImpactThreshold) {
-
     // Compute once and reuse.
     const gini = computeGiniCoefficient(impact);
     const ptp = np.ptp(impact);
@@ -257,7 +246,6 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     if (gini >= 0.3 || (gini >= 0.15 && ptp >= 3)) {
       const minVal = np.min(impact);
       const maxVal = np.max(impact);
-
       isLowImpact = impact.less_equal(minVal);
       isHighImpact = impact.greater_equal(maxVal);
       isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
@@ -297,7 +285,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
 
   // Final per-member threshold (ranges 2.0 to 1.5 as opinions increase)
   const dynamicThreshold = np
-    .full([impact.size], LESS_LENIENT_RATIO)
+    .full([impactSize], LESS_LENIENT_RATIO)
     .add(thresholdAdjustment);
 
   // Balance classification using the dynamic threshold
@@ -342,7 +330,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
       isAverageImpact.logical_and(isNeutralBalance), // 7: ambivalent
     ],
     [0, 1, 2, 4, 6, 8, 3, 5, 7], // Status codes (order matches conditions)
-    -1, // Default: not classified
+    -1, // Safety default (unreachable for valid inputs)
   );
 };
 
