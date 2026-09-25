@@ -157,8 +157,9 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  * - Average impact: between the 20th and 80th percentiles
  *
  * When the 20th and 80th percentiles collapse to the same value, classification
- * falls back to min/max when the Gini coefficient of the impact values
- * shows meaningful inequality (≥ 0.4); otherwise everyone is treated as
+ * falls back to min/max when the impact distribution shows meaningful
+ * inequality: a Gini coefficient ≥ 0.3, or a Gini ≥ 0.15 combined with a
+ * peak-to-peak spread (max − min) ≥ 3. Otherwise everyone is treated as
  * average impact.
  *
  * BALANCE CLASSIFICATION (Dynamic ratio threshold)
