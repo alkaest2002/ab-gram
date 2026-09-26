@@ -63,18 +63,41 @@ const createLikesGraph = (members, typeOfPreference) => {
   });
 
   // Mark edges as mutual if it's the case.
-  graph.forEachDirectedEdge((edge, source, target) => {
+  graph.forEachDirectedEdge((edge, attributes, source, target) => {
     const isMutual = graph.hasDirectedEdge(target, source);
     graph.setEdgeAttribute(edge, "isMutual", isMutual);
   });
 
-  // Assign random layout to graph and return it.
-  return random.assign(graph);
+  // Assign random layout to the graph.
+  random.assign(graph);
+
+  return graph;
 };
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS
 //////////////////////////////////////////////////////////////////////////////////
+
+/*
+SNA GROUP LEVEL METRICS
+- "numberOfNodes":         Number of members in the group.
+- "numberOfEdges":         Number of directed preference edges.
+- "numberOfMutualEdges":   Number of directed edges whose reverse edge exists.
+- "networkDensity":        Proportion of possible edges that exist.
+- "networkCentralization": Concentration of in-degree around the top node.
+- "networkReciprocity":    Proportion of edges that are reciprocated.
+- "networkTransitivity":   Global clustering coefficient.
+ */
+const GROUP_LEVEL_METRIC_KEYS = [
+  "numberOfNodes",
+  "numberOfEdges",
+  "numberOfMutualEdges",
+  "networkDensity",
+  "networkCentralization",
+  "networkReciprocity",
+  "networkTransitivity",
+];
+
 
 /**
  * Compute the network centralization of a graph.
@@ -214,6 +237,70 @@ const computeNetworkReciprocity = (graph) => {
   return reciprocatedEdges / totalEdges;
 };
 
+/**
+ * Compute the network density of a graph.
+ *
+ * Network density measures the proportion of possible edges that actually
+ * exist. It ranges from `0` (no edges) to `1` (complete graph where every
+ * node is connected to every other node).
+ *
+ * Formally:
+ *
+ *   For undirected: D = 2E / (N × (N - 1))
+ *   For directed:   D = E / (N × (N - 1))
+ *
+ * where E is the number of edges and N is the number of nodes.
+ *
+ * @param {import("graphology").Graph} graph - The graph to analyse.
+ * @returns {number} The network density, in the range `[0, 1]`.
+ */
+const computeNetworkDensity = (graph) => {
+  const n = graph.order;
+  const e = graph.size;
+
+  // A graph must have at least 2 nodes to have possible edges
+  if (n < 2) return 0;
+
+  // Maximum possible edges depends on whether the graph is directed
+  const maxEdges = graph.type === 'directed'
+    ? n * (n - 1)
+    : (n * (n - 1)) / 2;
+
+  return e / maxEdges;
+};
+
+/**
+ * Compute the group-level metrics for a single preference graph.
+ *
+ * Aggregates the node/edge counts and the density, centralization, reciprocity
+ * and transitivity of one graph — either the "likes" or the "dislikes" graph.
+ *
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph`.
+ * @returns {Record<string, number>} The group metrics keyed by
+ *   `GROUP_LEVEL_METRIC_KEYS`.
+ */
+const computeGroupLevelMetrics = (graph) => {
+  const numberOfEdges = graph.size;
+
+  // Number of directed edges whose reverse edge also exists. A mutual pair
+  // (A↔B) contributes two mutual edges, one in each direction.
+  let numberOfMutualEdges = 0;
+  graph.forEachDirectedEdge((edge, attributes, source, target) => {
+    if (graph.hasDirectedEdge(target, source)) numberOfMutualEdges++;
+  });
+
+  return {
+    numberOfNodes: graph.order,
+    numberOfEdges,
+    numberOfMutualEdges,
+    networkDensity: computeNetworkDensity(graph),
+    networkCentralization: computeNetworkCentralization(graph),
+    networkReciprocity: computeNetworkReciprocity(graph),
+    networkTransitivity: computeNetworkTransitivity(graph),
+  };
+};
+
 
 //////////////////////////////////////////////////////////////////////////////////
 // INDIVIDUAL LEVEL METRICS
@@ -225,13 +312,32 @@ const computeNetworkReciprocity = (graph) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute group-level metrics for the graph.
+ * Compute the SNA group-level metrics for the likes and dislikes graphs and
+ * return them as a plain object mirroring a pandas DataFrame.
  *
- * @param {import("graphology").DirectedGraph} graph
- * @returns {Record<string, number>} A dictionary of group metrics
+ * The group is represented by two directed graphs (one per preference type),
+ * so the result has one row per preference and one column per metric.
+ *
+ * @param {Member[]} members - The members of the group being analysed.
+ * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ *   `rowIndex` is `["likes", "dislikes"]`, `columnIndex` is the metric name per
+ *   column (in `GROUP_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the
+ *   score of preference type `rowIndex[i]` for metric `columnIndex[j]`.
  */
 export const getGroupLevelMetrics = (members) => {
-  return members
+  const preferenceTypes = ["likes", "dislikes"];
+
+  const metricsByPreference = preferenceTypes.map((typeOfPreference) =>
+    computeGroupLevelMetrics(createLikesGraph(members, typeOfPreference)),
+  );
+
+  return {
+    rowIndex: [...preferenceTypes],
+    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
+    values: metricsByPreference.map((metrics) =>
+      GROUP_LEVEL_METRIC_KEYS.map((key) => metrics[key]),
+    ),
+  };
 };
 
 /**
