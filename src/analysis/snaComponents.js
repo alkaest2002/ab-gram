@@ -56,6 +56,8 @@ const computeDiads = (graph) => {
   const diads = [];
 
   graph.forEachDirectedEdge((edge, attributes, source, target) => {
+    // The edge must be mutual (bidirectional) and source must sort before target
+    // to ensure each pair is emitted exactly once.
     if (source < target && attributes.isMutual) {
       diads.push([source, target]);
     }
