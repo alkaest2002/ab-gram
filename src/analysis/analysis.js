@@ -1,6 +1,8 @@
 import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matrixOfAdjs.js";
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./morenoMetrics.js";
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
+import { getSnaComponents } from "./snaComponents.js";
+import { createLikesGraph } from "./snaBase.js";
 
 
 /**
@@ -18,17 +20,33 @@ import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as sna
  *   morenoIndividualLevelMetrics: object,
  *   snaGroupLevelMetrics: object,
  *   snaIndividualLevelMetrics: object,
+ *   snaComponents: object,
  * }} The combined sociogram analysis results.
  */
 export const getSociogramAnalysis = (members) => {
   // Map each member id to its row/column position in the adjacency matrices.
   const memberIndices = getMemberIndices(members);
 
+  /////////////////////////////////////////////////////////////////////////////////////////
+  // CREATE ADJACENCY MATRICES, EDGE TYPES, AND SNA GRAPHS
+  /////////////////////////////////////////////////////////////////////////////////////////
+
   // Build the likes and dislikes adjacency matrices (rows/columns follow `members` order).
   const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
 
   // Classify every directed preference edge into one of seven relationship types.
   const edgeTypes = getEdgeTypes(adjLikes, adjDislikes, memberIndices);
+
+
+  // Build the likes and dislikes directed graphs once. Every SNA consumer
+  // (metrics, components, plots) reuses these two graphs instead of rebuilding
+  // its own copies from `members`.
+  const likesGraph = createLikesGraph(members, "likes");
+  const dislikesGraph = createLikesGraph(members, "dislikes");
+
+  /////////////////////////////////////////////////////////////////////////////////////////
+  // MORENO
+  /////////////////////////////////////////////////////////////////////////////////////////
 
   // Group-level Moreno metrics: cohesion, conflict, and positive/negative reciprocity.
   const morenoGroupLevelMetrics = morGroupLevel(adjLikes, adjDislikes);
@@ -37,7 +55,14 @@ export const getSociogramAnalysis = (members) => {
   const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
   // Group-level SNA metrics.
-  const snaGroupLevelMetric = snaGroupLevel(members);
+  const snaGroupLevelMetric = snaGroupLevel(likesGraph, dislikesGraph);
+
+  /////////////////////////////////////////////////////////////////////////////////////////
+  // SNA
+  /////////////////////////////////////////////////////////////////////////////////////////
+
+  // SNA components: diads, cliques, and strong/weak connected components.
+  const snaComponents = getSnaComponents(likesGraph, dislikesGraph);
 
   // Individual-level SNA metrics, one row per member (aligned with `memberIndices`).
   const snaIndividualLevelMetric = snaIndividualLevel(members);
@@ -49,5 +74,6 @@ export const getSociogramAnalysis = (members) => {
     snaGroupLevelMetric,
     morenoIndividualLevelMetrics,
     snaIndividualLevelMetric,
+    snaComponents,
   };
 };

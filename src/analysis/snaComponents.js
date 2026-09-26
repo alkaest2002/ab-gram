@@ -3,7 +3,6 @@ import {
   connectedComponents,
   stronglyConnectedComponents,
 } from "graphology-components";
-import { createLikesGraph } from "./snaBase.js";
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -265,24 +264,23 @@ const computeSnaComponents = (graph) => {
  * so the result has one row per preference and one column per component
  * category.
  *
- * @param {import("./snaBase.js").Member[]} members - The members of the group being
- *   analysed.
+ * @param {import("graphology").DirectedGraph} likesGraph - The directed likes
+ *   graph built by `createLikesGraph`.
+ * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
+ *   dislikes graph built by `createLikesGraph`.
  * @returns {{ rowIndex: string[], columnIndex: string[], values: string[][][][] }}
  *   `rowIndex` is `["likes", "dislikes"]`, `columnIndex` is the component
  *   category per column (in `COMPONENTS_KEYS` order), and `values[i][j]` is the
  *   list of components (each component being a list of member ids) of
  *   preference type `rowIndex[i]` for category `columnIndex[j]`.
  */
-export const getSnaComponents = (members) => {
-  const preferenceTypes = ["likes", "dislikes"];
-
-  const componentsByPreference = preferenceTypes.map((typeOfPreference) => {
-    const graph = createLikesGraph(members, typeOfPreference);
-    return computeSnaComponents(graph);
-  });
+export const getSnaComponents = (likesGraph, dislikesGraph) => {
+  const componentsByPreference = [likesGraph, dislikesGraph].map(
+    computeSnaComponents,
+  );
 
   return {
-    rowIndex: [...preferenceTypes],
+    rowIndex: ["likes", "dislikes"],
     columnIndex: [...COMPONENTS_KEYS],
     values: componentsByPreference.map((components) =>
       COMPONENTS_KEYS.map((key) => components[key]),
