@@ -242,32 +242,26 @@ const computeGroupLevelMetrics = (graph) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute the SNA group-level metrics for the likes and dislikes graphs and
- * return them as a plain object mirroring a pandas DataFrame.
+ * Compute the SNA group-level metrics for a single preference graph and return
+ * them as a plain object mirroring a pandas DataFrame.
  *
- * The group is represented by two directed graphs (one per preference type),
- * so the result has one row per preference and one column per metric.
+ * The group is represented by one directed graph, so the result has exactly
+ * one row (labelled by the graph's preference type) and one column per metric.
  *
- * @param {import("graphology").DirectedGraph} likesGraph - The directed likes
- *   graph built by `createLikesGraph`.
- * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
- *   dislikes graph built by `createLikesGraph`.
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph` (tagged with its `typeOfPreference`).
  * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
- *   `rowIndex` is `["likes", "dislikes"]`, `columnIndex` is the metric name per
- *   column (in `GROUP_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the
- *   score of preference type `rowIndex[i]` for metric `columnIndex[j]`.
+ *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the metric
+ *   name per column (in `GROUP_LEVEL_METRIC_KEYS` order), and `values[0][j]` is
+ *   the score for metric `columnIndex[j]`.
  */
-export const getGroupLevelMetrics = (likesGraph, dislikesGraph) => {
-  const metricsByPreference = [likesGraph, dislikesGraph].map(
-    computeGroupLevelMetrics,
-  );
+export const getGroupLevelMetrics = (graph) => {
+  const metrics = computeGroupLevelMetrics(graph);
 
   return {
-    rowIndex: ["likes", "dislikes"],
+    rowIndex: [graph.getAttribute("typeOfPreference")],
     columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    values: metricsByPreference.map((metrics) =>
-      GROUP_LEVEL_METRIC_KEYS.map((key) => metrics[key]),
-    ),
+    values: [GROUP_LEVEL_METRIC_KEYS.map((key) => metrics[key])],
   };
 };
 
@@ -277,6 +271,6 @@ export const getGroupLevelMetrics = (likesGraph, dislikesGraph) => {
  * @param {import("graphology").DirectedGraph} graph
  * @returns {Record<string, number>} A dictionary of node metrics
  */
-export const getIndividualLevelMetrics = (members) => {
-  return members
+export const getIndividualLevelMetrics = (graph) => {
+  return graph;
 };

@@ -2,7 +2,6 @@ import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matri
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./morenoMetrics.js";
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
 import { getSnaComponents } from "./snaComponents.js";
-import { createLikesGraph } from "./snaBase.js";
 
 
 /**
@@ -18,9 +17,11 @@ import { createLikesGraph } from "./snaBase.js";
  *   edgeTypes: object,
  *   morenoGroupLevelMetrics: object,
  *   morenoIndividualLevelMetrics: object,
- *   snaGroupLevelMetrics: object,
+ *   snaLikesGroupLevelMetrics: object,
+ *   snaDislikesGroupLevelMetrics: object,
+ *   snaLikesComponents: object,
+ *   snaDislikesComponents: object,
  *   snaIndividualLevelMetrics: object,
- *   snaComponents: object,
  * }} The combined sociogram analysis results.
  */
 export const getSociogramAnalysis = (members) => {
@@ -54,26 +55,33 @@ export const getSociogramAnalysis = (members) => {
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
   const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
-  // Group-level SNA metrics.
-  const snaGroupLevelMetric = snaGroupLevel(likesGraph, dislikesGraph);
-
   /////////////////////////////////////////////////////////////////////////////////////////
   // SNA
   /////////////////////////////////////////////////////////////////////////////////////////
 
-  // SNA components: diads, cliques, and strong/weak connected components.
-  const snaComponents = getSnaComponents(likesGraph, dislikesGraph);
+  // Group-level SNA metrics, one result per preference graph.
+  const snaLikesGroupLevelMetrics = snaGroupLevel(likesGraph);
+  const snaDislikesGroupLevelMetrics = snaGroupLevel(dislikesGraph);
+
+  // SNA components: diads, cliques, and strong/weak connected components,
+  // one result per preference graph.
+  const snaLikesComponents = getSnaComponents(likesGraph);
+  const snaDislikesComponents = getSnaComponents(dislikesGraph);
 
   // Individual-level SNA metrics, one row per member (aligned with `memberIndices`).
-  const snaIndividualLevelMetric = snaIndividualLevel(members);
+  const snaLikesIndividualLevelMetric = snaIndividualLevel(likesGraph);
+  const snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
 
 
   return {
     edgeTypes,
     morenoGroupLevelMetrics,
-    snaGroupLevelMetric,
     morenoIndividualLevelMetrics,
-    snaIndividualLevelMetric,
-    snaComponents,
+    snaLikesGroupLevelMetrics,
+    snaLikesComponents,
+    snaLikesIndividualLevelMetric,
+    snaDislikesGroupLevelMetrics,
+    snaDislikesComponents,
+    snaDislikesIndividualLevelMetric,
   };
 };

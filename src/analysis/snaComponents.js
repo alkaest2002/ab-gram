@@ -257,33 +257,27 @@ const computeSnaComponents = (graph) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute the SNA components for the likes and dislikes graphs and return them
- * as a plain object mirroring a pandas DataFrame.
+ * Compute the SNA components for a single preference graph and return them as
+ * a plain object mirroring a pandas DataFrame.
  *
- * The group is represented by two directed graphs (one per preference type),
- * so the result has one row per preference and one column per component
- * category.
+ * The group is represented by one directed graph, so the result has exactly
+ * one row (labelled by the graph's preference type) and one column per
+ * component category.
  *
- * @param {import("graphology").DirectedGraph} likesGraph - The directed likes
- *   graph built by `createLikesGraph`.
- * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
- *   dislikes graph built by `createLikesGraph`.
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph` (tagged with its `typeOfPreference`).
  * @returns {{ rowIndex: string[], columnIndex: string[], values: string[][][][] }}
- *   `rowIndex` is `["likes", "dislikes"]`, `columnIndex` is the component
- *   category per column (in `COMPONENTS_KEYS` order), and `values[i][j]` is the
- *   list of components (each component being a list of member ids) of
- *   preference type `rowIndex[i]` for category `columnIndex[j]`.
+ *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the component
+ *   category per column (in `COMPONENTS_KEYS` order), and `values[0][j]` is the
+ *   list of components (each component being a list of member ids) for
+ *   category `columnIndex[j]`.
  */
-export const getSnaComponents = (likesGraph, dislikesGraph) => {
-  const componentsByPreference = [likesGraph, dislikesGraph].map(
-    computeSnaComponents,
-  );
+export const getSnaComponents = (graph) => {
+  const components = computeSnaComponents(graph);
 
   return {
-    rowIndex: ["likes", "dislikes"],
+    rowIndex: [graph.getAttribute("typeOfPreference")],
     columnIndex: [...COMPONENTS_KEYS],
-    values: componentsByPreference.map((components) =>
-      COMPONENTS_KEYS.map((key) => components[key]),
-    ),
+    values: [COMPONENTS_KEYS.map((key) => components[key])],
   };
 };

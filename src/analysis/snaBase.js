@@ -1,6 +1,5 @@
 import { DirectedGraph } from "graphology";
-import { random } from 'graphology-layout';
-
+import { random } from "graphology-layout";
 
 //////////////////////////////////////////////////////////////////////////////////
 // BASE
@@ -48,12 +47,16 @@ export const createLikesGraph = (members, typeOfPreference) => {
   // Create directed graph.
   const graph = new DirectedGraph();
 
+  // Tag the graph with its preference type so consumers (metrics, components,
+  // plots) can report which of "likes"/"dislikes" it represents.
+  graph.setAttribute("typeOfPreference", typeOfPreference);
+
   // Add nodes to graph.
   addMemberNodes(graph, members);
 
   // Add edges to graph.
-  members.forEach(member => {
-    member[typeOfPreference].forEach(typedId => {
+  members.forEach((member) => {
+    member[typeOfPreference].forEach((typedId) => {
       graph.mergeDirectedEdge(member.id, typedId);
     });
   });
