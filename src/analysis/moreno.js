@@ -158,7 +158,7 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *
  * When the 20th and 80th percentiles collapse to the same value, classification
  * falls back to min/max when the impact distribution shows meaningful
- * inequality: a Gini coefficient ≥ 0.3, or a Gini ≥ 0.15 combined with a
+ * inequality: a Gini coefficient ≥ 0.3, or a Gini ≥ 0.2 combined with a
  * peak-to-peak spread (max − min) ≥ 3. Otherwise everyone is treated as
  * average impact.
  *
@@ -244,7 +244,7 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
     const ptp = np.ptp(impact);
 
     // If Gini coefficient is high or PTP is large, use min/max thresholds.
-    if (gini >= 0.3 || (gini >= 0.15 && ptp >= 3)) {
+    if (gini >= 0.3 || (gini >= 0.2 && ptp >= 3)) {
       const minVal = np.min(impact);
       const maxVal = np.max(impact);
       isLowImpact = impact.less_equal(minVal);
