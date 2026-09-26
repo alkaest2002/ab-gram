@@ -1,5 +1,9 @@
+
+import * as np from "numpy-ts";
 import { DirectedGraph } from "graphology";
 import { random } from 'graphology-layout';
+import { toUndirected } from "graphology-operators";
+import { simmelianStrength } from "graphology-metrics/edge";
 
 /**
  * Graph helpers for the sociogram report.
@@ -61,6 +65,106 @@ const createLikesGraph = (members, typeOfPreference) => {
 
   // Assign random layout to graph and return it.
   return random.assign(graph);
+};
+
+/**
+ * Compute the network centralization of a graph.
+ *
+ * Centralization measures how concentrated the nodes' centrality scores are
+ * around the single most central node. It ranges from `0` (every node is
+ * equally central, e.g. a fully symmetric graph) to `1` (all centrality
+ * concentrated in one node, e.g. a star).
+ *
+ * Formally:
+ *
+ *   C = Σ (C_max - C_i) / (n - 1)²
+ *
+ * where `C_max` is the largest centrality score, `C_i` the score of node `i`,
+ * `n` the number of nodes, and the sum runs over every node.
+ *
+ * The centrality used here is the in-degree: the number of members choosing
+ * each member. In-degree centralization is normalized by `(n - 1)²` because a
+ * star (one node receiving every choice) yields exactly `(n - 1)` differences
+ * of size `(n - 1)`, and so reaches the maximum value `1`.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The network centralization, in the range `[0, 1]`.
+ */
+const computeNetworkCentralization = (graph) => {
+  const n = graph.order;
+  if (n < 2) return 0;
+
+  // Compute the in-degree of each node
+  const centralities = np.array(
+     Array.from({ length: n }, (_, i) => graph.inDegree(graph.nodes()[i]))
+   );
+
+  // Compute the maximum centrality
+   const maxCentrality = np.max(centralities);
+
+  // 1. Subtract maxCentrality (results in negative differences)
+  // 2. Flip the sign with .neg() (or .negative()) to make them positive
+  // 3. Sum the NDArray into a primitive JS number
+  const sumDiffs = centralities.subtract(maxCentrality).negative().sum();
+
+  // 4. Return normalized centralization
+  return sumDiffs / Math.pow(n - 1, 2);
+};
+
+/**
+ * Compute the network transitivity (global clustering coefficient) of a graph.
+ *
+ * Transitivity measures how likely two neighbors of a node are themselves
+ * connected, i.e. the tendency of the network to form closed triangles. It
+ * ranges from `0` (no closed triads, e.g. a tree or star) to `1` (every
+ * connected triple is closed, e.g. a clique).
+ *
+ * Formally:
+ *
+ *   T = 3 × (number of closed triads) / (number of connected triples)
+ *
+ * A closed triad is a triangle: three nodes whose three pairwise edges all
+ * exist. A connected triple is three nodes where at least two edges exist
+ * (A-B and B-C, whether or not A-C exists). Each triangle contains three
+ * connected triples, hence the factor 3.
+ *
+ * Because the graph is directed, transitivity is computed on its undirected
+ * projection: two nodes are considered connected when an edge exists in either
+ * direction.
+ *
+ * The closed-triad count is derived from the Simmelian strength of each edge
+ * (the number of triangles an edge stands in), summed over every edge: the
+ * total equals `3 ×` the number of triangles.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The network transitivity, in the range `[0, 1]`.
+ */
+const computeNetworkTransitivity = (graph) => {
+  // Transitivity is a property of the undirected projection: two nodes are
+  // connected when an edge exists in either direction, and a mutual pair is a
+  // single tie. Casting to undirected merges those mutual pairs into one edge.
+  const undirected = toUndirected(graph);
+
+  // Sum the Simmelian strength of every edge. An edge's strength is the number
+  // of triangles it stands in, so the total equals 3 × the number of triangles
+  // (each triangle's 3 edges contribute 1 to the count, totaling 3×the triangle count).
+  const strengths = simmelianStrength(undirected);
+  const closedTriples = Object.values(strengths).reduce(
+    (total, strength) => total + strength,
+    0,
+  );
+
+  // Number of connected triples (2-paths): Σ C(deg, 2) over undirected degrees.
+  let connectedTriples = 0;
+  undirected.forEachNode((node) => {
+    const degree = undirected.degree(node);
+    if (degree >= 2) connectedTriples += (degree * (degree - 1)) / 2;
+  });
+
+  // Avoid a division by zero on graphs with no connected triples.
+  if (connectedTriples === 0) return 0;
+
+  return closedTriples / connectedTriples;
 };
 
 
