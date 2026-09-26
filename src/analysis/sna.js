@@ -167,6 +167,44 @@ const computeNetworkTransitivity = (graph) => {
   return closedTriples / connectedTriples;
 };
 
+/**
+ * Compute the network reciprocity of a directed graph.
+ *
+ * Reciprocity measures the tendency of directed edges to be reciprocated,
+ * i.e., the proportion of edges that have a corresponding edge in the
+ * opposite direction. It ranges from `0` (no reciprocal edges, e.g., a
+ * strictly hierarchical network) to `1` (all edges are reciprocal, e.g., a
+ * fully bidirectional network).
+ *
+ * Formally:
+ *
+ *   R = (number of reciprocated edges) / (total number of edges)
+ *
+ * A reciprocated edge A→B is one where the reverse edge B→A also exists.
+ * In a mutual pair A↔B, both directed edges are counted as reciprocated,
+ * contributing 2 to the numerator.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The network reciprocity, in the range `[0, 1]`.
+ */
+const computeNetworkReciprocity = (graph) => {
+  // Total number of directed edges
+  const totalEdges = graph.size;
+
+  // Avoid division by zero on empty graphs
+  if (totalEdges === 0) return 0;
+
+  // Count edges that have a reciprocal edge in the opposite direction
+  let reciprocatedEdges = 0;
+  graph.forEachDirectedEdge((edge, attributes, source, target) => {
+    if (graph.hasDirectedEdge(target, source)) {
+      reciprocatedEdges++;
+    }
+  });
+
+  return reciprocatedEdges / totalEdges;
+};
+
 
 ///////////// EXPORTS
 
