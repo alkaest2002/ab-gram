@@ -1,5 +1,5 @@
 import * as np from "numpy-ts";
-import { computeGiniCoefficient } from "./common.js";
+import { computeGiniCoefficient } from "./commonMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS
