@@ -1,6 +1,10 @@
 import * as np from "numpy-ts";
 import { computeGiniCoefficient } from "./common.js";
 
+//////////////////////////////////////////////////////////////////////////////////
+// GROUP LEVEL METRICS
+//////////////////////////////////////////////////////////////////////////////////
+
 /*
 MORENO GROUP LEVEL METRICS
 - "cohesion":            Group cohesion index (mutual like pairs / total possible pairs)
@@ -13,38 +17,6 @@ const GROUP_LEVEL_METRIC_KEYS = [
   "conflict",
   "positiveReciprocity",
   "negativeReciprocity",
-];
-
-/*
-MORENO INDIVIDUAL LEVEL METRICS
-- "rp": Received positive nominations (in-degree from likes adjacency matrix)
-- "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
-- "gp": Given positive nominations (out-degree likes adjacency matrix)
-- "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
-- "mp": Mutual positive connections (bidirectional positive edges)
-- "mr": Mutual negative connections (bidirectional negative edges)
-- "im": Impact index (rp + rr)
-- "bl": Balance index (rp - rr)
-- "ei": Expressivity index (gp + gr)
-- "or": Orientation index (gp - gr)
-- "ai": Affiliation index (bl + or)
-- "ii": Influence index (rp + mp)
-- "ss": Sociometric status (0 to 8, see SOCIOMETRIC STATUS CODES below)
-*/
-const INDIVIDUAL_LEVEL_METRIC_KEYS = [
-  "rp",
-  "rr",
-  "gp",
-  "gr",
-  "mp",
-  "mr",
-  "im",
-  "bl",
-  "ei",
-  "or",
-  "ai",
-  "ii",
-  "ss",
 ];
 
 /**
@@ -89,6 +61,43 @@ const computeMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
     [cohesion, conflict, positiveReciprocity, negativeReciprocity],
   ]);
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// INDIVIDUAL LEVEL METRICS
+//////////////////////////////////////////////////////////////////////////////////
+
+/*
+MORENO INDIVIDUAL LEVEL METRICS
+- "rp": Received positive nominations (in-degree from likes adjacency matrix)
+- "rr": Received negative nominations (in-degree from dislikes adjacency matrix)
+- "gp": Given positive nominations (out-degree likes adjacency matrix)
+- "gr": Given negative nominations (out-degree from dislikes adjacency matrix)
+- "mp": Mutual positive connections (bidirectional positive edges)
+- "mr": Mutual negative connections (bidirectional negative edges)
+- "im": Impact index (rp + rr)
+- "bl": Balance index (rp - rr)
+- "ei": Expressivity index (gp + gr)
+- "or": Orientation index (gp - gr)
+- "ai": Affiliation index (bl + or)
+- "ii": Influence index (rp + mp)
+- "ss": Sociometric status (0 to 8, see SOCIOMETRIC STATUS CODES below)
+*/
+const INDIVIDUAL_LEVEL_METRIC_KEYS = [
+  "rp",
+  "rr",
+  "gp",
+  "gr",
+  "mp",
+  "mr",
+  "im",
+  "bl",
+  "ei",
+  "or",
+  "ai",
+  "ii",
+  "ss",
+];
 
 /**
  * Compute Moreno's sociometric indices for every member.
@@ -335,7 +344,9 @@ const getSociometricStatus = (rp, rr, expressivity, impact) => {
   );
 };
 
-///////////// EXPORTS
+//////////////////////////////////////////////////////////////////////////////////
+// EXPORTS
+//////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Compute Moreno's group-level sociometric metrics and return them as a
