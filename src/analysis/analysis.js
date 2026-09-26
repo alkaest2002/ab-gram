@@ -1,6 +1,6 @@
 import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matrixOfAdjs.js";
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno.js";
-import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./sna.js";
+import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
 
 
 /**
