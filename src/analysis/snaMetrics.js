@@ -1,7 +1,15 @@
-
 import * as np from "numpy-ts";
 import { toUndirected } from "graphology-operators";
 import { simmelianStrength } from "graphology-metrics/edge";
+import {
+  degree,
+  inDegree,
+  outDegree,
+  closeness,
+  betweenness,
+  pagerank,
+  hits,
+} from "graphology-metrics/centrality";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS
@@ -26,7 +34,6 @@ const GROUP_LEVEL_METRIC_KEYS = [
   "networkReciprocity",
   "networkTransitivity",
 ];
-
 
 /**
  * Compute the network centralization of a graph.
@@ -57,11 +64,11 @@ const computeNetworkCentralization = (graph) => {
 
   // Compute the in-degree of each node
   const centralities = np.array(
-     Array.from({ length: n }, (_, i) => graph.inDegree(graph.nodes()[i]))
-   );
+    Array.from({ length: n }, (_, i) => graph.inDegree(graph.nodes()[i])),
+  );
 
   // Compute the maximum centrality
-   const maxCentrality = np.max(centralities);
+  const maxCentrality = np.max(centralities);
 
   // 1. Subtract maxCentrality (results in negative differences)
   // 2. Flip the sign with .neg() (or .negative()) to make them positive
@@ -191,9 +198,7 @@ const computeNetworkDensity = (graph) => {
   if (n < 2) return 0;
 
   // Maximum possible edges depends on whether the graph is directed
-  const maxEdges = graph.type === 'directed'
-    ? n * (n - 1)
-    : (n * (n - 1)) / 2;
+  const maxEdges = graph.type === "directed" ? n * (n - 1) : (n * (n - 1)) / 2;
 
   return e / maxEdges;
 };
@@ -230,12 +235,20 @@ const computeGroupLevelMetrics = (graph) => {
   };
 };
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // INDIVIDUAL LEVEL METRICS
 //////////////////////////////////////////////////////////////////////////////////
 
-
+const INDIVIDUAL_LEVEL_METRIC_KEYS = [
+  "inDegreeCentrality",
+  "outDegreeCentrality",
+  "degreeCentrality",
+  "closenessCentrality",
+  "betweennessCentrality",
+  "PageRank",
+  "hitsAuthority",
+  "hitsHub",
+];
 
 //////////////////////////////////////////////////////////////////////////////////
 // EXPORTS
@@ -266,11 +279,57 @@ export const getGroupLevelMetrics = (graph) => {
 };
 
 /**
- * Compute individual metrics for each node in the graph.
+ * Compute individual-level SNA metrics for every node in a preference graph
+ * and return them as a plain object mirroring a pandas DataFrame.
  *
- * @param {import("graphology").DirectedGraph} graph
- * @returns {Record<string, number>} A dictionary of node metrics
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph`.
+ * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ *   `rowIndex` is the member id per row (in `graph.nodes()` order),
+ *   `columnIndex` is the metric name per column (in
+ *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the score of
+ *   member `rowIndex[i]` for metric `columnIndex[j]`.
  */
 export const getIndividualLevelMetrics = (graph) => {
-  return graph;
+  const nodes = graph.nodes();
+  const columnIndex = [...INDIVIDUAL_LEVEL_METRIC_KEYS];
+
+  // graphology-metrics' centrality routines assume at least two nodes: degree
+  // centrality divides by `order - 1`, and pagerank/hits fail to converge on a
+  // single-node (or empty) graph. Degenerate groups have no structural
+  // centralities, so report a zero row per node (or no rows at all) instead.
+  if (nodes.length < 2) {
+    const values = nodes.map(() => columnIndex.map(() => 0));
+    return { rowIndex: nodes, columnIndex, values };
+  }
+
+  // HITS is computed once and split into its two scores (authority and hub).
+  const hitsResult = hits(graph);
+
+  // Compute individual-level metrics for each node.
+  const metricByNode = {
+    inDegreeCentrality: inDegree(graph),
+    outDegreeCentrality: outDegree(graph),
+    degreeCentrality: degree(graph),
+    closenessCentrality: closeness(graph),
+    betweennessCentrality: betweenness(graph),
+    PageRank: pagerank(graph),
+    hitsAuthority: hitsResult.authorities,
+    hitsHub: hitsResult.hubs,
+  };
+
+  // Explictly copy `nodes` to `memberIndices` to
+  // signifiy that node names equal member indices.
+  const memberIndices = [...nodes];
+
+  // Compute metric values for each node and column.
+  const values = nodes.map((node) =>
+    columnIndex.map((key) => metricByNode[key][node]),
+  );
+
+  return {
+    rowIndex: memberIndices,
+    columnIndex,
+    values
+  };
 };
