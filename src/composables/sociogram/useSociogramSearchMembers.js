@@ -46,15 +46,30 @@ function subsequenceInfo(needle, haystack) {
 }
 
 /**
- * OPTIMIZED: Check if all characters in needle appear anywhere in haystack.
- * Uses a Set for O(1) character lookups instead of O(n) string.includes() calls.
+ * Count how many times each character appears in a string.
+ * @param {string} value
+ * @returns {Map<string, number>}
+ */
+function charCounts(value) {
+    const counts = new Map();
+    for (const char of value) {
+        counts.set(char, (counts.get(char) ?? 0) + 1);
+    }
+    return counts;
+}
+
+/**
+ * OPTIMIZED: Check if every character in needle appears in haystack at least as
+ * many times as it appears in needle (repetitions count). Uses a pre-computed
+ * character-frequency Map for O(needle.length) lookups.
  * @param {string} needle
- * @param {Set<string>} haystackCharSet - Pre-computed character set from haystack
+ * @param {Map<string, number>} haystackCharCounts - Pre-computed character counts from haystack
  * @returns {boolean}
  */
-function hasAllCharacters(needle, haystackCharSet) {
-    for (let i = 0; i < needle.length; i++) {
-        if (!haystackCharSet.has(needle[i])) return false;
+function hasAllCharacters(needle, haystackCharCounts) {
+    const needleCharCounts = charCounts(needle);
+    for (const [char, count] of needleCharCounts) {
+        if ((haystackCharCounts.get(char) ?? 0) < count) return false;
     }
     return true;
 }
@@ -111,13 +126,13 @@ function editDistance(a, b, threshold = Infinity) {
  * 4: All characters present (unordered)
  * 5+: Typo tolerance (edit distance)
  *
- * OPTIMIZED: Takes pre-computed haystackCharSet to avoid recomputation.
+ * OPTIMIZED: Takes pre-computed character counts to avoid recomputation.
  * @param {string} normalizedName
  * @param {string} normalizedTerm
- * @param {Set<string>} nameCharSet - Pre-computed character set from normalizedName
+ * @param {Map<string, number>} nameCharCounts - Pre-computed character counts from normalizedName
  * @returns {number | null}
  */
-function scoreNormalizedName(normalizedName, normalizedTerm, nameCharSet) {
+function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
     if (!normalizedTerm || !normalizedName) return null;
 
     // Exact substring match (best possible)
@@ -136,8 +151,8 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharSet) {
         return 2 + boundaryBonus + gapPenalty;
     }
 
-    // All characters present (unordered) - OPTIMIZED: use pre-computed Set
-    if (hasAllCharacters(normalizedTerm, nameCharSet)) {
+    // All characters present (unordered, repetitions included) - OPTIMIZED: use pre-computed counts
+    if (hasAllCharacters(normalizedTerm, nameCharCounts)) {
         return 4;
     }
 
@@ -174,7 +189,7 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharSet) {
  * Fuzzy search over the sociogram members by name.
  *
  * OPTIMIZATIONS:
- * - Pre-compute character sets to avoid hasAllCharacters recomputation
+ * - Pre-compute character counts to avoid hasAllCharacters recomputation
  * - Single-pass scoring and filtering instead of filter-then-map
  * - Cache alphabetical sorting key instead of computing charCodeAt repeatedly
  * - Early termination in edit distance for typo tolerance
@@ -188,14 +203,14 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharSet) {
 export function useSociogramSearchMembers(members) {
     const query = ref("");
 
-    // OPTIMIZED: Pre-compute normalized names and character sets
+    // OPTIMIZED: Pre-compute normalized names and character counts
     const normalizedCache = computed(() => {
         return members.value.map((member) => {
             const normalized = normalizeForSearch(member.name);
             return {
                 member,
                 normalized,
-                charSet: new Set(normalized), // Pre-compute character set
+                charCounts: charCounts(normalized), // Pre-compute character counts
                 alphabetical: member.name.toLowerCase(), // Pre-compute alphabetical
             };
         });
@@ -212,7 +227,7 @@ export function useSociogramSearchMembers(members) {
             .reduce((results, entry) => {
                 // Initial check: exclude names that do not contain every query
                 // character before running the scoring mechanism.
-                if (!hasAllCharacters(normalizedTerm, entry.charSet)) {
+                if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
                     return results;
                 }
 
@@ -220,7 +235,7 @@ export function useSociogramSearchMembers(members) {
                 const primaryScore = scoreNormalizedName(
                     entry.normalized,
                     normalizedTerm,
-                    entry.charSet
+                    entry.charCounts
                 );
 
                 // Early termination: skip entries that don't match at all
