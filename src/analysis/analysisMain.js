@@ -2,7 +2,7 @@ import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matri
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./morenoMetrics.js";
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
 import { getSnaComponents } from "./snaComponents.js";
-
+import { getSnaPlots } from "./snaPlots.js"
 
 /**
  * Run the full sociogram analysis over a set of members.
@@ -72,6 +72,13 @@ export const getSociogramAnalysis = (members) => {
   const snaLikesIndividualLevelMetric = snaIndividualLevel(likesGraph);
   const snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
 
+  // SNA plots, one per preference graph.
+  const snaPlots = getSnaPlots([
+    // accent color is blue for likes, red for dislikes
+    [likesGraph, "#0000FF"],
+    [dislikesGraph, "#FF0000"]
+  ]);
+
 
   return {
     edgeTypes,
@@ -83,5 +90,6 @@ export const getSociogramAnalysis = (members) => {
     snaDislikesGroupLevelMetrics,
     snaDislikesComponents,
     snaDislikesIndividualLevelMetric,
+    snaPlots
   };
 };
