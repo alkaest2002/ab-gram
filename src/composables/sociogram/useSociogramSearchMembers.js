@@ -59,7 +59,7 @@ function charCounts(value) {
 }
 
 /**
- * OPTIMIZED: Check if every character in needle appears in haystack at least as
+ * Check if every character in needle appears in haystack at least as
  * many times as it appears in needle (repetitions count). Uses a pre-computed
  * character-frequency Map for O(needle.length) lookups.
  * @param {string} needle
@@ -78,7 +78,7 @@ function hasAllCharacters(needle, haystackCharCounts) {
  * Compute Levenshtein distance (edit distance) between two strings.
  * Lower is better; 0 = exact match.
  * Uses space-optimized version (single row) for O(min(a,b)) space.
- * OPTIMIZED: Early termination if distance exceeds threshold.
+ * Early termination if distance exceeds threshold.
  * @param {string} a
  * @param {string} b
  * @param {number} threshold - Return early if distance exceeds this
@@ -126,7 +126,7 @@ function editDistance(a, b, threshold = Infinity) {
  * 4: All characters present (unordered)
  * 5+: Typo tolerance (edit distance)
  *
- * OPTIMIZED: Takes pre-computed character counts to avoid recomputation.
+ * Takes pre-computed character counts to avoid recomputation.
  * @param {string} normalizedName
  * @param {string} normalizedTerm
  * @param {Map<string, number>} nameCharCounts - Pre-computed character counts from normalizedName
@@ -203,7 +203,7 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
 export function useSociogramSearchMembers(members) {
     const query = ref("");
 
-    // OPTIMIZED: Pre-compute normalized names and character counts
+    // Pre-compute normalized names and character counts
     const normalizedCache = computed(() => {
         return members.value.map((member) => {
             const normalized = normalizeForSearch(member.name);
@@ -222,7 +222,7 @@ export function useSociogramSearchMembers(members) {
 
         const normalizedTerm = normalizeForSearch(term);
 
-        // OPTIMIZED: Single-pass scoring, filtering, and sorting
+        // Single-pass scoring, filtering, and sorting
         const scored = normalizedCache.value
             .reduce((results, entry) => {
                 // Initial check: exclude names that do not contain every query
