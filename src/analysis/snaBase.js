@@ -67,7 +67,7 @@ export const createLikesGraph = (members, typeOfPreference) => {
     graph.setEdgeAttribute(edge, "isMutual", isMutual);
   });
 
-  // Assign random layout to the graph.
+  // Assign a random layout as the initial node coordinates.
   random.assign(graph);
 
   return graph;
