@@ -17,21 +17,15 @@ importers:
       graphology-components:
         specifier: ^1.5.4
         version: 1.5.4(graphology-types@0.24.8)
-      graphology-layout:
-        specifier: ^0.6.1
-        version: 0.6.1(graphology-types@0.24.8)
-      graphology-layout-force:
-        specifier: ^0.2.4
-        version: 0.2.4(graphology-types@0.24.8)
+      graphology-layout-forceatlas2:
+        specifier: ^0.10.1
+        version: 0.10.1(graphology-types@0.24.8)
       graphology-metrics:
         specifier: ^2.4.2
         version: 2.4.2(graphology-types@0.24.8)
       graphology-operators:
         specifier: ^1.6.1
         version: 1.6.1(graphology-types@0.24.8)
-      install:
-        specifier: ^0.13.0
-        version: 0.13.0
       numpy-ts:
         specifier: ^1.7.0
         version: 1.7.0
@@ -640,13 +634,8 @@ packages:
     peerDependencies:
       graphology-types: '>=0.20.0'
 
-  graphology-layout-force@0.2.4:
-    resolution: {integrity: sha512-NYZz0YAnDkn5pkm30cvB0IScFoWGtbzJMrqaiH070dYlYJiag12Oc89dbVfaMaVR/w8DMIKxn/ix9Bqj+Umm9Q==}
-    peerDependencies:
-      graphology-types: '>=0.19.0'
-
-  graphology-layout@0.6.1:
-    resolution: {integrity: sha512-m9aMvbd0uDPffUCFPng5ibRkb2pmfNvdKjQWeZrf71RS1aOoat5874+DcyNfMeCT4aQguKC7Lj9eCbqZj/h8Ag==}
+  graphology-layout-forceatlas2@0.10.1:
+    resolution: {integrity: sha512-ogzBeF1FvWzjkikrIFwxhlZXvD2+wlY54lqhsrWprcdPjopM2J9HoMweUmIgwaTvY4bUYVimpSsOdvDv1gPRFQ==}
     peerDependencies:
       graphology-types: '>=0.19.0'
 
@@ -680,10 +669,6 @@ packages:
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
-
-  install@0.13.0:
-    resolution: {integrity: sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==}
-    engines: {node: '>= 0.10'}
 
   is-docker@3.0.0:
     resolution: {integrity: sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==}
@@ -1740,16 +1725,10 @@ snapshots:
       graphology-utils: 2.5.2(graphology-types@0.24.8)
       mnemonist: 0.39.8
 
-  graphology-layout-force@0.2.4(graphology-types@0.24.8):
+  graphology-layout-forceatlas2@0.10.1(graphology-types@0.24.8):
     dependencies:
       graphology-types: 0.24.8
       graphology-utils: 2.5.2(graphology-types@0.24.8)
-
-  graphology-layout@0.6.1(graphology-types@0.24.8):
-    dependencies:
-      graphology-types: 0.24.8
-      graphology-utils: 2.5.2(graphology-types@0.24.8)
-      pandemonium: 2.4.1
 
   graphology-metrics@2.4.2(graphology-types@0.24.8):
     dependencies:
@@ -1785,8 +1764,6 @@ snapshots:
       graphology-types: 0.24.8
 
   hookable@5.5.3: {}
-
-  install@0.13.0: {}
 
   is-docker@3.0.0: {}
 
