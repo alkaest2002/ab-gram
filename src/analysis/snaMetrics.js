@@ -115,6 +115,7 @@ const computeNetworkTransitivity = (graph) => {
 
   // Sum the Simmelian strength of every edge. An edge's strength is the number
   // of triangles it stands in. Each edge of a triangle counts for `1`.
+  // So that the sum of all edge strengths equals three times the number of closed triangles.
   const strengths = simmelianStrength(undirected);
   const closedTriples = Object.values(strengths).reduce(
     (total, strength) => total + strength,
