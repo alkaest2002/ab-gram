@@ -1,9 +1,12 @@
 import { SVG } from "@svgdotjs/svg.js";
-import forceLayout from "graphology-layout-force";
+import forceAtlas2 from 'graphology-layout-forceatlas2';
 
 //////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION
 //////////////////////////////////////////////////////////////////////////////////
+
+// Number of ForceAtlas2 iterations run to settle the initial node coordinates.
+const ITERATIONS = 300;
 
 // Canvas and drawing constants, all expressed in SVG user units (the viewBox).
 const CANVAS_WIDTH = 600;
@@ -18,20 +21,14 @@ const LABEL_FONT_SIZE = 11;
 
 // Edge strokes: mutual edges are drawn thicker than non-mutual ones.
 const NON_MUTUAL_EDGE_WIDTH = 1;
-const MUTUAL_EDGE_WIDTH = 2.5;
+const MUTUAL_EDGE_WIDTH = 4;
 
 // Arrowhead: a light open chevron (no filled triangle), pointing at the target.
 const ARROW_SIZE = 8;
 const ARROW_STROKE_WIDTH = 1;
 
-// Horizontal spacing between consecutive isolated nodes.
+// Spacing between consecutive isolated nodes, horizontally and vertically.
 const ISOLATED_GAP = 8;
-
-// Vertical clearance kept between the connected graph and the isolated row.
-const ISOLATED_ROW_CLEARANCE = 8;
-
-// Number of force-directed iterations run to settle the random layout.
-const FORCE_MAX_ITERATIONS = 300;
 
 // Member ids inside a node are white, for contrast against the colored circle.
 const NODE_LABEL_COLOR = "#FFFFFF";
@@ -57,13 +54,11 @@ const ISOLATED_NODE_COLOR = "#000000";
  * @param {import("graphology").DirectedGraph} graph - The graph, whose nodes
  *   hold `x`/`y` attributes produced by the force layout.
  * @param {string[]} nodes - The nodes whose positions are normalized (the
- *   connected members; isolated members are placed separately).
- * @param {number} bottomInset - Distance from the canvas bottom reserved for
- *   the isolated row. The connected graph is fitted above this line.
+ *   connected members; isolated members are placed in a separate plot).
  * @returns {(node: string) => {x: number, y: number}} A mapper from a node id
  *   to its normalized SVG coordinates.
  */
-const buildCoordinateMapper = (graph, nodes, bottomInset) => {
+const buildCoordinateMapper = (graph, nodes) => {
   // A graph with no connected nodes has nothing to fit; the mapper is unused
   // in that case, but still returns a well-defined (centered) point.
   if (nodes.length === 0) {
@@ -88,10 +83,9 @@ const buildCoordinateMapper = (graph, nodes, bottomInset) => {
   const rawWidth = maxX - minX;
   const rawHeight = maxY - minY;
 
-  // Area available to the connected graph: the canvas minus the padding and
-  // any band reserved at the bottom for the isolated nodes.
+  // Area available to the connected graph: the canvas minus the padding.
   const availableWidth = CANVAS_WIDTH - 2 * PADDING;
-  const availableHeight = CANVAS_HEIGHT - PADDING - bottomInset;
+  const availableHeight = CANVAS_HEIGHT - 2 * PADDING;
 
   // Uniform scale: the largest that fits both axes, so the aspect ratio of the
   // force layout is preserved. `Infinity` guards degenerate axes (all nodes
@@ -106,9 +100,7 @@ const buildCoordinateMapper = (graph, nodes, bottomInset) => {
 
   // Center the scaled content in the available area.
   const offsetX = (CANVAS_WIDTH - rawWidth * scale) / 2 - minX * scale;
-  const offsetY =
-    (PADDING + CANVAS_HEIGHT - bottomInset - rawHeight * scale) / 2 -
-    minY * scale;
+  const offsetY = (CANVAS_HEIGHT - rawHeight * scale) / 2 - minY * scale;
 
   return (node) => ({
     x: graph.getNodeAttribute(node, "x") * scale + offsetX,
@@ -162,7 +154,8 @@ const computeEdgeEndpoints = (from, to, radius) => {
  * horizontally with `text-anchor: middle` and vertically with
  * `dominant-baseline: central`, so it sits at the exact circle center.
  *
- * @param {import("@svgdotjs/svg.js").Svg} draw - The SVG root.
+ * @param {import("@svgdotjs/svg.js").Container} draw - The SVG container
+ *   (the root or a translated group) to draw into.
  * @param {number} x - Horizontal center of the node.
  * @param {number} y - Vertical center of the node.
  * @param {string} label - The member id to display.
@@ -179,20 +172,47 @@ const drawNode = (draw, x, y, label, fillColor) => {
 };
 
 /**
- * Draw the isolated members (those without any edge) in a row starting at the
- * bottom-left corner, in black.
+ * Build the isolated members' plot dynamically.
  *
- * @param {import("@svgdotjs/svg.js").Svg} draw - The SVG root.
+ * Isolated members are laid out in rows that wrap once the canvas width is
+ * reached, so any number of them can be accommodated. The returned `height`
+ * is the vertical space the plot occupies, and `render` draws it into the
+ * given container using that container's local coordinates (its origin).
+ *
  * @param {string[]} isolatedNodes - The ids of the isolated members.
+ * @returns {{height: number, render: (draw: import("@svgdotjs/svg.js").Container) => void}}
+ *   The plot's height and a function that draws it into a container.
  */
-const drawIsolatedNodes = (draw, isolatedNodes) => {
-  let x = PADDING;
-  const y = CANVAS_HEIGHT - PADDING;
+const buildIsolatedNodesPlot = (isolatedNodes) => {
+  if (isolatedNodes.length === 0) {
+    return { height: 0, render: () => {} };
+  }
 
-  isolatedNodes.forEach((node) => {
-    drawNode(draw, x, y, node, ISOLATED_NODE_COLOR);
-    x += NODE_RADIUS * 2 + ISOLATED_GAP;
-  });
+  // Most circles (plus their gaps) that fit across the available width.
+  const nodesPerRow = Math.max(
+    1,
+    Math.floor(
+      (CANVAS_WIDTH - 2 * PADDING + ISOLATED_GAP) /
+        (NODE_RADIUS * 2 + ISOLATED_GAP),
+    ),
+  );
+  const rows = Math.ceil(isolatedNodes.length / nodesPerRow);
+
+  // Top/bottom padding plus one node band per row and a gap between rows.
+  const height =
+    2 * PADDING + rows * (NODE_RADIUS * 2) + (rows - 1) * ISOLATED_GAP;
+
+  const render = (draw) => {
+    isolatedNodes.forEach((node, index) => {
+      const row = Math.floor(index / nodesPerRow);
+      const col = index % nodesPerRow;
+      const x = PADDING + NODE_RADIUS + col * (NODE_RADIUS * 2 + ISOLATED_GAP);
+      const y = PADDING + NODE_RADIUS + row * (NODE_RADIUS * 2 + ISOLATED_GAP);
+      drawNode(draw, x, y, node, ISOLATED_NODE_COLOR);
+    });
+  };
+
+  return { height, render };
 };
 
 /**
@@ -205,23 +225,27 @@ const drawIsolatedNodes = (draw, isolatedNodes) => {
  *   The plot's preference type, accent color, and serialized SVG markup.
  */
 const buildPlot = (graph, accentColor) => {
-  // Settle the random starting layout with the force-directed algorithm. This
-  // updates each node's `x`/`y` attributes in place.
-  forceLayout.assign(graph, { maxIterations: FORCE_MAX_ITERATIONS });
+  // Settle the random starting layout with ForceAtlas2. This updates each
+  // node's `x`/`y` attributes in place.
+  forceAtlas2.assign(graph, { iterations: ITERATIONS });
 
-  // Split members: isolated nodes have no edge at all and are drawn separately
-  // at the bottom-left, in black.
+  // Split members: isolated nodes have no edge at all and are drawn in a
+  // separate plot stacked below the connected graph.
   const connected = [];
   const isolated = [];
   graph.forEachNode((node) => {
     (graph.degree(node) === 0 ? isolated : connected).push(node);
   });
 
+  // Build the isolated plot first: its height sets the total SVG height.
+  const isolatedPlot = buildIsolatedNodesPlot(isolated);
+
   // Transparent background and no border: the root SVG carries no fill, stroke
-  // or border, and no background rectangle is added.
+  // or border, and no background rectangle is added. Its height is the sum of
+  // the connected graph and the isolated plot (when present).
   const draw = SVG()
-    .size(CANVAS_WIDTH, CANVAS_HEIGHT)
-    .viewbox(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    .size(CANVAS_WIDTH, CANVAS_HEIGHT + isolatedPlot.height)
+    .viewbox(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT + isolatedPlot.height);
 
   // Arrowhead for non-mutual edges: an open chevron (two thin strokes) instead
   // of a filled triangle, so it reads light. `ref` aligns the marker's tip (its
@@ -240,14 +264,7 @@ const buildPlot = (graph, accentColor) => {
     })
     .ref(ARROW_SIZE, ARROW_SIZE / 2);
 
-  // Reserve room at the bottom for the isolated row so it never overlaps the
-  // connected graph (with a little clearance between them).
-  const bottomInset =
-    isolated.length > 0
-      ? PADDING + NODE_RADIUS * 2 + ISOLATED_ROW_CLEARANCE
-      : PADDING;
-
-  const toSvg = buildCoordinateMapper(graph, connected, bottomInset);
+  const toSvg = buildCoordinateMapper(graph, connected);
 
   // Draw edges first so the nodes are painted on top of them.
   graph.forEachDirectedEdge((edge, attributes, source, target) => {
@@ -274,8 +291,12 @@ const buildPlot = (graph, accentColor) => {
     drawNode(draw, x, y, node, accentColor);
   });
 
-  // Isolated members: a black row at the bottom-left.
-  drawIsolatedNodes(draw, isolated);
+  // Isolated members: a black plot stacked below the connected graph, drawn
+  // into a group translated down by the connected graph's height.
+  if (isolatedPlot.height > 0) {
+    const isolatedGroup = draw.group().translate(0, CANVAS_HEIGHT);
+    isolatedPlot.render(isolatedGroup);
+  }
 
   return {
     typeOfPreference: graph.getAttribute("typeOfPreference"),
@@ -294,12 +315,12 @@ const buildPlot = (graph, accentColor) => {
  *
  * Each graph is expected to carry an initial random layout (see
  * `createLikesGraph`). Its nodes are first repositioned with
- * `graphology-layout-force`, then rendered into an SVG with `svg.js`: the
+ * `graphology-layout-forceatlas2`, then rendered into an SVG with `svg.js`: the
  * connected members become accent-colored circles (labelled with their member
  * id) joined by accent-colored edges, mutual edges drawn thicker and without
  * arrowheads and non-mutual edges thinner with a light chevron arrowhead
- * pointing at their target. Isolated members are drawn in black along the
- * bottom-left edge.
+ * pointing at their target. Isolated members are drawn in black in a plot
+ * stacked vertically below the connected graph.
  *
  * @param {Array<[import("graphology").DirectedGraph, string]>} graphs - A list
  *   of `[graph, accentColor]` pairs, one per preference type.
