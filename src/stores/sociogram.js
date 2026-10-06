@@ -39,6 +39,11 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
   const membersCount = computed(() => members.value.length);
 
+  /** @type {import("vue").ComputedRef<boolean>} Whether all members have no dislikes. */
+  const allMembersHaveNoDislikes = computed(() => {
+    return members.value.every((member) => (member.dislikes ?? []).length === 0);
+  });
+
   /**
    * Replace the parsed members.
    * @param {Member[]} membersData
@@ -104,6 +109,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
     membersCount,
     maxMemberNameLength,
     maxMembersCount,
+    allMembersHaveNoDislikes,
     initMembers,
     addMember,
     updateMember,
