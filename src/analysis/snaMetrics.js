@@ -304,7 +304,15 @@ export const getIndividualLevelMetrics = (graph) => {
   }
 
   // HITS is computed once and split into its two scores (authority and hub).
-  const hitsResult = hits(graph);
+  // HITS's power iteration does not converge on a graph without edges, so
+  // report zero authority/hub scores there instead of throwing.
+  const hitsResult =
+    graph.size === 0
+      ? {
+          authorities: Object.fromEntries(nodes.map((node) => [node, 0])),
+          hubs: Object.fromEntries(nodes.map((node) => [node, 0])),
+        }
+      : hits(graph);
 
   // Compute individual-level metrics for each node.
   const metricByNode = {
