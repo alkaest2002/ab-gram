@@ -3,6 +3,7 @@ import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as mor
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
 import { getSnaComponents } from "./snaComponents.js";
 import { getSnaPlots } from "./snaPlots.js"
+import { createLikesGraph } from "./snaBase.js";
 
 /**
  * Run the full sociogram analysis over a set of members.
