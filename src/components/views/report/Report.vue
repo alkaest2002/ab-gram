@@ -14,9 +14,6 @@ import { useSociogramStore } from "@/stores/sociogram";
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 import ReportDoc from "@/components/views/report/ReportDoc.vue";
 
-// --- Workers ------------
-import ReportWorker from "@/workers/reportWorker.js?worker";
-
 // --- Composables --------
 import { createReportWorker } from "@/utils/workerLoader";
 
@@ -74,8 +71,7 @@ function startGeneration() {
             return;
         }
 
-        reportStore.setTabularData(data.tabularData ?? {});
-        reportStore.setGraphs(data.tabularData?.graphs ?? {});
+        reportStore.setAnalysis(data);
         reportStore.setStatus("generated");
     };
 
