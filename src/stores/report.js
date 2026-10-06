@@ -37,8 +37,11 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<Array<object>>} Moreno plots. */
   const morenoPlots = ref([]);
 
-  /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA plots, one per preference graph. */
-  const snaPlots = ref([]);
+  /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA likes plots. */
+  const snaLikesPlots = ref([]);
+
+  /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA dislikes plots. */
+  const snaDislikesPlots = ref([]);
 
   /** @param {string} value */
   function setStatus(value) {
@@ -60,7 +63,8 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesComponents.value = value.snaDislikesComponents ?? {};
     snaDislikesIndividualLevelMetric.value = value.snaDislikesIndividualLevelMetric ?? {};
     morenoPlots.value = value.morenoPlots ?? [];
-    snaPlots.value = value.snaPlots ?? [];
+    snaLikesPlots.value = value.snaLikesPlots ?? [];
+    snaDislikesPlots.value = value.snaDislikesPlots ?? [];
   }
 
   /** Reset the report store to its initial state. */
@@ -76,7 +80,8 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesComponents.value = {};
     snaDislikesIndividualLevelMetric.value = {};
     morenoPlots.value = [];
-    snaPlots.value = [];
+    snaLikesPlots.value = [];
+    snaDislikesPlots.value = [];
   }
 
   return {
@@ -84,14 +89,15 @@ export const useReportStore = defineStore("report", () => {
     edgeTypes,
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
-    snaLikesGroupLevelMetrics,
-    snaLikesComponents,
-    snaLikesIndividualLevelMetric,
-    snaDislikesGroupLevelMetrics,
-    snaDislikesComponents,
-    snaDislikesIndividualLevelMetric,
     morenoPlots,
-    snaPlots,
+    snaLikesGroupLevelMetrics,
+    snaLikesIndividualLevelMetric,
+    snaLikesComponents,
+    snaLikesPlots,
+    snaDislikesGroupLevelMetrics,
+    snaDislikesIndividualLevelMetric,
+    snaDislikesComponents,
+    snaDislikesPlots,
     setStatus,
     setAnalysis,
     reset,
