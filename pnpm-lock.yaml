@@ -17,6 +17,9 @@ importers:
       graphology-components:
         specifier: ^1.5.4
         version: 1.5.4(graphology-types@0.24.8)
+      graphology-layout:
+        specifier: ^0.6.1
+        version: 0.6.1(graphology-types@0.24.8)
       graphology-layout-forceatlas2:
         specifier: ^0.10.1
         version: 0.10.1(graphology-types@0.24.8)
@@ -636,6 +639,11 @@ packages:
 
   graphology-layout-forceatlas2@0.10.1:
     resolution: {integrity: sha512-ogzBeF1FvWzjkikrIFwxhlZXvD2+wlY54lqhsrWprcdPjopM2J9HoMweUmIgwaTvY4bUYVimpSsOdvDv1gPRFQ==}
+    peerDependencies:
+      graphology-types: '>=0.19.0'
+
+  graphology-layout@0.6.1:
+    resolution: {integrity: sha512-m9aMvbd0uDPffUCFPng5ibRkb2pmfNvdKjQWeZrf71RS1aOoat5874+DcyNfMeCT4aQguKC7Lj9eCbqZj/h8Ag==}
     peerDependencies:
       graphology-types: '>=0.19.0'
 
@@ -1729,6 +1737,12 @@ snapshots:
     dependencies:
       graphology-types: 0.24.8
       graphology-utils: 2.5.2(graphology-types@0.24.8)
+
+  graphology-layout@0.6.1(graphology-types@0.24.8):
+    dependencies:
+      graphology-types: 0.24.8
+      graphology-utils: 2.5.2(graphology-types@0.24.8)
+      pandemonium: 2.4.1
 
   graphology-metrics@2.4.2(graphology-types@0.24.8):
     dependencies:
