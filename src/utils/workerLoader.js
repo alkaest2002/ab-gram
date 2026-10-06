@@ -15,29 +15,32 @@
 
 import ReportWorker from '@/workers/reportWorker.js?worker';
 
-// Track whether the preload link has been added
+// Track whether the worker chunk has already been preloaded.
 let isPreloaded = false;
 
 /**
- * Preload the worker bundle by adding a <link rel="preload"> to the document head
+ * Preload the worker chunk in the background.
  *
- * This should be called early (e.g., in Home.vue onMounted) to download the worker
- * bundle in the background before it's actually needed.
+ * This should be called early (e.g., in Home.vue onMounted) to download the
+ * worker chunk before it's actually needed. Constructing the worker triggers
+ * the browser to fetch its (large) chunk, so the real instantiation in
+ * `createReportWorker` is served from cache.
  *
  * Benefits:
- * - Worker bundle is cached by browser
- * - When the actual worker is instantiated, it loads from cache
- * - Reduces perceived latency when worker is actually needed
+ * - Worker chunk is cached by the browser
+ * - The actual worker instantiation loads from cache
+ * - Reduces perceived latency when the worker is actually needed
  *
- * Safe to call multiple times (uses flag to prevent duplicates)
+ * Safe to call multiple times (uses a flag to prevent duplicates).
  *
- * @returns {void}
+ * @returns {Promise<void>}
  */
 export const preloadWorker = async () => {
   if (isPreloaded) return;
 
-  // This actually downloads and caches the worker module
-  await import('@/workers/reportWorker.js?worker');
+  // Constructing the worker starts the download of its chunk. The worker's
+  // top-level scope has no side effects, so it's discarded right away.
+  createReportWorker().terminate();
 
   isPreloaded = true;
   console.debug('✓ Worker module preloaded successfully');
