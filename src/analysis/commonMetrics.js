@@ -90,10 +90,10 @@ export const computeGiniCoefficient = (data) => {
   const indices = np.arange(n);
 
   // Calculate weights: 2*i - n + 1
-  const weights = indices.mul(2).sub(n).add(1);
+  const weights = indices.multiply(2).subtract(n).add(1);
 
   // Calculate weighted sum: Σ(value * weight)
-  const sumOfDifferences = sortedData.mul(weights).sum();
+  const sumOfDifferences = sortedData.multiply(weights).sum();
 
   // Return Gini coefficient
   return sumOfDifferences / (n * totalSum);
