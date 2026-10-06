@@ -64,7 +64,7 @@ function onFileRead({ lines }) {
     const normalizedNames = normalizeNames(lines).sort();
     const loadedMembers = buildMembers(normalizedNames);
 
-    sociogramStore.setMembers(loadedMembers);
+    sociogramStore.initMembers(loadedMembers);
     loadedCount.value = loadedMembers.length;
 }
 

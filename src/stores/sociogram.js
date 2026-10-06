@@ -43,34 +43,8 @@ export const useSociogramStore = defineStore("sociogram", () => {
    * Replace the parsed members.
    * @param {Member[]} membersData
    */
-  function setMembers(membersData) {
+  function initMembers(membersData) {
     members.value = membersData;
-  }
-
-  function updateMember({ memberId, key, value }) {
-    const memberIndex = members.value.findIndex((m) => m.id === memberId);
-    if (memberIndex !== -1) {
-      members.value[memberIndex][key] = value;
-    }
-  }
-
-  /**
-   * Remove a single member by id.
-   * @param {string} memberId
-   */
-  function removeMember(memberId) {
-    members.value = members.value.filter((m) => m.id !== memberId);
-    members.value.forEach((m) => {
-      if (m.likes.includes(memberId)) {
-        m.likes = m.likes.filter((id) => id !== memberId);
-        m.noLikes = m.likes.length === 0;
-      }
-
-      if (m.dislikes.includes(memberId)) {
-        m.dislikes = m.dislikes.filter((id) => id !== memberId);
-        m.noDislikes = m.dislikes.length === 0;
-      }
-    });
   }
 
   /**
@@ -88,6 +62,37 @@ export const useSociogramStore = defineStore("sociogram", () => {
     ];
   }
 
+  function updateMember({ memberId, key, value }) {
+      const memberIndex = members.value.findIndex((m) => m.id === memberId);
+      if (memberIndex !== -1) {
+        members.value[memberIndex][key] = value;
+      }
+    }
+
+    /**
+     * Remove a single member by id.
+     * @param {string} memberId
+     */
+    function removeMember(memberId) {
+
+      // Delete memberId by filtering out
+      members.value = members.value.filter((m) => m.id !== memberId);
+
+      // Loop through each remaining member and remove the memberId
+      // from likes/dislikes
+      members.value.forEach((currentMember) => {
+        // Delete MemberId from each likes/dislikes array
+        if (currentMember.likes.includes(memberId)) {
+          currentMember.likes = currentMember.likes.filter((id) => id !== memberId);
+          currentMember.noLikes = currentMember.likes.length === 0;
+        }
+        // Delete MemberId from each dislikes array
+        if (currentMember.dislikes.includes(memberId)) {
+          currentMember.dislikes = currentMember.dislikes.filter((id) => id !== memberId);
+          currentMember.noDislikes = currentMember.dislikes.length === 0;
+        }
+      });
+    }
   /** Clear all loaded members. */
   function resetMembers() {
     members.value = [];
@@ -99,9 +104,9 @@ export const useSociogramStore = defineStore("sociogram", () => {
     membersCount,
     maxMemberNameLength,
     maxMembersCount,
-    setMembers,
-    updateMember,
+    initMembers,
     addMember,
+    updateMember,
     removeMember,
     resetMembers,
   };
