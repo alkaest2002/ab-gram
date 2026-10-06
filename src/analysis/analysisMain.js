@@ -2,7 +2,7 @@ import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matri
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./morenoMetrics.js";
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
 import { getSnaComponents } from "./snaComponents.js";
-import { getSnaPlots } from "./snaPlots.js"
+import { getSnaPlot } from "./snaPlots.js"
 import { createLikesGraph } from "./snaBase.js";
 
 /**
@@ -22,7 +22,10 @@ import { createLikesGraph } from "./snaBase.js";
  *   snaDislikesGroupLevelMetrics: object,
  *   snaLikesComponents: object,
  *   snaDislikesComponents: object,
- *   snaIndividualLevelMetrics: object,
+ *   snaLikesIndividualLevelMetric: object,
+ *   snaDislikesIndividualLevelMetric: object,
+ *   snaLikesPlots: object[],
+ *   snaDislikesPlots: object[],
  * }} The combined sociogram analysis results.
  */
 export const getSociogramAnalysis = (members) => {
@@ -30,7 +33,7 @@ export const getSociogramAnalysis = (members) => {
   const memberIndices = getMemberIndices(members);
 
   /////////////////////////////////////////////////////////////////////////////////////////
-  // CREATE ADJACENCY MATRICES, EDGE TYPES, AND SNA GRAPHS
+  // CREATE ADJACENCY MATRICES, EDGE TYPES
   /////////////////////////////////////////////////////////////////////////////////////////
 
   // Build the likes and dislikes adjacency matrices (rows/columns follow `members` order).
@@ -39,18 +42,11 @@ export const getSociogramAnalysis = (members) => {
   // Classify every directed preference edge into one of seven relationship types.
   const edgeTypes = getEdgeTypes(adjLikes, adjDislikes, memberIndices);
 
-
-  // Build the likes and dislikes directed graphs once. Every SNA consumer
-  // (metrics, components, plots) reuses these two graphs instead of rebuilding
-  // its own copies from `members`.
-  const likesGraph = createLikesGraph(members, "likes");
-  const dislikesGraph = createLikesGraph(members, "dislikes");
-
   /////////////////////////////////////////////////////////////////////////////////////////
   // MORENO
   /////////////////////////////////////////////////////////////////////////////////////////
 
-  // Group-level Moreno metrics: cohesion, conflict, and positive/negative reciprocity.
+  // Group-level Moreno metrics
   const morenoGroupLevelMetrics = morGroupLevel(adjLikes, adjDislikes);
 
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
@@ -60,37 +56,41 @@ export const getSociogramAnalysis = (members) => {
   // SNA
   /////////////////////////////////////////////////////////////////////////////////////////
 
-  // Group-level SNA metrics, one result per preference graph.
+  // Build the likes and dislikes directed graphs once. Every SNA consumer.
+  const likesGraph = createLikesGraph(members, "likes");
+  const dislikesGraph = createLikesGraph(members, "dislikes");
+
+  // Group-level SNA metrics for the likes graph.
   const snaLikesGroupLevelMetrics = snaGroupLevel(likesGraph);
-  const snaDislikesGroupLevelMetrics = snaGroupLevel(dislikesGraph);
-
-  // SNA components: diads, cliques, and strong/weak connected components,
-  // one result per preference graph.
   const snaLikesComponents = getSnaComponents(likesGraph);
-  const snaDislikesComponents = getSnaComponents(dislikesGraph);
-
-  // Individual-level SNA metrics, one row per member (aligned with `memberIndices`).
   const snaLikesIndividualLevelMetric = snaIndividualLevel(likesGraph);
-  const snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
+  const snaLikesPlots = getSnaPlot(likesGraph, "#0000FF");
 
-  // SNA plots, one per preference graph.
-  const snaPlots = getSnaPlots([
-    // accent color is blue for likes, red for dislikes
-    [likesGraph, "#0000FF"],
-    [dislikesGraph, "#FF0000"]
-  ]);
+  // Initialize SNA metrics for the dislikes graph.
+  let snaDislikesGroupLevelMetrics = {};
+  let snaDislikesComponents = {};
+  let snaDislikesIndividualLevelMetric = {}
+  let snaDislikesPlots = [];
 
+  // If the dislikes graph is not empty, compute its SNA metrics.
+  if (dislikesGraph.size !== 0) {
+    snaDislikesGroupLevelMetrics = snaGroupLevel(dislikesGraph);
+    snaDislikesComponents = getSnaComponents(dislikesGraph);
+    snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
+    snaDislikesPlots = getSnaPlot(dislikesGraph, "#FF0000");
+  }
 
   return {
     edgeTypes,
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
-    snaLikesGroupLevelMetrics,
     snaLikesComponents,
+    snaLikesGroupLevelMetrics,
     snaLikesIndividualLevelMetric,
-    snaDislikesGroupLevelMetrics,
+    snaLikesPlots,
     snaDislikesComponents,
+    snaDislikesGroupLevelMetrics,
     snaDislikesIndividualLevelMetric,
-    snaPlots
+    snaDislikesPlots,
   };
 };

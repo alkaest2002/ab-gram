@@ -3,12 +3,13 @@ import { describe, it, expect, vi } from "vitest";
 // The full pipeline renders SVG at the end. Stub the plotting step (which needs
 // a browser DOM) so the rest of the analysis can be exercised end-to-end.
 vi.mock("@/analysis/snaPlots.js", () => ({
-  getSnaPlots: (graphs) =>
-    graphs.map(([graph, accentColor]) => ({
+  getSnaPlot: (graph, accentColor) => [
+    {
       typeOfPreference: graph.getAttribute("typeOfPreference"),
       accentColor,
       svg: "<svg/>",
-    })),
+    },
+  ],
 }));
 
 import { getSociogramAnalysis } from "@/analysis/analysisMain.js";
@@ -32,13 +33,14 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("edgeTypes");
     expect(result).toHaveProperty("morenoGroupLevelMetrics");
     expect(result).toHaveProperty("morenoIndividualLevelMetrics");
-    expect(result).toHaveProperty("snaLikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaLikesComponents");
+    expect(result).toHaveProperty("snaLikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaLikesIndividualLevelMetric");
-    expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
+    expect(result).toHaveProperty("snaLikesPlots");
     expect(result).toHaveProperty("snaDislikesComponents");
+    expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
-    expect(result).toHaveProperty("snaPlots");
+    expect(result).toHaveProperty("snaDislikesPlots");
   });
 
   it("classifies the mutual like between the two members", () => {
@@ -80,34 +82,87 @@ describe("getSociogramAnalysis", () => {
     expect(negativeReciprocity).toBeNaN();
   });
 
-  it("computes SNA group metrics for both preference graphs", () => {
+  it("computes SNA group metrics for the likes graph", () => {
     const members = [
       makeMember("a", ["b"]),
       makeMember("b", ["a"]),
     ];
 
-    const { snaLikesGroupLevelMetrics, snaDislikesGroupLevelMetrics } =
-      getSociogramAnalysis(members);
+    const { snaLikesGroupLevelMetrics } = getSociogramAnalysis(members);
 
+    expect(snaLikesGroupLevelMetrics.rowIndex).toEqual(["likes"]);
     expect(snaLikesGroupLevelMetrics.values[0]).toEqual([2, 2, 2, 1, 0, 1, 0]);
-    expect(snaDislikesGroupLevelMetrics.values[0]).toEqual([2, 0, 0, 0, 0, 0, 0]);
   });
 
-  it("produces a plot for each preference type", () => {
+  it("skips the dislikes SNA step when nobody dislikes anyone", () => {
     const members = [
       makeMember("a", ["b"]),
       makeMember("b", ["a"]),
     ];
 
-    const { snaPlots } = getSociogramAnalysis(members);
+    const {
+      snaDislikesGroupLevelMetrics,
+      snaDislikesComponents,
+      snaDislikesIndividualLevelMetric,
+      snaDislikesPlots,
+    } = getSociogramAnalysis(members);
 
-    expect(snaPlots.map((plot) => plot.typeOfPreference)).toEqual([
-      "likes",
-      "dislikes",
-    ]);
-    expect(snaPlots.map((plot) => plot.accentColor)).toEqual([
-      "#0000FF",
-      "#FF0000",
-    ]);
+    expect(snaDislikesGroupLevelMetrics).toEqual({});
+    expect(snaDislikesComponents).toEqual({});
+    expect(snaDislikesIndividualLevelMetric).toEqual({});
+    expect(snaDislikesPlots).toEqual([]);
+  });
+
+  it("computes dislikes SNA metrics, components and plots when dislikes exist", () => {
+    const members = [
+      makeMember("a", [], ["b"]),
+      makeMember("b", [], ["a"]),
+    ];
+
+    const {
+      snaLikesGroupLevelMetrics,
+      snaDislikesGroupLevelMetrics,
+      snaDislikesComponents,
+      snaDislikesIndividualLevelMetric,
+      snaDislikesPlots,
+    } = getSociogramAnalysis(members);
+
+    // The likes graph is empty, so only the node count is populated.
+    expect(snaLikesGroupLevelMetrics.values[0]).toEqual([2, 0, 0, 0, 0, 0, 0]);
+
+    expect(snaDislikesGroupLevelMetrics.rowIndex).toEqual(["dislikes"]);
+    expect(snaDislikesGroupLevelMetrics.values[0]).toEqual([2, 2, 2, 1, 0, 1, 0]);
+
+    expect(snaDislikesComponents.rowIndex).toEqual(["dislikes"]);
+    expect(snaDislikesIndividualLevelMetric.rowIndex).toEqual(["a", "b"]);
+    expect(snaDislikesPlots).toHaveLength(1);
+    expect(snaDislikesPlots[0].typeOfPreference).toBe("dislikes");
+    expect(snaDislikesPlots[0].accentColor).toBe("#FF0000");
+  });
+
+  it("produces a likes plot with the blue accent color", () => {
+    const members = [
+      makeMember("a", ["b"]),
+      makeMember("b", ["a"]),
+    ];
+
+    const { snaLikesPlots } = getSociogramAnalysis(members);
+
+    expect(snaLikesPlots).toHaveLength(1);
+    expect(snaLikesPlots[0].typeOfPreference).toBe("likes");
+    expect(snaLikesPlots[0].accentColor).toBe("#0000FF");
+  });
+
+  it("always produces a likes plot, even when the likes graph is empty", () => {
+    const members = [
+      makeMember("a", [], ["b"]),
+      makeMember("b", [], ["a"]),
+    ];
+
+    const { snaLikesPlots } = getSociogramAnalysis(members);
+
+    expect(snaLikesPlots).toHaveLength(1);
+    expect(snaLikesPlots[0].typeOfPreference).toBe("likes");
+    expect(snaLikesPlots[0].accentColor).toBe("#0000FF");
   });
 });

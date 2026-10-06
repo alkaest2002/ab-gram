@@ -35,7 +35,7 @@ vi.mock("graphology-layout-forceatlas2", () => ({
 }));
 
 import { createLikesGraph } from "@/analysis/snaBase.js";
-import { getSnaPlots } from "@/analysis/snaPlots.js";
+import { getSnaPlot } from "@/analysis/snaPlots.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
   id,
@@ -44,32 +44,34 @@ const makeMember = (id, likes = [], dislikes = []) => ({
   dislikes,
 });
 
-describe("getSnaPlots", () => {
-  it("returns one plot per graph in input order", () => {
+describe("getSnaPlot", () => {
+  it("returns a single plot for the likes graph", () => {
     const members = [
       makeMember("a", ["b"]),
       makeMember("b", ["a"]),
     ];
     const likes = createLikesGraph(members, "likes");
-    const dislikes = createLikesGraph(members, "dislikes");
 
-    const plots = getSnaPlots([
-      [likes, "#0000FF"],
-      [dislikes, "#FF0000"],
-    ]);
+    const plots = getSnaPlot(likes, "#0000FF");
 
-    expect(plots).toHaveLength(2);
-
+    expect(plots).toHaveLength(1);
     expect(plots[0].typeOfPreference).toBe("likes");
     expect(plots[0].accentColor).toBe("#0000FF");
     expect(plots[0].svg).toBe("<svg></svg>");
-
-    expect(plots[1].typeOfPreference).toBe("dislikes");
-    expect(plots[1].accentColor).toBe("#FF0000");
-    expect(plots[1].svg).toBe("<svg></svg>");
   });
 
-  it("returns an empty array for no graphs", () => {
-    expect(getSnaPlots([])).toEqual([]);
+  it("carries the graph's preference type and accent color", () => {
+    const members = [
+      makeMember("a", [], ["b"]),
+      makeMember("b", [], ["a"]),
+    ];
+    const dislikes = createLikesGraph(members, "dislikes");
+
+    const plots = getSnaPlot(dislikes, "#FF0000");
+
+    expect(plots).toHaveLength(1);
+    expect(plots[0].typeOfPreference).toBe("dislikes");
+    expect(plots[0].accentColor).toBe("#FF0000");
+    expect(plots[0].svg).toBe("<svg></svg>");
   });
 });

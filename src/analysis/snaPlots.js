@@ -328,6 +328,6 @@ const buildPlot = (graph, accentColor) => {
  *   One plot per input graph, in the same order. Each plot exposes the
  *   preference type, the accent color used, and the serialized SVG markup.
  */
-export const getSnaPlots = (graphs) => {
-  return graphs.map(([graph, accentColor]) => buildPlot(graph, accentColor));
+export const getSnaPlot = (graph, accentColor) => {
+  return [buildPlot(graph, accentColor)];
 };
