@@ -20,17 +20,18 @@ function scrollToHeading(heading, event) {
 <template>
     <nav
         v-if="headings.length"
-        aria-label="On this page"
+        aria-label="In quesat pagina"
         class="mb-10 rounded-lg border border-line p-4"
     >
         <p class="text-xs font-semibold tracking-wider text-muted uppercase">
-            On this page
+            In questa pagina
         </p>
         <ul class="mt-3 space-y-1 text-sm">
             <li
                 v-for="heading in headings"
                 :key="heading.id"
                 :class="{ 'pl-4': heading.level === 3 }"
+                class="text-sm"
             >
                 <a
                     :href="`#${heading.id}`"
