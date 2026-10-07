@@ -55,11 +55,11 @@ async function copyLink() {
         <div class="p-6 sm:p-8">
             <header class="space-y-2">
                 <p class="eyebrow">Sostieni il progetto</p>
-                <h2>Ti è stato utile?</h2>
+                <h2>Ti è stata utile l'app?</h2>
             </header>
 
             <p class="mt-4 max-w-[52ch]">
-                Offrici un caffè con una piccola donazione, oppure copia il
+                Offrici un caffè con una piccola donazione, tramite &copy; Stripe, oppure copia il
                 link e condividilo con chi potrebbe trovarla utile.
             </p>
 
