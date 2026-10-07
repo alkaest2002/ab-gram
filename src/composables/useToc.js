@@ -3,7 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from "vue";
 /**
  * Builds a table of contents from the `h2`/`h3` elements (which carry ids from
  * the Markdown pipeline) inside `containerRef`. Observes the container so the
- * list stays in sync while the route transition swaps the rendered page.
+ * list stays in sync whenever the rendered page changes.
  */
 export function useToc(containerRef) {
   const headings = ref([]);
