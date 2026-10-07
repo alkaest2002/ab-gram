@@ -7,8 +7,8 @@ import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsToc from "@/components/views/docs/DocsToc.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
 
-import { useToc } from "@/composables/useToc";
-import { usePrevNext } from "@/composables/usePrevNext";
+import { useToc } from "@/composables/docs/useToc";
+import { usePrevNext } from "@/composables/docs/usePrevNext";
 
 const route = useRoute();
 const articleRef = ref(null);
