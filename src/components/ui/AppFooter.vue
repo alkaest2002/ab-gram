@@ -7,6 +7,8 @@ import { RouterLink } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
+import PrivacyIcon from "@/components/ui/icons/PrivacyIcon.vue";
+import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 
 // --- Composables --------
 
@@ -22,18 +24,12 @@ const links = [
     {
         label: "Privacy",
         to: "/privacy",
-        fill: "url(#shield-half)",
-        paths: [
-            "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
-        ],
+        icon: PrivacyIcon,
     },
     {
         label: "Email",
         href: "mailto:info@ab-grid.example",
-        paths: [
-            "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z",
-            "m3 7 9 6 9-6",
-        ],
+        icon: EmailIcon,
     },
 ];
 
@@ -67,26 +63,7 @@ const links = [
                     :to="link.to"
                     :href="link.href"
                 >
-                    <svg
-                        class="size-5"
-                        viewBox="0 0 24 24"
-                        :fill="link.fill || 'none'"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <defs v-if="link.fill">
-                            <linearGradient id="shield-half" x1="0" y1="0" x2="1" y2="0">
-                                <stop offset="0%" stop-color="white" />
-                                <stop offset="50%" stop-color="white" />
-                                <stop offset="50%" stop-color="#888" />
-                                <stop offset="100%" stop-color="#888" />
-                            </linearGradient>
-                        </defs>
-                        <path v-for="path in link.paths" :key="path" :d="path" />
-                    </svg>
+                    <component :is="link.icon" />
                     {{ link.label }}
                 </component>
             </nav>
