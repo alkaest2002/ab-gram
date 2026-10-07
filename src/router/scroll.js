@@ -20,6 +20,16 @@ let fallbackTimer = null;
 const TRANSITION_TIMEOUT = 500;
 
 /**
+ * The `behavior` to pass to `window.scrollTo`/`scrollIntoView` for anchor
+ * scrolling. Respects the user's reduced-motion preference.
+ */
+export function preferredScrollBehavior() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth";
+}
+
+/**
  * Wait for the incoming page transition to begin.
  * Used by `scrollBehavior` in `src/router/index.js`.
  */

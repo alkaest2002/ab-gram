@@ -1,40 +1,54 @@
+<script setup>
+import { computed, ref } from "vue";
+import { useRoute } from "vue-router";
+
+import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
+import DocsToc from "@/components/views/docs/DocsToc.vue";
+import DocsPager from "@/components/views/docs/DocsPager.vue";
+
+import { useToc } from "@/composables/useToc";
+import { usePrevNext } from "@/composables/usePrevNext";
+
+const route = useRoute();
+const articleRef = ref(null);
+
+const { headings } = useToc(articleRef);
+const { prev, next } = usePrevNext();
+
+// Resolve the current page directly instead of using a nested <RouterView>.
+// A nested RouterView re-renders while App.vue's top-level transition is
+// leaving this component, which breaks the incoming page when leaving /docs.
+const page = computed(() => route.matched[1]?.components?.default);
+</script>
+
 <template>
-    <div class="page">
-        <h1>Docs</h1>
+    <!-- Two columns: sidebar on the left, page content on the right. -->
+    <div
+        class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
+    >
+        <aside
+            class="w-full shrink-0 lg:sticky lg:top-(--header-h) lg:max-h-[calc(100dvh-var(--header-h))] lg:w-64 lg:overflow-y-auto"
+        >
+            <DocsSidebar />
+        </aside>
 
-        <section class="card">
-            <h2>Struttura delle cartelle</h2>
-            <ul class="list-disc pl-5">
-                <li>
-                    <code>components/layout</code> — intestazione, piè di
-                    pagina, logo
-                </li>
-                <li>
-                    <code>components/ui</code> — elementi d'interfaccia
-                    riutilizzabili
-                </li>
-                <li>
-                    <code>composables</code> — logica riusabile in stile
-                    Composition API
-                </li>
-                <li><code>layouts</code> — cornice comune alle pagine</li>
-                <li>
-                    <code>router</code>, <code>stores</code>, <code>views</code>
-                </li>
-            </ul>
-        </section>
+        <div class="min-w-0 flex-1">
+            <DocsToc :headings="headings" />
 
-        <section class="card">
-            <h2>Convenzioni</h2>
-            <ul class="list-disc pl-5">
-                <li>Componenti in PascalCase e con nome composto</li>
-                <li>Viste con suffisso <code>View</code></li>
-                <li>Composable con prefisso <code>use</code></li>
-                <li>
-                    Store Pinia in stile options: <code>state</code>,
-                    <code>getters</code>, <code>actions</code>
-                </li>
-            </ul>
-        </section>
+            <article
+                ref="articleRef"
+                class="prose prose-neutral max-w-none prose-headings:scroll-mt-20"
+            >
+                <h1>{{ route.meta.title }}</h1>
+                <div
+                    :key="route.path"
+                    class="animate-page-in motion-reduce:animate-none"
+                >
+                    <component :is="page" />
+                </div>
+            </article>
+
+            <DocsPager :prev="prev" :next="next" />
+        </div>
     </div>
 </template>
