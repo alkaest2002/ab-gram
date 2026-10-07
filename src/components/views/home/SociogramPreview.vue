@@ -5,8 +5,8 @@
                 viewBox="0 -4 560 400"
                 class="graph-svg"
                 role="img"
-                aria-label="Sociogramma di un gruppo di dieci persone. Carla riceve tre preferenze ed è al
-          centro del grafo; Bruno e Carla, Elsa e Fabio formano due coppie reciproche. Anna e
+                aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre preferenze ed è al
+          centro del grafo; Bruno e Emma, Elsa e Milo formano due coppie reciproche. Anna e
           Bruno si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
           Iris, Luca e Marta scelgono senza essere scelti: Iris e Luca ricevono un rifiuto, Marta
           non riceve né preferenze né rifiuti."
@@ -49,21 +49,21 @@
 
                 <!-- Preferences -->
                 <g class="edge edge-choice" marker-end="url(#tip-choice)">
-                    <!-- Anna → Carla -->
+                    <!-- Anna → Emma -->
                     <path d="M131.1 137.1 Q186.9 168.1 236.8 177.7" />
-                    <!-- Dario → Carla -->
+                    <!-- Dario → Emma -->
                     <path d="M425.6 127.9 Q362.9 139.9 318.5 164.6" />
                     <!-- Bruno → Dario -->
                     <path d="M310.6 62.9 Q374.1 73.1 423.4 102.5" />
-                    <!-- Carla → Gina -->
+                    <!-- Emma → Gina -->
                     <path d="M312.3 204 Q362.9 232.1 418.7 242.8" />
-                    <!-- Gina → Fabio -->
+                    <!-- Gina → Milo -->
                     <path d="M429.4 265.9 Q374.1 298.9 317.5 308" />
                     <!-- Elsa → Anna -->
                     <path d="M99.1 219.4 Q93.8 186 98 159.5" />
                     <!-- Iris → Gina -->
                     <path d="M499.5 315 Q490.4 291.7 480.2 279.3" />
-                    <!-- Luca → Fabio -->
+                    <!-- Luca → Milo -->
                     <path d="M72 337 Q163 320 254 317" />
                     <!-- Marta → Bruno -->
                     <path d="M64 49 Q159 46 254 57" />
@@ -75,9 +75,9 @@
                     marker-start="url(#tip-mutual)"
                     marker-end="url(#tip-mutual)"
                 >
-                    <!-- Bruno ↔ Carla -->
+                    <!-- Bruno ↔ Emma -->
                     <path d="M275.2 95.7 Q271.8 122 274.4 142.4" />
-                    <!-- Elsa ↔ Fabio -->
+                    <!-- Elsa ↔ Milo -->
                     <path d="M136.6 269.5 Q185.9 298.9 242.5 308" />
                 </g>
 
@@ -118,7 +118,7 @@
                     <g class="is-star" transform="translate(280 186)">
                         <circle class="dot" r="32" />
                         <text class="initial" dy="0.34em">C</text>
-                        <text class="name" y="50">Carla</text>
+                        <text class="name" y="50">Emma</text>
                     </g>
 
                     <g transform="translate(456 122)">
@@ -127,7 +127,7 @@
                         <text class="name" y="-39">Dario</text>
                     </g>
 
-                    <!-- Name to the side, like Gina's: Fabio's arrow comes in from below. -->
+                    <!-- Name to the side, like Gina's: Milo's arrow comes in from below. -->
                     <g transform="translate(104 250)">
                         <circle class="dot" r="26" />
                         <text class="initial" dy="0.34em">E</text>
@@ -139,7 +139,7 @@
                     <g transform="translate(280 314)">
                         <circle class="dot" r="26" />
                         <text class="initial" dy="0.34em">F</text>
-                        <text class="name" y="41">Fabio</text>
+                        <text class="name" y="41">Milo</text>
                     </g>
 
                     <!-- Name to the side: arcs pass below and above. -->
@@ -158,7 +158,7 @@
                         <text class="name" y="39">Iris</text>
                     </g>
 
-                    <!-- Isolated and rejected: Luca chooses Fabio, Elsa rejects him. -->
+                    <!-- Isolated and rejected: Luca chooses Milo, Elsa rejects him. -->
                     <g class="is-alone" transform="translate(48 340)">
                         <circle class="dot" r="24" />
                         <text class="initial" dy="0.34em">L</text>
