@@ -27,7 +27,7 @@ Il sociogramma mostra i membri come nodi e le relazioni come linee.
 
 ```txt
 Anna — Bea   (preferenza)
-Anna — Carla (rifiuto)
+Anna — Emma (rifiuto)
 ```
 
 Da queste righe il grafico mostra subito chi è legato e chi è in conflitto.

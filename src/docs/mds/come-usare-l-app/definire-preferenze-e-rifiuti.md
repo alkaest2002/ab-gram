@@ -16,7 +16,7 @@ Una preferenza è una scelta positiva espressa da un membro verso un altro.
 ```csv
 da,a,tipo
 Anna,Bea,preferenza
-Anna,Carla,preferenza
+Anna,Emma,preferenza
 ```
 
 ## Rifiuti

@@ -13,7 +13,7 @@ Il salvataggio produce un file JSON con nomi e relazioni:
 
 ```json
 {
-  "membri": ["Anna", "Bea", "Carla"],
+  "membri": ["Anna", "Bea", "Emma"],
   "relazioni": [
     { "da": "Anna", "a": "Bea", "tipo": "preferenza" }
   ]

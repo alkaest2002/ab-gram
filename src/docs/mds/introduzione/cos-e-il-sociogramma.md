@@ -34,7 +34,7 @@ Un gruppo di tre persone può essere descritto così:
 ```csv
 da,a,tipo
 Anna,Bea,preferenza
-Anna,Carla,rifiuto
+Anna,Emma,rifiuto
 ```
 
 Da queste righe AB-Grid costruisce il grafo da leggere e interpretare.

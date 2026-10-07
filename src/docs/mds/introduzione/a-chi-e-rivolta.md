@@ -29,7 +29,7 @@ Non servono competenze tecniche: bastano un elenco di nomi e le scelte raccolte
 nel gruppo.
 
 ```txt
-Anna,Bea,Carla,Dario,Elisa
+Anna,Bea,Emma,Dario,Elisa
 ```
 
 ## Un caso concreto

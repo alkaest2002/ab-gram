@@ -14,7 +14,7 @@ Puoi digitare un nome alla volta:
 ```txt
 Anna
 Bea
-Carla
+Emma
 ```
 
 ### Da file CSV
@@ -25,7 +25,7 @@ Per gruppi numerosi conviene preparare un file con una colonna di nomi:
 nome
 Anna
 Bea
-Carla
+Emma
 ```
 
 ## Controlli automatici
