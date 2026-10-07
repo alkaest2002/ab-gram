@@ -22,6 +22,7 @@ const links = [
     {
         label: "Privacy",
         to: "/privacy",
+        fill: "url(#shield-half)",
         paths: [
             "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
         ],
@@ -51,7 +52,10 @@ const links = [
             class="mx-auto flex max-w-4xl flex-col gap-8 px-6 pt-4 pb-10 sm:flex-row sm:items-start sm:justify-between"
         >
             <div class="space-y-3">
-                <p class="text-sm">AB-Grid | Analisi sociometriche, {{ originYear }} &mdash; {{ currentYear }}</p>
+                <p class="text-xs">
+                    {{ originYear }} | {{ currentYear }} &copy; AB-Grid rilasciato con
+                    <a href="https://opensource.org/licenses/MIT" target="_blank">Licenza MIT</a>
+                </p>
             </div>
 
             <nav class="flex gap-6" aria-label="Informazioni">
@@ -66,13 +70,21 @@ const links = [
                     <svg
                         class="size-5"
                         viewBox="0 0 24 24"
-                        fill="none"
+                        :fill="link.fill || 'none'"
                         stroke="currentColor"
                         stroke-width="1.5"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         aria-hidden="true"
                     >
+                        <defs v-if="link.fill">
+                            <linearGradient id="shield-half" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="white" />
+                                <stop offset="50%" stop-color="white" />
+                                <stop offset="50%" stop-color="#888" />
+                                <stop offset="100%" stop-color="#888" />
+                            </linearGradient>
+                        </defs>
                         <path v-for="path in link.paths" :key="path" :d="path" />
                     </svg>
                     {{ link.label }}
