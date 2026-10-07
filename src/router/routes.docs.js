@@ -1,7 +1,7 @@
 export default {
   path: "/docs",
   name: "docs",
-  component: () => import("@/components/views/Docs.vue"),
+  component: () => import("@/components/views/docs/Docs.vue"),
   meta: {
     title: "Docs",
     inMenu: true,
