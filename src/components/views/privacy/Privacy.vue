@@ -1,5 +1,5 @@
 <script setup>
-import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
+import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
         <aside
             class="w-full shrink-0 lg:sticky lg:top-(--header-h) lg:max-h-[calc(100dvh-var(--header-h))] lg:w-64 lg:overflow-y-auto lg:pt-6"
         >
-            <PrivacyAside />
+            <PrivacySidebar />
         </aside>
 
         <div class="min-w-0 flex-1 space-y-8">
@@ -21,7 +21,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 ottobre 2026.
             </p>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="titolare" class="scroll-mt-24">1. Titolare del trattamento</h2>
                 <p>
                     Il titolare del trattamento è il soggetto che gestisce il
@@ -31,7 +31,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="dati-trattati" class="scroll-mt-24">2. Dati trattati e finalità</h2>
                 <p>
                     Il sito non raccoglie, non trasmette e non conserva alcun
@@ -43,7 +43,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="base-giuridica" class="scroll-mt-24">3. Base giuridica</h2>
                 <p>
                     Poiché il sito non effettua alcun trattamento di dati
@@ -54,7 +54,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="servizi-terze-parti" class="scroll-mt-24">4. Servizi di terze parti</h2>
                 <h3 id="google-fonts" class="scroll-mt-24">4.1 Google Fonts</h3>
                 <p>
@@ -90,7 +90,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="cookie" class="scroll-mt-24">5. Cookie</h2>
                 <p>
                     Il sito non utilizza cookie di profilazione né strumenti di
@@ -99,7 +99,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="conservazione" class="scroll-mt-24">6. Conservazione dei dati</h2>
                 <p>
                     Poiché il sito non memorizza dati personali, non è previsto
@@ -110,7 +110,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="diritti-interessato" class="scroll-mt-24">7. Diritti dell'interessato</h2>
                 <p>
                     Ai sensi degli articoli da 15 a 22 del GDPR, l'interessato
@@ -125,7 +125,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="diritto-di-reclamo" class="scroll-mt-24">8. Diritto di reclamo</h2>
                 <p>
                     L'interessato che ritenga che il trattamento dei propri dati
@@ -135,7 +135,7 @@ import PrivacyAside from "@/components/views/privacy/PrivacyAside.vue";
                 </p>
             </section>
 
-            <section class="card">
+            <section class="space-y-3">
                 <h2 id="modifiche" class="scroll-mt-24">9. Modifiche alla presente informativa</h2>
                 <p>
                     La presente informativa può essere aggiornata nel tempo, ad
