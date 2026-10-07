@@ -1,7 +1,5 @@
 <template>
     <div class="page">
-        <h1>About</h1>
-
         <section class="card">
             <h2>Il progetto</h2>
             <p>

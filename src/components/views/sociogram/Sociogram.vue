@@ -86,7 +86,6 @@ function editMember(memberId) {
 
 <template>
     <div class="page">
-        <h1>Costruisci il sociogramma</h1>
         <keep-alive>
             <KeepAliveTransition :key="currentComponentName">
                 <component
