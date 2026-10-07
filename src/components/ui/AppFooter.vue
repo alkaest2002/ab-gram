@@ -2,6 +2,7 @@
 // --- Vue ----------------
 
 // --- Routers ------------
+import { RouterLink } from "vue-router";
 
 // --- Stores -------------
 
@@ -19,15 +20,15 @@ const currentYear = new Date().getFullYear();
 
 const links = [
     {
-        label: "GitHub",
-        href: "https://github.com/ab-grid",
-        external: true,
-        paths: ["M9 18l-6-6 6-6", "M15 6l6 6-6 6"],
+        label: "Privacy",
+        to: "/privacy",
+        paths: [
+            "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+        ],
     },
     {
         label: "Email",
         href: "mailto:info@ab-grid.example",
-        external: false,
         paths: [
             "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z",
             "m3 7 9 6 9-6",
@@ -53,14 +54,14 @@ const links = [
                 <p class="text-sm">AB-Grid | Analisi sociometriche, {{ originYear }} &mdash; {{ currentYear }}</p>
             </div>
 
-            <nav class="flex gap-6" aria-label="Contatti">
-                <a
+            <nav class="flex gap-6" aria-label="Informazioni">
+                <component
+                    :is="link.to ? RouterLink : 'a'"
                     v-for="link in links"
-                    :key="link.href"
-                    class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+                    :key="link.to || link.href"
+                    class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink cursor-pointer"
+                    :to="link.to"
                     :href="link.href"
-                    :target="link.external ? '_blank' : undefined"
-                    :rel="link.external ? 'noreferrer' : undefined"
                 >
                     <svg
                         class="size-5"
@@ -75,7 +76,7 @@ const links = [
                         <path v-for="path in link.paths" :key="path" :d="path" />
                     </svg>
                     {{ link.label }}
-                </a>
+                </component>
             </nav>
         </div>
     </footer>
