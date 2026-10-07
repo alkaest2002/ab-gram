@@ -8,6 +8,7 @@ import { useRoute, RouterView } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
+import ContentTransition from "@/components/ui/ContentTransition.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 
@@ -37,6 +38,10 @@ const layout = computed(() => layouts[route.meta.layout] ?? DefaultLayout);
 
 <template>
     <component :is="layout">
-        <RouterView />
+        <RouterView v-slot="{ Component }">
+            <ContentTransition appear>
+                <component :is="Component" />
+            </ContentTransition>
+        </RouterView>
     </component>
 </template>

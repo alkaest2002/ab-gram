@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { RouterView, useRoute } from "vue-router";
 
+import ContentTransition from "@/components/ui/ContentTransition.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsToc from "@/components/views/docs/DocsToc.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
@@ -35,7 +36,11 @@ const { prev, next } = usePrevNext();
                 class="prose prose-neutral max-w-none prose-headings:scroll-mt-20"
             >
                 <h1>{{ route.meta.title }}</h1>
-                <RouterView />
+                <RouterView v-slot="{ Component }">
+                    <ContentTransition>
+                        <component :is="Component" />
+                    </ContentTransition>
+                </RouterView>
             </article>
 
             <DocsPager :prev="prev" :next="next" />

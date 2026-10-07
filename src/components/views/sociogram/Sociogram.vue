@@ -13,6 +13,7 @@ import StepImportFromArchive from "@/components/views/sociogram/steps/stepImport
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
+import KeepAliveTransition from "@/components/ui/KeepAliveTransition.vue";
 
 // --- Composables --------
 import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation";
@@ -87,11 +88,13 @@ function editMember(memberId) {
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
         <keep-alive>
-            <component
-                :is="stateComponents[currentComponentName]"
-                v-bind="stepProps"
-                v-on="stepListeners"
-            />
+            <KeepAliveTransition :key="currentComponentName">
+                <component
+                    :is="stateComponents[currentComponentName]"
+                    v-bind="stepProps"
+                    v-on="stepListeners"
+                />
+            </KeepAliveTransition>
         </keep-alive>
     </div>
 </template>
