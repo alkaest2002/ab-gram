@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { ref } from "vue";
+import { RouterView, useRoute } from "vue-router";
 
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsToc from "@/components/views/docs/DocsToc.vue";
@@ -14,11 +14,6 @@ const articleRef = ref(null);
 
 const { headings } = useToc(articleRef);
 const { prev, next } = usePrevNext();
-
-// Resolve the current page directly instead of using a nested <RouterView>.
-// A nested RouterView re-renders while App.vue's top-level transition is
-// leaving this component, which breaks the incoming page when leaving /docs.
-const page = computed(() => route.matched[1]?.components?.default);
 </script>
 
 <template>
@@ -40,12 +35,7 @@ const page = computed(() => route.matched[1]?.components?.default);
                 class="prose prose-neutral max-w-none prose-headings:scroll-mt-20"
             >
                 <h1>{{ route.meta.title }}</h1>
-                <div
-                    :key="route.path"
-                    class="animate-page-in motion-reduce:animate-none"
-                >
-                    <component :is="page" />
-                </div>
+                <RouterView />
             </article>
 
             <DocsPager :prev="prev" :next="next" />

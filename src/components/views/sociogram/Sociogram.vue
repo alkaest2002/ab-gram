@@ -13,7 +13,6 @@ import StepImportFromArchive from "@/components/views/sociogram/steps/stepImport
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
-import TransitionComponent from "@/components/ui/TransitionComponent.vue";
 
 // --- Composables --------
 import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation";
@@ -87,19 +86,12 @@ function editMember(memberId) {
 <template>
     <div class="page">
         <h1>Costruisci il sociogramma</h1>
-        <!-- Fade between steps. This is a local state change, not a route
-             navigation, so it deliberately has no `@before-enter` scroll hook and
-             must not touch the router's scroll coordination. -->
-        <TransitionComponent>
-            <div :key="currentComponentName">
-                <keep-alive>
-                    <component
-                        :is="stateComponents[currentComponentName]"
-                        v-bind="stepProps"
-                        v-on="stepListeners"
-                    />
-                </keep-alive>
-            </div>
-        </TransitionComponent>
+        <keep-alive>
+            <component
+                :is="stateComponents[currentComponentName]"
+                v-bind="stepProps"
+                v-on="stepListeners"
+            />
+        </keep-alive>
     </div>
 </template>

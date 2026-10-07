@@ -1,6 +1,4 @@
 <script setup>
-import { preferredScrollBehavior } from "@/router/scroll";
-
 defineProps({
     headings: {
         type: Array,
@@ -8,13 +6,13 @@ defineProps({
     },
 });
 
-// Same-page anchor: scroll directly instead of routing, so it is immediate and
-// doesn't wait for a page transition. `scrollIntoView` respects `scroll-mt-*`.
+// Same-page anchor: scroll directly instead of routing. `scrollIntoView`
+// respects the `scroll-mt-*` offset on headings.
 function scrollToHeading(heading, event) {
     event.preventDefault();
     const el = document.getElementById(heading.id);
     if (!el) return;
-    el.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
     history.replaceState(null, "", `#${heading.id}`);
 }
 </script>
