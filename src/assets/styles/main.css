@@ -83,7 +83,7 @@
 @layer components {
   /* Every view covers the viewport and extends beyond it when needed. */
   .page {
-    @apply mx-auto w-full max-w-3xl space-y-8 px-6 py-14;
+    @apply mx-auto w-full max-w-4xl space-y-8 px-6 py-14;
   }
 
   .card {

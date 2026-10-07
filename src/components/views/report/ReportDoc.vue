@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-w-3xl space-y-8">
+    <div class="w-full max-w-4xl space-y-8">
         <div class="space-y-3">
             <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">
                 Report

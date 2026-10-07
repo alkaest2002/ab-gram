@@ -46,7 +46,7 @@ const links = [
 <template>
     <footer class="mt-16 border-t border-line">
         <div
-            class="mx-auto flex max-w-3xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-start sm:justify-between"
+            class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-start sm:justify-between"
         >
             <div class="space-y-3">
                 <AppLogo />

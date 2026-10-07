@@ -20,7 +20,7 @@ const { prev, next } = usePrevNext();
 <template>
     <!-- Two columns: sidebar on the left, page content on the right. -->
     <div
-        class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
+        class="mx-auto flex w-full max-w-4xl flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
     >
         <aside
             class="w-full shrink-0 lg:sticky lg:top-(--header-h) lg:max-h-[calc(100dvh-var(--header-h))] lg:w-64 lg:overflow-y-auto"
