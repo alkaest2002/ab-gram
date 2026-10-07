@@ -9,15 +9,16 @@
 
 // Section order is authoritative; the `folder` key maps to a directory in `mds/`.
 const sectionOrder = [
-  { folder: "getting-started", title: "Getting Started" },
-  { folder: "guide", title: "Guide" },
-  { folder: "api", title: "API Reference" },
+  { folder: "introduzione", title: "Introduzione" },
+  { folder: "come-usare-l-app", title: "Come usare l'app" },
+  { folder: "interpretare-il-report", title: "Interpretare il report" },
+  { folder: "risoluzione-dei-problemi", title: "Risoluzione dei problemi" },
 ];
 
 /**
  * @typedef {Object} NavItem
  * @property {string} title        Page title, from frontmatter.
- * @property {string} path         Absolute route path, e.g. `/docs/guide/overview`.
+ * @property {string} path         Absolute route path, e.g. `/docs/come-usare-l-app/generare-il-report`.
  * @property {number} order        Sort order within its section, from frontmatter.
  * @property {string} description  Short description, from frontmatter.
  */
@@ -25,7 +26,7 @@ const sectionOrder = [
 /**
  * @typedef {Object} NavSection
  * @property {string} title   Section title, from `sectionOrder`.
- * @property {string} folder  Folder name under `mds/`, e.g. `guide`.
+ * @property {string} folder  Folder name under `mds/`, e.g. `come-usare-l-app`.
  * @property {NavItem[]} items Pages in this section, sorted by `order`.
  */
 
