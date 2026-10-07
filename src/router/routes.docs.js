@@ -20,7 +20,6 @@ export default {
   path: "/docs",
   name: "docs",
   component: Docs,
-  // `/docs` itself has no content, so it forwards to the first page.
   redirect: flatOrdered[0]?.path,
   meta: {
     title: "Docs",
