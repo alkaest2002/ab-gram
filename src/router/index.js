@@ -1,168 +1,27 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import { useAppStore } from "@/stores/app";
 import { waitForPageTransition } from "@/router/scroll";
 
-import Home from "@/components/views/home/Home.vue";
+import homeRoutes from "@/router/routes.home";
+import sociogramRoutes from "@/router/routes.sociogram";
+import reportRoutes from "@/router/routes.report";
+import notifyRoutes from "@/router/routes.notify";
+import docsRoutes from "@/router/routes.docs";
+import aboutRoutes from "@/router/routes.about";
+import privacyRoutes from "@/router/routes.privacy";
+import notFoundRoutes from "@/router/routes.not-found";
 
 const SITE_NAME = "AB-Grid";
 
 export const routes = [
-  {
-    path: "/",
-    name: "home",
-    component: Home,
-    meta: {
-      title: "Sociogrammi di gruppo",
-      inMenu: false,
-      layout: "DefaultLayout",
-    },
-  },
-  {
-    path: "/sociogram",
-    name: "sociogram",
-    component: () => import("@/components/views/sociogram/Sociogram.vue"),
-    meta: {
-      title: "App",
-      inMenu: true,
-      typeOfMenu: ["header"],
-      layout: "DefaultLayout",
-    },
-  },
-  {
-    path: "/report",
-    name: "report",
-    component: () => import("@/components/views/report/Report.vue"),
-    meta: {
-      title: "Report",
-      inMenu: false,
-      typeOfMenu: null,
-      layout: "EmptyLayout",
-    },
-  },
-  {
-    path: "/notify",
-    name: "notify",
-    component: "",
-    redirect: "/notify/generic-error",
-    meta: {
-      title: "Notify",
-      inMenu: false,
-      typeOfMenu: null,
-      layout: "DefaultLayout",
-    },
-    children: [
-      {
-        path: "generic-error",
-        name: "genericError",
-        component: () => import("@/components/views/notify/GenericError.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      },
-      {
-        path: "sociogram-validation-error",
-        name: "sociogramValidatioError",
-        component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      },
-      {
-        path: "report-no-data-error",
-        name: "reportNoDataError",
-        component: () => import("@/components/views/notify/ReportNoDataError.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      },
-      {
-        path: "report-error",
-        name: "reportError",
-        component: () => import("@/components/views/notify/ReportError.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      },
-      {
-        path: "report-stopped",
-        name: "reportStopped",
-        component: () => import("@/components/views/notify/ReportStopped.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      },
-      {
-        path: "file-input-error",
-        name: "fileInputError",
-        component: () => import("@/components/views/notify/FileInputError.vue"),
-        meta: {
-          title: "Informazione",
-          inMenu: false,
-          typeOfMenu: null,
-          layout: "EmptyLayout",
-        },
-      }
-    ]
-  },
-  {
-    path: "/docs",
-    name: "docs",
-    component: () => import("@/components/views/Docs.vue"),
-    meta: {
-      title: "Docs",
-      inMenu: true,
-      typeOfMenu: ["header"],
-      layout: "DefaultLayout",
-    },
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: () => import("@/components/views/About.vue"),
-    meta: {
-      title: "About",
-      inMenu: true,
-      typeOfMenu: ["header", "footer"],
-      layout: "DefaultLayout",
-    },
-  },
-  {
-    path: "/privacy",
-    name: "privacy",
-    component: () => import("@/components/views/Privacy.vue"),
-    meta: {
-      title: "Informativa privacy",
-      inMenu: true,
-      typeOfMenu: ["footer"],
-      layout: "DefaultLayout",
-    },
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    name: "not-found",
-    component: () => import("@/components/views/NotFound.vue"),
-    meta: {
-      title: "Pagina non trovata",
-      inMenu: false,
-      layout: "EmptyLayout",
-    },
-  },
+  homeRoutes,
+  sociogramRoutes,
+  reportRoutes,
+  notifyRoutes,
+  docsRoutes,
+  aboutRoutes,
+  privacyRoutes,
+  notFoundRoutes,
 ];
 
 const router = createRouter({
