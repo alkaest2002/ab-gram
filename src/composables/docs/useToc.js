@@ -24,7 +24,7 @@ export function useToc(containerRef) {
     rebuild();
     if (containerRef.value) {
       observer = new MutationObserver(rebuild);
-      observer.observe(containerRef.value, { childList: true, subtree: true });
+      observer.observe(containerRef.value, { childList: true });
     }
   });
 
