@@ -6,7 +6,6 @@
 // --- Stores -------------
 
 // --- Components ---------
-import AppLogo from "@/components/ui/AppLogo.vue";
 
 // --- Composables --------
 
@@ -15,7 +14,9 @@ import AppLogo from "@/components/ui/AppLogo.vue";
 // --- Emits --------------
 
 // --- State --------------
-// Hand-drawn SVG paths: no icon dependency, no files to load.
+const originYear = 2026
+const currentYear = new Date().getFullYear();
+
 const links = [
     {
         label: "GitHub",
@@ -46,13 +47,10 @@ const links = [
 <template>
     <footer class="mt-16 border-t border-line">
         <div
-            class="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-start sm:justify-between"
+            class="mx-auto flex max-w-4xl flex-col gap-8 px-6 pt-4 pb-10 sm:flex-row sm:items-start sm:justify-between"
         >
             <div class="space-y-3">
-                <AppLogo />
-                <p class="max-w-xs text-sm">
-                    Analisi sociometriche in tempo reale.
-                </p>
+                <p class="text-sm">AB-Grid | Analisi sociometriche, {{ originYear }} &mdash; {{ currentYear }}</p>
             </div>
 
             <nav class="flex gap-6" aria-label="Contatti">
