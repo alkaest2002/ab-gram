@@ -21,11 +21,11 @@ const steps = [
     },
     {
         title: "Scelte e rifiuti",
-        text: "Indica scelte e rifiuti di tutti.",
+        text: "Indica scelte e rifiuti di tutti i membri.",
     },
     {
         title: "Sociogramma",
-        text: "AB-Grid calcola indici e grafici.",
+        text: "AB-Grid calcola, per te, indici e grafici.",
     },
 ];
 
@@ -40,8 +40,8 @@ const steps = [
 
 <template>
     <div class="w-full">
-        <p class="eyebrow">Tre passaggi</p>
-        <h2 class="mt-3">Dai nomi al sociogramma</h2>
+        <p class="eyebrow">3 soli passaggi</p>
+        <h2 class="mt-3">Dal gruppo al sociogramma</h2>
 
         <ol
             class="mx-auto mt-10 grid max-w-3xl list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3"
@@ -73,52 +73,52 @@ const steps = [
                 >
                     <!-- 1 · Gruppo: members, not yet connected -->
                     <g v-if="i === 0" class="text-ink">
-                        <circle cx="16" cy="24" r="6" />
-                        <circle cx="48" cy="24" r="6" />
-                        <circle cx="80" cy="24" r="6" />
+                        <circle cx="48" cy="10" r="6" />
+                        <circle cx="16" cy="40" r="6" />
+                        <circle cx="80" cy="40" r="6" />
                     </g>
 
                     <!-- 2 · Scelte e rifiuti: a choice and a rejection -->
                     <g v-else-if="i === 1">
                         <g class="text-ink">
-                            <circle cx="16" cy="24" r="6" />
-                            <circle cx="48" cy="24" r="6" />
-                            <circle cx="80" cy="24" r="6" />
+                            <circle cx="48" cy="10" r="6" />
+                            <circle cx="16" cy="40" r="6" />
+                            <circle cx="80" cy="40" r="6" />
                         </g>
                         <g class="text-accent">
-                            <path d="M23 24h18" />
-                            <path d="m37.5 21 3.5 3-3.5 3" />
+                            <path d="M20.4 35.9 43.6 14.1" />
+                            <path d="M41.3 20.4 43.6 14.1 37.2 16" />
                         </g>
                         <g class="text-reject">
-                            <path d="M55 24h18" />
-                            <path d="m69.5 21 3.5 3-3.5 3" />
+                            <path d="M52.4 14.1 75.6 35.9" />
+                            <path d="M69.2 34 75.6 35.9 73.3 29.6" />
                         </g>
                     </g>
 
                     <!-- 3 · Sociogramma: reciprocal pair, star, isolate -->
                     <g v-else>
                         <g class="text-accent">
-                            <path d="M24 24h16" />
-                            <path d="m26.5 21-3.5 3 3.5 3" />
-                            <path d="m37.5 21 3.5 3-3.5 3" />
+                            <path d="M20.4 35.9 43.6 14.1" />
+                            <path d="M41.3 20.4 43.6 14.1 37.2 16" />
+                            <path d="M22.8 29.6 20.4 35.9 26.9 34" />
                         </g>
                         <circle
-                            cx="16"
-                            cy="24"
+                            cx="48"
+                            cy="10"
                             r="6"
                             class="text-ink"
                             fill="currentColor"
                         />
                         <circle
-                            cx="48"
-                            cy="24"
+                            cx="16"
+                            cy="40"
                             r="6"
                             class="text-ink"
                             fill="currentColor"
                         />
                         <circle
                             cx="80"
-                            cy="24"
+                            cy="40"
                             r="6"
                             class="text-ink"
                             stroke-dasharray="2.5 3"
