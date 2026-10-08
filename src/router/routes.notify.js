@@ -44,6 +44,17 @@ export default {
       },
     },
     {
+      path: "report-incomplete-data-error",
+      name: "reportIncompleteDataError",
+      component: () => import("@/components/views/notify/ReportIncompleteDataError.vue"),
+      meta: {
+        title: "Informazione",
+        inMenu: false,
+        typeOfMenu: null,
+        layout: "EmptyLayout",
+      },
+    },
+    {
       path: "report-error",
       name: "reportError",
       component: () => import("@/components/views/notify/ReportError.vue"),

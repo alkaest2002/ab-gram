@@ -17,7 +17,6 @@ import ReportDoc from "@/components/views/report/ReportDoc.vue";
 // --- Composables --------
 import { createReportWorker } from "@/utils/workerLoader";
 
-
 // --- Props --------------
 
 // --- Emits --------------
@@ -37,19 +36,14 @@ const statusComponents = {
     generated: ReportDoc,
 };
 
-const currentComponent = computed(() => statusComponents[status.value] ?? null);
+const currentComponent = computed(
+    () => statusComponents[status.value] ?? "generating",
+);
 
 // --- Watchers -----------
 
 // --- Lifecycle ----------
-// With no members there is nothing to report: leave before mounting and hand
-// the user over to the notify view.
 onBeforeMount(() => {
-    if (!sociogramStore.hasMembers) {
-        router.replace({ name: "reportNoDataError", query: { to: "/sociogram" } });
-        return;
-    }
-
     reportStore.setStatus("generating");
     startGeneration();
 });
@@ -74,7 +68,7 @@ function startGeneration() {
         reportStore.setStatus("generated");
     };
 
-  worker.onerror = ({ error }) => {
+    worker.onerror = ({ error }) => {
         stopWorker();
         failGeneration(error);
     };
