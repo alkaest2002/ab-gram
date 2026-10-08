@@ -63,7 +63,6 @@ const carouselCanGoNextMember = computed(
 watch(
     () => props.targetMemberId,
     (memberId) => {
-        if (typeof memberId !== "string") return;
         const index = members.value.findIndex(
             (member) => member.id === memberId,
         );
@@ -155,9 +154,9 @@ function resetDislikes() {
             </div>
 
             <CarouselMembers
-                :current-member="currentMember"
                 :current-index="currentIndex"
-                :total="members.length"
+                :current-member="currentMember"
+                :members-count="members.length"
                 :can-go-previous="carouselCanGoPreviousMember"
                 :can-go-next="carouselCanGoNextMember"
                 @carousel-previous="carouselGoPreviousMember"

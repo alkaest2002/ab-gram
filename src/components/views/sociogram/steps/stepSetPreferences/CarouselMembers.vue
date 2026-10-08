@@ -17,7 +17,7 @@ defineProps({
     /** Zero-based index of the current subject. */
     currentIndex: { type: Number, required: true },
     /** Total number of members in the carousel. */
-    total: { type: Number, required: true },
+    membersCount: { type: Number, required: true },
     /** Whether the carousel may move to the previous member. */
     canGoPrevious: { type: Boolean, default: false },
     /** Whether the carousel may move to the next member. */
@@ -50,7 +50,7 @@ defineEmits(["carousel-previous", "carousel-next"]);
         </BaseButton>
 
         <div class="min-w-0 flex-1 text-center">
-            <p class="eyebrow">Membro {{ currentIndex + 1 }} di {{ total }}</p>
+            <p class="eyebrow">Membro {{ currentIndex + 1 }} di {{ membersCount }}</p>
             <p class="mt-1 truncate font-display text-lg font-bold text-ink">
                 {{ currentMember?.name }}
             </p>
