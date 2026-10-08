@@ -8,6 +8,7 @@ import { ref } from "vue";
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
 // --- Composables --------
 import {
@@ -111,22 +112,7 @@ async function onFileChange(event) {
             v-if="fileName"
             class="inline-flex max-w-full items-center gap-2 rounded-md border border-line px-2.5 py-1.5"
         >
-            <svg
-                viewBox="0 0 24 24"
-                class="size-4 shrink-0 fill-none stroke-current stroke-[1.75] text-muted"
-                aria-hidden="true"
-            >
-                <path
-                    d="M7 3.5h7l4 4v13H7z"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-                <path
-                    d="M14 3.5V8h4"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-            </svg>
+            <FileIcon size="size-4" :stroke-width="1.75" class="text-muted" />
             <span class="truncate font-mono text-xs font-medium text-ink">
                 {{ fileName }}
             </span>
