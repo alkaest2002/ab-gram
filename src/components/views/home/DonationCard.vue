@@ -7,6 +7,9 @@ import { onBeforeUnmount, ref } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
+import HeartIcon from "@/components/ui/icons/HeartIcon.vue";
+import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
+import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 
 // --- Composables --------
 
@@ -70,18 +73,7 @@ async function copyLink() {
                     rel="noreferrer"
                     class="btn btn-solid w-full sm:w-auto"
                 >
-                    <svg
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z" />
-                    </svg>
+                    <HeartIcon size="size-4" />
                     Dona con Stripe
                 </a>
 
@@ -91,33 +83,8 @@ async function copyLink() {
                     aria-live="polite"
                     @click="copyLink"
                 >
-                    <svg
-                        v-if="copied"
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                    <svg
-                        v-else
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        aria-hidden="true"
-                    >
-                        <rect width="14" height="14" x="8" y="8" rx="2" />
-                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                    </svg>
+                    <CheckIcon v-if="copied" size="size-4" />
+                    <CopyIcon v-else size="size-4" />
                     <span class="grid place-items-center">
                         <span
                             class="col-start-1 row-start-1"
