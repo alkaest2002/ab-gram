@@ -22,6 +22,7 @@ self.onmessage = (event) => {
 
     self.postMessage(result);
   } catch (error) {
+    console.error('Worker error:', error);
     self.postMessage({
       error: error?.message ?? "Impossibile generare il report.",
     });

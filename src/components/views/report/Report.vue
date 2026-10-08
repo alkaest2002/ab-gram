@@ -74,9 +74,9 @@ function startGeneration() {
         reportStore.setStatus("generated");
     };
 
-    worker.onerror = () => {
+  worker.onerror = ({ error }) => {
         stopWorker();
-        failGeneration();
+        failGeneration(error);
     };
 
     // Hand the worker a plain, non-reactive snapshot of the sociogram members.
@@ -84,7 +84,7 @@ function startGeneration() {
     worker.postMessage({ members });
 }
 
-function failGeneration() {
+function failGeneration(error) {
     reportStore.setStatus("error");
     router.replace({ name: "reportError", query: { to: "/sociogram" } });
 }
