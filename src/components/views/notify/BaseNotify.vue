@@ -40,12 +40,12 @@ defineProps({
 
         <div class="mt-3 space-y-3">
             <p class="eyebrow">Errore</p>
-            <h1 class="text-balance">
+            <h2 class="text-3xl">
                 <slot name="title"> Ooops! Qualcosa è andato storto </slot>
-            </h1>
+            </h2>
             <p class="mx-auto max-w-[52ch] text-sm">
                 <slot name="text">
-                    Se persiste, segnala il problema al gestore del sito.
+                    Se pensi che si tratti di un bug, segnala il problema al gestore del sito.
                 </slot>
             </p>
         </div>

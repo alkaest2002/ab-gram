@@ -6,7 +6,7 @@
 // --- Stores -------------
 
 // --- Components ---------
-import BaseNotify from "@/components/ui/BaseNotify.vue";
+import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 
 // --- Composables --------
 
