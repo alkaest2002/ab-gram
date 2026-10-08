@@ -45,7 +45,7 @@ const emit = defineEmits(["report-generating-stop"]);
             />
             <path
                 d="M32 8a24 24 0 0 1 24 24"
-                class="fill-none stroke-accent stroke-2"
+                class="fill-none stroke-accent stroke-6"
                 stroke-linecap="round"
             />
         </svg>
@@ -54,7 +54,7 @@ const emit = defineEmits(["report-generating-stop"]);
             <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">
                 Report
             </p>
-            <h1>Generazione in corso</h1>
+            <h2 class="text-3xl">Generazione in corso</h2>
             <p class="mx-auto max-w-[46ch] text-base sm:text-[1.0625rem]">
                 Il report è in fase di generazione. L'operazione può richiedere
                 qualche istante.

@@ -106,7 +106,6 @@ function stopWorker() {
 <template>
     <component
         :is="currentComponent"
-        v-if="currentComponent"
         @report-geenrating-stop="stopGeneration"
     />
 </template>
