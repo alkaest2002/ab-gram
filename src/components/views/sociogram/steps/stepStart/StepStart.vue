@@ -8,6 +8,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 
 // --- Composables --------
@@ -83,11 +84,12 @@ function startFromScratch(step) {
             role="note"
             aria-label="Avviso"
         >
-            <p class="eyebrow">Avviso</p>
+            <p class="eyebrow flex items-center gap-1"> <WarningIcon size="size-3" /> Avviso</p>
             <p class="mt-1.5 text-sm leading-relaxed">
                 I dati del sociogramma non vengono salvati nella cache del
                 browser: ti consigliamo di non aggiornare la pagina mentre
-                stai lavorando. Potrai comunque salvare e riprendere i lavori
+                stai lavorando, né di usare i tasti back e forward del browser.
+                Potrai comunque salvare e riprendere i lavori
                 iniziati, anche se non ancora completati.
             </p>
         </section>
