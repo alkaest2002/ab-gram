@@ -14,9 +14,6 @@
 // --- Emits --------------
 
 // --- State --------------
-// Three commitments set as ledger rows: a hairline rule per row, the icon on
-// top, then the title and the description — because each promise is literally
-// a zero: zero euro, zero setup, zero data sent out.
 const features = [
     {
         id: "free",
