@@ -6,7 +6,7 @@
                 class="graph-svg"
                 role="img"
                 aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre preferenze ed è al
-          centro del grafo; Bruno e Emma, Elsa e Milo formano due coppie reciproche. Anna e
+          centro del grafo; Bruno e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
           Bruno si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
           Iris, Luca e Marta scelgono senza essere scelti: Iris e Luca ricevono un rifiuto, Marta
           non riceve né preferenze né rifiuti."
@@ -57,13 +57,13 @@
                     <path d="M310.6 62.9 Q374.1 73.1 423.4 102.5" />
                     <!-- Emma → Gina -->
                     <path d="M312.3 204 Q362.9 232.1 418.7 242.8" />
-                    <!-- Gina → Milo -->
+                    <!-- Gina → Fabio -->
                     <path d="M429.4 265.9 Q374.1 298.9 317.5 308" />
                     <!-- Elsa → Anna -->
                     <path d="M99.1 219.4 Q93.8 186 98 159.5" />
                     <!-- Iris → Gina -->
                     <path d="M499.5 315 Q490.4 291.7 480.2 279.3" />
-                    <!-- Luca → Milo -->
+                    <!-- Luca → Fabio -->
                     <path d="M72 337 Q163 320 254 317" />
                     <!-- Marta → Bruno -->
                     <path d="M64 49 Q159 46 254 57" />
@@ -77,7 +77,7 @@
                 >
                     <!-- Bruno ↔ Emma -->
                     <path d="M275.2 95.7 Q271.8 122 274.4 142.4" />
-                    <!-- Elsa ↔ Milo -->
+                    <!-- Elsa ↔ Fabio -->
                     <path d="M136.6 269.5 Q185.9 298.9 242.5 308" />
                 </g>
 
@@ -127,7 +127,7 @@
                         <text class="name" y="-39">Dario</text>
                     </g>
 
-                    <!-- Name to the side, like Gina's: Milo's arrow comes in from below. -->
+                    <!-- Name to the side, like Gina's: Fabio's arrow comes in from below. -->
                     <g transform="translate(104 250)">
                         <circle class="dot" r="26" />
                         <text class="initial" dy="0.34em">E</text>
@@ -139,7 +139,7 @@
                     <g transform="translate(280 314)">
                         <circle class="dot" r="26" />
                         <text class="initial" dy="0.34em">F</text>
-                        <text class="name" y="41">Milo</text>
+                        <text class="name" y="41">Fabio</text>
                     </g>
 
                     <!-- Name to the side: arcs pass below and above. -->
@@ -152,14 +152,14 @@
                     </g>
 
                     <!-- The isolated one: dashed outline, outside the group's ring. -->
-                    <g class="is-alone" transform="translate(510 342)">
+                    <g  transform="translate(510 342)">
                         <circle class="dot" r="24" />
                         <text class="initial" dy="0.34em">I</text>
                         <text class="name" y="39">Iris</text>
                     </g>
 
-                    <!-- Isolated and rejected: Luca chooses Milo, Elsa rejects him. -->
-                    <g class="is-alone" transform="translate(48 340)">
+                    <!-- Isolated and rejected: Luca chooses Fabio, Elsa rejects him. -->
+                    <g  transform="translate(48 340)">
                         <circle class="dot" r="24" />
                         <text class="initial" dy="0.34em">L</text>
                         <text class="name" y="39">Luca</text>
@@ -214,7 +214,7 @@
 .graph-svg {
     display: block;
     width: 100%;
-    max-width: 560px;
+    max-width: 600px;
     height: auto;
     margin-inline: auto;
 }

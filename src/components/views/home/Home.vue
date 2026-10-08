@@ -22,16 +22,16 @@ import { preloadWorker } from "@/utils/workerLoader";
 // --- State --------------
 const steps = [
     {
-        title: "Nomi",
-        text: "Inserisci i membri del gruppo, uno per riga.",
+        title: "Gruppo",
+        text: "Inserisci i membri del gruppo.",
     },
     {
         title: "Scelte e rifiuti",
-        text: "Per ognuno, indica chi sceglie e chi rifiuta.",
+        text: "Indica scelte e rifiuti di tutti.",
     },
     {
         title: "Sociogramma",
-        text: "Il grafo e gli indici si calcolano in automatico.",
+        text: "AB-Grid calcola indici e grafici.",
     },
 ];
 
@@ -65,16 +65,16 @@ onMounted(() => {
       chosen yet.
     -->
     <div class="page home">
-        <div class="flex flex-col items-center text-center">
-            <section class="mt-7 w-full">
+        <div class="flex flex-col items-center text-center space-y-18">
+
+            <!-- Hero -->
+            <section class="w-full">
                 <p class="eyebrow">Sociometria nel browser</p>
 
                 <h1 class="hero-title mt-3">
                     Analizza le <em>dinamiche dei gruppi</em>
                 </h1>
 
-                <!-- The lede teaches the colour code: blue is a choice, red a
-                     rejection — the same pair as the logo and the graph. -->
                 <p class="lede mx-auto mt-6 max-w-[56ch]">
                     Registra le
                     <strong class="font-semibold text-accent">scelte</strong> e
@@ -84,26 +84,8 @@ onMounted(() => {
                 </p>
             </section>
 
-            <!-- Edge -->
-            <div
-                class="mt-10 flex flex-col items-center sm:mt-14"
-                aria-hidden="true"
-            >
-                <span class="h-12 w-px bg-ink sm:h-16"></span>
-                <svg
-                    class="-mt-px size-2.5 text-ink"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="m1 1 4 4 4-4" />
-                </svg>
-            </div>
-
-            <section class="mt-7 w-full space-y-6">
+            <!-- Sociogram -->
+            <section class="w-full space-y-6">
                 <header class="mx-auto max-w-2xl space-y-3">
                     <p class="eyebrow">Un esempio</p>
                     <h2>Il gruppo, a colpo d'occhio</h2>
@@ -118,7 +100,7 @@ onMounted(() => {
                     class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2.5 font-mono text-xs text-muted"
                     aria-label="Come leggere il grafo"
                 >
-                    <li class="flex items-center gap-2">
+                    <li class="flex items-center gap-2 text-sm">
                         <svg
                             class="h-3 w-8 text-accent"
                             viewBox="0 0 32 12"
@@ -130,28 +112,10 @@ onMounted(() => {
                             aria-hidden="true"
                         >
                             <path d="M2 6h25" />
-                            <path d="m22 2 5 4-5 4" />
                         </svg>
                         scelta
                     </li>
-                    <li class="flex items-center gap-2">
-                        <svg
-                            class="h-3 w-8 text-accent"
-                            viewBox="0 0 32 12"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M4 6h24" />
-                            <path d="m9 2-5 4 5 4" />
-                            <path d="m23 2 5 4-5 4" />
-                        </svg>
-                        reciproca
-                    </li>
-                    <li class="flex items-center gap-2">
+                    <li class="flex items-center gap-2 text-sm">
                         <svg
                             class="h-3 w-8 text-reject"
                             viewBox="0 0 32 12"
@@ -162,57 +126,20 @@ onMounted(() => {
                             stroke-linejoin="round"
                             aria-hidden="true"
                         >
-                            <path d="M2 6h25" stroke-dasharray="3.5 3.5" />
-                            <path d="m22 2 5 4-5 4" />
+                            <path d="M2 6h25" />
                         </svg>
                         rifiuto
-                    </li>
-                    <li class="flex items-center gap-2">
-                        <svg
-                            class="size-3.5"
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            aria-hidden="true"
-                        >
-                            <circle
-                                cx="8"
-                                cy="8"
-                                r="6.5"
-                                stroke-dasharray="2.5 3.5"
-                            />
-                        </svg>
-                        isolamento
                     </li>
                 </ul>
             </section>
 
-            <!-- Edge -->
-            <div
-                class="mt-10 flex flex-col items-center sm:mt-14"
-                aria-hidden="true"
-            >
-                <span class="h-12 w-px bg-ink sm:h-16"></span>
-                <svg
-                    class="-mt-px size-2.5 text-ink"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="m1 1 4 4 4-4" />
-                </svg>
-            </div>
-
-            <section class="mt-7 w-full">
+            <!-- Sociogram Steps -->
+            <section class="w-full">
                 <p class="eyebrow">Tre passaggi</p>
                 <h2 class="mt-3">Dai nomi al sociogramma</h2>
 
                 <ol
-                    class="mx-auto mt-10 grid max-w-3xl list-none grid-cols-1 gap-8 p-0 sm:grid-cols-3"
+                    class="mx-auto mt-10 grid max-w-3xl list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3"
                 >
                     <li
                         v-for="(step, i) in steps"
@@ -258,7 +185,7 @@ onMounted(() => {
                                     <path d="m37.5 21 3.5 3-3.5 3" />
                                 </g>
                                 <g class="text-reject">
-                                    <path d="M55 24h18" stroke-dasharray="3.5 3.5" />
+                                    <path d="M55 24h18" />
                                     <path d="m69.5 21 3.5 3-3.5 3" />
                                 </g>
                             </g>
@@ -286,76 +213,20 @@ onMounted(() => {
                             {{ step.title }}
                         </h3>
                         <p class="mt-2 max-w-[28ch] text-sm">{{ step.text }}</p>
-
-                        <!-- Edge to the next step: right on desktop, down on mobile. -->
-                        <span
-                            v-if="i < steps.length - 1"
-                            class="absolute top-full left-1/2 z-10 grid h-8 w-8 -translate-x-1/2 place-items-center text-ink sm:top-1/2 sm:left-full sm:translate-x-0 sm:-translate-y-1/2"
-                            aria-hidden="true"
-                        >
-                            <svg
-                                class="h-3 w-6 rotate-90 sm:rotate-0"
-                                viewBox="0 0 24 12"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <path d="M2 6h19" />
-                                <path d="m17 2 4 4-4 4" />
-                            </svg>
-                        </span>
                     </li>
                 </ol>
             </section>
 
-            <!-- Edge -->
-            <div
-                class="mt-10 flex flex-col items-center sm:mt-14"
-                aria-hidden="true"
-            >
-                <span class="h-12 w-px bg-ink sm:h-16"></span>
-                <svg
-                    class="-mt-px size-2.5 text-ink"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="m1 1 4 4 4-4" />
-                </svg>
-            </div>
-
-            <section class="mt-7 w-full">
+            <!-- featurettes -->
+            <section class="w-full">
                 <Featurettes />
             </section>
 
-            <!-- Edge -->
-            <div
-                class="mt-10 flex flex-col items-center sm:mt-14"
-                aria-hidden="true"
-            >
-                <span class="h-12 w-px bg-ink sm:h-16"></span>
-                <svg
-                    class="-mt-px size-2.5 text-ink"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="m1 1 4 4 4-4" />
-                </svg>
-            </div>
-
-            <!-- The donation card keeps its own left-aligned layout. -->
-            <section class="mt-7 w-full max-w-2xl text-left">
+            <!-- Donation card -->
+            <section class="w-full max-w-2xl text-left">
                 <DonationCard />
             </section>
+
         </div>
     </div>
 </template>
