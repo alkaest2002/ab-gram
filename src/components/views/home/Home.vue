@@ -63,11 +63,10 @@ onMounted(() => {
                 </h1>
 
                 <p class="lede mx-auto mt-6 max-w-[56ch]">
-                    Registra le
+                    Registra
                     <strong class="font-semibold text-accent">scelte</strong> e
-                    i
                     <strong class="font-semibold text-reject">rifiuti</strong>
-                    dei membri di un gruppo. AB-Grid pensa a tutto il resto.
+                    dei membri di un gruppo. AB-Grid pensa al resto.
                 </p>
             </section>
 
