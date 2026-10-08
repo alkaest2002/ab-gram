@@ -7,7 +7,7 @@
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
-import NotifyStopIcon from "@/components/ui/icons/NotifyStopIcon.vue"
+import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
 
 // --- Composables --------
 
@@ -35,7 +35,7 @@ defineProps({
         class="mx-auto flex w-full max-w-xl flex-col items-center px-6 py-14 text-center"
     >
         <slot name="icon">
-            <NotifyStopIcon size="size-14" />
+            <WarningIcon size="size-18" :stroke-width="1.5" />
         </slot>
 
         <div class="mt-3 space-y-3">

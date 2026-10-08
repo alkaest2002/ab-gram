@@ -29,22 +29,20 @@ defineProps({
 </script>
 
 <template>
-    <svg viewBox="0 0 64 64" :class="size" class="shrink-0" aria-hidden="true">
-        <circle
-            cx="32"
-            cy="32"
-            r="23"
-            :stroke-width="strokeWidth"
-            class="fill-none stroke-muted"
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        :class="size"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        :stroke-width="strokeWidth"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    >
+        <path
+            d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
         />
-        <line
-            x1="16"
-            y1="16"
-            x2="48"
-            y2="48"
-            :stroke-width="strokeWidth"
-            class="stroke-muted"
-            stroke-linecap="round"
-        />
+        <path d="M12 9v4" />
+        <path d="M12 17h.01" />
     </svg>
 </template>
