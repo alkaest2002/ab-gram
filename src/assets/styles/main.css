@@ -160,14 +160,6 @@
       sm:flex-row sm:items-center sm:justify-between;
   }
 
-  .flow {
-    @apply flex flex-wrap items-center gap-2 font-mono text-[0.8125rem]
-      font-medium text-ink;
-  }
-
-  .flow-sep {
-    @apply text-accent;
-  }
 
   /* Eyebrow: small, letter-spaced, uppercase — mono, like a column header. */
   .eyebrow {
