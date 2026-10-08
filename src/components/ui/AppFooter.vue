@@ -7,7 +7,7 @@ import { RouterLink } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
-import PrivacyIcon from "@/components/ui/icons/PrivacyIcon.vue";
+import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 
 // --- Composables --------
@@ -24,7 +24,7 @@ const links = [
     {
         label: "Privacy",
         to: "/privacy",
-        icon: PrivacyIcon,
+        icon: ShieldIcon,
     },
     {
         label: "Email",
