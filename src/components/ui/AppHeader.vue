@@ -80,7 +80,7 @@ onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
                     :to="item.path"
                     class="nav-link"
                 >
-                    <component :is="navIcons[item.name]" />
+                    <component :is="navIcons[item.name]" size="size-4" />
                     <span>{{ item.meta.title }}</span>
                 </RouterLink>
             </nav>
