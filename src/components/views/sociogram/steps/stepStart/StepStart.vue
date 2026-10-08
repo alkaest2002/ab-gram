@@ -59,9 +59,9 @@ function startFromScratch(step) {
             <BaseButton variant="solid" @click="startFromScratch('loadMembers')">
                 Crea progetto
             </BaseButton>
-        </section>
 
-        <section class="card space-y-4">
+            <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
             <div class="space-y-1">
                 <p class="eyebrow">Progetto archiviato</p>
                 <h3>Importa i dati archiviati</h3>
@@ -76,6 +76,20 @@ function startFromScratch(step) {
             >
                 Importa progetto
             </BaseButton>
+        </section>
+
+        <section
+            class="rounded-lg border border-line bg-white p-5"
+            role="note"
+            aria-label="Avviso"
+        >
+            <p class="eyebrow">Avviso</p>
+            <p class="mt-1.5 text-sm leading-relaxed">
+                I dati del sociogramma non vengono salvati nella cache del
+                browser: ti consigliamo di non aggiornare la pagina mentre
+                stai lavorando. Potrai comunque salvare e riprendere i lavori
+                iniziati, anche se non ancora completati.
+            </p>
         </section>
     </div>
 </template>
