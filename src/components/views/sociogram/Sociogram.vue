@@ -34,9 +34,11 @@ const stateComponents = {
 };
 
 const currentComponentName = ref(
-  sociogramStore.hasMembers
-    ? SOCIOGRAM_STEPS[2]
-    : SOCIOGRAM_STEPS[0]
+  sociogramStore.status === "empty"
+    ? SOCIOGRAM_STEPS[0]
+    : sociogramStore.status === "partially-loaded"
+      ? SOCIOGRAM_STEPS[2]
+      : SOCIOGRAM_STEPS[4]
 );
 
 // UI state: the member to point the preferences carousel at when it opens.
