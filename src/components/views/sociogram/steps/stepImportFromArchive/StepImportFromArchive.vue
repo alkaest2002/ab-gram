@@ -25,6 +25,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 // --- State --------------
 const sociogramStore = useSociogramStore();
 
+const importFilename = ref(null);
 const importError = ref(null);
 const importedCount = ref(null);
 
@@ -46,7 +47,8 @@ function decodeBase64(value) {
     return new TextDecoder().decode(bytes);
 }
 
-function onFileSelected() {
+function onFileSelected({ filename }) {
+    importFilename.value = filename;
     importError.value = null;
     importedCount.value = null;
 }
@@ -104,6 +106,7 @@ function onFileReadError({ message }) {
         </TextFileReader>
 
         <StepImportFromArchiveResult
+            :filename="importFilename"
             :error="importError"
             :imported-count="importedCount"
         />

@@ -35,7 +35,7 @@ const emit = defineEmits([
 
 // --- State --------------
 const fileInput = ref(null);
-const fileName = ref("");
+const fileName = ref(null);
 
 // Streams the file instead of loading it all at once, so a huge file is never
 // held fully in memory — the byte ceiling is the safety limit.
@@ -62,7 +62,7 @@ async function onFileChange(event) {
 
     if (!file) return;
 
-    emit("file-selected", { name: file.name });
+    emit("file-selected", { filename: file.name });
 
     try {
         await readFile(file);
@@ -94,7 +94,7 @@ async function onFileChange(event) {
         <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
                 <p class="eyebrow">
-                    <slot name="label">Carica un file</slot>
+                    <slot name="label">{{ fileName ? "Carica un altro file" : "Carica un file" }}</slot>
                 </p>
                 <p class="mt-1 text-sm text-muted">
                     <slot>
@@ -106,16 +106,6 @@ async function onFileChange(event) {
             <BaseButton variant="solid" :disabled="isReadingFile" @click="pick">
                 {{ isReadingFile ? "Lettura…" : "Scegli file" }}
             </BaseButton>
-        </div>
-
-        <div
-            v-if="fileName"
-            class="inline-flex max-w-full items-center gap-2 rounded-md border border-line px-2.5 py-1.5"
-        >
-            <FileIcon size="size-4" :stroke-width="1.75" class="text-muted" />
-            <span class="truncate font-mono text-xs font-medium text-ink">
-                {{ fileName }}
-            </span>
         </div>
     </div>
 </template>

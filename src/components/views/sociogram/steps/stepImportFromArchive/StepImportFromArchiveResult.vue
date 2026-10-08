@@ -12,9 +12,8 @@ import { computed } from "vue";
 
 // --- Props --------------
 const props = defineProps({
-    /** Error message shown when the import failed. */
+    filename: { type: String, default: null },
     error: { type: String, default: null },
-    /** Number of imported members shown when the import succeeded. */
     importedCount: { type: Number, default: null },
 });
 
@@ -42,7 +41,7 @@ const importedSummary = computed(() => {
     <div v-if="hasImported || error" class="space-y-3">
         <div
             v-if="hasImported"
-            class="flex items-start gap-3 rounded-lg border border-line p-3"
+            class="flex items-center gap-3 rounded-lg border border-line p-3"
             role="status"
         >
             <span
@@ -61,7 +60,7 @@ const importedSummary = computed(() => {
                 </svg>
             </span>
             <div class="min-w-0 pt-0.5">
-                <p class="text-sm font-medium text-ink">Caricamento riuscito</p>
+                <p class="text-sm font-medium text-ink">{{ props.filename }}</p>
                 <p class="text-sm text-muted">{{ importedSummary }}.</p>
             </div>
         </div>

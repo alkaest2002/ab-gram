@@ -17,23 +17,27 @@ import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLo
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
-import { buildMembers, getMembersNameIssues, normalizeNames } from "@/utils/sociogram/memberHelpers";
+import {
+    buildMembers,
+    getMembersNameIssues,
+    normalizeNames,
+} from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
+const emit = defineEmits([
+    "sociogram-change-component",
+    "sociogram-restart-app",
+]);
 
 // --- State --------------
 // Get the sociogram store and its state.
 const sociogramStore = useSociogramStore();
-const {
-    maxMemberNameLength,
-    maxMembersCount,
-    hasMembers,
-    members,
-} = storeToRefs(sociogramStore);
+const { maxMemberNameLength, maxMembersCount, hasMembers, members } =
+    storeToRefs(sociogramStore);
 
+const loadFileName = ref("");
 const loadError = ref(null);
 const loadedCount = ref(null);
 
@@ -55,7 +59,8 @@ const hasLoaded = computed(
 // --- Lifecycle ----------
 
 // --- Methods ------------
-function onFileSelected() {
+function onFileSelected({ filename }) {
+    loadFileName.value = filename;
     loadError.value = null;
     loadedCount.value = null;
 }
@@ -75,13 +80,11 @@ function onFileReadError({ message }) {
 
 <template>
     <section class="card space-y-6">
-
         <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nomi">
-            Il file di testo deve contenere un elenco di nomi, non necessariamente in ordine alfabetico.
-            Ogni nome &egrave; limitato a
-            {{ sociogramStore.maxMemberNameLength }} caratteri;
-            possono essere caricati al massimo
-            {{ sociogramStore.maxMembersCount }} nomi.
+            Il file di testo deve contenere un elenco di nomi, non
+            necessariamente in ordine alfabetico. Ogni nome &egrave; limitato a
+            {{ sociogramStore.maxMemberNameLength }} caratteri; possono essere
+            caricati al massimo {{ sociogramStore.maxMembersCount }} nomi.
         </StepHeader>
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
@@ -93,17 +96,17 @@ function onFileReadError({ message }) {
             @file-read="onFileRead"
             @file-read-error="onFileReadError"
         >
-            <template #label>Carica il file</template>
+            <template #label>{{ hasMembers ? "Carica un altro file" : "Carica il file" }}</template>
             Il file deve contenere un elenco di nomi, uno per riga.
         </TextFileReader>
 
         <StepLoadMembersResult
+            :filename="loadFileName"
             :error="loadError"
             :loaded-count="loadedCount"
         />
 
-        <div v-if="hasMembers" class="space-y-4">
-
+        <div v-show="hasMembers" class="space-y-4">
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
             <StepLoadMembersListEditor
@@ -112,7 +115,6 @@ function onFileReadError({ message }) {
                 @sociogram-add-member="sociogramStore.addMember"
                 @sociogram-remove-member="sociogramStore.removeMember"
             />
-
         </div>
     </section>
 
