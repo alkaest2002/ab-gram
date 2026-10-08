@@ -59,9 +59,9 @@ const features = [
                 class="flex flex-col items-center gap-2.5 border-t border-line py-7 last:border-b"
             >
                 <span class="text-black" aria-hidden="true">
-                    <PiggyIcon v-if="feature.id === 'free'" size="size-18" stroke-width="1" />
-                    <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" stroke-width="1" />
-                    <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" stroke-width="1" />
+                    <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
+                    <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" :stroke-width="1" />
+                    <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" :stroke-width="1" />
                 </span>
 
                 <h3 class="tracking-[-0.01em] text-xl text-black">
