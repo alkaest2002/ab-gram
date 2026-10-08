@@ -39,6 +39,19 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
   const membersCount = computed(() => members.value.length);
 
+  /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
+  const status = computed(() => {
+    if (membersCount.value === 0) return "empty";
+    const memberDataIsComplete = ({ id, name, likes, noLikes, dislikes, noDislikes }) => {
+      const check1 = id && name;
+      const check2 = likes.length > 0 || noLikes;
+      const check3 = dislikes.length > 0 || noDislikes;
+      return check1 && check2 && check3;
+    }
+    if (members.value.every(memberDataIsComplete)) return "completed";
+    return "partially-loaded";
+  });
+
   /** @type {import("vue").ComputedRef<boolean>} Whether all members have no dislikes. */
   const allMembersHaveNoDislikes = computed(() => {
     return members.value.every((member) => (member.dislikes ?? []).length === 0);
@@ -104,6 +117,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
   }
 
   return {
+    status,
     members,
     hasMembers,
     membersCount,
