@@ -1,10 +1,9 @@
 <script setup>
 // --- Vue ----------------
 import { computed, toRaw } from "vue";
-import { useRouter } from "vue-router";
 
 // --- Routers ------------
-const router = useRouter();
+import { useRouter } from "vue-router";
 
 // --- Stores -------------
 import { storeToRefs } from "pinia";
@@ -31,6 +30,8 @@ const emit = defineEmits([
 const sociogramStore = useSociogramStore();
 const { members } = storeToRefs(sociogramStore);
 const { validate } = useSociogramValidateData(true);
+const router = useRouter();
+const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 // Resolve the member ids stored on likes/dislikes to display names.
@@ -52,16 +53,6 @@ const summary = computed(() =>
     }),
 );
 
-function goNext() {
-  const { valid, error } = validate({ members: toRaw(members.value) });
-  if (!valid) {
-    console.log(error)
-    router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
-    return;
-  };
-  router.push({ name: "report" });
-}
-
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -72,7 +63,15 @@ function openMember(memberId) {
     emit("sociogram-edit-member", memberId);
 }
 
-const { goToStep, restart } = useSociogramNavigation(emit);
+function goNext() {
+  const { valid, error } = validate({ members: toRaw(members.value) });
+  if (!valid) {
+    console.log(error)
+    router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
+    return;
+  };
+  router.push({ name: "report" });
+}
 </script>
 
 <template>

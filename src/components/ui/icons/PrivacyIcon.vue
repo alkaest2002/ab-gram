@@ -1,3 +1,29 @@
+<script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+</script>
+
 <template>
     <!-- Shield: privacy/security mark.
          Left half filled white, right half dark (#888); stroke inherits currentColor. -->

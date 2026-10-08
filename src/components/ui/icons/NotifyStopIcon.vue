@@ -1,3 +1,29 @@
+<script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+</script>
+
 <template>
     <!-- Stop sign: a barred circle (the European "no entry" mark) — the
          universal "stopped" symbol, in the app's muted colour (this is a

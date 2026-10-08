@@ -1,3 +1,29 @@
+<script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+</script>
+
 <template>
     <!-- Info circle: the about mark.
          Inherits currentColor so it follows the link colour. -->

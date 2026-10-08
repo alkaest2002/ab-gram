@@ -1,3 +1,29 @@
+<script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
+</script>
+
 <template>
     <!-- Sociogram network: three connected nodes — the app's main screen mark.
          Inherits currentColor so it follows the link colour. -->

@@ -1,7 +1,19 @@
 <script setup>
-// Static table of contents mirroring the articles rendered in Privacy.vue.
-// Leaf articles link straight to their heading; "Servizi di terze parti"
-// is a collapsible branch with a nested list for its sub-articles.
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 const sections = [
     { id: "titolare", label: "1. Titolare del trattamento" },
     { id: "dati-trattati", label: "2. Dati trattati e finalità" },
@@ -21,6 +33,13 @@ const sections = [
     { id: "modifiche", label: "9. Modifiche alla presente informativa" },
 ];
 
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 // Same-page anchor: scroll directly instead of routing. `scrollIntoView`
 // respects the `scroll-mt-*` offset on headings.
 function scrollToHeading(id, event) {

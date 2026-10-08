@@ -17,8 +17,6 @@ import MembersPreferencesProgress from "@/components/views/sociogram/steps/stepS
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
-
-// --- Utils -------------
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
@@ -33,6 +31,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 const sociogramStore = useSociogramStore();
 const { members, hasMembers, membersCount } = storeToRefs(sociogramStore);
 const { updateMember } = sociogramStore;
+const { goToStep, restart } = useSociogramNavigation(emit);
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
@@ -128,8 +127,6 @@ function resetLikes() {
 function resetDislikes() {
     currentDislikes.value = [];
 }
-
-const { goToStep, restart } = useSociogramNavigation(emit);
 </script>
 
 <template>

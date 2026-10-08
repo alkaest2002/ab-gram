@@ -1,20 +1,41 @@
 <script setup>
+// --- Vue ----------------
 import { ref } from "vue";
+
+// --- Routers ------------
 import { RouterView, useRoute } from "vue-router";
 
+// --- Stores -------------
+
+// --- Components ---------
 import ContentTransition from "@/components/ui/ContentTransition.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsToc from "@/components/views/docs/DocsToc.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
 
+// --- Composables --------
 import { useToc } from "@/composables/docs/useToc";
 import { usePrevNext } from "@/composables/docs/usePrevNext";
 
+
+// --- Props --------------
+
+// --- Emits --------------
+
+// --- State --------------
 const route = useRoute();
 const articleRef = ref(null);
 
 const { headings } = useToc(articleRef);
 const { prev, next } = usePrevNext();
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

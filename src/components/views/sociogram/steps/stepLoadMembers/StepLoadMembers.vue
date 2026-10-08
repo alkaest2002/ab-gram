@@ -37,6 +37,8 @@ const {
 const loadError = ref(null);
 const loadedCount = ref(null);
 
+const { goToStep, restart } = useSociogramNavigation(emit);
+
 // --- Computed -----------
 // The load step can only advance when there are members, none of them are
 // blank, and no two members share the same name.
@@ -53,8 +55,6 @@ const hasLoaded = computed(
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goToStep, restart } = useSociogramNavigation(emit);
-
 function onFileSelected() {
     loadError.value = null;
     loadedCount.value = null;

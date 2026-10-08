@@ -32,7 +32,6 @@ const { status } = storeToRefs(reportStore);
 let worker = null;
 
 // --- Computed -----------
-// One component per generation status.
 const statusComponents = {
     generating: ReportLoading,
     generated: ReportDoc,

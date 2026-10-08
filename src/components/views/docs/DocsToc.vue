@@ -1,4 +1,15 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
 defineProps({
     headings: {
         type: Array,
@@ -6,6 +17,17 @@ defineProps({
     },
 });
 
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 // Same-page anchor: scroll directly instead of routing. `scrollIntoView`
 // respects the `scroll-mt-*` offset on headings.
 function scrollToHeading(heading, event) {

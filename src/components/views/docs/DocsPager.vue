@@ -1,6 +1,16 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
 import { RouterLink } from "vue-router";
 
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
 defineProps({
     prev: {
         type: Object,
@@ -11,6 +21,18 @@ defineProps({
         default: null,
     },
 });
+
+// --- Emits --------------
+
+// --- State --------------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

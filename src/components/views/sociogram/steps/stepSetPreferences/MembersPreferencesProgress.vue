@@ -9,8 +9,6 @@ import { computed } from "vue";
 // --- Components ---------
 
 // --- Composables --------
-
-// --- Utils -------------
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------

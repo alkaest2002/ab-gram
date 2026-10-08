@@ -2,6 +2,12 @@
 // --- Vue ----------------
 import { computed, nextTick, ref, watch } from "vue";
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
 // --- Composables --------
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
@@ -73,6 +79,8 @@ watch(
     }
   }
 );
+
+// --- Lifecycle ----------
 
 // --- Methods ------------
 function isEditing(member) {

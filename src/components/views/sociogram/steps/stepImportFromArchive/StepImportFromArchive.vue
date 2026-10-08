@@ -29,6 +29,7 @@ const importError = ref(null);
 const importedCount = ref(null);
 
 const { validate } = useSociogramValidateData();
+const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);
@@ -38,8 +39,6 @@ const hasImported = computed(() => importedCount.value !== null);
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goToStep, restart } = useSociogramNavigation(emit);
-
 // Base64-decode a UTF-8 string, mirroring `encodeBase64` in useSociogramDownloadArchive.
 function decodeBase64(value) {
     const binary = atob(value);

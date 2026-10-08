@@ -1,4 +1,18 @@
 <script setup>
+// --- Vue ----------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- Components ---------
+
+// --- Composables --------
+
+// --- Props --------------
+
+// --- Emits --------------
+
 // --- State --------------
 const steps = [
     {
@@ -14,6 +28,14 @@ const steps = [
         text: "AB-Grid calcola indici e grafici.",
     },
 ];
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

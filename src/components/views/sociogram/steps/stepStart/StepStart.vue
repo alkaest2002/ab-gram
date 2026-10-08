@@ -20,6 +20,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 
 // --- State --------------
 const sociogramStore = useSociogramStore();
+const { goToStep } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 
@@ -28,8 +29,6 @@ const sociogramStore = useSociogramStore();
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const { goToStep } = useSociogramNavigation(emit);
-
 /**
  * Clear any previously loaded sociogram data, then move to the given step.
  * @param {string} step
