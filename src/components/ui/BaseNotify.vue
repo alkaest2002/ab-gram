@@ -35,7 +35,7 @@ defineProps({
         class="mx-auto flex w-full max-w-xl flex-col items-center px-6 py-14 text-center"
     >
         <slot name="icon">
-            <NotifyStopIcon />
+            <NotifyStopIcon size="size-14" />
         </slot>
 
         <div class="mt-3 space-y-3">
