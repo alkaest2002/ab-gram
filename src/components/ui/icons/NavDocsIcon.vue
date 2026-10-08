@@ -10,6 +10,10 @@
 // --- Composables --------
 
 // --- Props --------------
+defineProps({
+    size: { type: String, default: "size-5" },
+    strokeWidth: { type: Number, default: 1.5 },
+});
 
 // --- Emits --------------
 
@@ -25,14 +29,13 @@
 </script>
 
 <template>
-    <!-- Document outline with text lines: the docs mark.
-         Inherits currentColor so it follows the link colour. -->
     <svg
-        class="size-4 shrink-0"
+        :class="size"
+        class="shrink-0"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
+        :stroke-width="strokeWidth"
         stroke-linecap="round"
         stroke-linejoin="round"
         aria-hidden="true"

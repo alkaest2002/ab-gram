@@ -12,6 +12,8 @@
 // --- Props --------------
 defineProps({
     open: { type: Boolean, default: false },
+    size: { type: String, default: "size-5" },
+    strokeWidth: { type: Number, default: 1.5 },
 });
 
 // --- Emits --------------
@@ -28,14 +30,12 @@ defineProps({
 </script>
 
 <template>
-    <!-- Menu toggle mark: a hamburger when closed, a cross when open.
-         Inherits currentColor so it follows the button's text colour. -->
     <svg
-        class="size-5"
+        :class="size"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        stroke-width="1.5"
+        :stroke-width="strokeWidth"
         aria-hidden="true"
     >
         <path v-if="open" d="M6 6l12 12M18 6L6 18" />
