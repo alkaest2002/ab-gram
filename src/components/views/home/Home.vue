@@ -8,6 +8,7 @@ import { RouterLink } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
+import Hero from "@/components/views/home/Hero.vue";
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
 import DonationCard from "@/components/views/home/DonationCard.vue";
@@ -56,31 +57,12 @@ onMounted(() => {
 
             <!-- Hero -->
             <section class="w-full">
-                <p class="eyebrow">Sociometria nel browser</p>
-
-                <h1 class="hero-title mt-3">
-                    Analizza le <em>dinamiche dei gruppi</em>
-                </h1>
-
-                <p class="lede mx-auto mt-6 max-w-[56ch]">
-                    Registra
-                    <strong class="font-semibold text-accent">scelte</strong> e
-                    <strong class="font-semibold text-reject">rifiuti</strong>
-                    dei membri di un gruppo. AB-Grid pensa al resto.
-                </p>
+                <Hero />
             </section>
 
             <!-- Sociogram -->
-            <section class="w-full space-y-6">
-                <header class="mx-auto max-w-2xl space-y-3">
-                    <p class="eyebrow">Un esempio</p>
-                    <h2>Il gruppo, a colpo d'occhio</h2>
-                </header>
-
-                <div class="mx-auto w-full max-w-136">
-                    <SociogramPreview />
-                </div>
-
+            <section class="w-full">
+                <SociogramPreview />
             </section>
 
             <!-- Sociogram Steps -->
@@ -94,7 +76,7 @@ onMounted(() => {
             </section>
 
             <!-- Donation card -->
-            <section class="w-full max-w-2xl text-left">
+            <section class="w-full">
                 <DonationCard />
             </section>
 

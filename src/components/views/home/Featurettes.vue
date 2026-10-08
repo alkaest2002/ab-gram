@@ -21,17 +21,17 @@ import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 const features = [
     {
         id: "free",
-        title: "Gratuita",
-        text: "Nessun costo nascosto. Chiediamo, al massimo, una donazione libera per sostenere i costi del servizio di hosting.",
+        title: "App gratuita",
+        text: "Nessun costo nascosto. Chiediamo, al massimo, una donazione libera e volontaria per sostenere le spese del servizio di hosting.",
     },
     {
         id: "easy",
-        title: "Semplice",
+        title: "App semplice",
         text: "Nessun software da installare o da configurare. Tutto avviene all'interno del tuo browser.",
     },
     {
         id: "privacy",
-        title: "Privata",
+        title: "App centrata sulla privacy",
         text: "I tuoi dati non vegono comunicati a terze parti. Sono convervati nella memoria RAM del tuo dispositivo.",
     },
 ];
@@ -46,13 +46,13 @@ const features = [
 </script>
 
 <template>
-    <section class="space-y-8 text-center">
-        <header class="mx-auto max-w-2xl space-y-3">
+    <div class="space-y-8 text-center">
+        <header class="mx-auto space-y-3">
             <p class="eyebrow">Perché AB-Grid</p>
-            <h2>Tre impegni, zero eccezioni</h2>
+            <h2 class="text-2xl">Tre impegni, zero eccezioni</h2>
         </header>
 
-        <ul class="mx-auto w-full max-w-2xl">
+        <ul class="mx-auto w-full">
             <li
                 v-for="feature in features"
                 :key="feature.id"
@@ -64,12 +64,12 @@ const features = [
                     <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" stroke-width="1" />
                 </span>
 
-                <h3 class="text-xl tracking-[-0.01em] sm:text-2xl text-black">
+                <h3 class="tracking-[-0.01em] text-xl text-black">
                     {{ feature.title }}
                 </h3>
 
                 <p class="max-w-[52ch]">{{ feature.text }}</p>
             </li>
         </ul>
-    </section>
+    </div>
 </template>

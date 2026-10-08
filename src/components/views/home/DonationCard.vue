@@ -45,7 +45,7 @@ async function copyLink() {
 </script>
 
 <template>
-    <section class="relative overflow-hidden rounded-lg border border-line bg-white">
+    <section class="relative overflow-hidden rounded-lg border border-line bg-white text-left">
         <!-- The brand pair as a top rule: the same blue→red underline as the hero. -->
         <div
             class="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-accent to-reject"
@@ -55,7 +55,7 @@ async function copyLink() {
         <div class="p-6 sm:p-8">
             <header class="space-y-2">
                 <p class="eyebrow">Sostieni il progetto</p>
-                <h2>Ti è stata utile l'app?</h2>
+                <h2 class="text-2xl">Ti è stata utile l'app?</h2>
             </header>
 
             <p class="mt-4 max-w-[52ch]">

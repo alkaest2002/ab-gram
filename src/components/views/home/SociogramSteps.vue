@@ -17,15 +17,15 @@
 const steps = [
     {
         title: "Gruppo",
-        text: "Inserisci i membri del gruppo.",
+        text: "Inserisci i membri che compongono il gruppo.",
     },
     {
         title: "Scelte e rifiuti",
-        text: "Indica scelte e rifiuti di tutti i membri.",
+        text: "Indica le scelte e i rifiuti di tutti i membri del gruppo.",
     },
     {
         title: "Sociogramma",
-        text: "AB-Grid calcola, per te, indici e grafici.",
+        text: "AB-Grid calcola, in modo automatico, indici e grafici.",
     },
 ];
 
@@ -39,12 +39,14 @@ const steps = [
 </script>
 
 <template>
-    <div class="w-full">
-        <p class="eyebrow">3 soli passaggi</p>
-        <h2 class="mt-3">Dal gruppo al sociogramma</h2>
+    <div>
+        <header class="mx-auto max-w-2xl space-y-3">
+            <p class="eyebrow">3 soli passaggi</p>
+            <h2 class="text-2xl">Dal gruppo al sociogramma</h2>
+        </header>
 
         <ol
-            class="mx-auto mt-10 grid max-w-3xl list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3"
+            class="mx-auto mt-10 grid list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3"
         >
             <li
                 v-for="(step, i) in steps"
