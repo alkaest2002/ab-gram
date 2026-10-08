@@ -47,10 +47,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
 <template>
     <div class="flex flex-wrap gap-2 justify-between mt-4">
         <div class="flex flex-wrap gap-2">
-            <BaseTooltip
-                v-show="showRestart"
-                label="Ricomincia da capo"
-            >
+            <BaseTooltip v-show="showRestart" label="Ricomincia da capo">
                 <BaseButton
                     variant="outline"
                     :disabled="!enableRestart"
@@ -73,10 +70,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
                 </BaseButton>
             </BaseTooltip>
 
-            <BaseTooltip
-                v-show="showArchive"
-                label="Scarica archivio"
-            >
+            <BaseTooltip v-show="showArchive" label="Scarica archivio">
                 <BaseButton
                     variant="outline"
                     :disabled="!enableArchive"
@@ -84,26 +78,23 @@ const { downloadArchive } = useSociogramDownloadArchive();
                     @click="downloadArchive"
                 >
                     <svg
-                        class="size-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="size-5"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="1.5"
+                        stroke-width="1"
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        aria-hidden="true"
                     >
-                        <rect x="2" y="3" width="20" height="5" rx="1" />
-                        <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
-                        <path d="M10 12h4" />
+                        <path d="M12 15V3" />
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <path d="m7 10 5 5 5-5" />
                     </svg>
                 </BaseButton>
             </BaseTooltip>
 
-            <BaseTooltip
-                v-show="showPrevious"
-                label="Passaggio precedente"
-            >
+            <BaseTooltip v-show="showPrevious" label="Passaggio precedente">
                 <BaseButton
                     variant="outline"
                     :disabled="!enablePrevious"
@@ -126,10 +117,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
             </BaseTooltip>
         </div>
 
-        <BaseTooltip
-            v-show="showNext"
-            label="Passaggio successivo"
-        >
+        <BaseTooltip v-show="showNext" label="Passaggio successivo">
             <BaseButton
                 variant="outline"
                 :disabled="!enableNext"
