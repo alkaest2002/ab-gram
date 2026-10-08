@@ -1,4 +1,3 @@
-import { SVG } from "@svgdotjs/svg.js";
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -35,6 +34,10 @@ const NODE_LABEL_COLOR = "#FFFFFF";
 
 // Isolated nodes are drawn in black.
 const ISOLATED_NODE_COLOR = "#000000";
+
+// Counter used to keep arrowhead marker ids unique when several plots are
+// embedded in the same document.
+let markerCounter = 0;
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +113,34 @@ const buildCoordinateMapper = (graph, nodes) => {
 
 
 //////////////////////////////////////////////////////////////////////////////////
+// SVG STRING HELPERS
+//////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Escape a value for safe interpolation into XML/SVG markup.
+ *
+ * @param {string|number} value - The text to escape (e.g. a member id).
+ * @returns {string} The XML-escaped text.
+ */
+const escapeXml = (value) =>
+  String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+
+/**
+ * Format a numeric SVG coordinate for output (two decimals is far more precise
+ * than the canvas resolution requires).
+ *
+ * @param {number} value - The raw coordinate.
+ * @returns {string} The rounded coordinate.
+ */
+const formatCoordinate = (value) => String(Math.round(value * 100) / 100);
+
+
+//////////////////////////////////////////////////////////////////////////////////
 // DRAWING
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -148,44 +179,38 @@ const computeEdgeEndpoints = (from, to, radius) => {
 };
 
 /**
- * Draw a node: a small, fully colored circle with its member id centered inside.
+ * Build the markup for a single node: a small, fully colored circle with its
+ * member id centered inside.
  *
  * The label is written as a raw text node (no `<tspan>`) and centered
  * horizontally with `text-anchor: middle` and vertically with
  * `dominant-baseline: central`, so it sits at the exact circle center.
  *
- * @param {import("@svgdotjs/svg.js").Container} draw - The SVG container
- *   (the root or a translated group) to draw into.
  * @param {number} x - Horizontal center of the node.
  * @param {number} y - Vertical center of the node.
  * @param {string} label - The member id to display.
  * @param {string} fillColor - The circle's fill color.
+ * @returns {string} The node's SVG markup.
  */
-const drawNode = (draw, x, y, label, fillColor) => {
-  draw.circle(NODE_RADIUS * 2).fill(fillColor).center(x, y);
-
-  draw
-    .plain(String(label))
-    .font({ size: LABEL_FONT_SIZE, anchor: "middle" })
-    .attr({ x, y, "dominant-baseline": "central" })
-    .fill(NODE_LABEL_COLOR);
-};
+const nodeMarkup = (x, y, label, fillColor) =>
+  `<circle r="${NODE_RADIUS}" fill="${fillColor}" cx="${formatCoordinate(x)}" cy="${formatCoordinate(y)}"></circle>` +
+  `<text font-size="${LABEL_FONT_SIZE}" text-anchor="middle" x="${formatCoordinate(x)}" y="${formatCoordinate(y)}" dominant-baseline="central" fill="${NODE_LABEL_COLOR}">${escapeXml(label)}</text>`;
 
 /**
  * Build the isolated members' plot dynamically.
  *
  * Isolated members are laid out in rows that wrap once the canvas width is
  * reached, so any number of them can be accommodated. The returned `height`
- * is the vertical space the plot occupies, and `render` draws it into the
- * given container using that container's local coordinates (its origin).
+ * is the vertical space the plot occupies, and `render` returns the SVG markup
+ * drawn using the container's local coordinates (its origin).
  *
  * @param {string[]} isolatedNodes - The ids of the isolated members.
- * @returns {{height: number, render: (draw: import("@svgdotjs/svg.js").Container) => void}}
- *   The plot's height and a function that draws it into a container.
+ * @returns {{height: number, render: () => string}} The plot's height and a
+ *   function that returns its SVG markup.
  */
 const buildIsolatedNodesPlot = (isolatedNodes) => {
   if (isolatedNodes.length === 0) {
-    return { height: 0, render: () => {} };
+    return { height: 0, render: () => "" };
   }
 
   // Most circles (plus their gaps) that fit across the available width.
@@ -202,15 +227,16 @@ const buildIsolatedNodesPlot = (isolatedNodes) => {
   const height =
     2 * PADDING + rows * (NODE_RADIUS * 2) + (rows - 1) * ISOLATED_GAP;
 
-  const render = (draw) => {
-    isolatedNodes.forEach((node, index) => {
-      const row = Math.floor(index / nodesPerRow);
-      const col = index % nodesPerRow;
-      const x = PADDING + NODE_RADIUS + col * (NODE_RADIUS * 2 + ISOLATED_GAP);
-      const y = PADDING + NODE_RADIUS + row * (NODE_RADIUS * 2 + ISOLATED_GAP);
-      drawNode(draw, x, y, node, ISOLATED_NODE_COLOR);
-    });
-  };
+  const render = () =>
+    isolatedNodes
+      .map((node, index) => {
+        const row = Math.floor(index / nodesPerRow);
+        const col = index % nodesPerRow;
+        const x = PADDING + NODE_RADIUS + col * (NODE_RADIUS * 2 + ISOLATED_GAP);
+        const y = PADDING + NODE_RADIUS + row * (NODE_RADIUS * 2 + ISOLATED_GAP);
+        return nodeMarkup(x, y, node, ISOLATED_NODE_COLOR);
+      })
+      .join("");
 
   return { height, render };
 };
@@ -243,26 +269,24 @@ const buildPlot = (graph, accentColor) => {
   // Transparent background and no border: the root SVG carries no fill, stroke
   // or border, and no background rectangle is added. Its height is the sum of
   // the connected graph and the isolated plot (when present).
-  const draw = SVG()
-    .size(CANVAS_WIDTH, CANVAS_HEIGHT + isolatedPlot.height)
-    .viewbox(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT + isolatedPlot.height);
+  const totalHeight = CANVAS_HEIGHT + isolatedPlot.height;
+  const markerId = `arrow-${markerCounter++}`;
+
+  const parts = [];
+
+  parts.push(
+    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${CANVAS_WIDTH}" height="${totalHeight}" viewBox="0 0 ${CANVAS_WIDTH} ${totalHeight}">`,
+  );
 
   // Arrowhead for non-mutual edges: an open chevron (two thin strokes) instead
-  // of a filled triangle, so it reads light. `ref` aligns the marker's tip (its
-  // right edge) with the line endpoint, and the default `orient="auto"` rotates
-  // it to follow the line's direction.
-  const arrow = draw
-    .marker(ARROW_SIZE, ARROW_SIZE, (add) => {
-      add
-        .path(`M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}`)
-        .fill("none")
-        .stroke({
-          color: accentColor,
-          width: ARROW_STROKE_WIDTH,
-          linecap: "round",
-        });
-    })
-    .ref(ARROW_SIZE, ARROW_SIZE / 2);
+  // of a filled triangle, so it reads light. `refX`/`refY` align the marker's
+  // tip (its right edge) with the line endpoint, and `orient="auto"` rotates it
+  // to follow the line's direction.
+  parts.push(
+    `<defs><marker id="${markerId}" markerWidth="${ARROW_SIZE}" markerHeight="${ARROW_SIZE}" refX="${ARROW_SIZE}" refY="${ARROW_SIZE / 2}" viewBox="0 0 ${ARROW_SIZE} ${ARROW_SIZE}" orient="auto">` +
+      `<path d="M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}" fill="none" stroke="${accentColor}" stroke-width="${ARROW_STROKE_WIDTH}" stroke-linecap="round"></path>` +
+      `</marker></defs>`,
+  );
 
   const toSvg = buildCoordinateMapper(graph, connected);
 
@@ -277,31 +301,33 @@ const buildPlot = (graph, accentColor) => {
     const width = attributes.isMutual
       ? MUTUAL_EDGE_WIDTH
       : NON_MUTUAL_EDGE_WIDTH;
+    const markerEnd = attributes.isMutual ? "" : ` marker-end="url(#${markerId})"`;
 
-    const line = draw
-      .line(x1, y1, x2, y2)
-      .stroke({ color: accentColor, width });
-
-    if (!attributes.isMutual) line.marker("end", arrow);
+    parts.push(
+      `<line x1="${formatCoordinate(x1)}" y1="${formatCoordinate(y1)}" x2="${formatCoordinate(x2)}" y2="${formatCoordinate(y2)}" stroke="${accentColor}" stroke-width="${width}"${markerEnd}></line>`,
+    );
   });
 
   // Connected members: small colored circles labelled with their member id.
   connected.forEach((node) => {
     const { x, y } = toSvg(node);
-    drawNode(draw, x, y, node, accentColor);
+    parts.push(nodeMarkup(x, y, node, accentColor));
   });
 
   // Isolated members: a black plot stacked below the connected graph, drawn
   // into a group translated down by the connected graph's height.
   if (isolatedPlot.height > 0) {
-    const isolatedGroup = draw.group().translate(0, CANVAS_HEIGHT);
-    isolatedPlot.render(isolatedGroup);
+    parts.push(`<g transform="translate(0, ${CANVAS_HEIGHT})">`);
+    parts.push(isolatedPlot.render());
+    parts.push(`</g>`);
   }
+
+  parts.push(`</svg>`);
 
   return {
     typeOfPreference: graph.getAttribute("typeOfPreference"),
     accentColor,
-    svg: draw.svg(),
+    svg: parts.join(""),
   };
 };
 
@@ -315,12 +341,15 @@ const buildPlot = (graph, accentColor) => {
  *
  * Each graph is expected to carry an initial random layout (see
  * `createLikesGraph`). Its nodes are first repositioned with
- * `graphology-layout-forceatlas2`, then rendered into an SVG with `svg.js`: the
- * connected members become accent-colored circles (labelled with their member
- * id) joined by accent-colored edges, mutual edges drawn thicker and without
- * arrowheads and non-mutual edges thinner with a light chevron arrowhead
- * pointing at their target. Isolated members are drawn in black in a plot
- * stacked vertically below the connected graph.
+ * `graphology-layout-forceatlas2`, then rendered into SVG markup: the connected
+ * members become accent-colored circles (labelled with their member id) joined
+ * by accent-colored edges, mutual edges drawn thicker and without arrowheads and
+ * non-mutual edges thinner with a light chevron arrowhead pointing at their
+ * target. Isolated members are drawn in black in a plot stacked vertically below
+ * the connected graph.
+ *
+ * The SVG is built as a plain string (no DOM access), so it can run both in the
+ * browser main thread and inside a Web Worker, where `document` is unavailable.
  *
  * @param {Array<[import("graphology").DirectedGraph, string]>} graphs - A list
  *   of `[graph, accentColor]` pairs, one per preference type.
