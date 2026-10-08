@@ -27,13 +27,16 @@ import { preloadWorker } from "@/utils/workerLoader";
 
 // --- Lifecycle ----------
 onMounted(() => {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => {
-      preloadWorker().catch((err) => {
-        console.warn('Worker preload failed, will load on-demand:', err);
-      });
-    });
-  }
+    if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => {
+            preloadWorker().catch((err) => {
+                console.warn(
+                    "Worker preload failed, will load on-demand:",
+                    err,
+                );
+            });
+        });
+    }
 });
 
 // --- Methods ------------
@@ -49,14 +52,6 @@ onMounted(() => {
     -->
     <div class="page home">
         <div class="flex flex-col items-center text-center">
-            <!-- Node 1 · hero -->
-            <span
-                class="grid size-10 place-items-center rounded-full border-[1.5px] border-ink bg-white font-mono text-sm font-medium text-ink sm:size-11"
-                aria-hidden="true"
-            >
-                1
-            </span>
-
             <section class="mt-7 w-full">
                 <p class="eyebrow">Sociometria nel browser</p>
 
@@ -73,39 +68,9 @@ onMounted(() => {
                     <strong class="font-semibold text-reject">rifiuti</strong>
                     dei membri di un gruppo. AB-Grid pensa a tutto il resto.
                 </p>
-
-                <div
-                    class="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:items-center"
-                >
-                    <RouterLink
-                        to="/sociogram"
-                        class="btn btn-solid justify-center"
-                    >
-                        Crea un sociogramma
-                        <svg
-                            class="size-4"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M5 12h14M13 6l6 6-6 6" />
-                        </svg>
-                    </RouterLink>
-
-                    <RouterLink
-                        to="/docs"
-                        class="btn btn-outline justify-center"
-                    >
-                        Leggi la guida
-                    </RouterLink>
-                </div>
             </section>
 
-            <!-- Edge → node 2 -->
+            <!-- Edge -->
             <div
                 class="mt-10 flex flex-col items-center sm:mt-14"
                 aria-hidden="true"
@@ -122,11 +87,6 @@ onMounted(() => {
                 >
                     <path d="m1 1 4 4 4-4" />
                 </svg>
-                <span
-                    class="mt-4 grid size-10 place-items-center rounded-full border-[1.5px] border-ink bg-white font-mono text-sm font-medium text-ink sm:size-11"
-                >
-                    2
-                </span>
             </div>
 
             <section class="mt-7 w-full space-y-6">
@@ -214,7 +174,7 @@ onMounted(() => {
                 </ul>
             </section>
 
-            <!-- Edge → node 3 -->
+            <!-- Edge -->
             <div
                 class="mt-10 flex flex-col items-center sm:mt-14"
                 aria-hidden="true"
@@ -231,47 +191,6 @@ onMounted(() => {
                 >
                     <path d="m1 1 4 4 4-4" />
                 </svg>
-                <span
-                    class="mt-4 grid size-10 place-items-center rounded-full border-[1.5px] border-ink bg-white font-mono text-sm font-medium text-ink sm:size-11"
-                >
-                    3
-                </span>
-            </div>
-
-            <section class="mt-7 w-full">
-                <Featurettes />
-            </section>
-
-            <!-- Edge → the star node: where every edge leads. -->
-            <div
-                class="mt-10 flex flex-col items-center sm:mt-14"
-                aria-hidden="true"
-            >
-                <span class="h-12 w-px bg-line sm:h-16"></span>
-                <svg
-                    class="-mt-px size-2.5 text-line"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="m1 1 4 4 4-4" />
-                </svg>
-                <span
-                    class="mt-4 grid size-10 place-items-center rounded-full border-[1.5px] border-accent bg-accent text-white sm:size-11"
-                >
-                    <svg
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                    >
-                        <path
-                            d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"
-                        />
-                    </svg>
-                </span>
             </div>
 
             <section class="mt-7 w-full">
@@ -286,29 +205,9 @@ onMounted(() => {
                     <span>Sociogramma</span>
                 </p>
 
-                <div class="mt-8 flex flex-col justify-center sm:flex-row">
-                    <RouterLink
-                        to="/sociogram"
-                        class="btn btn-solid justify-center"
-                    >
-                        Crea il tuo sociogramma
-                        <svg
-                            class="size-4"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                        >
-                            <path d="M5 12h14M13 6l6 6-6 6" />
-                        </svg>
-                    </RouterLink>
-                </div>
             </section>
 
-            <!-- Edge → the isolated node: the member nobody has chosen yet. -->
+            <!-- Edge -->
             <div
                 class="mt-10 flex flex-col items-center sm:mt-14"
                 aria-hidden="true"
@@ -325,23 +224,29 @@ onMounted(() => {
                 >
                     <path d="m1 1 4 4 4-4" />
                 </svg>
-                <span
-                    class="mt-4 grid size-10 place-items-center rounded-full border-[1.5px] border-dashed border-muted bg-white text-muted sm:size-11"
+            </div>
+
+            <section class="mt-7 w-full">
+                <Featurettes />
+            </section>
+
+            <!-- Edge -->
+            <div
+                class="mt-10 flex flex-col items-center sm:mt-14"
+                aria-hidden="true"
+            >
+                <span class="h-12 w-px bg-ink sm:h-16"></span>
+                <svg
+                    class="-mt-px size-2.5 text-ink"
+                    viewBox="0 0 10 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                 >
-                    <svg
-                        class="size-4"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path
-                            d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7z"
-                        />
-                    </svg>
-                </span>
+                    <path d="m1 1 4 4 4-4" />
+                </svg>
             </div>
 
             <!-- The donation card keeps its own left-aligned layout. -->
