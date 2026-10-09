@@ -1,3 +1,4 @@
+
 <script setup>
 // --- Vue ----------------
 
@@ -14,6 +15,19 @@
 // --- Emits --------------
 
 // --- State --------------
+import packageJson from "../../../package.json";
+
+// Runtime (dependencies) and build-time (devDependencies) packages, read from
+// package.json so this page never drifts from the lockfile.
+const stripRange = (version) => version.replace(/^[\^~]/, "");
+
+const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
+    ([name, version]) => ({ name, version: stripRange(version) }),
+);
+
+const devDependencies = Object.entries(packageJson.devDependencies ?? {}).map(
+    ([name, version]) => ({ name, version: stripRange(version) }),
+);
 
 // --- Computed -----------
 
@@ -26,31 +40,70 @@
 
 <template>
     <div class="page">
-        <section class="space-y-4">
-            <p class="eyebrow">Il progetto</p>
-            <h1>AB-Grid</h1>
-            <p class="lede max-w-[58ch]">
-                Uno strumento di sociometria: raccoglie scelte e rifiuti
-                all'interno di un gruppo e li trasforma in un grafico leggibile,
-                per osservare le relazioni tra le persone.
-            </p>
-        </section>
-
         <section class="space-y-8">
             <header class="space-y-2">
-                <p class="eyebrow">Perché è gratuito</p>
-                <h2>Sociometria per tutti</h2>
+                <p class="eyebrow">Dettagli tecnici</p>
+                <h1>Cosa si nascondo sotto il cofano?</h1>
             </header>
 
             <p>
-                AB-Grid è distribuito gratuitamente per una scelta
-                precisa: democratizzare l'uso della sociometria.
-                Osservare e comprendere le relazioni di un gruppo non
-                dovrebbe essere un privilegio di chi dispone di risorse o
-                di software costosi, ma uno strumento alla portata di chi
-                lavora ogni giorno con le persone.
+                AB-Grid è un'applicazione web costruita con Vue 3 e Vite.
+                Queste sono le librerie che la fanno funzionare, dal calcolo
+                delle metriche di rete al rendering dei grafici.
             </p>
 
+            <div class="grid gap-8 sm:grid-cols-2">
+                <div class="card">
+                    <h3
+                        class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                    >
+                        Dipendenze
+                    </h3>
+                    <ul class="space-y-2 mt-6">
+                        <li
+                            v-for="pkg in dependencies"
+                            :key="pkg.name"
+                            class="flex items-baseline justify-between gap-4"
+                        >
+                            <span
+                                class="min-w-0 wrap-break-words font-mono text-sm text-ink"
+                            >
+                                {{ pkg.name }}
+                            </span>
+                            <span class="shrink-0 font-mono text-xs text-muted">
+                                {{ pkg.version }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3
+                        class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                    >
+                        Strumenti di sviluppo
+                    </h3>
+                    <ul class="space-y-2 mt-6">
+                        <li
+                            v-for="pkg in devDependencies"
+                            :key="pkg.name"
+                            class="flex items-baseline justify-between gap-4"
+                        >
+                            <span
+                                class="min-w-0 wrap-break-words font-mono text-sm text-ink"
+                            >
+                                {{ pkg.name }}
+                            </span>
+                            <span class="shrink-0 font-mono text-xs text-muted">
+                                {{ pkg.version }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="space-y-8">
             <div class="grid gap-8 sm:grid-cols-2">
                 <div
                     class="relative overflow-hidden rounded-lg border border-line bg-white"
@@ -103,7 +156,7 @@
 
                     <div class="space-y-2 p-6 sm:p-8">
                         <h3 class="text-ink">Contatti</h3>
-                        <p>
+                        <p class="text-sm">
                             Scrivi a
                             <a href="mailto:info@ab-grid.com"
                                 >info@ab-grid.com</a
