@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
-import { getSnaComponents } from "@/analysis/sna/snaComponents.js";
+import { getSnaComponents } from "@/analysis/sna/components/snaComponents.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 
