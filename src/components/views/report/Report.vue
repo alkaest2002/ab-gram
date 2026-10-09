@@ -13,6 +13,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 import ReportDoc from "@/components/views/report/ReportDoc.vue";
+import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
 
 // --- Composables --------
 import { createReportWorker } from "@/utils/workerLoader";
@@ -102,4 +103,6 @@ function stopWorker() {
         :is="currentComponent"
         @report-geenrating-stop="stopGeneration"
     />
+
+    <ReportCommandBar v-if="status === 'generated'" />
 </template>

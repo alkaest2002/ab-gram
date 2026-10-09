@@ -122,6 +122,12 @@
     @apply bg-reject/90;
   }
 
+  /* Icon-only command in the report's floating toolbar. */
+  .cmd-btn {
+    @apply inline-flex size-11 items-center justify-center rounded-full text-ink
+      transition-colors hover:bg-ink/10 focus-visible:bg-ink/10;
+  }
+
   /* Text link inside prose (RouterLinks don't inherit the base style). */
   .link {
     @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
