@@ -63,6 +63,10 @@ export const getRankedScores = (scores) => {
  * are sorted ascending and weighted by their rank (`2 * i - n + 1`), then the
  * weighted sum is normalized by the element count and total sum.
  *
+ * Formula:
+ *
+ *   $$ G = \frac{\sum_{i=0}^{n-1} (2i - n + 1)\,x_i}{n \sum_{i=0}^{n-1} x_i} $$
+ *
  * @param {import("numpy-ts").NDArray} data - A 1-D array of non-negative values.
  * @returns {number} The Gini coefficient in the range `[0, 1]`.
  * @throws {Error} When `data` contains negative values.

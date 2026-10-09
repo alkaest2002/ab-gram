@@ -9,6 +9,10 @@ import { simmelianStrength } from "graphology-metrics/edge";
 /**
  * Number of members (nodes) in the graph.
  *
+ * Formula:
+ *
+ *   $$ N = |V| $$
+ *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {number} The number of nodes.
  */
@@ -16,6 +20,10 @@ export const computeNumberOfNodes = (graph) => graph.order;
 
 /**
  * Number of directed preference edges in the graph.
+ *
+ * Formula:
+ *
+ *   $$ E = |\mathcal{E}| $$
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {number} The number of directed edges.
@@ -26,6 +34,10 @@ export const computeNumberOfEdges = (graph) => graph.size;
  * Number of directed edges whose reverse edge also exists.
  *
  * A mutual pair (A↔B) contributes two mutual edges, one in each direction.
+ *
+ * Formula:
+ *
+ *   $$ E_{\leftrightarrow} = \sum_{(u,v)\in E} \mathbf{1}\big[(v,u)\in E\big] $$
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {number} The number of mutual edges.
@@ -49,6 +61,8 @@ export const computeNumberOfMutualEdges = (graph) => {
  * Formally:
  *
  *   C = Σ (C_max - C_i) / (n - 1)²
+ *
+ *   $$ C = \frac{\sum_{i=1}^{n} (C_{\max} - C_i)}{(n - 1)^2} $$
  *
  * where `C_max` is the largest centrality score, `C_i` the score of node `i`,
  * `n` the number of nodes, and the sum runs over every node.
@@ -93,6 +107,8 @@ export const computeNetworkCentralization = (graph) => {
  * Formally:
  *
  *   T = 3 × (number of closed triads) / (number of connected triples)
+ *
+ *   $$ T = \frac{3\,t_{\triangle}}{\sum_{v \in V} \binom{d_v}{2}} $$
  *
  * A closed triad is a triangle: three nodes whose three pairwise edges all
  * exist. A connected triple is three nodes where at least two edges exist
@@ -151,6 +167,8 @@ export const computeNetworkTransitivity = (graph) => {
  *
  *   R = (number of reciprocated edges) / (total number of edges)
  *
+ *   $$ R = \frac{\sum_{i,j} a_{ij}\,a_{ji}}{\sum_{i,j} a_{ij}} $$
+ *
  * A reciprocated edge A→B is one where the reverse edge B→A also exists.
  * In a mutual pair A↔B, both directed edges are counted as reciprocated,
  * contributing 2 to the numerator.
@@ -187,6 +205,8 @@ export const computeNetworkReciprocity = (graph) => {
  *
  *   For undirected: D = 2E / (N × (N - 1))
  *   For directed:   D = E / (N × (N - 1))
+ *
+ *   $$ D = \frac{E}{N(N-1)}\ \text{(directed)},\quad D = \frac{2E}{N(N-1)}\ \text{(undirected)} $$
  *
  * where E is the number of edges and N is the number of nodes.
  *

@@ -10,6 +10,10 @@ import { computeGiniCoefficient } from "../../common/commonMetrics.js";
  *
  * This is the column sum (in-degree) of the likes adjacency matrix.
  *
+ * Formula:
+ *
+ *   $$ rp_i = \sum_{j} a_{ji} $$
+ *
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
  *   matrix row/column order).
@@ -20,6 +24,10 @@ export const computeReceivedPositive = (adjLikes) => adjLikes.sum(0);
  * Received negative nominations: how many dislikes each member received.
  *
  * This is the column sum (in-degree) of the dislikes adjacency matrix.
+ *
+ * Formula:
+ *
+ *   $$ rr_i = \sum_{j} d_{ji} $$
  *
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
@@ -32,6 +40,10 @@ export const computeReceivedNegative = (adjDislikes) => adjDislikes.sum(0);
  *
  * This is the row sum (out-degree) of the likes adjacency matrix.
  *
+ * Formula:
+ *
+ *   $$ gp_i = \sum_{j} a_{ij} $$
+ *
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
  *   matrix row/column order).
@@ -42,6 +54,10 @@ export const computeGivenPositive = (adjLikes) => adjLikes.sum(1);
  * Given negative nominations: how many dislikes each member gave.
  *
  * This is the row sum (out-degree) of the dislikes adjacency matrix.
+ *
+ * Formula:
+ *
+ *   $$ gr_i = \sum_{j} d_{ij} $$
  *
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
@@ -55,6 +71,10 @@ export const computeGivenNegative = (adjDislikes) => adjDislikes.sum(1);
  * `adjLikes * adjLikes.T` is non-zero exactly where both directions of a like
  * exist; the row sum counts each member's mutual like partners.
  *
+ * Formula:
+ *
+ *   $$ mp_i = \sum_{j} a_{ij}\,a_{ji} $$
+ *
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
  *   matrix row/column order).
@@ -64,6 +84,10 @@ export const computeMutualPositive = (adjLikes) =>
 
 /**
  * Mutual negative connections: how many mutual dislike pairs each member has.
+ *
+ * Formula:
+ *
+ *   $$ mr_i = \sum_{j} d_{ij}\,d_{ji} $$
  *
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
@@ -75,6 +99,10 @@ export const computeMutualNegative = (adjDislikes) =>
 /**
  * Impact index: total opinions received (positive + negative).
  *
+ * Formula:
+ *
+ *   $$ im_i = rp_i + rr_i $$
+ *
  * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
  * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
  * @returns {import("numpy-ts").NDArray} One value per member.
@@ -83,6 +111,10 @@ export const computeImpact = (rp, rr) => rp.add(rr);
 
 /**
  * Balance index: received positive minus received negative nominations.
+ *
+ * Formula:
+ *
+ *   $$ bl_i = rp_i - rr_i $$
  *
  * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
  * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
@@ -93,6 +125,10 @@ export const computeBalance = (rp, rr) => rp.subtract(rr);
 /**
  * Expressivity index: total opinions given (positive + negative).
  *
+ * Formula:
+ *
+ *   $$ ei_i = gp_i + gr_i $$
+ *
  * @param {import("numpy-ts").NDArray} gp - Given positive nominations.
  * @param {import("numpy-ts").NDArray} gr - Given negative nominations.
  * @returns {import("numpy-ts").NDArray} One value per member.
@@ -101,6 +137,10 @@ export const computeExpressivity = (gp, gr) => gp.add(gr);
 
 /**
  * Orientation index: given positive minus given negative nominations.
+ *
+ * Formula:
+ *
+ *   $$ or_i = gp_i - gr_i $$
  *
  * @param {import("numpy-ts").NDArray} gp - Given positive nominations.
  * @param {import("numpy-ts").NDArray} gr - Given negative nominations.
@@ -111,6 +151,10 @@ export const computeOrientation = (gp, gr) => gp.subtract(gr);
 /**
  * Affiliation index: balance plus orientation.
  *
+ * Formula:
+ *
+ *   $$ ai_i = bl_i + or_i $$
+ *
  * @param {import("numpy-ts").NDArray} balance - Balance index.
  * @param {import("numpy-ts").NDArray} orientation - Orientation index.
  * @returns {import("numpy-ts").NDArray} One value per member.
@@ -120,6 +164,10 @@ export const computeAffiliation = (balance, orientation) =>
 
 /**
  * Influence index: received positive plus mutual positive nominations.
+ *
+ * Formula:
+ *
+ *   $$ ii_i = rp_i + mp_i $$
  *
  * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
  * @param {import("numpy-ts").NDArray} mp - Mutual positive connections.
