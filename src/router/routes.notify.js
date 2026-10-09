@@ -7,7 +7,7 @@ export default {
     title: "Notify",
     inMenu: false,
     typeOfMenu: null,
-    layout: "DefaultLayout",
+    layout: "EmptyLayout",
   },
   children: [
     {
