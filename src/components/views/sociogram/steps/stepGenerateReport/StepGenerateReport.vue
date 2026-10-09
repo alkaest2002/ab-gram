@@ -96,6 +96,7 @@ function goNext() {
         :enable-previous="true"
         :enable-archive="true"
         :enable-next="true"
+        :enable-restart="true"
         @sociogram-navigation-previous="goToStep('setPreferences')"
         @sociogram-navigation-restart="restart"
         @sociogram-navigation-next="goNext"
