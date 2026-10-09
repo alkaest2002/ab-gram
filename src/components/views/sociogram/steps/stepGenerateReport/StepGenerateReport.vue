@@ -4,6 +4,7 @@ import { computed, toRaw } from "vue";
 
 // --- Routers ------------
 import { useRouter } from "vue-router";
+const router = useRouter();
 
 // --- Stores -------------
 import { storeToRefs } from "pinia";
@@ -30,7 +31,6 @@ const emit = defineEmits([
 const sociogramStore = useSociogramStore();
 const { members } = storeToRefs(sociogramStore);
 const { validate } = useSociogramValidateData(true);
-const router = useRouter();
 const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
