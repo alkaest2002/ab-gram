@@ -13,6 +13,7 @@ import PrinterIcon from "@/components/ui/icons/PrinterIcon.vue";
 import DownloadIcon from "@/components/ui/icons/DownloadIcon.vue";
 
 // --- Composables --------
+import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------
 
@@ -21,6 +22,7 @@ import DownloadIcon from "@/components/ui/icons/DownloadIcon.vue";
 // --- State --------------
 const router = useRouter();
 const reportStore = useReportStore();
+const { downloadJson } = useDownload();
 
 // --- Computed -----------
 
@@ -37,7 +39,7 @@ function printReport() {
     window.print();
 }
 
-function downloadJson() {
+function downloadReport() {
     const report = {
         edgeTypes: reportStore.edgeTypes,
         morenoGroupLevelMetrics: reportStore.morenoGroupLevelMetrics,
@@ -52,17 +54,7 @@ function downloadJson() {
         snaDislikesPlots: reportStore.snaDislikesPlots,
     };
 
-    const blob = new Blob([JSON.stringify(report, null, 2)], {
-        type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "report.json";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 0);
+    downloadJson(report, "report.json");
 }
 </script>
 
@@ -97,7 +89,7 @@ function downloadJson() {
                 class="cmd-btn"
                 aria-label="Scarica JSON"
                 title="Scarica JSON"
-                @click="downloadJson"
+                @click="downloadReport"
             >
                 <DownloadIcon />
             </button>
