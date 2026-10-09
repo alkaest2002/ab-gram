@@ -13,6 +13,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
+import MemberCard from "@/components/views/sociogram/steps/stepGenerateReport/MemberCard.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -58,11 +59,6 @@ const summary = computed(() =>
 // --- Lifecycle ----------
 
 // --- Methods ------------
-// Ask the parent to open the preferences step for a single member.
-function openMember(memberId) {
-    emit("sociogram-edit-member", memberId);
-}
-
 function goNext() {
   const { valid, error } = validate({ members: toRaw(members.value) });
   if (!valid) {
@@ -82,103 +78,14 @@ function goNext() {
         </StepHeader>
 
         <section class="space-y-4">
-            <ul class="grid gap-x-8 gap-y-5 md:grid-cols-2">
-                <li
+            <div class="grid gap-x-8 gap-y-5 md:grid-cols-2">
+                <MemberCard
                     v-for="member in summary"
                     :key="member.id"
-                    class="card p-4 cursor-pointer transition-colors hover:border-accent"
-                    role="button"
-                    tabindex="0"
-                    :aria-label="`Modifica le preferenze di ${member.name}`"
-                    @click="openMember(member.id)"
-                    @keydown.enter.prevent="openMember(member.id)"
-                    @keydown.space.prevent="openMember(member.id)"
-                >
-                    <div class="flex items-center gap-3">
-                        <svg
-                            viewBox="0 0 32 32"
-                            class="size-9 shrink-0"
-                            aria-hidden="true"
-                        >
-                            <circle
-                                cx="16"
-                                cy="16"
-                                r="14.3"
-                                class="fill-canvas stroke-ink"
-                                stroke-width="1.4"
-                            />
-                            <text
-                                x="16"
-                                y="16"
-                                dy="0.34em"
-                                text-anchor="middle"
-                                class="fill-ink font-mono text-[13px] font-medium"
-                            >
-                                {{ member.id }}
-                            </text>
-                        </svg>
-                        <p
-                            class="min-w-0 font-display text-base font-bold leading-snug tracking-[-0.01em] text-ink"
-                        >
-                            {{ member.name }}
-                        </p>
-                    </div>
-
-                    <div class="space-y-3 pl-12">
-                        <div class="space-y-1.5">
-                            <div
-                                class="flex items-center justify-between gap-3"
-                            >
-                                <span class="eyebrow flex items-center gap-1.5">
-                                    <span>{{ member.likes.length }} {{
-                                        member.likes.length == 1
-                                            ? "Scelta"
-                                            : "Scelte"
-                                    }}</span>
-                                </span>
-                            </div>
-                            <p
-                                v-if="member.likes.length"
-                                class="font-mono text-[13px] font-medium leading-[1.45] text-accent"
-                            >
-                                {{ member.likesText }}
-                            </p>
-                            <p
-                                v-else
-                                class="text-[13px] leading-[1.45] text-muted"
-                            >
-                                Nessuna scelta
-                            </p>
-                        </div>
-
-                        <div class="space-y-1.5">
-                            <div
-                                class="flex items-center justify-between gap-3"
-                            >
-                                <span class="eyebrow flex items-center gap-1.5">
-                                    <span>{{ member.dislikes.length }} {{
-                                        member.dislikes.length == 1
-                                            ? "Rifiuto"
-                                            : "Rifiuti"
-                                    }}</span>
-                                </span>
-                            </div>
-                            <p
-                                v-if="member.dislikes.length"
-                                class="font-mono text-[13px] font-medium leading-[1.45] text-reject"
-                            >
-                                {{ member.dislikesText }}
-                            </p>
-                            <p
-                                v-else
-                                class="text-[13px] leading-[1.45] text-muted"
-                            >
-                                Nessun rifiuto
-                            </p>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    :member="member"
+                    @sociogram-edit-member="$emit('sociogram-edit-member', $event)"
+                />
+            </div>
         </section>
     </section>
 
