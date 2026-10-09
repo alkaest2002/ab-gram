@@ -2,6 +2,7 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
 import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
+import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 /**
  * A single participant in the sociogram.
@@ -42,13 +43,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
   const status = computed(() => {
     if (membersCount.value === 0) return "empty";
-    const memberDataIsComplete = ({ id, name, likes, noLikes, dislikes, noDislikes }) => {
-      const check1 = id && name;
-      const check2 = likes.length > 0 || noLikes;
-      const check3 = dislikes.length > 0 || noDislikes;
-      return check1 && check2 && check3;
-    }
-    if (members.value.every(memberDataIsComplete)) return "completed";
+    if (members.value.every(isMemberComplete)) return "completed";
     return "partially-loaded";
   });
 
