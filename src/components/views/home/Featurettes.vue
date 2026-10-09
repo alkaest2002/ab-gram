@@ -49,7 +49,7 @@ const features = [
     <div class="space-y-8 text-center">
         <header class="mx-auto space-y-3">
             <p class="eyebrow">Perché AB-Grid</p>
-            <h2 class="text-2xl">Tre impegni, zero eccezioni</h2>
+            <h2 class="text-2xl">Il breve manifesto</h2>
         </header>
 
         <ul class="mx-auto w-full">

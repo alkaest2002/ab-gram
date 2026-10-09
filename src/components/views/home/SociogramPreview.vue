@@ -28,7 +28,7 @@
     <div class="space-y-6">
         <header class="mx-auto max-w-2xl space-y-3">
             <p class="eyebrow">Un esempio</p>
-            <h2 class="text-2xl">Il gruppo, a colpo d'occhio</h2>
+            <h2 class="text-2xl">Il gruppo a colpo d'occhio</h2>
         </header>
 
         <figure class="graph">
