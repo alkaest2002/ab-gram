@@ -29,7 +29,7 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 
 // --- State --------------
 const sociogramStore = useSociogramStore();
-const { members, hasMembers, membersCount } = storeToRefs(sociogramStore);
+const { members, membersCount, membersStatus } = storeToRefs(sociogramStore);
 const { updateMember } = sociogramStore;
 const { goToStep, restart } = useSociogramNavigation(emit);
 
@@ -47,9 +47,7 @@ const currentNoDislikes = writableMemberField("noDislikes", false);
 
 const isComplete = computed(() => isMemberComplete(currentMember.value));
 
-const canGoNext = computed(
-    () => hasMembers.value && members.value.every(isMemberComplete),
-);
+const canGoNext = computed(() => membersStatus.value === "completed");
 
 const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
 
@@ -140,7 +138,7 @@ function resetDislikes() {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <p v-if="!hasMembers" class="text-sm text-muted">
+        <p v-if="membersCount === 0" class="text-sm text-muted">
             Nessun membro caricato.
         </p>
 
