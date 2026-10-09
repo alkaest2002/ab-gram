@@ -40,10 +40,20 @@ const currentIndex = ref(0);
 // --- Computed -----------
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 
-const currentLikes = writableMemberField("likes", []);
-const currentDislikes = writableMemberField("dislikes", []);
-const currentNoLikes = writableMemberField("noLikes", false);
-const currentNoDislikes = writableMemberField("noDislikes", false);
+// Likes/dislikes and their "not expressed" flags are mutually exclusive: picking
+// at least one member clears the flag, ticking the flag clears the list. These
+const currentLikes = writableMemberField("likes", [], (value) => {
+    if (value.length > 0) currentNoLikes.value = false;
+});
+const currentDislikes = writableMemberField("dislikes", [], (value) => {
+    if (value.length > 0) currentNoDislikes.value = false;
+});
+const currentNoLikes = writableMemberField("noLikes", false, (value) => {
+    if (value) currentLikes.value = [];
+});
+const currentNoDislikes = writableMemberField("noDislikes", false, (value) => {
+    if (value) currentDislikes.value = [];
+});
 
 const isComplete = computed(() => isMemberComplete(currentMember.value));
 
@@ -69,38 +79,24 @@ watch(
     { immediate: true },
 );
 
-watch(currentLikes, (newValue) => {
-  if (newValue.length > 0) currentNoLikes.value = false;
-})
-
-watch(currentDislikes, (newValue) => {
-  if (newValue.length > 0) currentNoDislikes.value = false;
-})
-
-watch(currentNoLikes, (newValue) => {
-  newValue && resetLikes();
-});
-
-watch(currentNoDislikes, (newValue) => {
-  newValue && resetDislikes();
-});
-
-
 // --- Lifecycle ----------
 onActivated(() => window.scrollTo(0, 0));
 
 // --- Methods ------------
 // Two-way binding to a field on the current member, falling back to an empty
-// value while there is no member to edit.
-function writableMemberField(field, fallback) {
+// value while there is no member to edit. `onSet`, if given, runs after the
+// store has been updated.
+function writableMemberField(field, fallback, onSet) {
     return computed({
         get: () => currentMember.value?.[field] ?? fallback,
         set: (value) => {
-            if (currentMember.value) {
-                const memberId = currentMember.value.id;
-                const key = field;
-                updateMember({ memberId, key, value });
-            }
+            if (!currentMember.value) return;
+            updateMember({
+                memberId: currentMember.value.id,
+                key: field,
+                value,
+            });
+            onSet?.(value);
         },
     });
 }
@@ -115,14 +111,6 @@ function carouselGoNextMember() {
     if (carouselCanGoNextMember.value) {
         currentIndex.value++;
     }
-}
-
-function resetLikes() {
-    currentLikes.value = [];
-}
-
-function resetDislikes() {
-    currentDislikes.value = [];
 }
 </script>
 
