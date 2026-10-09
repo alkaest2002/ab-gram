@@ -1,15 +1,21 @@
-import * as np from "numpy-ts";
-import { toUndirected } from "graphology-operators";
-import { simmelianStrength } from "graphology-metrics/edge";
 import {
-  degree,
-  inDegree,
-  outDegree,
-  closeness,
-  betweenness,
-  pagerank,
-  hits,
-} from "graphology-metrics/centrality";
+  computeNumberOfNodes,
+  computeNumberOfEdges,
+  computeNumberOfMutualEdges,
+  computeNetworkDensity,
+  computeNetworkCentralization,
+  computeNetworkReciprocity,
+  computeNetworkTransitivity,
+} from "./metrics/sna/groupMetrics.js";
+import {
+  computeInDegreeCentrality,
+  computeOutDegreeCentrality,
+  computeDegreeCentrality,
+  computeClosenessCentrality,
+  computeBetweennessCentrality,
+  computePageRank,
+  computeHits,
+} from "./metrics/sna/individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS
@@ -36,174 +42,6 @@ const GROUP_LEVEL_METRIC_KEYS = [
 ];
 
 /**
- * Compute the network centralization of a graph.
- *
- * Centralization measures how concentrated the nodes' centrality scores are
- * around the single most central node. It ranges from `0` (every node is
- * equally central, e.g. a fully symmetric graph) to `1` (all centrality
- * concentrated in one node, e.g. a star).
- *
- * Formally:
- *
- *   C = Σ (C_max - C_i) / (n - 1)²
- *
- * where `C_max` is the largest centrality score, `C_i` the score of node `i`,
- * `n` the number of nodes, and the sum runs over every node.
- *
- * The centrality used here is the in-degree: the number of members choosing
- * each member. In-degree centralization is normalized by `(n - 1)²` because a
- * star (one node receiving every choice) yields exactly `(n - 1)` differences
- * of size `(n - 1)`, and so reaches the maximum value `1`.
- *
- * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {number} The network centralization, in the range `[0, 1]`.
- */
-const computeNetworkCentralization = (graph) => {
-  const n = graph.order;
-  if (n < 2) return 0;
-
-  // Compute the in-degree of each node
-  const centralities = np.array(
-    Array.from({ length: n }, (_, i) => graph.inDegree(graph.nodes()[i])),
-  );
-
-  // Compute the maximum centrality
-  const maxCentrality = np.max(centralities);
-
-  // 1. Subtract maxCentrality (results in negative differences)
-  // 2. Flip the sign with .neg() (or .negative()) to make them positive
-  // 3. Sum the NDArray into a primitive JS number
-  const sumDiffs = centralities.subtract(maxCentrality).negative().sum();
-
-  // 4. Return normalized centralization
-  return sumDiffs / Math.pow(n - 1, 2);
-};
-
-/**
- * Compute the network transitivity (global clustering coefficient) of a graph.
- *
- * Transitivity measures how likely two neighbors of a node are themselves
- * connected, i.e. the tendency of the network to form closed triangles. It
- * ranges from `0` (no closed triads, e.g. a tree or star) to `1` (every
- * connected triple is closed, e.g. a clique).
- *
- * Formally:
- *
- *   T = 3 × (number of closed triads) / (number of connected triples)
- *
- * A closed triad is a triangle: three nodes whose three pairwise edges all
- * exist. A connected triple is three nodes where at least two edges exist
- * (A-B and B-C, whether or not A-C exists). Each triangle contains three
- * connected triples, hence the factor 3.
- *
- * Because the graph is directed, transitivity is computed on its undirected
- * projection: two nodes are considered connected when an edge exists in either
- * direction.
- *
- * The closed-triad count is derived from the Simmelian strength of each edge
- * (the number of triangles an edge stands in), summed over every edge: the
- * total equals `3 ×` the number of triangles.
- *
- * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {number} The network transitivity, in the range `[0, 1]`.
- */
-const computeNetworkTransitivity = (graph) => {
-  // Transitivity is a property of the undirected projection: two nodes are
-  // connected when an edge exists in either direction, and a mutual pair is a
-  // single tie. Casting to undirected merges those mutual pairs into one edge.
-  const undirected = toUndirected(graph);
-
-  // Sum the Simmelian strength of every edge. An edge's strength is the number
-  // of triangles it stands in. Each edge of a triangle counts for `1`.
-  // So that the sum of all edge strengths equals three times the number of closed triangles.
-  const strengths = simmelianStrength(undirected);
-  const closedTriples = Object.values(strengths).reduce(
-    (total, strength) => total + strength,
-    0,
-  );
-
-  // Number of connected triples (2-paths): Σ C(deg, 2) over undirected degrees.
-  let connectedTriples = 0;
-  undirected.forEachNode((node) => {
-    const degree = undirected.degree(node);
-    if (degree >= 2) connectedTriples += (degree * (degree - 1)) / 2;
-  });
-
-  // Avoid a division by zero on graphs with no connected triples.
-  if (connectedTriples === 0) return 0;
-
-  return closedTriples / connectedTriples;
-};
-
-/**
- * Compute the network reciprocity of a directed graph.
- *
- * Reciprocity measures the tendency of directed edges to be reciprocated,
- * i.e., the proportion of edges that have a corresponding edge in the
- * opposite direction. It ranges from `0` (no reciprocal edges, e.g., a
- * strictly hierarchical network) to `1` (all edges are reciprocal, e.g., a
- * fully bidirectional network).
- *
- * Formally:
- *
- *   R = (number of reciprocated edges) / (total number of edges)
- *
- * A reciprocated edge A→B is one where the reverse edge B→A also exists.
- * In a mutual pair A↔B, both directed edges are counted as reciprocated,
- * contributing 2 to the numerator.
- *
- * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {number} The network reciprocity, in the range `[0, 1]`.
- */
-const computeNetworkReciprocity = (graph) => {
-  // Total number of directed edges
-  const totalEdges = graph.size;
-
-  // Avoid division by zero on empty graphs
-  if (totalEdges === 0) return 0;
-
-  // Count edges that have a reciprocal edge in the opposite direction
-  let reciprocatedEdges = 0;
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    if (graph.hasDirectedEdge(target, source)) {
-      reciprocatedEdges++;
-    }
-  });
-
-  return reciprocatedEdges / totalEdges;
-};
-
-/**
- * Compute the network density of a graph.
- *
- * Network density measures the proportion of possible edges that actually
- * exist. It ranges from `0` (no edges) to `1` (complete graph where every
- * node is connected to every other node).
- *
- * Formally:
- *
- *   For undirected: D = 2E / (N × (N - 1))
- *   For directed:   D = E / (N × (N - 1))
- *
- * where E is the number of edges and N is the number of nodes.
- *
- * @param {import("graphology").Graph} graph - The graph to analyse.
- * @returns {number} The network density, in the range `[0, 1]`.
- */
-const computeNetworkDensity = (graph) => {
-  const n = graph.order;
-  const e = graph.size;
-
-  // A graph must have at least 2 nodes to have possible edges
-  if (n < 2) return 0;
-
-  // Maximum possible edges depends on whether the graph is directed
-  const maxEdges = graph.type === "directed" ? n * (n - 1) : (n * (n - 1)) / 2;
-
-  return e / maxEdges;
-};
-
-/**
  * Compute the group-level metrics for a single preference graph.
  *
  * Aggregates the node/edge counts and the density, centralization, reciprocity
@@ -215,19 +53,10 @@ const computeNetworkDensity = (graph) => {
  *   `GROUP_LEVEL_METRIC_KEYS`.
  */
 const computeGroupLevelMetrics = (graph) => {
-  const numberOfEdges = graph.size;
-
-  // Number of directed edges whose reverse edge also exists. A mutual pair
-  // (A↔B) contributes two mutual edges, one in each direction.
-  let numberOfMutualEdges = 0;
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    if (graph.hasDirectedEdge(target, source)) numberOfMutualEdges++;
-  });
-
   return {
-    numberOfNodes: graph.order,
-    numberOfEdges,
-    numberOfMutualEdges,
+    numberOfNodes: computeNumberOfNodes(graph),
+    numberOfEdges: computeNumberOfEdges(graph),
+    numberOfMutualEdges: computeNumberOfMutualEdges(graph),
     networkDensity: computeNetworkDensity(graph),
     networkCentralization: computeNetworkCentralization(graph),
     networkReciprocity: computeNetworkReciprocity(graph),
@@ -304,24 +133,16 @@ export const getIndividualLevelMetrics = (graph) => {
   }
 
   // HITS is computed once and split into its two scores (authority and hub).
-  // HITS's power iteration does not converge on a graph without edges, so
-  // report zero authority/hub scores there instead of throwing.
-  const hitsResult =
-    graph.size === 0
-      ? {
-          authorities: Object.fromEntries(nodes.map((node) => [node, 0])),
-          hubs: Object.fromEntries(nodes.map((node) => [node, 0])),
-        }
-      : hits(graph);
+  const hitsResult = computeHits(graph);
 
   // Compute individual-level metrics for each node.
   const metricByNode = {
-    inDegreeCentrality: inDegree(graph),
-    outDegreeCentrality: outDegree(graph),
-    degreeCentrality: degree(graph),
-    closenessCentrality: closeness(graph),
-    betweennessCentrality: betweenness(graph),
-    PageRank: pagerank(graph),
+    inDegreeCentrality: computeInDegreeCentrality(graph),
+    outDegreeCentrality: computeOutDegreeCentrality(graph),
+    degreeCentrality: computeDegreeCentrality(graph),
+    closenessCentrality: computeClosenessCentrality(graph),
+    betweennessCentrality: computeBetweennessCentrality(graph),
+    PageRank: computePageRank(graph),
     hitsAuthority: hitsResult.authorities,
     hitsHub: hitsResult.hubs,
   };
@@ -338,6 +159,6 @@ export const getIndividualLevelMetrics = (graph) => {
   return {
     rowIndex: memberIndices,
     columnIndex,
-    values
+    values,
   };
 };
