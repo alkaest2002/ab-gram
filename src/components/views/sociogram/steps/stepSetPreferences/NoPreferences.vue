@@ -24,9 +24,6 @@ const props = defineProps({
         required: true,
         validator: (value) => ["likes", "dislikes"].includes(value),
     },
-
-    /** Label shown next to the checkbox. */
-    label: { type: String, required: true },
 });
 
 // --- Emits --------------
@@ -52,7 +49,7 @@ const checked = computed({
 <template>
     <div class="rounded-lg border border-line p-4">
         <p class="text-xs text-muted mb-3">
-            <slot />
+            <slot name="description" />
         </p>
         <label class="flex items-start gap-3">
             <input
@@ -61,7 +58,9 @@ const checked = computed({
                 :class="tone === 'likes' ? 'accent-accent' : 'accent-reject'"
                 v-model="checked"
             />
-            <span class="text-sm text-ink">{{ label }}</span>
+            <span class="text-sm text-ink">
+                <slot name="checkboxLabel" />
+            </span>
         </label>
     </div>
 </template>

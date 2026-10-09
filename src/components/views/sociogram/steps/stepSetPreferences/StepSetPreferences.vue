@@ -180,20 +180,28 @@ function carouselGoNextMember() {
                 <NoPreferences
                     v-model="currentNoLikes"
                     tone="likes"
-                    label="Non ha espresso preferenze."
                 >
-                    Se
-                    <strong>{{ currentMember?.name }}</strong>
-                    non ha espresso scelte, spunta questa casella di controllo.
+                    <template #description>
+                        Se
+                        <strong>{{ currentMember?.name }}</strong>
+                        non ha espresso scelte, spunta questa casella di controllo.
+                    </template>
+                    <template #checkboxLabel>
+                        Non ha espresso preferenze.
+                    </template>
                 </NoPreferences>
                 <NoPreferences
                     v-model="currentNoDislikes"
                     tone="dislikes"
-                    label="Non ha espresso rifiuti."
                 >
-                    Se
-                    <strong>{{ currentMember?.name }}</strong>
-                    non ha espresso rifiutispunta questa casella di controllo.
+                    <template #description>
+                        Se
+                        <strong>{{ currentMember?.name }}</strong>
+                        non ha espresso rifiuti, spunta questa casella di controllo.
+                    </template>
+                    <template #checkboxLabel>
+                        Non ha espresso rifiuti.
+                    </template>
                 </NoPreferences>
             </div>
 
