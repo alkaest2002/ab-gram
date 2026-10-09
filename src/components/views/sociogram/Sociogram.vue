@@ -5,6 +5,7 @@ import { computed, ref } from "vue";
 // --- Routers ------------
 
 // --- Stores -------------
+import { storeToRefs } from "pinia";
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
@@ -24,6 +25,7 @@ import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation"
 
 // --- State --------------
 const sociogramStore = useSociogramStore();
+const { membersStatus } = storeToRefs(sociogramStore);
 
 const stateComponents = {
     start: StepStart,
@@ -34,9 +36,9 @@ const stateComponents = {
 };
 
 const currentComponentName = ref(
-  sociogramStore.status === "empty"
+  membersStatus.value === "empty"
     ? SOCIOGRAM_STEPS[0]
-    : sociogramStore.status === "partially-loaded"
+    : membersStatus === "partially-loaded"
       ? SOCIOGRAM_STEPS[2]
       : SOCIOGRAM_STEPS[4]
 );
