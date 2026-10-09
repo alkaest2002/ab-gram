@@ -14,6 +14,7 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/CarouselMembers.vue";
 import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
 import MembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/MembersPreferencesProgress.vue";
+import NoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/NoPreferences.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -176,43 +177,37 @@ function carouselGoNextMember() {
             <!-- Declared "not answered" states: unlock the carousel when the
                  member has no likes/dislikes to record. -->
             <div class="grid gap-6 md:grid-cols-2" v-show="membersCount > 1">
-                <div class="rounded-lg border border-line p-4">
-                    <p class="text-xs text-muted mb-3">
-                        Se
-                        <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso scelte, seleziona la voce corrispondente
-                        per sbloccare i pulsanti del carosello.
-                    </p>
-                    <label class="flex items-start gap-3">
-                        <input
-                            type="checkbox"
-                            class="mt-0.5 size-4 shrink-0 accent-accent"
-                            v-model="currentNoLikes"
-                        />
-                        <span class="text-sm text-ink">
-                            Non ha espresso preferenze.
-                        </span>
-                    </label>
-                </div>
-                <div class="rounded-lg border border-line p-4">
-                    <p class="text-xs text-muted mb-3">
-                        Se
-                        <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso rifiuti, seleziona la voce
-                        corrispondente per sbloccare i pulsanti del carosello.
-                    </p>
-                    <label class="flex items-start gap-3">
-                        <input
-                            type="checkbox"
-                            class="mt-0.5 size-4 shrink-0 accent-reject"
-                            v-model="currentNoDislikes"
-                        />
-                        <span class="text-sm text-ink">
-                            Non ha espresso rifiuti.
-                        </span>
-                    </label>
-                </div>
+                <NoPreferences
+                    v-model="currentNoLikes"
+                    tone="likes"
+                    label="Non ha espresso preferenze."
+                >
+                    Se
+                    <strong>{{ currentMember?.name }}</strong>
+                    non ha espresso scelte, spunta questa casella di controllo.
+                </NoPreferences>
+                <NoPreferences
+                    v-model="currentNoDislikes"
+                    tone="dislikes"
+                    label="Non ha espresso rifiuti."
+                >
+                    Se
+                    <strong>{{ currentMember?.name }}</strong>
+                    non ha espresso rifiutispunta questa casella di controllo.
+                </NoPreferences>
             </div>
+
+            <CarouselMembers
+                v-show="membersCount > 8"
+                :current-index="currentIndex"
+                :current-member="currentMember"
+                :members-count="members.length"
+                :can-go-previous="carouselCanGoPreviousMember"
+                :can-go-next="carouselCanGoNextMember"
+                @carousel-previous="carouselGoPreviousMember"
+                @carousel-next="carouselGoNextMember"
+                class="mt-9"
+            />
         </template>
     </section>
 
