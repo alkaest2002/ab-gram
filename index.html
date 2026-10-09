@@ -17,9 +17,56 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      /* First-paint loader: shown instantly, then replaced when Vue mounts. */
+      .boot-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        background: #ffffff;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
+
+      .boot-loader__wheel {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        border: 3px solid #e3e3e6;
+        border-top-color: #2563eb;
+        animation: boot-spin 0.8s linear infinite;
+      }
+
+      .boot-loader__text {
+        margin: 0;
+        color: #5b5a63;
+        font-size: 0.9rem;
+      }
+
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .boot-loader__wheel {
+          animation-duration: 2s;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="boot-loader" role="status">
+        <div class="boot-loader__wheel" aria-hidden="true"></div>
+        <p class="boot-loader__text">Caricamento in corso…</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
