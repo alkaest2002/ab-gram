@@ -43,7 +43,7 @@ const devDependencies = Object.entries(packageJson.devDependencies ?? {}).map(
         <section class="space-y-8">
             <header class="space-y-2">
                 <p class="eyebrow">Dettagli tecnici</p>
-                <h1>Cosa si nascondo sotto il cofano?</h1>
+                <h1>Cosa si nasconde sotto il cofano?</h1>
             </header>
 
             <p>
