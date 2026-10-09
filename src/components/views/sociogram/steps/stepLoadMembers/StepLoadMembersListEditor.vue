@@ -144,7 +144,7 @@ function addMember() {
         {{
           editingId !== null
             ? "Premi Invio per confermare, Esc per annullare."
-            : "Clicca su un nome per modificarlo."
+            : "Clicca su un nominativo per modificarlo."
         }}
       </p>
     </div>

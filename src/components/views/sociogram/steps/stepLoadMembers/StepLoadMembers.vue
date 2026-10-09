@@ -97,7 +97,7 @@ function onFileReadError({ message }) {
             @file-read-error="onFileReadError"
         >
             <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
-            Il file deve contenere un elenco di nomi, uno per riga.
+            Elenco di nominativi (es., Rossi Mario), uno per riga.
         </TextFileReader>
 
         <StepLoadMembersResult
