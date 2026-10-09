@@ -85,8 +85,6 @@ function goNext() {
 
         <!-- 1 · each person's choices and rejections. -->
         <section class="space-y-4">
-            <p class="eyebrow">1 · Scelte e rifiuti</p>
-
             <ul class="grid gap-x-8 gap-y-5 md:grid-cols-2">
                 <li
                     v-for="member in summary"
