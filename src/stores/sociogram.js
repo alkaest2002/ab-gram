@@ -34,14 +34,11 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
   const members = ref([]);
 
-  /** @type {import("vue").ComputedRef<boolean>} Whether at least one member has been loaded. */
-  const hasMembers = computed(() => members.value.length > 0);
-
   /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
   const membersCount = computed(() => members.value.length);
 
   /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
-  const status = computed(() => {
+  const membersStatus = computed(() => {
     if (membersCount.value === 0) return "empty";
     if (members.value.every(isMemberComplete)) return "completed";
     return "partially-loaded";
@@ -112,10 +109,9 @@ export const useSociogramStore = defineStore("sociogram", () => {
   }
 
   return {
-    status,
     members,
-    hasMembers,
     membersCount,
+    membersStatus,
     maxMemberNameLength,
     maxMembersCount,
     allMembersHaveNoDislikes,
