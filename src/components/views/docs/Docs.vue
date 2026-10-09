@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 // --- Routers ------------
 import { RouterView, useRoute } from "vue-router";
@@ -16,6 +16,7 @@ import DocsPager from "@/components/views/docs/DocsPager.vue";
 // --- Composables --------
 import { useToc } from "@/composables/docs/useToc";
 import { usePrevNext } from "@/composables/docs/usePrevNext";
+import { useMathjax } from "@/composables/docs/useMathjax";
 
 
 // --- Props --------------
@@ -28,6 +29,10 @@ const articleRef = ref(null);
 
 const { headings } = useToc(articleRef);
 const { prev, next } = usePrevNext();
+const { typeset } = useMathjax(articleRef);
+
+// Re-run MathJax whenever a different docs page (and its Markdown) renders.
+watch(() => route.path, typeset);
 
 // --- Computed -----------
 
