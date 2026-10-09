@@ -5,8 +5,8 @@ import {
   createAdjacencyMatrix,
   createAdjacencyMatrices,
   getMemberIndices,
-  getEdgeTypes,
-} from "@/analysis/edges/matrixOfAdjs.js";
+} from "@/analysis/common/adjacencyMatrices.js";
+import { getEdgeTypes } from "@/analysis/edges/edgeTypes.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({ id, likes, dislikes });
 
