@@ -47,8 +47,8 @@ const summary = computed(() =>
             name: member.name,
             likes: (member.likes ?? []).map(resolve),
             dislikes: (member.dislikes ?? []).map(resolve),
-            likesText: (member.likes ?? []).map(resolve).join(" · "),
-            dislikesText: (member.dislikes ?? []).map(resolve).join(" · "),
+            likesText: (member.likes ?? []).map(resolve).sort().join(" · "),
+            dislikesText: (member.dislikes ?? []).map(resolve).sort().join(" · "),
         };
     }),
 );
@@ -81,9 +81,6 @@ function goNext() {
             il report.
         </StepHeader>
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
-        <!-- 1 · each person's choices and rejections. -->
         <section class="space-y-4">
             <ul class="grid gap-x-8 gap-y-5 md:grid-cols-2">
                 <li
@@ -133,31 +130,12 @@ function goNext() {
                                 class="flex items-center justify-between gap-3"
                             >
                                 <span class="eyebrow flex items-center gap-1.5">
-                                    <svg
-                                        viewBox="0 0 22 6"
-                                        class="h-1.5 w-5.5 shrink-0"
-                                        aria-hidden="true"
-                                    >
-                                        <line
-                                            x1="1"
-                                            y1="3"
-                                            x2="21"
-                                            y2="3"
-                                            stroke-width="2.5"
-                                            stroke-linecap="round"
-                                            class="stroke-accent"
-                                        />
-                                    </svg>
-                                    <span>{{
+                                    <span>{{ member.likes.length }} {{
                                         member.likes.length == 1
                                             ? "Scelta"
                                             : "Scelte"
                                     }}</span>
                                 </span>
-                                <span
-                                    class="font-mono text-sm font-medium leading-none tabular-nums text-accent"
-                                    >{{ member.likes.length }}</span
-                                >
                             </div>
                             <p
                                 v-if="member.likes.length"
@@ -178,32 +156,12 @@ function goNext() {
                                 class="flex items-center justify-between gap-3"
                             >
                                 <span class="eyebrow flex items-center gap-1.5">
-                                    <svg
-                                        viewBox="0 0 22 6"
-                                        class="h-1.5 w-5.5 shrink-0"
-                                        aria-hidden="true"
-                                    >
-                                        <line
-                                            x1="1"
-                                            y1="3"
-                                            x2="21"
-                                            y2="3"
-                                            stroke-width="2.5"
-                                            stroke-linecap="round"
-                                            stroke-dasharray="5 5"
-                                            class="stroke-reject"
-                                        />
-                                    </svg>
-                                    <span>{{
+                                    <span>{{ member.dislikes.length }} {{
                                         member.dislikes.length == 1
                                             ? "Rifiuto"
                                             : "Rifiuti"
                                     }}</span>
                                 </span>
-                                <span
-                                    class="font-mono text-sm font-medium leading-none tabular-nums text-reject"
-                                    >{{ member.dislikes.length }}</span
-                                >
                             </div>
                             <p
                                 v-if="member.dislikes.length"
