@@ -7,13 +7,13 @@ export default {
   beforeEnter() {
     const sociogramStore = useSociogramStore();
 
-    if (sociogramStore.status === "completed") {
+    if (sociogramStore.membersStatus === "completed") {
       return true;
     }
 
     return {
       name:
-        sociogramStore.status === "empty"
+        sociogramStore.membersStatus === "empty"
           ? "reportNoDataError"
           : "reportIncompleteDataError",
     };
