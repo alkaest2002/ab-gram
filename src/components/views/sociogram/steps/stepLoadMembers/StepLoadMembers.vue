@@ -34,7 +34,7 @@ const emit = defineEmits([
 // --- State --------------
 // Get the sociogram store and its state.
 const sociogramStore = useSociogramStore();
-const { maxMemberNameLength, maxMembersCount, hasMembers, members } =
+const { maxMemberNameLength, maxMembersCount, members, membersCount } =
     storeToRefs(sociogramStore);
 
 const loadFileName = ref("");
@@ -49,7 +49,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 const nameIssues = computed(() => getMembersNameIssues(members.value));
 const hasLoaded = computed(
     () =>
-        hasMembers.value &&
+        membersCount.value > 0 &&
         nameIssues.value.emptyNamesCount === 0 &&
         nameIssues.value.duplicateNamesCount === 0,
 );
@@ -96,7 +96,7 @@ function onFileReadError({ message }) {
             @file-read="onFileRead"
             @file-read-error="onFileReadError"
         >
-            <template #label>{{ hasMembers ? "Carica un altro file" : "Carica il file" }}</template>
+            <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
             Il file deve contenere un elenco di nomi, uno per riga.
         </TextFileReader>
 
@@ -106,7 +106,7 @@ function onFileReadError({ message }) {
             :loaded-count="loadedCount"
         />
 
-        <div v-show="hasMembers" class="space-y-4">
+        <div v-show="membersCount > 0" class="space-y-4">
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
             <StepLoadMembersListEditor
