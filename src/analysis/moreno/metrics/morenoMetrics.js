@@ -4,7 +4,7 @@ import {
   computeConflict,
   computePositiveReciprocity,
   computeNegativeReciprocity,
-} from "./metrics/moreno/groupMetrics.js";
+} from "./groupMetrics.js";
 import {
   computeReceivedPositive,
   computeReceivedNegative,
@@ -19,7 +19,7 @@ import {
   computeAffiliation,
   computeInfluence,
   computeSociometricStatus,
-} from "./metrics/moreno/individualMetrics.js";
+} from "./individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS

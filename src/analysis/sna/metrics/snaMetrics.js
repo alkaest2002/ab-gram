@@ -6,7 +6,7 @@ import {
   computeNetworkCentralization,
   computeNetworkReciprocity,
   computeNetworkTransitivity,
-} from "./metrics/sna/groupMetrics.js";
+} from "./groupMetrics.js";
 import {
   computeInDegreeCentrality,
   computeOutDegreeCentrality,
@@ -15,7 +15,7 @@ import {
   computeBetweennessCentrality,
   computePageRank,
   computeHits,
-} from "./metrics/sna/individualMetrics.js";
+} from "./individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS

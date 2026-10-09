@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 
 // The full pipeline renders SVG at the end. Stub the plotting step (which needs
 // a browser DOM) so the rest of the analysis can be exercised end-to-end.
-vi.mock("@/analysis/snaPlots.js", () => ({
+vi.mock("@/analysis/sna/plots/snaPlots.js", () => ({
   getSnaPlot: (graph, accentColor) => [
     {
       typeOfPreference: graph.getAttribute("typeOfPreference"),

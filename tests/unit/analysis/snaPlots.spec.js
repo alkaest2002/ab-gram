@@ -8,8 +8,8 @@ vi.mock("graphology-layout-forceatlas2", () => ({
   default: { assign: () => {} },
 }));
 
-import { createLikesGraph } from "@/analysis/snaBase.js";
-import { getSnaPlot } from "@/analysis/snaPlots.js";
+import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { getSnaPlot } from "@/analysis/sna/plots/snaPlots.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
   id,

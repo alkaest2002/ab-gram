@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import * as np from "numpy-ts";
 
-import { getRankedScores, computeGiniCoefficient } from "@/analysis/metrics/common/commonMetrics.js";
+import { getRankedScores, computeGiniCoefficient } from "@/analysis/common/commonMetrics.js";
 
 describe("getRankedScores", () => {
   it("ranks a 1-D array ascending with 1-based dense ranks", () => {

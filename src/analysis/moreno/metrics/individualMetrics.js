@@ -1,5 +1,5 @@
 import * as np from "numpy-ts";
-import { computeGiniCoefficient } from "../common/commonMetrics.js";
+import { computeGiniCoefficient } from "../../common/commonMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // MORENO INDIVIDUAL-LEVEL METRICS

@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 
-import { createLikesGraph } from "@/analysis/snaBase.js";
+import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
-} from "@/analysis/snaMetrics.js";
+} from "@/analysis/sna/metrics/snaMetrics.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 

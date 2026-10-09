@@ -1,9 +1,9 @@
-import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./matrixOfAdjs.js";
-import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./morenoMetrics.js";
-import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./snaMetrics.js";
-import { getSnaComponents } from "./snaComponents.js";
-import { getSnaPlot } from "./snaPlots.js"
-import { createLikesGraph } from "./snaBase.js";
+import { createAdjacencyMatrices, getEdgeTypes, getMemberIndices } from "./edges/matrixOfAdjs.js";
+import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno/metrics/morenoMetrics.js";
+import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./sna/metrics/snaMetrics.js";
+import { getSnaComponents } from "./sna/snaComponents.js";
+import { getSnaPlot } from "./sna/plots/snaPlots.js"
+import { createLikesGraph } from "./sna/snaBase.js";
 
 /**
  * Run the full sociogram analysis over a set of members.

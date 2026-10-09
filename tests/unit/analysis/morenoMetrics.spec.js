@@ -4,7 +4,7 @@ import * as np from "numpy-ts";
 import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
-} from "@/analysis/morenoMetrics.js";
+} from "@/analysis/moreno/metrics/morenoMetrics.js";
 
 const GROUP_COLUMNS = [
   "cohesion",

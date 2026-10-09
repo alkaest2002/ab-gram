@@ -6,7 +6,7 @@ import {
   createAdjacencyMatrices,
   getMemberIndices,
   getEdgeTypes,
-} from "@/analysis/matrixOfAdjs.js";
+} from "@/analysis/edges/matrixOfAdjs.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({ id, likes, dislikes });
 

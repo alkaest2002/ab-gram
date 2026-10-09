@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { DirectedGraph } from "graphology";
 
-import { createLikesGraph } from "@/analysis/snaBase.js";
+import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 
 const makeMember = (id, name, likes = [], dislikes = []) => ({
   id,
