@@ -38,6 +38,60 @@ function headingAnchor(md) {
   });
 }
 
+// Route internal doc links through Vue Router so they don't trigger a full page
+// reload. markdown-exit emits a plain `<a href>` by default; for links that point
+// to an app route we emit `<RouterLink>` instead, which Vue's SFC compiler resolves
+// to the globally-registered vue-router component. External links get the usual
+// new-tab safety attributes; `#hash` and relative links are left as native anchors.
+function routerLinks(md) {
+  function isExternal(href) {
+    return /^(?:https?:)?\/\//i.test(href) || /^(?:mailto:|tel:)/i.test(href);
+  }
+
+  function isInternal(href) {
+    return href.startsWith("/") && !href.startsWith("//");
+  }
+
+  function findMatchingOpenLink(tokens, idx) {
+    let depth = 0;
+    for (let i = idx - 1; i >= 0; i -= 1) {
+      const token = tokens[i];
+      if (token.type === "link_close") depth += 1;
+      else if (token.type === "link_open") {
+        if (depth === 0) return token;
+        depth -= 1;
+      }
+    }
+    return null;
+  }
+
+  md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
+    const token = tokens[idx];
+    const href = token.attrGet("href") ?? "";
+
+    if (isInternal(href)) {
+      token._routerLink = true;
+      const attrs = [`to="${md.utils.escapeHtml(href)}"`];
+      const title = token.attrGet("title");
+      if (title) attrs.push(`title="${md.utils.escapeHtml(title)}"`);
+      return `<RouterLink ${attrs.join(" ")}>`;
+    }
+
+    if (isExternal(href)) {
+      token.attrSet("target", "_blank");
+      token.attrSet("rel", "noopener noreferrer");
+    }
+
+    return self.renderToken(tokens, idx, options, env);
+  };
+
+  md.renderer.rules.link_close = (tokens, idx, options, env, self) => {
+    const open = findMatchingOpenLink(tokens, idx);
+    if (open?._routerLink) return "</RouterLink>";
+    return self.renderToken(tokens, idx, options, env);
+  };
+}
+
 export default defineConfig({
   plugins: [
     vue({
@@ -48,6 +102,7 @@ export default defineConfig({
     Markdown({
       markdownSetup(md) {
         headingAnchor(md);
+        routerLinks(md);
       },
     }),
   ],
