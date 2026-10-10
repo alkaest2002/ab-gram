@@ -68,8 +68,10 @@ const selectableMembers = computed(() => props.members.filter((member) => member
 // Search state and the ranked result list, shared via the search composable.
 const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
 
+// Optimize: use a Set for faster lookups.
 const selected = computed(() => new Set(selectedIds.value));
 const excluded = computed(() => new Set(props.excludedIds));
+
 const hasMembers = computed(() => props.members.length > 0);
 const hasSelectableMembers = computed(() => selectableMembers.value.length > 0);
 
