@@ -7,6 +7,10 @@ import * as np from "numpy-ts";
  * when `members[i]` chose `members[j]` for the given preference and `0`
  * otherwise.
  *
+ * Formally, entry `(i, j)` is
+ *
+ *   $$ a_{ij} = \begin{cases} 1 & \text{if member } i \text{ chose member } j \\ 0 & \text{otherwise} \end{cases} $$
+ *
  * @param {Member[]} members
  * @param {"likes" | "dislikes"} preference
  * @returns {import("numpy-ts").NDArray} A `members.length` x `members.length`
