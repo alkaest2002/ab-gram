@@ -81,7 +81,7 @@ il $3$ (nessun'altra scelta).
 
 Le componenti aiutano a capire se il gruppo è **unito** oppure **diviso in
 sottogruppi separati**, senza contatti tra loro. Più è severo il criterio
-(debole → forte → forte con soli legami reciproci), più il legame tra i membri
+(debole → forte → forte con soli legami reciproci → clique), più il legame tra i membri
 deve essere solido perché li si consideri parte della stessa componente.
 
 > **Nota sulla densità dei legami.** Le componenti (deboli, forti e forti con
