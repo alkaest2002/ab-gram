@@ -68,9 +68,11 @@
             </div>
         </div>
         <script type="module" src="/src/main.js"></script>
-        <script
-            defer
-            src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"
-        ></script>
+        <script>
+        MathJax = {
+          loader: {load: ['ui/lazy']}
+        };
+        </script>
+        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
     </body>
 </html>
