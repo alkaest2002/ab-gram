@@ -7,7 +7,7 @@ import { computed, nextTick, ref, watch } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
-import StepLoadMembersListEditorStats from "./StepLoadMembersListEditorStats.vue";
+import LoadMembersListEditorStats from "./LoadMembersListEditorStats.vue";
 
 // --- Composables --------
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
@@ -140,7 +140,7 @@ function addMember() {
       </p>
     </div>
 
-    <StepLoadMembersListEditorStats
+    <LoadMembersListEditorStats
       v-if="members.length > 0"
       :members-count="membersCount"
       :duplicated-names-count="duplicatedNamesCount"

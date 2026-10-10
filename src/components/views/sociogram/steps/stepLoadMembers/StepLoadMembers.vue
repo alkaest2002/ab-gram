@@ -12,8 +12,8 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
-import StepLoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersResult.vue";
-import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
+import LoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersResult.vue";
+import LoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersListEditor.vue";
 import OrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/OrderNamesRadioGroup.vue";
 
 // --- Composables --------
@@ -109,7 +109,7 @@ function onFileReadError({ message }) {
             Elenco dei nominativi (es., Rossi Mario), uno per riga.
         </TextFileReader>
 
-        <StepLoadMembersResult
+        <LoadMembersResult
             :filename="loadFileName"
             :error="loadError"
             :loaded-count="loadedCount"
@@ -118,7 +118,7 @@ function onFileReadError({ message }) {
         <div v-show="membersCount > 0" class="space-y-4">
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-            <StepLoadMembersListEditor
+            <LoadMembersListEditor
                 :members="members"
                 @sociogram-update-member="sociogramStore.updateMember"
                 @sociogram-add-member="sociogramStore.addMember"

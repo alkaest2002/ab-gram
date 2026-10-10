@@ -11,7 +11,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
-import StepImportFromArchiveResult from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchiveResult.vue";
+import ImportFromArchiveResult from "@/components/views/sociogram/steps/stepImportFromArchive/ImportFromArchiveResult.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -105,7 +105,7 @@ function onFileReadError({ message }) {
             Il file deve contenere un archivio valido.
         </TextFileReader>
 
-        <StepImportFromArchiveResult
+        <ImportFromArchiveResult
             :filename="importFilename"
             :error="importError"
             :imported-count="importedCount"
