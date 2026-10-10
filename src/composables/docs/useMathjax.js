@@ -1,6 +1,28 @@
 import { nextTick, onMounted } from "vue";
 
 /**
+ * Lazily injects the MathJax loader script the first time typesetting is
+ * actually needed, so non-docs routes never download it.
+ *
+ * `window.MathJax` starts as the config object from index.html (which has a
+ * `startup` block but no `startup.promise`); the loaded library replaces it
+ * and adds `startup.promise`. That is the signal we use to detect "already
+ * loaded" so we never inject twice.
+ */
+const MATHJAX_SRC = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js";
+let injected = false;
+
+function ensureMathJax() {
+  if (injected || window.MathJax?.startup?.promise) return;
+  injected = true;
+
+  const script = document.createElement("script");
+  script.src = MATHJAX_SRC;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
+/**
  * Shared promise that resolves once MathJax has finished loading and its
  * startup sequence has completed.
  *
@@ -68,6 +90,7 @@ export function useMathjax(containerRef) {
   }
 
   async function typeset() {
+    ensureMathJax();
     await mathjaxReady();
     await nextTick();
 

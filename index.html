@@ -77,6 +77,7 @@
           startup: {typeset: false}
         };
         </script>
-        <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+        <!-- MathJax is injected lazily by useMathjax() only when a docs page
+             first needs it, so other routes don't pay for it. -->
     </body>
 </html>
