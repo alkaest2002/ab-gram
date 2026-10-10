@@ -241,6 +241,7 @@ function addMember() {
           </span>
 
           <input
+            class="truncate"
             :data-member-id="member.id"
             :value="member.name"
             :readonly="!isEditing(member)"
