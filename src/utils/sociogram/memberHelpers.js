@@ -28,6 +28,38 @@ export function normalizeNames(rows) {
 }
 
 /**
+ * Order a list of names according to the requested mode.
+ *
+ * `"as-is"` returns the names in their current order, `"alphabetical"` sorts
+ * them lexicographically, and `"shuffle"` randomizes them with a Fisher–Yates
+ * shuffle. The input array is never mutated.
+ *
+ * @param {string[]} names
+ * @param {"as-is" | "alphabetical" | "shuffle"} mode
+ * @returns {string[]}
+ */
+export function orderNames(names, mode) {
+  if (mode === "alphabetical") return [...names].sort();
+  if (mode === "shuffle") return shuffleNames(names);
+  return names;
+}
+
+/**
+ * Return a new array with the names in random order (Fisher–Yates shuffle).
+ *
+ * @param {string[]} names
+ * @returns {string[]}
+ */
+export function shuffleNames(names) {
+  const result = [...names];
+  for (let i = result.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
  * Build parsed sociogram members from a list of names.
  *
  * Ids are position-based for now; preferences are not collected until a later

@@ -14,6 +14,7 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 import TextFileReader from "@/components/ui/TextFileReader.vue";
 import StepLoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersResult.vue";
 import StepLoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembersListEditor.vue";
+import OrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/OrderNamesRadioGroup.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -21,6 +22,7 @@ import {
     buildMembers,
     getMembersNameIssues,
     normalizeNames,
+    orderNames,
 } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
@@ -40,6 +42,10 @@ const { maxMemberNameLength, maxMembersCount, members, membersCount } =
 const loadFileName = ref("");
 const loadError = ref(null);
 const loadedCount = ref(null);
+
+// How imported names are ordered: "as-is" keeps the file order,
+// "alphabetical" sorts them lexicographically, "shuffle" randomizes them.
+const orderMode = ref("as-is");
 
 const { goToStep, restart } = useSociogramNavigation(emit);
 
@@ -66,8 +72,10 @@ function onFileSelected({ filename }) {
 }
 
 function onFileRead({ lines }) {
-    const normalizedNames = normalizeNames(lines).sort();
-    const loadedMembers = buildMembers(normalizedNames);
+    const normalizedNames = normalizeNames(lines);
+    const orderedNames = orderNames(normalizedNames, orderMode.value);
+
+    const loadedMembers = buildMembers(orderedNames);
 
     sociogramStore.initMembers(loadedMembers);
     loadedCount.value = loadedMembers.length;
@@ -80,12 +88,13 @@ function onFileReadError({ message }) {
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nomi">
-            Il file di testo deve contenere un elenco di nomi, non
-            necessariamente in ordine alfabetico. Ogni nome &egrave; limitato a
-            {{ sociogramStore.maxMemberNameLength }} caratteri; possono essere
-            caricati al massimo {{ sociogramStore.maxMembersCount }} nomi.
+        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica la lista dei nominativi">
+            Il file di testo deve contenere un elenco per un massimo {{ sociogramStore.maxMembersCount }} nominativi. Ogni nominativo &egrave; limitato a {{ sociogramStore.maxMemberNameLength }} caratteri.
         </StepHeader>
+
+        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
+        <OrderNamesRadioGroup v-model="orderMode" />
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
@@ -97,7 +106,7 @@ function onFileReadError({ message }) {
             @file-read-error="onFileReadError"
         >
             <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
-            Elenco di nominativi (es., Rossi Mario), uno per riga.
+            Elenco dei nominativi (es., Rossi Mario), uno per riga.
         </TextFileReader>
 
         <StepLoadMembersResult
