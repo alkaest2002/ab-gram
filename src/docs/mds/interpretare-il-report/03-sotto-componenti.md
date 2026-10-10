@@ -35,10 +35,20 @@ particolarmente dense.
 
 Una componente connessa è un insieme di membri raggiungibili tra loro:
 
-- **Componenti forti** — ogni membro raggiunge ogni altro seguendo la direzione
-  dei legami.
 - **Componenti deboli** — ogni membro raggiunge ogni altro ignorando la
   direzione dei legami.
+- **Componenti forti** — ogni membro raggiunge ogni altro seguendo la direzione
+  dei legami.
+- **Componenti forti con soli legami reciproci** — come le componenti forti, ma
+  costruite usando solo le relazioni reciproche ($a_{ij} = a_{ji} = 1$).
 
 Le sotto-componenti aiutano a capire se il gruppo è unito oppure
 diviso in sottogruppi separati.
+
+> **Nota sulla densità dei legami.** Le componenti (deboli, forti e forti con
+> soli legami reciproci) sono definite dalla *raggiungibilità*, non dalla
+> completezza: è sufficiente che esista un percorso tra due membri, non che
+> siano collegati direttamente. Sono quindi strutture <u>meno compatte
+  > delle clique</u>, in cui invece ogni membro è legato a tutti gli altri. Una
+> componente può contenere legami radi e catene di intermediari, mentre una
+> clique impone un legame diretto tra ogni coppia.
