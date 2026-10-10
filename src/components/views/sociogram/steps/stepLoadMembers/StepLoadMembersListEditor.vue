@@ -7,6 +7,7 @@ import { computed, nextTick, ref, watch } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
+import StepLoadMembersListEditorStats from "./StepLoadMembersListEditorStats.vue";
 
 // --- Composables --------
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
@@ -57,15 +58,6 @@ const canAddMember = computed(
   () => hasAvailableIndices.value && emptyNamesCount.value === 0,
 );
 
-// Issue counts read red when they need attention, muted once they're resolved.
-// Members is the baseline and always reads ink.
-const duplicatedTone = computed(() =>
-  duplicatedNamesCount.value > 0 ? "text-reject" : "text-muted"
-);
-const emptyTone = computed(() =>
-  emptyNamesCount.value > 0 ? "text-reject" : "text-muted"
-);
-
 // --- Watchers -----------
 // Focus the newly added member's input when it renders.
 watch(
@@ -110,7 +102,6 @@ function cancelEditing() {
   originalName.value = null;
 }
 
-// Full class strings (not interpolated) so Tailwind can see every utility.
 function inputClass(member) {
   return isEditing(member)
     ? `w-full border border-line bg-white px-3 py-2 text-sm text-ink transition-colors focus:border-accent outline-none`
@@ -149,78 +140,12 @@ function addMember() {
       </p>
     </div>
 
-    <dl
+    <StepLoadMembersListEditorStats
       v-if="members.length > 0"
-      class="grid grid-cols-1 divide-y divide-line rounded-lg border border-line sm:grid-cols-3 sm:divide-x sm:divide-y-0"
-    >
-      <!-- Persone: a filled dot, the baseline reading of the group's size. -->
-      <div class="flex flex-col px-5 py-4">
-        <dt class="eyebrow order-2 mt-2">Persone</dt>
-        <dd class="order-1 flex items-center gap-2.5 text-ink">
-          <span
-            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line text-ink"
-          >
-            <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="6.5" fill="currentColor" />
-            </svg>
-          </span>
-          <span class="font-mono text-2xl leading-none font-semibold">
-            {{ membersCount }}
-          </span>
-        </dd>
-      </div>
-
-      <!-- Nomi duplicati: two overlapping marks — the same name twice. -->
-      <div class="flex flex-col px-5 py-4">
-        <dt class="eyebrow order-2 mt-2">Nomi duplicati</dt>
-        <dd class="order-1 flex items-center gap-2.5" :class="duplicatedTone">
-          <span
-            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
-          >
-            <svg
-              class="size-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              aria-hidden="true"
-            >
-              <circle cx="10" cy="12" r="5.5" />
-              <circle cx="14" cy="12" r="5.5" />
-            </svg>
-          </span>
-          <span class="font-mono text-2xl leading-none font-semibold">
-            {{ duplicatedNamesCount }}
-          </span>
-        </dd>
-      </div>
-
-      <!-- Nomi vuoti: a dashed, hollow circle — the graph's mark for absence. -->
-      <div class="flex flex-col px-5 py-4">
-        <dt class="eyebrow order-2 mt-2">Nomi vuoti</dt>
-        <dd class="order-1 flex items-center gap-2.5" :class="emptyTone">
-          <span
-            class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
-          >
-            <svg
-              class="size-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-dasharray="3 3.5"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="6.5" />
-            </svg>
-          </span>
-          <span class="font-mono text-2xl leading-none font-semibold">
-            {{ emptyNamesCount }}
-          </span>
-        </dd>
-      </div>
-    </dl>
+      :members-count="membersCount"
+      :duplicated-names-count="duplicatedNamesCount"
+      :empty-names-count="emptyNamesCount"
+    />
 
     <p v-if="members.length === 0" class="text-sm text-muted">
       Nessun membro caricato.
