@@ -70,7 +70,11 @@
         <script type="module" src="/src/main.js"></script>
         <script>
         MathJax = {
-          loader: {load: ['ui/lazy']}
+          loader: {load: ['ui/lazy']},
+          // The docs are rendered client-side by Vue, so skip MathJax's
+          // automatic full-page typeset on load; each article is typeset on
+          // demand by useMathjax() as it mounts/navigates.
+          startup: {typeset: false}
         };
         </script>
         <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
