@@ -19,16 +19,16 @@ $$
 Sono le unità più piccole di reciprocità e indicano un legame confermato da
 entrambe le parti.
 
-## Cricche
+## Clique
 
-Una cricca è un insieme di membri in cui ognuno è collegato a tutti gli altri,
+Una clique è un insieme di membri in cui ognuno è collegato a tutti gli altri,
 ignorando la direzione dei legami:
 
 $$
 \forall i, j \in C,\ i \neq j : a_{ij} \lor a_{ji}
 $$
 
-Le cricche evidenziano i sottogruppi più compatti, in cui le relazioni sono
+Le clique evidenziano i sottogruppi più compatti, in cui le relazioni sono
 particolarmente dense.
 
 ## Componenti connesse
@@ -39,8 +39,6 @@ Una componente connessa è un insieme di membri raggiungibili tra loro:
   dei legami.
 - **Componenti deboli** — ogni membro raggiunge ogni altro ignorando la
   direzione dei legami.
-- **Componenti forti con soli legami reciproci** — come le componenti forti, ma
-  costruite usando solo le relazioni reciproche ($a_{ij} = a_{ji} = 1$).
 
-Le componenti deboli e le cricche aiutano a capire se il gruppo è unito oppure
+Le sotto-componenti aiutano a capire se il gruppo è unito oppure
 diviso in sottogruppi separati.

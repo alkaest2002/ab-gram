@@ -88,15 +88,3 @@ $$
 (a_{ij} \land \neg d_{ij} \land \neg a_{ji} \land d_{ji}) \lor
 (\neg a_{ij} \land d_{ij} \land a_{ji} \land \neg d_{ji})
 $$
-
-## Legami ambivalenti
-
-Un legame è ambivalente quando un membro prova sia preferenza sia rifiuto verso
-lo stesso membro: lo sceglie e al tempo stesso lo rifiuta.
-
-$$
-a_{ij} \land d_{ij}
-$$
-
-Questi legami richiedono un'attenzione particolare nella lettura del
-sociogramma, perché indicano una relazione non risolta.
