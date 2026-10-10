@@ -65,6 +65,13 @@
     @apply text-[0.975rem] leading-relaxed text-muted;
   }
 
+  /* MathJax's SVG output typesets inline math as an inline <svg>, but Tailwind's
+     preflight resets svg to display:block — which breaks inline math onto its own
+     line. Restore inline flow inside MathJax's SVG containers. */
+  mjx-container[jax="SVG"] > svg {
+    display: inline;
+  }
+
   /* Preflight resets link styles: we restore them only on plain text links;
      those with classes (RouterLink, .btn) stay unstyled. */
   a:not([class]) {
