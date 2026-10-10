@@ -40,7 +40,7 @@ Una componente connessa è un insieme di membri raggiungibili tra loro:
 - **Componenti deboli** — ogni membro raggiunge ogni altro ignorando la
   direzione dei legami.
 - **Componenti forti con soli legami reciproci** — come le componenti forti, ma
-  costruite usando solo le relazioni reciproche (\(a_{ij} = a_{ji} = 1\)).
+  costruite usando solo le relazioni reciproche ($a_{ij} = a_{ji} = 1$).
 
 Le componenti deboli e le cricche aiutano a capire se il gruppo è unito oppure
 diviso in sottogruppi separati.

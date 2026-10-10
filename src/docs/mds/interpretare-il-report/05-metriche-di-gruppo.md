@@ -10,8 +10,8 @@ per confrontare gruppi o momenti diversi.
 ## Densità
 
 La densità misura quanta parte delle relazioni possibili è effettivamente
-presente. Con \(n\) membri ci sono \(n(n-1)\) relazioni dirette possibili; se
-\(E\) è il numero di relazioni osservate:
+presente. Con $n$ membri ci sono $n(n-1)$ relazioni dirette possibili; se
+$E$ è il numero di relazioni osservate:
 
 $$
 D = \frac{E}{n(n-1)}
@@ -25,7 +25,7 @@ La reciprocità indica quanta parte delle scelte è ricambiata: è il rapporto t
 le scelte reciproche e tutte le scelte espresse.
 
 $$
-R = \frac{\frac{1}{2}\sum_{i,j} a_{ij}\,a_{ji}}{\sum_{i,j} a_{ij}}
+R = \frac{\frac{1}{2}\sum_{i,j} a_{ij}\thinspace a_{ji}}{\sum_{i,j} a_{ij}}
 $$
 
 - Valori alti: relazioni reciproche frequenti.
@@ -37,5 +37,5 @@ La coesione confronta le coppie di scelta reciproca con tutte le coppie
 possibili; il conflitto fa lo stesso con i rifiuti reciproci.
 
 $$
-Coh = \frac{\sum_{i,j} a_{ij}\,a_{ji}}{n(n-1)}, \qquad Con = \frac{\sum_{i,j} d_{ij}\,d_{ji}}{n(n-1)}
+Coh = \frac{\sum_{i,j} a_{ij}\thinspace a_{ji}}{n(n-1)}, \qquad Con = \frac{\sum_{i,j} d_{ij}\thinspace d_{ji}}{n(n-1)}
 $$

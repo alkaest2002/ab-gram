@@ -17,20 +17,20 @@ $$
 C_D(i) = \frac{d(i)}{n - 1}
 $$
 
-dove \(d(i)\) è il numero di legami del membro \(i\) e \(n\) il numero di
+dove $d(i)$ è il numero di legami del membro $i$ e $n$ il numero di
 membri del gruppo.
 
 ### Tipi di centralità
 
-- **Grado** — quante scelte ha ricevuto: \(d_{\text{in}}(i) = \sum_{j} a_{ji}\).
+- **Grado** — quante scelte ha ricevuto: $d_{\text{in}}(i) = \sum_{j} a_{ji}$.
 - **Intermediazione** — quanto sta sui percorsi tra gli altri.
 - **Vicinanza** — quanto è vicino a tutti gli altri.
 
 ## Gli indici di Moreno
 
 Per ogni membro si calcolano gli indici sociometrici classici, ricavati dalle
-somme di riga e di colonna delle matrici di adiacenza. Con \(a_{ij} = 1\) quando
-il membro \(i\) sceglie il membro \(j\) e \(d_{ij} = 1\) quando lo rifiuta,
+somme di riga e di colonna delle matrici di adiacenza. Con $a_{ij} = 1$ quando
+il membro $i$ sceglie il membro $j$ e $d_{ij} = 1$ quando lo rifiuta,
 le scelte ricevute e date sono:
 
 $$
