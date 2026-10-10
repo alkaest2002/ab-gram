@@ -6,13 +6,7 @@ description: Come classificare le relazioni tra i membri del gruppo.
 
 Ogni relazione tra due membri può essere classificata in base ai sentimenti
 espressi nelle due direzioni. Con $a_{ij} = 1$ quando il membro $i$ sceglie
-il membro $j$ e $d_{ij} = 1$ quando lo rifiuta, il legame da $i$ a $j$
-dipende dalla coppia di sentimenti in avanti e all'indietro:
-
-$$
-\text{avanti } (i \to j) = (a_{ij}, d_{ij}), \qquad
-\text{indietro } (j \to i) = (a_{ji}, d_{ji})
-$$
+il membro $j$ e $d_{ij} = 1$ quando lo rifiuta.
 
 ## Matrice di adiacenza
 
@@ -45,26 +39,6 @@ $$
 
 Qui, ad esempio, $a_{12} = 1$ significa che il membro $1$ sceglie il membro
 $2$, mentre $d_{31} = 0$ indica che il membro $3$ non rifiuta il membro $1$.
-
-## Lista di adiacenza
-
-La lista di adiacenza rappresenta il sociogramma elencando, per ogni membro, i
-membri a cui è collegato. Poiché le relazioni sono dirette e di due tipi, a ogni
-membro $i$ sono associate due liste:
-
-$$
-A_i = \\{\\, j \in V \mid a_{ij} = 1 \\,\\}, \qquad
-D_i = \\{\\, j \in V \mid d_{ij} = 1 \\,\\}
-$$
-
-dove $V$ è l'insieme dei membri, $A_i$ raccoglie i membri scelti da $i$ e
-$D_i$ quelli rifiutati. La lista di adiacenza dell'intero gruppo è la coppia di
-collezioni:
-
-$$
-\mathcal{A} = \\{\\, A_i \mid i \in V \\,\\}, \qquad
-\mathcal{D} = \\{\\, D_i \mid i \in V \\,\\}
-$$
 
 ## Legami non problematici
 
