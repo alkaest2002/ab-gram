@@ -1,5 +1,5 @@
 ---
-title: Cos'è AB-Grid
+title: Cos'è il sociogramma
 order: 1
 description: Una panoramica sul sociogramma e sul ruolo dell'applicazione.
 ---

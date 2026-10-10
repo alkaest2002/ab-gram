@@ -1,5 +1,5 @@
 ---
-title: Archiviare i dati
+title: Archiviare un progetto
 order: 3
 description: Come salvare e recuperare i dati inseriti nell'applicazione.
 ---
@@ -19,10 +19,6 @@ Il salvataggio produce un file JSON con nomi e relazioni:
   ]
 }
 ```
-
-$$
-rr_i = \sum_{j} d_{ji}
-$$
 
 ### Formati supportati
 

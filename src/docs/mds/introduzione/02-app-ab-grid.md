@@ -1,5 +1,5 @@
 ---
-title: A chi è rivolta l'applicazione
+title: App AB-Grid
 order: 2
 description: I destinatari dell'applicazione e i contesti in cui si usa.
 ---

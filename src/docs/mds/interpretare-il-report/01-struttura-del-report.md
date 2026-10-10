@@ -1,6 +1,6 @@
 ---
-title: Come è strutturato il report
-order: 3
+title: Struttura del report
+order: 1
 description: Le parti che compongono il report generato dall'applicazione.
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Caricare la lista dei nomi
+title: Creare un nuovo progetto
 order: 1
 description: Come inserire i membri del gruppo nell'applicazione.
 ---
