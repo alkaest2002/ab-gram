@@ -1,46 +1,77 @@
 import { nextTick, onMounted } from "vue";
 
 /**
- * Resolves once MathJax has finished loading and is ready to typeset.
+ * Shared promise that resolves once MathJax has finished loading and its
+ * startup sequence has completed.
  *
- * In this SPA, MathJax can finish loading either before or after Vue mounts,
- * so we can't assume `typesetPromise` exists yet — we wait on MathJax's own
- * startup promise (polling until the loader script has replaced the global).
+ * `MathJax.startup.promise` is the promise resolved when `pageReady()` is
+ * done (MathJax runs its startup typesetting, then resolves). The `MathJax`
+ * global starts as a plain config object and is replaced by the loaded
+ * library asynchronously, so `startup.promise` doesn't exist until the loader
+ * has run. We poll for it once and then wait on that promise. The result is
+ * memoized so every caller shares a single poll.
  */
+let readyPromise = null;
+
 function mathjaxReady(timeoutMs = 10000) {
-  return new Promise((resolve) => {
-    if (window.MathJax?.startup?.promise) {
-      window.MathJax.startup.promise.then(resolve);
-      return;
-    }
+  if (readyPromise) return readyPromise;
+
+  readyPromise = new Promise((resolve) => {
+    const attach = () => {
+      const startup = window.MathJax?.startup;
+      if (!startup?.promise) return false;
+      startup.promise.then(resolve);
+      return true;
+    };
+
+    if (attach()) return;
 
     const poll = setInterval(() => {
-      if (window.MathJax?.startup?.promise) {
-        clearInterval(poll);
-        window.MathJax.startup.promise.then(resolve);
-      }
+      if (attach()) clearInterval(poll);
     }, 50);
 
+    // Fallback so callers never hang if the loader fails to run.
     setTimeout(() => {
       clearInterval(poll);
       resolve();
     }, timeoutMs);
   });
+
+  return readyPromise;
 }
 
 /**
- * Re-typesets the math inside `containerRef` once it is in the DOM.
+ * Re-typesets the math inside `containerRef` once it is in the DOM, and keeps
+ * MathJax's internal state consistent across SPA navigation.
  *
  * MathJax runs automatically only on page load, but the docs are rendered
  * client-side by Vue (and swapped on navigation), so we have to run it again
  * whenever the article content is (re)rendered.
  */
 export function useMathjax(containerRef) {
+  /**
+   * Tells MathJax to forget any math previously typeset inside `containerRef`
+   * and to reset TeX state (labels and automatic equation numbering).
+   *
+   * Per https://docs.mathjax.org/en/latest/advanced/typeset.html this MUST run
+   * before the container's content is removed/replaced, otherwise MathJax keeps
+   * orphaned `MathItem`s in its internal list: memory grows and re-rendering
+   * can touch stale expressions. `texReset()` stops equation numbering and
+   * labels leaking from one page into the next.
+   */
+  function clear() {
+    const mathjax = window.MathJax;
+    if (!mathjax) return;
+
+    if (containerRef.value) mathjax.typesetClear?.([containerRef.value]);
+    mathjax.texReset?.();
+  }
+
   async function typeset() {
     await mathjaxReady();
     await nextTick();
 
-    if (window.MathJax?.typesetPromise && containerRef.value) {
+    if (containerRef.value && window.MathJax?.typesetPromise) {
       try {
         await window.MathJax.typesetPromise([containerRef.value]);
       } catch {
@@ -51,5 +82,5 @@ export function useMathjax(containerRef) {
 
   onMounted(typeset);
 
-  return { typeset };
+  return { typeset, clear };
 }

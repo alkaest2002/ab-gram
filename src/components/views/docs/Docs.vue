@@ -1,9 +1,9 @@
 <script setup>
 // --- Vue ----------------
-import { ref, watch } from "vue";
+import { onBeforeUnmount, ref, watch } from "vue";
 
 // --- Routers ------------
-import { RouterView, useRoute } from "vue-router";
+import { onBeforeRouteUpdate, RouterView, useRoute } from "vue-router";
 
 // --- Stores -------------
 
@@ -29,7 +29,13 @@ const articleRef = ref(null);
 
 const { headings } = useToc(articleRef);
 const { prev, next } = usePrevNext();
-const { typeset } = useMathjax(articleRef);
+const { typeset, clear } = useMathjax(articleRef);
+
+// Forget old math before the article content is swapped, so MathJax doesn't
+// retain orphaned expressions (memory growth) and equation numbering resets.
+onBeforeRouteUpdate(clear);
+// Also release math when leaving the docs section entirely.
+onBeforeUnmount(clear);
 
 // Re-run MathJax whenever a different docs page (and its Markdown) renders.
 watch(() => route.path, typeset);
