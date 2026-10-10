@@ -8,6 +8,12 @@ import * as np from "numpy-ts";
  * where `aId` is the id of the choosing member and `bId` the id of the chosen
  * one.
  *
+ * Let `a_ij = 1` when member `i` likes member `j`, and `d_ij = 1` when member
+ * `i` dislikes member `j`. Each directed edge `i -> j` combines the forward
+ * feelings of `i` with the reverse feelings of `j`:
+ *
+ *   $$ \text{forward } (i \to j) = (a_{ij},\, d_{ij}) \qquad \text{reverse } (j \to i) = (a_{ji},\, d_{ji}) $$
+ *
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix
  *   (`adjLikes[i][j] === 1` means member `i` likes member `j`).
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix
