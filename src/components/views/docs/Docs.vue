@@ -34,6 +34,7 @@ const { typeset, clear } = useMathjax(articleRef);
 // Forget old math before the article content is swapped, so MathJax doesn't
 // retain orphaned expressions (memory growth) and equation numbering resets.
 onBeforeRouteUpdate(clear);
+
 // Also release math when leaving the docs section entirely.
 onBeforeUnmount(clear);
 
