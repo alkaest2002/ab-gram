@@ -71,6 +71,11 @@
         <script>
         MathJax = {
           loader: {load: ['ui/lazy']},
+          tex: {
+            // Enable `$...$` inline math: the Markdown pipeline strips the
+            // backslashes from the default LaTeX delimiters.
+            inlineMath: {'[+]': [['$', '$']]}
+          },
           // The docs are rendered client-side by Vue, so skip MathJax's
           // automatic full-page typeset on load; each article is typeset on
           // demand by useMathjax() as it mounts/navigates.
