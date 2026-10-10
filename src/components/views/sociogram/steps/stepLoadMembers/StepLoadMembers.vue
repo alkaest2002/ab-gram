@@ -14,7 +14,7 @@ import SociogramNavigation from "@/components/views/sociogram/SociogramNavigatio
 import TextFileReader from "@/components/ui/TextFileReader.vue";
 import LoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersResult.vue";
 import LoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersListEditor.vue";
-import OrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/OrderNamesRadioGroup.vue";
+import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -94,7 +94,7 @@ function onFileReadError({ message }) {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <OrderNamesRadioGroup v-model="orderMode" />
+        <LoadMembersOrderNamesRadioGroup v-model="orderMode" />
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 

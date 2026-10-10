@@ -11,10 +11,10 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import CarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/CarouselMembers.vue";
-import SelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SelectMembers.vue";
-import MembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/MembersPreferencesProgress.vue";
-import NoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/NoPreferences.vue";
+import SetPreferencesCarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarouselMembers.vue";
+import SetPreferencesSelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesSelectMembers.vue";
+import SetPreferencesMembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesMembersPreferencesProgress.vue";
+import SetPreferencesNoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesNoPreferences.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -133,14 +133,14 @@ function carouselGoNextMember() {
 
         <template v-else>
             <!-- Progress: percentage of members whose data has been collected. -->
-            <MembersPreferencesProgress :members="members" class="mt-6" />
+            <SetPreferencesMembersPreferencesProgress :members="members" class="mt-6" />
 
             <!-- Carousel: select the subject, one member at a time. -->
             <div class="mt-6">
                 <p class="eyebrow">CAROSELLO</p>
             </div>
 
-            <CarouselMembers
+            <SetPreferencesCarouselMembers
                 :current-index="currentIndex"
                 :current-member="currentMember"
                 :members-count="members.length"
@@ -154,7 +154,7 @@ function carouselGoNextMember() {
             <!-- The subject's likes and dislikes. -->
             <div class="grid gap-6 md:grid-cols-2">
                 <!-- Likes -->
-                <SelectMembers
+                <SetPreferencesSelectMembers
                     v-model="currentLikes"
                     preference="likes"
                     label="Scelte"
@@ -164,7 +164,7 @@ function carouselGoNextMember() {
                 />
 
                 <!-- Dislikes-->
-                <SelectMembers
+                <SetPreferencesSelectMembers
                     v-model="currentDislikes"
                     preference="dislikes"
                     label="Rifiuti"
@@ -177,7 +177,7 @@ function carouselGoNextMember() {
             <!-- Declared "not answered" states: unlock the carousel when the
                  member has no likes/dislikes to record. -->
             <div class="grid gap-6 md:grid-cols-2" v-show="membersCount > 1">
-                <NoPreferences
+                <SetPreferencesNoPreferences
                     v-model="currentNoLikes"
                     tone="likes"
                 >
@@ -189,8 +189,8 @@ function carouselGoNextMember() {
                     <template #checkboxLabel>
                         Non ha espresso preferenze.
                     </template>
-                </NoPreferences>
-                <NoPreferences
+                </SetPreferencesNoPreferences>
+                <SetPreferencesNoPreferences
                     v-model="currentNoDislikes"
                     tone="dislikes"
                 >
@@ -202,10 +202,10 @@ function carouselGoNextMember() {
                     <template #checkboxLabel>
                         Non ha espresso rifiuti.
                     </template>
-                </NoPreferences>
+                </SetPreferencesNoPreferences>
             </div>
 
-            <CarouselMembers
+            <SetPreferencesCarouselMembers
                 v-show="membersCount > 8"
                 :current-index="currentIndex"
                 :current-member="currentMember"

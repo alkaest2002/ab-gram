@@ -13,7 +13,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
-import MemberCard from "@/components/views/sociogram/steps/stepGenerateReport/MemberCard.vue";
+import GenerateReportMemberCard from "@/components/views/sociogram/steps/stepGenerateReport/GenerateReportMemberCard.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -79,7 +79,7 @@ function goNext() {
 
         <section class="space-y-4">
             <div class="grid gap-x-8 gap-y-5 md:grid-cols-2">
-                <MemberCard
+                <GenerateReportMemberCard
                     v-for="member in summary"
                     :key="member.id"
                     :member="member"
