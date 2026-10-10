@@ -1,37 +1,37 @@
 ---
 title: Creare un nuovo progetto
 order: 1
-description: Come inserire i membri del gruppo nell'applicazione.
+description: Come avviare un nuovo sociogramma partendo da una lista di nomi.
 ---
 
-Il primo passo è caricare i nomi delle persone che compongono il gruppo.
-AB-Grid accetta sia un elenco testuale sia un file CSV.
+Quando apri AB-Grid ti trovi davanti alla schermata iniziale, che propone due
+percorsi:
 
-## Inserimento manuale
+- **Crea progetto** — avvia un nuovo sociogramma da una lista di nomi.
+- **Importa progetto** — riprende un sociogramma archiviato in precedenza.
 
-Puoi digitare un nome alla volta:
+Entrambi i pulsanti azzerano i dati attualmente in memoria, così ogni nuovo
+lavoro parte sempre pulito.
 
-```txt
-Anna
-Bea
-Emma
-```
+## Avviare un nuovo progetto
 
-### Da file CSV
+Scegli **Crea progetto** per iniziare da zero. Verrai portato al primo
+passaggio, dove carichi l'elenco dei nominativi.
 
-Per gruppi numerosi conviene preparare un file con una colonna di nomi:
+## Riprendere un progetto
 
-```csv
-nome
-Anna
-Bea
-Emma
-```
+Se hai già salvato un lavoro, scegli **Importa progetto**. L'applicazione ti
+chiederà il file archiviato e ricostruirà il sociogramma esattamente da dove lo
+avevi lasciato. Vedi [Importare un progetto archiviato](/docs/come-usare-l-app/02-importare-un-progetto-archiviato).
 
-## Controlli automatici
+## Un avviso importante sui dati
 
-Prima di procedere, l'applicazione:
+AB-Grid **non salva nulla nella cache del browser**: i dati restano nella memoria
+dell'applicazione finché la pagina è aperta. Per questo motivo:
 
-- Rimuove gli spazi superflui.
-- Segnala i nomi duplicati.
-- Mostra il numero totale di membri.
+- Non aggiornare la pagina mentre stai lavorando.
+- Non usare i tasti *indietro* e *avanti* del browser.
+
+Puoi comunque mettere in pausa e riprendere un lavoro in qualsiasi momento
+usando l'archivio, descritto in [Archiviare e riprendere un
+progetto](/docs/come-usare-l-app/06-archiviare-un-progetto).

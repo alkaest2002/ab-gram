@@ -1,31 +1,39 @@
 ---
 title: Generare il report
-order: 4
-description: Come produrre il report finale dal gruppo caricato.
+order: 5
+description: Come controllare il riepilogo e produrre il report finale.
 ---
 
-Una volta completati nomi e relazioni, puoi generare il report. Il calcolo è
-automatico e il risultato è subito disponibile.
+Il terzo passaggio è il **riepilogo**: qui controlli i dati raccolti prima di
+generare il report.
 
-## Avvio del calcolo
+## Il riepilogo
 
-La generazione avvia l'analisi del grafo:
+Per ogni membro viene mostrata una scheda con:
 
-```js
-const report = generaReport(grafo);
-console.log(report.metricheDiGruppo);
-```
+- L'identificativo del membro.
+- Il nome.
+- Le scelte espresse.
+- I rifiuti espressi.
 
-### Cosa viene calcolato
+### Correggere un membro
 
-- Le metriche di gruppo.
-- Le metriche individuali.
-- I grafici del sociogramma.
+Se noti un errore, clicca sulla scheda del membro: l'applicazione ti riporta al
+passaggio delle preferenze, già posizionato su quella persona.
 
-## Esportazione
+## Generare il report
 
-Il report può essere esportato in più formati:
+Quando sei pronto, premi **Avanti**. L'applicazione verifica che i dati siano
+completi e, se tutto è in ordine, genera il report.
 
-1. Immagine del sociogramma.
-2. Tabella delle metriche.
-3. File dei dati grezzi.
+### Requisiti per la generazione
+
+- Il gruppo deve contenere **almeno 5 membri**.
+- Ogni membro deve avere scelte e rifiuti completi (o aver dichiarato di non
+  averne).
+
+Se una di queste condizioni non è soddisfatta, l'applicazione segnala il problema
+invece di produrre un report incompleto.
+
+Una volta generato, puoi passare alla sezione
+[Interpretare il report](/docs/interpretare-il-report/01-struttura-del-report).
