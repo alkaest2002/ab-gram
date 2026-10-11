@@ -8,8 +8,8 @@ import { computed, ref } from "vue";
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
-import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
-import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
+import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
+import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
 import ImportProjectResult from "@/components/views/sociogram/steps/stepImportProject/ImportProjectResult.vue";
 

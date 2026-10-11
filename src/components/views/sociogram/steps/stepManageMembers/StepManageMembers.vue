@@ -9,8 +9,8 @@ import { storeToRefs } from "pinia";
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
-import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
-import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
+import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
+import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 
 // --- Composables --------

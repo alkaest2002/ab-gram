@@ -13,7 +13,7 @@ import EdgeIcon from "@/components/ui/icons/EdgeIcon.vue";
 import FirefoxIcon from "@/components/ui/icons/FirefoxIcon.vue";
 import SafariIcon from "@/components/ui/icons/SafariIcon.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
-import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
+import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
