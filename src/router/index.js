@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import homeRoutes from "@/router/routes.home";
-import sociogramRoutes from "@/router/routes.sociogram";
-import reportRoutes from "@/router/routes.report";
-import notifyRoutes from "@/router/routes.notify";
-import docsRoutes from "@/router/routes.docs";
-import aboutRoutes from "@/router/routes.about";
-import privacyRoutes from "@/router/routes.privacy";
-import notFoundRoutes from "@/router/routes.not-found";
+import homeRoutes from "@/router/routes/home";
+import sociogramRoutes from "@/router/routes/sociogram";
+import reportRoutes from "@/router/routes/report";
+import notifyRoutes from "@/router/routes/notify";
+import docsRoutes from "@/router/routes/docs";
+import aboutRoutes from "@/router/routes/about";
+import privacyRoutes from "@/router/routes/privacy";
+import notFoundRoutes from "@/router/routes/not-found";
 
 const SITE_NAME = "AB-Grid";
 

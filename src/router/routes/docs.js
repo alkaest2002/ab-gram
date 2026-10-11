@@ -1,8 +1,9 @@
 import Docs from "@/components/views/docs/Docs.vue";
 import { navigation, flatOrdered } from "@/docs/navigation";
 
-// Lazy Markdown components, keyed by their path relative to this file.
-const pages = import.meta.glob("../docs/mds/**/*.md");
+// Lazy Markdown components. With an alias glob, keys are root-relative
+// (leading slash), e.g. "/src/docs/mds/folder/slug.md".
+const pages = import.meta.glob("@/docs/mds/**/*.md");
 
 const children = navigation.flatMap((section) =>
   section.items.map((item) => {
@@ -10,7 +11,7 @@ const children = navigation.flatMap((section) =>
     return {
       path: relative,
       name: `docs-${relative.replaceAll("/", "-")}`,
-      component: pages[`../docs/mds/${relative}.md`],
+      component: pages[`/src/docs/mds/${relative}.md`],
       meta: { title: item.title },
     };
   }),
