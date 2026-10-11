@@ -92,10 +92,9 @@ function onFileReadError({ message }) {
 
 <template>
     <section class="card space-y-6">
-        <StepHeader
-            eyebrow="Passaggio 1 di 4"
-            title="Vuoi riprendere un progetto archiviato?"
-        >
+        <StepHeader>
+            <template #eyebrow>Passaggio 1 di 4</template>
+            <template #title>Vuoi riprendere un progetto archiviato?</template>
             Se hai già salvato un sociogramma, puoi ricaricarlo da un file
             archiviato. In alternativa prosegui per crearne uno nuovo.
         </StepHeader>

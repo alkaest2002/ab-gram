@@ -117,10 +117,9 @@ function carouselGoNextMember() {
 
 <template>
     <section class="card space-y-3">
-        <StepHeader
-            eyebrow="Passaggio 3 di 4"
-            title="Indica le scelte e i rifiuti di ogni membro del gruppo"
-        >
+        <StepHeader>
+            <template #eyebrow>Passaggio 3 di 4</template>
+            <template #title>Indica le scelte e i rifiuti di ogni membro del gruppo</template>
             Seleziona una persona con i comandi del carosello, indica le sue
             scelte e i suoi rifiuti.
         </StepHeader>

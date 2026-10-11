@@ -72,7 +72,9 @@ function goNext() {
 
 <template>
     <section class="card space-y-8">
-        <StepHeader eyebrow="Passaggio 4 di 4" title="Riepilogo">
+        <StepHeader>
+            <template #eyebrow>Passaggio 4 di 4</template>
+            <template #title>Riepilogo</template>
             Controlla i dati raccolti nei passaggi precedenti prima di generare
             il report.
         </StepHeader>

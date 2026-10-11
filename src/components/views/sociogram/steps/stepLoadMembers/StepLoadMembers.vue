@@ -84,7 +84,9 @@ function onFileReadError({ message }) {
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 1 di 4" title="Carica l'elenco dei nominativi">
+        <StepHeader>
+            <template #eyebrow>Passaggio 1 di 4</template>
+            <template #title>Carica l'elenco dei nominativi</template>
             Il file di testo deve contenere un elenco di nominativi, per un massimo di {{ sociogramStore.maxMembersCount }}. Ogni nominativo &egrave; limitato a {{ sociogramStore.maxMemberNameLength }} caratteri.
         </StepHeader>
 

@@ -51,7 +51,9 @@ const canGoNext = computed(
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 2 di 4" title="Gestisci i membri del gruppo">
+        <StepHeader>
+            <template #eyebrow>Passaggio 2 di 4</template>
+            <template #title>Gestisci i membri del gruppo</template>
             Controlla i nominativi caricati: puoi modificarli, rimuoverli o
             aggiungerne di nuovi prima di proseguire.
         </StepHeader>

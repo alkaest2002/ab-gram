@@ -54,7 +54,8 @@ function startFromScratch(step) {
 <template>
     <div class="space-y-6">
         <section class="card space-y-6">
-            <StepHeader title="È la prima volta che usi l'app?">
+            <StepHeader>
+                <template #title>È la prima volta che usi l'app?</template>
                 AB-Grid misura e visualizza le dinamiche relazionali dei gruppi sociali
                 attraverso indici sociometrici e mappe visive.
             </StepHeader>
