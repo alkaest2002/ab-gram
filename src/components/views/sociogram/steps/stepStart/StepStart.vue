@@ -8,6 +8,10 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
+import ChromeIcon from "@/components/ui/icons/ChromeIcon.vue";
+import EdgeIcon from "@/components/ui/icons/EdgeIcon.vue";
+import FirefoxIcon from "@/components/ui/icons/FirefoxIcon.vue";
+import SafariIcon from "@/components/ui/icons/SafariIcon.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 
@@ -22,6 +26,13 @@ const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]
 // --- State --------------
 const sociogramStore = useSociogramStore();
 const { goToStep } = useSociogramNavigation(emit);
+
+const browsers = [
+    { name: "Chrome", url: "https://www.google.com/chrome/", icon: ChromeIcon },
+    { name: "Firefox", url: "https://www.mozilla.org/firefox/", icon: FirefoxIcon },
+    { name: "Edge", url: "https://www.microsoft.com/edge", icon: EdgeIcon },
+    { name: "Safari", url: "https://www.apple.com/safari/", icon: SafariIcon },
+];
 
 // --- Computed -----------
 
@@ -92,6 +103,23 @@ function startFromScratch(step) {
                 Potrai comunque salvare e riprendere i lavori
                 iniziati, anche se non ancora completati.
             </p>
+            <p class="mt-3 text-sm leading-relaxed">
+                L'app è stata testata con i seguenti browser:
+            </p>
+            <div class="mt-2 grid grid-cols-4 gap-2">
+                <a
+                    v-for="browser in browsers"
+                    :key="browser.name"
+                    :href="browser.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    :aria-label="`Apri il sito di ${browser.name}`"
+                    class="flex flex-wrap flex-col items-center justify-center gap-1.5 rounded-lg border border-line bg-white p-3 text-center transition-colors hover:border-accent"
+                >
+                    <component :is="browser.icon" size="size-6" class="grayscale" />
+                    <span class="text-xs font-medium">{{ browser.name }}</span>
+                </a>
+            </div>
         </section>
     </div>
 </template>
