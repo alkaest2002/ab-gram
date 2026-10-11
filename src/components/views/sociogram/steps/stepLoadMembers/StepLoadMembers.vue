@@ -19,7 +19,6 @@ import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import {
     buildMembers,
-    getMembersNameIssues,
     normalizeNames,
     orderNames,
 } from "@/utils/sociogram/memberHelpers";
@@ -35,7 +34,7 @@ const emit = defineEmits([
 // --- State --------------
 // Get the sociogram store and its state.
 const sociogramStore = useSociogramStore();
-const { maxMemberNameLength, maxMembersCount, members, membersCount } =
+const { maxMemberNameLength, maxMembersCount, membersCount } =
     storeToRefs(sociogramStore);
 
 const loadFileName = ref("");
@@ -49,15 +48,9 @@ const orderMode = ref("as-is");
 const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
-// The load step can only advance when there are members, none of them are
-// blank, and no two members share the same name.
-const nameIssues = computed(() => getMembersNameIssues(members.value));
-const hasLoaded = computed(
-    () =>
-        membersCount.value > 0 &&
-        nameIssues.value.emptyNamesCount === 0 &&
-        nameIssues.value.duplicateNamesCount === 0,
-);
+// The load step only needs at least one member to advance. Blank or duplicated
+// names are reviewed and fixed in the following "manage members" step.
+const hasLoaded = computed(() => membersCount.value > 0);
 
 // --- Watchers -----------
 
