@@ -39,18 +39,18 @@ Non servono competenze tecniche: bastano **un elenco di nomi** e **le scelte
 raccolte nel gruppo**.
 
 1. **L'elenco dei membri.** È la lista delle persone che fanno parte del gruppo,
-   scritte una dopo l'altra e separate da una virgola, ad esempio:
+   scritte una dopo l'altra, ad esempio:
 
 ```txt
-Anna,Bea,Emma,Dario,Elisa
+Rossi Mario
+Verdi Giueppe
+Grandi Francesca
+Bianchi Elena
 ```
 
 2. **Le scelte raccolte nel gruppo.** Si chiede a ciascun membro di indicare
    con chi vorrebbe stare (ad esempio, "con chi ti piacerebbe lavorare a un
-   progetto?") ed eventualmente con chi preferirebbe non stare. Ogni risposta
-   diventa una riga che dice chi ha espresso la scelta, verso chi e se si tratta
-   di una preferenza o di un rifiuto, come nell'esempio della pagina
-   precedente.
+   progetto?") ed eventualmente con chi preferirebbe non stare.
 
 Una volta inseriti questi dati, AB-Grid costruisce il sociogramma e calcola le
 metriche per te.

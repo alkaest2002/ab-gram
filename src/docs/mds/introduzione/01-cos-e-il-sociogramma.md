@@ -25,16 +25,16 @@ Il sociogramma si basa su due soli elementi:
 
 Le relazioni possono essere di due tipi e hanno un verso:
 
-- Una **preferenza** segnala un legame **positivo**: una persona dice di voler
-  stare con un'altra (ad esempio, "con lei lavorerei volentieri").
+- Una **scelta** segnala un legame **positivo**: una persona dice di voler
+  stare con un'altra (ad esempio, "con lei studierei volentieri").
 - Un **rifiuto** segnala un legame **negativo**: una persona dice di non voler
-  stare con un'altra.
+  interagire con un'altra.
 - La **direzione** indica **chi ha espresso la scelta**: la relazione parte da
-  chi sceglie (o rifiuta) e arriva a chi è scelto (o rifiutato). Una scelta non
-  è quindi automaticamente ricambiata: se Anna sceglie Bea, non è detto che Bea
-  scelga Anna.
+  chi sceglie (o rifiuta) e arriva a chi è scelto (o rifiutato). Una scelta 
+  non è automaticamente ricambiata: ad esempio, se Anna sceglie Bea, non è detto che Bea
+  scelga Anna. Così anche per i rifiuti.
 
-## Perché è utile
+## Utilità del sociogramma
 
 Il sociogramma rende visibili i rapporti che restano nascosti nelle tabelle. In
 particolare, aiuta a riconoscere i **ruoli** che le persone assumono nel gruppo
