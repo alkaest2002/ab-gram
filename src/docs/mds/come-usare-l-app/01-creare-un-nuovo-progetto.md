@@ -18,6 +18,32 @@ lavoro parte sempre pulito.
 Scegli **Crea progetto** per iniziare da zero. Verrai portato al primo
 passaggio, dove carichi l'elenco dei nominativi.
 
+### Formato del file
+
+L'applicazione accetta un file di testo con **un nominativo per riga**:
+
+```txt
+Rossi Mario
+Bianchi Anna
+Verdi Luca
+```
+
+#### Limiti
+
+- Al massimo **35 nominativi**.
+- Ogni nominativo può contenere al massimo **150 caratteri**.
+
+### Ordinare i nominativi
+
+Prima di caricare il file puoi scegliere come ordinare i nomi:
+
+- **Mantieni l'ordine del file** — usa l'ordine in cui compaiono.
+- **Ordina alfabeticamente** — riordina i nomi dalla A alla Z.
+- **Mescola in modo casuale** — dispone i nomi in ordine casuale.
+
+Dopo il caricamento, l'applicazione mostra un riepilogo con il numero di nomi
+caricati, oppure un messaggio che spiega l'eventuale errore.
+
 ## Riprendere un progetto
 
 Se hai già salvato un lavoro, scegli **Importa progetto**. L'applicazione ti
