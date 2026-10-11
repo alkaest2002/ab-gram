@@ -18,14 +18,6 @@ import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavi
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
-const props = defineProps({
-    /**
-     * The step to return to when the user clicks "previous". It is either
-     * `loadMembers` (text file) or `importProject`, depending on how the
-     * user reached this step.
-     */
-    previousStep: { type: String, default: "loadMembers" },
-});
 
 // --- Emits --------------
 const emit = defineEmits([
@@ -79,7 +71,7 @@ const canGoNext = computed(
         :enable-next="canGoNext"
         :enable-archive="canGoNext"
         :enable-restart="canGoNext"
-        @sociogram-navigation-previous="goToStep(props.previousStep)"
+        @sociogram-navigation-previous="goToStep('start')"
         @sociogram-navigation-next="goToStep('setPreferences')"
         @sociogram-navigation-restart="restart"
     />

@@ -47,19 +47,11 @@ const currentComponentName = ref(
 // other step navigation so a stale target can't re-apply later.
 const memberIdToEdit = ref(null);
 
-// The step the user reached `manageMembers` from (`loadMembers` or
-// `importProject`), so its "previous" button can return to the right
-// loading step. Defaults to the text-file loader for direct landings.
-const manageMembersFrom = ref("loadMembers");
-
 // --- Computed -----------
 // Pass the target id only to the preferences step; the other steps ignore it.
 const stepProps = computed(() => {
     if (currentComponentName.value === "setPreferences") {
         return { targetMemberId: memberIdToEdit.value };
-    }
-    if (currentComponentName.value === "manageMembers") {
-        return { previousStep: manageMembersFrom.value };
     }
     return {};
 });
@@ -86,12 +78,6 @@ const stepListeners = computed(() => {
 
 // --- Methods ------------
 function changeComponent(componentName) {
-    if (componentName === "manageMembers") {
-        manageMembersFrom.value =
-            currentComponentName.value === "importProject"
-                ? "importProject"
-                : "loadMembers";
-    }
     memberIdToEdit.value = null;
     currentComponentName.value = componentName;
 }
