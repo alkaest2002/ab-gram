@@ -72,9 +72,7 @@ function onFileSelected({ filename }) {
 function onFileRead({ lines }) {
     const normalizedNames = normalizeNames(lines);
     const orderedNames = orderNames(normalizedNames, orderMode.value);
-
     const loadedMembers = buildMembers(orderedNames);
-
     sociogramStore.initMembers(loadedMembers);
     loadedCount.value = loadedMembers.length;
 }
