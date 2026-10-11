@@ -158,7 +158,7 @@ function carouselGoNextMember() {
                     preference="likes"
                     label="Scelte"
                     :members="members"
-                    :excluded-ids="currentDislikes"
+                    :opposing-ids="currentDislikes"
                     :self-id="currentMember?.id"
                 />
 
@@ -168,7 +168,7 @@ function carouselGoNextMember() {
                     preference="dislikes"
                     label="Rifiuti"
                     :members="members"
-                    :excluded-ids="currentLikes"
+                    :opposing-ids="currentLikes"
                     :self-id="currentMember?.id"
                 />
             </div>

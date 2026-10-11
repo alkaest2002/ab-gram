@@ -7,6 +7,7 @@ import { computed } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
+import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 // --- Composables --------
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
@@ -42,11 +43,11 @@ const props = defineProps({
     members: { type: Array, default: () => [] },
 
     /**
-     * Member ids already selected in the opposite preference. They are listed
-     * but disabled here, which is what keeps a person from being liked and
-     * disliked at the same time.
+     * Member ids selected in the opposite preference. They are not disabled:
+     * a member may be both liked and disliked. One that appears in both this
+     * list and the opposite one is highlighted as a conflict.
      */
-    excludedIds: { type: Array, default: () => [] },
+    opposingIds: { type: Array, default: () => [] },
 });
 
 // --- Emits --------------
@@ -70,7 +71,7 @@ const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
 
 // Optimize: use a Set for faster lookups.
 const selected = computed(() => new Set(selectedIds.value));
-const excluded = computed(() => new Set(props.excludedIds));
+const opposing = computed(() => new Set(props.opposingIds));
 
 const hasMembers = computed(() => props.members.length > 0);
 const hasSelectableMembers = computed(() => selectableMembers.value.length > 0);
@@ -89,13 +90,13 @@ function isChecked(member) {
     return selected.value.has(member.id);
 }
 
-function isDisabled(member) {
-    return excluded.value.has(member.id);
+// A member selected in both preferences: still allowed, but flagged so the
+// user can see the overlap at a glance.
+function isConflicting(member) {
+    return selected.value.has(member.id) && opposing.value.has(member.id);
 }
 
 function toggle(member) {
-    if (isDisabled(member)) return;
-
     const current = selectedIds.value;
     selectedIds.value = isChecked(member)
         ? current.filter((id) => id !== member.id)
@@ -103,9 +104,7 @@ function toggle(member) {
 }
 
 function handleEnter() {
-    const targets = filteredMembers.value.filter(
-        (member) => !isDisabled(member),
-    );
+    const targets = filteredMembers.value;
     if (targets.length === 0) return;
 
     const current = selectedIds.value;
@@ -148,12 +147,7 @@ function handleEnter() {
         >
             <li v-for="member in filteredMembers" :key="member.id">
                 <label
-                    class="flex items-center gap-3 px-3 py-2 text-sm transition-colors"
-                    :class="
-                        isDisabled(member)
-                            ? 'cursor-not-allowed opacity-45'
-                            : 'cursor-pointer hover:bg-ink/5'
-                    "
+                    class="flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-colors hover:bg-ink/5"
                 >
                     <input
                         type="checkbox"
@@ -164,11 +158,17 @@ function handleEnter() {
                                 : 'accent-reject'
                         "
                         :checked="isChecked(member)"
-                        :disabled="isDisabled(member)"
                         :aria-label="`${preference === 'likes' ? 'Mi piace' : 'Non mi piace'} ${member.name}`"
                         @change="toggle(member)"
                     />
                     <span class="truncate text-ink">{{ member.name }}</span>
+                    <span
+                        v-if="isConflicting(member)"
+                        class="ml-auto inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 font-mono text-[0.65rem] font-medium text-muted"
+                        title="Selezionato sia tra le scelte che tra i rifiuti"
+                    >
+                        <WarningIcon size="size-4" :stroke-width="2" />
+                    </span>
                 </label>
             </li>
         </ul>
