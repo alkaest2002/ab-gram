@@ -44,12 +44,6 @@ Prima di caricare il file puoi scegliere come ordinare i nomi:
 Dopo il caricamento, l'applicazione mostra un riepilogo con il numero di nomi
 caricati, oppure un messaggio che spiega l'eventuale errore.
 
-## Riprendere un progetto
-
-Se hai già salvato un lavoro, scegli **Importa progetto**. L'applicazione ti
-chiederà il file archiviato e ricostruirà il sociogramma esattamente da dove lo
-avevi lasciato. Vedi [Importare un progetto archiviato](/docs/come-usare-l-app/02-importare-un-progetto-archiviato).
-
 ## Un avviso importante sui dati
 
 AB-Grid **non salva nulla nella cache del browser**: i dati restano nella memoria

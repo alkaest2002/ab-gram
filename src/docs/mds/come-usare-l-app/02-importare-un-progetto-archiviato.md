@@ -24,8 +24,3 @@ L'applicazione:
 
 In caso di errore, viene mostrato un messaggio che spiega il problema (ad
 esempio un file che non è un archivio valido).
-
-## Proseguire
-
-Dopo l'import riusci passi alla gestione dell'elenco dei nominativi per
-controllare o completare i dati, quindi alle preferenze e infine al report.
