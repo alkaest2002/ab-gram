@@ -13,7 +13,6 @@ import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
 import LoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersResult.vue";
-import LoadMembersListEditor from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersListEditor.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
 // --- Composables --------
@@ -88,7 +87,7 @@ function onFileReadError({ message }) {
 
 <template>
     <section class="card space-y-6">
-        <StepHeader eyebrow="Passaggio 1 di 3" title="Carica l'elenco dei nominativi">
+        <StepHeader eyebrow="Passaggio 1 di 4" title="Carica l'elenco dei nominativi">
             Il file di testo deve contenere un elenco di nominativi, per un massimo di {{ sociogramStore.maxMembersCount }}. Ogni nominativo &egrave; limitato a {{ sociogramStore.maxMemberNameLength }} caratteri.
         </StepHeader>
 
@@ -114,17 +113,6 @@ function onFileReadError({ message }) {
             :error="loadError"
             :loaded-count="loadedCount"
         />
-
-        <div v-show="membersCount > 0" class="space-y-4">
-            <div class="h-px w-full bg-line" aria-hidden="true"></div>
-
-            <LoadMembersListEditor
-                :members="members"
-                @sociogram-update-member="sociogramStore.updateMember"
-                @sociogram-add-member="sociogramStore.addMember"
-                @sociogram-remove-member="sociogramStore.removeMember"
-            />
-        </div>
     </section>
 
     <SociogramNavigation
@@ -133,7 +121,7 @@ function onFileReadError({ message }) {
         :enable-archive="hasLoaded"
         :enable-restart="hasLoaded"
         @sociogram-navigation-previous="goToStep('start')"
-        @sociogram-navigation-next="goToStep('setPreferences')"
+        @sociogram-navigation-next="goToStep('manageMembers')"
         @sociogram-navigation-restart="restart"
     />
 </template>

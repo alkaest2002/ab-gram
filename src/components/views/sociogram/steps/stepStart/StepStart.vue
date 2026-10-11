@@ -84,7 +84,7 @@ function startFromScratch(step) {
             </div>
             <BaseButton
                 variant="outline"
-                @click="startFromScratch('importFromArchive')"
+                @click="startFromScratch('importProject')"
             >
                 Importa progetto
             </BaseButton>

@@ -118,7 +118,7 @@ function carouselGoNextMember() {
 <template>
     <section class="card space-y-3">
         <StepHeader
-            eyebrow="Passaggio 2 di 3"
+            eyebrow="Passaggio 3 di 4"
             title="Indica le scelte e i rifiuti di ogni membro del gruppo"
         >
             Seleziona una persona con i comandi del carosello, indica le sue
@@ -224,7 +224,7 @@ function carouselGoNextMember() {
         :enable-next="canGoNext"
         :enable-restart="true"
         :enable-archive="true"
-        @sociogram-navigation-previous="goToStep('loadMembers')"
+        @sociogram-navigation-previous="goToStep('manageMembers')"
         @sociogram-navigation-next="goToStep('generateReport')"
         @sociogram-navigation-restart="restart"
     />

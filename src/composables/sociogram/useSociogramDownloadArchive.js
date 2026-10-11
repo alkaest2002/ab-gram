@@ -7,7 +7,7 @@ import { useSociogramStore } from "@/stores/sociogram";
  * Archive export for the current sociogram state.
  *
  * Produces a `data:` URL that downloads the store snapshot as base64-encoded
- * JSON — the same format `StepImportFromArchive` reads back in, so a project
+ * JSON — the same format `StepImportProject` reads back in, so a project
  * can be stopped on any step and resumed later.
  */
 export function useSociogramDownloadArchive() {

@@ -11,7 +11,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/steps/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
-import ImportFromArchiveResult from "@/components/views/sociogram/steps/stepImportFromArchive/ImportFromArchiveResult.vue";
+import ImportProjectResult from "@/components/views/sociogram/steps/stepImportProject/ImportProjectResult.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -87,7 +87,7 @@ function onFileReadError({ message }) {
 <template>
     <section class="card space-y-6">
         <StepHeader
-            eyebrow="Passaggio 1 di 3"
+            eyebrow="Passaggio 1 di 4"
             title="Vuoi riprendere un progetto archiviato?"
         >
             Se hai già salvato un sociogramma, puoi ricaricarlo da un file
@@ -105,7 +105,7 @@ function onFileReadError({ message }) {
             Il file deve contenere un archivio valido.
         </TextFileReader>
 
-        <ImportFromArchiveResult
+        <ImportProjectResult
             :filename="importFilename"
             :error="importError"
             :imported-count="importedCount"
@@ -118,7 +118,7 @@ function onFileReadError({ message }) {
         :enable-archive="hasImported"
         :enable-restart="hasImported"
         @sociogram-navigation-previous="goToStep('start')"
-        @sociogram-navigation-next="goToStep('loadMembers')"
+        @sociogram-navigation-next="goToStep('manageMembers')"
         @sociogram-navigation-restart="restart"
     />
 </template>

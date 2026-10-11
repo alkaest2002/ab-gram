@@ -10,14 +10,12 @@ import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
-import StepImportFromArchive from "@/components/views/sociogram/steps/stepImportFromArchive/StepImportFromArchive.vue";
+import StepImportProject from "@/components/views/sociogram/steps/stepImportProject/StepImportProject.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
+import ManageMembers from "@/components/views/sociogram/steps/stepManageMembers/StepManageMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
 import KeepAliveTransition from "@/components/ui/KeepAliveTransition.vue";
-
-// --- Composables --------
-import { SOCIOGRAM_STEPS } from "@/composables/sociogram/useSociogramNavigation";
 
 // --- Props --------------
 
@@ -29,18 +27,19 @@ const { membersStatus } = storeToRefs(sociogramStore);
 
 const stateComponents = {
     start: StepStart,
-    importFromArchive: StepImportFromArchive,
+    importProject: StepImportProject,
     loadMembers: StepLoadMembers,
+    manageMembers: ManageMembers,
     setPreferences: StepSetPreferences,
     generateReport: StepGenerateReport,
 };
 
 const currentComponentName = ref(
-  membersStatus.value === "empty"
-    ? SOCIOGRAM_STEPS[0]
-    : membersStatus === "partially-loaded"
-      ? SOCIOGRAM_STEPS[2]
-      : SOCIOGRAM_STEPS[4]
+    membersStatus.value === "empty"
+        ? "start"
+        : membersStatus.value === "partially-loaded"
+          ? "manageMembers"
+          : "generateReport",
 );
 
 // UI state: the member to point the preferences carousel at when it opens.
@@ -48,13 +47,22 @@ const currentComponentName = ref(
 // other step navigation so a stale target can't re-apply later.
 const memberIdToEdit = ref(null);
 
+// The step the user reached `manageMembers` from (`loadMembers` or
+// `importProject`), so its "previous" button can return to the right
+// loading step. Defaults to the text-file loader for direct landings.
+const manageMembersFrom = ref("loadMembers");
+
 // --- Computed -----------
 // Pass the target id only to the preferences step; the other steps ignore it.
-const stepProps = computed(() =>
-    currentComponentName.value === "setPreferences"
-        ? { targetMemberId: memberIdToEdit.value }
-        : {},
-);
+const stepProps = computed(() => {
+    if (currentComponentName.value === "setPreferences") {
+        return { targetMemberId: memberIdToEdit.value };
+    }
+    if (currentComponentName.value === "manageMembers") {
+        return { previousStep: manageMembersFrom.value };
+    }
+    return {};
+});
 
 // Only "sociogram-edit-member" is emitted; binding it to every step
 // makes Vue try to fall through the listener on the others (e.g. StepStart,
@@ -78,6 +86,12 @@ const stepListeners = computed(() => {
 
 // --- Methods ------------
 function changeComponent(componentName) {
+    if (componentName === "manageMembers") {
+        manageMembersFrom.value =
+            currentComponentName.value === "importProject"
+                ? "importProject"
+                : "loadMembers";
+    }
     memberIdToEdit.value = null;
     currentComponentName.value = componentName;
 }
