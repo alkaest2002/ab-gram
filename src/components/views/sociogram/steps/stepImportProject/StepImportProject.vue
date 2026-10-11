@@ -11,7 +11,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
-import ImportProjectResult from "@/components/views/sociogram/steps/stepImportProject/ImportProjectResult.vue";
+import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -34,6 +34,12 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 const hasImported = computed(() => importedCount.value !== null);
+
+const importedSummary = computed(() => {
+    if (importedCount.value === null) return "";
+    const label = importedCount.value === 1 ? "membro importato" : "membri importati";
+    return `${importedCount.value} ${label}`;
+});
 
 // --- Watchers -----------
 
@@ -105,11 +111,10 @@ function onFileReadError({ message }) {
             Il file deve contenere un archivio valido.
         </TextFileReader>
 
-        <ImportProjectResult
-            :filename="importFilename"
-            :error="importError"
-            :imported-count="importedCount"
-        />
+        <FileReadResult :count="importedCount" :error="importError">
+            <p class="text-sm font-medium text-ink">{{ importFilename }}</p>
+            <p class="text-sm text-muted">{{ importedSummary }}.</p>
+        </FileReadResult>
     </section>
 
     <SociogramNavigation

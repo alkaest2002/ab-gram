@@ -12,7 +12,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import TextFileReader from "@/components/ui/TextFileReader.vue";
-import LoadMembersResult from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersResult.vue";
+import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
 // --- Composables --------
@@ -51,6 +51,12 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 // The load step only needs at least one member to advance. Blank or duplicated
 // names are reviewed and fixed in the following "manage members" step.
 const hasLoaded = computed(() => membersCount.value > 0);
+
+const loadedSummary = computed(() => {
+    if (loadedCount.value === null) return "";
+    const label = loadedCount.value === 1 ? "nome caricato" : "nomi caricati";
+    return `${loadedCount.value} ${label}`;
+});
 
 // --- Watchers -----------
 
@@ -101,11 +107,10 @@ function onFileReadError({ message }) {
             Elenco dei nominativi (es., Rossi Mario), uno per riga.
         </TextFileReader>
 
-        <LoadMembersResult
-            :filename="loadFileName"
-            :error="loadError"
-            :loaded-count="loadedCount"
-        />
+        <FileReadResult :count="loadedCount" :error="loadError">
+            <p class="text-sm font-medium text-ink">{{ loadFileName }}</p>
+            <p class="text-sm text-muted">{{ loadedSummary }}.</p>
+        </FileReadResult>
     </section>
 
     <SociogramNavigation

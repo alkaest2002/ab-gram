@@ -11,10 +11,11 @@ import { computed } from "vue";
 // --- Composables --------
 
 // --- Props --------------
+// `count` and `error` are the state values that drive visibility; the
+// displayed content is provided via slots so callers control the wording.
 const props = defineProps({
-    filename: { type: String, default: null },
+    count: { type: Number, default: null },
     error: { type: String, default: null },
-    importedCount: { type: Number, default: null },
 });
 
 // --- Emits --------------
@@ -22,13 +23,7 @@ const props = defineProps({
 // --- State --------------
 
 // --- Computed -----------
-const hasImported = computed(() => props.importedCount !== null);
-
-const importedSummary = computed(() => {
-    if (props.importedCount === null) return "";
-    const label = props.importedCount === 1 ? "membro importato" : "membri importati";
-    return `${props.importedCount} ${label}`;
-});
+const hasResult = computed(() => props.count !== null);
 
 // --- Watchers -----------
 
@@ -38,9 +33,9 @@ const importedSummary = computed(() => {
 </script>
 
 <template>
-    <div v-if="hasImported || error" class="space-y-3">
+    <div v-if="hasResult || error" class="space-y-3">
         <div
-            v-if="hasImported"
+            v-if="hasResult"
             class="flex items-center gap-3 rounded-lg border border-line p-3"
             role="status"
         >
@@ -60,8 +55,7 @@ const importedSummary = computed(() => {
                 </svg>
             </span>
             <div class="min-w-0 pt-0.5">
-                <p class="text-sm font-medium text-ink">{{ props.filename }}</p>
-                <p class="text-sm text-muted">{{ importedSummary }}.</p>
+                <slot />
             </div>
         </div>
 
@@ -97,7 +91,9 @@ const importedSummary = computed(() => {
             </span>
             <div class="min-w-0 pt-0.5">
                 <p class="text-sm font-medium text-ink">Caricamento non riuscito</p>
-                <p class="text-sm text-muted">{{ error }}</p>
+                <p class="text-sm text-muted">
+                    <slot name="error">{{ error }}</slot>
+                </p>
             </div>
         </div>
     </div>
