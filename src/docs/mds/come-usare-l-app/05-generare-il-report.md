@@ -4,7 +4,7 @@ order: 5
 description: Come controllare il riepilogo e produrre il report finale.
 ---
 
-Il terzo passaggio è il **riepilogo**: qui controlli i dati raccolti prima di
+Il quarto passaggio è il **riepilogo**: qui controlli i dati raccolti prima di
 generare il report.
 
 ## Il riepilogo

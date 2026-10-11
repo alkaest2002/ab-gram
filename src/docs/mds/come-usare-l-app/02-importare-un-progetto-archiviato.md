@@ -27,5 +27,5 @@ esempio un file che non è un archivio valido).
 
 ## Proseguire
 
-Dopo l'import riusci puoi passare alla lista dei nominativi per controllare o
-completare i dati, oppure proseguire direttamente con le preferenze.
+Dopo l'import riusci passi alla gestione dell'elenco dei nominativi per
+controllare o completare i dati, quindi alle preferenze e infine al report.

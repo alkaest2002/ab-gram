@@ -4,7 +4,7 @@ order: 4
 description: Come registrare scelte e rifiuti di ogni membro del gruppo.
 ---
 
-Nel secondo passaggio indichi, per ogni membro del gruppo, chi sceglie e chi
+Nel terzo passaggio indichi, per ogni membro del gruppo, chi sceglie e chi
 rifiuta.
 
 ## Scegliere la persona

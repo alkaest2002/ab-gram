@@ -1,13 +1,13 @@
 ---
-title: Caricare la lista dei nominativi
+title: Caricare e gestire la lista dei nominativi
 order: 3
-description: Come inserire e ordinare i membri del gruppo.
+description: Come inserire, ordinare e modificare i membri del gruppo.
 ---
 
-Il primo passaggio consiste nel caricare i nomi delle persone che compongono il
-gruppo.
+La gestione dei nomi del gruppo avviene in due passaggi: prima carichi il file di
+testo con i nominativi, poi controlli e modifichi l'elenco prima di proseguire.
 
-## Formato del file
+## Passaggio 1 — Caricare il file
 
 L'applicazione accetta un file di testo con **un nominativo per riga**:
 
@@ -22,7 +22,7 @@ Verdi Luca
 - Al massimo **35 nominativi**.
 - Ogni nominativo può contenere al massimo **150 caratteri**.
 
-## Ordinare i nominativi
+### Ordinare i nominativi
 
 Prima di caricare il file puoi scegliere come ordinare i nomi:
 
@@ -30,9 +30,12 @@ Prima di caricare il file puoi scegliere come ordinare i nomi:
 - **Ordina alfabeticamente** — riordina i nomi dalla A alla Z.
 - **Mescola in modo casuale** — dispone i nomi in ordine casuale.
 
-## Controllare e modificare l'elenco
+Dopo il caricamento, l'applicazione mostra un riepilogo con il numero di nomi
+caricati, oppure un messaggio che spiega l'eventuale errore.
 
-Dopo il caricamento puoi rivedere l'elenco:
+## Passaggio 2 — Controllare e modificare l'elenco
+
+Nel passaggio successivo puoi rivedere e correggere l'elenco:
 
 - **Clicca** su un nome per modificarlo; premi **Invio** per confermare o **Esc**
   per annullare.
