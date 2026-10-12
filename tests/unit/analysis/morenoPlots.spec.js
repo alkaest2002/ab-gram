@@ -20,37 +20,39 @@ const countOccurrences = (text, needle) =>
 
 describe("morenoPlots", () => {
   const members = [
-    makeMember("a", "Alice", ["b"]),
-    makeMember("b", "Bob", ["c"]),
-    makeMember("c", "Carol"),
-    makeMember("d", "Dave"),
+    makeMember("a", "Alice", ["b", "c"]),
+    makeMember("b", "Bob", ["a"]),
+    makeMember("c", "Carol", ["d"]),
+    makeMember("d", "Dave", ["e"]),
+    makeMember("e", "Eve"),
+    makeMember("f", "Frank"),
+    makeMember("g", "Grace", ["a"]),
   ];
 
   const graph = createLikesGraph(members, "likes");
 
   describe("getNodePaths", () => {
-    it("classifies every node by its shortest undirected path length", () => {
+    it("classifies every node by its shortest directed path length", () => {
       const paths = getNodePaths(graph);
 
+      // a likes b and c. b likes a back (mutual); c leads to d, then e. g likes
+      // a but a does not like g, so g is unreachable from a.
       expect(paths.a).toEqual({
-        oneHop: ["b"],
-        twoHops: ["c"],
-        multipleHops: [],
-        unreachable: ["d"],
+        mutuality: ["b"],
+        oneHop: ["c"],
+        twoHops: ["d"],
+        multipleHops: ["e"],
+        unreachable: ["f", "g"],
       });
 
+      // b likes a (mutual), which leads to c, then d, then e; f and g are not
+      // reachable from b (g likes a, but b's outgoing choices never reach g).
       expect(paths.b).toEqual({
-        oneHop: ["a", "c"],
-        twoHops: [],
-        multipleHops: [],
-        unreachable: ["d"],
-      });
-
-      expect(paths.c).toEqual({
-        oneHop: ["b"],
-        twoHops: ["a"],
-        multipleHops: [],
-        unreachable: ["d"],
+        mutuality: ["a"],
+        oneHop: [],
+        twoHops: ["c"],
+        multipleHops: ["d", "e"],
+        unreachable: ["f", "g"],
       });
     });
   });
@@ -60,10 +62,11 @@ describe("morenoPlots", () => {
       const paths = getNodePaths(graph);
 
       expect(getNodePathsFor(paths, "a")).toEqual({
-        oneHop: ["b"],
-        twoHops: ["c"],
-        multipleHops: [],
-        unreachable: ["d"],
+        mutuality: ["b"],
+        oneHop: ["c"],
+        twoHops: ["d"],
+        multipleHops: ["e"],
+        unreachable: ["f", "g"],
       });
     });
 
@@ -98,14 +101,15 @@ describe("morenoPlots", () => {
       expect(svg.startsWith("<svg")).toBe(true);
       expect(svg.endsWith("</svg>")).toBe(true);
 
-      // The ego plus b, c, e (reachable) and d, f (unreachable) = six nodes.
+      // The ego plus b, c, d, e, f = six nodes.
       expect(countOccurrences(svg, 'fill="#FFFFFF"')).toBe(6);
 
-      // Five dashed boundaries separate the center (ego) and the four rings.
-      expect(countOccurrences(svg, 'fill="none"')).toBe(5);
+      // Six dashed boundaries separate the center (ego) and the five rings.
+      expect(countOccurrences(svg, 'fill="none"')).toBe(6);
 
-      // d dislikes the ego (red), b, c and e are reachable (blue), f is
-      // unreachable (black).
+      // d dislikes the ego (red), b and c are reachable (blue), e and f are
+      // unreachable (black). e likes the ego but the ego cannot reach e, so it
+      // still lands on the unreachable ring.
       expect(svg).toContain('stroke="#FF0000"');
       expect(svg).toContain('stroke="#0000FF"');
       expect(svg).toContain('stroke="#000000"');
@@ -115,11 +119,11 @@ describe("morenoPlots", () => {
       expect(countOccurrences(svg, "<polygon")).toBe(3);
     });
 
-    it("marks the ego's outgoing likes and dislikes", () => {
+    it("marks a node that directly dislikes the ego and the ego's outgoing likes", () => {
       const outgoingMembers = [
-        makeMember("a", "Alice", ["b"], ["c"]),
+        makeMember("a", "Alice", ["b"], []),
         makeMember("b", "Bob", [], []),
-        makeMember("c", "Carol", [], []),
+        makeMember("c", "Carol", [], ["a"]),
       ];
       const likes = createLikesGraph(outgoingMembers, "likes");
       const dislikes = createLikesGraph(outgoingMembers, "dislikes");
@@ -131,8 +135,8 @@ describe("morenoPlots", () => {
         getNodePaths(likes),
       );
 
-      // a likes b (blue stroke + blue outward marker) and dislikes c (red
-      // stroke + red outward marker): two direction markers, no unreachable node.
+      // a likes b (blue stroke + blue outward marker) and c dislikes a (red
+      // stroke + red inward marker): two direction markers in total.
       expect(svg).toContain('stroke="#0000FF"');
       expect(svg).toContain('stroke="#FF0000"');
       expect(svg).toContain('fill="#0000FF"');
@@ -156,15 +160,16 @@ describe("morenoPlots", () => {
         getNodePaths(sparseLikes),
       );
 
-      // a - b is ring 1 (radius 80) and a - b - c is ring 2 (radius 135).
-      // Ring 3 is empty, so c must stay on ring 2 rather than shifting inward:
-      // a single ring-2 node is placed straight up from the center at (300, 165).
+      // a - b is ring 2 (oneHop, radius 135) and a - b - c is ring 3 (twoHops,
+      // radius 190). Ring 1 (mutuality) is empty, so b and c keep their ring
+      // slots rather than shifting inward: a single ring-3 node is placed
+      // straight up from the center at (300, 110).
       const cNode = svg.match(
         /<circle([^>]*)><\/circle><text[^>]*>c<\/text>/,
       );
       expect(cNode).not.toBeNull();
       expect(cNode[1]).toContain('cx="300"');
-      expect(cNode[1]).toContain('cy="165"');
+      expect(cNode[1]).toContain('cy="110"');
     });
   });
 
