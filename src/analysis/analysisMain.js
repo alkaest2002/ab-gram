@@ -34,7 +34,7 @@ export const getSociogramAnalysis = (members) => {
   const memberIndices = getMemberIndices(members);
 
   /////////////////////////////////////////////////////////////////////////////////////////
-  // CREATE ADJACENCY MATRICES, EDGE TYPES
+  // CREATE ADJACENCY MATRICES, EDGE TYPES AND DIRECTED GRAPHS
   /////////////////////////////////////////////////////////////////////////////////////////
 
   // Build the likes and dislikes adjacency matrices (rows/columns follow `members` order).
@@ -42,6 +42,10 @@ export const getSociogramAnalysis = (members) => {
 
   // Classify every directed preference edge into one of seven relationship types.
   const edgeTypes = getEdgeTypes(adjLikes, adjDislikes, memberIndices);
+
+  // Build the likes and dislikes directed graphs once. SNA and MORENO consume them.
+  const likesGraph = createLikesGraph(members, "likes");
+  const dislikesGraph = createLikesGraph(members, "dislikes");
 
   /////////////////////////////////////////////////////////////////////////////////////////
   // MORENO
@@ -56,10 +60,6 @@ export const getSociogramAnalysis = (members) => {
   /////////////////////////////////////////////////////////////////////////////////////////
   // SNA
   /////////////////////////////////////////////////////////////////////////////////////////
-
-  // Build the likes and dislikes directed graphs once. Every SNA consumer.
-  const likesGraph = createLikesGraph(members, "likes");
-  const dislikesGraph = createLikesGraph(members, "dislikes");
 
   // Group-level SNA metrics for the likes graph.
   const snaLikesGroupLevelMetrics = snaGroupLevel(likesGraph);
