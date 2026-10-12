@@ -41,6 +41,11 @@ const currentComponent = computed(
     () => statusComponents[status.value] ?? "generating",
 );
 
+const reportData = computed(() => ({
+  sociogram: sociogramStore.$state,
+  report: reportStore.$state,
+}));
+
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -101,6 +106,7 @@ function stopWorker() {
 <template>
     <component
         :is="currentComponent"
+        :report-data="reportData"
         @report-geenrating-stop="stopGeneration"
     />
 

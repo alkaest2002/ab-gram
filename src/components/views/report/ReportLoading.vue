@@ -11,6 +11,9 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 // --- Composables --------
 
 // --- Props --------------
+const props = defineProps({
+    reportData: { type: Object, required: true },
+});
 
 // --- Emits --------------
 const emit = defineEmits(["report-generating-stop"]);

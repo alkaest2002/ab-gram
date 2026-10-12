@@ -10,6 +10,9 @@
 // --- Composables --------
 
 // --- Props --------------
+const props = defineProps({
+    reportData: { type: Object, required: true },
+});
 
 // --- Emits --------------
 
