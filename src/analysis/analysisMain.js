@@ -76,7 +76,7 @@ export const getSociogramAnalysis = (members) => {
   // Initialize SNA metrics for the dislikes graph.
   let snaDislikesGroupLevelMetrics = {};
   let snaDislikesComponents = {};
-  let snaDislikesIndividualLevelMetric = {}
+  let snaDislikesIndividualLevelMetric = {};
   let snaDislikesPlots = [];
 
   // If the dislikes graph is not empty, compute its SNA metrics.

@@ -1,8 +1,44 @@
-import { singleSource } from "graphology-shortest-path";
-
 //////////////////////////////////////////////////////////////////////////////////
 // MORENO PLOTS
 //////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Compute the shortest directed paths from `source` to every reachable node
+ * using breadth-first search.
+ *
+ * This is a local reimplementation of `graphology-shortest-path`'s unweighted
+ * `singleSource`, kept here so the Moreno plots don't have to pull that
+ * CommonJS dependency into the Web Worker bundle.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The directed network.
+ * @param {string} source - The source node id.
+ * @returns {Record<string, string[]>} Map of `target -> [source, ..., target]`
+ *   for every node reachable from `source`. Unreachable nodes are absent.
+ */
+const singleSource = (graph, source) => {
+  const paths = { [source]: [source] };
+
+  // Breadth-first frontier: nodes discovered in the previous level.
+  let frontier = [source];
+
+  while (frontier.length > 0) {
+    const nextFrontier = [];
+
+    for (const node of frontier) {
+      for (const neighbor of graph.outboundNeighbors(node)) {
+        // First discovery is the shortest path in an unweighted graph.
+        if (paths[neighbor] === undefined) {
+          paths[neighbor] = paths[node].concat(neighbor);
+          nextFrontier.push(neighbor);
+        }
+      }
+    }
+
+    frontier = nextFrontier;
+  }
+
+  return paths;
+};
 
 /**
  * Compute the directed paths of every node in the graph.
@@ -17,9 +53,9 @@ import { singleSource } from "graphology-shortest-path";
  * - `multipleHops`: three or more edges — `A -> C -> D -> B`
  * - `unreachable`:  no directed path exists from `A` to `B`
  *
- * Distances come from `graphology-shortest-path`, so every ordered pair is
- * classified by its shortest directed path length and appears in exactly one
- * bucket.
+ * Path lengths come from a local breadth-first search, so every ordered pair
+ * is classified by its shortest directed path length and appears in exactly
+ * one bucket.
  *
  * @param {import("graphology").DirectedGraph} graph - The directed network.
  * @returns {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>}

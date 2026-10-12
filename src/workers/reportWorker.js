@@ -17,12 +17,10 @@ import { getSociogramAnalysis } from "@/analysis/analysisMain.js";
 self.onmessage = (event) => {
   try {
     const members = event.data?.members ?? [];
-
     const result = getSociogramAnalysis(members);
-
     self.postMessage(result);
   } catch (error) {
-    console.error("Worker error:", error);
+    console.error("Worker error:", error, error?.stack);
     self.postMessage({
       error: error?.message ?? "Impossibile generare il report.",
     });

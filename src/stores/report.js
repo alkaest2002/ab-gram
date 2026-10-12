@@ -16,6 +16,9 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<object>} Individual-level Moreno metrics. */
   const morenoIndividualLevelMetrics = ref({});
 
+  /** @type {import("vue").Ref<Array<{memberId: string, svg: string}>>} Moreno ego plots. */
+  const morenoEgoGraphs = ref([]);
+
   /** @type {import("vue").Ref<object>} Group-level SNA metrics for likes. */
   const snaLikesGroupLevelMetrics = ref({});
 
@@ -33,9 +36,6 @@ export const useReportStore = defineStore("report", () => {
 
   /** @type {import("vue").Ref<object>} Individual-level SNA metrics for dislikes. */
   const snaDislikesIndividualLevelMetric = ref({});
-
-  /** @type {import("vue").Ref<Array<object>>} Moreno plots. */
-  const morenoPlots = ref([]);
 
   /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA likes plots. */
   const snaLikesPlots = ref([]);
@@ -56,13 +56,13 @@ export const useReportStore = defineStore("report", () => {
     edgeTypes.value = value.edgeTypes ?? {};
     morenoGroupLevelMetrics.value = value.morenoGroupLevelMetrics ?? {};
     morenoIndividualLevelMetrics.value = value.morenoIndividualLevelMetrics ?? {};
+    morenoEgoGraphs.value = value.morenoEgoGraphs ?? [];
     snaLikesGroupLevelMetrics.value = value.snaLikesGroupLevelMetrics ?? {};
     snaLikesComponents.value = value.snaLikesComponents ?? {};
     snaLikesIndividualLevelMetric.value = value.snaLikesIndividualLevelMetric ?? {};
     snaDislikesGroupLevelMetrics.value = value.snaDislikesGroupLevelMetrics ?? {};
     snaDislikesComponents.value = value.snaDislikesComponents ?? {};
     snaDislikesIndividualLevelMetric.value = value.snaDislikesIndividualLevelMetric ?? {};
-    morenoPlots.value = value.morenoPlots ?? [];
     snaLikesPlots.value = value.snaLikesPlots ?? [];
     snaDislikesPlots.value = value.snaDislikesPlots ?? [];
   }
@@ -73,13 +73,13 @@ export const useReportStore = defineStore("report", () => {
     edgeTypes.value = {};
     morenoGroupLevelMetrics.value = {};
     morenoIndividualLevelMetrics.value = {};
+    morenoEgoGraphs.value = [];
     snaLikesGroupLevelMetrics.value = {};
     snaLikesComponents.value = {};
     snaLikesIndividualLevelMetric.value = {};
     snaDislikesGroupLevelMetrics.value = {};
     snaDislikesComponents.value = {};
     snaDislikesIndividualLevelMetric.value = {};
-    morenoPlots.value = [];
     snaLikesPlots.value = [];
     snaDislikesPlots.value = [];
   }
@@ -89,7 +89,7 @@ export const useReportStore = defineStore("report", () => {
     edgeTypes,
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
-    morenoPlots,
+    morenoEgoGraphs,
     snaLikesGroupLevelMetrics,
     snaLikesIndividualLevelMetric,
     snaLikesComponents,

@@ -74,9 +74,22 @@ function startGeneration() {
         reportStore.setStatus("generated");
     };
 
-    worker.onerror = ({ error }) => {
+    worker.onerror = (event) => {
+        console.error("Report worker failed:", {
+            message: event.message,
+            filename: event.filename,
+            lineno: event.lineno,
+            colno: event.colno,
+            error: event.error,
+        });
         stopWorker();
-        failGeneration(error);
+        failGeneration(event);
+    };
+
+    worker.onmessageerror = (event) => {
+        console.error("Report worker message error:", event);
+        stopWorker();
+        failGeneration(event);
     };
 
     // Hand the worker a plain, non-reactive snapshot of the sociogram members.
