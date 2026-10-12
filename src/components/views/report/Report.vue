@@ -42,8 +42,8 @@ const currentComponent = computed(
 );
 
 const reportData = computed(() => ({
-  sociogram: sociogramStore.$state,
-  report: reportStore.$state,
+    sociogram: sociogramStore.$state,
+    report: reportStore.$state,
 }));
 
 // --- Watchers -----------
@@ -104,11 +104,13 @@ function stopWorker() {
 </script>
 
 <template>
-    <component
-        :is="currentComponent"
-        :report-data="reportData"
-        @report-geenrating-stop="stopGeneration"
-    />
+    <div>
+        <component
+            :is="currentComponent"
+            :report-data="reportData"
+            @report-geenrating-stop="stopGeneration"
+        />
 
-    <ReportCommandBar v-if="status === 'generated'" />
+        <ReportCommandBar v-if="status === 'generated'" />
+    </div>
 </template>
