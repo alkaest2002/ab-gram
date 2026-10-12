@@ -251,18 +251,23 @@ const ringBoundaryMarkup = (radius) =>
   `<circle cx="${CENTER_X}" cy="${CENTER_Y}" r="${formatCoordinate(radius)}" fill="none" stroke="${BOUNDARY_COLOR}" stroke-width="${BOUNDARY_STROKE_WIDTH}" stroke-dasharray="${BOUNDARY_DASH}"></circle>`;
 
 /**
- * Build the direction marker for a node that points back toward the ego.
+ * Build a direction marker for a node, pointing either toward or away from the
+ * ego.
  *
- * The triangle's base lies tangent to the node's circle at the point facing the
- * ego, and its tip extends toward the ego, so it reads as "this member points at
- * the ego".
+ * The triangle's base lies tangent to the node's circle and its tip extends just
+ * past the circumference in the direction of the relationship's target. An
+ * inward marker (`towardEgo`) tips toward the center, reading as "this member
+ * points at the ego"; an outward marker tips away from the center, reading as
+ * "the ego points at this member".
  *
  * @param {number} x - Horizontal center of the node.
  * @param {number} y - Vertical center of the node.
  * @param {string} color - The marker's fill color.
+ * @param {boolean} towardEgo - Whether the tip faces the ego (inward) or away
+ *   from it (outward).
  * @returns {string} The triangle's SVG markup (empty when the node is the ego).
  */
-const triangleMarkup = (x, y, color) => {
+const triangleMarkup = (x, y, color, towardEgo) => {
   const dx = CENTER_X - x;
   const dy = CENTER_Y - y;
   const length = Math.hypot(dx, dy);
@@ -271,11 +276,14 @@ const triangleMarkup = (x, y, color) => {
   // toward; draw nothing.
   if (length === 0) return "";
 
-  // Unit vector pointing from the node toward the ego.
-  const ux = dx / length;
-  const uy = dy / length;
+  // Unit vector pointing from the node toward the relationship's target: the
+  // ego for an inward marker, the node itself (away from the center) for an
+  // outward marker.
+  const sign = towardEgo ? 1 : -1;
+  const ux = (sign * dx) / length;
+  const uy = (sign * dy) / length;
 
-  // The point on the node's circumference closest to the ego, where the base of
+  // The point on the node's circumference facing the target, where the base of
   // the triangle is tangent to the circle.
   const baseX = x + ux * NODE_RADIUS;
   const baseY = y + uy * NODE_RADIUS;
@@ -285,7 +293,7 @@ const triangleMarkup = (x, y, color) => {
   const py = ux;
   const half = TRIANGLE_SIZE / 2;
 
-  // The tip extends toward the ego, just past the circumference.
+  // The tip extends toward the target, just past the circumference.
   const tipX = baseX + ux * TRIANGLE_SIZE;
   const tipY = baseY + uy * TRIANGLE_SIZE;
 
@@ -300,20 +308,25 @@ const triangleMarkup = (x, y, color) => {
 
 /**
  * Build the markup for a single node: a white circle with a colored stroke, its
- * member id centered inside, and (optionally) a direction marker pointing back
- * toward the ego.
+ * member id centered inside, and up to two direction markers (one pointing
+ * toward the ego for the node's feeling, one pointing away for the ego's
+ * feeling).
  *
  * @param {number} x - Horizontal center of the node.
  * @param {number} y - Vertical center of the node.
  * @param {string} label - The member id to display.
  * @param {string} strokeColor - The circle's stroke color.
- * @param {boolean} hasTriangle - Whether to draw the direction marker.
+ * @param {string|null} inwardColor - Fill color of the inward marker (the node
+ *   feels about the ego), or `null` for no marker.
+ * @param {string|null} outwardColor - Fill color of the outward marker (the ego
+ *   feels about the node), or `null` for no marker.
  * @returns {string} The node's SVG markup.
  */
-const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
+const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
   `<circle r="${NODE_RADIUS}" fill="${NODE_FILL_COLOR}" stroke="${strokeColor}" stroke-width="${NODE_STROKE_WIDTH}" cx="${formatCoordinate(x)}" cy="${formatCoordinate(y)}"></circle>` +
   `<text font-size="${LABEL_FONT_SIZE}" text-anchor="middle" x="${formatCoordinate(x)}" y="${formatCoordinate(y)}" dominant-baseline="central" fill="${NODE_LABEL_COLOR}">${escapeXml(label)}</text>` +
-  (hasTriangle ? triangleMarkup(x, y, strokeColor) : "");
+  (inwardColor ? triangleMarkup(x, y, inwardColor, true) : "") +
+  (outwardColor ? triangleMarkup(x, y, outwardColor, false) : "");
 
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT
@@ -334,10 +347,12 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
  * Within a ring, nodes are spaced at equal angular intervals; empty rings are
  * not skipped, so every ring keeps its radial position even when empty. Dashed
  * boundary circles separate the concentric regions. Nodes are stroked in
- * priority order: red when they directly dislike the ego, blue when they are
- * reachable from the ego, and black otherwise. A node that directly likes or
- * dislikes the ego additionally carries a small triangle tangent to its circle,
- * pointing toward the ego.
+ * priority order: red when a direct dislike exists between the node and the ego
+ * (in either direction), blue when the node is reachable from the ego, and black
+ * otherwise. A direct like or dislike between the node and the ego additionally
+ * carries a small triangle tangent to the node's circle: pointing toward the ego
+ * when the node feels about the ego, and away from the ego when the ego feels
+ * about the node.
  *
  * The SVG is built as a plain string (no DOM access), matching the other plot
  * builders.
@@ -385,7 +400,9 @@ export const buildMorenoEgoPlot = (
 
   // The ego itself, always at the center. It trivially reaches itself, so it is
   // blue, and (having no self-edge) carries no direction marker.
-  parts.push(nodeMarkup(CENTER_X, CENTER_Y, memberId, REACHABLE_COLOR, false));
+  parts.push(
+    nodeMarkup(CENTER_X, CENTER_Y, memberId, REACHABLE_COLOR, null, null),
+  );
 
   rings.forEach((ringNodes, ringIndex) => {
     const radius = ringRadius(ringIndex + 1);
@@ -395,16 +412,37 @@ export const buildMorenoEgoPlot = (
       const x = CENTER_X + radius * Math.cos(angle);
       const y = CENTER_Y + radius * Math.sin(angle);
 
-      const dislikesEgo = dislikesGraph.hasDirectedEdge(node, memberId);
+      // A relationship exists independently in each direction: the node's
+      // feeling toward the ego and the ego's feeling toward the node.
       const likesEgo = likesGraph.hasDirectedEdge(node, memberId);
+      const dislikesEgo = dislikesGraph.hasDirectedEdge(node, memberId);
+      const egoLikes = likesGraph.hasDirectedEdge(memberId, node);
+      const egoDislikes = dislikesGraph.hasDirectedEdge(memberId, node);
 
-      const strokeColor = dislikesEgo
+      const strokeColor =
+        dislikesEgo || egoDislikes
+          ? DISLIKE_COLOR
+          : reachable.has(node)
+            ? REACHABLE_COLOR
+            : UNREACHABLE_COLOR;
+
+      // Inward marker: the node likes (blue) or dislikes (red) the ego.
+      const inwardColor = dislikesEgo
         ? DISLIKE_COLOR
-        : reachable.has(node)
+        : likesEgo
           ? REACHABLE_COLOR
-          : UNREACHABLE_COLOR;
+          : null;
 
-      parts.push(nodeMarkup(x, y, node, strokeColor, likesEgo || dislikesEgo));
+      // Outward marker: the ego likes (blue) or dislikes (red) the node.
+      const outwardColor = egoDislikes
+        ? DISLIKE_COLOR
+        : egoLikes
+          ? REACHABLE_COLOR
+          : null;
+
+      parts.push(
+        nodeMarkup(x, y, node, strokeColor, inwardColor, outwardColor),
+      );
     });
   });
 
