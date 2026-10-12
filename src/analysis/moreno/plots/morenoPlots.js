@@ -151,14 +151,6 @@ export const getNodePathsFor = (nodePaths, memberId) => nodePaths[memberId];
 // EGO PLOT CONFIGURATION
 //////////////////////////////////////////////////////////////////////////////////
 
-// Canvas and drawing constants, all expressed in SVG user units (the viewBox).
-const CANVAS_WIDTH = 600;
-const CANVAS_HEIGHT = 600;
-
-// Center of the concentric layout, where the ego (target) node sits.
-const CENTER_X = CANVAS_WIDTH / 2;
-const CENTER_Y = CANVAS_HEIGHT / 2;
-
 // Node circles: a fixed radius, with a label sized to fit inside.
 const NODE_RADIUS = 16;
 const LABEL_FONT_SIZE = 11;
@@ -170,10 +162,26 @@ const NODE_LABEL_COLOR = "#000000";
 
 // Concentric ring layout: ring 1 sits this far from the center, and each
 // further ring adds this gap on top of the previous one. Rings are numbered
-// 1..4 (closest to farthest), matching the reachability buckets below.
+// 1..5 (closest to farthest), matching the reachability buckets below. The gap
+// is deliberately roomy so adjacent rings have clearance for many nodes.
 const RING_1_RADIUS = 80;
-const RING_GAP = 55;
+const RING_GAP = 70;
 const RING_COUNT = 5;
+
+// Empty margin left around the outermost boundary so no node or dashed circle
+// is clipped by the canvas edge.
+const CANVAS_PADDING = 60;
+
+// The dashed boundary closing the outermost ring sits half a ring-gap beyond
+// that ring; padding beyond it sizes the square canvas.
+const OUTERMOST_BOUNDARY_RADIUS =
+  RING_1_RADIUS + (RING_COUNT - 1) * RING_GAP + RING_GAP / 2;
+
+// Center of the concentric layout, where the ego (target) node sits.
+const CENTER_X = OUTERMOST_BOUNDARY_RADIUS + CANVAS_PADDING;
+const CENTER_Y = CENTER_X;
+const CANVAS_WIDTH = CENTER_X * 2;
+const CANVAS_HEIGHT = CENTER_Y * 2;
 
 // Direction marker: a small filled triangle pointing back toward the ego.
 const TRIANGLE_SIZE = 8;
@@ -218,7 +226,7 @@ const formatCoordinate = (value) => String(Math.round(value * 100) / 100);
 /**
  * Radius of a ring in the concentric layout.
  *
- * Rings are numbered from 1 (closest to the ego) to 4 (outermost). Empty rings
+ * Rings are numbered from 1 (closest to the ego) to 5 (outermost). Empty rings
  * keep their radial slot, so the distance of every other ring is unchanged when
  * an inner ring has no nodes.
  *
@@ -230,8 +238,8 @@ const ringRadius = (ringIndex) => RING_1_RADIUS + (ringIndex - 1) * RING_GAP;
 /**
  * Radii of the dashed boundary circles that separate the concentric regions.
  *
- * The layout has five regions — the center (ego) plus four rings — separated by
- * five boundaries: one enclosing the ego, one between each adjacent pair of
+ * The layout has six regions — the center (ego) plus five rings — separated by
+ * six boundaries: one enclosing the ego, one between each adjacent pair of
  * rings, and one closing the outermost ring. Each boundary sits halfway between
  * its two neighbouring tracks, so it never intersects a node.
  *
@@ -353,9 +361,12 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
  * - ring 4: reached through two or more intermediaries (three or more edges)
  * - ring 5: unreachable from the ego
  *
- * Within a ring, nodes are spaced at equal angular intervals; empty rings are
- * not skipped, so every ring keeps its radial position even when empty. Dashed
- * boundary circles separate the concentric regions. Nodes are stroked in
+ * Within a ring, nodes are spaced at equal angular intervals and each ring
+ * starts at a random angle so the regions don't all align; empty rings are not
+ * skipped, so every ring keeps its radial position even when empty. Dashed
+ * boundary circles separate the concentric regions, and the square canvas is
+ * padded so the outermost boundary stays clear of the edges. Nodes are stroked
+ * in
  * priority order: red when the node directly dislikes the ego, blue when the
  * node is reachable from the ego, and black otherwise. A direct like or dislike
  * between the node and the ego additionally carries a small triangle tangent to
@@ -421,8 +432,13 @@ export const buildMorenoEgoPlot = (
   rings.forEach((ringNodes, ringIndex) => {
     const radius = ringRadius(ringIndex + 1);
 
+    // Give each ring its own random starting angle so the regions don't all
+    // align on the same ray out from the center.
+    const offset = Math.random() * 2 * Math.PI;
+
     ringNodes.forEach((node, index) => {
-      const angle = (index / ringNodes.length) * 2 * Math.PI - Math.PI / 2;
+      const angle =
+        offset + (index / ringNodes.length) * 2 * Math.PI - Math.PI / 2;
       const x = CENTER_X + radius * Math.cos(angle);
       const y = CENTER_Y + radius * Math.sin(angle);
 

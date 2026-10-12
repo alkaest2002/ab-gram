@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import {
@@ -160,16 +160,110 @@ describe("morenoPlots", () => {
         getNodePaths(sparseLikes),
       );
 
-      // a - b is ring 2 (oneHop, radius 135) and a - b - c is ring 3 (twoHops,
-      // radius 190). Ring 1 (mutuality) is empty, so b and c keep their ring
-      // slots rather than shifting inward: a single ring-3 node is placed
-      // straight up from the center at (300, 110).
-      const cNode = svg.match(
-        /<circle([^>]*)><\/circle><text[^>]*>c<\/text>/,
-      );
+      // Extract a node's circle attributes by its label.
+      const circle = (label) => {
+        const match = svg.match(
+          new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`),
+        );
+        return match ? match[1] : null;
+      };
+      const coordinate = (attrs, axis) =>
+        Number(attrs.match(new RegExp(`${axis}="([^"]+)"`))[1]);
+
+      const ego = circle("a");
+      const bNode = circle("b");
+      const cNode = circle("c");
+      expect(ego).not.toBeNull();
+      expect(bNode).not.toBeNull();
       expect(cNode).not.toBeNull();
-      expect(cNode[1]).toContain('cx="300"');
-      expect(cNode[1]).toContain('cy="110"');
+
+      const centerX = coordinate(ego, "cx");
+      const centerY = coordinate(ego, "cy");
+      const radiusOf = (attrs) =>
+        Math.hypot(
+          coordinate(attrs, "cx") - centerX,
+          coordinate(attrs, "cy") - centerY,
+        );
+
+      // Ring 1 (mutuality) is empty, so b stays on ring 2 (oneHop, radius 150)
+      // and c stays on ring 3 (twoHops, radius 220) instead of shifting inward.
+      expect(radiusOf(bNode)).toBeCloseTo(150, 0);
+      expect(radiusOf(cNode)).toBeCloseTo(220, 0);
+    });
+
+    it("keeps padding between the outermost boundary and the canvas edge", () => {
+      const { svg } = buildMorenoEgoPlot(
+        "a",
+        likesGraph,
+        dislikesGraph,
+        nodePaths,
+      );
+
+      // The dashed boundary circles are the only elements with fill="none".
+      const boundaryRadii = [
+        ...svg.matchAll(/<circle[^>]*r="([0-9.]+)"[^>]*fill="none"/g),
+      ].map((match) => Number(match[1]));
+      expect(boundaryRadii.length).toBe(6);
+
+      const canvas = svg.match(/viewBox="0 0 ([0-9.]+) ([0-9.]+)"/);
+      expect(canvas).not.toBeNull();
+      const width = Number(canvas[1]);
+
+      // The center sits at half the canvas; the outermost boundary must leave
+      // at least the canvas padding (60 units) of margin on every side.
+      expect(width / 2 - Math.max(...boundaryRadii)).toBeGreaterThanOrEqual(60);
+    });
+
+    it("starts each ring at its own random angular offset", () => {
+      const members = [
+        makeMember("a", "Alice", ["b"], []),
+        makeMember("b", "Bob", ["c"], []),
+        makeMember("c", "Carol", [], []),
+      ];
+      const likes = createLikesGraph(members, "likes");
+      const dislikes = createLikesGraph(members, "dislikes");
+
+      // Ring 1 (mutuality, empty) consumes the first call; ring 2 (oneHop, b)
+      // gets 0.5 turns and ring 3 (twoHops, c) gets 0.25 turns.
+      const random = vi
+        .spyOn(Math, "random")
+        .mockReturnValueOnce(0)
+        .mockReturnValueOnce(0.5)
+        .mockReturnValueOnce(0.25)
+        .mockReturnValue(0);
+
+      try {
+        const { svg } = buildMorenoEgoPlot(
+          "a",
+          likes,
+          dislikes,
+          getNodePaths(likes),
+        );
+
+        const circle = (label) => {
+          const match = svg.match(
+            new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`),
+          );
+          return match ? match[1] : null;
+        };
+        const coordinate = (attrs, axis) =>
+          Number(attrs.match(new RegExp(`${axis}="([^"]+)"`))[1]);
+
+        const ego = circle("a");
+        const bNode = circle("b");
+        const cNode = circle("c");
+        const angleOf = (attrs) =>
+          Math.atan2(
+            coordinate(attrs, "cy") - coordinate(ego, "cy"),
+            coordinate(attrs, "cx") - coordinate(ego, "cx"),
+          );
+
+        // b (offset 0.5) points straight down; c (offset 0.25) points right.
+        expect(angleOf(bNode)).toBeCloseTo(Math.PI / 2, 5);
+        expect(angleOf(cNode)).toBeCloseTo(0, 5);
+      } finally {
+        random.mockRestore();
+      }
     });
   });
 
