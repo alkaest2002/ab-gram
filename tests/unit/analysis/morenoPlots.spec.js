@@ -3,9 +3,9 @@ import { describe, it, expect } from "vitest";
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import {
   buildMorenoEgoPlot,
-  getDirectedPaths,
+  getNodePaths,
   getMorenoEgoPlots,
-  getNodeDirectedPaths,
+  getNodePathsFor,
 } from "@/analysis/moreno/plots/morenoPlots.js";
 
 const makeMember = (id, name, likes = [], dislikes = []) => ({
@@ -28,40 +28,47 @@ describe("morenoPlots", () => {
 
   const graph = createLikesGraph(members, "likes");
 
-  describe("getDirectedPaths", () => {
-    it("classifies every node by its shortest directed path length", () => {
-      const paths = getDirectedPaths(graph);
+  describe("getNodePaths", () => {
+    it("classifies every node by its shortest undirected path length", () => {
+      const paths = getNodePaths(graph);
 
       expect(paths.a).toEqual({
-        directed: ["b"],
-        oneHop: ["c"],
+        oneHop: ["b"],
+        twoHops: ["c"],
         multipleHops: [],
         unreachable: ["d"],
       });
 
       expect(paths.b).toEqual({
-        directed: ["c"],
-        oneHop: [],
+        oneHop: ["a", "c"],
+        twoHops: [],
         multipleHops: [],
-        unreachable: ["a", "d"],
+        unreachable: ["d"],
+      });
+
+      expect(paths.c).toEqual({
+        oneHop: ["b"],
+        twoHops: ["a"],
+        multipleHops: [],
+        unreachable: ["d"],
       });
     });
   });
 
-  describe("getNodeDirectedPaths", () => {
+  describe("getNodePathsFor", () => {
     it("returns the precomputed paths of a specific node", () => {
-      const paths = getDirectedPaths(graph);
+      const paths = getNodePaths(graph);
 
-      expect(getNodeDirectedPaths(paths, "a")).toEqual({
-        directed: ["b"],
-        oneHop: ["c"],
+      expect(getNodePathsFor(paths, "a")).toEqual({
+        oneHop: ["b"],
+        twoHops: ["c"],
         multipleHops: [],
         unreachable: ["d"],
       });
     });
 
     it("returns undefined for a node that is not present", () => {
-      expect(getNodeDirectedPaths(getDirectedPaths(graph), "z")).toBeUndefined();
+      expect(getNodePathsFor(getNodePaths(graph), "z")).toBeUndefined();
     });
   });
 
@@ -72,31 +79,32 @@ describe("morenoPlots", () => {
       makeMember("c", "Carol", [], []),
       makeMember("d", "Dave", [], ["a"]),
       makeMember("e", "Eve", ["a"], []),
+      makeMember("f", "Frank", [], []),
     ];
 
     const likesGraph = createLikesGraph(egoMembers, "likes");
     const dislikesGraph = createLikesGraph(egoMembers, "dislikes");
-    const directedPaths = getDirectedPaths(likesGraph);
+    const nodePaths = getNodePaths(likesGraph);
 
     it("places nodes on rings by reachability and colors them by priority", () => {
       const { memberId, svg } = buildMorenoEgoPlot(
         "a",
         likesGraph,
         dislikesGraph,
-        directedPaths,
+        nodePaths,
       );
 
       expect(memberId).toBe("a");
       expect(svg.startsWith("<svg")).toBe(true);
       expect(svg.endsWith("</svg>")).toBe(true);
 
-      // The ego plus b, c (reachable) and d, e (unreachable) = five nodes.
-      expect(countOccurrences(svg, 'fill="#FFFFFF"')).toBe(5);
+      // The ego plus b, c, e (reachable) and d, f (unreachable) = six nodes.
+      expect(countOccurrences(svg, 'fill="#FFFFFF"')).toBe(6);
 
       // Five dashed boundaries separate the center (ego) and the four rings.
       expect(countOccurrences(svg, 'fill="none"')).toBe(5);
 
-      // d dislikes the ego (red), b and c are reachable (blue), e is
+      // d dislikes the ego (red), b, c and e are reachable (blue), f is
       // unreachable (black).
       expect(svg).toContain('stroke="#FF0000"');
       expect(svg).toContain('stroke="#0000FF"');
@@ -119,10 +127,10 @@ describe("morenoPlots", () => {
         "a",
         sparseLikes,
         sparseDislikes,
-        getDirectedPaths(sparseLikes),
+        getNodePaths(sparseLikes),
       );
 
-      // a -> b is ring 1 (radius 80) and a -> b -> c is ring 2 (radius 135).
+      // a - b is ring 1 (radius 80) and a - b - c is ring 2 (radius 135).
       // Ring 3 is empty, so c must stay on ring 2 rather than shifting inward:
       // a single ring-2 node is placed straight up from the center at (300, 165).
       const cNode = svg.match(

@@ -3,32 +3,48 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute the shortest directed paths from `source` to every reachable node
- * using breadth-first search.
+ * Compute the shortest paths from `source` to every reachable node using
+ * breadth-first search, treating the graph as undirected.
  *
  * This is a local reimplementation of `graphology-shortest-path`'s unweighted
  * `singleSource`, kept here so the Moreno plots don't have to pull that
  * CommonJS dependency into the Web Worker bundle.
  *
- * @param {import("graphology").DirectedGraph} graph - The directed network.
- * @param {string} source - The source node id.
- * @returns {Record<string, string[]>} Map of `target -> [source, ..., target]`
- *   for every node reachable from `source`. Unreachable nodes are absent.
+ * Nodes are identified by their `memberId` attribute rather than their graph
+ * key, so both the returned map keys and the path arrays contain member ids.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The network. Edges are
+ *   followed in either direction, so the graph is treated as undirected here.
+ * @param {string} source - The graph key of the source node.
+ * @returns {Record<string, string[]>} Map of `target memberId -> [source
+ *   memberId, ..., target memberId]` for every node reachable from `source`.
+ *   Unreachable nodes are absent.
  */
 const singleSource = (graph, source) => {
-  const paths = { [source]: [source] };
+  const sourceId = graph.getNodeAttribute(source, "memberId");
+  const paths = { [sourceId]: [sourceId] };
 
-  // Breadth-first frontier: nodes discovered in the previous level.
+  // Breadth-first frontier holds graph keys (what the traversal API consumes);
+  // the paths themselves are stored by `memberId`.
   let frontier = [source];
 
   while (frontier.length > 0) {
     const nextFrontier = [];
 
     for (const node of frontier) {
-      for (const neighbor of graph.outboundNeighbors(node)) {
+      const nodeId = graph.getNodeAttribute(node, "memberId");
+
+      // Follow edges in both directions so the graph behaves as undirected.
+      const neighbors = graph
+        .outboundNeighbors(node)
+        .concat(graph.inboundNeighbors(node));
+
+      for (const neighbor of neighbors) {
+        const neighborId = graph.getNodeAttribute(neighbor, "memberId");
+
         // First discovery is the shortest path in an unweighted graph.
-        if (paths[neighbor] === undefined) {
-          paths[neighbor] = paths[node].concat(neighbor);
+        if (paths[neighborId] === undefined) {
+          paths[neighborId] = paths[nodeId].concat(neighborId);
           nextFrontier.push(neighbor);
         }
       }
@@ -41,86 +57,87 @@ const singleSource = (graph, source) => {
 };
 
 /**
- * Compute the directed paths of every node in the graph.
+ * Compute the paths of every node in the graph, treating edges as undirected.
  *
- * For each source node `A`, every other node `B` is reached following the
- * direction of the edges (so `A -> B` only counts when an edge actually points
- * from `A` to `B`). `B` is then filed under the bucket that matches the
+ * For each source node `A`, every other node `B` is reached by following edges
+ * in either direction. `B` is then filed under the bucket that matches the
  * shortest path from `A` to `B`:
  *
- * - `directed`:     a single edge — `A -> B`
- * - `oneHop`:       two edges — `A -> C -> B`
- * - `multipleHops`: three or more edges — `A -> C -> D -> B`
- * - `unreachable`:  no directed path exists from `A` to `B`
+ * - `oneHop`:       a single edge — `A - B`
+ * - `twoHops`:      two edges — `A - C - B`
+ * - `multipleHops`: three or more edges — `A - C - D - B`
+ * - `unreachable`:  no path connects `A` and `B`
  *
  * Path lengths come from a local breadth-first search, so every ordered pair
- * is classified by its shortest directed path length and appears in exactly
- * one bucket.
+ * is classified by its shortest path length and appears in exactly one bucket.
  *
- * @param {import("graphology").DirectedGraph} graph - The directed network.
- * @returns {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>}
+ * @param {import("graphology").DirectedGraph} graph - The network, treated as
+ *   undirected.
+ * @returns {Record<string, {oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>}
  *   An object keyed by each node's `memberId` attribute. Each value lists the
  *   target node ids reachable from that source, split by the number of hops
  *   required.
  */
-export const getDirectedPaths = (graph) => {
+export const getNodePaths = (graph) => {
   const result = {};
 
   graph.forEachNode((source) => {
-    // Shortest directed paths from `source` to every reachable node.
-    // `paths[target]` is a node-id array (source first) or absent when
-    // `target` cannot be reached.
+    const sourceId = graph.getNodeAttribute(source, "memberId");
+
+    // Shortest paths from `source` to every reachable node, treating the graph
+    // as undirected. `paths[targetId]` is a member-id array (source first) or
+    // absent when `targetId` cannot be reached.
     const paths = singleSource(graph, source);
 
     const categories = {
-      directed: [],
       oneHop: [],
+      twoHops: [],
       multipleHops: [],
       unreachable: [],
     };
 
     graph.forEachNode((target) => {
-      if (target === source) return;
+      const targetId = graph.getNodeAttribute(target, "memberId");
+      if (targetId === sourceId) return;
 
-      const path = paths[target];
+      const path = paths[targetId];
 
       if (path === undefined) {
-        categories.unreachable.push(target);
+        categories.unreachable.push(targetId);
       } else if (path.length === 2) {
-        // A -> B
-        categories.directed.push(target);
+        // A - B
+        categories.oneHop.push(targetId);
       } else if (path.length === 3) {
-        // A -> C -> B
-        categories.oneHop.push(target);
+        // A - C - B
+        categories.twoHops.push(targetId);
       } else {
-        // A -> ... -> B (two or more intermediate nodes)
-        categories.multipleHops.push(target);
+        // A - ... - B (two or more intermediate nodes)
+        categories.multipleHops.push(targetId);
       }
     });
 
     // Key by the node's `memberId` attribute so callers can retrieve a specific
     // node without walking the graph again.
-    result[graph.getNodeAttribute(source, "memberId")] = categories;
+    result[sourceId] = categories;
   });
 
   return result;
 };
 
 /**
- * Get the directed paths of a specific node from the precomputed map.
+ * Get the paths of a specific node from the precomputed map.
  *
- * This is a plain lookup into the result of {@link getDirectedPaths}, so it
- * runs in constant time and never re-runs the shortest-path computation.
+ * This is a plain lookup into the result of {@link getNodePaths}, so it runs in
+ * constant time and never re-runs the shortest-path computation.
  *
- * @param {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>} directedPaths -
- *   The map returned by {@link getDirectedPaths}.
+ * @param {Record<string, {oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>} nodePaths -
+ *   The map returned by {@link getNodePaths}.
  * @param {string} memberId - The `memberId` of the node whose paths are requested.
- * @returns {{directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]} | undefined}
+ * @returns {{oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]} | undefined}
  *   The target node ids reachable from `memberId`, split by the number of hops
  *   required, or `undefined` when the node is not present in the map.
  */
-export const getNodeDirectedPaths = (directedPaths, memberId) =>
-  directedPaths[memberId];
+export const getNodePathsFor = (nodePaths, memberId) => nodePaths[memberId];
 
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT CONFIGURATION
@@ -306,12 +323,12 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
  * Build an SVG "ego" plot centered on a single member.
  *
  * The member sits at the center and every other member is placed on one of
- * four concentric rings according to how many directed "likes" steps it takes
+ * four concentric rings according to how many undirected "likes" steps it takes
  * to reach them from the ego:
  *
  * - ring 1: reached directly (one edge)
- * - ring 2: reached through exactly one intermediate hop (two edges)
- * - ring 3: reached through two or more intermediate hops (three or more edges)
+ * - ring 2: reached through exactly one intermediary (two edges)
+ * - ring 3: reached through two or more intermediaries (three or more edges)
  * - ring 4: unreachable from the ego
  *
  * Within a ring, nodes are spaced at equal angular intervals; empty rings are
@@ -330,10 +347,10 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
  *   graph (edges point from the choosing member to the chosen one).
  * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
  *   dislikes graph (same edge direction convention).
- * @param {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>} directedPaths -
- *   The map returned by {@link getDirectedPaths} for the likes graph, used to
+ * @param {Record<string, {oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>} nodePaths -
+ *   The map returned by {@link getNodePaths} for the likes graph, used to
  *   determine reachability and hop distance from `memberId` via
- *   {@link getNodeDirectedPaths}.
+ *   {@link getNodePathsFor}.
  * @returns {{memberId: string, svg: string}} The ego's id and its serialized
  *   SVG markup.
  */
@@ -341,15 +358,15 @@ export const buildMorenoEgoPlot = (
   memberId,
   likesGraph,
   dislikesGraph,
-  directedPaths,
+  nodePaths,
 ) => {
-  const paths = getNodeDirectedPaths(directedPaths, memberId);
+  const paths = getNodePathsFor(nodePaths, memberId);
 
-  // The four buckets, in ring order. `getNodeDirectedPaths` returns `undefined`
+  // The four buckets, in ring order. `getNodePathsFor` returns `undefined`
   // for an unknown member; degrade to an empty layout in that case.
   const rings = [
-    paths?.directed ?? [],
     paths?.oneHop ?? [],
+    paths?.twoHops ?? [],
     paths?.multipleHops ?? [],
     paths?.unreachable ?? [],
   ];
@@ -403,10 +420,10 @@ export const buildMorenoEgoPlot = (
 /**
  * Build an SVG ego plot for every member of the group.
  *
- * This is the caching entry point for ego plots: the likes directed-paths map
- * is computed exactly once (via {@link getDirectedPaths}) and reused for every
- * member, so each plot only does an O(1) lookup via {@link getNodeDirectedPaths}
- * instead of re-running the all-pairs shortest-path computation.
+ * This is the caching entry point for ego plots: the likes node-paths map is
+ * computed exactly once (via {@link getNodePaths}) and reused for every member,
+ * so each plot only does an O(1) lookup via {@link getNodePathsFor} instead of
+ * re-running the all-pairs shortest-path computation.
  *
  * @param {{id: string}[]} members - The group members, in the order their plots
  *   should be returned.
@@ -418,9 +435,9 @@ export const buildMorenoEgoPlot = (
  *   the same order as `members`.
  */
 export const getMorenoEgoPlots = (members, likesGraph, dislikesGraph) => {
-  const directedPaths = getDirectedPaths(likesGraph);
+  const nodePaths = getNodePaths(likesGraph);
 
   return members.map((member) =>
-    buildMorenoEgoPlot(member.id, likesGraph, dislikesGraph, directedPaths),
+    buildMorenoEgoPlot(member.id, likesGraph, dislikesGraph, nodePaths),
   );
 };
