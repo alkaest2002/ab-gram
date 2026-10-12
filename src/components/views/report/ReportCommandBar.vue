@@ -5,7 +5,6 @@
 import { useRouter } from "vue-router";
 
 // --- Stores -------------
-import { useReportStore } from "@/stores/report";
 
 // --- Components ---------
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
@@ -16,12 +15,17 @@ import DownloadIcon from "@/components/ui/icons/DownloadIcon.vue";
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------
+const props = defineProps({
+    reportData: {
+        type: Object,
+        required: true,
+    },
+});
 
 // --- Emits --------------
 
 // --- State --------------
 const router = useRouter();
-const reportStore = useReportStore();
 const { downloadJson } = useDownload();
 
 // --- Computed -----------
@@ -40,21 +44,7 @@ function printReport() {
 }
 
 function downloadReport() {
-    const report = {
-        edgeTypes: reportStore.edgeTypes,
-        morenoGroupLevelMetrics: reportStore.morenoGroupLevelMetrics,
-        morenoIndividualLevelMetrics: reportStore.morenoIndividualLevelMetrics,
-        snaLikesComponents: reportStore.snaLikesComponents,
-        snaLikesGroupLevelMetrics: reportStore.snaLikesGroupLevelMetrics,
-        snaLikesIndividualLevelMetric: reportStore.snaLikesIndividualLevelMetric,
-        snaLikesPlots: reportStore.snaLikesPlots,
-        snaDislikesComponents: reportStore.snaDislikesComponents,
-        snaDislikesGroupLevelMetrics: reportStore.snaDislikesGroupLevelMetrics,
-        snaDislikesIndividualLevelMetric: reportStore.snaDislikesIndividualLevelMetric,
-        snaDislikesPlots: reportStore.snaDislikesPlots,
-    };
-
-    downloadJson(report, "report.json");
+    downloadJson(props.reportData, "report.json");
 }
 </script>
 

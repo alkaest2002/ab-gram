@@ -124,6 +124,6 @@ function stopWorker() {
             @report-geenrating-stop="stopGeneration"
         />
 
-        <ReportCommandBar v-if="status === 'generated'" />
+        <ReportCommandBar v-if="status === 'generated'" :report-data="reportData" />
     </div>
 </template>
