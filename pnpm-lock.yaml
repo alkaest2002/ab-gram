@@ -26,9 +26,6 @@ importers:
       graphology-operators:
         specifier: ^1.6.1
         version: 1.6.1(graphology-types@0.24.8)
-      graphology-shortest-path:
-        specifier: ^2.1.0
-        version: 2.1.0(graphology-types@0.24.8)
       mathjax:
         specifier: ^4.1.3
         version: 4.1.3
