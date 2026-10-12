@@ -193,8 +193,8 @@ const computeEdgeEndpoints = (from, to, radius) => {
  * @returns {string} The node's SVG markup.
  */
 const nodeMarkup = (x, y, label, fillColor) =>
-  `<circle r="${NODE_RADIUS}" fill="${fillColor}" cx="${formatCoordinate(x)}" cy="${formatCoordinate(y)}"></circle>` +
-  `<text font-size="${LABEL_FONT_SIZE}" text-anchor="middle" x="${formatCoordinate(x)}" y="${formatCoordinate(y)}" dominant-baseline="central" fill="${NODE_LABEL_COLOR}">${escapeXml(label)}</text>`;
+  `<circle r='${NODE_RADIUS}' fill='${fillColor}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
+  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${NODE_LABEL_COLOR}'>${escapeXml(label)}</text>`;
 
 /**
  * Build the isolated members' plot dynamically.
@@ -275,16 +275,16 @@ const buildPlot = (graph, accentColor) => {
   const parts = [];
 
   parts.push(
-    `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="${CANVAS_WIDTH}" height="${totalHeight}" viewBox="0 0 ${CANVAS_WIDTH} ${totalHeight}">`,
+    `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='${CANVAS_WIDTH}' height='${totalHeight}' viewBox='0 0 ${CANVAS_WIDTH} ${totalHeight}'>`,
   );
 
   // Arrowhead for non-mutual edges: an open chevron (two thin strokes) instead
   // of a filled triangle, so it reads light. `refX`/`refY` align the marker's
-  // tip (its right edge) with the line endpoint, and `orient="auto"` rotates it
+  // tip (its right edge) with the line endpoint, and `orient='auto'` rotates it
   // to follow the line's direction.
   parts.push(
-    `<defs><marker id="${markerId}" markerWidth="${ARROW_SIZE}" markerHeight="${ARROW_SIZE}" refX="${ARROW_SIZE}" refY="${ARROW_SIZE / 2}" viewBox="0 0 ${ARROW_SIZE} ${ARROW_SIZE}" orient="auto">` +
-      `<path d="M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}" fill="none" stroke="${accentColor}" stroke-width="${ARROW_STROKE_WIDTH}" stroke-linecap="round"></path>` +
+    `<defs><marker id='${markerId}' markerWidth='${ARROW_SIZE}' markerHeight='${ARROW_SIZE}' refX='${ARROW_SIZE}' refY='${ARROW_SIZE / 2}' viewBox='0 0 ${ARROW_SIZE} ${ARROW_SIZE}' orient='auto'>` +
+      `<path d='M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}' fill='none' stroke='${accentColor}' stroke-width='${ARROW_STROKE_WIDTH}' stroke-linecap='round'></path>` +
       `</marker></defs>`,
   );
 
@@ -301,10 +301,10 @@ const buildPlot = (graph, accentColor) => {
     const width = attributes.isMutual
       ? MUTUAL_EDGE_WIDTH
       : NON_MUTUAL_EDGE_WIDTH;
-    const markerEnd = attributes.isMutual ? "" : ` marker-end="url(#${markerId})"`;
+    const markerEnd = attributes.isMutual ? "" : ` marker-end='url(#${markerId})'`;
 
     parts.push(
-      `<line x1="${formatCoordinate(x1)}" y1="${formatCoordinate(y1)}" x2="${formatCoordinate(x2)}" y2="${formatCoordinate(y2)}" stroke="${accentColor}" stroke-width="${width}"${markerEnd}></line>`,
+      `<line x1='${formatCoordinate(x1)}' y1='${formatCoordinate(y1)}' x2='${formatCoordinate(x2)}' y2='${formatCoordinate(y2)}' stroke='${accentColor}' stroke-width='${width}'${markerEnd}></line>`,
     );
   });
 
@@ -317,7 +317,7 @@ const buildPlot = (graph, accentColor) => {
   // Isolated members: a black plot stacked below the connected graph, drawn
   // into a group translated down by the connected graph's height.
   if (isolatedPlot.height > 0) {
-    parts.push(`<g transform="translate(0, ${CANVAS_HEIGHT})">`);
+    parts.push(`<g transform='translate(0, ${CANVAS_HEIGHT})'>`);
     parts.push(isolatedPlot.render());
     parts.push(`</g>`);
   }

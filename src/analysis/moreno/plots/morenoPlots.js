@@ -264,7 +264,7 @@ const ringBoundaries = () => {
  * @returns {string} The boundary's SVG markup.
  */
 const ringBoundaryMarkup = (radius) =>
-  `<circle cx="${CENTER_X}" cy="${CENTER_Y}" r="${formatCoordinate(radius)}" fill="none" stroke="${BOUNDARY_COLOR}" stroke-width="${BOUNDARY_STROKE_WIDTH}" stroke-dasharray="${BOUNDARY_DASH}"></circle>`;
+  `<circle cx='${CENTER_X}' cy='${CENTER_Y}' r='${formatCoordinate(radius)}' fill='none' stroke='${BOUNDARY_COLOR}' stroke-width='${BOUNDARY_STROKE_WIDTH}' stroke-dasharray='${BOUNDARY_DASH}'></circle>`;
 
 /**
  * Build a direction marker for a node, pointing either toward or away from the
@@ -314,10 +314,10 @@ const triangleMarkup = (x, y, color, towardEgo) => {
   const tipY = baseY + uy * TRIANGLE_SIZE;
 
   return (
-    `<polygon fill="${color}" points="` +
+    `<polygon fill='${color}' points='` +
     `${formatCoordinate(tipX)},${formatCoordinate(tipY)} ` +
     `${formatCoordinate(baseX + px * half)},${formatCoordinate(baseY + py * half)} ` +
-    `${formatCoordinate(baseX - px * half)},${formatCoordinate(baseY - py * half)}">` +
+    `${formatCoordinate(baseX - px * half)},${formatCoordinate(baseY - py * half)}'>` +
     `</polygon>`
   );
 };
@@ -339,8 +339,8 @@ const triangleMarkup = (x, y, color, towardEgo) => {
  * @returns {string} The node's SVG markup.
  */
 const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
-  `<circle r="${NODE_RADIUS}" fill="${NODE_FILL_COLOR}" stroke="${strokeColor}" stroke-width="${NODE_STROKE_WIDTH}" cx="${formatCoordinate(x)}" cy="${formatCoordinate(y)}"></circle>` +
-  `<text font-size="${LABEL_FONT_SIZE}" text-anchor="middle" x="${formatCoordinate(x)}" y="${formatCoordinate(y)}" dominant-baseline="central" fill="${NODE_LABEL_COLOR}">${escapeXml(label)}</text>` +
+  `<circle r='${NODE_RADIUS}' fill='${NODE_FILL_COLOR}' stroke='${strokeColor}' stroke-width='${NODE_STROKE_WIDTH}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
+  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${NODE_LABEL_COLOR}'>${escapeXml(label)}</text>` +
   (inwardColor ? triangleMarkup(x, y, inwardColor, true) : "") +
   (outwardColor ? triangleMarkup(x, y, outwardColor, false) : "");
 
@@ -416,7 +416,7 @@ export const buildMorenoEgoPlot = (
   const parts = [];
 
   parts.push(
-    `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${CANVAS_WIDTH}" height="${CANVAS_HEIGHT}" viewBox="0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}">`,
+    `<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='${CANVAS_WIDTH}' height='${CANVAS_HEIGHT}' viewBox='0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}'>`,
   );
 
   // Draw the dashed boundaries separating the concentric regions first, so the
