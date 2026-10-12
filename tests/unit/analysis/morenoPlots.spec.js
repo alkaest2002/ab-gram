@@ -91,7 +91,10 @@ describe("morenoPlots", () => {
       expect(svg.endsWith("</svg>")).toBe(true);
 
       // The ego plus b, c (reachable) and d, e (unreachable) = five nodes.
-      expect(countOccurrences(svg, "<circle")).toBe(5);
+      expect(countOccurrences(svg, 'fill="#FFFFFF"')).toBe(5);
+
+      // Five dashed boundaries separate the center (ego) and the four rings.
+      expect(countOccurrences(svg, 'fill="none"')).toBe(5);
 
       // d dislikes the ego (red), b and c are reachable (blue), e is
       // unreachable (black).

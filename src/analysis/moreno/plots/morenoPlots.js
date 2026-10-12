@@ -148,6 +148,7 @@ const NODE_LABEL_COLOR = "#000000";
 // 1..4 (closest to farthest), matching the reachability buckets below.
 const RING_1_RADIUS = 80;
 const RING_GAP = 55;
+const RING_COUNT = 4;
 
 // Direction marker: a small filled triangle pointing back toward the ego.
 const TRIANGLE_SIZE = 8;
@@ -156,6 +157,11 @@ const TRIANGLE_SIZE = 8;
 const DISLIKE_COLOR = "#FF0000";
 const REACHABLE_COLOR = "#0000FF";
 const UNREACHABLE_COLOR = "#000000";
+
+// Dashed boundary circles separating the concentric regions.
+const BOUNDARY_COLOR = "#999999";
+const BOUNDARY_STROKE_WIDTH = 1;
+const BOUNDARY_DASH = "4 4";
 
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT SVG HELPERS
@@ -197,10 +203,41 @@ const formatCoordinate = (value) => String(Math.round(value * 100) / 100);
 const ringRadius = (ringIndex) => RING_1_RADIUS + (ringIndex - 1) * RING_GAP;
 
 /**
+ * Radii of the dashed boundary circles that separate the concentric regions.
+ *
+ * The layout has five regions — the center (ego) plus four rings — separated by
+ * five boundaries: one enclosing the ego, one between each adjacent pair of
+ * rings, and one closing the outermost ring. Each boundary sits halfway between
+ * its two neighbouring tracks, so it never intersects a node.
+ *
+ * @returns {number[]} Boundary radii, ordered from innermost to outermost.
+ */
+const ringBoundaries = () => {
+  const boundaries = [ringRadius(1) / 2];
+
+  for (let ring = 1; ring < RING_COUNT; ring += 1) {
+    boundaries.push((ringRadius(ring) + ringRadius(ring + 1)) / 2);
+  }
+
+  boundaries.push(ringRadius(RING_COUNT) + RING_GAP / 2);
+
+  return boundaries;
+};
+
+/**
+ * Build the markup for one dashed boundary circle.
+ *
+ * @param {number} radius - The boundary's radius, in SVG user units.
+ * @returns {string} The boundary's SVG markup.
+ */
+const ringBoundaryMarkup = (radius) =>
+  `<circle cx="${CENTER_X}" cy="${CENTER_Y}" r="${formatCoordinate(radius)}" fill="none" stroke="${BOUNDARY_COLOR}" stroke-width="${BOUNDARY_STROKE_WIDTH}" stroke-dasharray="${BOUNDARY_DASH}"></circle>`;
+
+/**
  * Build the direction marker for a node that points back toward the ego.
  *
- * The triangle's tip sits on the node's inner edge (the side facing the ego)
- * and its base opens away from the ego, so it reads as "this member points at
+ * The triangle's base lies tangent to the node's circle at the point facing the
+ * ego, and its tip extends toward the ego, so it reads as "this member points at
  * the ego".
  *
  * @param {number} x - Horizontal center of the node.
@@ -221,23 +258,25 @@ const triangleMarkup = (x, y, color) => {
   const ux = dx / length;
   const uy = dy / length;
 
-  const tipX = x + ux * NODE_RADIUS;
-  const tipY = y + uy * NODE_RADIUS;
+  // The point on the node's circumference closest to the ego, where the base of
+  // the triangle is tangent to the circle.
+  const baseX = x + ux * NODE_RADIUS;
+  const baseY = y + uy * NODE_RADIUS;
 
-  // The base opens away from the ego, behind the tip along the node's radius.
-  const baseCenterX = tipX - ux * TRIANGLE_SIZE;
-  const baseCenterY = tipY - uy * TRIANGLE_SIZE;
-
-  // Perpendicular to the radius, for the base's two corners.
+  // Perpendicular to the radius: the tangent line along which the base lies.
   const px = -uy;
   const py = ux;
   const half = TRIANGLE_SIZE / 2;
 
+  // The tip extends toward the ego, just past the circumference.
+  const tipX = baseX + ux * TRIANGLE_SIZE;
+  const tipY = baseY + uy * TRIANGLE_SIZE;
+
   return (
     `<polygon fill="${color}" points="` +
     `${formatCoordinate(tipX)},${formatCoordinate(tipY)} ` +
-    `${formatCoordinate(baseCenterX + px * half)},${formatCoordinate(baseCenterY + py * half)} ` +
-    `${formatCoordinate(baseCenterX - px * half)},${formatCoordinate(baseCenterY - py * half)}">` +
+    `${formatCoordinate(baseX + px * half)},${formatCoordinate(baseY + py * half)} ` +
+    `${formatCoordinate(baseX - px * half)},${formatCoordinate(baseY - py * half)}">` +
     `</polygon>`
   );
 };
@@ -276,11 +315,12 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
  * - ring 4: unreachable from the ego
  *
  * Within a ring, nodes are spaced at equal angular intervals; empty rings are
- * not skipped, so every ring keeps its radial position even when empty. Nodes
- * are stroked in priority order: red when they directly dislike the ego, blue
- * when they are reachable from the ego, and black otherwise. A node that
- * directly likes or dislikes the ego additionally carries a small triangle
- * pointing toward it.
+ * not skipped, so every ring keeps its radial position even when empty. Dashed
+ * boundary circles separate the concentric regions. Nodes are stroked in
+ * priority order: red when they directly dislike the ego, blue when they are
+ * reachable from the ego, and black otherwise. A node that directly likes or
+ * dislikes the ego additionally carries a small triangle tangent to its circle,
+ * pointing toward the ego.
  *
  * The SVG is built as a plain string (no DOM access), matching the other plot
  * builders.
@@ -321,6 +361,10 @@ export const buildMorenoEgoPlot = (
   parts.push(
     `<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${CANVAS_WIDTH}" height="${CANVAS_HEIGHT}" viewBox="0 0 ${CANVAS_WIDTH} ${CANVAS_HEIGHT}">`,
   );
+
+  // Draw the dashed boundaries separating the concentric regions first, so the
+  // nodes are drawn on top of them.
+  ringBoundaries().forEach((radius) => parts.push(ringBoundaryMarkup(radius)));
 
   // The ego itself, always at the center. It trivially reaches itself, so it is
   // blue, and (having no self-edge) carries no direction marker.
