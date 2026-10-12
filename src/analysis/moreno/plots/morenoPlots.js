@@ -58,38 +58,43 @@ const singleSource = (graph, source) => {
 
 /**
  * Compute the reachability categories of every node in the graph, treating
- * edges as directed.
+ * likes edges as directed and dislikes as a rejection that overrides any likes
+ * path.
  *
  * For each source node `A`, every other node `B` is reached by following the
  * "likes" edges in their own direction. `B` is then filed under the bucket that
- * matches the shortest directed path from `A` to `B`:
+ * matches the shortest directed likes path from `A` to `B`:
  *
  * - `mutuality`:    `A` likes `B` and `B` likes `A` back
  * - `oneHop`:       `A` likes `B`, but `B` does not like `A`
  * - `twoHops`:      reached through exactly one intermediary — `A → C → B`
  * - `multipleHops`: reached through two or more intermediaries — `A → C → D → B`
- * - `unreachable`:  no directed path leads from `A` to `B`
+ * - `unreachable`:  no directed likes path leads from `A` to `B`, or `A`
+ *                   dislikes `B`
  *
- * Distances come from a local breadth-first search over outgoing edges, so every
- * ordered pair is classified by its shortest directed path length and appears in
- * exactly one bucket.
+ * Distances come from a local breadth-first search over outgoing likes edges,
+ * and a node the source dislikes is always placed in `unreachable`, so every
+ * ordered pair appears in exactly one bucket.
  *
- * @param {import("graphology").DirectedGraph} graph - The directed likes
+ * @param {import("graphology").DirectedGraph} likesGraph - The directed likes
  *   network (edges point from the choosing member to the chosen one).
+ * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
+ *   dislikes network (same edge direction convention; nodes are keyed by the
+ *   same member ids).
  * @returns {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>}
  *   An object keyed by each node's `memberId` attribute. Each value lists the
  *   target node ids, split by their relationship to that source.
  */
-export const getNodePaths = (graph) => {
+export const getNodePaths = (likesGraph, dislikesGraph) => {
   const result = {};
 
-  graph.forEachNode((source) => {
-    const sourceId = graph.getNodeAttribute(source, "memberId");
+  likesGraph.forEachNode((source) => {
+    const sourceId = likesGraph.getNodeAttribute(source, "memberId");
 
-    // Shortest directed distances from `source` to every reachable node.
-    // `distances[targetId]` is the number of edges on the shortest directed
-    // path, or absent when `targetId` cannot be reached.
-    const distances = singleSource(graph, source);
+    // Shortest directed distances from `source` to every reachable node over
+    // the likes graph. `distances[targetId]` is the number of edges on the
+    // shortest directed likes path, or absent when `targetId` cannot be reached.
+    const distances = singleSource(likesGraph, source);
 
     const categories = {
       mutuality: [],
@@ -99,18 +104,23 @@ export const getNodePaths = (graph) => {
       unreachable: [],
     };
 
-    graph.forEachNode((target) => {
-      const targetId = graph.getNodeAttribute(target, "memberId");
+    likesGraph.forEachNode((target) => {
+      const targetId = likesGraph.getNodeAttribute(target, "memberId");
       if (targetId === sourceId) return;
 
       const distance = distances[targetId];
 
-      if (distance === undefined) {
+      // A node the source dislikes is treated as unreachable regardless of any
+      // likes path, so it lands on the outer ring and can be stroked red.
+      if (
+        dislikesGraph.hasDirectedEdge(source, target) ||
+        distance === undefined
+      ) {
         categories.unreachable.push(targetId);
       } else if (distance === 1) {
         // A directly likes the target; mutual only when the feeling is
         // reciprocated.
-        if (graph.hasDirectedEdge(target, source)) {
+        if (likesGraph.hasDirectedEdge(target, source)) {
           categories.mutuality.push(targetId);
         } else {
           categories.oneHop.push(targetId);
@@ -359,19 +369,19 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
  * - ring 2: liked directly, but not back (one edge)
  * - ring 3: reached through exactly one intermediary (two edges)
  * - ring 4: reached through two or more intermediaries (three or more edges)
- * - ring 5: unreachable from the ego
+ * - ring 5: unreachable from the ego, including nodes the ego dislikes
  *
  * Within a ring, nodes are spaced at equal angular intervals and each ring
  * starts at a random angle so the regions don't all align; empty rings are not
  * skipped, so every ring keeps its radial position even when empty. Dashed
  * boundary circles separate the concentric regions, and the square canvas is
  * padded so the outermost boundary stays clear of the edges. Nodes are stroked
- * in
- * priority order: red when the node directly dislikes the ego, blue when the
- * node is reachable from the ego, and black otherwise. A direct like or dislike
- * between the node and the ego additionally carries a small triangle tangent to
- * the node's circle: pointing toward the ego when the node feels about the ego,
- * and away from the ego when the ego likes the node.
+ * in priority order: red when the node is disliked by the ego or dislikes the
+ * ego, blue when the node is liked by the ego or likes the ego, and black
+ * otherwise (unreachable). A direct like or dislike between the node and the
+ * ego additionally carries a small triangle tangent to the node's circle:
+ * pointing toward the ego when the node feels about the ego, and away from the
+ * ego when the ego likes the node.
  *
  * The SVG is built as a plain string (no DOM access), matching the other plot
  * builders.
@@ -382,8 +392,8 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
  * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
  *   dislikes graph (same edge direction convention).
  * @param {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>} nodePaths -
- *   The map returned by {@link getNodePaths} for the likes graph, used to
- *   determine reachability and hop distance from `memberId` via
+ *   The map returned by {@link getNodePaths} for the likes/dislikes graphs,
+ *   used to determine reachability and hop distance from `memberId` via
  *   {@link getNodePathsFor}.
  * @returns {{memberId: string, svg: string}} The ego's id and its serialized
  *   SVG markup.
@@ -405,13 +415,6 @@ export const buildMorenoEgoPlot = (
     paths?.multipleHops ?? [],
     paths?.unreachable ?? [],
   ];
-
-  const reachable = new Set([
-    ...rings[0],
-    ...rings[1],
-    ...rings[2],
-    ...rings[3],
-  ]);
 
   const parts = [];
 
@@ -447,11 +450,13 @@ export const buildMorenoEgoPlot = (
       const likesEgo = likesGraph.hasDirectedEdge(node, memberId);
       const dislikesEgo = dislikesGraph.hasDirectedEdge(node, memberId);
       const egoLikes = likesGraph.hasDirectedEdge(memberId, node);
+      const egoDislikes = dislikesGraph.hasDirectedEdge(memberId, node);
 
-      // Dislikes only identify nodes that directly dislike the ego.
-      const strokeColor = dislikesEgo
+      // Dislike (in either direction) wins over like, which wins over the
+      // remaining unreachable nodes.
+      const strokeColor = dislikesEgo || egoDislikes
         ? DISLIKE_COLOR
-        : reachable.has(node)
+        : likesEgo || egoLikes
           ? REACHABLE_COLOR
           : UNREACHABLE_COLOR;
 
@@ -483,8 +488,8 @@ export const buildMorenoEgoPlot = (
 /**
  * Build an SVG ego plot for every member of the group.
  *
- * This is the caching entry point for ego plots: the likes reachability map is
- * computed exactly once (via {@link getNodePaths}) and reused for every member,
+ * This is the caching entry point for ego plots: the likes/dislikes reachability
+ * map is computed exactly once (via {@link getNodePaths}) and reused for every member,
  * so each plot only does an O(1) lookup via {@link getNodePathsFor} instead of
  * re-running the all-pairs shortest-path computation.
  *
@@ -498,7 +503,7 @@ export const buildMorenoEgoPlot = (
  *   the same order as `members`.
  */
 export const getMorenoEgoPlots = (members, likesGraph, dislikesGraph) => {
-  const nodePaths = getNodePaths(likesGraph);
+  const nodePaths = getNodePaths(likesGraph, dislikesGraph);
 
   return members.map((member) =>
     buildMorenoEgoPlot(member.id, likesGraph, dislikesGraph, nodePaths),
