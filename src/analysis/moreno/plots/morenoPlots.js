@@ -23,7 +23,7 @@ import { singleSource } from "graphology-shortest-path";
  *
  * @param {import("graphology").DirectedGraph} graph - The directed network.
  * @returns {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>}
- *   An object keyed by each node's `nodeId` attribute. Each value lists the
+ *   An object keyed by each node's `memberId` attribute. Each value lists the
  *   target node ids reachable from that source, split by the number of hops
  *   required.
  */
@@ -78,10 +78,10 @@ export const getDirectedPaths = (graph) => {
  *
  * @param {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>} directedPaths -
  *   The map returned by {@link getDirectedPaths}.
- * @param {string} nodeId - The `nodeId` of the node whose paths are requested.
+ * @param {string} memberId - The `memberId` of the node whose paths are requested.
  * @returns {{directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]} | undefined}
  *   The target node ids reachable from `nodeId`, split by the number of hops
  *   required, or `undefined` when the node is not present in the map.
  */
-export const getNodeDirectedPaths = (directedPaths, nodeId) =>
-  directedPaths[nodeId];
+export const getNodeDirectedPaths = (directedPaths, memberId) =>
+  directedPaths[memberId];
