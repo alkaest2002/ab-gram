@@ -154,6 +154,15 @@ In parole:
 
 Basta che si verifichi uno dei due casi perché il legame sia di questo tipo.
 
+## Legami ambivalenti
+
+Un legame è ambivalente quando un membro sceglie e rifiuta
+lo stesso membro.
+
+$$
+a_{ij} \land d_{ij}
+$$
+
 ## In sintesi
 
 | Tipo di legame | Cosa succede | Problematico? |
@@ -163,3 +172,4 @@ Basta che si verifichi uno dei due casi perché il legame sia di questo tipo.
 | Rifiuto a senso unico | Uno rifiuta, l'altro non esprime nulla | Sì |
 | Rifiuto reciproco | Si rifiutano a vicenda | Sì |
 | Sentimenti contrapposti | Uno sceglie, l'altro rifiuta | Sì |
+| Legami ambivalenti | Uno sceglie e rifiuta lo stesso membro | Sì |
