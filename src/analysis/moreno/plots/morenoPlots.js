@@ -5,8 +5,7 @@ import { singleSource } from "graphology-shortest-path";
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * List every node reachable from each node, grouped by how many directed hops
- * it takes to get there.
+ * Compute the directed paths of every node in the graph.
  *
  * For each source node `A`, every other node `B` is reached following the
  * direction of the edges (so `A -> B` only counts when an edge actually points
@@ -24,8 +23,9 @@ import { singleSource } from "graphology-shortest-path";
  *
  * @param {import("graphology").DirectedGraph} graph - The directed network.
  * @returns {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>}
- *   An object keyed by source node id. Each value lists the target node ids
- *   reachable from that source, split by the number of hops required.
+ *   An object keyed by each node's `nodeId` attribute. Each value lists the
+ *   target node ids reachable from that source, split by the number of hops
+ *   required.
  */
 export const getDirectedPaths = (graph) => {
   const result = {};
@@ -62,8 +62,26 @@ export const getDirectedPaths = (graph) => {
       }
     });
 
-    result[source] = categories;
+    // Key by the node's `nodeId` attribute so callers can retrieve a specific
+    // node without walking the graph again.
+    result[graph.getNodeAttribute(source, "nodeId")] = categories;
   });
 
   return result;
 };
+
+/**
+ * Get the directed paths of a specific node from the precomputed map.
+ *
+ * This is a plain lookup into the result of {@link getDirectedPaths}, so it
+ * runs in constant time and never re-runs the shortest-path computation.
+ *
+ * @param {Record<string, {directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]}>} directedPaths -
+ *   The map returned by {@link getDirectedPaths}.
+ * @param {string} nodeId - The `nodeId` of the node whose paths are requested.
+ * @returns {{directed: string[], oneHop: string[], multipleHops: string[], unreachable: string[]} | undefined}
+ *   The target node ids reachable from `nodeId`, split by the number of hops
+ *   required, or `undefined` when the node is not present in the map.
+ */
+export const getNodeDirectedPaths = (directedPaths, nodeId) =>
+  directedPaths[nodeId];
