@@ -92,6 +92,63 @@ deve essere solido perché li si consideri parte della stessa componente.
 > componente può contenere legami radi e catene di intermediari, mentre una
 > clique impone un legame diretto tra ogni coppia.
 
+## Clique o componenti: che differenza c'è?
+
+Clique e componenti connesse (deboli o forti) descrivono due idee diverse di
+"stare insieme", e vanno tenute distinte.
+
+- **La clique chiede un legame diretto tra ogni coppia.** Se $i$ e $j$ fanno
+  parte della stessa clique, tra loro c'è per forza una scelta, in almeno una
+  delle due direzioni. Non basta conoscersi "tramite qualcuno".
+- **La componente chiede solo che esista un percorso.** Due membri possono
+  appartenere alla stessa componente senza essersi mai scelti direttamente,
+  purché li colleghi una catena di intermediari.
+
+### Un'altra differenza: sovrapposizione
+
+Le componenti **dividono** il gruppo: ogni membro appartiene a una sola
+componente (un membro isolato forma una componente da solo). Le clique invece
+possono **sovrapporsi**: lo stesso membro può far parte di più clique, e molti
+membri possono non far parte di nessuna clique di dimensione apprezzabile.
+
+### Una clique non è per forza una componente forte
+
+Qui conta la direzione. Nella nostra definizione di clique basta una scelta in
+un solo verso, mentre le componenti forti richiedono di poter percorrere le
+frecce nel loro verso.
+
+Esempio: il membro $1$ sceglie il $2$ e il $3$, e il $2$ sceglie il $3$.
+
+- Ogni coppia è collegata ($1$-$2$, $1$-$3$, $2$-$3$), quindi $\{1, 2, 3\}$ è una
+  **clique**.
+- Ma dal $3$ non si raggiunge nessuno, quindi **non** è una componente forte.
+  È invece una componente debole.
+
+### E viceversa: una componente non è per forza una clique
+
+Esempio: quattro membri in cerchio, con $1$ che sceglie il $2$, il $2$ il $3$,
+il $3$ il $4$ e il $4$ l'$1$.
+
+- Seguendo le frecce ognuno raggiunge tutti gli altri, quindi è una
+  **componente forte**.
+- Ma $1$ e $3$ non si sono scelti direttamente (e lo stesso vale per $2$ e $4$),
+  quindi **non** è una clique.
+
+### Il caso più semplice
+
+Se prendiamo i legami debolmente connessi, vale una sola implicazione: **ogni
+clique sta dentro una componente debole**, perché i suoi membri sono già
+collegati direttamente tra loro. Non vale il contrario: una componente debole
+può essere molto più grande, e molto più rada, di qualunque clique al suo
+interno.
+
+| | Clique | Componente debole | Componente forte |
+| --- | --- | --- | --- |
+| Cosa richiede | Legame diretto tra ogni coppia | Percorso tra ogni coppia, ignorando le frecce | Percorso tra ogni coppia, seguendo le frecce |
+| Direzione delle scelte | Non conta | Non conta | Conta |
+| Sovrapposizione | Possibile | No, dividono il gruppo | No, dividono il gruppo |
+| Risponde alla domanda | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?" | "Si può arrivare a tutti seguendo le scelte?" |
+
 ## In sintesi
 
 | Struttura | Cosa richiede | Quanto è compatta |
