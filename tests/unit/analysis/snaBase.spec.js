@@ -22,8 +22,8 @@ describe("createLikesGraph", () => {
     expect(graph.order).toBe(2);
     expect(graph.hasNode("a")).toBe(true);
     expect(graph.hasNode("b")).toBe(true);
-    expect(graph.getNodeAttribute("a", "name")).toBe("Alice");
-    expect(graph.getNodeAttribute("b", "name")).toBe("Bob");
+    expect(graph.getNodeAttribute("a", "memberName")).toBe("Alice");
+    expect(graph.getNodeAttribute("b", "memberName")).toBe("Bob");
   });
 
   it("records the preference type as a graph attribute", () => {
