@@ -62,9 +62,9 @@ export const getDirectedPaths = (graph) => {
       }
     });
 
-    // Key by the node's `nodeId` attribute so callers can retrieve a specific
+    // Key by the node's `memberId` attribute so callers can retrieve a specific
     // node without walking the graph again.
-    result[graph.getNodeAttribute(source, "nodeId")] = categories;
+    result[graph.getNodeAttribute(source, "memberId")] = categories;
   });
 
   return result;
