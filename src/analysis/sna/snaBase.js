@@ -31,7 +31,7 @@ import { random } from "graphology-layout";
  */
 function addMemberNodes(graph, members) {
   for (const member of members) {
-    graph.addNode(member.id, { name: member.name });
+    graph.addNode(member.id, { nodeId: member.id, name: member.name });
   }
 }
 
