@@ -50,9 +50,9 @@ defineEmits(["carousel-previous", "carousel-next"]);
         </BaseButton>
 
         <div class="min-w-0 flex-1 text-center">
-            <p class="eyebrow">Membro {{ currentIndex + 1 }} di {{ membersCount }}</p>
+            <p class="eyebrow">Membro {{ currentMember?.id }} ({{ currentIndex + 1 }} di {{ membersCount }})</p>
             <p class="mt-1 truncate font-display text-lg font-bold text-ink">
-                {{ currentMember?.name }}
+               {{ currentMember?.name }}
             </p>
         </div>
 

@@ -110,7 +110,33 @@ describe("morenoPlots", () => {
       expect(svg).toContain('stroke="#0000FF"');
       expect(svg).toContain('stroke="#000000"');
 
-      // d dislikes the ego and e likes it: two direction markers.
+      // Direct relationships carry a direction marker: a likes b (outward),
+      // d dislikes the ego (inward) and e likes the ego (inward).
+      expect(countOccurrences(svg, "<polygon")).toBe(3);
+    });
+
+    it("marks the ego's outgoing likes and dislikes", () => {
+      const outgoingMembers = [
+        makeMember("a", "Alice", ["b"], ["c"]),
+        makeMember("b", "Bob", [], []),
+        makeMember("c", "Carol", [], []),
+      ];
+      const likes = createLikesGraph(outgoingMembers, "likes");
+      const dislikes = createLikesGraph(outgoingMembers, "dislikes");
+
+      const { svg } = buildMorenoEgoPlot(
+        "a",
+        likes,
+        dislikes,
+        getNodePaths(likes),
+      );
+
+      // a likes b (blue stroke + blue outward marker) and dislikes c (red
+      // stroke + red outward marker): two direction markers, no unreachable node.
+      expect(svg).toContain('stroke="#0000FF"');
+      expect(svg).toContain('stroke="#FF0000"');
+      expect(svg).toContain('fill="#0000FF"');
+      expect(svg).toContain('fill="#FF0000"');
       expect(countOccurrences(svg, "<polygon")).toBe(2);
     });
 
