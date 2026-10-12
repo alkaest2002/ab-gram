@@ -86,7 +86,6 @@ export const getDirectedPaths = (graph) => {
 export const getNodeDirectedPaths = (directedPaths, memberId) =>
   directedPaths[memberId];
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT CONFIGURATION
 //////////////////////////////////////////////////////////////////////////////////
@@ -121,7 +120,6 @@ const TRIANGLE_SIZE = 8;
 const DISLIKE_COLOR = "#FF0000";
 const REACHABLE_COLOR = "#0000FF";
 const UNREACHABLE_COLOR = "#000000";
-
 
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT SVG HELPERS
@@ -225,7 +223,6 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
   `<text font-size="${LABEL_FONT_SIZE}" text-anchor="middle" x="${formatCoordinate(x)}" y="${formatCoordinate(y)}" dominant-baseline="central" fill="${NODE_LABEL_COLOR}">${escapeXml(label)}</text>` +
   (hasTriangle ? triangleMarkup(x, y, strokeColor) : "");
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT
 //////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +261,12 @@ const nodeMarkup = (x, y, label, strokeColor, hasTriangle) =>
  * @returns {{memberId: string, svg: string}} The ego's id and its serialized
  *   SVG markup.
  */
-export const buildMorenoEgoPlot = (memberId, likesGraph, dislikesGraph, directedPaths) => {
+export const buildMorenoEgoPlot = (
+  memberId,
+  likesGraph,
+  dislikesGraph,
+  directedPaths,
+) => {
   const paths = getNodeDirectedPaths(directedPaths, memberId);
 
   // The four buckets, in ring order. `getNodeDirectedPaths` returns `undefined`
@@ -313,7 +315,6 @@ export const buildMorenoEgoPlot = (memberId, likesGraph, dislikesGraph, directed
 
   return { memberId, svg: parts.join("") };
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT BATCH BUILDER
