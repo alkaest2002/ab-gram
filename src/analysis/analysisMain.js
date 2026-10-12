@@ -57,6 +57,11 @@ export const getSociogramAnalysis = (members) => {
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
   const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
 
+  // Iterate through members to create ego graph for each of them
+  const morenoEgoGraphs = members.map((memberId) => {
+    return morenoEgoGraph(adjLikes, adjDislikes, memberId);
+  });
+
   /////////////////////////////////////////////////////////////////////////////////////////
   // SNA
   /////////////////////////////////////////////////////////////////////////////////////////
@@ -85,6 +90,7 @@ export const getSociogramAnalysis = (members) => {
     edgeTypes,
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
+    morenoEgoGraphs,
     snaLikesComponents,
     snaLikesGroupLevelMetrics,
     snaLikesIndividualLevelMetric,
