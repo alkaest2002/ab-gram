@@ -1,4 +1,5 @@
 import * as np from "numpy-ts";
+import { computeRankedScores } from "@/analysis/common/commonMetrics";
 import {
   computeCohesion,
   computeConflict,
@@ -180,12 +181,14 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `values` holds the single group row.
  */
 export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
-  const result = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
+  const rawValues = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
+  const rankedValues = computeRankedScores(rawValues);
 
   return {
     rowIndex: ["group"],
     columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    values: result.tolist(),
+    rawValues: rawValues.tolist(),
+    rankedValues: rankedValues.tolist(),
   };
 };
 
@@ -203,21 +206,24 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
  * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
  *   order.
- * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
  *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
- *   column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the
- *   score of member `rowIndex[i]` for metric `columnIndex[j]`.
+ *   column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `rawValues[i][j]` is the
+ *   score of member `rowIndex[i]` for metric `columnIndex[j]`, and `rankedValues[i][j]`
+ *   is the ranked score of member `rowIndex[i]` for metric `columnIndex[j]`.
  */
 export const getIndividualLevelMetrics = (
   adjLikes,
   adjDislikes,
   memberIndices,
 ) => {
-  const result = computeIndividualLevelMetrics(adjLikes, adjDislikes);
+  const rawValues = computeIndividualLevelMetrics(adjLikes, adjDislikes);
+  const rankedValues = computeRankedScores(rawValues);
 
   return {
     rowIndex: memberIndices,
     columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
-    values: result.tolist(),
+    rawValues: rawValues.tolist(),
+    rankedValues: rankedValues.tolist(),
   };
 };
