@@ -152,10 +152,12 @@ export const getGroupLevelMetrics = (graph) => {
   const rankedValues = computeRankedScores(rawValues);
 
   return {
-    rowIndex: [graph.getAttribute("typeOfPreference")],
-    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    rawValues: rawValues.tolist(),
-    rankedValues: rankedValues.tolist(),
+    ids: [graph.getAttribute("typeOfPreference")],
+    metrics: [...GROUP_LEVEL_METRIC_KEYS],
+    rawValuesById: rawValues.tolist(),
+    rawValuesByMetric: rawValues.T.tolist(),
+    rankedValuesById: rankedValues.tolist(),
+    rankedValuesByMetric: rankedValues.T.tolist(),
   };
 };
 
@@ -178,9 +180,11 @@ export const getIndividualLevelMetrics = (graph) => {
   const rankedValues = computeRankedScores(rawValues);
 
   return {
-    rowIndex: nodes,
-    columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
-    rawValues: rawValues.tolist(),
-    rankedValues: rankedValues.tolist(),
+    ids: nodes,
+    metrics: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
+    rawValuesById: rawValues.tolist(),
+    rawValuesByMetric: rawValues.T.tolist(),
+    rankedValuesById: rankedValues.tolist(),
+    rankedValuesByMetric: rankedValues.T.tolist(),
   };
 };

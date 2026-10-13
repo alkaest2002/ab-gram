@@ -186,10 +186,12 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
   const rankedValues = computeRankedScores(rawValues);
 
   return {
-    rowIndex: ["group"],
-    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    rawValues: rawValues.tolist(),
-    rankedValues: rankedValues.tolist(),
+    ids: ["group"],
+    metrics: [...GROUP_LEVEL_METRIC_KEYS],
+    rawValuesById: rawValues.tolist(),
+    rankedValuesById: rankedValues.tolist(),
+    rawValuesByMetric: rawValues.T.tolist(),
+    rankedValuesByMetric: rankedValues.T.tolist(),
   };
 };
 
@@ -222,9 +224,11 @@ export const getIndividualLevelMetrics = (
   const rankedValues = computeRankedScores(rawValues);
 
   return {
-    rowIndex: memberIndices,
-    columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
-    rawValues: rawValues.tolist(),
-    rankedValues: rankedValues.tolist(),
+    ids: memberIndices,
+    metrics: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
+    rawValuesById: rawValues.tolist(),
+    rankedValuesById: rankedValues.tolist(),
+    rawValuesByMetric: rawValues.T.tolist(),
+    rankedValuesByMetric: rankedValues.T.tolist(),
   };
 };
