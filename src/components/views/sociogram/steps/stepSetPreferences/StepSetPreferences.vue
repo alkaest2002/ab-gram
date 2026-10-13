@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed, ref, watch, onActivated } from "vue";
+import { computed, ref, watch, onActivated, useTemplateRef } from "vue";
 
 // --- Routers ------------
 
@@ -26,13 +26,19 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
+const emit = defineEmits([
+    "sociogram-change-component",
+    "sociogram-restart-app",
+]);
 
 // --- State --------------
 const sociogramStore = useSociogramStore();
 const { members, membersCount, membersStatus } = storeToRefs(sociogramStore);
 const { updateMember } = sociogramStore;
 const { goToStep, restart } = useSociogramNavigation(emit);
+
+const likesRef = useTemplateRef("likes");
+const dislikesRef = useTemplateRef("dislikes");
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
@@ -113,13 +119,24 @@ function carouselGoNextMember() {
         currentIndex.value++;
     }
 }
+
+function handleTabKey(typeOfPreference) {
+  if (typeOfPreference === 'likes') {
+    dislikesRef.value?.$el?.querySelector('input')?.focus();
+  } else if (typeOfPreference === 'dislikes') {
+    likesRef.value?.$el?.querySelector('input')?.focus();
+  }
+}
 </script>
 
 <template>
     <section class="card space-y-3">
         <StepHeader>
             <template #eyebrow>Passaggio 3 di 4</template>
-            <template #title>Indica le scelte e i rifiuti di ogni membro del gruppo</template>
+            <template #title
+                >Indica le scelte e i rifiuti di ogni membro del
+                gruppo</template
+            >
             Seleziona una persona con i comandi del carosello, indica le sue
             scelte e i suoi rifiuti.
         </StepHeader>
@@ -132,7 +149,10 @@ function carouselGoNextMember() {
 
         <template v-else>
             <!-- Progress: percentage of members whose data has been collected. -->
-            <SetPreferencesMembersPreferencesProgress :members="members" class="mt-6" />
+            <SetPreferencesMembersPreferencesProgress
+                :members="members"
+                class="mt-6"
+            />
 
             <!-- Carousel: select the subject, one member at a time. -->
             <div class="mt-6">
@@ -154,22 +174,26 @@ function carouselGoNextMember() {
             <div class="grid gap-6 md:grid-cols-2">
                 <!-- Likes -->
                 <SetPreferencesSelectMembers
+                    ref="likes"
                     v-model="currentLikes"
                     preference="likes"
                     label="Scelte"
                     :members="members"
                     :opposing-ids="currentDislikes"
                     :self-id="currentMember?.id"
+                    @keydown.tab.capture.prevent="handleTabKey('likes')"
                 />
 
                 <!-- Dislikes-->
                 <SetPreferencesSelectMembers
+                    ref="dislikes"
                     v-model="currentDislikes"
                     preference="dislikes"
                     label="Rifiuti"
                     :members="members"
                     :opposing-ids="currentLikes"
                     :self-id="currentMember?.id"
+                    @keydown.tab.capture.prevent="handleTabKey('dislikes')"
                 />
             </div>
 
@@ -183,7 +207,8 @@ function carouselGoNextMember() {
                     <template #description>
                         Se
                         <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso scelte, spunta questa casella di controllo.
+                        non ha espresso scelte, spunta questa casella di
+                        controllo.
                     </template>
                     <template #checkboxLabel>
                         Non ha espresso preferenze.
@@ -196,7 +221,8 @@ function carouselGoNextMember() {
                     <template #description>
                         Se
                         <strong>{{ currentMember?.name }}</strong>
-                        non ha espresso rifiuti, spunta questa casella di controllo.
+                        non ha espresso rifiuti, spunta questa casella di
+                        controllo.
                     </template>
                     <template #checkboxLabel>
                         Non ha espresso rifiuti.
