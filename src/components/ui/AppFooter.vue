@@ -45,7 +45,7 @@ const links = [
 <template>
     <footer class="mt-16 border-t border-line">
         <div
-            class="mx-auto flex max-w-4xl flex-col gap-8 px-6 pt-4 pb-10 sm:flex-row sm:items-start sm:justify-between"
+            class="flex flex-col gap-8 px-6 pt-4 pb-10 sm:flex-row sm:items-start sm:justify-between"
         >
             <div class="space-y-3">
                 <p class="text-xs">

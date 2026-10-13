@@ -54,7 +54,7 @@ onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
 <template>
     <header class="site-header">
         <div
-            class="mx-auto flex h-(--header-h) max-w-4xl items-center justify-between px-6"
+            class="flex h-(--header-h) items-center justify-between px-6"
         >
             <AppLogo />
 
