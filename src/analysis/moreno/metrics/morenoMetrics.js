@@ -84,7 +84,7 @@ MORENO INDIVIDUAL LEVEL METRICS
 - "or": Orientation index (gp - gr)
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
-- "ss": Sociometric status (0 to 8, see SOCIOMETRIC STATUS CODES below)
+- "ss": Sociometric status (codes 0-8, see `computeSociometricStatus`)
 */
 const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "rp",
@@ -168,7 +168,7 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  * Compute Moreno's group-level sociometric metrics and return them as a
  * plain object mirroring a pandas DataFrame.
  *
- * This mirrors `getMorenoIndividualLevelMetrics`, but the group is a single
+ * This mirrors `getIndividualLevelMetrics`, but the group is a single
  * observation: there is exactly one row (the group) and one column per metric
  * in `GROUP_LEVEL_METRIC_KEYS`.
  *
@@ -176,10 +176,19 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
- * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
- *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
- *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `rawValues`/`rankedValues` hold the
- *   single group row's raw and ranked scores.
+ * @returns {{
+ *   ids: string[],
+ *   metrics: string[],
+ *   rawValuesById: number[][],
+ *   rawValuesByMetric: number[][],
+ *   rankedValuesById: number[][],
+ *   rankedValuesByMetric: number[][],
+ * }}
+ *   `ids` is `["group"]` and `metrics` is the metric name per column (in
+ *   `GROUP_LEVEL_METRIC_KEYS` order). `rawValuesById` and `rankedValuesById`
+ *   hold the raw and ranked scores with rows indexed by `ids` and columns by
+ *   `metrics`; `rawValuesByMetric` and `rankedValuesByMetric` hold the same data
+ *   transposed (rows indexed by `metrics`, columns by `ids`).
  */
 export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
   const rawValues = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
@@ -209,11 +218,20 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
  * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
  *   order.
- * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
- *   `rowIndex` is the member id per row, `columnIndex` is the metric name per
- *   column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `rawValues[i][j]` is the
- *   score of member `rowIndex[i]` for metric `columnIndex[j]`, and `rankedValues[i][j]`
- *   is the ranked score of member `rowIndex[i]` for metric `columnIndex[j]`.
+ * @returns {{
+ *   ids: string[],
+ *   metrics: string[],
+ *   rawValuesById: number[][],
+ *   rawValuesByMetric: number[][],
+ *   rankedValuesById: number[][],
+ *   rankedValuesByMetric: number[][],
+ * }}
+ *   `ids` is the member id per row (the `memberIndices` argument) and `metrics`
+ *   is the metric name per column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order).
+ *   `rawValuesById[i][j]` and `rankedValuesById[i][j]` hold the raw and ranked
+ *   score of member `ids[i]` for metric `metrics[j]`. `rawValuesByMetric` and
+ *   `rankedValuesByMetric` hold the same data transposed (rows indexed by
+ *   `metrics`, columns by `ids`).
  */
 export const getIndividualLevelMetrics = (
   adjLikes,

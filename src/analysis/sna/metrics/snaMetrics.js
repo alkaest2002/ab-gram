@@ -142,10 +142,20 @@ const computeIndividualLevelMetrics = (graph) => {
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph` (tagged with its `typeOfPreference`).
- * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
- *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the metric
- *   name per column (in `GROUP_LEVEL_METRIC_KEYS` order), and
- *   `rawValues`/`rankedValues` hold the single group row's raw and ranked scores.
+ * @returns {{
+ *   ids: string[],
+ *   metrics: string[],
+ *   rawValuesById: number[][],
+ *   rawValuesByMetric: number[][],
+ *   rankedValuesById: number[][],
+ *   rankedValuesByMetric: number[][],
+ * }}
+ *   `ids` is the single preference-type label (the graph's `typeOfPreference`
+ *   attribute) and `metrics` is the metric name per column (in
+ *   `GROUP_LEVEL_METRIC_KEYS` order). `rawValuesById` and `rankedValuesById`
+ *   hold the raw and ranked scores with rows indexed by `ids` and columns by
+ *   `metrics`; `rawValuesByMetric` and `rankedValuesByMetric` hold the same data
+ *   transposed (rows indexed by `metrics`, columns by `ids`).
  */
 export const getGroupLevelMetrics = (graph) => {
   const rawValues = computeGroupLevelMetrics(graph);
@@ -167,12 +177,20 @@ export const getGroupLevelMetrics = (graph) => {
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
- *   `rowIndex` is the member id per row (in `graph.nodes()` order),
- *   `columnIndex` is the metric name per column (in
- *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `rawValues[i][j]` is the score of
- *   member `rowIndex[i]` for metric `columnIndex[j]`, and `rankedValues[i][j]`
- *   is the ranked score of member `rowIndex[i]` for metric `columnIndex[j]`.
+ * @returns {{
+ *   ids: string[],
+ *   metrics: string[],
+ *   rawValuesById: number[][],
+ *   rawValuesByMetric: number[][],
+ *   rankedValuesById: number[][],
+ *   rankedValuesByMetric: number[][],
+ * }}
+ *   `ids` is the member id per row (in `graph.nodes()` order) and `metrics` is
+ *   the metric name per column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order).
+ *   `rawValuesById[i][j]` and `rankedValuesById[i][j]` hold the raw and ranked
+ *   score of member `ids[i]` for metric `metrics[j]`. `rawValuesByMetric` and
+ *   `rankedValuesByMetric` hold the same data transposed (rows indexed by
+ *   `metrics`, columns by `ids`).
  */
 export const getIndividualLevelMetrics = (graph) => {
   const nodes = graph.nodes();
