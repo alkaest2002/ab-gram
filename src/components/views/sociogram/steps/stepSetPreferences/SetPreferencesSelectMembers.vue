@@ -119,6 +119,10 @@ function handleEnter() {
     ];
     query.value = "";
 }
+
+function clearQuery() {
+    query.value = "";
+}
 </script>
 
 <template>
@@ -135,6 +139,7 @@ function handleEnter() {
             placeholder="Cerca un nome…"
             :aria-label="`Cerca tra i membri per ${label}`"
             @keydown.enter.prevent="handleEnter"
+            @keydown.esc="clearQuery"
         />
 
         <p v-if="!hasMembers" class="text-sm text-muted">
