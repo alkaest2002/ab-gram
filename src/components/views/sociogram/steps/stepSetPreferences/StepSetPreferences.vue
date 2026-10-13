@@ -111,22 +111,25 @@ function writableMemberField(field, fallback, onSet) {
 function carouselGoPreviousMember() {
     if (carouselCanGoPreviousMember.value) {
         currentIndex.value--;
+        likesRef.value?.$el?.querySelector("input")?.focus();
     }
 }
 
 function carouselGoNextMember() {
     if (carouselCanGoNextMember.value) {
         currentIndex.value++;
+        likesRef.value?.$el?.querySelector("input")?.focus();
     }
 }
 
-function handleTabKey(typeOfPreference) {
-  if (typeOfPreference === 'likes') {
-    dislikesRef.value?.$el?.querySelector('input')?.focus();
-  } else if (typeOfPreference === 'dislikes') {
-    likesRef.value?.$el?.querySelector('input')?.focus();
-  }
+function tabToDislikes() {
+    dislikesRef.value?.$el?.querySelector("input")?.focus();
 }
+
+function tabToLikes() {
+    likesRef.value?.$el?.querySelector("input")?.focus();
+}
+
 </script>
 
 <template>
@@ -181,7 +184,7 @@ function handleTabKey(typeOfPreference) {
                     :members="members"
                     :opposing-ids="currentDislikes"
                     :self-id="currentMember?.id"
-                    @keydown.tab.capture.prevent="handleTabKey('likes')"
+                    @keydown.tab.capture.prevent="tabToDislikes"
                 />
 
                 <!-- Dislikes-->
@@ -193,7 +196,7 @@ function handleTabKey(typeOfPreference) {
                     :members="members"
                     :opposing-ids="currentLikes"
                     :self-id="currentMember?.id"
-                    @keydown.tab.capture.prevent="handleTabKey('dislikes')"
+                    @keydown.tab.capture.prevent="tabToLikes"
                 />
             </div>
 
