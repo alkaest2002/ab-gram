@@ -1,6 +1,6 @@
 ---
 title: Generare il report
-order: 5
+order: 6
 description: Come controllare il riepilogo e produrre il report finale.
 ---
 

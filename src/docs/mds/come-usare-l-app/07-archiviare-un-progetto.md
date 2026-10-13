@@ -1,6 +1,6 @@
 ---
 title: Archiviare e riprendere un progetto
-order: 6
+order: 7
 description: Come salvare e riprendere un sociogramma senza perdere il lavoro.
 ---
 

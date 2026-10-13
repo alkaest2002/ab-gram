@@ -54,4 +54,4 @@ dell'applicazione finché la pagina è aperta. Per questo motivo:
 
 Puoi comunque mettere in pausa e riprendere un lavoro in qualsiasi momento
 usando l'archivio, descritto in [Archiviare e riprendere un
-progetto](/docs/come-usare-l-app/06-archiviare-un-progetto).
+progetto](/docs/come-usare-l-app/07-archiviare-un-progetto).
