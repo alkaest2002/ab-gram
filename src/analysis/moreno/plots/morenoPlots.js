@@ -206,6 +206,19 @@ const BOUNDARY_COLOR = "#999999";
 const BOUNDARY_STROKE_WIDTH = 1;
 const BOUNDARY_DASH = "4 4";
 
+// Region names, ordered from the innermost ring to the outermost ring. The
+// center (where the ego node lies) is intentionally not labelled, so these five
+// names correspond one-to-one with the five rings in `buildMorenoEgoPlot`.
+const REGION_LABELS = ["0MU", "0HP", "1HP", "2HP+", "UNR"];
+const REGION_LABEL_FONT_SIZE = 13;
+const REGION_LABEL_COLOR = "#555555";
+
+// Angular gap (in radians) reserved at the 12 o'clock position so the stacked
+// region labels never collide with a node. Nodes are distributed over the
+// remaining arc, leaving a node-free corridor along the vertical line from the
+// center up to the north edge.
+const NORTH_GAP = Math.PI / 3;
+
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT SVG HELPERS
 //////////////////////////////////////////////////////////////////////////////////
@@ -354,6 +367,24 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
   (inwardColor ? triangleMarkup(x, y, inwardColor, true) : "") +
   (outwardColor ? triangleMarkup(x, y, outwardColor, false) : "");
 
+/**
+ * Build the markup for the region labels.
+ *
+ * The five region names are stacked vertically along the 12 o'clock line (the
+ * vertical axis running from the center up to the north). Each name is centered
+ * on the top point of its ring, so reading from the center outward gives the
+ * rings in order (innermost first, outermost last). Nodes are kept out of the
+ * reserved `NORTH_GAP` corridor around that line, so the names never overlap a
+ * node.
+ *
+ * @returns {string} The region labels' SVG markup.
+ */
+const regionLabelsMarkup = () =>
+  REGION_LABELS.map(
+    (label, index) =>
+      `<text font-size='${REGION_LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(CENTER_X)}' y='${formatCoordinate(CENTER_Y - ringRadius(index + 1))}' dominant-baseline='central' fill='${REGION_LABEL_COLOR}'>${escapeXml(label)}</text>`,
+  ).join("");
+
 //////////////////////////////////////////////////////////////////////////////////
 // EGO PLOT
 //////////////////////////////////////////////////////////////////////////////////
@@ -365,23 +396,27 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
  * concentric rings according to how many directed "likes" steps it takes to
  * reach them from the ego:
  *
- * - ring 1: mutual like (the ego and the member like each other)
- * - ring 2: liked directly, but not back (one edge)
- * - ring 3: reached through exactly one intermediary (two edges)
- * - ring 4: reached through two or more intermediaries (three or more edges)
- * - ring 5: unreachable from the ego, including nodes the ego dislikes
+ * - ring 1: mutual like (the ego and the member like each other) — `0MU`
+ * - ring 2: liked directly, but not back (one edge) — `0HP`
+ * - ring 3: reached through exactly one intermediary (two edges) — `1HP`
+ * - ring 4: reached through two or more intermediaries (three or more edges) —
+ *   `2HP+`
+ * - ring 5: unreachable from the ego, including nodes the ego dislikes — `UNR`
  *
  * Within a ring, nodes are spaced at equal angular intervals and each ring
  * starts at a random angle so the regions don't all align; empty rings are not
- * skipped, so every ring keeps its radial position even when empty. Dashed
- * boundary circles separate the concentric regions, and the square canvas is
- * padded so the outermost boundary stays clear of the edges. Nodes are stroked
- * in priority order: red when the node is disliked by the ego or dislikes the
- * ego, blue when the node is liked by the ego or likes the ego, and black
- * otherwise (unreachable). A direct like or dislike between the node and the
- * ego additionally carries a small triangle tangent to the node's circle:
- * pointing toward the ego when the node feels about the ego, and away from the
- * ego when the ego likes or dislikes the node.
+ * skipped, so every ring keeps its radial position even when empty. A fixed
+ * angular corridor is reserved at the 12 o'clock position and left node-free, so
+ * the region names can be stacked vertically along that line — each name
+ * centered on the top point of its ring, reading from the center out to the
+ * north (innermost first, outermost last). Dashed boundary circles separate the
+ * concentric regions, and the square canvas is padded so the outermost boundary
+ * stays clear of the edges. Nodes are stroked in priority order: red when the
+ * node is disliked by the ego or dislikes the ego, blue when the node is liked
+ * by the ego or likes the ego, and black otherwise (unreachable). A direct like
+ * or dislike between the node and the ego additionally carries a small triangle
+ * tangent to the node's circle: pointing toward the ego when the node feels
+ * about the ego, and away from the ego when the ego likes or dislikes the node.
  *
  * The SVG is built as a plain string (no DOM access), matching the other plot
  * builders.
@@ -436,12 +471,24 @@ export const buildMorenoEgoPlot = (
     const radius = ringRadius(ringIndex + 1);
 
     // Give each ring its own random starting angle so the regions don't all
-    // align on the same ray out from the center.
-    const offset = Math.random() * 2 * Math.PI;
+    // align on the same ray out from the center. The north corridor reserved for
+    // the region labels is skipped, so no node ever lands on the 12 o'clock
+    // line where the stacked names are drawn.
+    const available = 2 * Math.PI - NORTH_GAP;
+    // One random value is consumed per ring (even an empty one, keeping the
+    // mocked sequence in the tests deterministic). The phase only varies within
+    // a single slot so the whole ring stays inside the safe arc; a wider phase
+    // would let the last node wrap around into the reserved north corridor.
+    const slot =
+      ringNodes.length > 0 ? available / ringNodes.length : available;
+    const offset = Math.random() * slot;
 
     ringNodes.forEach((node, index) => {
       const angle =
-        offset + (index / ringNodes.length) * 2 * Math.PI - Math.PI / 2;
+        -Math.PI / 2 +
+        NORTH_GAP / 2 +
+        offset +
+        (index / ringNodes.length) * available;
       const x = CENTER_X + radius * Math.cos(angle);
       const y = CENTER_Y + radius * Math.sin(angle);
 
@@ -479,6 +526,9 @@ export const buildMorenoEgoPlot = (
       );
     });
   });
+
+  // Region names, stacked vertically in the node-free right margin.
+  parts.push(regionLabelsMarkup());
 
   parts.push(`</svg>`);
 

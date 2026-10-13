@@ -141,6 +141,129 @@ describe("morenoPlots", () => {
       expect(countOccurrences(svg, "<polygon")).toBe(3);
     });
 
+    it("stacks the region names along the 12 o'clock line", () => {
+      const { svg } = buildMorenoEgoPlot(
+        "a",
+        likesGraph,
+        dislikesGraph,
+        nodePaths,
+      );
+
+      // Innermost ring first, outermost ring last. The center (ego) is not
+      // named, so there are exactly five region labels.
+      const order = ["0MU", "0HP", "1HP", "2HP+", "UNR"];
+      const textOf = (name) => {
+        const match = svg.match(
+          new RegExp(`<text([^>]*)>${name.replace("+", "\\+")}</text>`),
+        );
+        return match ? match[1] : null;
+      };
+      const coordinate = (attrs, axis) =>
+        Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
+
+      const labels = order.map(textOf);
+      labels.forEach((attrs) => expect(attrs).not.toBeNull());
+
+      const canvas = svg.match(/viewBox='0 0 ([0-9.]+) ([0-9.]+)'/);
+      expect(canvas).not.toBeNull();
+      const centerX = Number(canvas[1]) / 2;
+      const centerY = Number(canvas[2]) / 2;
+
+      // All names share the center x and climb up from the center toward the
+      // north, so their y decreases in ring order (innermost nearest center).
+      const xs = labels.map((attrs) => coordinate(attrs, "x"));
+      const ys = labels.map((attrs) => coordinate(attrs, "y"));
+      xs.forEach((x) => expect(x).toBeCloseTo(centerX, 1));
+      ys.forEach((y) => expect(y).toBeLessThan(centerY));
+      for (let i = 1; i < ys.length; i += 1) {
+        expect(ys[i]).toBeLessThan(ys[i - 1]);
+      }
+
+      // No node sits in the reserved north corridor, so the names never overlap
+      // a node: every node's angle from the center stays outside the gap.
+      const northGap = Math.PI / 3;
+      const nodeCenters = [
+        ...svg.matchAll(
+          /<circle[^>]*fill='#FFFFFF'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
+        ),
+      ];
+      expect(nodeCenters.length).toBeGreaterThan(0);
+      nodeCenters.forEach((match) => {
+        const angle = Math.atan2(
+          Number(match[2]) - centerY,
+          Number(match[1]) - centerX,
+        );
+        const fromNorth = Math.abs(
+          Math.atan2(
+            Math.sin(angle + Math.PI / 2),
+            Math.cos(angle + Math.PI / 2),
+          ),
+        );
+        expect(fromNorth).toBeGreaterThanOrEqual(northGap / 2 - 1e-9);
+      });
+    });
+
+    it("keeps the north corridor clear on a crowded innermost ring", () => {
+      // Many members reciprocate so ring 1 (0MU) is densely populated; the
+      // reserved north gap must still hold even when the ring is full.
+      const members = [
+        makeMember("a", "Alice", ["b", "c", "d", "e", "f"]),
+        makeMember("b", "Bob", ["a"]),
+        makeMember("c", "Carol", ["a"]),
+        makeMember("d", "Dave", ["a"]),
+        makeMember("e", "Eve", ["a"]),
+        makeMember("f", "Frank", ["a"]),
+      ];
+      const likes = createLikesGraph(members, "likes");
+      const dislikes = createLikesGraph(members, "dislikes");
+
+      // Ring 1 (mutuality, 5 nodes) consumes the first call; the four empty
+      // rings consume the rest. A phase of 0.5 within one slot keeps the ring
+      // in the safe arc; the same 0.5 over the full arc would push a node into
+      // the north gap.
+      const random = vi
+        .spyOn(Math, "random")
+        .mockReturnValueOnce(0.5)
+        .mockReturnValue(0);
+
+      try {
+        const { svg } = buildMorenoEgoPlot(
+          "a",
+          likes,
+          dislikes,
+          getNodePaths(likes, dislikes),
+        );
+
+        const canvas = svg.match(/viewBox='0 0 ([0-9.]+) ([0-9.]+)'/);
+        const centerX = Number(canvas[1]) / 2;
+        const centerY = Number(canvas[2]) / 2;
+
+        const northGap = Math.PI / 3;
+        const nodeCenters = [
+          ...svg.matchAll(
+            /<circle[^>]*fill='#FFFFFF'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
+          ),
+        ];
+        expect(nodeCenters.length).toBe(members.length);
+
+        nodeCenters.forEach((match) => {
+          const angle = Math.atan2(
+            Number(match[2]) - centerY,
+            Number(match[1]) - centerX,
+          );
+          const fromNorth = Math.abs(
+            Math.atan2(
+              Math.sin(angle + Math.PI / 2),
+              Math.cos(angle + Math.PI / 2),
+            ),
+          );
+          expect(fromNorth).toBeGreaterThanOrEqual(northGap / 2 - 1e-9);
+        });
+      } finally {
+        random.mockRestore();
+      }
+    });
+
     it("marks a node that directly dislikes the ego and the ego's outgoing likes", () => {
       const outgoingMembers = [
         makeMember("a", "Alice", ["b"], []),
@@ -322,9 +445,10 @@ describe("morenoPlots", () => {
             coordinate(attrs, "cx") - coordinate(ego, "cx"),
           );
 
-        // b (offset 0.5) points straight down; c (offset 0.25) points right.
+        // b (offset 0.5) points straight down; c (offset 0.25) points just
+        // clockwise of the reserved north corridor, i.e. π/12 below east.
         expect(angleOf(bNode)).toBeCloseTo(Math.PI / 2, 5);
-        expect(angleOf(cNode)).toBeCloseTo(0, 5);
+        expect(angleOf(cNode)).toBeCloseTo(Math.PI / 12, 5);
       } finally {
         random.mockRestore();
       }
