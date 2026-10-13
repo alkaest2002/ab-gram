@@ -1,14 +1,23 @@
 ---
-title: Cos'è la Social Network Analysis
+title: Cos'è la Social Network Analysis?
 order: 2
 description: Cos'è la Social Network Analysis e quali sono i suoi concetti fondamentali.
 ---
 
 La **Social Network Analysis** (SNA) è l'insieme di metodi e misure per studiare
 le **reti sociali**, cioè gli insiemi di persone (o di altri "attori") e delle
-relazioni che li collegano. Nasce dall'incontro tra la sociometria, la teoria dei
-grafi e le scienze sociali, e oggi è usata in molti campi, dalla sociologia
-all'analisi dei social media.
+relazioni che li collegano. Si sviluppa dall'incontro di più ambiti di ricerca,
+come la teoria dei grafi, l'antropologia sociale e la psicologia sociale, e oggi
+è usata in molti campi, dalla sociologia all'analisi dei social media.
+
+## Il legame con Moreno
+
+La SNA non nasce dalla sociometria, ma ha con essa un legame concettuale
+profondo. L'idea di **Jacob L. Moreno** di rappresentare un gruppo come un
+insieme di punti e di linee, il sociogramma, e di studiare la **struttura delle
+relazioni** invece degli individui presi singolarmente è il fondamento su cui la
+SNA costruisce i suoi strumenti. Per questo AB-Grid può partire da un test
+sociometrico e leggerlo con le misure della SNA. 
 
 ## Attori e legami
 
@@ -23,42 +32,25 @@ Quando un legame ha una direzione (per esempio, "Anna sceglie Bea"), la rete si
 dice **orientata**. Quando invece il legame è reciproco o senza direzione, la
 rete è **non orientata**.
 
-In una rete orientata la direzione cambia il significato dei dati: ricevere
-molte scelte e esprimerne molte sono due cose diverse. Anna può scegliere Bea
-senza essere ricambiata; se invece anche Bea sceglie Anna, il legame è
-**reciproco**.
+## Le misure
 
-## Le misure principali
+La SNA offre misure che si dividono in due famiglie:
 
-La Social Network Analysis offre misure per descrivere sia i singoli nodi sia la
-rete nel suo insieme.
+- le misure **di gruppo**, che descrivono la rete nel suo insieme: quanto è
+  connessa, quanto le relazioni sono ricambiate, se ruota attorno a pochi
+  membri;
+- le misure **individuali**, che descrivono la posizione di ciascun membro. Molte
+  di queste sono misure di **centralità**: indicano quanto una persona è
+  importante nella rete, per esempio perché è molto scelta o perché fa da ponte
+  tra persone diverse.
 
-**Per i singoli nodi** c'è la **centralità**, che indica quanto un nodo è
-importante nella rete. Esistono più modi di essere centrali:
-
-- per il **numero di legami diretti** (centralità di grado): in una rete
-  orientata si distingue tra legami ricevuti, che indicano popolarità, e legami
-  espressi;
-- per la **vicinanza** agli altri nodi (centralità di vicinanza): un nodo è
-  centrale se può raggiungere tutti con pochi passaggi;
-- per il **ruolo di ponte** tra gruppi diversi (centralità di intermediazione):
-  un nodo è centrale se molti percorsi tra gli altri nodi passano da lui.
-
-**Per la rete nel suo insieme** ci sono invece:
-
-- la **densità**, che misura quanti legami esistono rispetto a quanti potrebbero
-  esistere: una densità alta indica un gruppo molto connesso, una bassa indica
-  relazioni più rade;
-- le **componenti**, cioè i gruppi di nodi collegati tra loro, che rivelano se la
-  rete è unita o spezzata in parti separate.
+La definizione di ciascuna misura calcolata da AB-Grid si trova nella sezione
+della documentazione dedicata alle metriche.
 
 ## Il legame con AB-Grid
 
 AB-Grid applica le idee della Social Network Analysis a un gruppo reale:
-trasforma le scelte raccolte in una rete, la disegna come sociogramma e calcola
-alcune di queste misure, presentandole in modo semplice anche per chi non ha una
+trasforma le scelte e i rifiuti raccolti in due reti, la rete delle scelte e
+quella dei rifiuti, le disegna come sociogramma e calcola su ciascuna le misure
+di gruppo e individuali, presentandole in modo semplice anche per chi non ha una
 formazione tecnica.
-
-Se la sociometria fornisce il metodo per raccogliere le preferenze di un gruppo,
-la Social Network Analysis fornisce gli strumenti per leggerle in modo
-sistematico.

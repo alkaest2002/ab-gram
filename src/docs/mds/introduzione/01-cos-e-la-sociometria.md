@@ -50,6 +50,29 @@ Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna. Nel sociogramma
 corrispondente ci sarebbero tre punti collegati da tre linee orientate, ciascuna
 con la direzione di chi esprime verso chi riceve.
 
+## Gli indici sociometrici
+
+Dalla matrice sociometrica si ricavano degli **indici** che sintetizzano la
+posizione di ciascun membro e le caratteristiche del gruppo. Si dividono in due
+famiglie:
+
+- gli indici **individuali**, che descrivono ogni membro a partire dalle scelte e
+  dai rifiuti che riceve e che esprime: per esempio quanto è scelto, quanto è
+  rifiutato, quanto le sue relazioni sono ricambiate. Tra questi c'è anche lo
+  **status sociometrico**, che colloca il membro in una categoria che ne riassume
+  la posizione nel gruppo;
+- gli indici **di gruppo**, che misurano quanto il gruppo è coeso, quanto è
+  conflittuale e quanto scelte e rifiuti sono ricambiati.
+
+Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
+confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
+differenza rispetto alle misure della Social Network Analysis, che AB-Grid
+calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
+*Cos'è la Social Network Analysis*).
+
+La definizione di ciascun indice si trova nella sezione della documentazione
+dedicata alle metriche.
+
 ## Perché è utile
 
 La sociometria permette di rispondere a domande che difficilmente emergono dalla
