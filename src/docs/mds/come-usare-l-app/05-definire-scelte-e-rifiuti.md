@@ -1,6 +1,6 @@
 ---
 title: Definire scelte e rifiuti
-order: 4
+order: 5
 description: Come indicare per ogni membro le scelte e i rifiuti del gruppo.
 ---
 
@@ -61,4 +61,4 @@ disattivato finché non hai completato tutti i membri.
 
 Negli elenchi delle scelte e dei rifiuti c'è un campo *Cerca un nome…* per
 raggiungere subito una persona. Il funzionamento della ricerca è descritto in
-[Filtrare i membri con la ricerca fuzzy](/docs/come-usare-l-app/05-filtare-i-membri).
+[Filtrare i membri con la ricerca fuzzy](/docs/come-usare-l-app/06-filtare-i-membri).

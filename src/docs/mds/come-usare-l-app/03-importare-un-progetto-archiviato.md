@@ -1,6 +1,6 @@
 ---
 title: Importare un progetto archiviato
-order: 2
+order: 3
 description: Come riprendere un sociogramma salvato in precedenza.
 ---
 
@@ -11,7 +11,7 @@ dove avevi interrotto, senza reinserire nomi e relazioni.
 
 Nella schermata di import scegli **Scegli file** e seleziona l'archivio in
 formato testo prodotto dall'applicazione (vedi [Archiviare e riprendere un
-progetto](/docs/come-usare-l-app/07-archiviare-un-progetto)).
+progetto](/docs/come-usare-l-app/08-archiviare-un-progetto)).
 
 ## Cosa succede durante l'import
 

@@ -1,6 +1,6 @@
 ---
-title: Cos'è il sociogramma
-order: 1
+title: Cos'è il sociogramma?
+order: 3
 description: Una panoramica sul sociogramma e sul ruolo dell'applicazione.
 ---
 

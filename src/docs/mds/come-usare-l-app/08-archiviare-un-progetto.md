@@ -1,6 +1,6 @@
 ---
 title: Archiviare e riprendere un progetto
-order: 7
+order: 8
 description: Come salvare e riprendere un sociogramma senza perdere il lavoro.
 ---
 
@@ -31,7 +31,7 @@ dati-2026-10-10T14-30-00.txt
 
 Per riaprire un archivio, avvia l'applicazione e scegli **Importa progetto**
 nella schermata iniziale, oppure consulta [Importare un progetto
-archiviato](/docs/come-usare-l-app/02-importare-un-progetto-archiviato).
+archiviato](/docs/come-usare-l-app/03-importare-un-progetto-archiviato).
 
 Il progetto viene ricostruito esattamente da dove lo avevi interrotto, inclusi
 i passaggi già completati.
