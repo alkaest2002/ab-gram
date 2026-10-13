@@ -381,7 +381,7 @@ const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
  * otherwise (unreachable). A direct like or dislike between the node and the
  * ego additionally carries a small triangle tangent to the node's circle:
  * pointing toward the ego when the node feels about the ego, and away from the
- * ego when the ego likes the node.
+ * ego when the ego likes or dislikes the node.
  *
  * The SVG is built as a plain string (no DOM access), matching the other plot
  * builders.
@@ -467,8 +467,12 @@ export const buildMorenoEgoPlot = (
           ? REACHABLE_COLOR
           : null;
 
-      // Outward marker: the ego likes (blue) the node.
-      const outwardColor = egoLikes ? REACHABLE_COLOR : null;
+      // Outward marker: the ego likes (blue) or dislikes (red) the node.
+      const outwardColor = egoDislikes
+        ? DISLIKE_COLOR
+        : egoLikes
+          ? REACHABLE_COLOR
+          : null;
 
       parts.push(
         nodeMarkup(x, y, node, strokeColor, inwardColor, outwardColor),

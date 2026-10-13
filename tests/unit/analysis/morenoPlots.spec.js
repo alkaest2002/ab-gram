@@ -196,8 +196,10 @@ describe("morenoPlots", () => {
       expect(ego).not.toBeNull();
       expect(bNode).not.toBeNull();
 
-      // a dislikes b, so b is red and sits on ring 5 (radius 360).
+      // a dislikes b, so b is red, sits on ring 5 (radius 360), and carries a
+      // red outward direction marker (the ego points at b).
       expect(bNode).toContain("stroke='#FF0000'");
+      expect(svg).toContain("<polygon fill='#FF0000'");
       const radiusOf = (attrs) =>
         Math.hypot(
           coordinate(attrs, "cx") - coordinate(ego, "cx"),
