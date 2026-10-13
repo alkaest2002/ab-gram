@@ -1,3 +1,5 @@
+import * as np from "numpy-ts";
+import { computeRankedScores } from "@/analysis/common/commonMetrics";
 import {
   computeNumberOfNodes,
   computeNumberOfEdges,
@@ -49,19 +51,22 @@ const GROUP_LEVEL_METRIC_KEYS = [
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {Record<string, number>} The group metrics keyed by
- *   `GROUP_LEVEL_METRIC_KEYS`.
+ * @returns {import("numpy-ts").NDArray}
+ *   A `1` x `GROUP_LEVEL_METRIC_KEYS.length` matrix holding, in column order, the
+ *   group-level metrics.
  */
 const computeGroupLevelMetrics = (graph) => {
-  return {
-    numberOfNodes: computeNumberOfNodes(graph),
-    numberOfEdges: computeNumberOfEdges(graph),
-    numberOfMutualEdges: computeNumberOfMutualEdges(graph),
-    networkDensity: computeNetworkDensity(graph),
-    networkCentralization: computeNetworkCentralization(graph),
-    networkReciprocity: computeNetworkReciprocity(graph),
-    networkTransitivity: computeNetworkTransitivity(graph),
-  };
+  return np.array([
+    [
+      computeNumberOfNodes(graph),
+      computeNumberOfEdges(graph),
+      computeNumberOfMutualEdges(graph),
+      computeNetworkDensity(graph),
+      computeNetworkCentralization(graph),
+      computeNetworkReciprocity(graph),
+      computeNetworkTransitivity(graph),
+    ],
+  ]);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -79,57 +84,26 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "hitsHub",
 ];
 
-//////////////////////////////////////////////////////////////////////////////////
-// EXPORTS
-//////////////////////////////////////////////////////////////////////////////////
-
 /**
- * Compute the SNA group-level metrics for a single preference graph and return
- * them as a plain object mirroring a pandas DataFrame.
- *
- * The group is represented by one directed graph, so the result has exactly
- * one row (labelled by the graph's preference type) and one column per metric.
- *
- * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createLikesGraph` (tagged with its `typeOfPreference`).
- * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
- *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the metric
- *   name per column (in `GROUP_LEVEL_METRIC_KEYS` order), and `values[0][j]` is
- *   the score for metric `columnIndex[j]`.
- */
-export const getGroupLevelMetrics = (graph) => {
-  const metrics = computeGroupLevelMetrics(graph);
-
-  return {
-    rowIndex: [graph.getAttribute("typeOfPreference")],
-    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
-    values: [GROUP_LEVEL_METRIC_KEYS.map((key) => metrics[key])],
-  };
-};
-
-/**
- * Compute individual-level SNA metrics for every node in a preference graph
- * and return them as a plain object mirroring a pandas DataFrame.
+ * Compute individual-level SNA metrics for every node in a preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
- *   `rowIndex` is the member id per row (in `graph.nodes()` order),
- *   `columnIndex` is the metric name per column (in
- *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `values[i][j]` is the score of
- *   member `rowIndex[i]` for metric `columnIndex[j]`.
+ * @returns {import("numpy-ts").NDArray}
+ *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are nodes
+ *   (aligned with `graph.nodes()` order) and columns are the metrics in
+ *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order.
  */
-export const getIndividualLevelMetrics = (graph) => {
+const computeIndividualLevelMetrics = (graph) => {
   const nodes = graph.nodes();
-  const columnIndex = [...INDIVIDUAL_LEVEL_METRIC_KEYS];
+  const size = nodes.length;
 
   // graphology-metrics' centrality routines assume at least two nodes: degree
   // centrality divides by `order - 1`, and pagerank/hits fail to converge on a
   // single-node (or empty) graph. Degenerate groups have no structural
   // centralities, so report a zero row per node (or no rows at all) instead.
-  if (nodes.length < 2) {
-    const values = nodes.map(() => columnIndex.map(() => 0));
-    return { rowIndex: nodes, columnIndex, values };
+  if (size < 2) {
+    return np.full([size, INDIVIDUAL_LEVEL_METRIC_KEYS.length], 0);
   }
 
   // HITS is computed once and split into its two scores (authority and hub).
@@ -147,18 +121,66 @@ export const getIndividualLevelMetrics = (graph) => {
     hitsHub: hitsResult.hubs,
   };
 
-  // Explictly copy `nodes` to `memberIndices` to
-  // signifiy that node names equal member indices.
-  const memberIndices = [...nodes];
-
-  // Compute metric values for each node and column.
-  const values = nodes.map((node) =>
-    columnIndex.map((key) => metricByNode[key][node]),
+  // Stack every metric as a column, keeping the numpy array until export.
+  const columns = INDIVIDUAL_LEVEL_METRIC_KEYS.map((key) =>
+    np.array(nodes.map((node) => metricByNode[key][node])),
   );
 
+  return np.column_stack(columns);
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+// EXPORTS
+//////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Compute the SNA group-level metrics for a single preference graph and return
+ * them as a plain object mirroring a pandas DataFrame.
+ *
+ * The group is represented by one directed graph, so the result has exactly
+ * one row (labelled by the graph's preference type) and one column per metric.
+ *
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph` (tagged with its `typeOfPreference`).
+ * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
+ *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the metric
+ *   name per column (in `GROUP_LEVEL_METRIC_KEYS` order), and
+ *   `rawValues`/`rankedValues` hold the single group row's raw and ranked scores.
+ */
+export const getGroupLevelMetrics = (graph) => {
+  const rawValues = computeGroupLevelMetrics(graph);
+  const rankedValues = computeRankedScores(rawValues);
+
   return {
-    rowIndex: memberIndices,
-    columnIndex,
-    values,
+    rowIndex: [graph.getAttribute("typeOfPreference")],
+    columnIndex: [...GROUP_LEVEL_METRIC_KEYS],
+    rawValues: rawValues.tolist(),
+    rankedValues: rankedValues.tolist(),
+  };
+};
+
+/**
+ * Compute individual-level SNA metrics for every node in a preference graph
+ * and return them as a plain object mirroring a pandas DataFrame.
+ *
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph`.
+ * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
+ *   `rowIndex` is the member id per row (in `graph.nodes()` order),
+ *   `columnIndex` is the metric name per column (in
+ *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order), and `rawValues[i][j]` is the score of
+ *   member `rowIndex[i]` for metric `columnIndex[j]`, and `rankedValues[i][j]`
+ *   is the ranked score of member `rowIndex[i]` for metric `columnIndex[j]`.
+ */
+export const getIndividualLevelMetrics = (graph) => {
+  const nodes = graph.nodes();
+  const rawValues = computeIndividualLevelMetrics(graph);
+  const rankedValues = computeRankedScores(rawValues);
+
+  return {
+    rowIndex: nodes,
+    columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
+    rawValues: rawValues.tolist(),
+    rankedValues: rankedValues.tolist(),
   };
 };

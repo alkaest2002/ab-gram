@@ -44,7 +44,9 @@ describe("getGroupLevelMetrics", () => {
 
     expect(result.rowIndex).toEqual(["likes"]);
     expect(result.columnIndex).toEqual(GROUP_COLUMNS);
-    expect(result.values[0]).toEqual([3, 6, 6, 1, 0, 1, 1]);
+    expect(result.rawValues[0]).toEqual([3, 6, 6, 1, 0, 1, 1]);
+    // A single group row means every metric column ranks itself as 1.
+    expect(result.rankedValues).toEqual([[1, 1, 1, 1, 1, 1, 1]]);
   });
 
   it("computes density and centralization for a star graph", () => {
@@ -60,7 +62,7 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(graph);
 
-    const values = result.values[0];
+    const values = result.rawValues[0];
     const byName = Object.fromEntries(
       GROUP_COLUMNS.map((key, i) => [key, values[i]]),
     );
@@ -79,7 +81,7 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(graph);
 
-    expect(result.values[0]).toEqual([1, 0, 0, 0, 0, 0, 0]);
+    expect(result.rawValues[0]).toEqual([1, 0, 0, 0, 0, 0, 0]);
   });
 });
 
@@ -106,16 +108,19 @@ describe("getIndividualLevelMetrics", () => {
     const degree = column("degreeCentrality");
 
     // Central node a: in-degree 3, out-degree 0, degree 3 (order - 1 = 3).
-    expect(result.values[0][inDegree]).toBe(1);
-    expect(result.values[0][outDegree]).toBe(0);
-    expect(result.values[0][degree]).toBe(1);
+    expect(result.rawValues[0][inDegree]).toBe(1);
+    expect(result.rawValues[0][outDegree]).toBe(0);
+    expect(result.rawValues[0][degree]).toBe(1);
 
     // Leaf nodes: in-degree 0, out-degree 1, degree 1.
-    for (const row of result.values.slice(1)) {
+    for (const row of result.rawValues.slice(1)) {
       expect(row[inDegree]).toBe(0);
       expect(row[outDegree]).toBeCloseTo(1 / 3, 10);
       expect(row[degree]).toBeCloseTo(1 / 3, 10);
     }
+
+    // Ranks are column-wise: in-degree raw [1, 0, 0, 0] ranks to [2, 1, 1, 1].
+    expect(result.rankedValues.map((row) => row[inDegree])).toEqual([2, 1, 1, 1]);
   });
 
   it("reports zero rows for a degenerate single-node graph", () => {
@@ -124,7 +129,7 @@ describe("getIndividualLevelMetrics", () => {
     const result = getIndividualLevelMetrics(graph);
 
     expect(result.rowIndex).toEqual(["a"]);
-    expect(result.values).toEqual([INDIVIDUAL_COLUMNS.map(() => 0)]);
+    expect(result.rawValues).toEqual([INDIVIDUAL_COLUMNS.map(() => 0)]);
   });
 
   it("produces PageRank scores that sum to one", () => {
@@ -140,7 +145,7 @@ describe("getIndividualLevelMetrics", () => {
     const result = getIndividualLevelMetrics(graph);
     const pageRankColumn = INDIVIDUAL_COLUMNS.indexOf("PageRank");
 
-    const total = result.values.reduce(
+    const total = result.rawValues.reduce(
       (sum, row) => sum + row[pageRankColumn],
       0,
     );
