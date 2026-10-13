@@ -15,7 +15,7 @@ import * as np from "numpy-ts";
  *   replaced by its 1-based ascending dense ranks.
  * @throws {Error} When `scores` has more than 2 dimensions.
  */
-export const getRankedScores = (scores) => {
+export const computeRankedScores = (scores) => {
   // Throw if array with more than 2 dimensions.
   if (scores.ndim > 2) {
     throw new Error(
