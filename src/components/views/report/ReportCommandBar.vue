@@ -13,6 +13,7 @@ import DownloadIcon from "@/components/ui/icons/DownloadIcon.vue";
 
 // --- Composables --------
 import { useDownload } from "@/composables/useDownload";
+const { downloadJson } = useDownload();
 
 // --- Props --------------
 const props = defineProps({
@@ -26,7 +27,6 @@ const props = defineProps({
 
 // --- State --------------
 const router = useRouter();
-const { downloadJson } = useDownload();
 
 // --- Computed -----------
 
@@ -44,7 +44,7 @@ function printReport() {
 }
 
 function downloadReport() {
-    downloadJson(props.reportData, "report.json");
+    downloadJson(props.reportData, "report-data", true, false);
 }
 </script>
 

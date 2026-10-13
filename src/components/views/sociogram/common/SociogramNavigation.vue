@@ -4,13 +4,15 @@
 // --- Routers ------------
 
 // --- Stores -------------
+import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseTooltip from "@/components/ui/BaseTooltip.vue";
 
 // --- Composables --------
-import { useSociogramDownloadArchive } from "@/composables/sociogram/useSociogramDownloadArchive";
+import { useDownload } from "@/composables/useDownload";
+const { downloadJson } = useDownload();
 
 // --- Props --------------
 defineProps({
@@ -33,7 +35,7 @@ defineEmits([
 ]);
 
 // --- State --------------
-const { downloadArchive } = useSociogramDownloadArchive();
+const sociogramStore = useSociogramStore();
 
 // --- Computed -----------
 
@@ -42,6 +44,11 @@ const { downloadArchive } = useSociogramDownloadArchive();
 // --- Lifecycle ----------
 
 // --- Methods ------------
+
+const handleDownload = () => {
+    const jsonData = sociogramStore.$state;
+    downloadJson(jsonData, "sociogram-data", "text/encoded", true, true);
+};
 </script>
 
 <template>
@@ -75,7 +82,7 @@ const { downloadArchive } = useSociogramDownloadArchive();
                     variant="outline"
                     :disabled="!enableArchive"
                     aria-label="Scarica archivio"
-                    @click="downloadArchive"
+                    @click="handleDownload"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
