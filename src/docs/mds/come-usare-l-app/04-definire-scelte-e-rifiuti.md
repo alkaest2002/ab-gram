@@ -1,96 +1,64 @@
 ---
-title: Filtrare e selezionare i membri
-order: 5
-description: Come trovare un nome in fretta con la ricerca tollerante alle imprecisioni.
+title: Definire scelte e rifiuti
+order: 4
+description: Come indicare per ogni membro le scelte e i rifiuti del gruppo.
 ---
 
-Nelle liste delle **scelte** e dei **rifiuti** trovi il campo *Cerca un nome…*,
-che ti porta subito alla persona che cerchi. Non serve scrivere il nome per
-intero né rispettarne la grafia: la **ricerca fuzzy** funziona anche con poche
-lettere, o con le lettere in un ordine diverso.
+Nel terzo passaggio raccogli le preferenze di ogni membro del gruppo: per ciascuno
+indichi le **scelte** (le persone con cui prova affinità) e i **rifiuti** (le
+persone da cui si sente distante). Questi dati sono la materia prima del
+sociogramma.
 
-## La regola d'oro
+## Scegliere il membro
 
-Perché un nome compaia tra i risultati, deve contenere **tutte le lettere** che
-digiti, ciascuna almeno tante volte quante la scrivi. È una logica "AND":
+Un **carosello** ti presenta un membro alla volta, mostrandone il numero e il
+nome. Usa le frecce per spostarti:
 
-- `rss` richiede una `r` e due `s`: *Rossi* compare;
-- `rrr` richiede tre `r`: *Rossi*, che ne ha una sola, **non** compare.
+- **‹** passa al membro precedente;
+- **›** passa al membro successivo.
 
-Ne derivano due vantaggi pratici:
+La freccia *successiva* si attiva solo quando il membro corrente è completo:
+devi aver indicato sia le scelte sia i rifiuti, oppure aver dichiarato che non ne
+ha.
 
-- **puoi omettere delle lettere**, di solito le vocali: `rss` trova *Rossi*;
-- **puoi cambiare l'ordine** delle lettere: `rso` trova comunque *Rossi*.
+## Indicare scelte e rifiuti
 
-Non puoi invece digitare una lettera che nel nome non esiste: `rossa` non trova
-*Rossi*, perché manca la `a`.
+Per ogni membro trovi due elenchi affiancati:
 
-## Come sono ordinati i risultati
+- **Scelte** — le persone verso cui il membro prova affinità;
+- **Rifiuti** — le persone da cui il membro si sente distante.
 
-I nomi trovati sono elencati dal più pertinente al meno pertinente:
+Spunta la casella accanto a un nome per selezionarlo, oppure deselezionala per
+rimuoverlo. Un contatore in alto mostra quante persone hai selezionato.
 
-1. **Parte esatta del nome**: il testo digitato è una porzione continua del
-   nome. Esempio: `rossi` mette *Rossi* in cima.
-2. **Lettere in ordine**: le lettere compaiono nella sequenza digitata, con
-   altre lettere in mezzo. Esempio: `rss` trova *Rossi*.
-3. **Lettere in qualsiasi ordine**: ci sono tutte, ma in sequenza diversa.
-   Esempio: `rso` trova *Rossi*.
+Il membro corrente non compare negli elenchi: nessuno può scegliere o rifiutare
+se stesso.
 
-A parità di pertinenza contano anche, in misura minore, la lunghezza del nome e
-l'ordine alfabetico. Il risultato è che il nome cercato sale in alto, e lo
-individui a colpo d'occhio anche in un gruppo numeroso.
+### Se non ha espresso scelte o rifiuti
 
-## Cosa viene ignorato
+Se un membro non ha indicato scelte o rifiuti, spunta la casella corrispondente:
 
-La ricerca non fa differenza tra:
+- **Non ha espresso preferenze.**
+- **Non ha espresso rifiuti.**
 
-- **maiuscole e minuscole**: `rossi` trova *Rossi*;
-- **lettere accentate e non**: `jose` trova *José*;
-- **punteggiatura**: apostrofi e trattini sono trattati come spazi.
+Le due indicazioni si escludono a vicenda: selezionare una persona azzera
+automaticamente la casella "non ha espresso…", e spuntare la casella svuota
+l'elenco.
 
-## Consigli per trovare più in fretta
+## Una persona scelta e rifiutata
 
-### Punta sulle consonanti
+Puoi selezionare la stessa persona sia tra le scelte sia tra i rifiuti. In quel
+caso il nome viene contrassegnato con un avviso, per segnalare la contraddizione
+senza impedirti di registrarla.
 
-Le vocali sono frequenti e distinguono poco; le consonanti dicono molto di più.
-`rss` basta per *Rossi* e `cln` per *Calanna*: scrivi meno e arrivi allo stesso
-nome.
+## Avanzamento
 
-### Usa le iniziali dei nomi composti
+La barra **Avanzamento** mostra quanti membri hai già completato, con contatore
+e percentuale che si aggiornano mentre compili. Il pulsante **Avanti** resta
+disattivato finché non hai completato tutti i membri.
 
-Per *Luca Ferrari* bastano le iniziali: `lf`. Se più persone hanno le
-stesse iniziali, aggiungi una lettera della seconda parola, ad esempio `lfe`.
+## Trovare un nome in fretta
 
-### Aggiungi una lettera per separare i nomi simili
-
-Se due nomi si somigliano (*Rossi* e *Rosso*), `ross` li trova entrambi.
-Aggiungi la vocale finale (`rossi` oppure `rosso`) per distinguerli. In
-generale, se la lista è ancora troppo lunga, **scrivi una lettera in più**: i
-nomi che non ti servono scompariranno.
-
-### Attenzione agli errori di battitura
-
-Uno scambio di lettere non compromette la ricerca: `maroi` trova ancora *Mario*,
-perché le lettere ci sono tutte. Una lettera sbagliata invece sì: `marlo` non
-trova *Mario*, perché la `l` non fa parte del nome. Se non ottieni risultati,
-controlla di non aver digitato una lettera estranea al nome.
-
-### Svuota il campo per rivedere tutti i nomi
-
-Cancellando il testo, l'elenco torna a mostrare tutti i membri del gruppo.
-
-## Selezionare in blocco
-
-Con una ricerca attiva, premi **Invio** per selezionare (o deselezionare) in un
-colpo solo tutti i nomi trovati. È il modo più rapido per gestire insieme più
-persone con nomi simili.
-
-## Esempi rapidi
-
-| Digiti | Trovi |
-| ------ | ----- |
-| `rss`  | *Rossi* |
-| `cln`  | *Calanna* |
-| `lf`   | *Luca Ferrari* |
-| `jose` | *José* |
-| `mrt`  | *Mario Conti* (iniziali e consonanti) |
+Negli elenchi delle scelte e dei rifiuti c'è un campo *Cerca un nome…* per
+raggiungere subito una persona. Il funzionamento della ricerca è descritto in
+[Filtrare i membri con la ricerca fuzzy](/docs/come-usare-l-app/05-filtare-i-membri).

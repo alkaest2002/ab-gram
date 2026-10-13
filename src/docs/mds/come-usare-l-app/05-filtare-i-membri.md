@@ -1,5 +1,5 @@
 ---
-title: Cercare i membri
+title: Filtrare i membri con la ricerca fuzzy
 order: 5
 description: Come trovare un nome in fretta con la ricerca tollerante alle imprecisioni.
 ---
@@ -79,6 +79,8 @@ risultati, controlla di non aver digitato una lettera estranea al nome.
 ### Svuota il campo per rivedere tutti i nomi
 
 Cancellando il testo, l'elenco torna a mostrare tutti i membri del gruppo.
+In alternativa, premi **Esc** per azzerare la ricerca attiva: il campo viene
+svuotato e la lista torna a mostrare tutti i nomi.
 
 ## Selezionare in blocco
 
