@@ -224,7 +224,7 @@ export const getIndividualLevelMetrics = (
   return {
     rowIndex: memberIndices,
     columnIndex: [...INDIVIDUAL_LEVEL_METRIC_KEYS],
-    rawValues: rawValues.T.tolist(),
-    rankedValues: rankedValues.T.tolist(),
+    rawValues: rawValues.tolist(),
+    rankedValues: rankedValues.tolist(),
   };
 };
