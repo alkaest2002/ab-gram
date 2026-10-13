@@ -74,7 +74,7 @@ describe("getSociogramAnalysis", () => {
       "negativeReciprocity",
     ]);
     const [cohesion, conflict, positiveReciprocity, negativeReciprocity] =
-      morenoGroupLevelMetrics.values[0];
+      morenoGroupLevelMetrics.rawValues[0];
 
     expect(cohesion).toBe(1);
     expect(conflict).toBe(0);

@@ -19,7 +19,7 @@ export const computeRankedScores = (scores) => {
   // Throw if array with more than 2 dimensions.
   if (scores.ndim > 2) {
     throw new Error(
-      `getRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
+      `computeRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
     );
   }
 

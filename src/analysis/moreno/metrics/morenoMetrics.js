@@ -176,9 +176,10 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
  *   `adjLikes[i][j] === 1` means member `i` likes member `j`.
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix, where
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
- * @returns {{ rowIndex: string[], columnIndex: string[], values: number[][] }}
+ * @returns {{ rowIndex: string[], columnIndex: string[], rawValues: number[][], rankedValues: number[][] }}
  *   `rowIndex` is `["group"]`, `columnIndex` is the metric name per column
- *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `values` holds the single group row.
+ *   (in `GROUP_LEVEL_METRIC_KEYS` order), and `rawValues`/`rankedValues` hold the
+ *   single group row's raw and ranked scores.
  */
 export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
   const rawValues = computeMorenoGroupLevelMetrics(adjLikes, adjDislikes);
