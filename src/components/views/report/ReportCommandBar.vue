@@ -63,7 +63,7 @@ function downloadReport() {
                 title="Torna al sociogramma"
                 @click="goBack"
             >
-                <ArrowLeftIcon />
+                <ArrowLeftIcon :stroke-class="'stroke-white'" />
             </button>
             <button
                 type="button"
@@ -72,7 +72,7 @@ function downloadReport() {
                 title="Genera PDF"
                 @click="printReport"
             >
-                <PrinterIcon />
+                <PrinterIcon :stroke-class="'stroke-white'" />
             </button>
             <button
                 type="button"
@@ -81,7 +81,7 @@ function downloadReport() {
                 title="Scarica JSON"
                 @click="downloadReport"
             >
-                <DownloadIcon />
+                <DownloadIcon :stroke-class="'stroke-white'" />
             </button>
         </div>
     </nav>
