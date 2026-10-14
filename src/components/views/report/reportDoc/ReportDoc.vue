@@ -8,6 +8,7 @@ import { provide, ref } from "vue";
 
 // --- Components ---------
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
+import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -49,5 +50,6 @@ provide(REPORT_PAGES_KEY, {
           numbering stays correct via the registry provided above.
         -->
         <PageListOfMembers :report-data="reportData" />
+        <PageListOfPreferences :report-data="reportData" />
     </div>
 </template>
