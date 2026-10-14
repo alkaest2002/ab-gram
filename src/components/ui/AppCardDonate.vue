@@ -8,6 +8,7 @@
 // --- Components ---------
 import HeartIcon from "@/components/ui/icons/HeartIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Composables --------
 
@@ -25,6 +26,8 @@ const donationUrl = "https://donate.stripe.com/4gM6oH21z5ov7Yq59pcV201";
 // --- Lifecycle ----------
 
 // --- Methods ------------
+const openDonation = () =>
+    window.open(donationUrl, "_blank", "noopener,noreferrer");
 </script>
 
 <template>
@@ -35,15 +38,16 @@ const donationUrl = "https://donate.stripe.com/4gM6oH21z5ov7Yq59pcV201";
         Offrici un caffè con una piccola donazione volontaria e libera, tramite &copy; Stripe.
 
         <template #actions>
-            <a
-                :href="donationUrl"
-                target="_blank"
-                rel="noreferrer"
-                class="btn btn-outline w-full sm:w-auto"
+            <BaseButton
+                buttonVariant="solid"
+                class="w-full sm:w-auto"
+                @click="openDonation"
             >
-                <HeartIcon size="size-4" />
+                <template #icon>
+                    <HeartIcon size="size-4" />
+                </template>
                 Dona con Stripe
-            </a>
+            </BaseButton>
 
         </template>
     </BaseCard>

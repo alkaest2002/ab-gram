@@ -8,8 +8,15 @@
 // --- Components ---------
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Composables --------
+defineProps({
+    variant: {
+        type: String,
+        default: "outline",
+    },
+});
 
 // --- Props --------------
 
@@ -24,6 +31,9 @@ import BaseCard from "@/components/ui/BaseCard.vue";
 // --- Lifecycle ----------
 
 // --- Methods ------------
+const openEmail = () => {
+    window.location.href = "mailto:info@ab-grid.com";
+};
 </script>
 
 <template>
@@ -34,13 +44,16 @@ import BaseCard from "@/components/ui/BaseCard.vue";
         Scrivici se hai bisogno di informazioni supplementari. Cercheremo di risponderti il prima possibile.
 
         <template #actions>
-            <a
-                href="mailto:info@ab-grid.com"
-                class="btn btn-outline w-full sm:w-auto"
+            <BaseButton
+                :buttonVariant="variant"
+                class="w-full sm:w-auto"
+                @click="openEmail"
             >
-                <EmailIcon size="size-4" />
-                Scrivi a info@ab-grid.com
-            </a>
+                <template #icon>
+                    <EmailIcon size="size-4" />
+                </template>
+                info@ab-grid.com
+            </BaseButton>
         </template>
     </BaseCard>
 </template>
