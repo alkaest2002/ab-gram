@@ -14,7 +14,7 @@ defineProps({
     open: { type: Boolean, default: false },
     size: { type: String, default: "size-5" },
     strokeWidth: { type: Number, default: 1.5 },
-    strokeColor: { type: String, default: "currentColor" },
+    strokeClass: { type: String, default: "stroke-current" },
 });
 
 // --- Emits --------------
@@ -32,10 +32,9 @@ defineProps({
 
 <template>
     <svg
-        :class="size"
+        :class="[size, strokeClass]"
         viewBox="0 0 24 24"
         fill="none"
-        :stroke="strokeColor"
         :stroke-width="strokeWidth"
         aria-hidden="true"
     >
