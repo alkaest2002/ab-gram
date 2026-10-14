@@ -22,6 +22,6 @@ export default {
     title: "Report",
     inMenu: false,
     typeOfMenu: null,
-    layout: "EmptyLayout",
+    layout: "ReportLayout",
   },
 };

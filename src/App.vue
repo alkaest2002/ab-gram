@@ -11,6 +11,7 @@ import { useRoute, RouterView } from "vue-router";
 import AppContentTransition from "@/components/ui/AppContentTransition.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
+import ReportLayout from "@/components/layouts/ReportLayout.vue";
 
 // --- Composables --------
 
@@ -22,6 +23,7 @@ import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 const layouts = {
     DefaultLayout,
     EmptyLayout,
+    ReportLayout,
 };
 
 const route = useRoute();
