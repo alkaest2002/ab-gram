@@ -42,7 +42,7 @@ onMounted(() => {
             class="flex items-start justify-between gap-6 border-b border-line"
         >
             <p
-                class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted"
+                class="font-mono text-xs font-medium tracking-relaxed uppercase text-muted"
             >
                 AB-Grid Report
             </p>
@@ -58,8 +58,8 @@ onMounted(() => {
         <footer
             class="mt-6 flex items-center justify-between border-t border-line pt-1"
         >
-            <span class="font-mono text-xs text-muted">AB-Grid</span>
-            <span v-if="pageNumber" class="font-mono text-xs text-muted">
+            <span class="font-mono text-[9pt] text-muted">Dr P. Calanna, Dr G. Buonaiuto</span>
+            <span v-if="pageNumber" class="font-mono text-[9pt] text-muted">
                 Pagina {{ pageNumber
                 }}<template v-if="totalPages"> di {{ totalPages }}</template>
             </span>
