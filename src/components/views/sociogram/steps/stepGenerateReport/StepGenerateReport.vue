@@ -48,8 +48,8 @@ const summary = computed(() =>
             name: member.name,
             likes: (member.likes ?? []).map(resolve),
             dislikes: (member.dislikes ?? []).map(resolve),
-            likesText: (member.likes ?? []).map(resolve).sort().join(" · "),
-            dislikesText: (member.dislikes ?? []).map(resolve).sort().join(" · "),
+            likesText: (member.likes ?? []).map(resolve).join(" · "),
+            dislikesText: (member.dislikes ?? []).map(resolve).join(" · "),
         };
     }),
 );
