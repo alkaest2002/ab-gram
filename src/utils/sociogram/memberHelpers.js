@@ -80,6 +80,26 @@ export function buildMembers(names) {
 }
 
 /**
+ * Order member ids according to their position in the shared id sequence.
+ *
+ * The input array is never mutated. Ids that are not part of `MEMBERS_INDICES`
+ * are pushed to the end while preserving their original relative order.
+ *
+ * @param {string[]} ids
+ * @returns {string[]}
+ */
+export function orderMemberId(ids) {
+  return [...ids].sort((a, b) => {
+    const indexA = MEMBERS_INDICES.indexOf(a);
+    const indexB = MEMBERS_INDICES.indexOf(b);
+    return (
+      (indexA === -1 ? MEMBERS_INDICES.length : indexA) -
+      (indexB === -1 ? MEMBERS_INDICES.length : indexB)
+    );
+  });
+}
+
+/**
  * Count name issues across the loaded members.
  *
  * Names are trimmed once before counting, so both figures below compare the
