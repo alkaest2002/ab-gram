@@ -37,41 +37,30 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
         </template>
 
         <template #default>
-            <section class="space-y-4">
-                <table class="w-full border-collapse border-y-2 border-ink text-sm">
-                    <thead>
-                        <tr class="border-b border-ink text-left">
-                            <th
-                                class="py-2 pr-6 text-xs font-semibold tracking-[0.14em] uppercase text-muted"
-                            >
-                                ID
-                            </th>
-                            <th
-                                class="py-2 text-xs font-semibold tracking-[0.14em] uppercase text-muted"
-                            >
-                                Nome
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="member in members"
-                            :key="member.id"
-                            class="odd:bg-gray-100"
-                        >
-                            <td
-                                class="pr-6 text-sm font-semibold text-ink w-2"
-                            >
-                                {{ member.id }}
-                            </td>
-                            <td class="text-ink">{{ member.name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <section class="overflow-hidden rounded-lg border border-line bg-white">
+                <header
+                    class="flex items-center justify-between gap-4 border-b border-line px-4 py-2"
+                >
+                    <p class="eyebrow">Sociogramma</p>
+                    <span class="font-mono text-xs font-medium text-muted">
+                        {{ members.length }} membri
+                    </span>
+                </header>
 
-                <p v-if="members.length === 0" class="text-sm text-muted">
-                    Nessun membro nel gruppo.
-                </p>
+                <ul class="columns-2 gap-x-10 px-4 py-3 text-sm">
+                    <li
+                        v-for="member in members"
+                        :key="member.id"
+                        class="break-inside-avoid flex items-center gap-x-2.5 py-1"
+                    >
+                        <span
+                            class="inline-flex h-6 min-w-7 shrink-0 items-center justify-center rounded-md border border-line px-1.5 font-mono text-xs font-semibold text-ink"
+                        >
+                            {{ member.id }}
+                        </span>
+                        <span class="text-ink">{{ member.name }}</span>
+                    </li>
+                </ul>
             </section>
         </template>
     </BasePage>
