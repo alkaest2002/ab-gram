@@ -12,8 +12,12 @@ import BaseCard from "@/components/ui/BaseCard.vue";
 // --- Composables --------
 
 // --- Props --------------
-
-// --- Emits --------------
+defineProps({
+    buttonVariant: {
+        type: String,
+        default: "outline",
+    },
+});
 
 // --- State --------------
 
@@ -35,7 +39,7 @@ import BaseCard from "@/components/ui/BaseCard.vue";
         Ministero dell'Istruzione e del Merito.
 
         <template #actions>
-            <CopyLinkButton />
+            <CopyLinkButton :buttonVariant="buttonVariant" />
         </template>
     </BaseCard>
 </template>

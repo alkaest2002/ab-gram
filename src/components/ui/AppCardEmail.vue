@@ -12,7 +12,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Composables --------
 defineProps({
-    variant: {
+    buttonVariant: {
         type: String,
         default: "outline",
     },
@@ -45,7 +45,7 @@ const openEmail = () => {
 
         <template #actions>
             <BaseButton
-                :buttonVariant="variant"
+                :buttonVariant="buttonVariant"
                 class="w-full sm:w-auto"
                 @click="openEmail"
             >

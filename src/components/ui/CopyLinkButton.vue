@@ -1,4 +1,7 @@
 <script setup>
+// --- Vue ----------------
+import { computed } from "vue";
+
 // --- Components ---------
 import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
 import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
@@ -6,14 +9,33 @@ import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 // --- Composables --------
 import { useCopyLink } from "@/composables/useCopyLink";
 
+// --- Props --------------
+const props = defineProps({
+    buttonVariant: {
+        type: String,
+        default: "outline",
+        validator: (value) => ["solid", "outline", "red"].includes(value),
+    },
+});
+
 // --- State --------------
 const { copied, copyLink } = useCopyLink();
+
+// Classes written out in full: Tailwind doesn't see ones built by interpolation.
+const variantClasses = {
+    solid: "btn-solid",
+    outline: "btn-outline",
+    red: "btn-red",
+};
+
+// --- Computed -----------
+const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);
 </script>
 
 <template>
     <button
         type="button"
-        class="btn btn-outline w-full sm:w-auto"
+        :class="[...classes, 'w-full sm:w-auto']"
         aria-live="polite"
         @click="copyLink"
     >

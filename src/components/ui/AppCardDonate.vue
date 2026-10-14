@@ -13,8 +13,12 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 // --- Composables --------
 
 // --- Props --------------
-
-// --- Emits --------------
+defineProps({
+    buttonVariant: {
+        type: String,
+        default: "solid",
+    },
+});
 
 // --- State --------------
 const donationUrl = "https://donate.stripe.com/4gM6oH21z5ov7Yq59pcV201";
@@ -39,7 +43,7 @@ const openDonation = () =>
 
         <template #actions>
             <BaseButton
-                buttonVariant="solid"
+                :buttonVariant="buttonVariant"
                 class="w-full sm:w-auto"
                 @click="openDonation"
             >

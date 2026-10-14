@@ -136,7 +136,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
 
         <section class="space-y-8">
             <div class="grid gap-8 sm:grid-cols-2">
-                <AppCardEmail :variant="'solid'" />
+                <AppCardEmail :buttonVariant="'solid'" />
                 <AppCardEdu />
             </div>
         </section>
