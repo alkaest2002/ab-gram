@@ -39,8 +39,7 @@ const reportData = computed(() => ({
 
 <template>
     <div>
-        <ReportDoc v-if="status === 'generated'" :report-data="reportData" />
-
-        <ReportCommandBar v-if="status === 'generated'" :report-data="reportData" />
+        <ReportDoc :report-data="reportData" />
+        <ReportCommandBar :report-data="reportData" />
     </div>
 </template>
