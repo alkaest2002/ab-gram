@@ -54,7 +54,7 @@ function downloadReport() {
         aria-label="Comandi del report"
     >
         <div
-            class="flex items-center gap-1 rounded-full bg-black/40 p-1.5 shadow-lg backdrop-blur-md"
+            class="flex items-center gap-1 rounded-full bg-black/70 p-1.5 shadow-lg backdrop-blur-md"
         >
             <button
                 type="button"
