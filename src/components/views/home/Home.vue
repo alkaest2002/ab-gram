@@ -8,10 +8,11 @@ import { RouterLink } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
+import DonationCard from "@/components/ui/AppCardDonate.vue";
+import EduCard from "@/components/ui/AppCardEdu.vue";
 import Hero from "@/components/views/home/Hero.vue";
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
-import DonationCard from "@/components/views/home/DonationCard.vue";
 import Featurettes from "@/components/views/home/Featurettes.vue";
 
 // --- Composables --------
@@ -75,9 +76,10 @@ onMounted(() => {
                 <Featurettes />
             </section>
 
-            <!-- Donation card -->
-            <section class="w-full">
+            <!-- Donation / edu cards -->
+            <section class="grid w-full gap-8 lg:grid-cols-2">
                 <DonationCard />
+                <EduCard />
             </section>
 
         </div>
