@@ -69,8 +69,6 @@ export const createLikesGraph = (members, typeOfPreference) => {
 
   // Assign a random layout as the initial node coordinates.
   random.assign(graph);
-  graph.forEachNode((node, attr) => {
-    console.log(node, attr);
-  });
+
   return graph;
 };
