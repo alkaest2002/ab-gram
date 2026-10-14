@@ -41,7 +41,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="report-page flex flex-col bg-canvas">
+    <section class="report-page flex flex-col rounded-lg bg-canvas border border-gray-200 shadow-lg print:rounded-none print:shadow-none">
         <header class="flex items-start justify-between gap-6 border-b border-line pb-4">
             <div class="space-y-1">
                 <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">

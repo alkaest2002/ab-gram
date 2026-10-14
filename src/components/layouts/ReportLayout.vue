@@ -31,7 +31,7 @@
       backdrop and padding vanish and each sheet maps 1:1 onto an A4 page (see
       the @page rule below).
     -->
-    <main class="min-h-dvh bg-line/40 px-6 py-10 print:min-h-0 print:bg-transparent print:p-0">
+    <main class="min-h-dvh px-6 py-10 print:min-h-0 print:bg-transparent print:p-0">
         <div class="mx-auto w-full max-w-[210mm] print:max-w-none">
             <slot />
         </div>
