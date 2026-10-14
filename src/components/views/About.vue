@@ -19,16 +19,32 @@ import AppCardEmail from "@/components/ui/AppCardEmail.vue";
 // --- State --------------
 import packageJson from "../../../package.json";
 
-// Runtime (dependencies) and build-time (devDependencies) packages, read from
-// package.json so this page never drifts from the lockfile.
+// Runtime dependencies, read from package.json so this page never drifts from
+// the lockfile.
 const stripRange = (version) => version.replace(/^[\^~]/, "");
 
-const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
-    ([name, version]) => ({ name, version: stripRange(version) }),
-);
+// Public GitHub repositories for the runtime dependencies.
+const repositories = {
+    graphology: "https://github.com/graphology/graphology",
+    "graphology-components": "https://github.com/graphology/graphology",
+    "graphology-layout": "https://github.com/graphology/graphology",
+    "graphology-layout-forceatlas2": "https://github.com/graphology/graphology",
+    "graphology-metrics": "https://github.com/graphology/graphology",
+    "graphology-operators": "https://github.com/graphology/graphology",
+    mathjax: "https://github.com/mathjax/MathJax",
+    "numpy-ts": "https://github.com/dupontcyborg/numpy-ts",
+    pinia: "https://github.com/vuejs/pinia",
+    "unplugin-vue-markdown": "https://github.com/unplugin/unplugin-vue-markdown",
+    vue: "https://github.com/vuejs/core",
+    "vue-router": "https://github.com/vuejs/router",
+};
 
-const devDependencies = Object.entries(packageJson.devDependencies ?? {}).map(
-    ([name, version]) => ({ name, version: stripRange(version) }),
+const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
+    ([name, version]) => ({
+        name,
+        version: stripRange(version),
+        repository: repositories[name],
+    }),
 );
 
 // --- Computed -----------
@@ -54,53 +70,66 @@ const devDependencies = Object.entries(packageJson.devDependencies ?? {}).map(
                 delle metriche di rete al rendering dei grafici.
             </p>
 
-            <div class="grid gap-8 sm:grid-cols-2">
-                <div class="card">
-                    <h3
-                        class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
-                    >
-                        Dipendenze
-                    </h3>
-                    <ul class="space-y-2 mt-6">
-                        <li
-                            v-for="pkg in dependencies"
-                            :key="pkg.name"
-                            class="flex items-baseline justify-between gap-4"
-                        >
-                            <span
-                                class="min-w-0 wrap-break-words font-mono text-sm text-ink"
+            <div class="card">
+                <h3
+                    class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                >
+                    Dipendenze
+                </h3>
+                <div class="mt-6 overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-line">
+                                <th
+                                    class="py-2 pr-4 font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                                >
+                                    Libreria
+                                </th>
+                                <th
+                                    class="py-2 pr-4 font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                                >
+                                    Versione
+                                </th>
+                                <th
+                                    class="py-2 font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                                >
+                                    Repository
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                v-for="pkg in dependencies"
+                                :key="pkg.name"
+                                class="border-b border-line last:border-0"
                             >
-                                {{ pkg.name }}
-                            </span>
-                            <span class="shrink-0 font-mono text-xs text-muted">
-                                {{ pkg.version }}
-                            </span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3
-                        class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
-                    >
-                        Strumenti di sviluppo
-                    </h3>
-                    <ul class="space-y-2 mt-6">
-                        <li
-                            v-for="pkg in devDependencies"
-                            :key="pkg.name"
-                            class="flex items-baseline justify-between gap-4"
-                        >
-                            <span
-                                class="min-w-0 wrap-break-words font-mono text-sm text-ink"
-                            >
-                                {{ pkg.name }}
-                            </span>
-                            <span class="shrink-0 font-mono text-xs text-muted">
-                                {{ pkg.version }}
-                            </span>
-                        </li>
-                    </ul>
+                                <td
+                                    class="py-2 pr-4 font-mono text-sm whitespace-nowrap text-ink"
+                                >
+                                    {{ pkg.name }}
+                                </td>
+                                <td
+                                    class="py-2 pr-4 font-mono text-xs whitespace-nowrap text-muted"
+                                >
+                                    {{ pkg.version }}
+                                </td>
+                                <td class="py-2">
+                                    <a
+                                        v-if="pkg.repository"
+                                        :href="pkg.repository"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="font-mono text-xs break-all text-accent transition-colors hover:text-ink"
+                                    >
+                                        {{ pkg.repository }}
+                                    </a>
+                                    <span v-else class="font-mono text-xs text-muted">
+                                        —
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
