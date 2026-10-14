@@ -1,5 +1,6 @@
 <script setup>
 // --- Vue ----------------
+import { computed, inject, onMounted, ref } from "vue";
 
 // --- Routers ------------
 
@@ -8,13 +9,10 @@
 // --- Components ---------
 
 // --- Composables --------
+import { REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------
 defineProps({
-    /** 1-based page number, shown in the footer. */
-    pageNumber: { type: Number, default: null },
-    /** Total number of pages, shown alongside the page number. */
-    totalPages: { type: Number, default: null },
     /** Small uppercase label shown in the page header. */
     eyebrow: { type: String, default: "Report" },
     /** Document title shown in the page header. */
@@ -24,12 +22,20 @@ defineProps({
 // --- Emits --------------
 
 // --- State --------------
+// Page number comes from the report's registry (see ReportDoc). When the page
+// is rendered outside a report, it falls back to no number.
+const registry = inject(REPORT_PAGES_KEY, null);
+const pageNumber = ref(null);
 
 // --- Computed -----------
+const totalPages = computed(() => registry?.totalPages.value ?? null);
 
 // --- Watchers -----------
 
 // --- Lifecycle ----------
+onMounted(() => {
+    if (registry) pageNumber.value = registry.register();
+});
 
 // --- Methods ------------
 </script>

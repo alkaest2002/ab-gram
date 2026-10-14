@@ -1,5 +1,6 @@
 <script setup>
 // --- Vue ----------------
+import { provide, ref } from "vue";
 
 // --- Routers ------------
 
@@ -9,6 +10,7 @@
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
 
 // --- Composables --------
+import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
 // --- Props --------------
 const props = defineProps({
@@ -18,12 +20,19 @@ const props = defineProps({
 // --- Emits --------------
 
 // --- State --------------
+// Pages register themselves as they mount. The count is reactive, so every
+// footer can show "Pagina N di M" without manual numbering.
+const totalPages = ref(0);
+
+provide(REPORT_PAGES_KEY, {
+    register() {
+        totalPages.value += 1;
+        return totalPages.value;
+    },
+    totalPages,
+});
 
 // --- Computed -----------
-// The document is an ordered list of page components. Add a page here and it is
-// automatically numbered and slotted into the printed sequence.
-const pages = [PageListOfMembers];
-const totalPages = pages.length;
 
 // --- Watchers -----------
 
@@ -34,13 +43,11 @@ const totalPages = pages.length;
 
 <template>
     <div class="space-y-8 print:space-y-0">
-        <component
-            :is="page"
-            v-for="(page, index) in pages"
-            :key="index"
-            :report-data="reportData"
-            :page-number="index + 1"
-            :total-pages="totalPages"
-        />
+        <!--
+          The document is composed declaratively: each child below is one page.
+          Add pages here — repeating a component renders the page again, and
+          numbering stays correct via the registry provided above.
+        -->
+        <PageListOfMembers :report-data="reportData" />
     </div>
 </template>

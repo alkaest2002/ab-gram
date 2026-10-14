@@ -7,15 +7,13 @@ import { computed } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
-import BasePageLayout from "./BasePageLayout.vue";
+import BasePage from "./BasePage.vue";
 
 // --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
     reportData: { type: Object, required: true },
-    pageNumber: { type: Number, default: 1 },
-    totalPages: { type: Number, default: null },
 });
 
 // --- Emits --------------
@@ -33,12 +31,7 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
 </script>
 
 <template>
-    <BasePageLayout
-        :page-number="pageNumber"
-        :total-pages="totalPages"
-        eyebrow="Report"
-        title="Sociogramma di gruppo"
-    >
+    <BasePageLayout>
         <section class="space-y-4">
             <div class="space-y-2">
                 <h2>Elenco dei membri</h2>
