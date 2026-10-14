@@ -13,7 +13,6 @@ import BasePage from "./BasePage.vue";
 
 // --- Props --------------
 const props = defineProps({
-    title: { type: String, default: "" },
     reportData: { type: Object, required: true },
 });
 
