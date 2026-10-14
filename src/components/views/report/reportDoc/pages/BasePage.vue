@@ -12,12 +12,6 @@ import { computed, inject, onMounted, ref } from "vue";
 import { REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------
-defineProps({
-    /** Small uppercase label shown in the page header. */
-    eyebrow: { type: String, default: "Report" },
-    /** Document title shown in the page header. */
-    title: { type: String, default: "Sociogramma di gruppo" },
-});
 
 // --- Emits --------------
 
@@ -41,24 +35,33 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="report-page flex flex-col rounded-lg bg-canvas border border-gray-200 shadow-lg print:rounded-none print:shadow-none">
-        <header class="flex items-start justify-between gap-6 border-b border-line pb-4">
-            <div class="space-y-1">
-                <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">
-                    {{ eyebrow }}
-                </p>
-                <p class="text-sm font-semibold text-ink">{{ title }}</p>
-            </div>
+    <section
+        class="report-page flex flex-col rounded-lg bg-canvas border border-gray-200 shadow-lg print:rounded-none print:shadow-none"
+    >
+        <header
+            class="flex items-start justify-between gap-6 border-b border-line"
+        >
+            <p
+                class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted"
+            >
+                AB-Grid Report
+            </p>
         </header>
 
-        <div class="flex-1 pt-6">
+        <div class="flex-1 pt-3">
+            <div v-if="$slots.pageTitle" class="mb-3">
+                <slot name="pageTitle" />
+            </div>
             <slot />
         </div>
 
-        <footer class="mt-6 flex items-center justify-between border-t border-line pt-3">
+        <footer
+            class="mt-6 flex items-center justify-between border-t border-line pt-1"
+        >
             <span class="font-mono text-xs text-muted">AB-Grid</span>
             <span v-if="pageNumber" class="font-mono text-xs text-muted">
-                Pagina {{ pageNumber }}<template v-if="totalPages"> di {{ totalPages }}</template>
+                Pagina {{ pageNumber
+                }}<template v-if="totalPages"> di {{ totalPages }}</template>
             </span>
         </footer>
     </section>

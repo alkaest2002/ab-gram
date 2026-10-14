@@ -13,6 +13,7 @@ import BasePage from "./BasePage.vue";
 
 // --- Props --------------
 const props = defineProps({
+    title: { type: String, default: "" },
     reportData: { type: Object, required: true },
 });
 
@@ -32,43 +33,47 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
 
 <template>
     <BasePage>
-        <section class="space-y-4">
-            <div class="space-y-2">
-                <h2>Elenco dei membri</h2>
-                <p class="max-w-[52ch]">
-                    I membri del gruppo con l'identificativo usato nei sociogrammi
-                    e nelle tabelle del report.
+        <template #pageTitle>
+            <h2>Elenco dei membri</h2>
+        </template>
+
+        <template #default>
+            <section class="space-y-4">
+                <table class="w-full border-collapse border-y-2 border-ink text-sm">
+                    <thead>
+                        <tr class="border-b border-ink text-left">
+                            <th
+                                class="py-2 pr-6 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted"
+                            >
+                                ID
+                            </th>
+                            <th
+                                class="py-2 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted"
+                            >
+                                Nome
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="member in members"
+                            :key="member.id"
+                            class="odd:bg-gray-100"
+                        >
+                            <td
+                                class="pr-6 font-mono text-sm font-semibold text-ink w-2"
+                            >
+                                {{ member.id }}
+                            </td>
+                            <td class="text-ink">{{ member.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p v-if="members.length === 0" class="text-sm text-muted">
+                    Nessun membro nel gruppo.
                 </p>
-            </div>
-
-            <table class="w-full border-collapse text-sm">
-                <thead>
-                    <tr class="border-b-2 border-ink text-left">
-                        <th class="py-2 pr-6 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted">
-                            ID
-                        </th>
-                        <th class="py-2 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted">
-                            Nome
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="member in members"
-                        :key="member.id"
-                        class="border-b border-line"
-                    >
-                        <td class="py-2 pr-6 font-mono text-sm font-semibold text-ink">
-                            {{ member.id }}
-                        </td>
-                        <td class="py-2 text-ink">{{ member.name }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p v-if="members.length === 0" class="text-sm text-muted">
-                Nessun membro nel gruppo.
-            </p>
-        </section>
+            </section>
+        </template>
     </BasePage>
 </template>
