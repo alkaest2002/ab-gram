@@ -46,7 +46,6 @@ const openEmail = () => {
         <template #actions>
             <BaseButton
                 :buttonVariant="buttonVariant"
-                class="w-full sm:w-auto"
                 @click="openEmail"
             >
                 <template #icon>

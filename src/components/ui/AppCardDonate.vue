@@ -44,7 +44,6 @@ const openDonation = () =>
         <template #actions>
             <BaseButton
                 :buttonVariant="buttonVariant"
-                class="w-full sm:w-auto"
                 @click="openDonation"
             >
                 <template #icon>

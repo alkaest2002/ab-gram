@@ -29,13 +29,13 @@ const variantClasses = {
 };
 
 // --- Computed -----------
-const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);
+const buttonClasses = computed(() => ["btn", variantClasses[props.buttonVariant]]);
 </script>
 
 <template>
     <button
         type="button"
-        :class="[...classes, 'w-full sm:w-auto']"
+        :class="buttonClasses"
         aria-live="polite"
         @click="copyLink"
     >
