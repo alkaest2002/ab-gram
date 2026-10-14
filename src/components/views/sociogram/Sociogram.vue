@@ -15,7 +15,7 @@ import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/
 import ManageMembers from "@/components/views/sociogram/steps/stepManageMembers/StepManageMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
 import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
-import KeepAliveTransition from "@/components/ui/KeepAliveTransition.vue";
+import AppKeepAliveTransition from "@/components/ui/AppKeepAliveTransition.vue";
 
 // --- Props --------------
 
@@ -91,13 +91,13 @@ function editMember(memberId) {
 <template>
     <div class="page">
         <keep-alive>
-            <KeepAliveTransition :key="currentComponentName">
+            <AppKeepAliveTransition :key="currentComponentName">
                 <component
                     :is="stateComponents[currentComponentName]"
                     v-bind="stepProps"
                     v-on="stepListeners"
                 />
-            </KeepAliveTransition>
+            </AppKeepAliveTransition>
         </keep-alive>
     </div>
 </template>

@@ -6,7 +6,7 @@
 // --- Stores -------------
 
 // --- Components ---------
-import CopyLinkButton from "@/components/ui/CopyLinkButton.vue";
+import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 
 // --- Composables --------
@@ -39,7 +39,7 @@ defineProps({
         Ministero dell'Istruzione e del Merito.
 
         <template #actions>
-            <CopyLinkButton :buttonVariant="buttonVariant" />
+            <AppCopyLinkButton :buttonVariant="buttonVariant" />
         </template>
     </BaseCard>
 </template>

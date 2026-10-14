@@ -8,7 +8,7 @@ import { onBeforeRouteUpdate, RouterView, useRoute } from "vue-router";
 // --- Stores -------------
 
 // --- Components ---------
-import ContentTransition from "@/components/ui/ContentTransition.vue";
+import AppContentTransition from "@/components/ui/AppContentTransition.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsToc from "@/components/views/docs/DocsToc.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
@@ -70,9 +70,9 @@ watch(() => route.path, typeset);
             >
                 <h1>{{ route.meta.title }}</h1>
                 <RouterView v-slot="{ Component }">
-                    <ContentTransition>
+                    <AppContentTransition>
                         <component :is="Component" />
-                    </ContentTransition>
+                    </AppContentTransition>
                 </RouterView>
             </article>
 

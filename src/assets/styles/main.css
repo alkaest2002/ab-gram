@@ -19,7 +19,7 @@
   --color-accent: #2563eb;
   --color-reject: #dc2626;
 
-  /* Fade-in used by KeepAliveTransition to animate kept-alive (re)activations. */
+  /* Fade-in used by AppKeepAliveTransition to animate kept-alive (re)activations. */
   --animate-fade-in: fade-in 0.2s ease-out both;
 }
 

@@ -11,7 +11,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
-import TextFileReader from "@/components/ui/TextFileReader.vue";
+import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
@@ -96,7 +96,7 @@ function onFileReadError({ message }) {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <TextFileReader
+        <BaseTextFileReader
             :max-line-length="maxMemberNameLength"
             :max-lines="maxMembersCount"
             @file-selected="onFileSelected"
@@ -105,7 +105,7 @@ function onFileReadError({ message }) {
         >
             <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
             Elenco dei nominativi (es., Rossi Mario), uno per riga.
-        </TextFileReader>
+        </BaseTextFileReader>
 
         <FileReadResult :count="loadedCount" :error="loadError">
             <p class="text-sm font-medium text-ink">{{ loadFileName }}</p>

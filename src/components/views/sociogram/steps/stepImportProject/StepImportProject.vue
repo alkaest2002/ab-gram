@@ -10,7 +10,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 // --- Components ---------
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
-import TextFileReader from "@/components/ui/TextFileReader.vue";
+import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 
 // --- Composables --------
@@ -101,14 +101,14 @@ function onFileReadError({ message }) {
 
         <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <TextFileReader
+        <BaseTextFileReader
             @file-selected="onFileSelected"
             @file-read="onFileRead"
             @file-read-error="onFileReadError"
         >
             <template #label>Importa da file</template>
             Il file deve contenere un archivio valido.
-        </TextFileReader>
+        </BaseTextFileReader>
 
         <FileReadResult :count="importedCount" :error="importError">
             <p class="text-sm font-medium text-ink">{{ importFilename }}</p>
