@@ -42,12 +42,12 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
                     <thead>
                         <tr class="border-b border-ink text-left">
                             <th
-                                class="py-2 pr-6 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted"
+                                class="py-2 pr-6 text-xs font-semibold tracking-[0.14em] uppercase text-muted"
                             >
                                 ID
                             </th>
                             <th
-                                class="py-2 font-mono text-xs font-semibold tracking-[0.14em] uppercase text-muted"
+                                class="py-2 text-xs font-semibold tracking-[0.14em] uppercase text-muted"
                             >
                                 Nome
                             </th>
@@ -60,7 +60,7 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
                             class="odd:bg-gray-100"
                         >
                             <td
-                                class="pr-6 font-mono text-sm font-semibold text-ink w-2"
+                                class="pr-6 text-sm font-semibold text-ink w-2"
                             >
                                 {{ member.id }}
                             </td>
