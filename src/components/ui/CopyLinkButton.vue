@@ -1,33 +1,13 @@
 <script setup>
-// --- Vue ----------------
-import { onBeforeUnmount, ref } from "vue";
-
 // --- Components ---------
 import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
 import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 
+// --- Composables --------
+import { useCopyLink } from "@/composables/useCopyLink";
+
 // --- State --------------
-const siteUrl = window.location.origin;
-const copied = ref(false);
-let copyTimer = null;
-
-// --- Lifecycle ----------
-onBeforeUnmount(() => clearTimeout(copyTimer));
-
-// --- Methods ------------
-async function copyLink() {
-    try {
-        await navigator.clipboard.writeText(siteUrl);
-    } catch {
-        // Clipboard API needs a secure context (https or localhost). Without it
-        // there's no reliable fallback, so leave the button label unchanged.
-        return;
-    }
-
-    copied.value = true;
-    clearTimeout(copyTimer);
-    copyTimer = setTimeout(() => (copied.value = false), 2000);
-}
+const { copied, copyLink } = useCopyLink();
 </script>
 
 <template>

@@ -7,6 +7,7 @@
 
 // --- Components ---------
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
+import BaseCard from "@/components/ui/BaseCard.vue";
 
 // --- Composables --------
 
@@ -26,30 +27,20 @@ import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 </script>
 
 <template>
-    <div class="relative overflow-hidden rounded-lg border border-line bg-white">
-        <div
-            class="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-accent to-reject"
-            aria-hidden="true"
-        ></div>
-        <div class="p-6 sm:p-8">
-            <header class="space-y-2">
-                <p class="eyebrow">Contatti</p>
-                <h2 class="text-2xl">Hai una domanda?</h2>
-            </header>
+    <BaseCard>
+        <template #eyebrow>Contatti</template>
+        <template #title>Hai una domanda?</template>
 
-            <p class="mt-4 max-w-[52ch]">
-                Scrivici e ti risponderemo il prima possibile.
-            </p>
+        Scrivici se hai bisogno di informazioni supplementari. Cercheremo di risponderti il prima possibile.
 
-            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a
-                    href="mailto:info@ab-grid.com"
-                    class="btn btn-solid w-full sm:w-auto"
-                >
-                    <EmailIcon size="size-4" />
-                    Scrivi a info@ab-grid.com
-                </a>
-            </div>
-        </div>
-    </div>
+        <template #actions>
+            <a
+                href="mailto:info@ab-grid.com"
+                class="btn btn-outline w-full sm:w-auto"
+            >
+                <EmailIcon size="size-4" />
+                Scrivi a info@ab-grid.com
+            </a>
+        </template>
+    </BaseCard>
 </template>
