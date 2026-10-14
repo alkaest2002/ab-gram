@@ -10,7 +10,6 @@ import PiggyIcon from "@/components/ui/icons/PiggyIcon.vue";
 import SmileyIcon from "@/components/ui/icons/SmileyIcon.vue";
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 
-
 // --- Composables --------
 
 // --- Props --------------
@@ -22,17 +21,17 @@ const features = [
     {
         id: "free",
         title: "App gratuita",
-        text: "Nessun costo nascosto. Al massimo, chiediamo una donazione libera e volontaria per sostenere le spese del servizio di hosting.",
+        text: "Nessun costo nascosto. Se vuoi, puoi lasciare una donazione libera per aiutarci a coprire le spese di hosting.",
     },
     {
         id: "easy",
         title: "App semplice",
-        text: "Nessun software da installare o da configurare. Tutto avviene all'interno del tuo browser con pochi click.",
+        text: "Niente da installare né da configurare. Tutto funziona direttamente nel browser, in pochi passaggi, con pochi click.",
     },
     {
         id: "privacy",
-        title: "App centrata sulla privacy",
-        text: "I dati che inserisci non lasciano il tuo dispositivo per finire nelle mani di perfetti sconosciuti.",
+        title: "App attenta alla privacy",
+        text: "I tuoi dati restano sul tuo dispositivo: non vengono inviati a nessuno e non raggiungono server esterni.",
     },
 ];
 
@@ -59,9 +58,21 @@ const features = [
                 class="flex flex-col items-center gap-2.5 border-t border-line py-7 last:border-b"
             >
                 <span class="text-black" aria-hidden="true">
-                    <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
-                    <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" :stroke-width="1" />
-                    <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" :stroke-width="1" />
+                    <PiggyIcon
+                        v-if="feature.id === 'free'"
+                        size="size-18"
+                        :stroke-width="1"
+                    />
+                    <SmileyIcon
+                        v-else-if="feature.id === 'easy'"
+                        size="size-18"
+                        :stroke-width="1"
+                    />
+                    <ShieldIcon
+                        v-else-if="feature.id === 'privacy'"
+                        size="size-18"
+                        :stroke-width="1"
+                    />
                 </span>
 
                 <h3 class="tracking-[-0.01em] text-xl text-black">
