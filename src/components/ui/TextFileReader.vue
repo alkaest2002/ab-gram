@@ -103,7 +103,7 @@ async function onFileChange(event) {
                 </p>
             </div>
 
-            <BaseButton variant="solid" :disabled="isReadingFile" @click="pick">
+            <BaseButton buttonVariant="solid" :disabled="isReadingFile" @click="pick">
                 {{ isReadingFile ? "Lettura…" : "Scegli file" }}
             </BaseButton>
         </div>

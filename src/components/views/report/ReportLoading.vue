@@ -64,7 +64,7 @@ const emit = defineEmits(["report-generating-stop"]);
             </p>
         </div>
 
-        <BaseButton variant="outline" @click="emit('report-generating-stop')">
+        <BaseButton buttonVariant="outline" @click="emit('report-generating-stop')">
             Interrompi
         </BaseButton>
 

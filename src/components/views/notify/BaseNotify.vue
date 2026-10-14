@@ -53,7 +53,7 @@ defineProps({
         <div
             class="mt-10 flex w-full flex-col items-center gap-4 border-t border-line pt-8"
         >
-            <BaseButton :to="to" variant="solid">
+            <BaseButton :to="to" buttonVariant="solid">
                 <slot name="buttonLabel" />
             </BaseButton>
         </div>

@@ -56,7 +56,7 @@ const handleDownload = () => {
         <div class="flex flex-wrap gap-2">
             <BaseTooltip v-show="showRestart" label="Ricomincia da capo">
                 <BaseButton
-                    variant="outline"
+                    buttonVariant="outline"
                     :disabled="!enableRestart"
                     aria-label="Ricomincia da capo"
                     @click="$emit('sociogram-navigation-restart')"
@@ -79,7 +79,7 @@ const handleDownload = () => {
 
             <BaseTooltip v-show="showArchive" label="Scarica archivio">
                 <BaseButton
-                    variant="outline"
+                    buttonVariant="outline"
                     :disabled="!enableArchive"
                     aria-label="Scarica archivio"
                     @click="handleDownload"
@@ -103,7 +103,7 @@ const handleDownload = () => {
 
             <BaseTooltip v-show="showPrevious" label="Passaggio precedente">
                 <BaseButton
-                    variant="outline"
+                    buttonVariant="outline"
                     :disabled="!enablePrevious"
                     @click="$emit('sociogram-navigation-previous')"
                 >
@@ -126,7 +126,7 @@ const handleDownload = () => {
 
         <BaseTooltip v-show="showNext" label="Passaggio successivo">
             <BaseButton
-                variant="outline"
+                buttonVariant="outline"
                 :disabled="!enableNext"
                 @click="$emit('sociogram-navigation-next')"
             >

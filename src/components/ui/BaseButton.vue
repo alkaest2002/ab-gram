@@ -13,9 +13,8 @@ import { RouterLink } from "vue-router";
 
 // --- Props --------------
 const props = defineProps({
-    /** If present, the button becomes a route link. */
     to: { type: [String, Object], default: null },
-    variant: {
+    buttonVariant: {
         type: String,
         default: "solid",
         validator: (value) => ["solid", "outline", "red"].includes(value),
@@ -33,7 +32,7 @@ const variantClasses = {
 };
 
 // --- Computed -----------
-const classes = computed(() => ["btn", variantClasses[props.variant]]);
+const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);
 
 // --- Watchers -----------
 
@@ -48,6 +47,7 @@ const classes = computed(() => ["btn", variantClasses[props.variant]]);
         :to="to ?? undefined"
         :class="classes"
     >
+        <slot name="icon" />
         <slot />
     </component>
 </template>

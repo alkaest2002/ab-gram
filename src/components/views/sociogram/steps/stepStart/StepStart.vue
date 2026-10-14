@@ -69,7 +69,7 @@ function startFromScratch(step) {
                     Crea un nuovo sociogramma a partire da una lista di nomi.
                 </p>
             </div>
-            <BaseButton variant="outline" @click="startFromScratch('loadMembers')">
+            <BaseButton buttonVariant="solid" @click="startFromScratch('loadMembers')">
                 Crea progetto
             </BaseButton>
 
@@ -84,7 +84,7 @@ function startFromScratch(step) {
                 </p>
             </div>
             <BaseButton
-                variant="outline"
+                buttonVariant="outline"
                 @click="startFromScratch('importProject')"
             >
                 Importa progetto

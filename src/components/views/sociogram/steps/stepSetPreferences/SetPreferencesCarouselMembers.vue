@@ -41,7 +41,7 @@ defineEmits(["carousel-previous", "carousel-next"]);
 <template>
     <div class="flex items-center justify-between gap-4 rounded-lg border border-line p-4">
         <BaseButton
-            variant="outline"
+            buttonVariant="outline"
             :disabled="!canGoPrevious"
             aria-label="Membro precedente"
             @click="$emit('carousel-previous')"
@@ -57,7 +57,7 @@ defineEmits(["carousel-previous", "carousel-next"]);
         </div>
 
         <BaseButton
-            variant="outline"
+            buttonVariant="outline"
             :disabled="!canGoNext"
             aria-label="Membro successivo"
             @click="$emit('carousel-next')"
