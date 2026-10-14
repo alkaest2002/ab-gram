@@ -1,9 +1,9 @@
 import { useSociogramStore } from "@/stores/sociogram";
+import { useReportStore } from "@/stores/report";
 
 export default {
   path: "/report",
-  name: "report",
-  component: () => import("@/components/views/report/Report.vue"),
+  component: "",
   beforeEnter() {
     const sociogramStore = useSociogramStore();
 
@@ -22,6 +22,38 @@ export default {
     title: "Report",
     inMenu: false,
     typeOfMenu: null,
-    layout: "ReportLayout",
   },
+  children: [
+    {
+      path: "",
+      name: "report",
+      component: () => import("@/components/views/report/Report.vue"),
+      meta: {
+        title: "Report",
+        inMenu: false,
+        typeOfMenu: null,
+        layout: "EmptyLayout",
+      },
+    },
+    {
+      path: "generated",
+      name: "reportGenerated",
+      component: () => import("@/components/views/report/ReportGenerated.vue"),
+      beforeEnter() {
+        const reportStore = useReportStore();
+
+        if (reportStore.status === "generated") {
+          return true;
+        }
+
+        return { name: "report" };
+      },
+      meta: {
+        title: "Report",
+        inMenu: false,
+        typeOfMenu: null,
+        layout: "ReportLayout",
+      },
+    },
+  ],
 };

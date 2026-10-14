@@ -6,14 +6,11 @@ import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 
 // --- Stores -------------
-import { storeToRefs } from "pinia";
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
-import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
-import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 
 // --- Composables --------
 import { createReportWorker } from "@/utils/workerLoader";
@@ -26,21 +23,11 @@ import { createReportWorker } from "@/utils/workerLoader";
 const router = useRouter();
 const reportStore = useReportStore();
 const sociogramStore = useSociogramStore();
-const { status } = storeToRefs(reportStore);
 
 /** @type {Worker | null} Active report generation worker. */
 let worker = null;
 
 // --- Computed -----------
-const statusComponents = {
-    generating: ReportLoading,
-    generated: ReportDoc,
-};
-
-const currentComponent = computed(
-    () => statusComponents[status.value] ?? "generating",
-);
-
 const reportData = computed(() => ({
     sociogram: sociogramStore.$state,
     report: reportStore.$state,
@@ -72,6 +59,7 @@ function startGeneration() {
 
         reportStore.setAnalysis(data);
         reportStore.setStatus("generated");
+        router.replace({ name: "reportGenerated" });
     };
 
     worker.onerror = (event) => {
@@ -117,13 +105,8 @@ function stopWorker() {
 </script>
 
 <template>
-    <div>
-        <component
-            :is="currentComponent"
-            :report-data="reportData"
-            @report-geenrating-stop="stopGeneration"
-        />
-
-        <ReportCommandBar v-if="status === 'generated'" :report-data="reportData" />
-    </div>
+    <ReportLoading
+        :report-data="reportData"
+        @report-generating-stop="stopGeneration"
+    />
 </template>
