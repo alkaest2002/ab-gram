@@ -17,7 +17,7 @@
 const steps = [
     {
         title: "Gruppo",
-        text: "Inserisci i membri che compongono il gruppo.",
+        text: "Inserisci i membri che compongono il gruppo che intendi studiare.",
     },
     {
         title: "Scelte e rifiuti",
@@ -25,7 +25,7 @@ const steps = [
     },
     {
         title: "Sociogramma",
-        text: "AB-Grid calcola, in modo automatico, indici e grafici.",
+        text: "AB-Grid calcola, in modo automatico, indici sociometrici e grafici.",
     },
 ];
 

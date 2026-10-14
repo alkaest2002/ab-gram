@@ -22,17 +22,17 @@ const features = [
     {
         id: "free",
         title: "App gratuita",
-        text: "Nessun costo nascosto. Chiediamo, al massimo, una donazione libera e volontaria per sostenere le spese del servizio di hosting.",
+        text: "Nessun costo nascosto. Al massimo, chiediamo una donazione libera e volontaria per sostenere le spese del servizio di hosting.",
     },
     {
         id: "easy",
         title: "App semplice",
-        text: "Nessun software da installare o da configurare. Tutto avviene all'interno del tuo browser.",
+        text: "Nessun software da installare o da configurare. Tutto avviene all'interno del tuo browser con pochi click.",
     },
     {
         id: "privacy",
         title: "App centrata sulla privacy",
-        text: "I tuoi dati non vegono comunicati a terze parti. Sono convervati nella memoria RAM del tuo dispositivo.",
+        text: "I dati che inserisci non lasciano il tuo dispositivo per finire nelle mani di perfetti sconosciuti.",
     },
 ];
 
