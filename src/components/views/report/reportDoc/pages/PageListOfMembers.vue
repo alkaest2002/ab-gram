@@ -31,7 +31,7 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
 </script>
 
 <template>
-    <BasePageLayout>
+    <BasePage>
         <section class="space-y-4">
             <div class="space-y-2">
                 <h2>Elenco dei membri</h2>
@@ -70,5 +70,5 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
                 Nessun membro nel gruppo.
             </p>
         </section>
-    </BasePageLayout>
+    </BasePage>
 </template>
