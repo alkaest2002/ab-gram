@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed, ref, watch, onActivated, useTemplateRef } from "vue";
+import { computed, ref, watch, onActivated, onDeactivated, onBeforeUnmount, useTemplateRef } from "vue";
 
 // --- Routers ------------
 
@@ -87,7 +87,15 @@ watch(
 );
 
 // --- Lifecycle ----------
-onActivated(() => window.scrollTo(0, 0));
+// Keyboard shortcuts live on `window` and must only be active while this step
+// is shown. The component is kept alive, so bind on activation and unbind on
+// deactivation/unmount to avoid leaking the listener onto other steps.
+onActivated(() => {
+    window.scrollTo(0, 0);
+    window.addEventListener("keydown", handleWindowKeydown);
+});
+onDeactivated(() => window.removeEventListener("keydown", handleWindowKeydown));
+onBeforeUnmount(() => window.removeEventListener("keydown", handleWindowKeydown));
 
 // --- Methods ------------
 // Two-way binding to a field on the current member, falling back to an empty
@@ -122,18 +130,46 @@ function carouselGoNextMember() {
     }
 }
 
-function tabToDislikes() {
-    dislikesRef.value?.$el?.querySelector("input")?.focus();
+function likesInput() {
+    return likesRef.value?.$el?.querySelector("input");
 }
 
-function tabToLikes() {
-    likesRef.value?.$el?.querySelector("input")?.focus();
+function dislikesInput() {
+    return dislikesRef.value?.$el?.querySelector("input");
+}
+
+// Global keyboard shortcuts: Tab cycles focus between the two preference
+// search fields, and the left/right arrows move the carousel between members.
+// Every other key (including Enter/Escape in the search fields) is ignored.
+function handleWindowKeydown(event) {
+    if (event.key === "Tab") {
+        event.preventDefault();
+        if (document.activeElement === likesInput()) {
+            dislikesInput()?.focus();
+        } else {
+            likesInput()?.focus();
+        }
+        return;
+    }
+
+    if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        carouselGoPreviousMember();
+        return;
+    }
+
+    if (event.key === "ArrowRight") {
+        event.preventDefault();
+        carouselGoNextMember();
+    }
 }
 
 </script>
 
 <template>
-    <section class="card space-y-3">
+    <section
+        class="card space-y-3"
+    >
         <StepHeader>
             <template #eyebrow>Passaggio 3 di 4</template>
             <template #title
@@ -184,7 +220,6 @@ function tabToLikes() {
                     :members="members"
                     :opposing-ids="currentDislikes"
                     :self-id="currentMember?.id"
-                    @keydown.tab.capture.prevent="tabToDislikes"
                 />
 
                 <!-- Dislikes-->
@@ -196,7 +231,6 @@ function tabToLikes() {
                     :members="members"
                     :opposing-ids="currentLikes"
                     :self-id="currentMember?.id"
-                    @keydown.tab.capture.prevent="tabToLikes"
                 />
             </div>
 
