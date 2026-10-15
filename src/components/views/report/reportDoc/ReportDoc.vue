@@ -7,6 +7,7 @@ import { provide, ref } from "vue";
 // --- Stores -------------
 
 // --- Components ---------
+import PageCover from "@/components/views/report/reportDoc/pages/PageCover.vue";
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
 
@@ -49,6 +50,7 @@ provide(REPORT_PAGES_KEY, {
           Add pages here — repeating a component renders the page again, and
           numbering stays correct via the registry provided above.
         -->
+        <PageCover />
         <PageListOfMembers :report-data="reportData" />
         <PageListOfPreferences :report-data="reportData" />
     </div>
