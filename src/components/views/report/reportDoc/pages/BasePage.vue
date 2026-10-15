@@ -43,10 +43,10 @@ onMounted(() => {
     >
         <!--
           Every page is a single-column, borderless layout table: header, an
-          optional title band, the content, and the footer. Fixed A4-derived row
-          heights keep a fixed-height page (the SNA page) on one printed sheet,
-          while list-heavy pages can still grow onto a second sheet because a
-          table's `height` acts as a minimum.
+          optional title band, the content, and the footer. Each band has a fixed
+          A4-derived height, so a page always occupies exactly one sheet; content
+          taller than its band is clipped rather than growing the page onto a
+          second sheet.
         -->
         <table class="page-table">
             <tr class="page-row page-row--header">
@@ -64,8 +64,13 @@ onMounted(() => {
             </tr>
 
             <tr class="page-row page-row--content">
-                <td class="page-cell page-cell--content">
-                    <slot />
+                <td
+                    class="page-cell page-cell--content"
+                    :class="{ 'page-cell--content--with-title': $slots.pageTitle }"
+                >
+                    <div class="page-content">
+                        <slot />
+                    </div>
                 </td>
             </tr>
 
@@ -133,15 +138,29 @@ onMounted(() => {
     height: 6mm;
 }
 
+/* The content band fills the sheet minus the fixed bands. Its height must be
+   explicit (not auto) so percentage-sized children (e.g. PageSnaLikes' nested
+   plot table) resolve against a definite containing-block height. It is also a
+   hard ceiling: the wrapper below clips, so content can never grow the page. */
+.page-cell--content {
+    height: 265mm; /* 277 − header(6) − footer(6) */
+}
+.page-cell--content--with-title {
+    height: 251mm; /* 277 − header(6) − title(14) − footer(6) */
+}
+
+/* Clip overflowing content to the content band, enforcing one sheet per page. */
+.page-content {
+    height: 100%;
+    overflow: hidden;
+}
+
 .page-cell--header {
     vertical-align: middle;
     border-bottom: 1px solid var(--color-line);
 }
 .page-cell--title {
     vertical-align: middle;
-}
-.page-row--content {
-    vertical-align: top;
 }
 .page-cell--footer {
     vertical-align: middle;
