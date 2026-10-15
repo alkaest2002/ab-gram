@@ -14,7 +14,7 @@ const COMPONENT_KEYS = [
 ];
 
 describe("getSnaComponents", () => {
-  it("returns one array per component type", () => {
+  it("returns one array per component type and a membersStats object", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -24,8 +24,9 @@ describe("getSnaComponents", () => {
 
     const result = getSnaComponents(graph);
 
-    expect(Object.keys(result)).toEqual(COMPONENT_KEYS);
+    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "membersStats"]);
     COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
+    expect(result.membersStats).toBeInstanceOf(Object);
   });
 
   it("reports dyads and cliques for a mutual triangle", () => {
@@ -108,5 +109,44 @@ describe("getSnaComponents", () => {
     expect(strongComponentsWithReciprocalEdges).toEqual([["a", "b", "c", "d"]]);
     expect(strongComponents).toEqual([["a", "b", "c", "d"]]);
     expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
+  });
+
+  it("reports, per member, the percentage of each type's components containing it", () => {
+    const members = [
+      makeMember("a", ["b", "c"]),
+      makeMember("b", ["a", "c"]),
+      makeMember("c", ["a", "b"]),
+    ];
+    const graph = createLikesGraph(members, "likes");
+
+    const { membersStats } = getSnaComponents(graph);
+
+    // Three dyads; every member appears in exactly two of them.
+    expect(membersStats.a.dyads).toBeCloseTo(2 / 3);
+    expect(membersStats.b.dyads).toBeCloseTo(2 / 3);
+    expect(membersStats.c.dyads).toBeCloseTo(2 / 3);
+
+    // The single clique / strong / weak component contains everyone.
+    expect(membersStats.a.cliques).toBe(1);
+    expect(membersStats.a.strongComponentsWithReciprocalEdges).toBe(1);
+    expect(membersStats.a.strongComponents).toBe(1);
+    expect(membersStats.a.weakComponents).toBe(1);
+  });
+
+  it("reports 0% for a component type with no components", () => {
+    const members = [
+      makeMember("a", ["b"]),
+      makeMember("b", ["c"]),
+      makeMember("c", ["d"]),
+      makeMember("d", []),
+    ];
+    const graph = createLikesGraph(members, "likes");
+
+    const { membersStats } = getSnaComponents(graph);
+
+    // No dyads exist, so no member can be present in one.
+    ["a", "b", "c", "d"].forEach((id) =>
+      expect(membersStats[id].dyads).toBe(0),
+    );
   });
 });

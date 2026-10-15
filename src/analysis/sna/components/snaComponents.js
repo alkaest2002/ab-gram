@@ -32,6 +32,14 @@ const COMPONENTS_KEYS = /** @type {const} */ ([
  */
 
 /**
+ * Per-member presence statistics. Keyed by member id; each member maps every
+ * component type to the fraction (0–1) of that type's components that contain
+ * the member.
+ *
+ * @typedef {Record<string, Record<ComponentsKey, number>>} MembersStats
+ */
+
+/**
  * Minimum number of members a component must have to be reported.
  *
  * Dyads are always pairs (two members); every other component category must
@@ -295,7 +303,7 @@ const sortComponents = (components) => {
  *
  * @type {Record<ComponentsKey, (graph: import("graphology").DirectedGraph) => string[][]>}
  */
-const COMPUTERS = {
+const COMPONENTS = {
   dyads: computeDyads,
   cliques: computeCliques,
   strongComponentsWithReciprocalEdges: computeStrongComponentsWithReciprocalEdges,
@@ -304,18 +312,61 @@ const COMPUTERS = {
 };
 
 /**
- * Compute the SNA components of a directed preference graph.
+ * Percentage of a single component type's components that contain `member`.
+ *
+ * @param {string} member - The member id.
+ * @param {string[][]} components - The components of one type.
+ * @returns {number} The presence fraction in `[0, 1]`. A type with no
+ *   components has nothing to be present in, so it reports `0`.
+ */
+const presencePercentage = (member, components) =>
+  components.length === 0
+    ? 0
+    : components.filter((component) => component.includes(member)).length /
+      components.length;
+
+/**
+ * Compute, for every member, the fraction of each component type's components
+ * that contain the member.
+ *
+ * @param {string[]} members - The member ids (the graph's nodes).
+ * @param {SnaComponents} components - The components keyed by type.
+ * @returns {MembersStats} Member id -> component type -> presence fraction.
+ */
+const computeMembersStats = (members, components) =>
+  Object.fromEntries(
+    members.map((member) => [
+      member,
+      Object.fromEntries(
+        Object.entries(components).map(([type, list]) => [
+          type,
+          presencePercentage(member, list),
+        ]),
+      ),
+    ]),
+  );
+
+/**
+ * Compute the SNA components of a directed preference graph and, for every
+ * member, the fraction of each component type's components that contain it.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {SnaComponents} The components keyed by category, each value a list
- *   of member-id lists.
+ * @returns {SnaComponents & { membersStats: MembersStats }} The components
+ *   keyed by category, each value a list of member-id lists, plus the
+ *   `membersStats` presence fractions.
  */
-const computeSnaComponents = (graph) =>
-  /** @type {SnaComponents} */ (
+const computeSnaComponents = (graph) => {
+  const components = /** @type {SnaComponents} */ (
     Object.fromEntries(
-      COMPONENTS_KEYS.map((key) => [key, sortComponents(COMPUTERS[key](graph))]),
+      COMPONENTS_KEYS.map((key) => [key, sortComponents(COMPONENTS[key](graph))]),
     )
   );
+
+  return {
+    ...components,
+    membersStats: computeMembersStats(graph.nodes(), components),
+  };
+};
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -327,7 +378,9 @@ const computeSnaComponents = (graph) =>
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {SnaComponents} The components keyed by component type, where each
- *   value is a list of components (a component being a list of member ids).
+ * @returns {SnaComponents & { membersStats: MembersStats }} The components
+ *   keyed by component type (a component being a list of member ids), plus
+ *   `membersStats`: per member, the percentage of each type's components that
+ *   contain them.
  */
 export const getSnaComponents = (graph) => computeSnaComponents(graph);
