@@ -89,7 +89,7 @@ function downloadReport() {
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 9999px;
-    background-color: rgb(0 0 0 / 0.7);
+    background-color: rgb(50 50 50);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -98,7 +98,7 @@ function downloadReport() {
 
 .cmd-btn:hover,
 .cmd-btn:focus-visible {
-    background-color: rgb(0 0 0 / 0.8);
+    background-color: rgb(50 50 50);
 }
 
 .cmd-label {
