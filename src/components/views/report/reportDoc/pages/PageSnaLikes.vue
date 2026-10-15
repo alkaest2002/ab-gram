@@ -37,13 +37,13 @@ const accentColor = computed(() => plot.value?.accentColor ?? "#2563eb");
 // the four structural indices are proportions in [0, 1], shown as percentages
 // with a small bar so the value reads at a glance.
 const METRIC_CONFIG = {
-    numberOfNodes: { label: "Membri", kind: "count" },
-    numberOfEdges: { label: "Scelte", kind: "count" },
-    numberOfMutualEdges: { label: "Scelte reciproche", kind: "count" },
-    networkDensity: { label: "Densità", kind: "ratio" },
-    networkCentralization: { label: "Centralizzazione", kind: "ratio" },
-    networkReciprocity: { label: "Reciprocità", kind: "ratio" },
-    networkTransitivity: { label: "Transitività", kind: "ratio" },
+    numberOfNodes: { label: "Numero di membri nel gruppo", kind: "count" },
+    numberOfEdges: { label: "Totale scelte effettuate", kind: "count" },
+    numberOfMutualEdges: { label: "Totale scelte reciproche effettuate", kind: "count" },
+    networkDensity: { label: "Densità della rete", kind: "ratio" },
+    networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
+    networkReciprocity: { label: "Reciprocità delle rete", kind: "ratio" },
+    networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
 };
 
 const metricRows = computed(() => {
@@ -93,7 +93,7 @@ function ratioPercent(row) {
               rows).
             -->
             <div v-if="plot" class="sna-layout">
-                <div class="sna-plot">
+                <div class="sna-plot border-b border-line pb-1">
                     <div class="plot-svg" v-html="plot.svg"></div>
                     <div class="plot-legend">
                         <div class="flex flex-wrap gap-x-[5mm] gap-y-[1mm]">
@@ -126,7 +126,7 @@ function ratioPercent(row) {
                     </div>
                 </div>
 
-                <div class="sna-stats">
+                <div class="sna-stats pt-3">
                     <table class="w-full text-left">
                         <tbody>
                             <tr v-for="row in metricRows" :key="row.key" class="align-baseline">
@@ -135,7 +135,7 @@ function ratioPercent(row) {
                                 >
                                     {{ row.label }}
                                 </td>
-                                <td class="py-[0.75mm] text-right">
+                                <td class="py-[1.5mm] text-right">
                                     <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                         {{ formatValue(row) }}
                                     </div>
@@ -181,7 +181,6 @@ function ratioPercent(row) {
     min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow: hidden;
 }
 
