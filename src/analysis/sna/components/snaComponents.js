@@ -36,7 +36,7 @@ const COMPONENTS_KEYS = /** @type {const} */ ([
  * component type to the fraction (0–1) of that type's components that contain
  * the member.
  *
- * @typedef {Record<string, Record<ComponentsKey, number>>} MembersStats
+ * @typedef {Record<string, Record<ComponentsKey, number>>} MemberInComponentStats
  */
 
 /**
@@ -331,9 +331,9 @@ const presencePercentage = (member, components) =>
  *
  * @param {string[]} members - The member ids (the graph's nodes).
  * @param {SnaComponents} components - The components keyed by type.
- * @returns {MembersStats} Member id -> component type -> presence fraction.
+ * @returns {MemberInComponentStats} Member id -> component type -> presence fraction.
  */
-const computeMembersStats = (members, components) =>
+const computeMemberInComponentStats = (members, components) =>
   Object.fromEntries(
     members.map((member) => [
       member,
@@ -351,9 +351,9 @@ const computeMembersStats = (members, components) =>
  * member, the fraction of each component type's components that contain it.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {SnaComponents & { membersStats: MembersStats }} The components
+ * @returns {SnaComponents & { memberInComponentStats: MemberInComponentStats }} The components
  *   keyed by category, each value a list of member-id lists, plus the
- *   `membersStats` presence fractions.
+ *   `memberInComponentStats` presence fractions.
  */
 const computeSnaComponents = (graph) => {
   const components = /** @type {SnaComponents} */ (
@@ -364,7 +364,7 @@ const computeSnaComponents = (graph) => {
 
   return {
     ...components,
-    membersStats: computeMembersStats(graph.nodes(), components),
+    memberInComponentStats: computeMemberInComponentStats(graph.nodes(), components),
   };
 };
 
@@ -378,9 +378,9 @@ const computeSnaComponents = (graph) => {
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {SnaComponents & { membersStats: MembersStats }} The components
+ * @returns {SnaComponents & { memberInComponentStats: MemberInComponentStats }} The components
  *   keyed by component type (a component being a list of member ids), plus
- *   `membersStats`: per member, the percentage of each type's components that
+ *   `memberInComponentStats`: per member, the fraction of each type's components that
  *   contain them.
  */
 export const getSnaComponents = (graph) => computeSnaComponents(graph);

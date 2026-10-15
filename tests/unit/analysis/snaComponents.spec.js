@@ -14,7 +14,7 @@ const COMPONENT_KEYS = [
 ];
 
 describe("getSnaComponents", () => {
-  it("returns one array per component type and a membersStats object", () => {
+  it("returns one array per component type and a memberInComponentStats object", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -24,9 +24,9 @@ describe("getSnaComponents", () => {
 
     const result = getSnaComponents(graph);
 
-    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "membersStats"]);
+    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "memberInComponentStats"]);
     COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
-    expect(result.membersStats).toBeInstanceOf(Object);
+    expect(result.memberInComponentStats).toBeInstanceOf(Object);
   });
 
   it("reports dyads and cliques for a mutual triangle", () => {
@@ -111,7 +111,7 @@ describe("getSnaComponents", () => {
     expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
   });
 
-  it("reports, per member, the percentage of each type's components containing it", () => {
+  it("reports, per member, the fraction of each type's components containing it", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -119,18 +119,18 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { membersStats } = getSnaComponents(graph);
+    const { memberInComponentStats } = getSnaComponents(graph);
 
     // Three dyads; every member appears in exactly two of them.
-    expect(membersStats.a.dyads).toBeCloseTo(2 / 3);
-    expect(membersStats.b.dyads).toBeCloseTo(2 / 3);
-    expect(membersStats.c.dyads).toBeCloseTo(2 / 3);
+    expect(memberInComponentStats.a.dyads).toBeCloseTo(2 / 3);
+    expect(memberInComponentStats.b.dyads).toBeCloseTo(2 / 3);
+    expect(memberInComponentStats.c.dyads).toBeCloseTo(2 / 3);
 
     // The single clique / strong / weak component contains everyone.
-    expect(membersStats.a.cliques).toBe(1);
-    expect(membersStats.a.strongComponentsWithReciprocalEdges).toBe(1);
-    expect(membersStats.a.strongComponents).toBe(1);
-    expect(membersStats.a.weakComponents).toBe(1);
+    expect(memberInComponentStats.a.cliques).toBe(1);
+    expect(memberInComponentStats.a.strongComponentsWithReciprocalEdges).toBe(1);
+    expect(memberInComponentStats.a.strongComponents).toBe(1);
+    expect(memberInComponentStats.a.weakComponents).toBe(1);
   });
 
   it("reports 0% for a component type with no components", () => {
@@ -142,11 +142,11 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { membersStats } = getSnaComponents(graph);
+    const { memberInComponentStats } = getSnaComponents(graph);
 
     // No dyads exist, so no member can be present in one.
     ["a", "b", "c", "d"].forEach((id) =>
-      expect(membersStats[id].dyads).toBe(0),
+      expect(memberInComponentStats[id].dyads).toBe(0),
     );
   });
 });
