@@ -10,62 +10,77 @@ import {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Component categories produced by `computeSnaComponents`.
- *
- * Every value is a list of components, where a component is the list of member
- * ids that form it (e.g. `[["a", "b"], ["c", "d", "e"]]`).
+ * Component categories produced by `computeSnaComponents`, in output order.
  */
-const COMPONENTS_KEYS = [
-  "diads",
+const COMPONENTS_KEYS = /** @type {const} */ ([
+  "dyads",
   "cliques",
   "strongComponentsWithReciprocalEdges",
   "strongComponents",
   "weakComponents",
-];
+]);
+
+/**
+ * @typedef {typeof COMPONENTS_KEYS[number]} ComponentsKey
+ */
+
+/**
+ * Every value is a list of components, where a component is the list of member
+ * ids that form it (e.g. `[["a", "b"], ["c", "d", "e"]]`).
+ *
+ * @typedef {Record<ComponentsKey, string[][]>} SnaComponents
+ */
 
 /**
  * Minimum number of members a component must have to be reported.
  *
- * Diads are always pairs (two members); every other component category must
+ * Dyads are always pairs (two members); every other component category must
  * have at least `MIN_COMPONENT_SIZE` members.
  */
 const MIN_COMPONENT_SIZE = 3;
 
 
 //////////////////////////////////////////////////////////////////////////////////
-// COMPONENTS
+// HELPERS
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute the diads: pairs of members with a bidirectional relationship.
+ * Keep only the components with at least `MIN_COMPONENT_SIZE` members.
  *
- * A diad is an unordered pair `[a, b]` such that both `a → b` and `b → a`
- * exist. `createLikesGraph` flags every reciprocal edge with `isMutual`, so a
- * directed edge contributes a diad when `isMutual` is set. Keeping only the
- * edge whose source sorts before its target guarantees each pair is emitted
- * exactly once, with a deterministic member order.
+ * Shared by every category (other than dyads) so the size rule lives in one
+ * place.
+ *
+ * @param {string[][]} components - Components as lists of member ids.
+ * @returns {string[][]} The components that are large enough to be reported.
+ */
+const filterBySize = (components) =>
+  components.filter((component) => component.length >= MIN_COMPONENT_SIZE);
+
+/**
+ * Visit every reciprocal edge of the graph.
+ *
+ * A reciprocal edge is a directed edge that `createLikesGraph` flagged with
+ * `isMutual`. Self-loops are never visited: a member cannot form a
+ * relationship with itself, so this is the single place where they are
+ * excluded for every category that relies on reciprocity.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
  *   `createLikesGraph`.
- * @returns {string[][]} One `[a, b]` pair per reciprocal relationship.
+ * @param {(source: string, target: string) => void} callback - Called once per
+ *   reciprocal, non-loop edge.
  */
-const computeDiads = (graph) => {
-  const diads = [];
-
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    // The edge must be mutual (bidirectional) and source must sort before target
-    // to ensure each pair is emitted exactly once.
-    if (source < target && attributes.isMutual) {
-      diads.push([source, target]);
+const forEachMutualEdge = (graph, callback) => {
+  graph.forEachDirectedEdge((_edge, attributes, source, target) => {
+    if (source !== target && attributes.isMutual) {
+      callback(source, target);
     }
   });
-
-  return diads;
 };
 
 /**
  * Build the undirected adjacency of a graph: for every node, the set of nodes
- * it is connected to through an edge in either direction.
+ * it is connected to through an edge in either direction. Self-loops are
+ * ignored.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
  * @returns {Map<string, Set<string>>} Node id -> set of adjacent node ids.
@@ -73,15 +88,46 @@ const computeDiads = (graph) => {
 const buildUndirectedAdjacency = (graph) => {
   const adjacency = new Map();
 
-  graph.forEachNode((node) => adjacency.set(node, new Set()));
-
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    if (source === target) return;
-    adjacency.get(source).add(target);
-    adjacency.get(target).add(source);
+  graph.forEachNode((node) => {
+    // `neighbors` merges in- and out-neighbours; a self-loop lists the node
+    // itself, so it is removed.
+    const neighbors = new Set(graph.neighbors(node));
+    neighbors.delete(node);
+    adjacency.set(node, neighbors);
   });
 
   return adjacency;
+};
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// COMPONENTS
+//////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Compute the dyads: pairs of members with a bidirectional relationship.
+ *
+ * A dyad is an unordered pair `[a, b]` such that both `a → b` and `b → a`
+ * exist. `createLikesGraph` flags every reciprocal edge with `isMutual`, so a
+ * directed edge contributes a dyad when `isMutual` is set. Keeping only the
+ * edge whose source sorts before its target guarantees each pair is emitted
+ * exactly once, with a deterministic member order.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The likes graph built by
+ *   `createLikesGraph`.
+ * @returns {string[][]} One `[a, b]` pair per reciprocal relationship.
+ */
+const computeDyads = (graph) => {
+  const dyads = [];
+
+  forEachMutualEdge(graph, (source, target) => {
+    // Source must sort before target to emit each pair exactly once.
+    if (source < target) {
+      dyads.push([source, target]);
+    }
+  });
+
+  return dyads;
 };
 
 /**
@@ -159,18 +205,13 @@ const findMaximalCliques = (adjacency) => {
  * A clique is therefore a maximal complete subgraph of the graph's undirected
  * projection. Only cliques of at least `MIN_COMPONENT_SIZE` members are
  * returned, so triads and larger groups are reported while pairs are left to
- * `diads`.
+ * `dyads`.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
  * @returns {string[][]} The cliques, each as a list of member ids.
  */
-const computeCliques = (graph) => {
-  const adjacency = buildUndirectedAdjacency(graph);
-
-  return findMaximalCliques(adjacency).filter(
-    (clique) => clique.length >= MIN_COMPONENT_SIZE,
-  );
-};
+const computeCliques = (graph) =>
+  filterBySize(findMaximalCliques(buildUndirectedAdjacency(graph)));
 
 /**
  * Compute the strongly connected groups that only use reciprocal edges.
@@ -188,16 +229,34 @@ const computeStrongComponentsWithReciprocalEdges = (graph) => {
 
   graph.forEachNode((node) => reciprocal.addNode(node));
 
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    if (attributes.isMutual) {
-      reciprocal.mergeDirectedEdge(source, target);
-    }
+  forEachMutualEdge(graph, (source, target) => {
+    reciprocal.mergeDirectedEdge(source, target);
   });
 
-  return stronglyConnectedComponents(reciprocal).filter(
-    (component) => component.length >= MIN_COMPONENT_SIZE,
-  );
+  return filterBySize(stronglyConnectedComponents(reciprocal));
 };
+
+/**
+ * Compute the strongly connected components of the graph, following the
+ * direction of every edge. Only components of at least `MIN_COMPONENT_SIZE`
+ * members are returned.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The likes graph.
+ * @returns {string[][]} The components, each as a list of member ids.
+ */
+const computeStrongComponents = (graph) =>
+  filterBySize(stronglyConnectedComponents(graph));
+
+/**
+ * Compute the weakly connected components of the graph, ignoring the direction
+ * of every edge. Only components of at least `MIN_COMPONENT_SIZE` members are
+ * returned.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The likes graph.
+ * @returns {string[][]} The components, each as a list of member ids.
+ */
+const computeWeakComponents = (graph) =>
+  filterBySize(connectedComponents(graph));
 
 /**
  * Sort every component's members and the component list itself.
@@ -228,30 +287,32 @@ const sortComponents = (components) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Computation for each component category. Keyed by `COMPONENTS_KEYS` so the
+ * output shape and the list of categories cannot drift apart.
+ *
+ * @type {Record<ComponentsKey, (graph: import("graphology").DirectedGraph) => string[][]>}
+ */
+const COMPUTERS = {
+  dyads: computeDyads,
+  cliques: computeCliques,
+  strongComponentsWithReciprocalEdges: computeStrongComponentsWithReciprocalEdges,
+  strongComponents: computeStrongComponents,
+  weakComponents: computeWeakComponents,
+};
+
+/**
  * Compute the SNA components of a directed preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {Record<typeof COMPONENTS_KEYS[number], string[][]>} The components
- *   keyed by category, each value a list of member-id lists.
+ * @returns {SnaComponents} The components keyed by category, each value a list
+ *   of member-id lists.
  */
-const computeSnaComponents = (graph) => {
-  const strongComponents = stronglyConnectedComponents(graph).filter(
-    (component) => component.length >= MIN_COMPONENT_SIZE,
+const computeSnaComponents = (graph) =>
+  /** @type {SnaComponents} */ (
+    Object.fromEntries(
+      COMPONENTS_KEYS.map((key) => [key, sortComponents(COMPUTERS[key](graph))]),
+    )
   );
-  const weakComponents = connectedComponents(graph).filter(
-    (component) => component.length >= MIN_COMPONENT_SIZE,
-  );
-
-  return {
-    diads: sortComponents(computeDiads(graph)),
-    cliques: sortComponents(computeCliques(graph)),
-    strongComponentsWithReciprocalEdges: sortComponents(
-      computeStrongComponentsWithReciprocalEdges(graph),
-    ),
-    strongComponents: sortComponents(strongComponents),
-    weakComponents: sortComponents(weakComponents),
-  };
-};
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -263,8 +324,7 @@ const computeSnaComponents = (graph) => {
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {Record<typeof COMPONENTS_KEYS[number], string[][]>} The components
- *   keyed by component type, where each value is a list of components (a
- *   component being a list of member ids).
+ * @returns {SnaComponents} The components keyed by component type, where each
+ *   value is a list of components (a component being a list of member ids).
  */
 export const getSnaComponents = (graph) => computeSnaComponents(graph);
