@@ -8,8 +8,6 @@ import { useRouter } from "vue-router";
 
 // --- Components ---------
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
-import PrinterIcon from "@/components/ui/icons/PrinterIcon.vue";
-import DownloadIcon from "@/components/ui/icons/DownloadIcon.vue";
 
 // --- Composables --------
 import { useDownload } from "@/composables/useDownload";
@@ -50,39 +48,64 @@ function downloadReport() {
 
 <template>
     <nav
-        class="fixed inset-x-0 bottom-0 z-30 flex justify-center px-6 pb-6 print:hidden"
+        class="fixed inset-x-0 bottom-0 z-30 flex justify-center gap-1 px-6 pb-6 print:hidden"
         aria-label="Comandi del report"
     >
-        <div
-            class="flex items-center gap-1 rounded-full bg-black/70 p-1.5 shadow-lg backdrop-blur-md"
+        <button
+            type="button"
+            class="cmd-btn"
+            aria-label="Torna al sociogramma"
+            title="Torna al sociogramma"
+            @click="goBack"
         >
-            <button
-                type="button"
-                class="cmd-btn"
-                aria-label="Torna al sociogramma"
-                title="Torna al sociogramma"
-                @click="goBack"
-            >
-                <ArrowLeftIcon :stroke-class="'stroke-white'" />
-            </button>
-            <button
-                type="button"
-                class="cmd-btn"
-                aria-label="Genera PDF"
-                title="Genera PDF"
-                @click="printReport"
-            >
-                <PrinterIcon :stroke-class="'stroke-white'" />
-            </button>
-            <button
-                type="button"
-                class="cmd-btn"
-                aria-label="Scarica JSON"
-                title="Scarica JSON"
-                @click="downloadReport"
-            >
-                <DownloadIcon :stroke-class="'stroke-white'" />
-            </button>
-        </div>
+            <ArrowLeftIcon :size="'size-7'" :stroke-class="'stroke-white'" />
+        </button>
+        <button
+            type="button"
+            class="cmd-btn"
+            aria-label="Genera PDF"
+            title="Genera PDF"
+            @click="printReport"
+        >
+            <span class="cmd-label">PDF</span>
+        </button>
+        <button
+            type="button"
+            class="cmd-btn"
+            aria-label="Scarica JSON"
+            title="Scarica JSON"
+            @click="downloadReport"
+        >
+            <span class="cmd-label">JSON</span>
+        </button>
     </nav>
 </template>
+
+<style scoped>
+.cmd-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    background-color: rgb(0 0 0 / 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    transition: background-color 150ms ease;
+}
+
+.cmd-btn:hover,
+.cmd-btn:focus-visible {
+    background-color: rgb(0 0 0 / 0.8);
+}
+
+.cmd-label {
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+}
+</style>
