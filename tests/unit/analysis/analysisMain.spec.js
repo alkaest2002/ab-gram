@@ -134,7 +134,7 @@ describe("getSociogramAnalysis", () => {
     expect(snaDislikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 2, 2, 1, 0, 1, 0]);
 
     expect(snaDislikesComponents).toEqual({
-      diads: [["a", "b"]],
+      dyads: [["a", "b"]],
       cliques: [],
       strongComponentsWithReciprocalEdges: [],
       strongComponents: [],
