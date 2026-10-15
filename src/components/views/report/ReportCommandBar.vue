@@ -44,7 +44,7 @@ function printReport() {
 }
 
 function downloadReport() {
-    downloadJson(props.reportData, "report-data", true, false);
+    downloadJson(props.reportData, "report-data", "application/json", true, false);
 }
 </script>
 
