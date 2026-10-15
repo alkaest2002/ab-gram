@@ -11,6 +11,7 @@ import PageCover from "@/components/views/report/reportDoc/pages/PageCover.vue";
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
 import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics.vue";
+import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -59,11 +60,20 @@ provide(REPORT_PAGES_KEY, {
             :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
         />
+        <PageSnaComponents
+            type-of-sna="likes"
+            :components="reportData.analysisData?.snaLikesComponents ?? {}"
+        />
         <PageSnaGroupMetrics
             v-if="!reportData.membersData.allMembersHaveNoDislikes"
             type-of-sna="dislikes"
             :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
+        />
+        <PageSnaComponents
+            v-if="!reportData.membersData.allMembersHaveNoDislikes"
+            type-of-sna="dislikes"
+            :components="reportData.analysisData?.snaDislikesComponents ?? {}"
         />
     </div>
 </template>
