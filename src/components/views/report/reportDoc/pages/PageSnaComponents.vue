@@ -88,7 +88,7 @@ const categories = computed(() =>
                             <span
                                 v-for="(component, index) in category.components"
                                 :key="`${category.key}-${index}`"
-                                class="inline-flex items-center rounded-lg border border-ink bg-canvas px-[2.5mm] py-[1mm] font-mono text-[10pt] font-semibold text-ink"
+                                class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] py-[1mm] font-mono text-[9pt] font-semibold text-muted"
                             >
                                 {{ component.join(" · ") }}
                             </span>
