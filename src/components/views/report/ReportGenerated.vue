@@ -31,7 +31,10 @@ provide(APP_VERSION_KEY, appVersion);
 // --- Computed -----------
 const reportData = computed(() => ({
     appVersion: appVersion.value,
-    sociogram: sociogramStore.$state,
+    sociogram: {
+        allMembersHaveNoDislikes: sociogramStore.allMembersHaveNoDislikes,
+        ...sociogramStore.$state,
+    },
     report: reportStore.$state,
 }));
 
