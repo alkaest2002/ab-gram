@@ -52,18 +52,18 @@ provide(REPORT_PAGES_KEY, {
           numbering stays correct via the registry provided above.
         -->
         <PageCover />
-        <PageListOfMembers :report-data="reportData" />
-        <PageListOfPreferences :report-data="reportData" />
+        <PageListOfMembers :members-data="reportData.membersData" />
+        <PageListOfPreferences :members-data="reportData.membersData" />
         <PageSnaGroupMetrics
             type-of-sna="likes"
-            :sna-plot="reportData.report?.snaLikesPlots?.[0] ?? null"
-            :sna-metrics="reportData.report?.snaLikesGroupLevelMetrics ?? {}"
+            :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
+            :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
         />
         <PageSnaGroupMetrics
-            v-if="!reportData.sociogram.allMembersHaveNoDislikes"
+            v-if="!reportData.membersData.allMembersHaveNoDislikes"
             type-of-sna="dislikes"
-            :sna-plot="reportData.report?.snaDislikesPlots?.[0] ?? null"
-            :sna-metrics="reportData.report?.snaDislikesGroupLevelMetrics ?? {}"
+            :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
+            :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
         />
     </div>
 </template>

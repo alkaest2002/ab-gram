@@ -13,7 +13,7 @@ import BasePage from "./BasePage.vue";
 
 // --- Props --------------
 const props = defineProps({
-    reportData: { type: Object, required: true },
+    membersData: { type: Object, required: true },
 });
 
 // --- Emits --------------
@@ -21,7 +21,7 @@ const props = defineProps({
 // --- State --------------
 
 // --- Computed -----------
-const members = computed(() => props.reportData?.sociogram?.members ?? []);
+const members = computed(() => props.membersData?.members ?? []);
 
 // Balanced two-column split. Safari does not honour CSS multi-column layout
 // (`columns-2`) when printing and collapses it to a single column, so the two

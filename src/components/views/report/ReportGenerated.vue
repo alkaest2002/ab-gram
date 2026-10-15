@@ -31,11 +31,11 @@ provide(APP_VERSION_KEY, appVersion);
 // --- Computed -----------
 const reportData = computed(() => ({
     appVersion: appVersion.value,
-    sociogram: {
+    membersData: {
         allMembersHaveNoDislikes: sociogramStore.allMembersHaveNoDislikes,
         ...sociogramStore.$state,
     },
-    report: reportStore.$state,
+    analysisData: reportStore.$state,
 }));
 
 // --- Watchers -----------
