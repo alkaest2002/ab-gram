@@ -101,5 +101,5 @@ function stopWorker() {
 </script>
 
 <template>
-    <ReportLoading @report-generating-stop="stopGeneration" />
+    <ReportLoading @stop-generating-report="stopGeneration" />
 </template>

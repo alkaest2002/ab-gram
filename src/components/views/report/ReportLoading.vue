@@ -13,7 +13,7 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits(["report-generating-stop"]);
+const emit = defineEmits(["stop-generating-report"]);
 
 // --- State --------------
 
