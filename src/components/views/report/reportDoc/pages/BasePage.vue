@@ -79,6 +79,10 @@ onMounted(() => {
     padding: 10mm;
     box-sizing: border-box;
 
+    /* Base type size for the printed document. Specific labels and headings
+       override this, but any inherited text defaults to 10pt. */
+    font-size: 10pt;
+
     /* Keep borders and backgrounds faithful on paper. */
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
