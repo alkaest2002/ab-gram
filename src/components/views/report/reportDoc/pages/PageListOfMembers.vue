@@ -42,7 +42,7 @@ const columns = computed(() => {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2>Elenco dei {{ members.length }} membri</h2>
+            <h2 class="text-[16pt]">Elenco dei {{ members.length }} membri</h2>
         </template>
 
         <template #default>
@@ -51,7 +51,7 @@ const columns = computed(() => {
                     <ul
                         v-for="(column, i) in columns"
                         :key="i"
-                        class="flex-1 text-sm"
+                        class="flex-1"
                     >
                         <li
                             v-for="member in column"
@@ -59,7 +59,7 @@ const columns = computed(() => {
                             class="flex items-center gap-x-2.5 py-1"
                         >
                             <span
-                                class="inline-flex h-5 min-w-7 shrink-0 items-center justify-center rounded-md border border-ink px-1.5 font-mono text-xs font-semibold text-ink"
+                                class="inline-flex h-5 min-w-7 shrink-0 items-center justify-center rounded-md border border-ink px-1.5 font-mono text-[10pt] font-semibold text-ink"
                             >
                                 {{ member.id }}
                             </span>

@@ -31,11 +31,11 @@ import BasePage from "./BasePage.vue";
             <div class="flex min-h-[235mm] flex-col">
                 <!-- Title block, centred in the space left above the notices. -->
                 <div class="flex flex-1 flex-col justify-center">
-                    <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">
+                    <p class="font-mono text-[9pt] font-medium tracking-[0.14em] uppercase text-muted">
                         Documento riservato
                     </p>
                     <h1
-                        class="mt-6 font-display text-[2.75rem] leading-[1.05] font-bold tracking-[-0.02em] text-ink"
+                        class="mt-6 font-display text-[28pt] leading-[1.05] font-bold tracking-[-0.02em] text-ink"
                     >
                         Report
                         <span
@@ -50,11 +50,11 @@ import BasePage from "./BasePage.vue";
                 <div class="space-y-8 border-t border-line px-10 pt-8">
                     <section class="space-y-3">
                         <h2
-                            class="font-mono text-xs font-semibold tracking-[0.14em] uppercase text-ink"
+                            class="font-mono text-[10pt] font-semibold tracking-[0.14em] uppercase text-ink"
                         >
                             AVVISO DI RISERVATEZZA
                         </h2>
-                        <p class="text-xs">
+                        <p>
                             Questo documento contiene dati personali, anche di
                             natura sensibile, ed è destinato esclusivamente al
                             destinatario autorizzato. Se ne sei venuto in
@@ -73,12 +73,12 @@ import BasePage from "./BasePage.vue";
 
                     <section class="space-y-3">
                         <h2
-                            class="font-mono text-xs font-semibold tracking-[0.14em] uppercase text-ink"
+                            class="font-mono text-[10pt] font-semibold tracking-[0.14em] uppercase text-ink"
                         >
                             NOTA SULLA GENERAZIONE DEL REPORT E SULLA SUA
                             INTERPRETAZIONE
                         </h2>
-                        <p class="text-xs">
+                        <p>
                             Il presente report è stato generato automaticamente
                             dall'app AB-Grid sulla base dei dati inseriti
                             dall'utente. Gli indici, i grafici e le
@@ -87,7 +87,7 @@ import BasePage from "./BasePage.vue";
                             una fotografia delle relazioni rilevate in un
                             determinato momento e contesto.
                         </p>
-                        <p class="text-xs">
+                        <p>
                             La lettura e l'interpretazione di questo documento
                             richiedono competenze specifiche in ambito
                             psicologico, pedagogico o educativo. Il report non
@@ -99,7 +99,7 @@ import BasePage from "./BasePage.vue";
                             diretta del contesto e, se necessario, integrate con
                             altri strumenti di valutazione.
                         </p>
-                        <p class="text-xs">
+                        <p>
                             Gli sviluppatori di AB-Grid non rispondono di
                             interpretazioni errate o di usi impropri del
                             contenuto del report da parte di soggetti non

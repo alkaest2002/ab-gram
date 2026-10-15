@@ -54,7 +54,7 @@ const columns = computed(() => {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2>Scelte e rifiuti</h2>
+            <h2 class="text-[16pt]">Scelte e rifiuti</h2>
         </template>
 
         <template #default>
@@ -63,7 +63,7 @@ const columns = computed(() => {
                     <ul
                         v-for="(column, i) in columns"
                         :key="i"
-                        class="flex-1 text-sm"
+                        class="flex-1"
                     >
                         <li
                             v-for="row in column"
@@ -72,7 +72,7 @@ const columns = computed(() => {
                         >
                             <div class="flex items-start gap-x-2.5">
                                 <span
-                                    class="inline-flex h-5 min-w-7 shrink-0 items-center justify-center rounded-md border border-ink px-1.5 font-mono text-xs font-semibold text-ink"
+                                    class="inline-flex h-5 min-w-7 shrink-0 items-center justify-center rounded-md border border-ink px-1.5 font-mono text-[10pt] font-semibold text-ink"
                                 >
                                     {{ row.id }}
                                 </span>
@@ -81,20 +81,20 @@ const columns = computed(() => {
                                     <span
                                         v-for="like in row.likes"
                                         :key="`l-${like}`"
-                                        class="inline-flex h-5 items-center rounded-md border border-accent px-1.5 font-mono text-xs font-medium text-accent"
+                                        class="inline-flex h-5 items-center rounded-md border border-accent px-1.5 font-mono text-[10pt] font-medium text-accent"
                                     >
                                         + {{ like }}
                                     </span>
                                     <span
                                         v-for="dislike in row.dislikes"
                                         :key="`d-${dislike}`"
-                                        class="inline-flex h-5 items-center rounded-md border border-reject px-1.5 font-mono text-xs font-medium text-reject"
+                                        class="inline-flex h-5 items-center rounded-md border border-reject px-1.5 font-mono text-[10pt] font-medium text-reject"
                                     >
                                         - {{ dislike }}
                                     </span>
                                     <span
                                         v-if="!row.likes.length && !row.dislikes.length"
-                                        class="inline-flex h-6 items-center font-mono text-xs text-muted"
+                                        class="inline-flex h-6 items-center font-mono text-[10pt] text-muted"
                                     >
                                         —
                                     </span>

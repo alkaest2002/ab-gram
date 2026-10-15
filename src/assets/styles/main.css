@@ -69,6 +69,15 @@
     @apply text-[0.975rem] leading-relaxed text-muted;
   }
 
+  /* The report is a print document with its own point-based type scale. It opts
+     out of the rem prose sizing above so its body text inherits the page's base
+     size (11pt, set in BasePage) instead of the site-wide 0.975rem. Explicit
+     `text-[xpt]` utilities on labels and headings still override this. */
+  .report-page p,
+  .report-page li {
+    font-size: inherit;
+  }
+
   /* MathJax's SVG output typesets inline math as an inline <svg>, but Tailwind's
      preflight resets svg to display:block — which breaks inline math onto its own
      line. Restore inline flow inside MathJax's SVG containers. */

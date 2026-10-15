@@ -45,7 +45,7 @@ onMounted(() => {
             class="flex items-start justify-between gap-6 border-b border-line"
         >
             <p
-                class="font-mono text-xs font-medium tracking-relaxed uppercase text-muted"
+                class="font-mono text-[9pt] font-medium tracking-relaxed uppercase text-muted"
             >
                 AB-Grid Report
             </p>
@@ -80,8 +80,8 @@ onMounted(() => {
     box-sizing: border-box;
 
     /* Base type size for the printed document. Specific labels and headings
-       override this, but any inherited text defaults to 10pt. */
-    font-size: 10pt;
+       override this, but any inherited text defaults to 11pt. */
+    font-size: 11pt;
 
     /* Keep borders and backgrounds faithful on paper. */
     print-color-adjust: exact;
