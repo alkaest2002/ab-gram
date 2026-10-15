@@ -77,7 +77,7 @@ onMounted(() => {
             <tr class="page-row page-row--footer">
                 <td class="page-cell page-cell--footer">
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[9pt] text-muted">Versione: {{ appVersion }}</span>
+                        <span class="font-mono text-[9pt] text-muted">AB-Grid ver. {{ appVersion }}</span>
                         <span v-if="pageNumber" class="font-mono text-[9pt] text-muted">
                             Pagina {{ pageNumber
                             }}<template v-if="totalPages"> di {{ totalPages }}</template>
