@@ -40,7 +40,7 @@ const columns = computed(() => {
 </script>
 
 <template>
-    <BasePage>
+    <BasePage :app-version="reportData.appVersion">
         <template #pageTitle>
             <h2>Elenco dei {{ members.length }} membri</h2>
         </template>

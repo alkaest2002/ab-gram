@@ -52,7 +52,7 @@ const columns = computed(() => {
 </script>
 
 <template>
-    <BasePage>
+    <BasePage :app-version="reportData.appVersion">
         <template #pageTitle>
             <h2>Scelte e rifiuti</h2>
         </template>

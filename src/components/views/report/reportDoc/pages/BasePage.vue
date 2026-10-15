@@ -12,6 +12,12 @@ import { computed, inject, onMounted, ref } from "vue";
 import { REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------
+const props = defineProps({
+    appVersion: {
+        type: String,
+        required: true,
+    },
+});
 
 // --- Emits --------------
 
@@ -58,7 +64,7 @@ onMounted(() => {
         <footer
             class="mt-6 flex items-center justify-between border-t border-line pt-1"
         >
-            <span class="font-mono text-[9pt] text-muted">Dr P. Calanna, Dr G. Buonaiuto</span>
+            <span class="font-mono text-[9pt] text-muted">Versione: {{ props.appVersion }}</span>
             <span v-if="pageNumber" class="font-mono text-[9pt] text-muted">
                 Pagina {{ pageNumber
                 }}<template v-if="totalPages"> di {{ totalPages }}</template>
