@@ -261,8 +261,10 @@ const computeWeakComponents = (graph) =>
 /**
  * Sort every component's members and the component list itself.
  *
- * This makes the output deterministic regardless of the graph's traversal
- * order, which is convenient for reports and tests.
+ * Each component's members are sorted alphabetically, then the component list
+ * is ordered by length (smallest first). Components of equal length are ordered
+ * lexicographically so the output stays deterministic regardless of the
+ * graph's traversal order, which is convenient for reports and tests.
  *
  * @param {string[][]} components - Components as lists of member ids.
  * @returns {string[][]} The same components, deterministically ordered.
@@ -271,12 +273,13 @@ const sortComponents = (components) => {
   const sorted = components.map((component) => [...component].sort());
 
   sorted.sort((a, b) => {
-    const length = Math.min(a.length, b.length);
-    for (let i = 0; i < length; i += 1) {
+    if (a.length !== b.length) return a.length - b.length;
+
+    for (let i = 0; i < a.length; i += 1) {
       if (a[i] < b[i]) return -1;
       if (a[i] > b[i]) return 1;
     }
-    return a.length - b.length;
+    return 0;
   });
 
   return sorted;
