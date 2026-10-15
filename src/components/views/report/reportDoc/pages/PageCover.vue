@@ -34,17 +34,17 @@ import BasePage from "./BasePage.vue";
                     <h1
                         class="mt-6 font-display text-[28pt] leading-[1.05] font-bold tracking-[-0.02em] text-ink"
                     >
-                        Report
                         <span
                             class="relative whitespace-nowrap after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-accent after:to-reject after:content-['']"
                         >
                             AB-Grid
                         </span>
+                        Report
                     </h1>
                 </div>
 
                 <!-- Legal notices. -->
-                <div class="space-y-8 border-t border-line px-10 pt-8">
+                <div class="space-y-8 px-10 pt-12">
                     <section class="space-y-3">
                         <h2
                             class="font-mono text-[10pt] font-semibold tracking-[0.14em] uppercase text-ink"
