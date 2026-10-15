@@ -88,8 +88,8 @@ export const computeBetweennessCentrality = (graph) => betweenness(graph);
 export const computePageRank = (graph) => pagerank(graph);
 
 /**
- * Compute HITS scores for every node, falling back to zero scores when the
- * graph has no edges (where HITS's power iteration does not converge).
+ * Compute HITS scores for every node, falling back to sentinel scores when the
+ * power iteration cannot produce a result.
  *
  * Formula:
  *
@@ -97,7 +97,9 @@ export const computePageRank = (graph) => pagerank(graph);
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {{ authorities: Record<string, number>, hubs: Record<string, number> }}
- *   The authority and hub scores keyed by node id.
+ *   The authority and hub scores keyed by node id. When HITS fails to converge,
+ *   every score is `-1` so callers can tell an uncomputable score apart from a
+ *   legitimate zero score.
  */
 export const computeHits = (graph) => {
   const nodes = graph.nodes();
@@ -111,7 +113,17 @@ export const computeHits = (graph) => {
     };
   }
 
-  return hits(graph);
+  try {
+    return hits(graph);
+  } catch (error) {
+    // HITS can also throw "failed to converge" on graphs with edges (e.g. with
+    // dangling nodes). Rather than aborting the whole report, mark every score
+    // as 0 to signal that the metric could not be computed.
+    return {
+      authorities: Object.fromEntries(nodes.map((node) => [node, 0])),
+      hubs: Object.fromEntries(nodes.map((node) => [node, 0])),
+    };
+  }
 };
 
 /**
