@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed, onBeforeMount, onBeforeUnmount } from "vue";
+import { onBeforeMount, onBeforeUnmount } from "vue";
 
 // --- Routers ------------
 import { useRouter } from "vue-router";
@@ -28,10 +28,6 @@ const sociogramStore = useSociogramStore();
 let worker = null;
 
 // --- Computed -----------
-const reportData = computed(() => ({
-    sociogram: sociogramStore.$state,
-    report: reportStore.$state,
-}));
 
 // --- Watchers -----------
 
@@ -105,8 +101,5 @@ function stopWorker() {
 </script>
 
 <template>
-    <ReportLoading
-        :report-data="reportData"
-        @report-generating-stop="stopGeneration"
-    />
+    <ReportLoading @report-generating-stop="stopGeneration" />
 </template>
