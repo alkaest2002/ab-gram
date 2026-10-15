@@ -38,7 +38,7 @@ const SNA_CONFIG = {
 // The categories are shown in a fixed reading order (not the DataFrame column
 // order), so the component lists are looked up by key rather than by position.
 const CATEGORIES = [
-    { key: "diads", label: "Diadi" },
+    { key: "dyads", label: "Diadi" },
     { key: "cliques", label: "Clique" },
     { key: "weakComponents", label: "Componenti debolmente connesse" },
     { key: "strongComponents", label: "Componenti fortemente connesse" },
