@@ -6,6 +6,7 @@ import { computed } from "vue";
 
 // --- Stores -------------
 import { storeToRefs } from "pinia";
+import { useAppStore } from "@/stores/app";
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
@@ -22,10 +23,11 @@ import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 // --- State --------------
 const reportStore = useReportStore();
 const sociogramStore = useSociogramStore();
-const { status } = storeToRefs(reportStore);
+const { appVersion } = storeToRefs(useAppStore());
 
 // --- Computed -----------
 const reportData = computed(() => ({
+    appVersion: appVersion.value,
     sociogram: sociogramStore.$state,
     report: reportStore.$state,
 }));
