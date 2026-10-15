@@ -10,6 +10,7 @@ import { provide, ref } from "vue";
 import PageCover from "@/components/views/report/reportDoc/pages/PageCover.vue";
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
+import PageSnaLikes from "@/components/views/report/reportDoc/pages/PageSnaLikes.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -53,5 +54,6 @@ provide(REPORT_PAGES_KEY, {
         <PageCover />
         <PageListOfMembers :report-data="reportData" />
         <PageListOfPreferences :report-data="reportData" />
+        <PageSnaLikes :report-data="reportData" />
     </div>
 </template>
