@@ -30,8 +30,8 @@ const members = computed(() => props.reportData?.sociogram?.members ?? []);
 const rows = computed(() =>
     members.value.map((member) => ({
         id: member.id,
-        likes: [...(member.likes ?? [])].sort(),
-        dislikes: [...(member.dislikes ?? [])].sort(),
+        likes: [...(member.likes ?? [])],
+        dislikes: [...(member.dislikes ?? [])],
     })),
 );
 
