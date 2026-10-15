@@ -26,13 +26,10 @@ const COMPONENTS_KEYS = [
 /**
  * Minimum number of members a component must have to be reported.
  *
- * Only the categories listed here enforce a minimum size. `diads` are always
- * pairs, `cliques` start at triads, and `strongComponents` keep every strongly
- * connected component returned by graphology-components (including singletons).
+ * Diads are always pairs (two members); every other component category must
+ * have at least `MIN_COMPONENT_SIZE` members.
  */
-const MIN_CLIQUE_SIZE = 3;
-const MIN_STRONG_RECIPROCAL_SIZE = 4;
-const MIN_WEAK_SIZE = 4;
+const MIN_COMPONENT_SIZE = 3;
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -160,8 +157,9 @@ const findMaximalCliques = (adjacency) => {
  * to every other node, ignoring the direction of connections.
  *
  * A clique is therefore a maximal complete subgraph of the graph's undirected
- * projection. Only cliques of at least `MIN_CLIQUE_SIZE` members are returned,
- * so triads and larger groups are reported while pairs are left to `diads`.
+ * projection. Only cliques of at least `MIN_COMPONENT_SIZE` members are
+ * returned, so triads and larger groups are reported while pairs are left to
+ * `diads`.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
  * @returns {string[][]} The cliques, each as a list of member ids.
@@ -170,7 +168,7 @@ const computeCliques = (graph) => {
   const adjacency = buildUndirectedAdjacency(graph);
 
   return findMaximalCliques(adjacency).filter(
-    (clique) => clique.length >= MIN_CLIQUE_SIZE,
+    (clique) => clique.length >= MIN_COMPONENT_SIZE,
   );
 };
 
@@ -179,7 +177,7 @@ const computeCliques = (graph) => {
  *
  * The graph is reduced to its reciprocal edges — the ones `createLikesGraph`
  * flagged with `isMutual` — then its strongly connected components are computed.
- * Only components of at least `MIN_STRONG_RECIPROCAL_SIZE` members are returned.
+ * Only components of at least `MIN_COMPONENT_SIZE` members are returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
  *   `createLikesGraph`.
@@ -197,7 +195,7 @@ const computeStrongComponentsWithReciprocalEdges = (graph) => {
   });
 
   return stronglyConnectedComponents(reciprocal).filter(
-    (component) => component.length >= MIN_STRONG_RECIPROCAL_SIZE,
+    (component) => component.length >= MIN_COMPONENT_SIZE,
   );
 };
 
@@ -237,9 +235,11 @@ const sortComponents = (components) => {
  *   keyed by category, each value a list of member-id lists.
  */
 const computeSnaComponents = (graph) => {
-  const strongComponents = stronglyConnectedComponents(graph);
+  const strongComponents = stronglyConnectedComponents(graph).filter(
+    (component) => component.length >= MIN_COMPONENT_SIZE,
+  );
   const weakComponents = connectedComponents(graph).filter(
-    (component) => component.length >= MIN_WEAK_SIZE,
+    (component) => component.length >= MIN_COMPONENT_SIZE,
   );
 
   return {
@@ -259,27 +259,12 @@ const computeSnaComponents = (graph) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Compute the SNA components for a single preference graph and return them as
- * a plain object mirroring a pandas DataFrame.
- *
- * The group is represented by one directed graph, so the result has exactly
- * one row (labelled by the graph's preference type) and one column per
- * component category.
+ * Compute the SNA components of a single preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createLikesGraph` (tagged with its `typeOfPreference`).
- * @returns {{ rowIndex: string[], columnIndex: string[], values: string[][][][] }}
- *   `rowIndex` is `["likes"]` or `["dislikes"]`, `columnIndex` is the component
- *   category per column (in `COMPONENTS_KEYS` order), and `values[0][j]` is the
- *   list of components (each component being a list of member ids) for
- *   category `columnIndex[j]`.
+ *   by `createLikesGraph`.
+ * @returns {Record<typeof COMPONENTS_KEYS[number], string[][]>} The components
+ *   keyed by component type, where each value is a list of components (a
+ *   component being a list of member ids).
  */
-export const getSnaComponents = (graph) => {
-  const components = computeSnaComponents(graph);
-
-  return {
-    rowIndex: [graph.getAttribute("typeOfPreference")],
-    columnIndex: [...COMPONENTS_KEYS],
-    values: [COMPONENTS_KEYS.map((key) => components[key])],
-  };
-};
+export const getSnaComponents = (graph) => computeSnaComponents(graph);
