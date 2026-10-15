@@ -77,11 +77,11 @@ const handleDownload = () => {
                 </BaseButton>
             </BaseTooltip>
 
-            <BaseTooltip v-show="showArchive" label="Scarica archivio">
+            <BaseTooltip v-show="showArchive" label="Scarica progetto">
                 <BaseButton
                     buttonVariant="outline"
                     :disabled="!enableArchive"
-                    aria-label="Scarica archivio"
+                    aria-label="Scarica progetto"
                     @click="handleDownload"
                 >
                     <svg

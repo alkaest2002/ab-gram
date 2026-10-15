@@ -102,12 +102,12 @@ function startFromScratch(step) {
                 <WarningIcon size="size-3" /> Avviso
             </p>
             <p class="mt-1.5 text-sm leading-relaxed">
-                I dati del sociogramma vengono salvati nella memoria RAM: al fine di evitare la perdiata dei dati, ti
+                I dati del sociogramma vengono salvati nella memoria RAM: al fine di evitare la perdita dei dati, ti
                 consigliamo di
                 <span class="font-medium"
                     >non aggiornare la pagina mentre stai lavorando, né di usare
                     i tasti back e forward del browser</span
-                >. Potrai comunque mettere in pausa e riprendere un lavoro avviato e non concluso.
+                >. Potrai comunque "mettere in pausa" e riprendere un lavoro avviato e non concluso.
             </p>
             <p class="mt-3 text-sm leading-relaxed">
                 L'app è stata testata con i seguenti browser:
