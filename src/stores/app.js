@@ -3,12 +3,8 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore("app", () => {
 
-  /** @type {import("vue").Ref<boolean>} */
-  const shouldLockUi = ref(true);
+  /** @type {import("vue").Ref<string>} */
+  const appVersion = ref("0.10");
 
-  function lockUi(value) {
-    shouldLockUi.value = Boolean(value);
-  }
-
-  return { shouldLockUi, lockUi };
+  return { appVersion, };
 });
