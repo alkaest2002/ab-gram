@@ -47,7 +47,7 @@ import BasePage from "./BasePage.vue";
                 <div class="space-y-8 px-10 pt-12">
                     <section class="space-y-3">
                         <h2
-                            class="font-mono text-[10pt] font-semibold tracking-[0.14em] uppercase text-ink"
+                            class="font-mono text-[10pt] font-semibold tracking-wide uppercase text-ink"
                         >
                             AVVISO DI RISERVATEZZA
                         </h2>
@@ -69,10 +69,9 @@ import BasePage from "./BasePage.vue";
 
                     <section class="space-y-3">
                         <h2
-                            class="font-mono text-[10pt] font-semibold tracking-[0.14em] uppercase text-ink"
+                            class="font-mono text-[10pt] font-semibold tracking-wide uppercase text-ink"
                         >
-                            NOTA SULLA GENERAZIONE DEL REPORT E SULLA SUA
-                            INTERPRETAZIONE
+                            NOTA SUL REPORT E SULLA SUA INTERPRETAZIONE
                         </h2>
                         <p class="text-[9pt]">
                             Il presente report è stato generato automaticamente
