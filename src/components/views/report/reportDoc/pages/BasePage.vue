@@ -9,19 +9,16 @@ import { computed, inject, onMounted, ref } from "vue";
 // --- Components ---------
 
 // --- Composables --------
-import { REPORT_PAGES_KEY } from "./reportPages.js";
+import { APP_VERSION_KEY, REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------
-const props = defineProps({
-    appVersion: {
-        type: String,
-        required: true,
-    },
-});
 
 // --- Emits --------------
 
 // --- State --------------
+// App version is provided by `ReportGenerated` and injected here to stamp the footer.
+const appVersion = inject(APP_VERSION_KEY, null);
+
 // Page number comes from the report's registry (see ReportDoc). When the page
 // is rendered outside a report, it falls back to no number.
 const registry = inject(REPORT_PAGES_KEY, null);
@@ -64,7 +61,7 @@ onMounted(() => {
         <footer
             class="mt-6 flex items-center justify-between border-t border-line pt-1"
         >
-            <span class="font-mono text-[9pt] text-muted">Versione: {{ props.appVersion }}</span>
+            <span class="font-mono text-[9pt] text-muted">Versione: {{ appVersion }}</span>
             <span v-if="pageNumber" class="font-mono text-[9pt] text-muted">
                 Pagina {{ pageNumber
                 }}<template v-if="totalPages"> di {{ totalPages }}</template>

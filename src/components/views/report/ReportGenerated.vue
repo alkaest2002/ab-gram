@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
+import { computed, provide } from "vue";
 
 // --- Routers ------------
 
@@ -15,6 +15,7 @@ import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
 import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 
 // --- Composables --------
+import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
 // --- Props --------------
 
@@ -24,6 +25,8 @@ import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 const reportStore = useReportStore();
 const sociogramStore = useSociogramStore();
 const { appVersion } = storeToRefs(useAppStore());
+
+provide(APP_VERSION_KEY, appVersion);
 
 // --- Computed -----------
 const reportData = computed(() => ({
