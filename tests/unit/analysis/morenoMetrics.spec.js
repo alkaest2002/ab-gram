@@ -44,13 +44,13 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(adjLikes, adjDislikes);
 
-    expect(result.rowIndex).toEqual(["group"]);
-    expect(result.columnIndex).toEqual(GROUP_COLUMNS);
+    expect(result.ids).toEqual(["group"]);
+    expect(result.metrics).toEqual(GROUP_COLUMNS);
     // cohesion = 1/3, conflict = 1/3, positiveReciprocity = 1/3, negativeReciprocity = 1/2.
-    expect(result.rawValues[0][0]).toBeCloseTo(1 / 3, 10);
-    expect(result.rawValues[0][1]).toBeCloseTo(1 / 3, 10);
-    expect(result.rawValues[0][2]).toBeCloseTo(1 / 3, 10);
-    expect(result.rawValues[0][3]).toBeCloseTo(0.5, 10);
+    expect(result.rawValuesById[0][0]).toBeCloseTo(1 / 3, 10);
+    expect(result.rawValuesById[0][1]).toBeCloseTo(1 / 3, 10);
+    expect(result.rawValuesById[0][2]).toBeCloseTo(1 / 3, 10);
+    expect(result.rawValuesById[0][3]).toBeCloseTo(0.5, 10);
   });
 
   it("reports NaN reciprocity when there are no nominations", () => {
@@ -65,10 +65,10 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(adjLikes, adjDislikes);
 
-    expect(result.rawValues[0][0]).toBe(0);
-    expect(result.rawValues[0][1]).toBe(0);
-    expect(result.rawValues[0][2]).toBeNaN();
-    expect(result.rawValues[0][3]).toBeNaN();
+    expect(result.rawValuesById[0][0]).toBe(0);
+    expect(result.rawValuesById[0][1]).toBe(0);
+    expect(result.rawValuesById[0][2]).toBeNaN();
+    expect(result.rawValuesById[0][3]).toBeNaN();
   });
 });
 
@@ -91,15 +91,15 @@ describe("getIndividualLevelMetrics", () => {
       "c",
     ]);
 
-    expect(result.rowIndex).toEqual(["a", "b", "c"]);
-    expect(result.columnIndex).toEqual(INDIVIDUAL_COLUMNS);
-    expect(result.rawValues).toEqual([
+    expect(result.ids).toEqual(["a", "b", "c"]);
+    expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
+    expect(result.rawValuesById).toEqual([
       [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8],
       [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2],
       [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2],
     ]);
     // Ranks are column-wise: each metric column is ranked across members.
-    expect(result.rankedValues).toEqual([
+    expect(result.rankedValuesById).toEqual([
       [3, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 3, 2],
       [2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 3, 2, 1],
       [1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1],
@@ -122,8 +122,8 @@ describe("getIndividualLevelMetrics", () => {
     ]);
 
     const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
-    expect(result.rawValues[0][statusColumn]).toBe(0);
-    expect(result.rawValues[1][statusColumn]).toBe(0);
+    expect(result.rawValuesById[0][statusColumn]).toBe(0);
+    expect(result.rawValuesById[1][statusColumn]).toBe(0);
   });
 
   it("classifies members who give but receive no opinions as ignored", () => {
@@ -143,7 +143,7 @@ describe("getIndividualLevelMetrics", () => {
 
     // a gives a like but receives none (ignored); b receives a like and gives
     // none (popular).
-    expect(result.rawValues).toEqual([
+    expect(result.rawValuesById).toEqual([
       [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
       [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 4],
     ]);

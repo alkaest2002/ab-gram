@@ -5,7 +5,7 @@ import { getSnaComponents } from "@/analysis/sna/components/snaComponents.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 
-const COMPONENT_COLUMNS = [
+const COMPONENT_KEYS = [
   "diads",
   "cliques",
   "strongComponentsWithReciprocalEdges",
@@ -14,7 +14,7 @@ const COMPONENT_COLUMNS = [
 ];
 
 describe("getSnaComponents", () => {
-  it("reports diads and cliques for a mutual triangle", () => {
+  it("returns one array per component type", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -24,10 +24,25 @@ describe("getSnaComponents", () => {
 
     const result = getSnaComponents(graph);
 
-    expect(result.rowIndex).toEqual(["likes"]);
-    expect(result.columnIndex).toEqual(COMPONENT_COLUMNS);
+    expect(Object.keys(result)).toEqual(COMPONENT_KEYS);
+    COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
+  });
 
-    const [diads, cliques, reciprocal, strong, weak] = result.values[0];
+  it("reports diads and cliques for a mutual triangle", () => {
+    const members = [
+      makeMember("a", ["b", "c"]),
+      makeMember("b", ["a", "c"]),
+      makeMember("c", ["a", "b"]),
+    ];
+    const graph = createLikesGraph(members, "likes");
+
+    const {
+      diads,
+      cliques,
+      strongComponentsWithReciprocalEdges,
+      strongComponents,
+      weakComponents,
+    } = getSnaComponents(graph);
 
     expect(diads).toEqual([
       ["a", "b"],
@@ -35,13 +50,12 @@ describe("getSnaComponents", () => {
       ["b", "c"],
     ]);
     expect(cliques).toEqual([["a", "b", "c"]]);
-    // A three-member strong component is too small for these categories.
-    expect(reciprocal).toEqual([]);
-    expect(strong).toEqual([["a", "b", "c"]]);
-    expect(weak).toEqual([]);
+    expect(strongComponentsWithReciprocalEdges).toEqual([["a", "b", "c"]]);
+    expect(strongComponents).toEqual([["a", "b", "c"]]);
+    expect(weakComponents).toEqual([["a", "b", "c"]]);
   });
 
-  it("reports a weak component of at least four members", () => {
+  it("drops strong and weak components smaller than three members", () => {
     const members = [
       makeMember("a", ["b"]),
       makeMember("b", ["c"]),
@@ -50,18 +64,24 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const result = getSnaComponents(graph);
-
-    const [diads, cliques, reciprocal, strong, weak] = result.values[0];
+    const {
+      diads,
+      cliques,
+      strongComponentsWithReciprocalEdges,
+      strongComponents,
+      weakComponents,
+    } = getSnaComponents(graph);
 
     expect(diads).toEqual([]);
     expect(cliques).toEqual([]);
-    expect(reciprocal).toEqual([]);
-    expect(strong).toEqual([["a"], ["b"], ["c"], ["d"]]);
-    expect(weak).toEqual([["a", "b", "c", "d"]]);
+    expect(strongComponentsWithReciprocalEdges).toEqual([]);
+    // Each node is its own strongly connected component, so every one is
+    // smaller than the three-member minimum.
+    expect(strongComponents).toEqual([]);
+    expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
   });
 
-  it("reports strongly connected reciprocal components of at least four members", () => {
+  it("reports strongly connected reciprocal components of at least three members", () => {
     const members = [
       makeMember("a", ["b", "d"]),
       makeMember("b", ["a", "c"]),
@@ -70,9 +90,13 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const result = getSnaComponents(graph);
-
-    const [diads, cliques, reciprocal, strong, weak] = result.values[0];
+    const {
+      diads,
+      cliques,
+      strongComponentsWithReciprocalEdges,
+      strongComponents,
+      weakComponents,
+    } = getSnaComponents(graph);
 
     expect(diads).toEqual([
       ["a", "b"],
@@ -81,8 +105,8 @@ describe("getSnaComponents", () => {
       ["c", "d"],
     ]);
     expect(cliques).toEqual([]);
-    expect(reciprocal).toEqual([["a", "b", "c", "d"]]);
-    expect(strong).toEqual([["a", "b", "c", "d"]]);
-    expect(weak).toEqual([["a", "b", "c", "d"]]);
+    expect(strongComponentsWithReciprocalEdges).toEqual([["a", "b", "c", "d"]]);
+    expect(strongComponents).toEqual([["a", "b", "c", "d"]]);
+    expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
   });
 });
