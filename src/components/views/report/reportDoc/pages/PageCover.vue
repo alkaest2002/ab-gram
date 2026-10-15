@@ -30,7 +30,7 @@ import BasePage from "./BasePage.vue";
         <template #default>
             <div class="flex min-h-[235mm] flex-col">
                 <!-- Title block, centred in the space left above the notices. -->
-                <div class="flex flex-1 flex-col justify-center">
+                <div class="mt-12">
                     <p class="font-mono text-[9pt] font-medium tracking-[0.14em] uppercase text-muted">
                         Documento riservato
                     </p>
