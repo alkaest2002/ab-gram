@@ -54,16 +54,15 @@ import BasePage from "./BasePage.vue";
                         >
                             AVVISO DI RISERVATEZZA
                         </h2>
-                        <p>
-                            Questo documento contiene dati personali, anche di
-                            natura sensibile, ed è destinato esclusivamente al
-                            destinatario autorizzato. Se ne sei venuto in
-                            possesso senza esserne il legittimo destinatario, ti
-                            invitiamo a interrompere immediatamente la lettura, a
+                        <p class="text-[9pt]">
+                            Questo documento contiene dati personali. Se ne sei venuto in
+                            possesso senza esserne il naturale destinatario, ti
+                            invitiamo a interrompere la lettura, a
                             non copiarlo, diffonderlo o fotografarlo e a
-                            consegnarlo al titolare o al responsabile del
-                            trattamento dei dati, oppure a restituirlo a chi te
-                            l'ha messo a disposizione. La divulgazione o
+                            consegnarlo al legittimo titolare, oppure a restituirlo a chi te
+                            l'ha messo a disposizione.</p>
+                        <p class="text-[9pt]">
+                            La divulgazione o
                             l'utilizzo non autorizzato dei dati qui contenuti può
                             costituire violazione della normativa sulla
                             protezione dei dati personali (Regolamento UE
@@ -78,7 +77,7 @@ import BasePage from "./BasePage.vue";
                             NOTA SULLA GENERAZIONE DEL REPORT E SULLA SUA
                             INTERPRETAZIONE
                         </h2>
-                        <p>
+                        <p class="text-[9pt]">
                             Il presente report è stato generato automaticamente
                             dall'app AB-Grid sulla base dei dati inseriti
                             dall'utente. Gli indici, i grafici e le
@@ -87,7 +86,7 @@ import BasePage from "./BasePage.vue";
                             una fotografia delle relazioni rilevate in un
                             determinato momento e contesto.
                         </p>
-                        <p>
+                        <p class="text-[9pt]">
                             La lettura e l'interpretazione di questo documento
                             richiedono competenze specifiche in ambito
                             psicologico, pedagogico o educativo. Il report non
@@ -99,7 +98,7 @@ import BasePage from "./BasePage.vue";
                             diretta del contesto e, se necessario, integrate con
                             altri strumenti di valutazione.
                         </p>
-                        <p>
+                        <p class="text-[9pt]">
                             Gli sviluppatori di AB-Grid non rispondono di
                             interpretazioni errate o di usi impropri del
                             contenuto del report da parte di soggetti non
