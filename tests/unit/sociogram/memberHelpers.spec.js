@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 
 import { orderMemberId } from "@/utils/sociogram/memberHelpers.js";
-import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions.js";
 
 describe("orderMemberId", () => {
   it("sorts ids by their position in MEMBERS_INDICES", () => {
