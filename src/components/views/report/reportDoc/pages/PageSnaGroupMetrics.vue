@@ -154,11 +154,11 @@ function ratioPercent(row) {
                         <tbody>
                             <tr v-for="row in metricRows" :key="row.key" class="align-baseline">
                                 <td
-                                    class="py-[0.75mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
+                                    class="py-[2mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
                                 >
                                     {{ row.label }}
                                 </td>
-                                <td class="py-[1.5mm] text-right">
+                                <td class="py-[2mm] text-right">
                                     <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                         {{ formatValue(row) }}
                                     </div>
