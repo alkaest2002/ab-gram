@@ -199,4 +199,30 @@ describe("getEdgeTypes", () => {
     expect(result.typeVII).toEqual([["a", "b"]]);
     expect(result.typeI).toEqual([]);
   });
+
+  it("sorts each type's edges by the choosing member id", () => {
+    // Both `c -> b` and `a -> b` are one-sided likes. `argwhere` walks the
+    // matrix in row-major order, which follows the memberIds order `["c", "a",
+    // "b"]`, so the edges come out `[c -> b, a -> b]` before sorting. Sorting
+    // by the first element (the choosing member) reorders them to `a -> b` then
+    // `c -> b`, regardless of that input order.
+    const result = classify(
+      [
+        [0, 0, 1], // c likes b
+        [0, 0, 1], // a likes b
+        [0, 0, 0], // b likes nobody
+      ],
+      [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+      ["c", "a", "b"],
+    );
+
+    expect(result.typeII).toEqual([
+      ["a", "b"],
+      ["c", "b"],
+    ]);
+  });
 });

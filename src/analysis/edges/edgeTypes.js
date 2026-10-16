@@ -126,14 +126,8 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
       .filter(([i, j]) => i !== j)
       .map(([i, j]) => [memberIds[i], memberIds[j]]);
 
-  // Sort edges to ensure consistent ordering across types (e.g. [a, b] and [b, a]
-  // should come one after the other, not interspersed).
-  const pairKey = ([a, b]) => JSON.stringify([a, b].sort());
-  const sortEdges = (edges) =>
-    edges.sort(
-      (e1, e2) =>
-        pairKey(e1).localeCompare(pairKey(e2)) || e1[0].localeCompare(e2[0]),
-    );
+  // Sort edges to ensure consistent ordering across types
+  const sortEdges = (edges) => edges.sort((e1, e2) => e1[0].localeCompare(e2[0]))
 
   const edgeTypes = {
     typeI: sortEdges(toEdges(typeI)),
