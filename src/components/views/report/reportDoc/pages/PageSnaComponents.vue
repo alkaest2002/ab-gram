@@ -72,9 +72,9 @@ const categories = computed(() =>
         </template>
 
         <template #default>
-            <div class="flex h-full flex-col gap-[3mm] overflow-hidden">
+            <div class="flex h-full flex-col gap-[6mm] overflow-hidden">
                 <section v-for="category in categories" :key="category.key" class="shrink-0">
-                    <header class="flex items-baseline justify-between border-b border-line pb-[1mm]">
+                    <header class="flex items-baseline justify-between border-b border-line">
                         <h3 class="font-mono text-[9pt] font-medium tracking-[0.08em] text-muted uppercase">
                             {{ category.label }}
                         </h3>
@@ -88,7 +88,8 @@ const categories = computed(() =>
                             <span
                                 v-for="(component, index) in category.components"
                                 :key="`${category.key}-${index}`"
-                                class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] py-[1mm] font-mono text-[9pt] font-semibold text-muted"
+                                class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] font-mono text-[9pt] font-semibold text-muted"
+                                :class="{'py-[1mm]': component.length > 24}"
                             >
                                 {{ component.join(" · ") }}
                             </span>
