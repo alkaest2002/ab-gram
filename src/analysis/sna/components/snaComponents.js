@@ -333,7 +333,7 @@ const presencePercentage = (member, components) =>
  * @param {SnaComponents} components - The components keyed by type.
  * @returns {MemberInComponentStats} Member id -> component type -> presence fraction.
  */
-const computeMemberInComponentStats = (members, components) =>
+const computeMemberInComponents = (members, components) =>
   Object.fromEntries(
     members.map((member) => [
       member,
@@ -351,9 +351,9 @@ const computeMemberInComponentStats = (members, components) =>
  * member, the fraction of each component type's components that contain it.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {SnaComponents & { memberInComponentStats: MemberInComponentStats }} The components
+ * @returns {SnaComponents & { memberInComponents: MemberInComponentStats }} The components
  *   keyed by category, each value a list of member-id lists, plus the
- *   `memberInComponentStats` presence fractions.
+ *   `memberInComponents` presence fractions.
  */
 const computeSnaComponents = (graph) => {
   const components = /** @type {SnaComponents} */ (
@@ -364,7 +364,7 @@ const computeSnaComponents = (graph) => {
 
   return {
     ...components,
-    memberInComponentStats: computeMemberInComponentStats(graph.nodes(), components),
+    memberInComponents: computeMemberInComponents(graph.nodes(), components),
   };
 };
 
@@ -378,9 +378,9 @@ const computeSnaComponents = (graph) => {
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph`.
- * @returns {SnaComponents & { memberInComponentStats: MemberInComponentStats }} The components
+ * @returns {SnaComponents & { memberInComponents: MemberInComponentStats }} The components
  *   keyed by component type (a component being a list of member ids), plus
- *   `memberInComponentStats`: per member, the fraction of each type's components that
+ *   `memberInComponents`: per member, the fraction of each type's components that
  *   contain them.
  */
 export const getSnaComponents = (graph) => computeSnaComponents(graph);
