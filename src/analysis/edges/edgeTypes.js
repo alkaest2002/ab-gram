@@ -1,7 +1,7 @@
 import * as np from "numpy-ts";
 
 /** Edge types where `A -> B` and `B -> A` describe the same relationship. */
-const SYMMETRIC_TYPES = new Set(["typeII", "typeIV"]);
+const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
 
 /**
  * Count how many edges of each type every member takes part in.
@@ -69,9 +69,18 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
  * }}
  *   Seven edge lists, each holding `[aId, bId]` member-id pairs, plus
  *   `memberInEdges`: for every member id, the number of edges of each type
- *   (`memberInEdges[memberId].typeII`, ...) the member takes part in, as either
- *   `A` or `B`. Mutual types (II and IV) count each unordered pair once, so a
- *   mutual relationship adds 1 to each of its two members, not 2.
+ *   (`memberInEdges[memberId].typeI`, ...) the member takes part in, as either
+ *   `A` or `B`. Mutual types (`typeI` and `typeIV`) count each unordered pair
+ *   once, so a mutual relationship adds 1 to each of its two members, not 2.
+ *
+ *   The seven types are:
+ *   - `typeI`   mutual like
+ *   - `typeII`  one-sided like
+ *   - `typeIII` one-sided dislike
+ *   - `typeIV`  mutual dislike
+ *   - `typeV`   `A` likes `B`, `B` dislikes `A`
+ *   - `typeVI`  `A` dislikes `B`, `B` likes `A`
+ *   - `typeVII` `A` both likes and dislikes `B`
  *
  *   An edge may appear in more than one list (e.g. when `B` both likes and
  *   dislikes `A`), but never twice within the same list.
@@ -91,19 +100,19 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
   // within one type.
   const likesBack = adjLikes.T; // B likes A
   const dislikesBack = adjDislikes.T; // B dislikes A
-  const noneBack = and(not(adjLikes.T), not(adjDislikes.T)); // B neither likes nor dislikes A
+  const noneBack = and(not(likesBack), not(dislikesBack)); // B neither likes nor dislikes A
 
-  // NON PROBLEMATIC EDGES
-  const typeI = and(likesOnly, noneBack); // one-sided like
-  const typeII = and(likesOnly, likesBack); // mutual like
+  // HEALTHY EDGES
+  const typeI = and(likesOnly, likesBack); // mutual like
+  const typeII = and(likesOnly, noneBack); // one-sided like
+
+  // POTENTIALLY PROBLEMATIC EDGES
+  const typeIII = and(dislikesOnly, noneBack); // one-sided dislike
 
   // PROBLEMATIC EDGES
-  const typeIII = and(dislikesOnly, noneBack); // one-sided dislike
   const typeIV = and(dislikesOnly, dislikesBack); // mutual dislike
   const typeV = and(likesOnly, dislikesBack); // A likes B, B dislikes A
   const typeVI = and(dislikesOnly, likesBack); // A dislikes B, B likes A
-
-  // EDGES THAT NEED INQUIRY
   const typeVII = both; // A likes and dislikes B
 
   // Translate matrix coordinates [i, j] into the matching member-id pair.
@@ -119,12 +128,12 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
 
   // Sort edges to ensure consistent ordering across types (e.g. [a, b] and [b, a]
   // should come one after the other, not interspersed).
+  const pairKey = ([a, b]) => JSON.stringify([a, b].sort());
   const sortEdges = (edges) =>
-    edges.sort(([a1, b1], [a2, b2]) => {
-      const pair1 = JSON.stringify([a1, b1].sort());
-      const pair2 = JSON.stringify([a2, b2].sort());
-      return pair1.localeCompare(pair2);
-    });
+    edges.sort(
+      (e1, e2) =>
+        pairKey(e1).localeCompare(pairKey(e2)) || e1[0].localeCompare(e2[0]),
+    );
 
   const edgeTypes = {
     typeI: sortEdges(toEdges(typeI)),
