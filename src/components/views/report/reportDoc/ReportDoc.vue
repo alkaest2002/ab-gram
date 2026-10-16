@@ -12,6 +12,7 @@ import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageLis
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
 import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics.vue";
 import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents.vue";
+import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -75,5 +76,6 @@ provide(REPORT_PAGES_KEY, {
             type-of-sna="dislikes"
             :components="reportData.analysisData?.snaDislikesComponents ?? {}"
         />
+        <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
     </div>
 </template>
