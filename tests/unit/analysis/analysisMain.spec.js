@@ -51,7 +51,7 @@ describe("getSociogramAnalysis", () => {
 
     const { edgeTypes } = getSociogramAnalysis(members);
 
-    expect(edgeTypes.typeII).toEqual(
+    expect(edgeTypes.typeI).toEqual(
       expect.arrayContaining([
         ["a", "b"],
         ["b", "a"],
@@ -139,6 +139,22 @@ describe("getSociogramAnalysis", () => {
       strongComponentsWithReciprocalEdges: [],
       strongComponents: [],
       weakComponents: [],
+      memberInComponents: {
+        a: {
+          dyads: 1,
+          cliques: 0,
+          strongComponentsWithReciprocalEdges: 0,
+          strongComponents: 0,
+          weakComponents: 0,
+        },
+        b: {
+          dyads: 1,
+          cliques: 0,
+          strongComponentsWithReciprocalEdges: 0,
+          strongComponents: 0,
+          weakComponents: 0,
+        },
+      },
     });
     expect(snaDislikesIndividualLevelMetric.ids).toEqual(["a", "b"]);
     expect(snaDislikesPlots).toHaveLength(1);

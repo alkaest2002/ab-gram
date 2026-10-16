@@ -80,29 +80,7 @@ describe("getEdgeTypes", () => {
   const classify = (likes, dislikes, memberIndices) =>
     getEdgeTypes(np.array(likes), np.array(dislikes), memberIndices);
 
-  it("classifies a one-sided like as type I", () => {
-    const result = classify(
-      [
-        [0, 1],
-        [0, 0],
-      ],
-      [
-        [0, 0],
-        [0, 0],
-      ],
-      ["a", "b"],
-    );
-
-    expect(result.typeI).toEqual([["a", "b"]]);
-    expect(result.typeII).toEqual([]);
-    expect(result.typeIII).toEqual([]);
-    expect(result.typeIV).toEqual([]);
-    expect(result.typeV).toEqual([]);
-    expect(result.typeVI).toEqual([]);
-    expect(result.typeVII).toEqual([]);
-  });
-
-  it("classifies a mutual like as type II", () => {
+  it("classifies a mutual like as type I", () => {
     const result = classify(
       [
         [0, 1],
@@ -115,14 +93,36 @@ describe("getEdgeTypes", () => {
       ["a", "b"],
     );
 
-    expect(result.typeII).toEqual(
+    expect(result.typeI).toEqual(
       expect.arrayContaining([
         ["a", "b"],
         ["b", "a"],
       ]),
     );
-    expect(result.typeII).toHaveLength(2);
+    expect(result.typeI).toHaveLength(2);
+    expect(result.typeII).toEqual([]);
+  });
+
+  it("classifies a one-sided like as type II", () => {
+    const result = classify(
+      [
+        [0, 1],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+      ],
+      ["a", "b"],
+    );
+
+    expect(result.typeII).toEqual([["a", "b"]]);
     expect(result.typeI).toEqual([]);
+    expect(result.typeIII).toEqual([]);
+    expect(result.typeIV).toEqual([]);
+    expect(result.typeV).toEqual([]);
+    expect(result.typeVI).toEqual([]);
+    expect(result.typeVII).toEqual([]);
   });
 
   it("classifies a one-sided dislike as type III", () => {
