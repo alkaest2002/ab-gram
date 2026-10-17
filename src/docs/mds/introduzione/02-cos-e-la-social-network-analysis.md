@@ -16,7 +16,7 @@ La SNA non nasce dalla sociometria, ma ha con essa un legame concettuale
 profondo. L'idea di **Jacob L. Moreno** di rappresentare un gruppo come un
 insieme di punti e di linee, il sociogramma, e di studiare la **struttura delle
 relazioni** invece degli individui presi singolarmente è il fondamento su cui la
-SNA costruisce i suoi strumenti. Per questo AB-Grid può partire da un test
+SNA costruisce i suoi strumenti. Per questo AB-Gram può partire da un test
 sociometrico e leggerlo con le misure della SNA. 
 
 ## Attori e legami
@@ -44,12 +44,12 @@ La SNA offre misure che si dividono in due famiglie:
   importante nella rete, per esempio perché è molto scelta o perché fa da ponte
   tra persone diverse.
 
-La definizione di ciascuna misura calcolata da AB-Grid si trova nella sezione
+La definizione di ciascuna misura calcolata da AB-Gram si trova nella sezione
 della documentazione dedicata alle metriche.
 
-## Il legame con AB-Grid
+## Il legame con AB-Gram
 
-AB-Grid applica le idee della Social Network Analysis a un gruppo reale:
+AB-Gram applica le idee della Social Network Analysis a un gruppo reale:
 trasforma le scelte e i rifiuti raccolti in due reti, la rete delle scelte e
 quella dei rifiuti, le disegna come sociogramma e calcola su ciascuna le misure
 di gruppo e individuali, presentandole in modo semplice anche per chi non ha una

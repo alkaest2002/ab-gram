@@ -3,7 +3,7 @@
   a tight white "AB" laid across the seam, so each letter is cut by the other
   colour. Webfonts are not available to an icon, so this names a common bold
   grotesque and falls back to the system sans — at 32px and below only the
-  weight and the split are legible anyway. No "Grid": it disappears below 24px.
+  weight and the split are legible anyway. No "Gram": it disappears below 24px.
 -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>

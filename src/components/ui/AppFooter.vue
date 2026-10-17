@@ -28,7 +28,7 @@ const links = [
     },
     {
         label: "Email",
-        href: "mailto:info@ab-grid.example",
+        href: "mailto:info@ab-gram.example",
         icon: EmailIcon,
     },
 ];
@@ -49,7 +49,7 @@ const links = [
         >
             <div class="space-y-3">
                 <p class="text-xs">
-                    {{ originYear }} | {{ currentYear }} &copy; AB-Grid rilasciato con
+                    {{ originYear }} | {{ currentYear }} &copy; AB-Gram rilasciato con
                     <a href="https://opensource.org/licenses/MIT" target="_blank">Licenza MIT</a>
                 </p>
             </div>

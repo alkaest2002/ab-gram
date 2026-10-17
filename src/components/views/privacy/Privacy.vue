@@ -50,7 +50,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                     Il titolare del trattamento è il soggetto che gestisce il
                     presente sito, contattabile all'indirizzo di posta
                     elettronica indicato nella sezione Contatti
-                    (<a href="mailto:info@ab-grid.example">info@ab-grid.example</a>).
+                    (<a href="mailto:info@ab-gram.example">info@ab-gram.example</a>).
                 </p>
             </section>
 

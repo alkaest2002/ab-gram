@@ -4,7 +4,7 @@ order: 8
 description: Come salvare e riprendere un sociogramma senza perdere il lavoro.
 ---
 
-L'archivio è il modo in cui AB-Grid salva il tuo lavoro. Poiché i dati restano
+L'archivio è il modo in cui AB-Gram salva il tuo lavoro. Poiché i dati restano
 solo nella memoria dell'applicazione e **non vengono memorizzati nella cache del
 browser**, l'archivio è l'unico strumento per mettere in pausa un progetto
 complesso e riprenderlo in seguito.

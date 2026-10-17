@@ -4,7 +4,7 @@ order: 2
 description: Come avviare un nuovo sociogramma partendo da una lista di nomi.
 ---
 
-Quando apri AB-Grid ti trovi davanti alla schermata iniziale, che propone due
+Quando apri AB-Gram ti trovi davanti alla schermata iniziale, che propone due
 percorsi:
 
 - **Crea progetto** — avvia un nuovo sociogramma da una lista di nomi.
@@ -46,7 +46,7 @@ caricati, oppure un messaggio che spiega l'eventuale errore.
 
 ## Un avviso importante sui dati
 
-AB-Grid **non salva nulla nella cache del browser**: i dati restano nella memoria
+AB-Gram **non salva nulla nella cache del browser**: i dati restano nella memoria
 dell'applicazione finché la pagina è aperta. Per questo motivo:
 
 - Non aggiornare la pagina mentre stai lavorando.

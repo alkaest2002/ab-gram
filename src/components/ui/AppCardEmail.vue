@@ -32,7 +32,7 @@ defineProps({
 
 // --- Methods ------------
 const openEmail = () => {
-    window.location.href = "mailto:info@ab-grid.com";
+    window.location.href = "mailto:info@ab-gram.com";
 };
 </script>
 
@@ -51,7 +51,7 @@ const openEmail = () => {
                 <template #icon>
                     <EmailIcon size="size-4" />
                 </template>
-                info@ab-grid.com
+                info@ab-gram.com
             </BaseButton>
         </template>
     </BaseCard>

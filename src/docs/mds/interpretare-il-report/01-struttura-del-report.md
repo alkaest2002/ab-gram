@@ -4,7 +4,7 @@ order: 1
 description: Le parti che compongono il report generato dall'applicazione.
 ---
 
-Il report prodotto da AB-Grid è organizzato in sezioni che vanno lette in
+Il report prodotto da AB-Gram è organizzato in sezioni che vanno lette in
 ordine: prima il quadro generale, poi i dettagli.
 
 ## Le sezioni del report

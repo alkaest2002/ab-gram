@@ -36,7 +36,7 @@
             Registra
             <strong class="font-semibold text-accent">scelte</strong> e
             <strong class="font-semibold text-reject">rifiuti</strong>
-            dei membri di un gruppo. AB-Grid pensa al resto.
+            dei membri di un gruppo. AB-Gram pensa al resto.
         </p>
     </div>
 </template>

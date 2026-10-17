@@ -37,7 +37,7 @@ import BasePage from "./BasePage.vue";
                         <span
                             class="relative whitespace-nowrap after:absolute after:inset-x-0 after:-bottom-1 after:h-0.5 after:rounded-full after:bg-linear-to-r after:from-accent after:to-reject after:content-['']"
                         >
-                            AB-Grid
+                            AB-Gram
                         </span>
                         Report
                     </h1>
@@ -75,7 +75,7 @@ import BasePage from "./BasePage.vue";
                         </h2>
                         <p class="text-[9pt]">
                             Il presente report è stato generato automaticamente
-                            dall'app AB-Grid sulla base dei dati inseriti
+                            dall'app AB-Gram sulla base dei dati inseriti
                             dall'utente. Gli indici, i grafici e le
                             rappresentazioni sociometriche in esso contenuti
                             hanno natura puramente descrittiva e rappresentano
@@ -95,7 +95,7 @@ import BasePage from "./BasePage.vue";
                             altri strumenti di valutazione.
                         </p>
                         <p class="text-[9pt]">
-                            Gli sviluppatori di AB-Grid non rispondono di
+                            Gli sviluppatori di AB-Gram non rispondono di
                             interpretazioni errate o di usi impropri del
                             contenuto del report da parte di soggetti non
                             qualificati.

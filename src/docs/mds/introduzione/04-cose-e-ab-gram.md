@@ -1,25 +1,25 @@
 ---
-title: Cos'è l'app AB-Grid?
+title: Cos'è l'app AB-Gram?
 order: 3
 description: I destinatari dell'applicazione, le idee su cui si fonda e i contesti in cui si usa.
 ---
 
-**AB-Grid** è un'applicazione pensata per chi lavora con i gruppi e vuole capirne
+**AB-Gram** è un'applicazione pensata per chi lavora con i gruppi e vuole capirne
 le **dinamiche sociali**, cioè come le persone si relazionano tra loro, senza
 dover imparare strumenti complessi. Non occorre conoscere la matematica o
 l'informatica: basta raccogliere le **scelte** e i **rifiuti** del gruppo, e
-AB-Grid li trasforma in una mappa e in alcuni numeri facili da leggere.
+AB-Gram li trasforma in una mappa e in alcuni numeri facili da leggere.
 
 ## Come funziona
 
-AB-Grid unisce due approcci complementari:
+AB-Gram unisce due approcci complementari:
 
 - la **sociometria**, nata con Jacob L. Moreno, che fornisce il metodo per
   raccogliere le preferenze di un gruppo e gli indici per leggerle;
 - la **Social Network Analysis**, che fornisce misure sulla struttura delle
   relazioni, cioè su come i membri sono collegati tra loro.
 
-A partire dai dati inseriti, AB-Grid disegna il **sociogramma** e calcola gli
+A partire dai dati inseriti, AB-Gram disegna il **sociogramma** e calcola gli
 indici sociometrici e le misure di rete, sia per l'intero gruppo sia per ogni
 singolo membro. Per approfondire le due basi teoriche, vedi *Cos'è la
 sociometria?* e *Cos'è la Social Network Analysis*.
@@ -68,9 +68,9 @@ Bianchi Elena
    di scelte e di rifiuti non è limitato, ma conviene invitare i membri a
    concentrarsi sulle persone verso cui l'affinità o la distanza sono più forti.
 
-Una volta inseriti questi dati, AB-Grid costruisce il sociogramma e calcola le
+Una volta inseriti questi dati, AB-Gram costruisce il sociogramma e calcola le
 metriche per te. I dati li raccogli e li inserisci tu, quando sei pronto:
-AB-Grid non li invia a un server e non li memorizza in modo permanente.
+AB-Gram non li invia a un server e non li memorizza in modo permanente.
 
 ## Un caso concreto
 
@@ -79,7 +79,7 @@ alunno isolato o un sottogruppo chiuso.
 
 Supponiamo che a inizio anno chieda a ciascun alunno con chi vorrebbe fare un
 lavoro di gruppo e con chi preferirebbe non farlo. Dopo aver inserito le risposte, 
-AB-Grid può mostrare, ad esempio, che un alunno non è stato scelto
+AB-Gram può mostrare, ad esempio, che un alunno non è stato scelto
 da nessuno, oppure che cinque compagni si scelgono solo tra loro e non hanno
 contatti con il resto della classe. Sono situazioni che nel registro o in un
 elenco di risposte passerebbero facilmente inosservate. Conoscerle permette di

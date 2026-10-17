@@ -9,7 +9,7 @@ import aboutRoutes from "@/router/routes/about";
 import privacyRoutes from "@/router/routes/privacy";
 import notFoundRoutes from "@/router/routes/not-found";
 
-const SITE_NAME = "AB-Grid";
+const SITE_NAME = "AB-Gram";
 
 // The site header is sticky; scrolling to an anchor needs this offset so the
 // heading lands just below it instead of underneath it (4.25rem ≈ 76px + gap).

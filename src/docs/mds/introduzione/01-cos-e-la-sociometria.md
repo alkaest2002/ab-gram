@@ -66,7 +66,7 @@ famiglie:
 
 Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
 confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
-differenza rispetto alle misure della Social Network Analysis, che AB-Grid
+differenza rispetto alle misure della Social Network Analysis, che AB-Gram
 calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
 *Cos'è la Social Network Analysis*).
 

@@ -52,7 +52,7 @@ onMounted(() => {
             <tr class="page-row page-row--header">
                 <td class="page-cell page-cell--header">
                     <p class="font-mono text-[9pt] font-medium tracking-relaxed uppercase text-muted">
-                        AB-Grid Report
+                        AB-Gram Report
                     </p>
                 </td>
             </tr>
@@ -77,7 +77,7 @@ onMounted(() => {
             <tr class="page-row page-row--footer">
                 <td class="page-cell page-cell--footer">
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[9pt] text-muted">AB-Grid ver. {{ appVersion }}</span>
+                        <span class="font-mono text-[9pt] text-muted">AB-Gram ver. {{ appVersion }}</span>
                         <span v-if="pageNumber" class="font-mono text-[9pt] text-muted">
                             Pagina {{ pageNumber
                             }}<template v-if="totalPages"> di {{ totalPages }}</template>

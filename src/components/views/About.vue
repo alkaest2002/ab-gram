@@ -65,7 +65,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
             </header>
 
             <p>
-                AB-Grid è un'applicazione web costruita con Vue 3 e Vite.
+                AB-Gram è un'applicazione web costruita con Vue 3 e Vite.
                 Queste sono le librerie che la fanno funzionare, dal calcolo
                 delle metriche di rete al rendering dei grafici.
             </p>

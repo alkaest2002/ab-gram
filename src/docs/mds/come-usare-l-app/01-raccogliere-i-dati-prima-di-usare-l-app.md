@@ -4,7 +4,7 @@ order: 1
 description: Come preparare su carta o in formato elettronico le scelte e i rifiuti da inserire nell'app.
 ---
 
-AB-Grid non raccoglie i dati al posto tuo: per costruire il sociogramma ha
+AB-Gram non raccoglie i dati al posto tuo: per costruire il sociogramma ha
 bisogno delle **scelte** e dei **rifiuti** che ogni membro del gruppo ha espresso
 verso gli altri. Prima di aprire l'applicazione devi quindi averli già raccolti.
 
@@ -31,7 +31,7 @@ Ricorda che la direzione conta: la scelta parte da **chi** la esprime e arriva a
 
 ## Nessun limite al numero di scelte e rifiuti
 
-AB-Grid non pone alcun limite al numero di scelte e di rifiuti che ogni membro
+AB-Gram non pone alcun limite al numero di scelte e di rifiuti che ogni membro
 può esprimere: puoi registrare tutte le preferenze raccolte, senza doverne
 scartare nessuna.
 
@@ -60,7 +60,7 @@ servono.
 ## Una scelta di "privacy by design"
 
 Il fatto che i dati vengano raccolti da te, e non direttamente dall'applicazione,
-è una decisione voluta. AB-Grid:
+è una decisione voluta. AB-Gram:
 
 - non contatta i membri del gruppo;
 - non invia dati a un server;
