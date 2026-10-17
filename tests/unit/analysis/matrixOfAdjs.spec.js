@@ -225,4 +225,88 @@ describe("getEdgeTypes", () => {
       ["c", "b"],
     ]);
   });
+
+  it("reports each member's edge types as a share of their total edges", () => {
+    const result = classify(
+      [
+        [0, 1, 0, 0], // a likes b
+        [0, 0, 0, 0], // b likes nobody
+        [0, 0, 0, 0], // c likes nobody
+        [0, 0, 0, 0], // d likes nobody
+      ],
+      [
+        [0, 0, 1, 0], // a dislikes c
+        [0, 0, 0, 0], // b dislikes nobody
+        [1, 0, 0, 0], // c dislikes a
+        [0, 0, 0, 0], // d dislikes nobody
+      ],
+      ["a", "b", "c", "d"],
+    );
+
+    expect(result.memberInEdges.a).toEqual({
+      typeI: 0,
+      typeII: 0.5,
+      typeIII: 0,
+      typeIV: 0.5,
+      typeV: 0,
+      typeVI: 0,
+      typeVII: 0,
+    });
+    // `b` only receives a one-sided like; it never chooses anyone, so it has
+    // no attributed edges of its own.
+    expect(result.memberInEdges.b).toEqual({
+      typeI: 0,
+      typeII: 0,
+      typeIII: 0,
+      typeIV: 0,
+      typeV: 0,
+      typeVI: 0,
+      typeVII: 0,
+    });
+    expect(result.memberInEdges.c).toEqual({
+      typeI: 0,
+      typeII: 0,
+      typeIII: 0,
+      typeIV: 1,
+      typeV: 0,
+      typeVI: 0,
+      typeVII: 0,
+    });
+    expect(result.memberInEdges.d).toEqual({
+      typeI: 0,
+      typeII: 0,
+      typeIII: 0,
+      typeIV: 0,
+      typeV: 0,
+      typeVI: 0,
+      typeVII: 0,
+    });
+  });
+
+  it("keeps zero shares (not NaN) for members with no edges", () => {
+    const result = classify(
+      [
+        [0, 0],
+        [0, 0],
+      ],
+      [
+        [0, 0],
+        [0, 0],
+      ],
+      ["a", "b"],
+    );
+
+    const zeroShares = {
+      typeI: 0,
+      typeII: 0,
+      typeIII: 0,
+      typeIV: 0,
+      typeV: 0,
+      typeVI: 0,
+      typeVII: 0,
+    };
+
+    expect(result.memberInEdges.a).toEqual(zeroShares);
+    expect(result.memberInEdges.b).toEqual(zeroShares);
+  });
 });

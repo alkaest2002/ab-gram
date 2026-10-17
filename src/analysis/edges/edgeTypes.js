@@ -4,41 +4,62 @@ import * as np from "numpy-ts";
 const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
 
 /**
- * Count how many edges of each type every member takes part in.
+ * Compute, for every member, the share of their edges that belong to each type.
  *
- * For symmetric types (mutual like / mutual dislike) an unordered pair is
- * counted once, even if both `[A, B]` and `[B, A]` are present.
+ * A directed edge is attributed to its choosing member (`A`); a symmetric edge
+ * (mutual like / mutual dislike) is attributed to both members. Symmetric
+ * unordered pairs are counted once, even if both `[A, B]` and `[B, A]` are
+ * present.
  *
  * @param {string[]} memberIds
  * @param {Record<string, string[][]>} edgeTypes - Edge lists keyed by type name.
- * @returns {Record<string, Record<string, number>>} `result[memberId][edgeType]`
+ * @returns {Record<string, Record<string, number>>} `result[memberId][edgeType]`,
+ *   a value in `[0, 1]` equal to the share of the member's total edges of that
+ *   type. Shares sum to 1, or are all 0 for a member with no edges.
  */
 const computeMemberInEdges = (memberIds, edgeTypes) => {
+  const typeNames = Object.keys(edgeTypes);
+
+  // Initialize result with zero counts for each member and edge type
   const result = Object.fromEntries(
-    memberIds.map((id) => [
-      id,
-      Object.fromEntries(Object.keys(edgeTypes).map((t) => [t, 0])),
+    memberIds.map((memberId) => [
+      memberId,
+      Object.fromEntries(typeNames.map((type) => [type, 0])),
     ]),
   );
 
+  // Count edges for each type, updating the result object
   for (const [edgeType, edges] of Object.entries(edgeTypes)) {
     const isSymmetric = SYMMETRIC_TYPES.has(edgeType);
     const seenPairs = new Set();
 
-    for (const edge of edges) {
+    for (const [fromId, toId] of edges) {
       if (isSymmetric) {
-        const pairKey = JSON.stringify([...edge].sort());
+        // Canonical key for an unordered pair, so [A, B] and [B, A] collapse
+        // into a single relationship. "\u0000" keeps the ids from running
+        // together into an ambiguous key.
+        const pairKey = fromId < toId ? `${fromId}\u0000${toId}` : `${toId}\u0000${fromId}`;
         if (seenPairs.has(pairKey)) continue;
         seenPairs.add(pairKey);
       }
 
-      // Set: a member is counted at most once per edge.
-      for (const id of new Set(edge)) {
-        // hasOwn ignores inherited keys such as "constructor" or "toString".
-        if (Object.hasOwn(result, id)) result[id][edgeType]++;
-      }
+      // The choosing member (`fromId`) always owns the edge. Only symmetric
+      // types also credit the chosen member (`toId`), because those
+      // relationships are mutual (the unordered pair is already deduped above).
+      if (Object.hasOwn(result, fromId)) result[fromId][edgeType] += 1;
+      if (isSymmetric && Object.hasOwn(result, toId)) result[toId][edgeType] += 1;
     }
   }
+
+  // Convert counts into the share of the member's total edges, keeping every
+  // value in [0, 1]. A member with no edges keeps 0 rather than dividing by 0.
+  for (const counts of Object.values(result)) {
+    const total = typeNames.reduce((sum, type) => sum + counts[type], 0);
+    for (const type of typeNames) {
+      counts[type] = total === 0 ? 0 : counts[type] / total;
+    }
+  }
+
   return result;
 };
 
@@ -68,10 +89,11 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
  *   memberInEdges: Record<string, Record<string, number>>
  * }}
  *   Seven edge lists, each holding `[aId, bId]` member-id pairs, plus
- *   `memberInEdges`: for every member id, the number of edges of each type
- *   (`memberInEdges[memberId].typeI`, ...) the member takes part in, as either
- *   `A` or `B`. Mutual types (`typeI` and `typeIV`) count each unordered pair
- *   once, so a mutual relationship adds 1 to each of its two members, not 2.
+ *   `memberInEdges`: for every member id, the share (in `[0, 1]`) of that
+ *   member's total edges that are of each type
+ *   (`memberInEdges[memberId].typeI`, ...). Directed edges are attributed to
+ *   their choosing member (`A`); mutual types (`typeI` and `typeIV`) count each
+ *   unordered pair once and attribute it to both members.
  *
  *   The seven types are:
  *   - `typeI`   mutual like
