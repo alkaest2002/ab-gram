@@ -25,7 +25,7 @@ const steps = [
     },
     {
         title: "Sociogramma",
-        text: "AB-Gram calcola, in modo automatico, indici sociometrici e grafici.",
+        text: "AB-Gram calcola, in automatico, indici sociometrici e grafici.",
     },
 ];
 
