@@ -2,51 +2,14 @@ import { describe, it, expect } from "vitest";
 
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData.js";
 import { MAX_MEMBERS_COUNT, MIN_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions.js";
+import { getHogwartsMembers, getHogwartsSnapshot } from "../../fixtures/hogwarts.js";
 
 /**
- * A structurally valid member. `overrides` lets each test tweak a single field
- * without re-declaring the whole shape.
+ * The Hogwarts demo roster is a valid, complete snapshot: nine members, unique
+ * ids, every like/dislike referencing an existing member, and each member
+ * resolving both preference categories (via entries or the "no answer" flags).
+ * Tests derive their failing cases from this base by mutating one field.
  */
-function makeMember(overrides = {}) {
-  return {
-    id: "A",
-    name: "Alice",
-    likes: [],
-    dislikes: [],
-    noLikes: false,
-    noDislikes: false,
-    ...overrides,
-  };
-}
-
-/**
- * A minimal valid snapshot: two members that reference each other, which keeps
- * every default (non-complete) check green.
- */
-function makeValidSnapshot() {
-  return {
-    members: [
-      makeMember({ id: "A", name: "Alice", likes: ["B"] }),
-      makeMember({ id: "B", name: "Bob", dislikes: ["A"] }),
-    ],
-  };
-}
-
-/**
- * A valid complete snapshot: five members, each with at least one like and one
- * dislike that point at existing members.
- */
-function makeCompleteSnapshot() {
-  return {
-    members: [
-      makeMember({ id: "A", name: "Alice", likes: ["B"], dislikes: ["C"] }),
-      makeMember({ id: "B", name: "Bob", likes: ["C"], dislikes: ["D"] }),
-      makeMember({ id: "C", name: "Carol", likes: ["D"], dislikes: ["E"] }),
-      makeMember({ id: "D", name: "Dave", likes: ["E"], dislikes: ["A"] }),
-      makeMember({ id: "E", name: "Eve", likes: ["A"], dislikes: ["B"] }),
-    ],
-  };
-}
 
 function expectValid(result, parsed) {
   expect(result).toEqual({ valid: true, error: null, data: parsed });
@@ -62,13 +25,13 @@ describe("useSociogramValidateData (default)", () => {
   const { validate } = useSociogramValidateData();
 
   it("accepts a valid snapshot and returns it as data", () => {
-    const snapshot = makeValidSnapshot();
+    const snapshot = getHogwartsSnapshot();
 
     expectValid(validate(snapshot), snapshot);
   });
 
   it("returns the same object reference in data", () => {
-    const snapshot = makeValidSnapshot();
+    const snapshot = getHogwartsSnapshot();
 
     expect(validate(snapshot).data).toBe(snapshot);
   });
@@ -89,8 +52,12 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it(`rejects a snapshot with more than ${MAX_MEMBERS_COUNT} members`, () => {
+    const roster = getHogwartsMembers();
     const snapshot = {
-      members: Array.from({ length: MAX_MEMBERS_COUNT + 1 }, () => makeMember()),
+      members: Array.from(
+        { length: MAX_MEMBERS_COUNT + 1 },
+        (_, i) => roster[i % roster.length],
+      ),
     };
 
     expectInvalid(
@@ -106,7 +73,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member without an id", () => {
-    const snapshot = { members: [makeMember({ id: "" })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].id = "";
 
     expectInvalid(
       validate(snapshot),
@@ -115,13 +83,15 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member without a name", () => {
-    const snapshot = { members: [makeMember({ name: undefined })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].name = undefined;
 
     expectInvalid(validate(snapshot), "Ogni membro del gruppo deve avere un nome.");
   });
 
   it("rejects a member with invalid likes", () => {
-    const snapshot = { members: [makeMember({ likes: "B" })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].likes = "B";
 
     expectInvalid(
       validate(snapshot),
@@ -130,7 +100,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member with invalid dislikes", () => {
-    const snapshot = { members: [makeMember({ dislikes: ["b"] })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].dislikes = ["b"];
 
     expectInvalid(
       validate(snapshot),
@@ -139,7 +110,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member with a non-boolean noLikes flag", () => {
-    const snapshot = { members: [makeMember({ noLikes: "yes" })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].noLikes = "yes";
 
     expectInvalid(
       validate(snapshot),
@@ -148,7 +120,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member with a non-boolean noDislikes flag", () => {
-    const snapshot = { members: [makeMember({ noDislikes: 0 })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].noDislikes = 0;
 
     expectInvalid(
       validate(snapshot),
@@ -157,31 +130,28 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it(`rejects a member with more than ${MAX_MEMBERS_COUNT} likes`, () => {
-    const snapshot = {
-      members: [
-        makeMember({
-          likes: Array.from({ length: MAX_MEMBERS_COUNT + 1 }, () => "B"),
-        }),
-      ],
-    };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].likes = Array.from(
+      { length: MAX_MEMBERS_COUNT + 1 },
+      () => "B",
+    );
 
     expectInvalid(validate(snapshot), "Un membro del gruppo ha espresso troppe scelte.");
   });
 
   it(`rejects a member with more than ${MAX_MEMBERS_COUNT} dislikes`, () => {
-    const snapshot = {
-      members: [
-        makeMember({
-          dislikes: Array.from({ length: MAX_MEMBERS_COUNT + 1 }, () => "B"),
-        }),
-      ],
-    };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].dislikes = Array.from(
+      { length: MAX_MEMBERS_COUNT + 1 },
+      () => "B",
+    );
 
     expectInvalid(validate(snapshot), "Un membro del gruppo ha espresso troppi rifiuti.");
   });
 
   it("rejects a member who likes themself", () => {
-    const snapshot = { members: [makeMember({ likes: ["A"] })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].likes = ["A"];
 
     expectInvalid(
       validate(snapshot),
@@ -190,7 +160,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a member who dislikes themself", () => {
-    const snapshot = { members: [makeMember({ dislikes: ["A"] })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].dislikes = ["A"];
 
     expectInvalid(
       validate(snapshot),
@@ -199,9 +170,10 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a snapshot with duplicate member ids", () => {
-    const snapshot = {
-      members: [makeMember({ id: "A" }), makeMember({ id: "A", name: "Bob" })],
-    };
+    const snapshot = getHogwartsSnapshot();
+    // Luna (E) neither likes nor dislikes anyone with id "A", so the duplicate
+    // id is caught by the uniqueness check rather than the self-reference rule.
+    snapshot.members[4].id = "A";
 
     expectInvalid(
       validate(snapshot),
@@ -210,7 +182,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects likes that reference a missing member", () => {
-    const snapshot = { members: [makeMember({ likes: ["Z"] })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].likes = ["Z"];
 
     expectInvalid(
       validate(snapshot),
@@ -219,7 +192,8 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects dislikes that reference a missing member", () => {
-    const snapshot = { members: [makeMember({ dislikes: ["Z"] })] };
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].dislikes = ["Z"];
 
     expectInvalid(
       validate(snapshot),
@@ -232,26 +206,24 @@ describe("useSociogramValidateData(true) (complete)", () => {
   const { validate } = useSociogramValidateData(true);
 
   it("accepts a valid complete snapshot", () => {
-    const snapshot = makeCompleteSnapshot();
+    const snapshot = getHogwartsSnapshot();
 
     expectValid(validate(snapshot), snapshot);
   });
 
   it(`rejects a snapshot with fewer than ${MIN_MEMBERS_COUNT} members`, () => {
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members = snapshot.members.slice(0, MIN_MEMBERS_COUNT - 1);
+
     expectInvalid(
-      validate(makeValidSnapshot()),
+      validate(snapshot),
       `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`,
     );
   });
 
   it("rejects a member with no likes when noLikes is false", () => {
-    const snapshot = makeCompleteSnapshot();
-    snapshot.members[0] = makeMember({
-      id: "A",
-      name: "Alice",
-      likes: [],
-      dislikes: ["C"],
-    });
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0] = { ...snapshot.members[0], likes: [], noLikes: false };
 
     expectInvalid(
       validate(snapshot),
@@ -260,26 +232,19 @@ describe("useSociogramValidateData(true) (complete)", () => {
   });
 
   it("accepts a member with no likes when noLikes is true", () => {
-    const snapshot = makeCompleteSnapshot();
-    snapshot.members[0] = makeMember({
-      id: "A",
-      name: "Alice",
-      likes: [],
-      dislikes: ["C"],
-      noLikes: true,
-    });
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0] = { ...snapshot.members[0], likes: [], noLikes: true };
 
     expectValid(validate(snapshot), snapshot);
   });
 
   it("rejects a member with no dislikes when noDislikes is false", () => {
-    const snapshot = makeCompleteSnapshot();
-    snapshot.members[0] = makeMember({
-      id: "A",
-      name: "Alice",
-      likes: ["B"],
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0] = {
+      ...snapshot.members[0],
       dislikes: [],
-    });
+      noDislikes: false,
+    };
 
     expectInvalid(
       validate(snapshot),
@@ -288,14 +253,12 @@ describe("useSociogramValidateData(true) (complete)", () => {
   });
 
   it("accepts a member with no dislikes when noDislikes is true", () => {
-    const snapshot = makeCompleteSnapshot();
-    snapshot.members[0] = makeMember({
-      id: "A",
-      name: "Alice",
-      likes: ["B"],
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0] = {
+      ...snapshot.members[0],
       dislikes: [],
       noDislikes: true,
-    });
+    };
 
     expectValid(validate(snapshot), snapshot);
   });

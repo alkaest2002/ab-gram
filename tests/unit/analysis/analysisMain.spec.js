@@ -13,6 +13,7 @@ vi.mock("@/analysis/sna/plots/snaPlots.js", () => ({
 }));
 
 import { getSociogramAnalysis } from "@/analysis/analysisMain.js";
+import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
   id,
@@ -22,17 +23,13 @@ const makeMember = (id, likes = [], dislikes = []) => ({
 });
 
 describe("getSociogramAnalysis", () => {
-  it("combines every analysis step into a single result", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
-
-    const result = getSociogramAnalysis(members);
+  it("combines every analysis step over the Hogwarts roster", () => {
+    const result = getSociogramAnalysis(getHogwartsMembers());
 
     expect(result).toHaveProperty("edgeTypes");
     expect(result).toHaveProperty("morenoGroupLevelMetrics");
     expect(result).toHaveProperty("morenoIndividualLevelMetrics");
+    expect(result).toHaveProperty("morenoEgoGraphs");
     expect(result).toHaveProperty("snaLikesComponents");
     expect(result).toHaveProperty("snaLikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaLikesIndividualLevelMetric");
@@ -41,6 +38,24 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaDislikesPlots");
+
+    // Nine members flow through every step, and the roster contains both likes
+    // and dislikes, so both SNA pipelines are populated.
+    expect(result.snaLikesGroupLevelMetrics.rawValuesById[0][0]).toBe(9);
+    expect(result.snaDislikesGroupLevelMetrics.ids).toEqual(["dislikes"]);
+    expect(result.snaLikesIndividualLevelMetric.ids).toEqual([
+      "A", "B", "C", "D", "E", "F", "G", "H", "I",
+    ]);
+    expect(result.snaDislikesIndividualLevelMetric.ids).toEqual([
+      "A", "B", "C", "D", "E", "F", "G", "H", "I",
+    ]);
+    expect(result.morenoEgoGraphs).toHaveLength(9);
+    expect(result.snaLikesPlots).toHaveLength(1);
+    expect(result.snaLikesPlots[0].typeOfPreference).toBe("likes");
+    expect(result.snaLikesPlots[0].accentColor).toBe("#0000FF");
+    expect(result.snaDislikesPlots).toHaveLength(1);
+    expect(result.snaDislikesPlots[0].typeOfPreference).toBe("dislikes");
+    expect(result.snaDislikesPlots[0].accentColor).toBe("#FF0000");
   });
 
   it("classifies the mutual like between the two members", () => {

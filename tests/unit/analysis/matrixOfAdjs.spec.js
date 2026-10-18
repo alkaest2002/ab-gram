@@ -7,6 +7,7 @@ import {
   getMemberIndices,
 } from "@/analysis/common/adjacencyMatrices.js";
 import { getEdgeTypes } from "@/analysis/edges/edgeTypes.js";
+import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({ id, likes, dislikes });
 
@@ -46,33 +47,51 @@ describe("createAdjacencyMatrix", () => {
 });
 
 describe("createAdjacencyMatrices", () => {
-  it("builds both preference matrices", () => {
-    const members = [
-      makeMember("a", ["b"], ["c"]),
-      makeMember("b", [], ["a"]),
-      makeMember("c", ["a"], []),
-    ];
+  it("builds both preference matrices from the Hogwarts roster", () => {
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(
+      getHogwartsMembers(),
+    );
 
-    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
-
+    // Rows and columns follow member order A..I; entry (i, j) is 1 when member
+    // i chose member j for that preference.
     expect(adjLikes.tolist()).toEqual([
-      [0, 1, 0],
-      [0, 0, 0],
-      [1, 0, 0],
+      [0, 1, 1, 0, 1, 0, 0, 0, 0],
+      [1, 0, 1, 0, 0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 0, 0, 0, 0, 0, 0],
+      [0, 1, 0, 1, 0, 0, 0, 0, 1],
+      [0, 0, 0, 0, 0, 0, 1, 0, 1],
+      [0, 0, 0, 0, 0, 1, 0, 1, 1],
+      [0, 0, 0, 0, 0, 1, 1, 0, 0],
+      [1, 0, 0, 0, 0, 1, 0, 0, 0],
     ]);
     expect(adjDislikes.tolist()).toEqual([
-      [0, 0, 1],
-      [1, 0, 0],
-      [0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 1, 1, 1, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]);
   });
 });
 
 describe("getMemberIndices", () => {
-  it("returns member ids in matrix row order", () => {
-    const members = [makeMember("a"), makeMember("b"), makeMember("c")];
-
-    expect(getMemberIndices(members)).toEqual(["a", "b", "c"]);
+  it("returns the Hogwarts member ids in matrix row order", () => {
+    expect(getMemberIndices(getHogwartsMembers())).toEqual([
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+    ]);
   });
 });
 
