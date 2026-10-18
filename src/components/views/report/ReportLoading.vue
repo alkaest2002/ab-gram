@@ -31,24 +31,16 @@ const emit = defineEmits(["stop-generating-report"]);
         role="status"
         class="flex w-full max-w-xl flex-col items-center gap-6 text-center"
     >
-        <!-- Spinner: a faint full ring with a blue arc sweeping around it. -->
-        <svg
-            viewBox="0 0 64 64"
-            class="size-16 shrink-0 animate-spin motion-reduce:animate-none"
+        <!-- Spinner: a single thin ring with a subtle accent sweep. -->
+        <div
+            class="size-12 shrink-0 animate-spin rounded-full motion-reduce:animate-none"
             aria-hidden="true"
-        >
-            <circle
-                cx="32"
-                cy="32"
-                r="24"
-                class="fill-none stroke-line stroke-2"
-            />
-            <path
-                d="M32 8a24 24 0 0 1 24 24"
-                class="fill-none stroke-accent stroke-6"
-                stroke-linecap="round"
-            />
-        </svg>
+            style="
+                background: conic-gradient(from 0deg, transparent, var(--color-accent));
+                -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+                mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+            "
+        ></div>
 
         <div class="space-y-3">
             <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">
@@ -61,7 +53,7 @@ const emit = defineEmits(["stop-generating-report"]);
             </p>
         </div>
 
-        <BaseButton buttonVariant="outline" @click="emit('report-generating-stop')">
+        <BaseButton buttonVariant="outline" @click="emit('stop-generating-report')">
             Interrompi
         </BaseButton>
 
