@@ -7,9 +7,10 @@
 import { useSociogramStore } from "@/stores/sociogram";
 
 // --- Components ---------
-import BaseButton from "@/components/ui/BaseButton.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
+import StartLoadMembers from "@/components/views/sociogram/steps/stepStart/StartLoadMembers.vue";
+import StartImportProject from "@/components/views/sociogram/steps/stepStart/StartImportProject.vue";
 
 // --- Composables --------
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -61,36 +62,16 @@ function startFromScratch(step) {
 
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-            <div class="space-y-1">
-                <p class="eyebrow">Nuovo progetto</p>
-                <h3>Carica una nuova lista di nomi</h3>
-                <p class="text-sm">
-                    Crea un nuovo sociogramma a partire da una lista di nomi.
-                </p>
-            </div>
-            <BaseButton
-                buttonVariant="solid"
-                @click="startFromScratch('loadMembers')"
-            >
-                Crea progetto
-            </BaseButton>
+            <StartLoadMembers
+                @sociogram-start-load-members="startFromScratch('loadMembers')"
+            />
 
             <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-            <div class="space-y-1">
-                <p class="eyebrow">Progetto archiviato</p>
-                <h3>Importa i dati archiviati</h3>
-                <p class="text-sm">
-                    Riprendi un progetto salvato in precedenza, esattamente da
-                    dove lo avevi lasciato.
-                </p>
-            </div>
-            <BaseButton
-                buttonVariant="outline"
-                @click="startFromScratch('importProject')"
-            >
-                Importa progetto
-            </BaseButton>
+            <StartImportProject
+                @sociogram-start-import-project="startFromScratch('importProject')"
+                @sociogram-start-demo="goToStep('manageMembers')"
+            />
         </section>
 
         <section

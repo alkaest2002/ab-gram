@@ -1,0 +1,66 @@
+[
+  {
+    "id": "A",
+    "name": "Potter, Harry",
+    "likes": ["B", "C", "D", "H"],
+    "dislikes": ["E", "F", "G"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "B",
+    "name": "Granger, Hermione",
+    "likes": ["A", "C", "D"],
+    "dislikes": ["E", "F", "G"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "C",
+    "name": "Longbottom, Neville",
+    "likes": ["A", "B", "D"],
+    "dislikes": ["E", "F", "G"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "D",
+    "name": "Lovegood, Luna",
+    "likes": ["A", "B", "C", "H"],
+    "dislikes": [],
+    "noLikes": false,
+    "noDislikes": true
+  },
+  {
+    "id": "E",
+    "name": "Malfoy, Draco",
+    "likes": ["F", "G", "H"],
+    "dislikes": ["A", "B", "C"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "F",
+    "name": "Crabbe, Vincent",
+    "likes": ["E", "G", "H"],
+    "dislikes": ["A", "B"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "G",
+    "name": "Goyle, Gregory",
+    "likes": ["E", "F"],
+    "dislikes": ["A", "C"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "H",
+    "name": "Diggory, Cedric",
+    "likes": ["A", "D", "E", "F"],
+    "dislikes": [],
+    "noLikes": false,
+    "noDislikes": true
+  }
+]
