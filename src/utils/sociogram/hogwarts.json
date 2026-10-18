@@ -2,105 +2,73 @@
   {
     "id": "A",
     "name": "Potter, Harry",
-    "likes": ["B", "D", "L", "M"],
-    "dislikes": ["E", "F", "G", "J", "K"],
+    "likes": ["B", "C", "E"],
+    "dislikes": ["F", "G", "H"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "B",
     "name": "Granger, Hermione",
-    "likes": ["A", "I", "M"],
-    "dislikes": ["E", "F", "G", "K"],
+    "likes": ["A", "C"],
+    "dislikes": ["F", "G", "H"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "C",
-    "name": "Longbottom, Neville",
-    "likes": ["A", "B", "L", "M"],
-    "dislikes": ["E", "F", "G", "J", "K"],
+    "name": "Weasley, Ron",
+    "likes": ["A", "B"],
+    "dislikes": ["F"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "D",
+    "name": "Longbottom, Neville",
+    "likes": ["A", "B", "C"],
+    "dislikes": ["F", "G", "H"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "E",
     "name": "Lovegood, Luna",
-    "likes": ["B", "C", "H", "I"],
+    "likes": ["B", "D", "I"],
     "dislikes": [],
     "noLikes": false,
     "noDislikes": true
   },
   {
-    "id": "E",
-    "name": "Malfoy, Draco",
-    "likes": ["F", "H"],
-    "dislikes": ["A", "B", "C", "L", "M"],
-    "noLikes": false,
-    "noDislikes": false
-  },
-  {
     "id": "F",
-    "name": "Crabbe, Vincent",
-    "likes": ["E", "G", "H"],
-    "dislikes": ["A", "B"],
+    "name": "Malfoy, Draco",
+    "likes": ["G", "I"],
+    "dislikes": ["A", "B", "C", "D"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "G",
-    "name": "Goyle, Gregory",
-    "likes": ["E", "F"],
-    "dislikes": ["A", "C"],
+    "name": "Crabbe, Vincent",
+    "likes": ["F", "H", "I"],
+    "dislikes": ["A", "B"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "H",
-    "name": "Diggory, Cedric",
-    "likes": ["A", "E", "L"],
-    "dislikes": [],
+    "name": "Goyle, Gregory",
+    "likes": ["F", "G"],
+    "dislikes": ["A", "D"],
     "noLikes": false,
-    "noDislikes": true
+    "noDislikes": false
   },
   {
     "id": "I",
-    "name": "Silente, Albus",
-    "likes": ["A", "C", "J", "L"],
-    "dislikes": ["K"],
+    "name": "Diggory, Cedric",
+    "likes": ["A", "F"],
+    "dislikes": [],
     "noLikes": false,
-    "noDislikes": false
-  },
-  {
-    "id": "J",
-    "name": "Piton, Severus",
-    "likes": ["E", "I"],
-    "dislikes": ["A", "C", "K", "M"],
-    "noLikes": false,
-    "noDislikes": false
-  },
-  {
-    "id": "K",
-    "name": "Voldemort, Lord",
-    "likes": ["E", "F"],
-    "dislikes": ["A", "B", "I", "L", "M"],
-    "noLikes": false,
-    "noDislikes": false
-  },
-  {
-    "id": "L",
-    "name": "Agrid, Rubeus",
-    "likes": ["A", "B"],
-    "dislikes": ["E", "K"],
-    "noLikes": false,
-    "noDislikes": false
-  },
-  {
-    "id": "M",
-    "name": "Weasley, Ron",
-    "likes": ["A", "B"],
-    "dislikes": ["E", "J", "K"],
-    "noLikes": false,
-    "noDislikes": false
+    "noDislikes": true
   }
 ]
