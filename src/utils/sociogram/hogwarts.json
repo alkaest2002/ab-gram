@@ -2,31 +2,31 @@
   {
     "id": "A",
     "name": "Potter, Harry",
-    "likes": ["B", "C", "D", "H"],
-    "dislikes": ["E", "F", "G"],
+    "likes": ["B", "D", "L", "M"],
+    "dislikes": ["E", "F", "G", "J", "K"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "B",
     "name": "Granger, Hermione",
-    "likes": ["A", "C", "D"],
-    "dislikes": ["E", "F", "G"],
+    "likes": ["A", "I", "M"],
+    "dislikes": ["E", "F", "G", "K"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "C",
     "name": "Longbottom, Neville",
-    "likes": ["A", "B", "D"],
-    "dislikes": ["E", "F", "G"],
+    "likes": ["A", "B", "L", "M"],
+    "dislikes": ["E", "F", "G", "J", "K"],
     "noLikes": false,
     "noDislikes": false
   },
   {
     "id": "D",
     "name": "Lovegood, Luna",
-    "likes": ["A", "B", "C", "H"],
+    "likes": ["B", "C", "H", "I"],
     "dislikes": [],
     "noLikes": false,
     "noDislikes": true
@@ -34,8 +34,8 @@
   {
     "id": "E",
     "name": "Malfoy, Draco",
-    "likes": ["F", "G", "H"],
-    "dislikes": ["A", "B", "C"],
+    "likes": ["F", "H"],
+    "dislikes": ["A", "B", "C", "L", "M"],
     "noLikes": false,
     "noDislikes": false
   },
@@ -58,9 +58,49 @@
   {
     "id": "H",
     "name": "Diggory, Cedric",
-    "likes": ["A", "D", "E", "F"],
+    "likes": ["A", "E", "L"],
     "dislikes": [],
     "noLikes": false,
     "noDislikes": true
+  },
+  {
+    "id": "I",
+    "name": "Silente, Albus",
+    "likes": ["A", "C", "J", "L"],
+    "dislikes": ["K"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "J",
+    "name": "Piton, Severus",
+    "likes": ["E", "I"],
+    "dislikes": ["A", "C", "K", "M"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "K",
+    "name": "Voldemort, Lord",
+    "likes": ["E", "F"],
+    "dislikes": ["A", "B", "I", "L", "M"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "L",
+    "name": "Agrid, Rubeus",
+    "likes": ["A", "B"],
+    "dislikes": ["E", "K"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "M",
+    "name": "Weasley, Ron",
+    "likes": ["A", "B"],
+    "dislikes": ["E", "J", "K"],
+    "noLikes": false,
+    "noDislikes": false
   }
 ]
