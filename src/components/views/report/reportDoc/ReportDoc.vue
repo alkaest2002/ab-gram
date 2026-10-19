@@ -1,6 +1,6 @@
 <script setup>
 // --- Vue ----------------
-import { provide, ref } from "vue";
+import { computed, provide, ref } from "vue";
 
 // --- Routers ------------
 
@@ -13,6 +13,7 @@ import PageListOfPreferences from "@/components/views/report/reportDoc/pages/Pag
 import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics.vue";
 import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents.vue";
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes.vue";
+import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -38,6 +39,14 @@ provide(REPORT_PAGES_KEY, {
 });
 
 // --- Computed -----------
+// Moreno ego plots are keyed by member id; expose a lookup so each member page
+// can pull its own plot without scanning the array in the template.
+const egoPlotByMemberId = computed(() => {
+    const plots = props.reportData?.analysisData?.morenoEgoGraphs ?? [];
+    return Object.fromEntries(plots.map((plot) => [plot.memberId, plot]));
+});
+
+const members = computed(() => props.reportData?.membersData?.members ?? []);
 
 // --- Watchers -----------
 
@@ -77,5 +86,15 @@ provide(REPORT_PAGES_KEY, {
             :components="reportData.analysisData?.snaDislikesComponents ?? {}"
         />
         <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
+        <PageMemberMetrics
+            v-for="member in members"
+            :key="member.id"
+            :member="member"
+            :ego-plot="egoPlotByMemberId[member.id] ?? null"
+            :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
+            :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
+            :edge-types="reportData.analysisData?.edgeTypes ?? {}"
+            :components="reportData.analysisData?.snaLikesComponents ?? {}"
+        />
     </div>
 </template>
