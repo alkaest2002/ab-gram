@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -21,16 +20,14 @@ const props = defineProps({
 // --- State --------------
 
 // --- Computed -----------
-const members = computed(() => props.membersData?.members ?? []);
+const members = props.membersData?.members ?? [];
 
 // Balanced two-column split. Safari does not honour CSS multi-column layout
 // (`columns-2`) when printing and collapses it to a single column, so the two
 // halves are laid out with flexbox instead. The first half takes the extra
 // item on odd counts, matching balanced column fill.
-const columns = computed(() => {
-    const half = Math.ceil(members.value.length / 2);
-    return [members.value.slice(0, half), members.value.slice(half)];
-});
+const half = Math.ceil(members.length / 2);
+const columns = [members.slice(0, half), members.slice(half)];
 
 // --- Watchers -----------
 

@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -49,37 +48,37 @@ const SNA_CONFIG = {
 };
 
 // --- Computed -----------
-const config = computed(() => SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes);
+const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 
 // Reuse the plot's own accent so the metric bars and legend stay in the same
 // hue as the graph, falling back to the type-specific color otherwise.
-const accentColor = computed(() => props.snaPlot?.accentColor ?? config.value.accentColor);
+const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
 
 // Metric key -> display label and formatting kind. Counts are whole numbers;
 // the four structural indices are proportions in [0, 1], shown as percentages
 // with a small bar so the value reads at a glance. The two edge labels depend
-// on the preference type, so the config is assembled reactively.
-const METRIC_CONFIG = computed(() => ({
+// on the preference type, so the config is assembled from the selected type.
+const METRIC_CONFIG = {
     numberOfNodes: { label: "Numero di membri nel gruppo", kind: "count" },
-    numberOfEdges: { label: config.value.edgeLabel, kind: "count" },
-    numberOfMutualEdges: { label: config.value.mutualEdgeLabel, kind: "count" },
+    numberOfEdges: { label: config.edgeLabel, kind: "count" },
+    numberOfMutualEdges: { label: config.mutualEdgeLabel, kind: "count" },
     networkDensity: { label: "Densità della rete", kind: "ratio" },
     networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
     networkReciprocity: { label: "Reciprocità delle rete", kind: "ratio" },
     networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
-}));
+};
 
-const metricRows = computed(() => {
+const metricRows = (() => {
     const keys = props.snaMetrics?.metrics ?? [];
     const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
 
     return keys.map((key, index) => ({
         key,
-        label: METRIC_CONFIG.value[key]?.label ?? key,
-        kind: METRIC_CONFIG.value[key]?.kind ?? "count",
+        label: METRIC_CONFIG[key]?.label ?? key,
+        kind: METRIC_CONFIG[key]?.kind ?? "count",
         value: values[index] ?? 0,
     }));
-});
+})();
 
 // --- Watchers -----------
 

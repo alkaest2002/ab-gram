@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -194,34 +193,32 @@ function buildChip(label, key, source) {
 
 // Metric chips grouped by row (Moreno indices then SNA centralities). Each row
 // holds six chips so the page lays out exactly six metrics per line.
-const metricChips = computed(() =>
-    METRIC_ROWS.map((row) =>
-        row.map(({ label, key, source }) => buildChip(label, key, source)),
-    ),
+const metricChips = METRIC_ROWS.map((row) =>
+    row.map(({ label, key, source }) => buildChip(label, key, source)),
 );
 
 // `memberInEdges` is keyed by member id and holds a 0-1 share per edge type.
-const edgeShares = computed(() => {
+const edgeShares = (() => {
     const shares = props.edgeTypes?.memberInEdges?.[props.member.id] ?? {};
     return EDGE_TYPE_CONFIG.map(({ key, label }) => ({
         key,
         label,
         value: Number(shares[key] ?? 0),
     }));
-});
+})();
 
 // `memberInComponents` is keyed by member id and holds a 0-1 presence fraction
 // per component category.
-const componentShares = computed(() => {
+const componentShares = (() => {
     const shares = props.components?.memberInComponents?.[props.member.id] ?? {};
     return COMPONENT_CONFIG.map(({ key, label }) => ({
         key,
         label,
         value: Number(shares[key] ?? 0),
     }));
-});
+})();
 
-const status = computed(() => {
+const status = (() => {
     const metrics = props.morenoMetrics;
     const memberIndex = memberIndexIn(metrics);
     const metricIndex = metricIndexOf(metrics, "ss");
@@ -232,7 +229,7 @@ const status = computed(() => {
     if (!config) return null;
 
     return { code, ...config, tone: STATUS_TONES[config.tone] };
-});
+})();
 
 // --- Watchers -----------
 

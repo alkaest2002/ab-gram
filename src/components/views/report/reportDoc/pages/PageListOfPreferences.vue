@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -21,28 +20,24 @@ const props = defineProps({
 // --- State --------------
 
 // --- Computed -----------
-const members = computed(() => props.membersData?.members ?? []);
+const members = props.membersData?.members ?? [];
 
 // Compact rows: preferences resolved to their ids (not names), sorted for a
 // stable reading order and rendered as individual chips. Likes and dislikes
 // stay separate so the `+`/`−` signs map 1:1 onto sociometry's positive/negative
 // choice convention.
-const rows = computed(() =>
-    members.value.map((member) => ({
-        id: member.id,
-        likes: [...(member.likes ?? [])],
-        dislikes: [...(member.dislikes ?? [])],
-    })),
-);
+const rows = members.map((member) => ({
+    id: member.id,
+    likes: [...(member.likes ?? [])],
+    dislikes: [...(member.dislikes ?? [])],
+}));
 
 // Balanced two-column split. Safari does not honour CSS multi-column layout
 // (`columns-2`) when printing and collapses it to a single column, so the two
 // halves are laid out with flexbox instead. The first half takes the extra
 // item on odd counts, matching balanced column fill.
-const columns = computed(() => {
-    const half = Math.ceil(rows.value.length / 2);
-    return [rows.value.slice(0, half), rows.value.slice(half)];
-});
+const half = Math.ceil(rows.length / 2);
+const columns = [rows.slice(0, half), rows.slice(half)];
 
 // --- Watchers -----------
 

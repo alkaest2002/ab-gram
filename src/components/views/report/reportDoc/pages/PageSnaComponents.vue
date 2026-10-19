@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -46,17 +45,15 @@ const CATEGORIES = [
 ];
 
 // --- Computed -----------
-const config = computed(() => SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes);
+const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 
 // `components` maps each component type to the list of its components (each
 // component being a list of member ids). A missing/empty prop degrades to
 // empty lists.
-const categories = computed(() =>
-    CATEGORIES.map((category) => ({
-        ...category,
-        components: props.components?.[category.key] ?? [],
-    })),
-);
+const categories = CATEGORIES.map((category) => ({
+    ...category,
+    components: props.components?.[category.key] ?? [],
+}));
 
 // --- Watchers -----------
 

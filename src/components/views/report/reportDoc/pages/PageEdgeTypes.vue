@@ -1,6 +1,5 @@
 <script setup>
 // --- Vue ----------------
-import { computed } from "vue";
 
 // --- Routers ------------
 
@@ -66,25 +65,23 @@ const TONE_CLASSES = {
 // --- Computed -----------
 // `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
 // missing/empty prop degrades to empty lists, so every type still renders.
-const categories = computed(() =>
-    CATEGORIES.map((category) => {
-        const tone = TONE_CLASSES[category.tone];
+const categories = CATEGORIES.map((category) => {
+    const tone = TONE_CLASSES[category.tone];
 
-        const types = category.types.map((key) => ({
-            key,
-            label: EDGE_TYPES[key].label,
-            edges: toDisplayEdges(props.edgeTypes?.[key] ?? []),
-        }));
+    const types = category.types.map((key) => ({
+        key,
+        label: EDGE_TYPES[key].label,
+        edges: toDisplayEdges(props.edgeTypes?.[key] ?? []),
+    }));
 
-        return {
-            key: category.key,
-            label: category.label,
-            total: types.reduce((sum, type) => sum + type.edges.length, 0),
-            types,
-            ...tone,
-        };
-    }),
-);
+    return {
+        key: category.key,
+        label: category.label,
+        total: types.reduce((sum, type) => sum + type.edges.length, 0),
+        types,
+        ...tone,
+    };
+});
 
 // --- Watchers -----------
 
