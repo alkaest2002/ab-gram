@@ -85,47 +85,47 @@ const COMPONENT_CONFIG = [
 const STATUS_CONFIG = {
     0: {
         label: "Isolato",
-        description: "Nessuna scelta ricevuta né espressa.",
+        description: "nessuna scelta ricevuta né espressa.",
         tone: "muted",
     },
     1: {
         label: "Ignorato",
-        description: "Ha espresso scelte ma non ne ha ricevute.",
+        description: "ha espresso scelte ma non ne ha ricevute.",
         tone: "muted",
     },
     2: {
         label: "Marginale",
-        description: "Impatto basso: riceve poche attenzioni.",
+        description: "riceve poche attenzioni.",
         tone: "muted",
     },
     3: {
         label: "Apprezzato",
-        description: "Impatto medio con bilancio positivo.",
+        description: "impatto medio con bilancio positivo.",
         tone: "accent",
     },
     4: {
         label: "Popolare",
-        description: "Impatto alto con bilancio positivo.",
+        description: "impatto alto con bilancio positivo.",
         tone: "accent",
     },
     5: {
         label: "Malvisto",
-        description: "Impatto medio con bilancio negativo.",
+        description: "impatto medio con bilancio negativo.",
         tone: "reject",
     },
     6: {
         label: "Rifiutato",
-        description: "Impatto alto con bilancio negativo.",
+        description: "impatto alto con bilancio negativo.",
         tone: "reject",
     },
     7: {
         label: "Ambivalente",
-        description: "Impatto medio con bilancio neutro.",
+        description: "impatto medio con bilancio neutro.",
         tone: "ink",
     },
     8: {
         label: "Controverso",
-        description: "Impatto alto con bilancio neutro.",
+        description: "impatto alto con bilancio neutro.",
         tone: "ink",
     },
 };
@@ -134,26 +134,18 @@ const STATUS_TONES = {
     accent: {
         bar: "bg-accent",
         text: "text-accent",
-        border: "border-accent",
-        tint: "bg-accent/10",
     },
     reject: {
         bar: "bg-reject",
         text: "text-reject",
-        border: "border-reject",
-        tint: "bg-reject/10",
     },
     ink: {
         bar: "bg-ink",
         text: "text-ink",
-        border: "border-ink",
-        tint: "bg-ink/10",
     },
     muted: {
         bar: "bg-muted",
         text: "text-muted",
-        border: "border-muted",
-        tint: "bg-muted/10",
     },
 };
 
@@ -288,11 +280,11 @@ function formatShare(value) {
                 </div>
 
                 <!-- BOTTOM: four stacked rows. -->
-                <div class="bottom-band flex flex-col gap-y-[3mm]">
+                <div class="bottom-band flex flex-col gap-y-[4mm]">
                     <!-- Row 1: metrics. -->
                     <section class="min-w-0">
                         <header
-                            class="mb-[1mm] border-b border-line pb-[0.5mm]"
+                            class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
                                 class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
@@ -338,7 +330,7 @@ function formatShare(value) {
                     <!-- Row 2: edge types. -->
                     <section class="min-w-0">
                         <header
-                            class="mb-[1mm] border-b border-line pb-[0.5mm]"
+                            class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
                                 class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
@@ -367,7 +359,7 @@ function formatShare(value) {
                     <!-- Row 3: component categories. -->
                     <section class="min-w-0">
                         <header
-                            class="mb-[1mm] border-b border-line pb-[0.5mm]"
+                            class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
                                 class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
@@ -396,7 +388,7 @@ function formatShare(value) {
                     <!-- Row 4: sociometric status. -->
                     <section v-if="status" class="min-w-0">
                         <header
-                            class="mb-[1mm] border-b border-line pb-[0.5mm]"
+                            class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
                                 class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
@@ -406,20 +398,13 @@ function formatShare(value) {
                         </header>
 
                         <div
-                            class="flex items-center gap-[2.5mm] rounded border px-[2.5mm] py-[1.5mm]"
-                            :class="[status.tone.border, status.tone.tint]"
+                            class="flex items-center gap-[2.5mm]"
                         >
                             <div class="min-w-0">
                                 <p
-                                    class="font-display text-[13pt] font-bold leading-none flex gap-3 items-center"
-                                    :class="status.tone.text"
+                                    class="font-display leading-none"
                                 >
-                                    {{ status.label }}
-                                    <span
-                                        class="mt-[0.5mm] font-mono text-[7.5pt] text-muted"
-                                    >
-                                        {{ status.description }}
-                                    </span>
+                                    <span class="font-medium text-[10pt]" :class="status.tone.text">{{ status.label }}</span> &middot; <span class="text-[10pt]">{{ status.description }}</span>
                                 </p>
                             </div>
                         </div>
