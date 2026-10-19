@@ -34,7 +34,7 @@
   {
     "id": "E",
     "name": "Lovegood, Luna",
-    "likes": ["B", "D", "I"],
+    "likes": ["A", "B", "D", "I"],
     "dislikes": [],
     "noLikes": false,
     "noDislikes": true
