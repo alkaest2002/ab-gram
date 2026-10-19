@@ -4,8 +4,14 @@ import * as np from "numpy-ts";
 import { computeRankedScores, computeGiniCoefficient } from "@/analysis/common/commonMetrics.js";
 
 describe("computeRankedScores", () => {
-  it("ranks a 1-D array ascending with 1-based dense ranks", () => {
+  it("ranks a 1-D array descending (higher is better) with 1-based dense ranks by default", () => {
     const result = computeRankedScores(np.array([30, 10, 20, 10]));
+
+    expect(result.tolist()).toEqual([1, 3, 2, 3]);
+  });
+
+  it("ranks a 1-D array ascending when higherRawScoreIsBetter is false", () => {
+    const result = computeRankedScores(np.array([30, 10, 20, 10]), false);
 
     expect(result.tolist()).toEqual([3, 1, 2, 1]);
   });
@@ -19,15 +25,15 @@ describe("computeRankedScores", () => {
     );
 
     expect(result.tolist()).toEqual([
-      [2, 1, 2, 1],
       [1, 2, 1, 2],
+      [2, 1, 2, 1],
     ]);
   });
 
   it("assigns the same rank to tied values", () => {
     const result = computeRankedScores(np.array([10, 10, 20]));
 
-    expect(result.tolist()).toEqual([1, 1, 2]);
+    expect(result.tolist()).toEqual([2, 2, 1]);
   });
 
   it("returns an empty array for an empty 1-D input", () => {
