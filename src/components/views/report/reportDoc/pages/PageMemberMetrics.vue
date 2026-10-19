@@ -195,9 +195,10 @@ function buildChip(label, key, source) {
     };
 }
 
-// Flat, wrap-friendly list of metric chips (Moreno indices then SNA centralities).
+// Metric chips grouped by row (Moreno indices then SNA centralities). Each row
+// holds six chips so the page lays out exactly six metrics per line.
 const metricChips = computed(() =>
-    METRIC_ROWS.flatMap((row) =>
+    METRIC_ROWS.map((row) =>
         row.map(({ label, key, source }) => buildChip(label, key, source)),
     ),
 );
@@ -288,43 +289,49 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[10pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[10pt] font-bold uppercase tracking-[0.08em] text-muted"
                             >
                                 Metriche
                             </h3>
                         </header>
 
-                        <div class="flex flex-wrap gap-[1mm]">
-                            <span
-                                v-for="chip in metricChips"
-                                :key="chip.label"
-                                class="inline-flex w-[24mm] shrink-0 items-center justify-between gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                        <div class="flex flex-col gap-[1mm]">
+                            <div
+                                v-for="(row, rowIndex) in metricChips"
+                                :key="rowIndex"
+                                class="flex gap-[1mm]"
                             >
                                 <span
-                                    class="flex min-w-0 items-center gap-[1mm]"
+                                    v-for="chip in row"
+                                    :key="chip.label"
+                                    class="flex flex-1 items-center justify-between gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                                 >
                                     <span
-                                        class="font-mono text-[9pt] font-medium text-muted"
-                                        >{{ chip.label }}</span
+                                        class="flex min-w-0 items-center gap-[1mm]"
                                     >
+                                        <span
+                                            class="font-mono text-[9pt] font-medium text-muted"
+                                            >{{ chip.label }}</span
+                                        >
+                                        <span
+                                            class="font-mono text-[7.5pt] font-semibold text-ink"
+                                            >{{ formatValue(chip.raw) }}</span
+                                        >
+                                    </span>
                                     <span
-                                        class="font-mono text-[7.5pt] font-semibold text-ink"
-                                        >{{ formatValue(chip.raw) }}</span
+                                        class="inline-flex shrink-0 items-center gap-[0.4mm] rounded bg-gray-200 px-[1mm] py-[0.3mm] text-ink"
                                     >
+                                        <span
+                                            class="font-mono text-[9pt] font-bold leading-none"
+                                            >{{ chip.rank }}</span
+                                        >
+                                        <span
+                                            class="font-mono text-[5.5pt] leading-none text-muted"
+                                            >{{ chip.maxRank }}</span
+                                        >
+                                    </span>
                                 </span>
-                                <span
-                                    class="inline-flex shrink-0 items-center gap-[0.4mm] rounded bg-gray-200 px-[1mm] py-[0.3mm] text-ink"
-                                >
-                                    <span
-                                        class="font-mono text-[9pt] font-bold leading-none"
-                                        >{{ chip.rank }}</span
-                                    >
-                                    <span
-                                        class="font-mono text-[5.5pt] leading-none text-muted"
-                                        >{{ chip.maxRank }}</span
-                                    >
-                                </span>
-                            </span>
+                            </div>
                         </div>
                     </section>
 
@@ -334,16 +341,16 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
                             >
                                 Relazioni
                             </h3>
                         </header>
-                        <div class="flex flex-wrap gap-[1mm]">
+                        <div class="flex gap-[1mm]">
                             <span
                                 v-for="item in edgeShares"
                                 :key="item.key"
-                                class="inline-flex w-[24mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                                class="flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                             >
                                 <span
                                     class="font-mono text-[9pt] font-medium text-muted"
@@ -363,16 +370,16 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
                             >
                                 Componenti
                             </h3>
                         </header>
-                        <div class="flex flex-wrap gap-[1mm]">
+                        <div class="flex gap-[1mm]">
                             <span
                                 v-for="item in componentShares"
                                 :key="item.key"
-                                class="inline-flex w-[24mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                                class="flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                             >
                                 <span
                                     class="font-mono text-[9pt] font-medium text-muted"
@@ -381,6 +388,20 @@ function formatShare(value) {
                                 <span
                                     class="font-mono text-[7.5pt] font-semibold leading-none text-ink"
                                     >{{ formatShare(item.value) }}</span
+                                >
+                            </span>
+                            <span
+                                v-if="componentShares.length"
+                                class="invisible flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                                aria-hidden="true"
+                            >
+                                <span
+                                    class="font-mono text-[9pt] font-medium text-muted"
+                                    >{{ componentShares[componentShares.length - 1].label }}</span
+                                >
+                                <span
+                                    class="font-mono text-[7.5pt] font-semibold leading-none text-ink"
+                                    >{{ formatShare(componentShares[componentShares.length - 1].value) }}</span
                                 >
                             </span>
                         </div>
@@ -392,7 +413,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
                             >
                                 Stato sociometrico
                             </h3>
