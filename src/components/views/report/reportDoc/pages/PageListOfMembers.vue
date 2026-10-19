@@ -51,7 +51,7 @@ const columns = computed(() => {
                     <ul
                         v-for="(column, i) in columns"
                         :key="i"
-                        class="flex-1"
+                        class="min-w-0 flex-1"
                     >
                         <li
                             v-for="member in column"
