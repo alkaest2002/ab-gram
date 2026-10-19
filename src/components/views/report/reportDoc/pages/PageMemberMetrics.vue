@@ -259,7 +259,7 @@ function formatShare(value) {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2 class="text-[16pt] leading-none">
+            <h2 class="text-[16pt] truncate">
                 Membro {{ props.member.id }}
                 <span class="text-muted"
                     >— {{ props.member.name }}</span
