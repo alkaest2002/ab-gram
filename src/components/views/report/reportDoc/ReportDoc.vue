@@ -14,6 +14,7 @@ import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageS
 import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents.vue";
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes.vue";
 import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics.vue";
+import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary.vue";
 
 // --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
@@ -96,5 +97,6 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :edge-types="reportData.analysisData?.edgeTypes ?? {}"
             :components="reportData.analysisData?.snaLikesComponents ?? {}"
         />
+        <PageGlossary />
     </div>
 </template>
