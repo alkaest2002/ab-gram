@@ -100,7 +100,7 @@ function toDisplayEdges(edges) {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2 class="text-[16pt] leading-none">Tipi di relazione</h2>
+            <h2 class="text-[16pt]">Tipi di relazione</h2>
         </template>
 
         <template #default>

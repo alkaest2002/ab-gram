@@ -54,7 +54,7 @@ const columns = computed(() => {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2 class="text-[16pt] leading-none">Scelte e rifiuti</h2>
+            <h2 class="text-[16pt]">Scelte e rifiuti</h2>
         </template>
 
         <template #default>

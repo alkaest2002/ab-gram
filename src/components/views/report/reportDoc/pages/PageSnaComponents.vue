@@ -68,7 +68,7 @@ const categories = computed(() =>
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2 class="text-[16pt] leading-none">{{ config.pageTitle }}</h2>
+            <h2 class="text-[16pt]">{{ config.pageTitle }}</h2>
         </template>
 
         <template #default>

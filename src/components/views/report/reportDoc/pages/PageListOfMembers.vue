@@ -42,7 +42,7 @@ const columns = computed(() => {
 <template>
     <BasePage>
         <template #pageTitle>
-            <h2 class="text-[16pt] leading-none">Elenco dei {{ members.length }} membri</h2>
+            <h2 class="text-[16pt]">Elenco dei {{ members.length }} membri</h2>
         </template>
 
         <template #default>
@@ -63,7 +63,7 @@ const columns = computed(() => {
                             >
                                 {{ member.id }}
                             </span>
-                            <span class="text-ink">{{ member.name }}</span>
+                            <span class="min-w-0 truncate text-ink">{{ member.name }}</span>
                         </li>
                     </ul>
                 </div>
