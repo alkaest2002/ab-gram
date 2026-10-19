@@ -210,7 +210,8 @@ const edgeShares = (() => {
 // `memberInComponents` is keyed by member id and holds a 0-1 presence fraction
 // per component category.
 const componentShares = (() => {
-    const shares = props.components?.memberInComponents?.[props.member.id] ?? {};
+    const shares =
+        props.components?.memberInComponents?.[props.member.id] ?? {};
     return COMPONENT_CONFIG.map(({ key, label }) => ({
         key,
         label,
@@ -257,7 +258,8 @@ function formatShare(value) {
     <BasePage>
         <template #pageTitle>
             <h2 class="text-[16pt] truncate">
-                <span class="text-muted">Membro {{ props.member.id }}  |</span> {{ props.member.name }}
+                <span class="text-muted">Membro {{ props.member.id }} |</span>
+                {{ props.member.name }}
             </h2>
         </template>
 
@@ -273,14 +275,13 @@ function formatShare(value) {
 
                 <!-- BOTTOM: four stacked rows. -->
                 <div class="bottom-band flex flex-col gap-y-[4mm]">
-
                     <!-- Row 1: metrics. -->
                     <section class="min-w-0">
                         <header
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[10pt] font-bold uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[10pt] font-bold uppercase tracking-[0.08em]"
                             >
                                 Metriche
                             </h3>
@@ -305,21 +306,23 @@ function formatShare(value) {
                                             >{{ chip.label }}</span
                                         >
                                         <span
-                                            class="font-mono text-[7.5pt] font-semibold text-ink"
+                                            class="font-mono text-[7.5pt] font-semibold"
                                             >{{ formatValue(chip.raw) }}</span
                                         >
                                     </span>
                                     <span
-                                        class="inline-flex shrink-0 items-center gap-[0.4mm] rounded bg-gray-200 px-[1mm] py-[0.3mm] text-ink"
+                                        class="flex bg-gray-200 px-[2mm] py-[.5mm] rounded"
                                     >
-                                        <span
-                                            class="font-mono text-[9pt] font-bold leading-none"
-                                            >{{ chip.rank }}</span
-                                        >
-                                        <span
-                                            class="font-mono text-[5.5pt] leading-none text-muted"
-                                            >{{ chip.maxRank }}</span
-                                        >
+                                        <span class="flex grow justify-center items-center gap-2">
+                                            <span
+                                                class="font-mono text-[9pt] font-bold leading-none"
+                                                >{{ chip.rank }}</span
+                                            >
+                                            <span
+                                                class="font-mono text-[7pt] leading-none text-muted"
+                                                >{{ chip.maxRank }}</span
+                                            >
+                                        </span>
                                     </span>
                                 </span>
                             </div>
@@ -332,7 +335,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
                             >
                                 Relazioni
                             </h3>
@@ -348,7 +351,7 @@ function formatShare(value) {
                                     >{{ item.label }}</span
                                 >
                                 <span
-                                    class="font-mono text-[9pt] font-semibold leading-none text-ink"
+                                    class="font-mono text-[9pt] font-semibold leading-none"
                                     >{{ formatShare(item.value) }}</span
                                 >
                             </span>
@@ -377,7 +380,7 @@ function formatShare(value) {
                                     >{{ item.label }}</span
                                 >
                                 <span
-                                    class="font-mono text-[7.5pt] font-semibold leading-none text-ink"
+                                    class="font-mono text-[9pt] font-semibold leading-none"
                                     >{{ formatShare(item.value) }}</span
                                 >
                             </span>
@@ -388,11 +391,21 @@ function formatShare(value) {
                             >
                                 <span
                                     class="font-mono text-[9pt] font-medium text-muted"
-                                    >{{ componentShares[componentShares.length - 1].label }}</span
+                                    >{{
+                                        componentShares[
+                                            componentShares.length - 1
+                                        ].label
+                                    }}</span
                                 >
                                 <span
-                                    class="font-mono text-[7.5pt] font-semibold leading-none text-ink"
-                                    >{{ formatShare(componentShares[componentShares.length - 1].value) }}</span
+                                    class="font-mono text-[7.5pt] font-semibold leading-none"
+                                    >{{
+                                        formatShare(
+                                            componentShares[
+                                                componentShares.length - 1
+                                            ].value,
+                                        )
+                                    }}</span
                                 >
                             </span>
                         </div>
@@ -404,20 +417,24 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
                             >
                                 Stato sociometrico
                             </h3>
                         </header>
 
-                        <div
-                            class="flex items-center gap-[2.5mm]"
-                        >
+                        <div class="flex items-center gap-[2.5mm]">
                             <div class="min-w-0">
-                                <p
-                                    class="font-display leading-none"
-                                >
-                                    <span class="font-medium text-[10pt]" :class="status.tone.text">{{ status.label }}</span> &middot; <span class="text-[10pt]">{{ status.description }}</span>
+                                <p class="font-display leading-none">
+                                    <span
+                                        class="font-medium text-[10pt]"
+                                        :class="status.tone.text"
+                                        >{{ status.label }}</span
+                                    >
+                                    &middot;
+                                    <span class="text-[10pt]">{{
+                                        status.description
+                                    }}</span>
                                 </p>
                             </div>
                         </div>
