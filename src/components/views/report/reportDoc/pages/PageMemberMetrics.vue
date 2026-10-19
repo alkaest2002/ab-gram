@@ -150,14 +150,11 @@ const STATUS_TONES = {
 };
 
 // --- Computed -----------
-const memberId = computed(() => props.member?.id ?? null);
-const memberName = computed(() => props.member?.name ?? "");
 
 // Row index of this member inside a metric object's `ids` array.
 const memberIndexIn = (metrics) => {
-    const id = memberId.value;
-    if (id == null) return -1;
-    return (metrics?.ids ?? []).indexOf(id);
+    if (props.member.id == null) return -1;
+    return (metrics?.ids ?? []).indexOf(props.member.id);
 };
 
 // Column index of a metric key inside a metric object's `metrics` array.
@@ -205,7 +202,7 @@ const metricChips = computed(() =>
 
 // `memberInEdges` is keyed by member id and holds a 0-1 share per edge type.
 const edgeShares = computed(() => {
-    const shares = props.edgeTypes?.memberInEdges?.[memberId.value] ?? {};
+    const shares = props.edgeTypes?.memberInEdges?.[props.member.id] ?? {};
     return EDGE_TYPE_CONFIG.map(({ key, label }) => ({
         key,
         label,
@@ -216,7 +213,7 @@ const edgeShares = computed(() => {
 // `memberInComponents` is keyed by member id and holds a 0-1 presence fraction
 // per component category.
 const componentShares = computed(() => {
-    const shares = props.components?.memberInComponents?.[memberId.value] ?? {};
+    const shares = props.components?.memberInComponents?.[props.member.id] ?? {};
     return COMPONENT_CONFIG.map(({ key, label }) => ({
         key,
         label,
@@ -263,9 +260,9 @@ function formatShare(value) {
     <BasePage>
         <template #pageTitle>
             <h2 class="text-[16pt] leading-none">
-                Membro {{ memberId }}
-                <span v-if="memberName" class="text-muted"
-                    >— {{ memberName }}</span
+                Membro {{ props.member.id }}
+                <span class="text-muted"
+                    >— {{ props.member.name }}</span
                 >
             </h2>
         </template>
