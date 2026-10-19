@@ -3,19 +3,22 @@ import * as np from "numpy-ts";
 /**
  * Compute dense ranks for every column of a matrix.
  *
- * Each column is ranked independently against its sorted unique values: the
- * smallest value gets rank 1, ties share the same rank, and the next distinct
- * value continues at the following rank. For example `[30, 10, 20, 10]` becomes
- * `[3, 1, 2, 1]`.
+ * Each column is ranked independently against its sorted unique values: ties
+ * share the same rank, and the next distinct value continues at the following
+ * rank. When `higherRawScoreIsBetter` is true the largest value gets rank 1
+ * (for example `[30, 10, 20, 10]` becomes `[1, 3, 2, 3]`); otherwise the
+ * smallest value gets rank 1 (the same input becomes `[3, 1, 2, 1]`).
  *
  * A 1-D array is treated as a single column and returned as a 1-D array.
  *
  * @param {import("numpy-ts").NDArray} scores - A 1-D or 2-D array whose columns are ranked.
+ * @param {boolean} [higherRawScoreIsBetter=true] - When true, higher raw scores
+ *   receive better (lower-numbered) ranks; when false, lower raw scores do.
  * @returns {import("numpy-ts").NDArray} Same shape as `scores`, with each column
- *   replaced by its 1-based ascending dense ranks.
+ *   replaced by its 1-based dense ranks.
  * @throws {Error} When `scores` has more than 2 dimensions.
  */
-export const computeRankedScores = (scores) => {
+export const computeRankedScores = (scores, higherRawScoreIsBetter = true) => {
   // Throw if array with more than 2 dimensions.
   if (scores.ndim > 2) {
     throw new Error(
@@ -47,8 +50,15 @@ export const computeRankedScores = (scores) => {
 
     // `unique_inverse` returns the column's unique values sorted ascending and,
     // for each element, its 0-based index into that sorted list.
-    const { inverse_indices: inverse } = np.unique_inverse(column);
-    rankedColumns.push(np.add(inverse, 1));
+    const { values, inverse_indices: inverse } = np.unique_inverse(column);
+
+    // With higher-is-better, the largest value maps to rank 1; otherwise the
+    // smallest value does. Either way, ties share a rank.
+    rankedColumns.push(
+      higherRawScoreIsBetter
+        ? np.add(np.negative(inverse), values.size)
+        : np.add(inverse, 1),
+    );
   }
 
   // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
