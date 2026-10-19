@@ -39,17 +39,17 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaDislikesPlots");
 
-    // Nine members flow through every step, and the roster contains both likes
+    // Eleven members flow through every step, and the roster contains both likes
     // and dislikes, so both SNA pipelines are populated.
-    expect(result.snaLikesGroupLevelMetrics.rawValuesById[0][0]).toBe(9);
+    expect(result.snaLikesGroupLevelMetrics.rawValuesById[0][0]).toBe(11);
     expect(result.snaDislikesGroupLevelMetrics.ids).toEqual(["dislikes"]);
     expect(result.snaLikesIndividualLevelMetric.ids).toEqual([
-      "A", "B", "C", "D", "E", "F", "G", "H", "I",
+      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
     ]);
     expect(result.snaDislikesIndividualLevelMetric.ids).toEqual([
-      "A", "B", "C", "D", "E", "F", "G", "H", "I",
+      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
     ]);
-    expect(result.morenoEgoGraphs).toHaveLength(9);
+    expect(result.morenoEgoGraphs).toHaveLength(11);
     expect(result.snaLikesPlots).toHaveLength(1);
     expect(result.snaLikesPlots[0].typeOfPreference).toBe("likes");
     expect(result.snaLikesPlots[0].accentColor).toBe("#0000FF");

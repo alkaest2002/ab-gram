@@ -5,7 +5,7 @@ import { MAX_MEMBERS_COUNT, MIN_MEMBERS_COUNT } from "@/utils/sociogram/sociogra
 import { getHogwartsMembers, getHogwartsSnapshot } from "../../fixtures/hogwarts.js";
 
 /**
- * The Hogwarts demo roster is a valid, complete snapshot: nine members, unique
+ * The Hogwarts demo roster is a valid, complete snapshot: eleven members, unique
  * ids, every like/dislike referencing an existing member, and each member
  * resolving both preference categories (via entries or the "no answer" flags).
  * Tests derive their failing cases from this base by mutating one field.
