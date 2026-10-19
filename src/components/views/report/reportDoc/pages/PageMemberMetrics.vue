@@ -260,10 +260,7 @@ function formatShare(value) {
     <BasePage>
         <template #pageTitle>
             <h2 class="text-[16pt] truncate">
-                Membro {{ props.member.id }}
-                <span class="text-muted"
-                    >— {{ props.member.name }}</span
-                >
+                <span class="text-muted">Membro {{ props.member.id }}  |</span> {{ props.member.name }}
             </h2>
         </template>
 
