@@ -36,28 +36,28 @@ const props = defineProps({
 // key so a chip can read "gp 10 (1/10)" while the data is keyed "gp"/"PageRank".
 const METRIC_ROWS = [
     [
-        { label: "gp", key: "gp", source: "moreno" },
-        { label: "rp", key: "rp", source: "moreno" },
-        { label: "mp", key: "mp", source: "moreno" },
-        { label: "gr", key: "gr", source: "moreno" },
-        { label: "rr", key: "rr", source: "moreno" },
-        { label: "mr", key: "mr", source: "moreno" },
+        { label: "GP", key: "gp", source: "moreno" },
+        { label: "RP", key: "rp", source: "moreno" },
+        { label: "MP", key: "mp", source: "moreno" },
+        { label: "GR", key: "gr", source: "moreno" },
+        { label: "RR", key: "rr", source: "moreno" },
+        { label: "MR", key: "mr", source: "moreno" },
     ],
     [
-        { label: "im", key: "im", source: "moreno" },
-        { label: "bl", key: "bl", source: "moreno" },
-        { label: "ei", key: "ei", source: "moreno" },
-        { label: "or", key: "or", source: "moreno" },
-        { label: "ai", key: "ai", source: "moreno" },
-        { label: "ii", key: "ii", source: "moreno" },
+        { label: "IM", key: "im", source: "moreno" },
+        { label: "BL", key: "bl", source: "moreno" },
+        { label: "EI", key: "ei", source: "moreno" },
+        { label: "OR", key: "or", source: "moreno" },
+        { label: "AI", key: "ai", source: "moreno" },
+        { label: "II", key: "ii", source: "moreno" },
     ],
     [
-        { label: "dg", key: "degreeCentrality", source: "sna" },
-        { label: "cl", key: "closenessCentrality", source: "sna" },
-        { label: "bt", key: "betweennessCentrality", source: "sna" },
-        { label: "pk", key: "PageRank", source: "sna" },
-        { label: "ha", key: "hitsAuthority", source: "sna" },
-        { label: "hu", key: "hitsHub", source: "sna" },
+        { label: "DG", key: "degreeCentrality", source: "sna" },
+        { label: "CL", key: "closenessCentrality", source: "sna" },
+        { label: "BT", key: "betweennessCentrality", source: "sna" },
+        { label: "PK", key: "PageRank", source: "sna" },
+        { label: "HA", key: "hitsAuthority", source: "sna" },
+        { label: "HU", key: "hitsHub", source: "sna" },
     ],
 ];
 
@@ -73,11 +73,11 @@ const EDGE_TYPE_CONFIG = [
 ];
 
 const COMPONENT_CONFIG = [
-    { key: "dyads", label: "dyd" },
-    { key: "cliques", label: "clq" },
-    { key: "weakComponents", label: "wcc" },
-    { key: "strongComponents", label: "scc" },
-    { key: "strongComponentsWithReciprocalEdges", label: "scm" },
+    { key: "dyads", label: "DYD" },
+    { key: "cliques", label: "CLQ" },
+    { key: "weakComponents", label: "WCC" },
+    { key: "strongComponents", label: "SCC" },
+    { key: "strongComponentsWithReciprocalEdges", label: "SCM" },
 ];
 
 // Moreno's sociometric status codes (0-8) with an Italian label, a short reading
@@ -281,13 +281,14 @@ function formatShare(value) {
 
                 <!-- BOTTOM: four stacked rows. -->
                 <div class="bottom-band flex flex-col gap-y-[4mm]">
+
                     <!-- Row 1: metrics. -->
                     <section class="min-w-0">
                         <header
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[10pt] font-medium uppercase tracking-[0.08em] text-muted"
                             >
                                 Metriche
                             </h3>
@@ -300,11 +301,11 @@ function formatShare(value) {
                                 class="inline-flex w-[24mm] shrink-0 items-center justify-between gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                             >
                                 <span
-                                    class="flex min-w-0 items-baseline gap-[1mm]"
+                                    class="flex min-w-0 items-center gap-[1mm]"
                                 >
                                     <span
-                                        class="font-mono text-[6.5pt] font-medium text-muted"
-                                        >{{ chip.label.toUpperCase() }}</span
+                                        class="font-mono text-[9pt] font-medium text-muted"
+                                        >{{ chip.label }}</span
                                     >
                                     <span
                                         class="font-mono text-[7.5pt] font-semibold text-ink"
@@ -312,15 +313,15 @@ function formatShare(value) {
                                     >
                                 </span>
                                 <span
-                                    class="inline-flex shrink-0 items-baseline gap-[0.4mm] rounded bg-accent px-[1mm] py-[0.3mm] text-white"
+                                    class="inline-flex shrink-0 items-center gap-[0.4mm] rounded bg-gray-200 px-[1mm] py-[0.3mm] text-ink"
                                 >
                                     <span
-                                        class="font-mono text-[7.5pt] font-bold leading-none"
+                                        class="font-mono text-[9pt] font-bold leading-none"
                                         >{{ chip.rank }}</span
                                     >
                                     <span
-                                        class="font-mono text-[5.5pt] leading-none opacity-80"
-                                        >/{{ chip.maxRank }}</span
+                                        class="font-mono text-[5.5pt] leading-none text-muted"
+                                        >{{ chip.maxRank }}</span
                                     >
                                 </span>
                             </span>
@@ -333,7 +334,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
                             >
                                 Relazioni
                             </h3>
@@ -342,14 +343,14 @@ function formatShare(value) {
                             <span
                                 v-for="item in edgeShares"
                                 :key="item.key"
-                                class="inline-flex w-[16mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                                class="inline-flex w-[24mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                             >
                                 <span
-                                    class="font-mono text-[6.5pt] font-medium text-muted"
+                                    class="font-mono text-[9pt] font-medium text-muted"
                                     >{{ item.label }}</span
                                 >
                                 <span
-                                    class="rounded bg-ink px-[1mm] py-[0.3mm] font-mono text-[7pt] font-semibold leading-none text-white"
+                                    class="font-mono text-[9pt] font-semibold leading-none text-ink"
                                     >{{ formatShare(item.value) }}</span
                                 >
                             </span>
@@ -362,7 +363,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
                             >
                                 Componenti
                             </h3>
@@ -371,14 +372,14 @@ function formatShare(value) {
                             <span
                                 v-for="item in componentShares"
                                 :key="item.key"
-                                class="inline-flex w-[16mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                                class="inline-flex w-[24mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                             >
                                 <span
-                                    class="font-mono text-[6.5pt] font-medium text-muted"
+                                    class="font-mono text-[9pt] font-medium text-muted"
                                     >{{ item.label }}</span
                                 >
                                 <span
-                                    class="rounded bg-accent px-[1mm] py-[0.3mm] font-mono text-[7pt] font-semibold leading-none text-white"
+                                    class="font-mono text-[7.5pt] font-semibold leading-none text-ink"
                                     >{{ formatShare(item.value) }}</span
                                 >
                             </span>
@@ -391,7 +392,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[7.5pt] font-medium uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-medium uppercase tracking-[0.08em] text-muted"
                             >
                                 Stato sociometrico
                             </h3>

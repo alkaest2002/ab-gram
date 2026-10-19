@@ -18,7 +18,7 @@
   {
     "id": "C",
     "name": "Weasley, Ron",
-    "likes": ["A", "B"],
+    "likes": ["A", "B", "J", "K"],
     "dislikes": ["F"],
     "noLikes": false,
     "noDislikes": false
@@ -43,7 +43,7 @@
     "id": "F",
     "name": "Malfoy, Draco",
     "likes": ["G", "I"],
-    "dislikes": ["A", "B", "C", "D"],
+    "dislikes": ["A", "B", "C", "D", "J", "K"],
     "noLikes": false,
     "noDislikes": false
   },
@@ -51,7 +51,7 @@
     "id": "G",
     "name": "Crabbe, Vincent",
     "likes": ["F", "H", "I"],
-    "dislikes": ["A", "B"],
+    "dislikes": ["A", "B", "J", "K"],
     "noLikes": false,
     "noDislikes": false
   },
@@ -59,7 +59,7 @@
     "id": "H",
     "name": "Goyle, Gregory",
     "likes": ["F", "G"],
-    "dislikes": ["A", "D"],
+    "dislikes": ["A", "D", "J", "K"],
     "noLikes": false,
     "noDislikes": false
   },
@@ -70,5 +70,21 @@
     "dislikes": [],
     "noLikes": false,
     "noDislikes": true
+  },
+  {
+    "id": "J",
+    "name": "Weasley, Fred",
+    "likes": ["K", "A", "B", "C", "D", "E"],
+    "dislikes": ["F", "G", "H"],
+    "noLikes": false,
+    "noDislikes": false
+  },
+  {
+    "id": "K",
+    "name": "Weasley, George",
+    "likes": ["J", "A", "B", "C", "D", "E"],
+    "dislikes": ["F", "G", "H"],
+    "noLikes": false,
+    "noDislikes": false
   }
 ]
