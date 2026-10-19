@@ -364,7 +364,7 @@ function formatShare(value) {
                             class="mb-[2mm] border-b border-line pb-[0.5mm]"
                         >
                             <h3
-                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em] text-muted"
+                                class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
                             >
                                 Componenti
                             </h3>
