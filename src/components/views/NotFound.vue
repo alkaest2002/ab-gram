@@ -6,7 +6,7 @@
 // --- Stores -------------
 
 // --- Components ---------
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 
 // --- Composables --------
 
@@ -26,9 +26,11 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 </script>
 
 <template>
-    <div class="page">
-        <h1>Pagina non trovata</h1>
-        <p>L'indirizzo richiesto non esiste o è stato spostato.</p>
-        <BaseButton to="/">Torna alla home</BaseButton>
-    </div>
+    <BaseNotify to="/">
+        <template #title> Pagina non trovata </template>
+        <template #text>
+            L'indirizzo richiesto non esiste o è stato spostato.
+        </template>
+        <template #buttonLabel> Torna alla home </template>
+    </BaseNotify>
 </template>
