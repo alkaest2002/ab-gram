@@ -78,25 +78,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 
             <section class="space-y-3">
                 <h2 id="servizi-terze-parti" class="scroll-mt-24">4. Servizi di terze parti</h2>
-                <h3 id="google-fonts" class="scroll-mt-24">4.1 Google Fonts</h3>
-                <p>
-                    Il sito utilizza i caratteri tipografici di Google Fonts. Al
-                    caricamento di una pagina, il browser dell'utente si collega
-                    ai server di Google per scaricare i font e può trasmettere a
-                    Google dati tecnici quali l'indirizzo IP e le
-                    caratteristiche del browser. Il trattamento è disciplinato
-                    dalla
-                    <a
-                        href="https://policies.google.com/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        informativa sulla privacy di Google
-                    </a>
-                    e può comportare il trasferimento dei dati al di fuori dello
-                    Spazio economico europeo.
-                </p>
-                <h3 id="github-pages" class="scroll-mt-24">4.2 GitHub Pages (hosting)</h3>
+                <h3 id="github-pages" class="scroll-mt-24">4.1 GitHub Pages (hosting)</h3>
                 <p>
                     Il sito è ospitato sulla piattaforma GitHub Pages. GitHub può
                     trattare dati tecnici (ad esempio l'indirizzo IP o i log di

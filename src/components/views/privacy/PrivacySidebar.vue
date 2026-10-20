@@ -18,8 +18,7 @@ const sections = [
         id: "servizi-terze-parti",
         label: "4. Servizi di terze parti",
         children: [
-            { id: "google-fonts", label: "4.1 Google Fonts" },
-            { id: "github-pages", label: "4.2 GitHub Pages (hosting)" },
+            { id: "github-pages", label: "4.1 GitHub Pages (hosting)" },
         ],
     },
     { id: "cookie", label: "5. Cookie" },
