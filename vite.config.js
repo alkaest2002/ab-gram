@@ -1,4 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
+import { copyFileSync } from "node:fs";
+import path from "node:path";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -92,6 +94,30 @@ function routerLinks(md) {
   };
 }
 
+// GitHub Pages has no SPA rewrite rules, so reloading a deep link (e.g.
+// /docs/introduzione/…) 404s before the app can boot. GitHub serves a root
+// `404.html` for any missing path while keeping the original URL in the
+// address bar, so an exact copy of `index.html` lets Vue Router read that URL
+// and render the right route. Rebuild it on every build to keep the hashed
+// asset references in sync.
+function spa404() {
+  let outDir = "dist";
+
+  return {
+    name: "spa-404",
+    apply: "build",
+    configResolved(config) {
+      outDir = config.build.outDir;
+    },
+    closeBundle() {
+      copyFileSync(
+        path.resolve(outDir, "index.html"),
+        path.resolve(outDir, "404.html"),
+      );
+    },
+  };
+}
+
 export default defineConfig(({ command }) => ({
   // GitHub Pages serves the production site from /<repo>/
   // (https://alkaest2002.github.io/ab-gram/), so assets and router history must be
@@ -109,6 +135,7 @@ export default defineConfig(({ command }) => ({
         routerLinks(md);
       },
     }),
+    spa404(),
   ],
   resolve: {
     alias: {
