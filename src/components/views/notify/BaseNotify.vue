@@ -6,7 +6,6 @@ import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
 
 // --- Props --------------
 defineProps({
-    /** Where the button links to; passed down by the router. */
     to: { type: [String, Object], default: null },
 });
 
