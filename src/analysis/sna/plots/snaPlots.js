@@ -4,9 +4,6 @@ import forceAtlas2 from 'graphology-layout-forceatlas2';
 // CONFIGURATION
 //////////////////////////////////////////////////////////////////////////////////
 
-// Number of ForceAtlas2 iterations run to settle the initial node coordinates.
-const ITERATIONS = 300;
-
 // Canvas and drawing constants, all expressed in SVG user units (the viewBox).
 const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 600;
@@ -23,7 +20,7 @@ const NON_MUTUAL_EDGE_WIDTH = 1;
 const MUTUAL_EDGE_WIDTH = 4;
 
 // Arrowhead: a light open chevron (no filled triangle), pointing at the target.
-const ARROW_SIZE = 6;
+const ARROW_SIZE = 5;
 const ARROW_STROKE_WIDTH = 1;
 
 // Spacing between consecutive isolated nodes, horizontally and vertically.
@@ -38,6 +35,31 @@ const ISOLATED_NODE_COLOR = "#000000";
 // Counter used to keep arrowhead marker ids unique when several plots are
 // embedded in the same document.
 let markerCounter = 0;
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// FORCEATLAS2 LAYOUT
+//////////////////////////////////////////////////////////////////////////////////
+
+// Number of ForceAtlas2 iterations run to settle the initial node coordinates.
+const ITERATIONS = 500;
+
+// Controls repulsion strength. Higher values push nodes further apart, giving a
+// more spread-out layout with clearer clusters; lower values give a denser, more
+// compact graph. Usually the first setting to tweak (raise it for larger graphs,
+// e.g. 2 to 10 or more).
+const SCALING_RATIO = .5;
+
+// Pulls every node toward the center of the layout. Without it, disconnected
+// components drift off to infinity. Higher values keep the graph compact and
+// centered, but too much squashes the structure and hides clusters.
+const GRAVITY = 1;
+
+// Changes how gravity scales: instead of weakening as nodes near the center,
+// the pull grows with distance from the center. Useful for keeping disconnected
+// components close together, but makes the layout more compact (so pair it with
+// a higher scalingRatio).
+const STRONG_GRAVITY_MODE = false;
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +275,14 @@ const buildIsolatedNodesPlot = (isolatedNodes) => {
 const buildPlot = (graph, accentColor) => {
   // Settle the random starting layout with ForceAtlas2. This updates each
   // node's `x`/`y` attributes in place.
-  forceAtlas2.assign(graph, { iterations: ITERATIONS });
+  forceAtlas2.assign(graph, {
+    iterations: ITERATIONS,
+    settings: {
+      scalingRatio: SCALING_RATIO,
+      gravity: GRAVITY,
+      strongGravityMode: STRONG_GRAVITY_MODE,
+    },
+  });
 
   // Split members: isolated nodes have no edge at all and are drawn in a
   // separate plot stacked below the connected graph.
