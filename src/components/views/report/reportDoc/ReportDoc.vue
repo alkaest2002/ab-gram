@@ -70,6 +70,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             type-of-sna="likes"
             :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
+            :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
         />
         <PageSnaComponents
             type-of-sna="likes"
@@ -80,6 +81,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             type-of-sna="dislikes"
             :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
+            :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
         />
         <PageSnaComponents
             v-if="!reportData.membersData.allMembersHaveNoDislikes"

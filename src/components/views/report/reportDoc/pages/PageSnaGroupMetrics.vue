@@ -19,6 +19,7 @@ const props = defineProps({
     },
     snaPlot: { type: Object, default: null },
     snaMetrics: { type: Object, default: () => ({}) },
+    morenoMetrics: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -36,6 +37,8 @@ const SNA_CONFIG = {
         mutualEdgeLabel: "Totale scelte reciproche effettuate",
         directedLegend: "Scelta non reciproca",
         mutualLegend: "Scelta reciproca",
+        morenoIndexKey: "cohesion",
+        morenoIndexLabel: "Indice di coesione",
     },
     dislikes: {
         accentColor: "#dc2626",
@@ -44,6 +47,8 @@ const SNA_CONFIG = {
         mutualEdgeLabel: "Totale rifiuti reciproci effettuati",
         directedLegend: "Rifiuto non reciproco",
         mutualLegend: "Rifiuto reciproco",
+        morenoIndexKey: "conflict",
+        morenoIndexLabel: "Indice di conflitto",
     },
 };
 
@@ -72,12 +77,29 @@ const metricRows = (() => {
     const keys = props.snaMetrics?.metrics ?? [];
     const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
 
-    return keys.map((key, index) => ({
+    const rows = keys.map((key, index) => ({
         key,
         label: METRIC_CONFIG[key]?.label ?? key,
         kind: METRIC_CONFIG[key]?.kind ?? "count",
         value: values[index] ?? 0,
     }));
+
+    // The Moreno group index that complements this preference type (cohesion
+    // for likes, conflict for dislikes) is appended as a final ratio row.
+    const morenoKeys = props.morenoMetrics?.metrics ?? [];
+    const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
+    const morenoIndex = morenoKeys.indexOf(config.morenoIndexKey);
+
+    if (morenoIndex !== -1) {
+        rows.push({
+            key: config.morenoIndexKey,
+            label: config.morenoIndexLabel,
+            kind: "ratio",
+            value: morenoValues[morenoIndex] ?? 0,
+        });
+    }
+
+    return rows;
 })();
 
 // --- Watchers -----------
