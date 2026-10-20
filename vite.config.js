@@ -92,10 +92,11 @@ function routerLinks(md) {
   };
 }
 
-export default defineConfig({
-  // GitHub Pages serves the site from /<repo>/ (https://alkaest2002.github.io/ab-gram/),
-  // so assets and router history must be rooted there, not at the domain root.
-  base: "/ab-gram/",
+export default defineConfig(({ command }) => ({
+  // GitHub Pages serves the production site from /<repo>/
+  // (https://alkaest2002.github.io/ab-gram/), so assets and router history must be
+  // rooted there when built. In dev we serve from the domain root instead.
+  base: command === "serve" ? "/" : "/ab-gram/",
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/],
@@ -114,4 +115,4 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-});
+}));
