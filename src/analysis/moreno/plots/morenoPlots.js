@@ -162,8 +162,8 @@ export const getNodePathsFor = (nodePaths, memberId) => nodePaths[memberId];
 //////////////////////////////////////////////////////////////////////////////////
 
 // Node circles: a fixed radius, with a label sized to fit inside.
-const NODE_RADIUS = 16;
-const LABEL_FONT_SIZE = 11;
+const NODE_RADIUS = 13;
+const LABEL_FONT_SIZE = 10;
 const NODE_STROKE_WIDTH = 2;
 
 // Nodes are drawn as white circles with a colored stroke; the label matches

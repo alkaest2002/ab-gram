@@ -15,15 +15,15 @@ const CANVAS_HEIGHT = 600;
 const PADDING = 48;
 
 // Node circles are "small": a fixed radius, with a label sized to fit inside.
-const NODE_RADIUS = 16;
-const LABEL_FONT_SIZE = 11;
+const NODE_RADIUS = 10;
+const LABEL_FONT_SIZE = 10;
 
 // Edge strokes: mutual edges are drawn thicker than non-mutual ones.
 const NON_MUTUAL_EDGE_WIDTH = 1;
 const MUTUAL_EDGE_WIDTH = 4;
 
 // Arrowhead: a light open chevron (no filled triangle), pointing at the target.
-const ARROW_SIZE = 8;
+const ARROW_SIZE = 6;
 const ARROW_STROKE_WIDTH = 1;
 
 // Spacing between consecutive isolated nodes, horizontally and vertically.
