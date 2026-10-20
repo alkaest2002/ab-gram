@@ -12,7 +12,7 @@ import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
 import Featurettes from "@/components/views/home/Featurettes.vue";
 
 //   -- From utils
-import { preloadWorker } from "@/utils/workerLoader";
+import { preloadReportWorker, preloadSnaPlotWorker } from "@/utils/worker";
 
 // --- Props --------------
 
@@ -34,11 +34,13 @@ import { preloadWorker } from "@/utils/workerLoader";
 onMounted(() => {
     if ("requestIdleCallback" in window) {
         requestIdleCallback(() => {
-            preloadWorker().catch((err) => {
-                console.warn(
-                    "Worker preload failed, will load on-demand:",
-                    err,
-                );
+            [preloadReportWorker, preloadSnaPlotWorker].forEach((preload) => {
+                preload().catch((err) => {
+                    console.warn(
+                        "Worker preload failed, will load on-demand:",
+                        err,
+                    );
+                });
             });
         });
     }
