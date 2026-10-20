@@ -20,6 +20,7 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+const emit = defineEmits(["regenerate-sna-plot"]);
 
 // --- Routers ------------
 
@@ -73,6 +74,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
             :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+            @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
         />
         <PageSnaComponents
             type-of-sna="likes"
@@ -85,6 +87,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
             :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
             :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+            @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
         />
         <PageSnaComponents
             v-if="!reportData.membersData.allMembersHaveNoDislikes"

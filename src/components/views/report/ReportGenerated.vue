@@ -47,11 +47,14 @@ const reportData = computed(() => ({
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function handleRegenerateSnaPlot(plot) {
+    reportStore.setSnaPlot(plot);
+}
 </script>
 
 <template>
     <div>
-        <ReportDoc :report-data="reportData" />
+        <ReportDoc :report-data="reportData" @regenerate-sna-plot="handleRegenerateSnaPlot" />
         <ReportCommandBar :report-data="reportData" />
     </div>
 </template>

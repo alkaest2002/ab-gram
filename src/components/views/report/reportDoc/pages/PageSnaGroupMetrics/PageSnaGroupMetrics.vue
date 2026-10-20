@@ -26,6 +26,7 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+const emit = defineEmits(["regenerate-sna-plot"]);
 
 // --- Routers ------------
 
@@ -199,7 +200,16 @@ function confirmRegenerate() {
             return;
         }
 
-        svg.value = data?.svg ?? svg.value;
+        const regeneratedSvg = data?.svg ?? svg.value;
+        svg.value = regeneratedSvg;
+
+        // Bubbled up to `ReportGenerated`, which persists the regenerated plot
+        // in the report store so it survives re-renders and print/export.
+        emit("regenerate-sna-plot", {
+            typeOfPreference: props.typeOfSna,
+            accentColor,
+            svg: regeneratedSvg,
+        });
         isModalOpen.value = false;
     };
 

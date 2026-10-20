@@ -67,6 +67,18 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesPlots.value = value.snaDislikesPlots ?? [];
   }
 
+  /**
+   * Replace the regenerated SNA plot for a single preference type.
+   * @param {{typeOfPreference: string, accentColor: string, svg: string}} plot - The regenerated plot.
+   */
+  function setSnaPlot(plot) {
+    if (plot.typeOfPreference === "likes") {
+      snaLikesPlots.value = [plot];
+    } else if (plot.typeOfPreference === "dislikes") {
+      snaDislikesPlots.value = [plot];
+    }
+  }
+
   /** Reset the report store to its initial state. */
   function reset() {
     status.value = "idle";
@@ -100,6 +112,7 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesPlots,
     setStatus,
     setAnalysis,
+    setSnaPlot,
     reset,
   };
 });
