@@ -3,9 +3,6 @@
 //   -- From vue
 import { onMounted } from "vue";
 
-//   -- From vue-router
-import { RouterLink } from "vue-router";
-
 //   -- From components
 import DonationCard from "@/components/ui/AppCardDonate.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
