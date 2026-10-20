@@ -9,8 +9,8 @@ import { createSnaPlotWorker } from "@/utils/worker";
 //   -- From relative
 import BasePage from "../BasePage.vue";
 import SnaPlot from "./SnaPlot.vue";
-import SnaRegenerateModal from "./SnaRegenerateModal.vue";
-import SnaStats from "./SnaStats.vue";
+import SnaRegeneratePlotModal from "./SnaRegeneratePlotModal.vue";
+import SnaMetrics from "./SnaMetrics.vue";
 
 // --- Props --------------
 const props = defineProps({
@@ -263,12 +263,12 @@ onBeforeUnmount(() => {
                     :mutual-legend="config.mutualLegend"
                     @open-modal="openModal"
                 />
-                <SnaStats :rows="metricRows" :accent-color="accentColor" />
+                <SnaMetrics :rows="metricRows" :accent-color="accentColor" />
             </div>
 
             <!-- Regeneration modal: teleported to <body> by the component so it
                  escapes the fixed-height, overflow-hidden report page. -->
-            <SnaRegenerateModal
+            <SnaRegeneratePlotModal
                 :open="isModalOpen"
                 :regenerating="isRegenerating"
                 :error="error"
