@@ -48,12 +48,12 @@ const ITERATIONS = 500;
 // more spread-out layout with clearer clusters; lower values give a denser, more
 // compact graph. Usually the first setting to tweak (raise it for larger graphs,
 // e.g. 2 to 10 or more).
-const SCALING_RATIO = .5;
+const SCALING_RATIO = .6;
 
 // Pulls every node toward the center of the layout. Without it, disconnected
 // components drift off to infinity. Higher values keep the graph compact and
 // centered, but too much squashes the structure and hides clusters.
-const GRAVITY = 1;
+const GRAVITY = 1.1;
 
 // Changes how gravity scales: instead of weakening as nodes near the center,
 // the pull grows with distance from the center. Useful for keeping disconnected
