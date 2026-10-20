@@ -26,8 +26,8 @@ describe("createLikesGraph", () => {
   it("adds a directed edge from each member to each chosen member", () => {
     const graph = createLikesGraph(getHogwartsMembers(), "likes");
 
-    // The roster contains 36 directed likes in total.
-    expect(graph.size).toBe(36);
+    // The roster contains 37 directed likes in total.
+    expect(graph.size).toBe(37);
     expect(graph.hasDirectedEdge("A", "B")).toBe(true);
     expect(graph.hasDirectedEdge("A", "C")).toBe(true);
     expect(graph.hasDirectedEdge("A", "E")).toBe(true);
@@ -41,10 +41,10 @@ describe("createLikesGraph", () => {
   it("marks mutual edges with isMutual and one-way edges without", () => {
     const graph = createLikesGraph(getHogwartsMembers(), "likes");
 
-    // A and B like each other; A likes E but E does not like A back.
+    // A and B like each other, and A and E also like each other back.
     expect(graph.getEdgeAttribute("A", "B", "isMutual")).toBe(true);
     expect(graph.getEdgeAttribute("B", "A", "isMutual")).toBe(true);
-    expect(graph.getEdgeAttribute("A", "E", "isMutual")).toBe(false);
+    expect(graph.getEdgeAttribute("A", "E", "isMutual")).toBe(true);
   });
 
   it("builds an independent graph for the dislikes preference", () => {

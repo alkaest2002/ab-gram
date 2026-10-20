@@ -98,11 +98,11 @@ describe("getIndividualLevelMetrics", () => {
       [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2],
       [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2],
     ]);
-    // Ranks are column-wise: each metric column is ranked across members.
+    // Ranks are column-wise, with the highest raw score ranked first (1).
     expect(result.rankedValuesById).toEqual([
-      [3, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 3, 2],
-      [2, 1, 1, 1, 2, 1, 1, 2, 1, 2, 3, 2, 1],
-      [1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1],
+      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2],
+      [3, 1, 1, 1, 2, 1, 2, 2, 1, 2, 3, 3, 2],
     ]);
   });
 

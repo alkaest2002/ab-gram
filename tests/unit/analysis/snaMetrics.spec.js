@@ -119,8 +119,9 @@ describe("getIndividualLevelMetrics", () => {
       expect(row[degree]).toBeCloseTo(1 / 3, 10);
     }
 
-    // Ranks are column-wise: in-degree raw [1, 0, 0, 0] ranks to [2, 1, 1, 1].
-    expect(result.rankedValuesById.map((row) => row[inDegree])).toEqual([2, 1, 1, 1]);
+    // Ranks are column-wise, highest raw score first: in-degree raw [1, 0, 0, 0]
+    // ranks the central node as 1 and every leaf as 2.
+    expect(result.rankedValuesById.map((row) => row[inDegree])).toEqual([1, 2, 2, 2]);
   });
 
   it("reports zero rows for a degenerate single-node graph", () => {

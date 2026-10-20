@@ -171,9 +171,10 @@ describe("useSociogramValidateData (default)", () => {
 
   it("rejects a snapshot with duplicate member ids", () => {
     const snapshot = getHogwartsSnapshot();
-    // Luna (E) neither likes nor dislikes anyone with id "A", so the duplicate
-    // id is caught by the uniqueness check rather than the self-reference rule.
-    snapshot.members[4].id = "A";
+    // Luna (E) likes A, B, D and I but never references C, so changing her id
+    // to "C" duplicates Ron's id and is caught by the uniqueness check rather
+    // than the self-reference rule.
+    snapshot.members[4].id = "C";
 
     expectInvalid(
       validate(snapshot),
