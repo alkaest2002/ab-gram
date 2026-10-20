@@ -38,11 +38,15 @@ const emit = defineEmits([
 // `update:*`, so the parent container stays the single source of truth.
 const scalingRatio = computed({
     get: () => props.scalingRatio,
-    set: (value) => emit("update:scalingRatio", value),
+    // `v-model.number` leaves the raw string in place when the field is cleared
+    // (`looseToNumber` returns `""` for `NaN`), which would emit a String to a
+    // Number prop. Coerce back to a number so the parent always receives one;
+    // an empty field falls back to `0`, matching the input's `min="0"`.
+    set: (value) => emit("update:scalingRatio", Number(value) || 0),
 });
 const gravity = computed({
     get: () => props.gravity,
-    set: (value) => emit("update:gravity", value),
+    set: (value) => emit("update:gravity", Number(value) || 0),
 });
 
 // --- Watchers -----------
