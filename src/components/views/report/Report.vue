@@ -14,7 +14,7 @@ import { useSociogramStore } from "@/stores/sociogram";
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 
 //   -- From utils
-import { createReportWorker } from "@/utils/workerLoader";
+import { createReportWorker } from "@/utils/worker";
 
 // --- Props --------------
 

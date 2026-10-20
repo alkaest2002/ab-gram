@@ -1,5 +1,11 @@
 <script setup>
 // --- Imports ------------
+//   -- From vue
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+
+//   -- From utils
+import { createSnaPlotWorker } from "@/utils/worker";
+
 //   -- From relative
 import BasePage from "./BasePage.vue";
 
@@ -10,6 +16,7 @@ const props = defineProps({
         required: true,
         validator: (value) => ["likes", "dislikes"].includes(value),
     },
+    members: { type: Array, default: () => [] },
     snaPlot: { type: Object, default: null },
     snaMetrics: { type: Object, default: () => ({}) },
     morenoMetrics: { type: Object, default: () => ({}) },
@@ -58,6 +65,22 @@ const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 // Reuse the plot's own accent so the metric bars and legend stay in the same
 // hue as the graph, falling back to the type-specific color otherwise.
 const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
+
+// Plot regeneration state. The rendered SVG is kept locally so the worker can
+// swap it in place; the change is local to this page and never writes back to
+// the report store.
+const svg = ref(props.snaPlot?.svg ?? "");
+const isModalOpen = ref(false);
+const isRegenerating = ref(false);
+const error = ref("");
+
+// ForceAtlas2 settings edited by the modal. These mirror the module-level
+// defaults in `snaPlots.js` (SCALING_RATIO / GRAVITY).
+const scalingRatio = ref(0.6);
+const gravity = ref(1.1);
+
+// The regeneration worker, kept so it can be terminated mid-flight.
+let worker = null;
 
 // Metric key -> display label and formatting kind. Counts are whole numbers;
 // the four structural indices are proportions in [0, 1], shown as percentages
@@ -110,10 +133,101 @@ const metricRows = (() => {
 // --- Computed -----------
 
 // --- Watchers -----------
+// Lock page scroll while the regeneration modal is open.
+watch(isModalOpen, (open) =>
+    document.body.classList.toggle("overflow-hidden", open),
+);
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function openModal() {
+    error.value = "";
+    isModalOpen.value = true;
+}
+
+function closeModal() {
+    // Ignore close attempts while a regeneration is running: the user must
+    // either let it finish or stop it explicitly.
+    if (isRegenerating.value) return;
+    isModalOpen.value = false;
+    error.value = "";
+}
+
+function stopWorker() {
+    if (worker) {
+        worker.terminate();
+        worker = null;
+    }
+    isRegenerating.value = false;
+}
+
+function confirmRegenerate() {
+    if (isRegenerating.value) return;
+
+    const settings = {
+        scalingRatio: Number(scalingRatio.value),
+        gravity: Number(gravity.value),
+    };
+
+    if (!Number.isFinite(settings.scalingRatio) || !Number.isFinite(settings.gravity)) {
+        error.value = "Inserisci valori numerici validi.";
+        return;
+    }
+
+    error.value = "";
+
+    try {
+        worker = createSnaPlotWorker();
+    } catch (err) {
+        console.error("Failed to create SNA plot worker:", err);
+        error.value = "Impossibile avviare il worker.";
+        return;
+    }
+
+    isRegenerating.value = true;
+
+    worker.onmessage = (event) => {
+        const { data } = event;
+        stopWorker();
+
+        if (data?.error) {
+            error.value = data.error;
+            return;
+        }
+
+        svg.value = data?.svg ?? svg.value;
+        isModalOpen.value = false;
+    };
+
+    worker.onerror = () => {
+        stopWorker();
+        error.value = "Impossibile rigenerare il grafico.";
+    };
+
+    // Hand the worker a plain, non-reactive snapshot of the members so it can
+    // be structured-cloned without dragging Vue proxies across the boundary.
+    worker.postMessage({
+        members: JSON.parse(JSON.stringify(props.members)),
+        accentColor,
+        config: {
+            typeOfPreference: props.typeOfSna,
+            settings,
+        },
+    });
+}
+
+function handleKeydown(event) {
+    if (event.key === "Escape") closeModal();
+}
+
+onMounted(() => window.addEventListener("keydown", handleKeydown));
+onBeforeUnmount(() => {
+    window.removeEventListener("keydown", handleKeydown);
+    document.body.classList.remove("overflow-hidden");
+    stopWorker();
+});
+
 function formatValue(row) {
     if (row.kind === "ratio") {
         // One decimal, Italian comma separator (e.g. 0.214 -> "21,4%").
@@ -145,7 +259,18 @@ function ratioPercent(row) {
             -->
             <div v-if="snaPlot" class="sna-layout">
                 <div class="sna-plot border-b border-line pb-1">
-                    <div class="plot-svg" v-html="snaPlot.svg"></div>
+                    <div class="plot-svg relative">
+                        <div class="h-full w-full" v-html="svg"></div>
+                        <button
+                            type="button"
+                            class="absolute bottom-2 right-2 z-10 print:hidden flex h-5 w-5 items-center justify-center rounded-full border border-line bg-canvas/90 text-sm leading-none text-muted shadow-sm transition-colors hover:text-ink"
+                            aria-label="Rigenera il grafico"
+                            title="Rigenera il grafico"
+                            @click="openModal"
+                        >
+                            +
+                        </button>
+                    </div>
                     <div class="plot-legend">
                         <div class="flex flex-wrap gap-x-[5mm] gap-y-[1mm]">
                             <span class="inline-flex items-center gap-[1.5mm]">
@@ -205,6 +330,88 @@ function ratioPercent(row) {
                     </table>
                 </div>
             </div>
+
+            <!-- Regeneration modal, teleported to <body> so it escapes the
+                 fixed-height, overflow-hidden report page that would clip it. -->
+            <Teleport to="body">
+                <div
+                    v-if="isModalOpen"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 print:hidden"
+                    @click.self="closeModal"
+                >
+                    <div
+                        class="w-full max-w-sm rounded-xl border border-line bg-canvas p-5 shadow-xl"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="sna-regenerate-title"
+                    >
+                        <h3 id="sna-regenerate-title" class="font-display text-[13pt] font-bold text-ink">
+                            Rigenera il grafico
+                        </h3>
+                        <p class="mt-1 text-[8.5pt] leading-snug text-muted">
+                            Modifica i parametri di ForceAtlas2 e ricostruisci la disposizione dei nodi.
+                        </p>
+
+                        <form class="mt-4 space-y-3" @submit.prevent="confirmRegenerate">
+                            <label class="block">
+                                <span class="font-mono text-[8pt] font-medium tracking-[0.08em] uppercase text-muted">
+                                    Scaling ratio
+                                </span>
+                                <input
+                                    v-model.number="scalingRatio"
+                                    type="number"
+                                    step="0.1"
+                                    min="0"
+                                    :disabled="isRegenerating"
+                                    class="mt-1 w-full rounded-md border border-line bg-canvas px-3 py-1.5 text-[10pt] text-ink outline-none transition-colors focus:border-accent disabled:opacity-50"
+                                />
+                            </label>
+
+                            <label class="block">
+                                <span class="font-mono text-[8pt] font-medium tracking-[0.08em] uppercase text-muted">
+                                    Gravity
+                                </span>
+                                <input
+                                    v-model.number="gravity"
+                                    type="number"
+                                    step="0.1"
+                                    min="0"
+                                    :disabled="isRegenerating"
+                                    class="mt-1 w-full rounded-md border border-line bg-canvas px-3 py-1.5 text-[10pt] text-ink outline-none transition-colors focus:border-accent disabled:opacity-50"
+                                />
+                            </label>
+
+                            <p v-if="error" class="text-[8.5pt] text-reject">{{ error }}</p>
+
+                            <div class="flex justify-end gap-2 pt-1">
+                                <button
+                                    v-if="!isRegenerating"
+                                    type="button"
+                                    class="rounded-md px-3 py-1.5 text-[9pt] font-medium text-muted transition-colors hover:bg-line hover:text-ink"
+                                    @click="closeModal"
+                                >
+                                    Annulla
+                                </button>
+                                <button
+                                    v-if="isRegenerating"
+                                    type="button"
+                                    class="rounded-md bg-reject px-3 py-1.5 text-[9pt] font-medium text-white transition-opacity hover:opacity-90"
+                                    @click="stopWorker"
+                                >
+                                    Interrompi
+                                </button>
+                                <button
+                                    v-else
+                                    type="submit"
+                                    class="rounded-md bg-accent px-3 py-1.5 text-[9pt] font-medium text-white transition-opacity hover:opacity-90"
+                                >
+                                    Rigenera
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </Teleport>
         </template>
     </BasePage>
 </template>
