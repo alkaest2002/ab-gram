@@ -269,19 +269,29 @@ const buildIsolatedNodesPlot = (isolatedNodes) => {
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createLikesGraph` (tagged with its `typeOfPreference`).
  * @param {string} accentColor - The accent color used for nodes and edges.
+ * @param {object} [config] - Extra options merged over the ForceAtlas2 defaults
+ *   below (e.g. `settings`); supplied values override the defaults.
  * @returns {{typeOfPreference: string, accentColor: string, svg: string}}
  *   The plot's preference type, accent color, and serialized SVG markup.
  */
-const buildPlot = (graph, accentColor) => {
+const buildPlot = (graph, accentColor, config = {}) => {
   // Settle the random starting layout with ForceAtlas2. This updates each
-  // node's `x`/`y` attributes in place.
-  forceAtlas2.assign(graph, {
-    iterations: ITERATIONS,
+  // node's `x`/`y` attributes in place. The layout runs with the module-level
+  // defaults (the `SCALING_RATIO`/`GRAVITY`/`STRONG_GRAVITY_MODE` settings
+  // above), then the caller's `config` is merged last so it takes precedence.
+
+  const baseConfig = {
     settings: {
       scalingRatio: SCALING_RATIO,
       gravity: GRAVITY,
       strongGravityMode: STRONG_GRAVITY_MODE,
     },
+  };
+
+  forceAtlas2.assign(graph, {
+    iterations: ITERATIONS,
+    ...baseConfig,
+    ...config,
   });
 
   // Split members: isolated nodes have no edge at all and are drawn in a
@@ -366,9 +376,9 @@ const buildPlot = (graph, accentColor) => {
 //////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Build an SVG plot for each preference graph.
+ * Build an SVG plot for a single preference graph.
  *
- * Each graph is expected to carry an initial random layout (see
+ * The graph is expected to carry an initial random layout (see
  * `createLikesGraph`). Its nodes are first repositioned with
  * `graphology-layout-forceatlas2`, then rendered into SVG markup: the connected
  * members become accent-colored circles (labelled with their member id) joined
@@ -380,12 +390,14 @@ const buildPlot = (graph, accentColor) => {
  * The SVG is built as a plain string (no DOM access), so it can run both in the
  * browser main thread and inside a Web Worker, where `document` is unavailable.
  *
- * @param {Array<[import("graphology").DirectedGraph, string]>} graphs - A list
- *   of `[graph, accentColor]` pairs, one per preference type.
+ * @param {import("graphology").DirectedGraph} graph - A preference graph built
+ *   by `createLikesGraph` (tagged with its `typeOfPreference`).
+ * @param {string} accentColor - The accent color used for nodes and edges.
+ * @param {object} [config] - Extra ForceAtlas2 options merged over the defaults.
  * @returns {Array<{typeOfPreference: string, accentColor: string, svg: string}>}
- *   One plot per input graph, in the same order. Each plot exposes the
- *   preference type, the accent color used, and the serialized SVG markup.
+ *   An array containing the single plot, which exposes the preference type, the
+ *   accent color used, and the serialized SVG markup.
  */
-export const getSnaPlot = (graph, accentColor) => {
-  return [buildPlot(graph, accentColor)];
+export const getSnaPlot = (graph, accentColor, config = {}) => {
+  return [buildPlot(graph, accentColor, config)];
 };
