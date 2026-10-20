@@ -46,8 +46,12 @@
     @apply bg-canvas font-sans text-ink antialiased;
   }
 
-  body > * {
-      @apply max-w-250 mx-auto;
+  /* Cap and center the app shell only — not every direct child of <body>.
+     Vue <Teleport> mounts overlays (e.g. modals) directly under <body>, and a
+     `body > *` selector would clamp their fixed backdrops to the 62.5rem max
+     width on large screens instead of letting them cover the full viewport. */
+  body > #app {
+    @apply max-w-250 mx-auto;
   }
 
   /* Typography lives here, so the templates stay nearly class-free.
