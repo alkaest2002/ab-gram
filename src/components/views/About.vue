@@ -1,4 +1,3 @@
-
 <script setup>
 // --- Vue ----------------
 
@@ -34,7 +33,8 @@ const repositories = {
     mathjax: "https://github.com/mathjax/MathJax",
     "numpy-ts": "https://github.com/dupontcyborg/numpy-ts",
     pinia: "https://github.com/vuejs/pinia",
-    "unplugin-vue-markdown": "https://github.com/unplugin/unplugin-vue-markdown",
+    "unplugin-vue-markdown":
+        "https://github.com/unplugin/unplugin-vue-markdown",
     vue: "https://github.com/vuejs/core",
     "vue-router": "https://github.com/vuejs/router",
 };
@@ -64,10 +64,16 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
                 <h1>Cosa si nasconde sotto il cofano?</h1>
             </header>
 
+            <p class="mb-3">
+                AB-Gram è un'applicazione web sviluppata dal
+                <span class="font-bold">Dott. Pierpaolo Calanna, PhD</span> e
+                dal <span class="font-bold">Dott. Gaetano Buonaiuto</span>,
+                esperti militari di dinamiche di gruppo.
+            </p>
             <p>
-                AB-Gram è un'applicazione web costruita con Vue 3 e Vite.
-                Queste sono le librerie che la fanno funzionare, dal calcolo
-                delle metriche di rete al rendering dei grafici.
+                Di seguito si riportano le librerie che fanno funzionare
+                AB-Gram, dal calcolo delle metriche individuali e di gruppo, al
+                rendering dei grafici.
             </p>
 
             <div class="card">
@@ -123,7 +129,10 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
                                     >
                                         {{ pkg.repository }}
                                     </a>
-                                    <span v-else class="font-mono text-xs text-muted">
+                                    <span
+                                        v-else
+                                        class="font-mono text-xs text-muted"
+                                    >
                                         —
                                     </span>
                                 </td>
