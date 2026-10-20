@@ -166,9 +166,9 @@ const NODE_RADIUS = 16;
 const LABEL_FONT_SIZE = 11;
 const NODE_STROKE_WIDTH = 2;
 
-// Nodes are drawn as white circles with a colored stroke; the label is dark.
+// Nodes are drawn as white circles with a colored stroke; the label matches
+// the stroke color.
 const NODE_FILL_COLOR = "#FFFFFF";
-const NODE_LABEL_COLOR = "#000000";
 
 // Concentric ring layout: ring 1 sits this far from the center, and each
 // further ring adds this gap on top of the previous one. Rings are numbered
@@ -363,7 +363,7 @@ const triangleMarkup = (x, y, color, towardEgo) => {
  */
 const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
   `<circle r='${NODE_RADIUS}' fill='${NODE_FILL_COLOR}' stroke='${strokeColor}' stroke-width='${NODE_STROKE_WIDTH}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
-  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${NODE_LABEL_COLOR}'>${escapeXml(label)}</text>` +
+  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${strokeColor}'>${escapeXml(label)}</text>` +
   (inwardColor ? triangleMarkup(x, y, inwardColor, true) : "") +
   (outwardColor ? triangleMarkup(x, y, outwardColor, false) : "");
 
