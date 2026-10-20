@@ -8,7 +8,9 @@ import {
 
 const GROUP_COLUMNS = [
   "cohesion",
+  "cohesionTypeII",
   "conflict",
+  "conflictTypeII",
   "positiveReciprocity",
   "negativeReciprocity",
 ];
@@ -46,11 +48,14 @@ describe("getGroupLevelMetrics", () => {
 
     expect(result.ids).toEqual(["group"]);
     expect(result.metrics).toEqual(GROUP_COLUMNS);
-    // cohesion = 1/3, conflict = 1/3, positiveReciprocity = 1/3, negativeReciprocity = 1/2.
+    // cohesion I = 1/3, cohesion II = 2/3, conflict I = 1/3, conflict II = 1,
+    // positiveReciprocity = 1/3, negativeReciprocity = 1/2.
     expect(result.rawValuesById[0][0]).toBeCloseTo(1 / 3, 10);
-    expect(result.rawValuesById[0][1]).toBeCloseTo(1 / 3, 10);
+    expect(result.rawValuesById[0][1]).toBeCloseTo(2 / 3, 10);
     expect(result.rawValuesById[0][2]).toBeCloseTo(1 / 3, 10);
-    expect(result.rawValuesById[0][3]).toBeCloseTo(0.5, 10);
+    expect(result.rawValuesById[0][3]).toBeCloseTo(1, 10);
+    expect(result.rawValuesById[0][4]).toBeCloseTo(1 / 3, 10);
+    expect(result.rawValuesById[0][5]).toBeCloseTo(0.5, 10);
   });
 
   it("reports NaN reciprocity when there are no nominations", () => {
@@ -65,10 +70,12 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(adjLikes, adjDislikes);
 
-    expect(result.rawValuesById[0][0]).toBe(0);
-    expect(result.rawValuesById[0][1]).toBe(0);
-    expect(result.rawValuesById[0][2]).toBeNaN();
-    expect(result.rawValuesById[0][3]).toBeNaN();
+    expect(result.rawValuesById[0][0]).toBe(0); // cohesion I
+    expect(result.rawValuesById[0][1]).toBe(0); // cohesion II
+    expect(result.rawValuesById[0][2]).toBe(0); // conflict I
+    expect(result.rawValuesById[0][3]).toBe(0); // conflict II
+    expect(result.rawValuesById[0][4]).toBeNaN(); // positiveReciprocity
+    expect(result.rawValuesById[0][5]).toBeNaN(); // negativeReciprocity
   });
 });
 

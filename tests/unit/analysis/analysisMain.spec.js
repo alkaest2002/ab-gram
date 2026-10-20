@@ -84,15 +84,25 @@ describe("getSociogramAnalysis", () => {
 
     expect(morenoGroupLevelMetrics.metrics).toEqual([
       "cohesion",
+      "cohesionTypeII",
       "conflict",
+      "conflictTypeII",
       "positiveReciprocity",
       "negativeReciprocity",
     ]);
-    const [cohesion, conflict, positiveReciprocity, negativeReciprocity] =
-      morenoGroupLevelMetrics.rawValuesById[0];
+    const [
+      cohesion,
+      cohesionTypeII,
+      conflict,
+      conflictTypeII,
+      positiveReciprocity,
+      negativeReciprocity,
+    ] = morenoGroupLevelMetrics.rawValuesById[0];
 
     expect(cohesion).toBe(1);
+    expect(cohesionTypeII).toBe(1);
     expect(conflict).toBe(0);
+    expect(conflictTypeII).toBe(0);
     expect(positiveReciprocity).toBeCloseTo(0.5, 10);
     expect(negativeReciprocity).toBeNaN();
   });

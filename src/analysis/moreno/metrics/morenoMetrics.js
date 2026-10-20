@@ -2,7 +2,9 @@ import * as np from "numpy-ts";
 import { computeRankedScores } from "@/analysis/common/commonMetrics";
 import {
   computeCohesion,
+  computeCohesionTypeII,
   computeConflict,
+  computeConflictTypeII,
   computePositiveReciprocity,
   computeNegativeReciprocity,
 } from "./groupMetrics.js";
@@ -28,14 +30,18 @@ import {
 
 /*
 MORENO GROUP LEVEL METRICS
-- "cohesion":            Group cohesion index (mutual like pairs / total possible pairs)
-- "conflict":            Group conflict index (mutual dislike pairs / total possible pairs)
+- "cohesion":            Group cohesion index, type I (mutual like pairs / total possible pairs)
+- "cohesionTypeII":      Group cohesion index, type II (mutual like edges / total likes)
+- "conflict":            Group conflict index, type I (mutual dislike pairs / total possible pairs)
+- "conflictTypeII":      Group conflict index, type II (mutual dislike edges / total dislikes)
 - "positiveReciprocity": Positive reciprocity index (mutual like pairs / total likes)
 - "negativeReciprocity": Negative reciprocity index (mutual dislike pairs / total dislikes)
  */
 const GROUP_LEVEL_METRIC_KEYS = [
   "cohesion",
+  "cohesionTypeII",
   "conflict",
+  "conflictTypeII",
   "positiveReciprocity",
   "negativeReciprocity",
 ];
@@ -52,13 +58,16 @@ const GROUP_LEVEL_METRIC_KEYS = [
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @returns {import("numpy-ts").NDArray}
  *   A `1` x `GROUP_LEVEL_METRIC_KEYS.length` matrix holding, in column order, the
- *   cohesion, conflict, positive-reciprocity and negative-reciprocity metrics.
+ *   cohesion (types I and II), conflict (types I and II), positive-reciprocity
+ *   and negative-reciprocity metrics.
  */
 const computeMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
   return np.array([
     [
       computeCohesion(adjLikes),
+      computeCohesionTypeII(adjLikes),
       computeConflict(adjDislikes),
+      computeConflictTypeII(adjDislikes),
       computePositiveReciprocity(adjLikes),
       computeNegativeReciprocity(adjDislikes),
     ],

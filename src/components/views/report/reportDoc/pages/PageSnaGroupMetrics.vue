@@ -37,8 +37,10 @@ const SNA_CONFIG = {
         mutualEdgeLabel: "Totale scelte reciproche effettuate",
         directedLegend: "Scelta non reciproca",
         mutualLegend: "Scelta reciproca",
-        morenoIndexKey: "cohesion",
-        morenoIndexLabel: "Indice di coesione",
+        morenoIndexes: [
+            { key: "cohesion", label: "Indice di coesione (tipo I)" },
+            { key: "cohesionTypeII", label: "Indice di coesione (tipo II)" },
+        ],
     },
     dislikes: {
         accentColor: "#dc2626",
@@ -47,8 +49,10 @@ const SNA_CONFIG = {
         mutualEdgeLabel: "Totale rifiuti reciproci effettuati",
         directedLegend: "Rifiuto non reciproco",
         mutualLegend: "Rifiuto reciproco",
-        morenoIndexKey: "conflict",
-        morenoIndexLabel: "Indice di conflitto",
+        morenoIndexes: [
+            { key: "conflict", label: "Indice di conflitto (tipo I)" },
+            { key: "conflictTypeII", label: "Indice di conflitto (tipo II)" },
+        ],
     },
 };
 
@@ -84,19 +88,22 @@ const metricRows = (() => {
         value: values[index] ?? 0,
     }));
 
-    // The Moreno group index that complements this preference type (cohesion
-    // for likes, conflict for dislikes) is appended as a final ratio row.
+    // The Moreno group indices that complement this preference type (cohesion
+    // for likes, conflict for dislikes, in both type I and type II) are
+    // appended as final ratio rows.
     const morenoKeys = props.morenoMetrics?.metrics ?? [];
     const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
-    const morenoIndex = morenoKeys.indexOf(config.morenoIndexKey);
 
-    if (morenoIndex !== -1) {
-        rows.push({
-            key: config.morenoIndexKey,
-            label: config.morenoIndexLabel,
-            kind: "ratio",
-            value: morenoValues[morenoIndex] ?? 0,
-        });
+    for (const { key, label } of config.morenoIndexes) {
+        const morenoIndex = morenoKeys.indexOf(key);
+        if (morenoIndex !== -1) {
+            rows.push({
+                key,
+                label,
+                kind: "ratio",
+                value: morenoValues[morenoIndex] ?? 0,
+            });
+        }
     }
 
     return rows;
@@ -170,16 +177,16 @@ function ratioPercent(row) {
                     </div>
                 </div>
 
-                <div class="sna-stats pt-3">
+                <div class="sna-stats pt-1">
                     <table class="w-full text-left">
                         <tbody>
                             <tr v-for="row in metricRows" :key="row.key" class="align-baseline">
                                 <td
-                                    class="py-[2mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
+                                    class="py-[1.5mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
                                 >
                                     {{ row.label }}
                                 </td>
-                                <td class="py-[2mm] text-right">
+                                <td class="py-[1.5mm] text-right">
                                     <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                         {{ formatValue(row) }}
                                     </div>
