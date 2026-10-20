@@ -78,7 +78,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
 
             <div class="card">
                 <h3
-                    class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase"
+                    class="font-mono text-xs font-bold tracking-[0.14em] text-muted uppercase"
                 >
                     Dipendenze
                 </h3>
