@@ -4,14 +4,14 @@
 import { computed, provide, ref } from "vue";
 
 //   -- From components
-import PageCover from "@/components/views/report/reportDoc/pages/PageCover.vue";
-import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
-import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
-import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics.vue";
-import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents.vue";
-import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes.vue";
-import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics.vue";
-import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary.vue";
+import PageCover from "@/components/views/report/reportDoc/pages/PageCover/PageCover.vue";
+import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers/PageListOfMembers.vue";
+import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences/PageListOfPreferences.vue";
+import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics/PageSnaGroupMetrics.vue";
+import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents/PageSnaComponents.vue";
+import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes/PageEdgeTypes.vue";
+import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics/PageMemberMetrics.vue";
+import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary/PageGlossary.vue";
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
 // --- Props --------------
