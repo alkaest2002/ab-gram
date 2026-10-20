@@ -89,3 +89,56 @@ di nodi collegati forma un triangolo.
 $$
 T = \frac{3 t_{\triangle}}{\sum_{v \in V} \binom{d_v}{2}}
 $$
+
+### Indice di coesione
+
+L'indice di coesione misura **quanto il gruppo è unito**, contando le scelte
+reciproche. Qui $a_{ij}$ vale $1$ se $i$ sceglie $j$ e $0$ altrimenti, così il
+prodotto $a_{ij}a_{ji}$ vale $1$ solo quando la scelta è ricambiata. Il
+numeratore $\sum_{i,j} a_{ij}a_{ji}$ è esattamente il numero di legami
+reciproci $E_{\leftrightarrow}$ descritto sopra (ogni coppia ricambiata conta
+per due). Come per la reciprocità, si distinguono due versioni, che rispondono
+a domande diverse.
+
+**Coesione di tipo I.** Rapporto tra le scelte reciproche e tutte le scelte
+*possibili*: misura quanto il gruppo è coeso rispetto a quanto potrebbe esserlo.
+Vale $1$ quando tutti si scelgono a vicenda e $0$ quando nessuna scelta è
+ricambiata. Il denominatore $n(n-1)$ è il numero di scelte possibili (ogni
+membro può scegliere ogni altro).
+
+$$
+Coh_I = \frac{\sum_{i,j} a_{ij} a_{ji}}{n(n-1)}
+$$
+
+**Coesione di tipo II.** Rapporto tra le scelte reciproche e le scelte
+effettivamente *espresse*: misura quanta parte delle scelte fatte viene
+ricambiata, senza tener conto di quante scelte si sarebbero potute fare.
+Coincide con la *reciprocità* delle scelte vista sopra.
+
+$$
+Coh_{II} = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
+$$
+
+### Indice di conflitto
+
+L'indice di conflitto è il "gemello" della coesione applicato ai rifiuti:
+misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $d_{ij}$
+vale $1$ se $i$ rifiuta $j$ e $0$ altrimenti, quindi $d_{ij}d_{ji}$ vale $1$
+solo quando il rifiuto è ricambiato. Anche in questo caso si distinguono due
+versioni.
+
+**Conflitto di tipo I.** Rapporto tra i rifiuti reciproci e tutti i rifiuti
+*possibili*: vale $1$ quando tutti si rifiutano a vicenda e $0$ quando nessun
+rifiuto è ricambiato.
+
+$$
+Con_I = \frac{\sum_{i,j} d_{ij} d_{ji}}{n(n-1)}
+$$
+
+**Conflitto di tipo II.** Rapporto tra i rifiuti reciproci e i rifiuti
+effettivamente *espressi*: misura quanta parte dei rifiuti fatti viene
+ricambiata.
+
+$$
+Con_{II} = \frac{\sum_{i,j} d_{ij} d_{ji}}{\sum_{i,j} d_{ij}}
+$$
