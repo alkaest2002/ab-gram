@@ -56,7 +56,7 @@ watch(() => route.path, typeset);
         class="flex w-full flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
     >
         <aside
-            class="hidden w-full shrink-0 lg:block lg:sticky lg:top-(--header-h) lg:max-h-[calc(100dvh-var(--header-h))] lg:w-64 lg:overflow-y-auto lg:pt-6"
+            class="hidden w-full shrink-0 lg:block lg:w-64 lg:pt-6"
         >
             <DocsSidebar />
         </aside>
