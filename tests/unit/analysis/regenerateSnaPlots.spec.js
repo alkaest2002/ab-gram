@@ -7,8 +7,6 @@ vi.mock("graphology-layout-forceatlas2", () => ({
   default: { assign: forceAtlas2Assign },
 }));
 
-import { regenerateSnaPlot } from "@/analysis/sna/plots/regenerateSnaPlots.js";
-
 const makeMember = (id, likes = [], dislikes = []) => ({
   id,
   name: id,
@@ -16,36 +14,53 @@ const makeMember = (id, likes = [], dislikes = []) => ({
   dislikes,
 });
 
-describe("regenerateSnaPlot", () => {
-  it("builds and returns a single plot from members", () => {
-    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
+// The worker registers its message handler on `self`, which does not exist in
+// Node. Provide a minimal stand-in with a captured `postMessage`.
+const postMessage = vi.fn();
+globalThis.self = { postMessage, onmessage: null };
 
-    const plot = regenerateSnaPlot(members, "#0000FF", {
-      typeOfPreference: "likes",
+const handleMessage = (data) => self.onmessage({ data });
+
+describe("snaPlotWorker", () => {
+  it("builds and posts a single plot from members", async () => {
+    await import("@/workers/snaPlotWorker.js");
+
+    handleMessage({
+      members: [makeMember("a", ["b"]), makeMember("b", ["a"])],
+      accentColor: "#0000FF",
+      config: { typeOfPreference: "likes" },
     });
 
-    expect(plot.typeOfPreference).toBe("likes");
-    expect(plot.accentColor).toBe("#0000FF");
-    expect(plot.svg).toContain("<svg");
-    expect(plot.svg).toContain("</svg>");
+    const [message] = postMessage.mock.calls[0];
+    expect(message.svg).toContain("<svg");
+    expect(message.svg).toContain("</svg>");
+    expect(message.svg).toContain("#0000FF");
   });
 
-  it("plots the configured preference type", () => {
-    const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
+  it("plots the configured preference type", async () => {
+    await import("@/workers/snaPlotWorker.js");
 
-    const plot = regenerateSnaPlot(members, "#FF0000", {
-      typeOfPreference: "dislikes",
+    handleMessage({
+      members: [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])],
+      accentColor: "#FF0000",
+      config: { typeOfPreference: "dislikes" },
     });
 
-    expect(plot.typeOfPreference).toBe("dislikes");
+    const graph = forceAtlas2Assign.mock.calls[0][0];
+    expect(graph.getAttribute("typeOfPreference")).toBe("dislikes");
   });
 
-  it("forwards the ForceAtlas2 settings to the layout", () => {
+  it("forwards the ForceAtlas2 settings to the layout", async () => {
+    await import("@/workers/snaPlotWorker.js");
     forceAtlas2Assign.mockClear();
 
-    regenerateSnaPlot([makeMember("a", ["b"]), makeMember("b", [])], "#0000FF", {
-      typeOfPreference: "likes",
-      settings: { scalingRatio: 2, gravity: 0.5 },
+    handleMessage({
+      members: [makeMember("a", ["b"]), makeMember("b", [])],
+      accentColor: "#0000FF",
+      config: {
+        typeOfPreference: "likes",
+        settings: { scalingRatio: 2, gravity: 0.5 },
+      },
     });
 
     const options = forceAtlas2Assign.mock.calls[0][1];
