@@ -1,19 +1,18 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, inject, onMounted, ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
+//   -- From relative
 import { APP_VERSION_KEY, REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // App version is provided by `ReportGenerated` and injected here to stamp the footer.
@@ -23,6 +22,8 @@ const appVersion = inject(APP_VERSION_KEY, null);
 // is rendered outside a report, it falls back to no number.
 const registry = inject(REPORT_PAGES_KEY, null);
 const pageNumber = ref(null);
+
+// --- Composables --------
 
 // --- Computed -----------
 const totalPages = computed(() => registry?.totalPages.value ?? null);

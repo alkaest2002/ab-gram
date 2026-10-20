@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -23,6 +16,10 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // Per-type presentation details: the network plot is drawn with a hard-coded
@@ -56,7 +53,6 @@ const SNA_CONFIG = {
     },
 };
 
-// --- Computed -----------
 const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 
 // Reuse the plot's own accent so the metric bars and legend stay in the same
@@ -108,6 +104,10 @@ const metricRows = (() => {
 
     return rows;
 })();
+
+// --- Composables --------
+
+// --- Computed -----------
 
 // --- Watchers -----------
 

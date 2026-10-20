@@ -1,22 +1,25 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+
+//   -- From utils
 import {
     buildMembers,
     normalizeNames,
@@ -31,12 +34,15 @@ const emit = defineEmits([
     "sociogram-restart-app",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 // Get the sociogram store and its state.
 const sociogramStore = useSociogramStore();
 const { maxMemberNameLength, maxMembersCount, membersCount } =
     storeToRefs(sociogramStore);
 
+// --- State --------------
 const loadFileName = ref("");
 const loadError = ref(null);
 const loadedCount = ref(null);
@@ -45,6 +51,7 @@ const loadedCount = ref(null);
 // "alphabetical" sorts them lexicographically, "shuffle" randomizes them.
 const orderMode = ref("as-is");
 
+// --- Composables --------
 const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------

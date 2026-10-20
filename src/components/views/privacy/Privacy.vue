@@ -1,20 +1,19 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

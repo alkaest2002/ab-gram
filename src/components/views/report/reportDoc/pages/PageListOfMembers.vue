@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -17,9 +10,11 @@ const props = defineProps({
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
 
-// --- Computed -----------
+// --- Stores -------------
+
+// --- State --------------
 const members = props.membersData?.members ?? [];
 
 // Balanced two-column split. Safari does not honour CSS multi-column layout
@@ -28,6 +23,10 @@ const members = props.membersData?.members ?? [];
 // item on odd counts, matching balanced column fill.
 const half = Math.ceil(members.length / 2);
 const columns = [members.slice(0, half), members.slice(half)];
+
+// --- Composables --------
+
+// --- Computed -----------
 
 // --- Watchers -----------
 

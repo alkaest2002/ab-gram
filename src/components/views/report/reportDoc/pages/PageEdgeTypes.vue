@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -16,6 +9,10 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // The seven relationship types are shown in a fixed reading order, grouped by
@@ -62,7 +59,6 @@ const TONE_CLASSES = {
     reject: { borderColor: "border-reject", labelColor: "text-reject", barColor: "bg-reject" },
 };
 
-// --- Computed -----------
 // `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
 // missing/empty prop degrades to empty lists, so every type still renders.
 const categories = CATEGORIES.map((category) => {
@@ -82,6 +78,10 @@ const categories = CATEGORIES.map((category) => {
         ...tone,
     };
 });
+
+// --- Composables --------
+
+// --- Computed -----------
 
 // --- Watchers -----------
 

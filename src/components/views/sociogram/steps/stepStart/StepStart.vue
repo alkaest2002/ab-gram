@@ -1,18 +1,15 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
+// --- Imports ------------
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import StartLoadMembers from "@/components/views/sociogram/steps/stepStart/StartLoadMembers.vue";
 import StartImportProject from "@/components/views/sociogram/steps/stepStart/StartImportProject.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
 // --- Props --------------
@@ -23,16 +20,21 @@ const emit = defineEmits([
     "sociogram-restart-app",
 ]);
 
-// --- State --------------
-const sociogramStore = useSociogramStore();
-const { goToStep } = useSociogramNavigation(emit);
+// --- Routers ------------
 
+// --- Stores -------------
+const sociogramStore = useSociogramStore();
+
+// --- State --------------
 const browsers = [
     { name: "Chrome", url: "https://www.google.com/chrome/" },
     { name: "Firefox", url: "https://www.mozilla.org/firefox/" },
     { name: "Edge", url: "https://www.microsoft.com/edge" },
     { name: "Safari", url: "https://www.apple.com/safari/" },
 ];
+
+// --- Composables --------
+const { goToStep } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 

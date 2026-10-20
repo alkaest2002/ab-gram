@@ -1,14 +1,9 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
+//   -- From utils
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
@@ -19,7 +14,13 @@ const props = defineProps({
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 const totalCount = computed(() => props.members.length);

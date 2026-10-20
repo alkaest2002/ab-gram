@@ -1,14 +1,15 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, ref, watch, onActivated, onDeactivated, onBeforeUnmount, useTemplateRef } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import SetPreferencesCarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarouselMembers.vue";
@@ -16,8 +17,10 @@ import SetPreferencesSelectMembers from "@/components/views/sociogram/steps/step
 import SetPreferencesMembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesMembersPreferencesProgress.vue";
 import SetPreferencesNoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesNoPreferences.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+
+//   -- From utils
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
@@ -31,18 +34,23 @@ const emit = defineEmits([
     "sociogram-restart-app",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
 const { members, membersCount, membersStatus } = storeToRefs(sociogramStore);
 const { updateMember } = sociogramStore;
-const { goToStep, restart } = useSociogramNavigation(emit);
 
+// --- State --------------
 const likesRef = useTemplateRef("likes");
 const dislikesRef = useTemplateRef("dislikes");
 
 // The member whose preferences are being collected. Preferences live directly
 // on each member in the store, so there is nothing to save or reload on move.
 const currentIndex = ref(0);
+
+// --- Composables --------
+const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
@@ -163,7 +171,6 @@ function handleWindowKeydown(event) {
         carouselGoNextMember();
     }
 }
-
 </script>
 
 <template>

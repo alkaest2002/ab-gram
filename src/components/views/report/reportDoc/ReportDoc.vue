@@ -1,12 +1,9 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, provide, ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import PageCover from "@/components/views/report/reportDoc/pages/PageCover.vue";
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences.vue";
@@ -15,8 +12,6 @@ import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSna
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes.vue";
 import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics.vue";
 import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary.vue";
-
-// --- Composables --------
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
 // --- Props --------------
@@ -25,6 +20,10 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // Pages register themselves as they mount. The count is reactive, so every
@@ -38,6 +37,8 @@ provide(REPORT_PAGES_KEY, {
     },
     totalPages,
 });
+
+// --- Composables --------
 
 // --- Computed -----------
 // Moreno ego plots are keyed by member id; expose a lookup so each member page

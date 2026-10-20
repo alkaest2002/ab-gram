@@ -1,18 +1,15 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // Static glossary of the compact labels shown across the report, each mapped to
@@ -67,6 +64,8 @@ const entries = [...GLOSSARY].sort((a, b) =>
 // counts, matching balanced column fill.
 const half = Math.ceil(entries.length / 2);
 const columns = [entries.slice(0, half), entries.slice(half)];
+
+// --- Composables --------
 
 // --- Computed -----------
 

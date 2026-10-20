@@ -1,17 +1,13 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
+// --- Imports ------------
+//   -- From vue-router
 import { useRouter } from "vue-router";
 
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useDownload } from "@/composables/useDownload";
-const { downloadJson } = useDownload();
 
 // --- Props --------------
 const props = defineProps({
@@ -23,8 +19,15 @@ const props = defineProps({
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
 const router = useRouter();
+
+// --- Stores -------------
+
+// --- State --------------
+
+// --- Composables --------
+const { downloadJson } = useDownload();
 
 // --- Computed -----------
 

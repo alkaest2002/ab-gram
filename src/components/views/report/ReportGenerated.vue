@@ -1,32 +1,36 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, provide } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useAppStore } from "@/stores/app";
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
 import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
-
-// --- Composables --------
 import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
 // --- Props --------------
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const reportStore = useReportStore();
 const sociogramStore = useSociogramStore();
 const { appVersion } = storeToRefs(useAppStore());
 
+// --- State --------------
 provide(APP_VERSION_KEY, appVersion);
+
+// --- Composables --------
 
 // --- Computed -----------
 const reportData = computed(() => ({

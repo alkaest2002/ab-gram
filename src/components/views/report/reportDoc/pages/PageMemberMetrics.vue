@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -27,6 +20,10 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // The metric chips are listed in a fixed reading order (not the dataframe column
@@ -148,8 +145,6 @@ const STATUS_TONES = {
     },
 };
 
-// --- Computed -----------
-
 // Row index of this member inside a metric object's `ids` array.
 const memberIndexIn = (metrics) => {
     if (props.member.id == null) return -1;
@@ -158,38 +153,6 @@ const memberIndexIn = (metrics) => {
 
 // Column index of a metric key inside a metric object's `metrics` array.
 const metricIndexOf = (metrics, key) => (metrics?.metrics ?? []).indexOf(key);
-
-function readRaw(metrics, memberIndex, metricIndex) {
-    if (memberIndex < 0 || metricIndex < 0) return 0;
-    return metrics?.rawValuesById?.[memberIndex]?.[metricIndex] ?? 0;
-}
-
-function readRank(metrics, memberIndex, metricIndex) {
-    if (memberIndex < 0 || metricIndex < 0) return 0;
-    return metrics?.rankedValuesById?.[memberIndex]?.[metricIndex] ?? 0;
-}
-
-// Highest dense rank for a metric: `rankedValuesByMetric[m]` is the rank column,
-// so its maximum is the denominator of the "rank / max rank" chip suffix.
-function readMaxRank(metrics, metricIndex) {
-    const column = metrics?.rankedValuesByMetric?.[metricIndex] ?? [];
-    if (!column.length) return 0;
-    return Math.max(...column);
-}
-
-function buildChip(label, key, source) {
-    const metrics =
-        source === "moreno" ? props.morenoMetrics : props.snaMetrics;
-    const memberIndex = memberIndexIn(metrics);
-    const metricIndex = metricIndexOf(metrics, key);
-
-    return {
-        label,
-        raw: readRaw(metrics, memberIndex, metricIndex),
-        rank: readRank(metrics, memberIndex, metricIndex),
-        maxRank: readMaxRank(metrics, metricIndex),
-    };
-}
 
 // Metric chips grouped by row (Moreno indices then SNA centralities). Each row
 // holds six chips so the page lays out exactly six metrics per line.
@@ -232,11 +195,47 @@ const status = (() => {
     return { code, ...config, tone: STATUS_TONES[config.tone] };
 })();
 
+// --- Composables --------
+
+// --- Computed -----------
+
 // --- Watchers -----------
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function readRaw(metrics, memberIndex, metricIndex) {
+    if (memberIndex < 0 || metricIndex < 0) return 0;
+    return metrics?.rawValuesById?.[memberIndex]?.[metricIndex] ?? 0;
+}
+
+function readRank(metrics, memberIndex, metricIndex) {
+    if (memberIndex < 0 || metricIndex < 0) return 0;
+    return metrics?.rankedValuesById?.[memberIndex]?.[metricIndex] ?? 0;
+}
+
+// Highest dense rank for a metric: `rankedValuesByMetric[m]` is the rank column,
+// so its maximum is the denominator of the "rank / max rank" chip suffix.
+function readMaxRank(metrics, metricIndex) {
+    const column = metrics?.rankedValuesByMetric?.[metricIndex] ?? [];
+    if (!column.length) return 0;
+    return Math.max(...column);
+}
+
+function buildChip(label, key, source) {
+    const metrics =
+        source === "moreno" ? props.morenoMetrics : props.snaMetrics;
+    const memberIndex = memberIndexIn(metrics);
+    const metricIndex = metricIndexOf(metrics, key);
+
+    return {
+        label,
+        raw: readRaw(metrics, memberIndex, metricIndex),
+        rank: readRank(metrics, memberIndex, metricIndex),
+        maxRank: readMaxRank(metrics, metricIndex),
+    };
+}
+
 // Raw values are whole numbers for the Moreno indices and decimals in [0, 1]
 // for the SNA centralities; show integers verbatim and trim floats to 2 decimals
 // so the compact chips stay readable.

@@ -1,15 +1,8 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
-
-// --- Composables --------
 
 // --- Props --------------
 defineProps({
@@ -19,7 +12,13 @@ defineProps({
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

@@ -1,13 +1,5 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
+// --- Imports ------------
 
 // --- Props --------------
 defineProps({
@@ -18,7 +10,13 @@ defineProps({
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

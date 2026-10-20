@@ -1,15 +1,10 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { RouterLink } from "vue-router";
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -23,6 +18,10 @@ const props = defineProps({
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 // Classes written out in full: Tailwind doesn't see ones built by interpolation.
 const variantClasses = {
@@ -30,6 +29,8 @@ const variantClasses = {
     outline: "btn-outline",
     red: "btn-red",
 };
+
+// --- Composables --------
 
 // --- Computed -----------
 const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);

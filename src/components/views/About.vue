@@ -1,23 +1,21 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import AppCardEdu from "@/components/ui/AppCardEdu.vue";
 import AppCardEmail from "@/components/ui/AppCardEmail.vue";
 
-// --- Composables --------
+//   -- From relative
+import packageJson from "../../../package.json";
 
 // --- Props --------------
 
 // --- Emits --------------
 
-// --- State --------------
-import packageJson from "../../../package.json";
+// --- Routers ------------
 
+// --- Stores -------------
+
+// --- State --------------
 // Runtime dependencies, read from package.json so this page never drifts from
 // the lockfile.
 const stripRange = (version) => version.replace(/^[\^~]/, "");
@@ -46,6 +44,8 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
         repository: repositories[name],
     }),
 );
+
+// --- Composables --------
 
 // --- Computed -----------
 

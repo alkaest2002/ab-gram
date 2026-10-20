@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, useId } from "vue";
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -26,10 +19,22 @@ const props = defineProps({
 // --- Emits --------------
 const emit = defineEmits(["update:modelValue"]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 // Unique name for the radio group, so multiple instances never share the same
 // radio group in the DOM.
 const groupName = useId();
+
+const options = [
+    { value: "as-is", label: "Mantienti l'ordine del file" },
+    { value: "alphabetical", label: "Ordina alfabeticamente" },
+    { value: "shuffle", label: "Mescola in modo casuale" },
+];
+
+// --- Composables --------
 
 // --- Computed -----------
 // v-model: read the selected mode from `modelValue` and write it back by
@@ -38,12 +43,6 @@ const selected = computed({
     get: () => props.modelValue,
     set: (value) => emit("update:modelValue", value),
 });
-
-const options = [
-    { value: "as-is", label: "Mantienti l'ordine del file" },
-    { value: "alphabetical", label: "Ordina alfabeticamente" },
-    { value: "shuffle", label: "Mescola in modo casuale" },
-];
 
 // --- Watchers -----------
 

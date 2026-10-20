@@ -1,13 +1,12 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { onMounted } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { RouterLink } from "vue-router";
 
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import DonationCard from "@/components/ui/AppCardDonate.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
 import Hero from "@/components/views/home/Hero.vue";
@@ -15,14 +14,20 @@ import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
 import Featurettes from "@/components/views/home/Featurettes.vue";
 
-// --- Composables --------
+//   -- From utils
 import { preloadWorker } from "@/utils/workerLoader";
 
 // --- Props --------------
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

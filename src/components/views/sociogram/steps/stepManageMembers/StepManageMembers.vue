@@ -1,21 +1,26 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
-import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
+
+//   -- From utils
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
+
+//   -- From relative
+import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 
 // --- Props --------------
 
@@ -25,10 +30,15 @@ const emit = defineEmits([
     "sociogram-restart-app",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
 const { members, membersCount } = storeToRefs(sociogramStore);
 
+// --- State --------------
+
+// --- Composables --------
 const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------

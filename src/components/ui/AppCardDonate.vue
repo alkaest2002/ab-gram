@@ -1,16 +1,9 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import HeartIcon from "@/components/ui/icons/HeartIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 defineProps({
@@ -20,8 +13,16 @@ defineProps({
     },
 });
 
+// --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 const donationUrl = "https://donate.stripe.com/4gM6oH21z5ov7Yq59pcV201";
+
+// --- Composables --------
 
 // --- Computed -----------
 

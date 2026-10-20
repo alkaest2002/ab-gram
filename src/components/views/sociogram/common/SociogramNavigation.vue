@@ -1,18 +1,14 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
+// --- Imports ------------
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseTooltip from "@/components/ui/BaseTooltip.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useDownload } from "@/composables/useDownload";
-const { downloadJson } = useDownload();
 
 // --- Props --------------
 defineProps({
@@ -34,8 +30,15 @@ defineEmits([
     "sociogram-navigation-restart",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
+
+// --- State --------------
+
+// --- Composables --------
+const { downloadJson } = useDownload();
 
 // --- Computed -----------
 
@@ -44,7 +47,6 @@ const sociogramStore = useSociogramStore();
 // --- Lifecycle ----------
 
 // --- Methods ------------
-
 const handleDownload = () => {
     const jsonData = sociogramStore.$state;
     downloadJson(jsonData, "sociogram-data", "text/encoded", true, true);

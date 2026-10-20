@@ -1,23 +1,25 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { useRoute, RouterView } from "vue-router";
 
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import AppContentTransition from "@/components/ui/AppContentTransition.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 import ReportLayout from "@/components/layouts/ReportLayout.vue";
 
-// --- Composables --------
-
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+const route = useRoute();
+
+// --- Stores -------------
 
 // --- State --------------
 const layouts = {
@@ -26,7 +28,7 @@ const layouts = {
     ReportLayout,
 };
 
-const route = useRoute();
+// --- Composables --------
 
 // --- Computed -----------
 const layout = computed(() => layouts[route.meta.layout] ?? DefaultLayout);

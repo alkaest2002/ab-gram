@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -29,7 +22,13 @@ const props = defineProps({
 // --- Emits --------------
 const emit = defineEmits(["update:modelValue"]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 // v-model: read the flag from `modelValue` and write it back by emitting

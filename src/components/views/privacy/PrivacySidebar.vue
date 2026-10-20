@@ -1,17 +1,13 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
+// --- Imports ------------
 
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 const sections = [
@@ -32,6 +28,8 @@ const sections = [
     { id: "diritto-di-reclamo", label: "8. Diritto di reclamo" },
     { id: "modifiche", label: "9. Modifiche alla presente informativa" },
 ];
+
+// --- Composables --------
 
 // --- Computed -----------
 

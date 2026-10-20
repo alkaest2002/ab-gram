@@ -1,20 +1,19 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
+// --- Imports ------------
+//   -- From vue-router
 import { RouterLink } from "vue-router";
 
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 const originYear = 2026
@@ -32,6 +31,8 @@ const links = [
         icon: EmailIcon,
     },
 ];
+
+// --- Composables --------
 
 // --- Computed -----------
 

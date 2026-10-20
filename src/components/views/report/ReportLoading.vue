@@ -1,21 +1,20 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
 const emit = defineEmits(["stop-generating-report"]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

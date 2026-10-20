@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -17,9 +10,11 @@ const props = defineProps({
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
 
-// --- Computed -----------
+// --- Stores -------------
+
+// --- State --------------
 const members = props.membersData?.members ?? [];
 
 // Compact rows: preferences resolved to their ids (not names), sorted for a
@@ -38,6 +33,10 @@ const rows = members.map((member) => ({
 // item on odd counts, matching balanced column fill.
 const half = Math.ceil(rows.length / 2);
 const columns = [rows.slice(0, half), rows.slice(half)];
+
+// --- Composables --------
+
+// --- Computed -----------
 
 // --- Watchers -----------
 

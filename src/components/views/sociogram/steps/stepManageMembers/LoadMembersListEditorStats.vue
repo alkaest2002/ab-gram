@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue -------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -31,7 +24,13 @@ const props = defineProps({
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 // Issue counts read red when they need attention, muted once they're resolved.

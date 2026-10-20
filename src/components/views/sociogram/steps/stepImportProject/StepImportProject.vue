@@ -1,19 +1,18 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 
@@ -22,13 +21,17 @@ import { useSociogramValidateData } from "@/composables/sociogram/useSociogramVa
 // --- Emits --------------
 const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
 
+// --- State --------------
 const importFilename = ref(null);
 const importError = ref(null);
 const importedCount = ref(null);
 
+// --- Composables --------
 const { validate } = useSociogramValidateData();
 const { goToStep, restart } = useSociogramNavigation(emit);
 

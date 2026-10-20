@@ -1,14 +1,15 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
 import StepImportProject from "@/components/views/sociogram/steps/stepImportProject/StepImportProject.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
@@ -21,10 +22,13 @@ import AppKeepAliveTransition from "@/components/ui/AppKeepAliveTransition.vue";
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
 const { membersStatus } = storeToRefs(sociogramStore);
 
+// --- State --------------
 const stateComponents = {
     start: StepStart,
     importProject: StepImportProject,
@@ -46,6 +50,8 @@ const currentComponentName = ref(
 // Set only by the report summary's "edit this member" cards; cleared on any
 // other step navigation so a stale target can't re-apply later.
 const memberIdToEdit = ref(null);
+
+// --- Composables --------
 
 // --- Computed -----------
 // Pass the target id only to the preferences step; the other steps ignore it.

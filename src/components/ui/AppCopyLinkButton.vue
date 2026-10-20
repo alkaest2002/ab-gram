@@ -1,12 +1,13 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Components ---------
+//   -- From components
 import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
 import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useCopyLink } from "@/composables/useCopyLink";
 
 // --- Props --------------
@@ -18,9 +19,13 @@ const props = defineProps({
     },
 });
 
-// --- State --------------
-const { copied, copyLink } = useCopyLink();
+// --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- State --------------
 // Classes written out in full: Tailwind doesn't see ones built by interpolation.
 const variantClasses = {
     solid: "btn-solid",
@@ -28,8 +33,17 @@ const variantClasses = {
     red: "btn-red",
 };
 
+// --- Composables --------
+const { copied, copyLink } = useCopyLink();
+
 // --- Computed -----------
 const buttonClasses = computed(() => ["btn", variantClasses[props.buttonVariant]]);
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

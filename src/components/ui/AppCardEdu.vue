@@ -1,15 +1,8 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 defineProps({
@@ -19,7 +12,15 @@ defineProps({
     },
 });
 
+// --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

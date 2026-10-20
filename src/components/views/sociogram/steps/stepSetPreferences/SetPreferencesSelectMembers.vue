@@ -1,15 +1,12 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
 
 // --- Props --------------
@@ -53,7 +50,17 @@ const props = defineProps({
 // --- Emits --------------
 const emit = defineEmits(["update:modelValue"]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+// Members that can actually be chosen: everyone except the subject themselves.
+const selectableMembers = computed(() => props.members.filter((member) => member.id !== props.selfId));
+
+// --- Composables --------
+// Search state and the ranked result list, shared via the search composable.
+const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
 
 // --- Computed -----------
 // v-model: read the ids from `modelValue` and write them back by emitting
@@ -62,12 +69,6 @@ const selectedIds = computed({
     get: () => props.modelValue ?? [],
     set: (value) => emit("update:modelValue", value),
 });
-
-// Members that can actually be chosen: everyone except the subject themselves.
-const selectableMembers = computed(() => props.members.filter((member) => member.id !== props.selfId));
-
-// Search state and the ranked result list, shared via the search composable.
-const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
 
 // Optimize: use a Set for faster lookups.
 const selected = computed(() => new Set(selectedIds.value));

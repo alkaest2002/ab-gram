@@ -1,21 +1,20 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import AppHeader from "@/components/ui/AppHeader.vue";
 import AppFooter from "@/components/ui/AppFooter.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

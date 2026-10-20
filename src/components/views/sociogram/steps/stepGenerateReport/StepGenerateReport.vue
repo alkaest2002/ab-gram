@@ -1,21 +1,23 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, toRaw } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { useRouter } from "vue-router";
-const router = useRouter();
 
-// --- Stores -------------
+//   -- From pinia
 import { storeToRefs } from "pinia";
+
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import GenerateReportMemberCard from "@/components/views/sociogram/steps/stepGenerateReport/GenerateReportMemberCard.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 
@@ -28,9 +30,16 @@ const emit = defineEmits([
     "sociogram-edit-member",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+const router = useRouter();
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
 const { members } = storeToRefs(sociogramStore);
+
+// --- State --------------
+
+// --- Composables --------
 const { validate } = useSociogramValidateData(true);
 const { goToStep, restart } = useSociogramNavigation(emit);
 

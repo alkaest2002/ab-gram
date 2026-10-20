@@ -1,21 +1,20 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { onActivated, onDeactivated, ref } from "vue";
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 const rootEl = ref(null);
+
+// --- Composables --------
 
 // --- Computed -----------
 

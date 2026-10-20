@@ -1,17 +1,12 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
+// --- Imports ------------
+//   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-// --- Composables --------
-
-// --- Data ---------------
+//   -- From utils
 import hogwartsDemo from "@/utils/sociogram/hogwarts.json";
 
 // --- Props --------------
@@ -22,8 +17,14 @@ const emit = defineEmits([
     "sociogram-start-demo",
 ]);
 
-// --- State --------------
+// --- Routers ------------
+
+// --- Stores -------------
 const sociogramStore = useSociogramStore();
+
+// --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

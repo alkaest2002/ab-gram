@@ -1,16 +1,11 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-// --- Composables --------
+// --- Props --------------
 defineProps({
     buttonVariant: {
         type: String,
@@ -18,11 +13,15 @@ defineProps({
     },
 });
 
-// --- Props --------------
-
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

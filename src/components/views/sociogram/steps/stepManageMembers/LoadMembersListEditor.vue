@@ -1,17 +1,14 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { computed, nextTick, ref, watch } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-import LoadMembersListEditorStats from "./LoadMembersListEditorStats.vue";
-
-// --- Composables --------
+//   -- From utils
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
+
+//   -- From relative
+import LoadMembersListEditorStats from "./LoadMembersListEditorStats.vue";
 
 // --- Props --------------
 const props = defineProps({
@@ -29,11 +26,17 @@ const emit = defineEmits([
   "sociogram-remove-member",
 ]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 // Inline editing state. The list is a preview: clicking a name makes it
 // editable. Enter commits the change, Esc (or clicking away) cancels it by restoring the previous name.
 const editingId = ref(null);
 const originalName = ref(null);
+
+// --- Composables --------
 
 // --- Computed -----------
 /** Total number of members. */

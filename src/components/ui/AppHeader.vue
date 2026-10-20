@@ -1,20 +1,19 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { onBeforeUnmount, watch } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { RouterLink, useRoute } from "vue-router";
 
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import AppLogo from "@/components/ui/AppLogo.vue";
 import MenuIcon from "@/components/ui/icons/MenuIcon.vue";
 import NavAppIcon from "@/components/ui/icons/NavAppIcon.vue";
 import NavDocsIcon from "@/components/ui/icons/NavDocsIcon.vue";
 import NavAboutIcon from "@/components/ui/icons/NavAboutIcon.vue";
 
-// --- Composables --------
+//   -- From composables
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 
@@ -22,17 +21,22 @@ import { useNavItems } from "@/composables/useNavItems";
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
 const route = useRoute();
-const { isOpen, close, toggle } = useDisclosure();
-const { navItems } = useNavItems("header");
 
+// --- Stores -------------
+
+// --- State --------------
 // Each menu entry maps to its hand-drawn icon (see src/components/ui/icons/).
 const navIcons = {
     sociogram: NavAppIcon,
     docs: NavDocsIcon,
     about: NavAboutIcon,
 };
+
+// --- Composables --------
+const { isOpen, close, toggle } = useDisclosure();
+const { navItems } = useNavItems("header");
 
 // --- Computed -----------
 

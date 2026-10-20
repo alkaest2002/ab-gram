@@ -1,16 +1,13 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { ref } from "vue";
 
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+//   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
 import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
-// --- Composables --------
+//   -- From composables
 import {
     useSociogramTextReader,
     DEFAULT_MAX_FILE_SIZE,
@@ -33,10 +30,15 @@ const emit = defineEmits([
     "file-read-error",
 ]);
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
 const fileInput = ref(null);
 const fileName = ref(null);
 
+// --- Composables --------
 // Streams the file instead of loading it all at once, so a huge file is never
 // held fully in memory — the byte ceiling is the safety limit.
 const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(null, {

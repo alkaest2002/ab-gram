@@ -1,17 +1,13 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
+// --- Imports ------------
 
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 const steps = [
@@ -28,6 +24,8 @@ const steps = [
         text: "AB-Gram calcola, in automatico, indici sociometrici e grafici.",
     },
 ];
+
+// --- Composables --------
 
 // --- Computed -----------
 

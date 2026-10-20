@@ -1,14 +1,7 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From relative
 import BasePage from "./BasePage.vue";
-
-// --- Composables --------
 
 // --- Props --------------
 const props = defineProps({
@@ -21,6 +14,10 @@ const props = defineProps({
 });
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 // Per-type presentation details. The two preference types share the same
@@ -44,7 +41,6 @@ const CATEGORIES = [
     { key: "strongComponentsWithReciprocalEdges", label: "Componenti fortemente reciproche" },
 ];
 
-// --- Computed -----------
 const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 
 // `components` maps each component type to the list of its components (each
@@ -54,6 +50,10 @@ const categories = CATEGORIES.map((category) => ({
     ...category,
     components: props.components?.[category.key] ?? [],
 }));
+
+// --- Composables --------
+
+// --- Computed -----------
 
 // --- Watchers -----------
 

@@ -1,20 +1,19 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
+// --- Imports ------------
+//   -- From vue-router
 import { RouterLink } from "vue-router";
-
-// --- Stores -------------
-
-// --- Components ---------
-
-// --- Composables --------
 
 // --- Props --------------
 
 // --- Emits --------------
 
+// --- Routers ------------
+
+// --- Stores -------------
+
 // --- State --------------
+
+// --- Composables --------
 
 // --- Computed -----------
 

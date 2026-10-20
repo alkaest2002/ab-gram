@@ -1,31 +1,37 @@
 <script setup>
-// --- Vue ----------------
+// --- Imports ------------
+//   -- From vue
 import { onBeforeMount, onBeforeUnmount } from "vue";
 
-// --- Routers ------------
+//   -- From vue-router
 import { useRouter } from "vue-router";
 
-// --- Stores -------------
+//   -- From stores
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
-// --- Components ---------
+//   -- From components
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 
-// --- Composables --------
+//   -- From utils
 import { createReportWorker } from "@/utils/workerLoader";
 
 // --- Props --------------
 
 // --- Emits --------------
 
-// --- State --------------
+// --- Routers ------------
 const router = useRouter();
+
+// --- Stores -------------
 const reportStore = useReportStore();
 const sociogramStore = useSociogramStore();
 
+// --- State --------------
 /** @type {Worker | null} Active report generation worker. */
 let worker = null;
+
+// --- Composables --------
 
 // --- Computed -----------
 

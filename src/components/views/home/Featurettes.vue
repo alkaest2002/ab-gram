@@ -1,20 +1,17 @@
 <script setup>
-// --- Vue ----------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- Components ---------
+// --- Imports ------------
+//   -- From components
 import PiggyIcon from "@/components/ui/icons/PiggyIcon.vue";
 import SmileyIcon from "@/components/ui/icons/SmileyIcon.vue";
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 
-// --- Composables --------
-
 // --- Props --------------
 
 // --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
 
 // --- State --------------
 const features = [
@@ -34,6 +31,8 @@ const features = [
         text: "I tuoi dati restano sul tuo dispositivo: non vengono inviati a nessuno e non raggiungono server esterni.",
     },
 ];
+
+// --- Composables --------
 
 // --- Computed -----------
 
