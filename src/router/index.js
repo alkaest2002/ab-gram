@@ -29,12 +29,6 @@ export const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  // A single active class, shared by header and footer.
-  // Note: RouterLink builds `{ [active]: isActive, [exact]: isExactActive }`,
-  // so giving the two options the same name makes the second one win and the
-  // active-but-not-exact links (the /app parent) end up with no class. Keep them distinct.
-  linkActiveClass: "is-active",
-  linkExactActiveClass: "is-exact-active",
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
       return { el: to.hash, top: HEADER_OFFSET, behavior: "smooth" };
