@@ -5,7 +5,6 @@ import { RouterLink } from "vue-router";
 
 //   -- From components
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
-import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 
 // --- Props --------------
 
@@ -19,18 +18,6 @@ import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 const originYear = 2026
 const currentYear = new Date().getFullYear();
 
-const links = [
-    {
-        label: "Privacy",
-        to: "/privacy",
-        icon: ShieldIcon,
-    },
-    {
-        label: "Email",
-        href: "mailto:info@ab-gram.example",
-        icon: EmailIcon,
-    },
-];
 
 // --- Composables --------
 
@@ -56,17 +43,13 @@ const links = [
             </div>
 
             <nav class="flex gap-6" aria-label="Informazioni">
-                <component
-                    :is="link.to ? RouterLink : 'a'"
-                    v-for="link in links"
-                    :key="link.to || link.href"
+                <RouterLink
+                    to="/privacy"
                     class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink cursor-pointer"
-                    :to="link.to"
-                    :href="link.href"
                 >
-                    <component :is="link.icon" />
-                    {{ link.label }}
-                </component>
+                    <ShieldIcon />
+                    Privacy
+                </RouterLink>
             </nav>
         </div>
     </footer>
