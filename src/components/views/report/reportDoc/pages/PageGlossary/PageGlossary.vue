@@ -39,12 +39,19 @@ const GLOSSARY = [
     { label: "HA", extended: "HITS autorità" },
     { label: "HU", extended: "HITS hub" },
 
-    // SNA components.
-    { label: "DYD", extended: "Diadi" },
-    { label: "CLQ", extended: "Clique" },
-    { label: "WCC", extended: "Componenti debolmente connesse" },
-    { label: "SCC", extended: "Componenti fortemente connesse" },
-    { label: "SCM", extended: "Componenti fortemente connesse e reciproche" },
+    // SNA components. In the member pages these labels are prefixed by the
+    // network they belong to: "L-" for likes (scelte) and "D-" for dislikes
+    // (rifiuti).
+    { label: "L-DYD", extended: "Diadi (scelte)" },
+    { label: "L-CLQ", extended: "Clique (scelte)" },
+    { label: "L-WCC", extended: "Componenti debolmente connesse (scelte)" },
+    { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },
+    { label: "L-SCM", extended: "Componenti fortemente connesse e reciproche (scelte)" },
+    { label: "D-DYD", extended: "Diadi (rifiuti)" },
+    { label: "D-CLQ", extended: "Clique (rifiuti)" },
+    { label: "D-WCC", extended: "Componenti debolmente connesse (rifiuti)" },
+    { label: "D-SCC", extended: "Componenti fortemente connesse (rifiuti)" },
+    { label: "D-SCM", extended: "Componenti fortemente connesse e reciproche (rifiuti)" },
 
     // Edge types.
     { label: "T1", extended: "Scelte reciproche" },
