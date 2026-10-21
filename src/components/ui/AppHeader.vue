@@ -94,8 +94,8 @@ const isActive = (path) =>
                     v-for="item in navItems"
                     :key="item.path"
                     :to="item.path"
-                    class="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-                    :class="{ 'text-accent': isActive(item.path) }"
+                    class="inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-semibold transition-colors hover:text-ink"
+                    :class="isActive(item.path) ? 'text-accent' : 'text-muted'"
                 >
                     <component :is="navIcons[item.name]" size="size-4" />
                     <span>{{ item.meta.title }}</span>
