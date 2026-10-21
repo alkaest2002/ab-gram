@@ -9,11 +9,9 @@ import { onBeforeRouteUpdate, RouterView, useRoute } from "vue-router";
 //   -- From components
 import AppContentTransition from "@/components/ui/AppContentTransition.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
-import DocsToc from "@/components/views/docs/DocsToc.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
 
 //   -- From composables
-import { useToc } from "@/composables/docs/useToc";
 import { usePrevNext } from "@/composables/docs/usePrevNext";
 import { useMathjax } from "@/composables/docs/useMathjax";
 
@@ -30,7 +28,6 @@ const route = useRoute();
 const articleRef = ref(null);
 
 // --- Composables --------
-const { headings } = useToc(articleRef);
 const { prev, next } = usePrevNext();
 const { typeset, clear } = useMathjax(articleRef);
 
@@ -63,8 +60,6 @@ onBeforeUnmount(clear);
         </aside>
 
         <div class="min-w-0 flex-1">
-            <DocsToc :headings="headings" />
-
             <article
                 ref="articleRef"
                 class="prose prose-neutral max-w-none prose-headings:scroll-mt-20"
