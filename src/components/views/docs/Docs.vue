@@ -57,7 +57,7 @@ onBeforeUnmount(clear);
         class="flex w-full flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
     >
         <aside
-            class="hidden w-full shrink-0 lg:block lg:w-64 lg:pt-6"
+            class="hidden w-full shrink-0 lg:block lg:w-64"
         >
             <DocsSidebar />
         </aside>
