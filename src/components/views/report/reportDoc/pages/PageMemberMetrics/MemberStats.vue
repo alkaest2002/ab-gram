@@ -435,8 +435,8 @@ function formatShare(value) {
                             :class="status.tone.text"
                             >{{ status.label }}</span
                         >
-                        &middot;
-                        <span class="text-[10pt]">{{
+                        <span class="text-[9pt] text-muted mx-2">&rarr;</span>
+                        <span class="text-[9pt] text-muted">{{
                             status.description
                         }}</span>
                     </p>
