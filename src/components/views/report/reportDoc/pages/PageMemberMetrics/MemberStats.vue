@@ -447,7 +447,7 @@ function formatShare(value) {
 </template>
 
 <style scoped>
-/* Bottom band: fills the content cell below the 65% ego plot. */
+/* Bottom band: fills the content cell below the 62% ego plot. */
 .bottom-band {
     flex: 1 1 0;
     min-height: 0;

@@ -28,7 +28,7 @@ import BasePage from "../BasePage.vue";
     <BasePage>
         <template #default>
             <div class="flex min-h-[235mm] flex-col">
-                <!-- Title block, centred in the space left above the notices. -->
+                <!-- Title block -->
                 <div class="mt-12">
                     <h1
                         class="mt-6 font-display text-[28pt] leading-[1.05] font-bold tracking-[-0.02em] text-ink"

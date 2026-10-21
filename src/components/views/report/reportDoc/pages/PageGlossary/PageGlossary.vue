@@ -90,11 +90,6 @@ const columns = [entries.slice(0, half), entries.slice(half)];
         </template>
 
         <template #default>
-            <!--
-              Two flex columns separated by a vertical line. CSS grid and
-              multi-column layout are avoided because Safari collapses them to a
-              single column when printing.
-            -->
             <div class="flex h-full">
                 <dl
                     v-for="(column, index) in columns"

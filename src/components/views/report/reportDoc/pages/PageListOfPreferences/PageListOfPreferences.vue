@@ -17,22 +17,12 @@ const props = defineProps({
 // --- State --------------
 const members = props.membersData?.members ?? [];
 
-// Compact rows: preferences resolved to their ids (not names), sorted for a
-// stable reading order and rendered as individual chips. Likes and dislikes
-// stay separate so the `+`/`−` signs map 1:1 onto sociometry's positive/negative
-// choice convention.
-const rows = members.map((member) => ({
-    id: member.id,
-    likes: [...(member.likes ?? [])],
-    dislikes: [...(member.dislikes ?? [])],
-}));
-
 // Balanced two-column split. Safari does not honour CSS multi-column layout
 // (`columns-2`) when printing and collapses it to a single column, so the two
 // halves are laid out with flexbox instead. The first half takes the extra
 // item on odd counts, matching balanced column fill.
-const half = Math.ceil(rows.length / 2);
-const columns = [rows.slice(0, half), rows.slice(half)];
+const half = Math.ceil(members.length / 2);
+const columns = [members.slice(0, half), members.slice(half)];
 
 // --- Composables --------
 
