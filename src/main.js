@@ -14,3 +14,18 @@ app.use(router);
 
 await router.isReady();
 app.mount("#app");
+
+function preloadRoutes() {
+  router.getRoutes().forEach((route) => {
+    const component = route.components?.default
+    if (typeof component === 'function') component()
+  })
+}
+
+window.addEventListener('load', () => {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(preloadRoutes)
+  } else {
+    setTimeout(preloadRoutes, 2000)
+  }
+})
