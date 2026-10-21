@@ -152,9 +152,11 @@
   }
 
   /* Typography tints list markers with a muted gray; keep bullets in ink to
-     match the surrounding prose text. */
-  .prose ul > li::marker {
-    color: var(--color-ink);
+     match the surrounding prose text. `prose-neutral` re-declares this variable
+     later in the cascade with equal specificity, so `!important` is required
+     to win. */
+  .prose {
+    --tw-prose-bullets: var(--color-ink) !important;
   }
 
   /* Home: the landing page breathes more than the others — few sections,
