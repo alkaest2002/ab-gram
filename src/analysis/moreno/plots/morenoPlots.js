@@ -202,7 +202,7 @@ const REACHABLE_COLOR = "#0000FF";
 const UNREACHABLE_COLOR = "#000000";
 
 // Dashed boundary circles separating the concentric regions.
-const BOUNDARY_COLOR = "#999999";
+const BOUNDARY_COLOR = "#555555";
 const BOUNDARY_STROKE_WIDTH = 1;
 const BOUNDARY_DASH = "4 4";
 
