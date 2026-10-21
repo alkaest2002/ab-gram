@@ -155,4 +155,4 @@ interno.
 | --------- | ------------- | ----------------- |
 | Diade | Due membri che si scelgono a vicenda | Massima (ma coinvolge solo due persone) |
 | Clique | Ognuno collegato direttamente a tutti gli altri | Alta |
-| Componente connessa | Un percorso tra ogni coppia di membri, anche passando per altri | Più bassa: può contenere catene di intermediari | Componente connessa | Un percorso tra ogni coppia di membri, anche passando per altri | Più bassa: può contenere catene di intermediari |
+| Componente connessa | Un percorso tra ogni coppia di membri, anche passando per altri | Più bassa: può contenere catene di intermediari |

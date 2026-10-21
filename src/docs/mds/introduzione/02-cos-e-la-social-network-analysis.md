@@ -16,11 +16,11 @@ profondo. L'idea di **Jacob L. Moreno** di rappresentare un gruppo come un
 insieme di punti e di linee, il sociogramma, e di studiare la **struttura delle
 relazioni** invece degli individui presi singolarmente è il fondamento su cui la
 SNA costruisce i suoi strumenti. Per questo AB-Gram può partire da un questionario
-sociometrico e "leggerlo" con le metriche della SNA. 
+sociometrico e "leggerlo" con le metriche della SNA.
 
 ## Attori e legami
 
-Ogni rete è costitutita di due elementi:
+Ogni rete è costituita di due elementi:
 
 - i **nodi** (o attori), cioè le persone, i gruppi o gli enti che fanno parte
   della rete;
@@ -43,8 +43,8 @@ La SNA, almeno nella sua incarnazione classica, offre misure che si dividono gro
   importante nella rete, per esempio perché è molto scelta o perché fa da ponte
   tra persone diverse.
 
-La definizione di ciascuna metrica SNA calcolata da AB-Gram si trova nsi trova in 
-un'apposita sezione della documentazione..
+La definizione di ciascuna metrica SNA calcolata da AB-Gram si trova in
+un'apposita sezione della documentazione.
 
 ## In sintesi
 

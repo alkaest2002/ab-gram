@@ -81,11 +81,11 @@ famiglie:
   rifiutato, quanto le sue relazioni sono ricambiate. Tra questi c'è anche lo
   **status sociometrico**, che colloca il membro in una categoria che ne riassume
   la posizione nel gruppo;
-- gli indici **di gruppo**, che misurano -- ad esempio -- quanto il gruppo è coeso o quanto è
+- gli indici **di gruppo**, che misurano — ad esempio — quanto il gruppo è coeso o quanto è
   conflittuale.
 
-La definizione di ciascuna metrica di Moreno (o successivi autori) e calcolata da AB-Gram 
-si trova in un'apposita sezione della documentazione.
+La definizione di ciascuna metrica calcolata da AB-Gram (ideata da Moreno o da
+autori successivi) si trova in un'apposita sezione della documentazione.
 
 Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
 confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
