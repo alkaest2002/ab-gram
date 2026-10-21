@@ -149,11 +149,6 @@
     @apply bg-reject/90;
   }
 
-  /* Text link inside prose (RouterLinks don't inherit the base style). */
-  .link {
-    @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
-  }
-
   /* Typography tints list markers with a muted gray; keep bullets in ink to
      match the surrounding prose text. `prose-neutral` re-declares this variable
      later in the cascade with equal specificity, so `!important` is required
@@ -162,40 +157,12 @@
     --tw-prose-bullets: var(--color-ink) !important;
   }
 
-  /* The key phrase sits in the same bold weight and is underlined by the brand
-     pair: blue fading to red. */
-
   .lede {
     @apply text-base sm:text-[1.0625rem];
   }
 
-  /* Closing band: the app's path in three words and a single call to action. */
-  .band {
-    @apply flex flex-col gap-5 rounded-lg border border-line p-6
-      sm:flex-row sm:items-center sm:justify-between;
-  }
-
-
   /* Eyebrow: small, letter-spaced, uppercase — mono, like a column header. */
   .eyebrow {
     @apply font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase;
-  }
-
-  .tag {
-    @apply rounded-md border border-accent px-2 py-0.5 font-mono text-xs
-      font-medium text-accent;
-  }
-
-  .tag-off {
-    @apply border-line text-muted;
-  }
-
-  /* Solid blue pill for compact, tappable download links. */
-  .badge {
-    @apply inline-flex items-center rounded-full bg-accent px-3 py-1 text-xs
-      font-medium text-white transition-colors;
-  }
-  .badge:hover {
-    @apply bg-accent/90;
   }
 }
