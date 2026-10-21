@@ -109,7 +109,7 @@ function toDisplayEdges(edges) {
                     :key="category.key"
                     class="shrink-0 pl-[2.5mm]"
                 >
-                    <header class="flex items-baseline justify-between border-b border-line pb-[1mm]">
+                    <header class="flex items-baseline justify-between border-b border-line pb-[2mm]">
                         <h3
                             class="inline-flex items-center gap-[1.5mm] font-mono text-[9pt] font-semibold tracking-[0.08em] uppercase"
                             :class="category.labelColor"
@@ -123,7 +123,7 @@ function toDisplayEdges(edges) {
                     </header>
 
                     <div class="pt-[1.5mm]">
-                        <div v-for="type in category.types" :key="type.key" class="pt-[1mm] first:pt-0 mb-[1.5mm]">
+                        <div v-for="type in category.types" :key="type.key" class="pt-[2mm] first:pt-0 mb-[1.5mm]">
 
                             <div class="flex items-baseline justify-between">
                                 <p class="font-mono text-[8pt] font-medium text-muted">{{ type.edges.length }} {{ type.label }}</p>
@@ -138,10 +138,6 @@ function toDisplayEdges(edges) {
                                     {{ edge.text }}
                                 </span>
                             </div>
-
-                            <p v-else class="mt-[0.5mm] font-mono text-[8pt] text-muted italic">
-                                nessuna relazione
-                            </p>
                         </div>
                     </div>
                 </section>
