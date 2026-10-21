@@ -70,7 +70,7 @@
 
   p,
   li {
-    @apply text-[0.975rem] leading-relaxed text-muted;
+    @apply text-[0.975rem] leading-relaxed text-ink;
   }
 
   /* The report is a print document with its own point-based type scale. It opts

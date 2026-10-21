@@ -6,27 +6,27 @@ description: Le origini della sociometria e l'idea di misurare le relazioni di u
 
 La **sociometria** è la disciplina che studia in modo **quantitativo** le
 relazioni tra i membri di un gruppo. Il suo scopo è misurare e rappresentare i
-legami — di simpatia, di rifiuto, di collaborazione — che si creano tra le
+legami — di scelta, di rifiuto — che si creano tra le
 persone, per capire come il gruppo è organizzato al suo interno.
 
 ## Le origini
 
-La sociometria nasce negli anni Trenta grazie allo psichiatra e sociologo
-**Jacob L. Moreno**. L'intuizione di Moreno è semplice ma potente: i legami di un
+La sociometria nasce negli anni Trenta del '900 grazie allo psichiatra e sociologo
+**Jacob L. Moreno**. L'intuizione di Moreno fu semplice ma decisiva: i legami di un
 gruppo non emergono con certezza dall'osservazione esterna, ma si possono
-**misurare** chiedendo ai membri con chi preferiscono stare e con chi no. Da
-queste risposte si ricava una "fotografia" delle preferenze del gruppo.
+**misurare** chiedendo ai membri con chi preferiscono interagire e con chi no. Da
+queste risposte si ricava una "fotografia" delle preferenze del gruppo e dunque delle sue dinamiche.
 
 ## L'idea di base
 
-Il punto di partenza è il **test sociometrico**: a ogni membro si chiede di
+Il punto di partenza è il **questionario sociometrico**: a ogni membro si chiede di
 indicare, per una situazione concreta, le persone che sceglierebbe e quelle che
 rifiuterebbe. Questa situazione si chiama **criterio sociometrico** (per esempio:
 «Con chi vorresti lavorare al progetto di gruppo?»). Cambiando il criterio
 possono cambiare anche le risposte, perché si può avere affinità con una persona
 in un contesto e non in un altro.
 
-Le risposte vengono poi raccolte e trasformate in dati che descrivono la
+Le risposte vengono raccolte e trasformate in dati che descrivono la
 struttura del gruppo. Due strumenti riassumono questi dati:
 
 - la **matrice sociometrica**, una tabella in cui righe e colonne sono i membri
@@ -36,19 +36,39 @@ struttura del gruppo. Due strumenti riassumono questi dati:
 
 ### Un esempio
 
-Nella matrice qui sotto le righe indicano **chi esprime** la preferenza e le
+Nella matrice qui sotto le righe indicano **chi esprime** una scelta o un rifiuto e le
 colonne **chi la riceve**. Il segno `+` indica una scelta, il segno `−` un
 rifiuto.
 
-|            | Anna | Bea | Carlo |
-| ---------- | :--: | :-: | :---: |
-| **Anna**   |  —   |  +  |       |
-| **Bea**    |      |  —  |   −   |
-| **Carlo**  |  +   |     |   —   |
+|            | Anna | Bea  |  Carlo |
+| ---------- | :--: | :--: |  :--:  |
+| **Anna**   |      |  +   |       |
+| **Bea**    |      |      |   -  |
+| **Carlo**  |  +   |      |      |
 
-Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna. Nel sociogramma
-corrispondente ci sarebbero tre punti collegati da tre linee orientate, ciascuna
-con la direzione di chi esprime verso chi riceve.
+Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna.
+
+La tabella si può separare in due **matrici di adiacenza**: una per le scelte
+($A$) e una per i rifiuti ($D$). Righe e colonne sono sempre i membri nello
+stesso ordine (Anna, Bea, Carlo); ogni elemento vale $1$ se la relazione esiste
+e $0$ se non esiste. La diagonale vale sempre $0$, perché nessuno sceglie o
+rifiuta se stesso.
+
+$$
+A =
+\begin{pmatrix}
+0 & 1 & 0 \\\\
+0 & 0 & 0 \\\\
+1 & 0 & 0
+\end{pmatrix}
+\qquad
+D =
+\begin{pmatrix}
+0 & 0 & 0 \\\\
+0 & 0 & 1 \\\\
+0 & 0 & 0
+\end{pmatrix}
+$$
 
 ## Gli indici sociometrici
 
@@ -61,8 +81,8 @@ famiglie:
   rifiutato, quanto le sue relazioni sono ricambiate. Tra questi c'è anche lo
   **status sociometrico**, che colloca il membro in una categoria che ne riassume
   la posizione nel gruppo;
-- gli indici **di gruppo**, che misurano quanto il gruppo è coeso, quanto è
-  conflittuale e quanto scelte e rifiuti sono ricambiati.
+- gli indici **di gruppo**, che misurano -- ad esempio -- quanto il gruppo è coeso o quanto è
+  conflittuale.
 
 Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
 confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
@@ -70,16 +90,13 @@ differenza rispetto alle misure della Social Network Analysis, che AB-Gram
 calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
 *Cos'è la Social Network Analysis*).
 
-La definizione di ciascun indice si trova nella sezione della documentazione
-dedicata alle metriche.
-
 ## Perché è utile
 
 La sociometria permette di rispondere a domande che difficilmente emergono dalla
-semplice osservazione: chi è isolato, chi è popolare, chi fa da ponte tra i
+semplice osservazione esterna: chi è isolato, chi è popolare, chi fa da ponte tra i
 sottogruppi, quali alleanze si formano. Per questo è usata in ambiti come la
-scuola, il lavoro e lo sport, ovunque serva comprendere come sta un gruppo.
+scuola, il lavoro e lo sport, ovunque serva comprendere le dinamiche di un gruppo.
 
-I risultati descrivono il gruppo in un preciso momento e rispetto a un preciso
+*Attenzione*: I risultati di un'analisi sociometrica descrivono il gruppo in un preciso momento e rispetto a un preciso
 criterio: vanno letti come un punto di partenza per capire e per intervenire, non
 come un giudizio definitivo sulle persone.
