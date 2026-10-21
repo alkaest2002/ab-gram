@@ -4,13 +4,13 @@ order: 6
 description: Come leggere i grafici prodotti dal report.
 ---
 
-Il report contiene due tipi di grafico: il sociogramma di rete, che mostra il
+Il report contiene due tipi di grafico: il grafo di rete, che mostra il
 gruppo nel suo insieme, e il grafico ego, che mostra le relazioni dal punto di
 vista di un singolo membro.
 
-## Il sociogramma di rete
+## Il grafo di rete
 
-Il sociogramma di rete compare nelle pagine "Rete delle scelte" e "Rete dei
+Il grafo di rete compare nelle pagine "Rete delle scelte" e "Rete dei
 rifiuti". Ogni pagina mostra una sola rete: le scelte sono disegnate in blu, i
 rifiuti in rosso.
 
@@ -35,9 +35,11 @@ sotto il grafo principale.
 
 ### Posizione dei nodi
 
-La disposizione è calcolata con un algoritmo che avvicina i membri collegati
-tra loro: i sottogruppi tendono ad apparire come gruppi di nodi vicini. La
-posizione non esprime un ordine di importanza.
+La disposizione è calcolata con un algoritmo di posizionamento force-directed (a forze simulate), che tratta la rete come un sistema fisico: i nodi si comportano come particelle che si respingono a vicenda, mentre i collegamenti agiscono come molle che attirano i nodi connessi. A partire da una configurazione iniziale casuale, il sistema si evolve iterativamente fino a raggiungere uno stato di equilibrio, in cui le forze di attrazione e repulsione si bilanciano. Il risultato è che i membri collegati tra loro tendono ad avvicinarsi e i sottogruppi molto connessi appaiono come gruppi di nodi vicini.
+
+È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete.
+
+Inoltre, poiché l’inizializzazione è casuale, l’algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafo, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
 
 ## Il grafico ego
 
@@ -51,13 +53,13 @@ al centro e dispone tutti gli altri intorno a lui.
   quanti passi di "scelta" servono per raggiungerli partendo dal membro
   centrale:
 
-| Anello | Sigla | Significato |
-| --- | --- | --- |
-| 1 | `0MU` | Scelta reciproca |
-| 2 | `0HP` | Scelto direttamente, senza ricambio |
-| 3 | `1HP` | Raggiungibile tramite un solo intermediario |
-| 4 | `2HP+` | Raggiungibile tramite due o più intermediari |
-| 5 | `UNR` | Non raggiungibile |
+| Anello | Sigla  | Significato                                  |
+| ------ | ------ | -------------------------------------------- |
+| 1      | `0MU`  | Scelta reciproca                             |
+| 2      | `0HP`  | Scelto direttamente, senza ricambio          |
+| 3      | `1HP`  | Raggiungibile tramite un solo intermediario  |
+| 4      | `2HP+` | Raggiungibile tramite due o più intermediari |
+| 5      | `UNR`  | Non raggiungibile                            |
 
 I cerchi tratteggiati separano gli anelli e le sigle sono riportate lungo la
 linea verticale superiore, dal centro verso l'esterno.
