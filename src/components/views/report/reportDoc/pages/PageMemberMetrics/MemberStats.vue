@@ -157,26 +157,37 @@ const metricChips = METRIC_ROWS.map((row) =>
     row.map(({ label, key, source }) => buildChip(label, key, source)),
 );
 
-// `memberInEdges` is keyed by member id and holds a 0-1 share per edge type.
+// `memberInEdges` is keyed by member id and holds a `{ cnt, pct }` per edge
+// type: the number of the member's edges of that type (`cnt`) and its 0-1 share
+// of the member's total edges (`pct`).
 const edgeShares = (() => {
     const shares = props.edgeTypes?.memberInEdges?.[props.memberId] ?? {};
-    return EDGE_TYPE_CONFIG.map(({ key, label }) => ({
-        key,
-        label,
-        value: Number(shares[key] ?? 0),
-    }));
+    return EDGE_TYPE_CONFIG.map(({ key, label }) => {
+        const value = shares[key] ?? {};
+        return {
+            key,
+            label,
+            count: Number(value.cnt ?? 0),
+            share: Number(value.pct ?? 0),
+        };
+    });
 })();
 
-// `memberInComponents` is keyed by member id and holds a 0-1 presence fraction
-// per component category.
+// `memberInComponents` is keyed by member id and holds a `{ cnt, pct }` per
+// component category: the number of that type's components containing the member
+// (`cnt`) and the 0-1 fraction of the type's components it is present in (`pct`).
 const componentShares = (() => {
     const shares =
         props.components?.memberInComponents?.[props.memberId] ?? {};
-    return COMPONENT_CONFIG.map(({ key, label }) => ({
-        key,
-        label,
-        value: Number(shares[key] ?? 0),
-    }));
+    return COMPONENT_CONFIG.map(({ key, label }) => {
+        const value = shares[key] ?? {};
+        return {
+            key,
+            label,
+            count: Number(value.cnt ?? 0),
+            share: Number(value.pct ?? 0),
+        };
+    });
 })();
 
 const status = (() => {
@@ -243,8 +254,8 @@ function formatValue(value) {
     return String(Math.round(num * 100) / 100);
 }
 
-// `memberInEdges` / `memberInComponents` hold 0-1 fractions; present as a whole
-// percentage (a single decimal would be noise on these dense chips).
+// The `pct` fields on edges/components are 0-1 fractions; present them as a
+// whole percentage (a single decimal would be noise on these dense chips).
 function formatShare(value) {
     return `${Math.round(Number(value) * 100)}%`;
 }
@@ -315,10 +326,16 @@ function formatShare(value) {
                         class="font-mono text-[9pt] font-medium text-muted"
                         >{{ item.label }}</span
                     >
-                    <span
-                        class="font-mono text-[9pt] font-semibold leading-none"
-                        >{{ formatShare(item.value) }}</span
-                    >
+                    <span class="flex items-center gap-[1mm]">
+                        <span
+                            class="font-mono text-[9pt] font-semibold leading-none"
+                            >{{ item.count }}</span
+                        >
+                        <span
+                            class="font-mono text-[7pt] leading-none text-muted"
+                            >{{ formatShare(item.share) }}</span
+                        >
+                    </span>
                 </span>
             </div>
         </section>
@@ -340,10 +357,16 @@ function formatShare(value) {
                         class="font-mono text-[9pt] font-medium text-muted"
                         >{{ item.label }}</span
                     >
-                    <span
-                        class="font-mono text-[9pt] font-semibold leading-none"
-                        >{{ formatShare(item.value) }}</span
-                    >
+                    <span class="flex items-center gap-[1mm]">
+                        <span
+                            class="font-mono text-[9pt] font-semibold leading-none"
+                            >{{ item.count }}</span
+                        >
+                        <span
+                            class="font-mono text-[7pt] leading-none text-muted"
+                            >{{ formatShare(item.share) }}</span
+                        >
+                    </span>
                 </span>
                 <span
                     v-if="componentShares.length"
@@ -354,14 +377,23 @@ function formatShare(value) {
                         class="font-mono text-[9pt] font-medium text-muted"
                         >{{ componentShares[componentShares.length - 1].label }}</span
                     >
-                    <span
-                        class="font-mono text-[7.5pt] font-semibold leading-none"
-                        >{{
-                            formatShare(
-                                componentShares[componentShares.length - 1].value,
-                            )
-                        }}</span
-                    >
+                    <span class="flex items-center gap-[1mm]">
+                        <span
+                            class="font-mono text-[9pt] font-semibold leading-none"
+                            >{{
+                                componentShares[componentShares.length - 1].count
+                            }}</span
+                        >
+                        <span
+                            class="font-mono text-[7pt] leading-none text-muted"
+                            >{{
+                                formatShare(
+                                    componentShares[componentShares.length - 1]
+                                        .share,
+                                )
+                            }}</span
+                        >
+                    </span>
                 </span>
             </div>
         </section>
