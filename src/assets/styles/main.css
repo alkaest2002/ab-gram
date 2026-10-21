@@ -151,6 +151,12 @@
     @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
   }
 
+  /* Typography tints list markers with a muted gray; keep bullets in ink to
+     match the surrounding prose text. */
+  .prose ul > li::marker {
+    color: var(--color-ink);
+  }
+
   /* Home: the landing page breathes more than the others — few sections,
      spaced apart. */
   .home {
