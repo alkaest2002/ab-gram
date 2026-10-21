@@ -92,6 +92,22 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                         informativa sulla privacy di GitHub
                     </a>.
                 </p>
+
+                <h3 id="discord" class="scroll-mt-24">4.2 Discord (community)</h3>
+                <p>
+                    Tramite il sito è possibile accedere al server della community
+                    su Discord. Discord può trattare dati personali (ad esempio
+                    l'indirizzo IP, i dati dell'account o le informazioni relative
+                    all'utilizzo del servizio) in qualità di titolare autonomo del
+                    trattamento. Per maggiori informazioni si rimanda alla
+                    <a
+                        href="https://discord.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        informativa sulla privacy di Discord
+                    </a>.
+                </p>
             </section>
 
             <section class="space-y-3">

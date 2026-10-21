@@ -19,6 +19,7 @@ const sections = [
         label: "4. Servizi di terze parti",
         children: [
             { id: "github-pages", label: "4.1 GitHub Pages (hosting)" },
+            { id: "discord", label: "4.2 Discord (community)" },
         ],
     },
     { id: "cookie", label: "5. Cookie" },
