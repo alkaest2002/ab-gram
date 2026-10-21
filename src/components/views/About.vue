@@ -64,13 +64,11 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
                 <h1>Cosa si nasconde sotto il cofano?</h1>
             </header>
 
-            <p class="mb-3">
+            <p class="mb-6">
                 AB-Gram è un'applicazione web sviluppata dal
                 <span class="font-bold">Dott. Pierpaolo Calanna, PhD</span> e
                 dal <span class="font-bold">Dott. Gaetano Buonaiuto</span>,
-                esperti militari di dinamiche di gruppo.
-            </p>
-            <p>
+                esperti di dinamiche di gruppo.
                 Di seguito si riportano le librerie che fanno funzionare
                 AB-Gram, dal calcolo delle metriche individuali e di gruppo, al
                 rendering dei grafici.
@@ -78,7 +76,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
 
             <div class="card">
                 <h3
-                    class="font-mono text-xs font-bold tracking-[0.14em] text-muted uppercase"
+                    class="font-mono text-xs font-bold text-[11pt] tracking-[0.14em] text-muted uppercase"
                 >
                     Dipendenze
                 </h3>
