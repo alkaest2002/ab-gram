@@ -44,14 +44,14 @@ const GLOSSARY = [
     // (rifiuti).
     { label: "L-DYD", extended: "Diadi (scelte)" },
     { label: "L-CLQ", extended: "Clique (scelte)" },
-    { label: "L-WCC", extended: "Componenti debolmente connesse (scelte)" },
-    { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },
-    { label: "L-SCM", extended: "Componenti fortemente connesse e reciproche (scelte)" },
+    { label: "L-WCC", extended: "Comp.ti debolmente connesse (scelte)" },
+    { label: "L-SCC", extended: "Comp.ti fortemente connesse (scelte)" },
+    { label: "L-SCM", extended: "Comp.ti fortemente connesse e reciproche (scelte)" },
     { label: "D-DYD", extended: "Diadi (rifiuti)" },
     { label: "D-CLQ", extended: "Clique (rifiuti)" },
-    { label: "D-WCC", extended: "Componenti debolmente connesse (rifiuti)" },
-    { label: "D-SCC", extended: "Componenti fortemente connesse (rifiuti)" },
-    { label: "D-SCM", extended: "Componenti fortemente connesse e reciproche (rifiuti)" },
+    { label: "D-WCC", extended: "Comp.ti debolmente connesse (rifiuti)" },
+    { label: "D-SCC", extended: "Comp.ti fortemente connesse (rifiuti)" },
+    { label: "D-SCM", extended: "Comp.ti fortemente connesse e reciproche (rifiuti)" },
 
     // Edge types.
     { label: "T1", extended: "Scelte reciproche" },
@@ -107,7 +107,7 @@ const columns = [entries.slice(0, half), entries.slice(half)];
                         :key="entry.label"
                         class="flex items-baseline gap-[2mm] pb-[1.5mm]"
                     >
-                        <dt class="w-[9mm] shrink-0 font-mono text-[8.5pt] font-semibold tracking-[0.06em] text-ink">
+                        <dt class="w-[12mm] shrink-0 font-mono text-[8.5pt] font-semibold tracking-[0.06em] text-ink">
                             {{ entry.label }}
                         </dt>
                         <dd class="min-w-0 text-[8.5pt] leading-[1.35] text-muted">

@@ -35,7 +35,7 @@ defineProps({
 <style scoped>
 /* Top band: 65% of the content cell. */
 .top-band {
-    flex: 0 0 65%;
+    flex: 0 0 62%;
     min-height: 0;
 }
 

@@ -12,8 +12,12 @@ const props = defineProps({
     snaMetrics: { type: Object, default: () => ({}) },
     // `getEdgeTypes` result, exposing `memberInEdges`.
     edgeTypes: { type: Object, default: () => ({}) },
-    // `getSnaComponents` result, exposing `memberInComponents`.
-    components: { type: Object, default: () => ({}) },
+    // `getSnaComponents` result for the choice ("likes") network, exposing
+    // `memberInComponents`.
+    likesComponents: { type: Object, default: () => ({}) },
+    // `getSnaComponents` result for the rejection ("dislikes") network, exposing
+    // `memberInComponents`.
+    dislikesComponents: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -176,19 +180,28 @@ const edgeShares = (() => {
 // `memberInComponents` is keyed by member id and holds a `{ cnt, pct }` per
 // component category: the number of that type's components containing the member
 // (`cnt`) and the 0-1 fraction of the type's components it is present in (`pct`).
-const componentShares = (() => {
-    const shares =
-        props.components?.memberInComponents?.[props.memberId] ?? {};
+const buildComponentShares = (components, prefix) => {
+    const shares = components?.memberInComponents?.[props.memberId] ?? {};
     return COMPONENT_CONFIG.map(({ key, label }) => {
         const value = shares[key] ?? {};
         return {
-            key,
-            label,
+            key: `${prefix}-${key}`,
+            label: `${prefix}-${label}`,
             count: Number(value.cnt ?? 0),
             share: Number(value.pct ?? 0),
         };
     });
-})();
+};
+
+// The component stats render as two rows: one for the likes network and one for
+// the dislikes network, each label prefixed to make its network unambiguous.
+const componentRows = [
+    { name: "likes", shares: buildComponentShares(props.likesComponents, "L") },
+    {
+        name: "dislikes",
+        shares: buildComponentShares(props.dislikesComponents, "D"),
+    },
+];
 
 const status = (() => {
     const metrics = props.morenoMetrics;
@@ -347,54 +360,59 @@ function formatShare(value) {
                     Componenti
                 </h3>
             </header>
-            <div class="flex gap-[1mm]">
-                <span
-                    v-for="item in componentShares"
-                    :key="item.key"
-                    class="flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+            <div class="flex flex-col gap-[1mm]">
+                <div
+                    v-for="row in componentRows"
+                    :key="row.name"
+                    class="flex gap-[1mm]"
                 >
                     <span
-                        class="font-mono text-[9pt] font-medium text-muted"
-                        >{{ item.label }}</span
+                        v-for="item in row.shares"
+                        :key="item.key"
+                        class="flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
                     >
-                    <span class="flex items-center gap-[1mm]">
                         <span
-                            class="font-mono text-[9pt] font-semibold leading-none"
-                            >{{ item.count }}</span
+                            class="font-mono text-[9pt] font-medium text-muted"
+                            >{{ item.label }}</span
                         >
-                        <span
-                            class="font-mono text-[7pt] leading-none text-muted"
-                            >{{ formatShare(item.share) }}</span
-                        >
+                        <span class="flex items-center gap-[1mm]">
+                            <span
+                                class="font-mono text-[9pt] font-semibold leading-none"
+                                >{{ item.count }}</span
+                            >
+                            <span
+                                class="font-mono text-[7pt] leading-none text-muted"
+                                >{{ formatShare(item.share) }}</span
+                            >
+                        </span>
                     </span>
-                </span>
-                <span
-                    v-if="componentShares.length"
-                    class="invisible flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
-                    aria-hidden="true"
-                >
                     <span
-                        class="font-mono text-[9pt] font-medium text-muted"
-                        >{{ componentShares[componentShares.length - 1].label }}</span
+                        v-if="row.shares.length"
+                        class="invisible flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                        aria-hidden="true"
                     >
-                    <span class="flex items-center gap-[1mm]">
                         <span
-                            class="font-mono text-[9pt] font-semibold leading-none"
-                            >{{
-                                componentShares[componentShares.length - 1].count
-                            }}</span
+                            class="font-mono text-[9pt] font-medium text-muted"
+                            >{{ row.shares[row.shares.length - 1].label }}</span
                         >
-                        <span
-                            class="font-mono text-[7pt] leading-none text-muted"
-                            >{{
-                                formatShare(
-                                    componentShares[componentShares.length - 1]
-                                        .share,
-                                )
-                            }}</span
-                        >
+                        <span class="flex items-center gap-[1mm]">
+                            <span
+                                class="font-mono text-[9pt] font-semibold leading-none"
+                                >{{
+                                    row.shares[row.shares.length - 1].count
+                                }}</span
+                            >
+                            <span
+                                class="font-mono text-[7pt] leading-none text-muted"
+                                >{{
+                                    formatShare(
+                                        row.shares[row.shares.length - 1].share,
+                                    )
+                                }}</span
+                            >
+                        </span>
                     </span>
-                </span>
+                </div>
             </div>
         </section>
 

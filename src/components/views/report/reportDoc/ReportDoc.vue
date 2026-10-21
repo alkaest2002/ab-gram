@@ -103,7 +103,8 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
             :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
             :edge-types="reportData.analysisData?.edgeTypes ?? {}"
-            :components="reportData.analysisData?.snaLikesComponents ?? {}"
+            :likes-components="reportData.analysisData?.snaLikesComponents ?? {}"
+            :dislikes-components="reportData.analysisData?.snaDislikesComponents ?? {}"
         />
         <PageGlossary />
     </div>
