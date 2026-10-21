@@ -87,7 +87,7 @@ La raccolta può avvenire in due modi, e la scelta spetta a te:
 In entrambi i casi il principio è lo stesso: per ciascun membro, registra le sue
 scelte e i suoi rifiuti.
 
-## Una scelta di "privacy by design"
+## 5. Una scelta di "privacy by design"
 
 Il fatto che i dati vengano raccolti da te, e non direttamente dall'applicazione,
 è una decisione voluta. AB-Gram:

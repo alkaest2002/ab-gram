@@ -14,7 +14,7 @@ l'elenco prima di proseguire.
 - **Aggiungi** una persona con il pulsante in fondo all'elenco.
 - **Elimina** una persona con il pulsante a destra del nome.
 
-Un riquadro di riepilogo mostra il numero di persone, di nomi duplicati e di
+Un riquadro di riepilogo mostra il numero di persone, il numero di nomi duplicati e di
 nomi vuoti.
 
 ## Controlli automatici

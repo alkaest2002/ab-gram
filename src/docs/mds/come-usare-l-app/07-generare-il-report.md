@@ -29,7 +29,7 @@ completi e, se tutto è in ordine, genera il report.
 ### Requisiti per la generazione
 
 - Il gruppo deve contenere **almeno 5 membri**.
-- Ogni membro deve avere scelte e rifiuti completi (o aver dichiarato di non
+- Ogni membro deve avere scelte e rifiuti completi (o aver esplicitamente dichiarato di non
   averne).
 
 Se una di queste condizioni non è soddisfatta, l'applicazione segnala il problema
