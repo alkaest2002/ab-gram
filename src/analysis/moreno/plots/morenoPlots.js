@@ -202,7 +202,7 @@ const REACHABLE_COLOR = "#0000FF";
 const UNREACHABLE_COLOR = "#000000";
 
 // Dashed boundary circles separating the concentric regions.
-const BOUNDARY_COLOR = "#555555";
+const BOUNDARY_COLOR = "#333333";
 const BOUNDARY_STROKE_WIDTH = 1;
 const BOUNDARY_DASH = "4 4";
 
@@ -211,7 +211,7 @@ const BOUNDARY_DASH = "4 4";
 // names correspond one-to-one with the five rings in `buildMorenoEgoPlot`.
 const REGION_LABELS = ["0MU", "0HP", "1HP", "2HP+", "UNR"];
 const REGION_LABEL_FONT_SIZE = 13;
-const REGION_LABEL_COLOR = "#555555";
+const REGION_LABEL_COLOR = "#333333";
 
 // Angular gap (in radians) reserved at the 12 o'clock position so the stacked
 // region labels never collide with a node. Nodes are distributed over the
