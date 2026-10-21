@@ -166,10 +166,6 @@ const NODE_RADIUS = 13;
 const LABEL_FONT_SIZE = 10;
 const NODE_STROKE_WIDTH = 2;
 
-// Nodes are drawn as white circles with a colored stroke; the label matches
-// the stroke color.
-const NODE_FILL_COLOR = "#FFFFFF";
-
 // Concentric ring layout: ring 1 sits this far from the center, and each
 // further ring adds this gap on top of the previous one. Rings are numbered
 // 1..5 (closest to farthest), matching the reachability buckets below. The gap
@@ -196,10 +192,21 @@ const CANVAS_HEIGHT = CENTER_Y * 2;
 // Direction marker: a small filled triangle pointing back toward the ego.
 const TRIANGLE_SIZE = 8;
 
-// Stroke colors, applied by the priority order documented in `buildMorenoEgoPlot`.
-const DISLIKE_COLOR = "#FF0000";
-const REACHABLE_COLOR = "#0000FF";
-const UNREACHABLE_COLOR = "#000000";
+// Stroke, fill, and label colors, per node kind. The ego at the center is drawn
+// dark gray over a light gray fill with a dark label; the remaining nodes use a
+// colored stroke — blue for like, red for dislike, gray for neutral — over a
+// white fill. Like and dislike labels inherit the stroke color, while the
+// neutral label is darkened for legibility.
+const EGO_STROKE_COLOR = "#333333";
+const EGO_FILL_COLOR = "#FFFFFF";
+const EGO_LABEL_COLOR = "#333333";
+const DISLIKE_STROKE_COLOR = "#FF0000";
+const DISLIKE_FILL_COLOR = "#FFFFFF";
+const REACHABLE_STROKE_COLOR = "#0000FF";
+const REACHABLE_FILL_COLOR = "#FFFFFF";
+const NEUTRAL_STROKE_COLOR = "#333333";
+const NEUTRAL_FILL_COLOR = "#FFFFFF";
+const NEUTRAL_LABEL_COLOR = "#333333";
 
 // Dashed boundary circles separating the concentric regions.
 const BOUNDARY_COLOR = "#333333";
@@ -346,8 +353,8 @@ const triangleMarkup = (x, y, color, towardEgo) => {
 };
 
 /**
- * Build the markup for a single node: a white circle with a colored stroke, its
- * member id centered inside, and up to two direction markers (one pointing
+ * Build the markup for a single node: a circle with a colored stroke and fill,
+ * its member id centered inside, and up to two direction markers (one pointing
  * toward the ego for the node's feeling, one pointing away for the ego's
  * feeling).
  *
@@ -355,15 +362,17 @@ const triangleMarkup = (x, y, color, towardEgo) => {
  * @param {number} y - Vertical center of the node.
  * @param {string} label - The member id to display.
  * @param {string} strokeColor - The circle's stroke color.
+ * @param {string} fillColor - The circle's fill color.
+ * @param {string} labelColor - The label's fill color.
  * @param {string|null} inwardColor - Fill color of the inward marker (the node
  *   feels about the ego), or `null` for no marker.
  * @param {string|null} outwardColor - Fill color of the outward marker (the ego
  *   feels about the node), or `null` for no marker.
  * @returns {string} The node's SVG markup.
  */
-const nodeMarkup = (x, y, label, strokeColor, inwardColor, outwardColor) =>
-  `<circle r='${NODE_RADIUS}' fill='${NODE_FILL_COLOR}' stroke='${strokeColor}' stroke-width='${NODE_STROKE_WIDTH}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
-  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${strokeColor}'>${escapeXml(label)}</text>` +
+const nodeMarkup = (x, y, label, strokeColor, fillColor, labelColor, inwardColor, outwardColor) =>
+  `<circle r='${NODE_RADIUS}' fill='${fillColor}' stroke='${strokeColor}' stroke-width='${NODE_STROKE_WIDTH}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
+  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${labelColor}'>${escapeXml(label)}</text>` +
   (inwardColor ? triangleMarkup(x, y, inwardColor, true) : "") +
   (outwardColor ? triangleMarkup(x, y, outwardColor, false) : "");
 
@@ -411,9 +420,10 @@ const regionLabelsMarkup = () =>
  * centered on the top point of its ring, reading from the center out to the
  * north (innermost first, outermost last). Dashed boundary circles separate the
  * concentric regions, and the square canvas is padded so the outermost boundary
- * stays clear of the edges. Nodes are stroked in priority order: red when the
+ * stays clear of the edges. Nodes are colored in priority order: red when the
  * node is disliked by the ego or dislikes the ego, blue when the node is liked
- * by the ego or likes the ego, and black otherwise (unreachable). A direct like
+ * by the ego or likes the ego, and gray otherwise (neutral/unreachable). The ego
+ * at the center is light gray, stroke and fill. A direct like
  * or dislike between the node and the ego additionally carries a small triangle
  * tangent to the node's circle: pointing toward the ego when the node feels
  * about the ego, and away from the ego when the ego likes or dislikes the node.
@@ -461,10 +471,10 @@ export const buildMorenoEgoPlot = (
   // nodes are drawn on top of them.
   ringBoundaries().forEach((radius) => parts.push(ringBoundaryMarkup(radius)));
 
-  // The ego itself, always at the center. It trivially reaches itself, so it is
-  // blue, and (having no self-edge) carries no direction marker.
+  // The ego itself, always at the center, drawn light gray. It has no self-edge,
+  // so it carries no direction marker.
   parts.push(
-    nodeMarkup(CENTER_X, CENTER_Y, memberId, REACHABLE_COLOR, null, null),
+    nodeMarkup(CENTER_X, CENTER_Y, memberId, EGO_STROKE_COLOR, EGO_FILL_COLOR, EGO_LABEL_COLOR, null, null),
   );
 
   rings.forEach((ringNodes, ringIndex) => {
@@ -500,29 +510,29 @@ export const buildMorenoEgoPlot = (
       const egoDislikes = dislikesGraph.hasDirectedEdge(memberId, node);
 
       // Dislike (in either direction) wins over like, which wins over the
-      // remaining unreachable nodes.
-      const strokeColor = dislikesEgo || egoDislikes
-        ? DISLIKE_COLOR
+      // remaining neutral nodes. Each kind pairs a stroke, fill, and label color.
+      const [strokeColor, fillColor, labelColor] = dislikesEgo || egoDislikes
+        ? [DISLIKE_STROKE_COLOR, DISLIKE_FILL_COLOR, DISLIKE_STROKE_COLOR]
         : likesEgo || egoLikes
-          ? REACHABLE_COLOR
-          : UNREACHABLE_COLOR;
+          ? [REACHABLE_STROKE_COLOR, REACHABLE_FILL_COLOR, REACHABLE_STROKE_COLOR]
+          : [NEUTRAL_STROKE_COLOR, NEUTRAL_FILL_COLOR, NEUTRAL_LABEL_COLOR];
 
       // Inward marker: the node likes (blue) or dislikes (red) the ego.
       const inwardColor = dislikesEgo
-        ? DISLIKE_COLOR
+        ? DISLIKE_STROKE_COLOR
         : likesEgo
-          ? REACHABLE_COLOR
+          ? REACHABLE_STROKE_COLOR
           : null;
 
       // Outward marker: the ego likes (blue) or dislikes (red) the node.
       const outwardColor = egoDislikes
-        ? DISLIKE_COLOR
+        ? DISLIKE_STROKE_COLOR
         : egoLikes
-          ? REACHABLE_COLOR
+          ? REACHABLE_STROKE_COLOR
           : null;
 
       parts.push(
-        nodeMarkup(x, y, node, strokeColor, inwardColor, outwardColor),
+        nodeMarkup(x, y, node, strokeColor, fillColor, labelColor, inwardColor, outwardColor),
       );
     });
   });

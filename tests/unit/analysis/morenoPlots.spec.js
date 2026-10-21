@@ -124,17 +124,18 @@ describe("morenoPlots", () => {
       expect(svg.startsWith("<svg")).toBe(true);
       expect(svg.endsWith("</svg>")).toBe(true);
 
-      // The ego plus b, c, d, e, f = six nodes.
+      // Every node — the ego plus b, c, d, e, f — is filled white.
       expect(countOccurrences(svg, "fill='#FFFFFF'")).toBe(6);
 
       // Six dashed boundaries separate the center (ego) and the five rings.
       expect(countOccurrences(svg, "fill='none'")).toBe(6);
 
-      // d dislikes the ego (red), b is liked by the ego and e likes the ego
-      // (blue), and c and f have no direct relationship (black).
+      // d dislikes the ego (red stroke), b is liked by the ego and e likes the
+      // ego (blue stroke), and the ego plus the neutral c and f use a dark gray
+      // stroke. The stroke-width distinguishes nodes from the dashed boundaries.
       expect(svg).toContain("stroke='#FF0000'");
       expect(svg).toContain("stroke='#0000FF'");
-      expect(svg).toContain("stroke='#000000'");
+      expect(svg).toContain("stroke='#333333' stroke-width='2'");
 
       // Direct relationships carry a direction marker: a likes b (outward),
       // d dislikes the ego (inward) and e likes the ego (inward).
@@ -184,7 +185,7 @@ describe("morenoPlots", () => {
       const northGap = Math.PI / 3;
       const nodeCenters = [
         ...svg.matchAll(
-          /<circle[^>]*fill='#FFFFFF'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
+          /<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
         ),
       ];
       expect(nodeCenters.length).toBeGreaterThan(0);
@@ -241,7 +242,7 @@ describe("morenoPlots", () => {
         const northGap = Math.PI / 3;
         const nodeCenters = [
           ...svg.matchAll(
-            /<circle[^>]*fill='#FFFFFF'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
+            /<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
           ),
         ];
         expect(nodeCenters.length).toBe(members.length);
