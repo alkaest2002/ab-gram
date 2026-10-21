@@ -71,16 +71,16 @@ const gravity = computed({
                 aria-modal="true"
                 aria-labelledby="sna-regenerate-title"
             >
-                <h3 id="sna-regenerate-title" class="font-display text-[13pt] font-bold text-ink">
+                <h3 id="sna-regenerate-title" class="font-display text-[12pt] font-bold text-ink">
                     Rigenera il grafico
                 </h3>
-                <p class="mt-1 text-[8.5pt] leading-snug text-muted">
+                <p class="mt-1 text-[10pt] leading-snug text-muted">
                     Modifica i parametri di ForceAtlas2 e ricostruisci la disposizione dei nodi.
                 </p>
 
                 <form class="mt-4 space-y-3" @submit.prevent="emit('confirm')">
                     <label class="block">
-                        <span class="font-mono text-[8pt] font-medium tracking-[0.08em] uppercase text-muted">
+                        <span class="font-mono text-[9pt] font-medium tracking-[0.08em] uppercase text-muted">
                             Scaling ratio
                         </span>
                         <input
@@ -94,7 +94,7 @@ const gravity = computed({
                     </label>
 
                     <label class="block">
-                        <span class="font-mono text-[8pt] font-medium tracking-[0.08em] uppercase text-muted">
+                        <span class="font-mono text-[9pt] font-medium tracking-[0.08em] uppercase text-muted">
                             Gravity
                         </span>
                         <input
@@ -107,13 +107,13 @@ const gravity = computed({
                         />
                     </label>
 
-                    <p v-if="error" class="text-[8.5pt] text-reject">{{ error }}</p>
+                    <p v-if="error" class="text-[9pt] text-reject">{{ error }}</p>
 
                     <div class="flex justify-end gap-2 pt-1">
                         <button
                             v-if="!regenerating"
                             type="button"
-                            class="rounded-md px-3 py-1.5 text-[9pt] font-medium text-muted transition-colors hover:bg-line hover:text-ink"
+                            class="rounded-md px-3 py-1.5 text-[10pt] font-medium text-muted transition-colors hover:bg-line hover:text-ink"
                             @click="emit('close')"
                         >
                             Annulla
@@ -121,7 +121,7 @@ const gravity = computed({
                         <button
                             v-if="regenerating"
                             type="button"
-                            class="rounded-md bg-reject px-3 py-1.5 text-[9pt] font-medium text-white transition-opacity hover:opacity-90"
+                            class="rounded-md bg-reject px-3 py-1.5 text-[10pt] font-medium text-white transition-opacity hover:opacity-90"
                             @click="emit('stop')"
                         >
                             Interrompi
@@ -129,7 +129,7 @@ const gravity = computed({
                         <button
                             v-else
                             type="submit"
-                            class="rounded-md bg-accent px-3 py-1.5 text-[9pt] font-medium text-white transition-opacity hover:opacity-90"
+                            class="rounded-md bg-accent px-3 py-1.5 text-[10pt] font-medium text-white transition-opacity hover:opacity-90"
                         >
                             Rigenera
                         </button>
