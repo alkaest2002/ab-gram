@@ -30,7 +30,7 @@ defineProps({
         :class="size"
         class="shrink-0"
         viewBox="0 0 24 24"
-        fill="#5865F2"
+        fill="#FFFFFF"
         aria-hidden="true"
     >
         <path

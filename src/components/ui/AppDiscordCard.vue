@@ -20,7 +20,7 @@ defineProps({
 // --- Stores -------------
 
 // --- State --------------
-const discordUrl = "https://discord.com/channels/1562509525280493672/1562509526052110450";
+const discordUrl = "https://discord.com/channels/1562511213198577874/1562511213961809953";
 
 // --- Composables --------
 
