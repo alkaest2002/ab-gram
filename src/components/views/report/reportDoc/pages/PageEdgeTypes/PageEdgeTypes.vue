@@ -55,7 +55,7 @@ const CATEGORIES = [
 
 const TONE_CLASSES = {
     accent: { borderColor: "border-accent", labelColor: "text-accent", barColor: "bg-accent" },
-    ink: { borderColor: "border-ink", labelColor: "text-ink", barColor: "bg-ink" },
+    ink: { borderColor: "border-orange-800", labelColor: "text-orange-800", barColor: "bg-orange-800" },
     reject: { borderColor: "border-reject", labelColor: "text-reject", barColor: "bg-reject" },
 };
 
@@ -107,7 +107,7 @@ function toDisplayEdges(edges) {
                 <section
                     v-for="category in categories"
                     :key="category.key"
-                    class="shrink-0 pl-[2.5mm]"
+                    class="shrink-0 pl-[1mm]"
                 >
                     <header class="flex items-baseline justify-between border-b border-line pb-[2mm]">
                         <h3
