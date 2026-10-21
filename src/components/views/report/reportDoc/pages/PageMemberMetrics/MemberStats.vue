@@ -196,11 +196,14 @@ const buildComponentShares = (components, prefix) => {
 // The component stats render as two rows: one for the likes network and one for
 // the dislikes network, each label prefixed to make its network unambiguous.
 const componentRows = [
-    { name: "likes", shares: buildComponentShares(props.likesComponents, "L") },
-    {
-        name: "dislikes",
-        shares: buildComponentShares(props.dislikesComponents, "D"),
-    },
+  {
+    name: "likes",
+    shares: buildComponentShares(props.likesComponents, "L")
+  },
+  {
+    name: "dislikes",
+    shares: buildComponentShares(props.dislikesComponents, "D")
+  },
 ];
 
 const status = (() => {
