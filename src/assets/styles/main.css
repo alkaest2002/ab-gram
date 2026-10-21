@@ -128,6 +128,7 @@
   .btn-solid {
     @apply bg-ink text-white;
   }
+
   .btn-solid:not(:disabled):hover {
     @apply bg-ink/85;
   }
@@ -135,6 +136,7 @@
   .btn-outline {
     @apply border border-ink bg-transparent text-ink;
   }
+
   .btn-outline:not(:disabled):hover {
     @apply bg-ink text-white;
   }
@@ -142,6 +144,7 @@
   .btn-red {
     @apply bg-reject text-white;
   }
+
   .btn-red:not(:disabled):hover {
     @apply bg-reject/90;
   }
@@ -159,28 +162,8 @@
     --tw-prose-bullets: var(--color-ink) !important;
   }
 
-  /* Home: the landing page breathes more than the others — few sections,
-     spaced apart. */
-  .home {
-    @apply space-y-9 py-9 sm:space-y-12 sm:py-12;
-  }
-
   /* The key phrase sits in the same bold weight and is underlined by the brand
      pair: blue fading to red. */
-  .hero-title {
-    @apply font-display text-[2.125rem] leading-[1.08] font-bold tracking-[-0.02em]
-      text-ink sm:text-[3.125rem];
-  }
-
-  .hero-title em {
-    @apply relative not-italic;
-  }
-
-  .hero-title em::after {
-    @apply absolute inset-x-0 -bottom-1 h-0.5 rounded-full
-      bg-linear-to-r from-accent to-reject;
-    content: '';
-  }
 
   .lede {
     @apply text-base sm:text-[1.0625rem];
@@ -214,118 +197,5 @@
   }
   .badge:hover {
     @apply bg-accent/90;
-  }
-
-  /* Header: the blur sits on a ::before layer, not on the header itself —
-     a backdrop-filter would create a containing block for fixed children
-     (the overlay and menu panel), which must anchor to the viewport instead. */
-  .site-header {
-    @apply sticky top-0 z-20 border-b border-line;
-  }
-
-  .site-header::before {
-    @apply pointer-events-none absolute inset-0 -z-10 bg-canvas/85 backdrop-blur;
-    content: '';
-  }
-
-  /* Darkened, blurred overlay under the menu panel (mobile only). */
-  .nav-backdrop {
-    @apply fixed inset-0 z-30 bg-ink/25 opacity-0 backdrop-blur-sm transition-opacity
-      duration-200 sm:hidden;
-    visibility: hidden;
-  }
-
-  .nav-backdrop[data-open='true'] {
-    @apply opacity-100;
-    visibility: visible;
-  }
-
-  /* Navigation: a drop-down panel under the header on mobile, an inline row from
-     sm up. No display:none, so opening and closing can be animated. */
-  .site-nav {
-    @apply fixed inset-x-3 top-(--header-h) z-40 flex origin-top flex-col gap-0.5
-      overflow-y-auto rounded-2xl border border-line bg-canvas/95 p-2 opacity-0
-      backdrop-blur-md transition-[opacity,transform] duration-200 ease-out;
-    max-height: calc(100dvh - var(--header-h) - 0.75rem);
-    box-shadow: 0 18px 40px -18px color-mix(in oklab, var(--color-ink) 35%, transparent);
-    transform: translateY(-0.5rem) scale(0.98);
-    visibility: hidden;
-  }
-
-  .site-nav[data-open='true'] {
-    @apply opacity-100;
-    transform: none;
-    visibility: visible;
-  }
-
-  @media (width >= 40rem) {
-    .site-nav {
-      @apply static inset-auto z-auto w-auto max-h-none flex-row items-center gap-1
-        overflow-visible rounded-none border-0 bg-transparent p-0 opacity-100 shadow-none
-        backdrop-blur-none;
-      transform: none;
-      visibility: visible;
-    }
-  }
-
-  .nav-link {
-    @apply inline-flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-semibold
-      text-muted transition-colors hover:text-ink;
-  }
-
-  .nav-link.is-active {
-    @apply text-accent;
-  }
-
-  /* Above the overlay, so it stays clickable to close. */
-  .nav-toggle {
-    @apply relative z-50 rounded-md p-2 text-ink transition-colors hover:bg-ink/5
-      sm:hidden;
-  }
-
-  /* Logo lockup: "AB" reversed out of the two brand colours, then "Gram" in
-     ink. Everything below is sized in em off this one font-size, so the whole
-     lockup scales from a single value. */
-  .logo {
-    @apply inline-flex items-center text-[1.375rem] leading-none font-bold
-      tracking-[-0.035em];
-    transform-origin: left center;
-    transition: transform 200ms ease;
-  }
-
-  .logo-ab {
-    @apply inline-flex overflow-hidden;
-    border-radius: 0.14em;
-  }
-
-  /* Equal widths, so the blue/red seam sits at the centre of the block and not
-     wherever the "A" happens to end. Tracking is reset: these are two single
-     letters, each optically centred in its own field. */
-  .logo-a,
-  .logo-b {
-    @apply text-canvas;
-    width: 1em;
-    padding-block: 0.1em 0.14em;
-    text-align: center;
-    letter-spacing: normal;
-  }
-
-  .logo-a {
-    @apply bg-accent;
-  }
-
-  .logo-b {
-    @apply bg-reject;
-  }
-
-  .logo-word {
-    @apply text-ink;
-    margin-left: 0.16em;
-  }
-
-  /* Hovering swells the lockup a touch — the only movement it needs. */
-  .logo:hover,
-  .logo:focus-visible {
-    transform: scale(1.03);
   }
 }
