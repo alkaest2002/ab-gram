@@ -22,18 +22,17 @@ const stripRange = (version) => version.replace(/^[\^~]/, "");
 
 // Public GitHub repositories for the runtime dependencies.
 const repositories = {
-    graphology: "https://github.com/graphology/graphology",
+    "graphology": "https://github.com/graphology/graphology",
     "graphology-components": "https://github.com/graphology/graphology",
     "graphology-layout": "https://github.com/graphology/graphology",
     "graphology-layout-forceatlas2": "https://github.com/graphology/graphology",
     "graphology-metrics": "https://github.com/graphology/graphology",
     "graphology-operators": "https://github.com/graphology/graphology",
-    mathjax: "https://github.com/mathjax/MathJax",
+    "mathjax": "https://github.com/mathjax/MathJax",
     "numpy-ts": "https://github.com/dupontcyborg/numpy-ts",
-    pinia: "https://github.com/vuejs/pinia",
-    "unplugin-vue-markdown":
-        "https://github.com/unplugin/unplugin-vue-markdown",
-    vue: "https://github.com/vuejs/core",
+    "pinia": "https://github.com/vuejs/pinia",
+    "unplugin-vue-markdown": "https://github.com/unplugin/unplugin-vue-markdown",
+    "vue": "https://github.com/vuejs/core",
     "vue-router": "https://github.com/vuejs/router",
 };
 
@@ -68,7 +67,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(
                 AB-Gram è un'applicazione web sviluppata dal
                 <span class="font-bold">Dott. Pierpaolo Calanna, PhD</span> e
                 dal <span class="font-bold">Dott. Gaetano Buonaiuto</span>,
-                esperti di dinamiche di gruppo.
+                esperti in dinamiche di gruppo.
                 Di seguito si riportano le librerie che fanno funzionare
                 AB-Gram, dal calcolo delle metriche individuali e di gruppo, al
                 rendering dei grafici.
