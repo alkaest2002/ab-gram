@@ -134,7 +134,7 @@ $$
 ii_i = rp_i + mp_i
 $$
 
-### Stato sociometrico
+### Status sociometrico
 
 Lo **stato sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,

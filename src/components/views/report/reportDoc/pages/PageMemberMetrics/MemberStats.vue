@@ -423,7 +423,7 @@ function formatShare(value) {
         <section v-if="status" class="min-w-0">
             <header class="mb-[2mm] border-b border-line pb-[0.5mm]">
                 <h3 class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]">
-                    Stato sociometrico
+                    Status sociometrico
                 </h3>
             </header>
 
