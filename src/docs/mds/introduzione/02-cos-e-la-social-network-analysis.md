@@ -7,21 +7,20 @@ description: Cos'è la Social Network Analysis e quali sono i suoi concetti fond
 La **Social Network Analysis** (SNA) è l'insieme di metodi e misure per studiare
 le **reti sociali**, cioè gli insiemi di persone (o di altri "attori") e delle
 relazioni che li collegano. Si sviluppa dall'incontro di più ambiti di ricerca,
-come la teoria dei grafi, l'antropologia sociale e la psicologia sociale, e oggi
-è usata in molti campi, dalla sociologia all'analisi dei social media.
+come la teoria dei grafi, l'antropologia e la psicologia sociale.
 
-## Il legame con Moreno
+## L'eredità di Jacob Moreno
 
 La SNA non nasce dalla sociometria, ma ha con essa un legame concettuale
 profondo. L'idea di **Jacob L. Moreno** di rappresentare un gruppo come un
 insieme di punti e di linee, il sociogramma, e di studiare la **struttura delle
 relazioni** invece degli individui presi singolarmente è il fondamento su cui la
-SNA costruisce i suoi strumenti. Per questo AB-Gram può partire da un test
-sociometrico e leggerlo con le misure della SNA. 
+SNA costruisce i suoi strumenti. Per questo AB-Gram può partire da un questionario
+sociometrico e "leggerlo" con le metriche della SNA. 
 
 ## Attori e legami
 
-Ogni rete è fatta di due ingredienti:
+Ogni rete è costitutita di due elementi:
 
 - i **nodi** (o attori), cioè le persone, i gruppi o gli enti che fanno parte
   della rete;
@@ -34,7 +33,7 @@ rete è **non orientata**.
 
 ## Le misure
 
-La SNA offre misure che si dividono in due famiglie:
+La SNA, almeno nella sua incarnazione classica, offre misure che si dividono grosso modo in due famiglie:
 
 - le misure **di gruppo**, che descrivono la rete nel suo insieme: quanto è
   connessa, quanto le relazioni sono ricambiate, se ruota attorno a pochi
@@ -44,13 +43,13 @@ La SNA offre misure che si dividono in due famiglie:
   importante nella rete, per esempio perché è molto scelta o perché fa da ponte
   tra persone diverse.
 
-La definizione di ciascuna misura calcolata da AB-Gram si trova nella sezione
-della documentazione dedicata alle metriche.
+La definizione di ciascuna metrica SNA calcolata da AB-Gram si trova nsi trova in 
+un'apposita sezione della documentazione..
 
-## Il legame con AB-Gram
+## In sintesi
 
 AB-Gram applica le idee della Social Network Analysis a un gruppo reale:
 trasforma le scelte e i rifiuti raccolti in due reti, la rete delle scelte e
-quella dei rifiuti, le disegna come sociogramma e calcola su ciascuna le misure
+quella dei rifiuti, le disegna come grafi orientati e calcola su ciascuna le misure
 di gruppo e individuali, presentandole in modo semplice anche per chi non ha una
 formazione tecnica.

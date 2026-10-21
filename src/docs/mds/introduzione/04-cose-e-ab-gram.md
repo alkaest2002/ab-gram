@@ -12,17 +12,14 @@ AB-Gram li trasforma in una mappa e in alcuni numeri facili da leggere.
 
 ## Come funziona
 
-AB-Gram unisce due approcci complementari:
+AB-Gram combina due approcci complementari:
 
-- la **sociometria**, nata con Jacob L. Moreno, che fornisce il metodo per
-  raccogliere le preferenze di un gruppo e gli indici per leggerle;
-- la **Social Network Analysis**, che fornisce misure sulla struttura delle
-  relazioni, cioè su come i membri sono collegati tra loro.
+- la **sociometria**, fondata da Jacob L. Moreno, che permette di rilevare le preferenze e le scelte reciproche dei membri di un gruppo e di leggerle attraverso appositi indici;
+- la **Social Network Analysis**, che studia la struttura dei legami tra i membri: chi è collegato a chi, quanto sono connessi e quali posizioni occupano nella rete.
 
 A partire dai dati inseriti, AB-Gram disegna il **sociogramma** e calcola gli
 indici sociometrici e le misure di rete, sia per l'intero gruppo sia per ogni
-singolo membro. Per approfondire le due basi teoriche, vedi *Cos'è la
-sociometria?* e *Cos'è la Social Network Analysis*.
+singolo membro.
 
 ## Destinatari
 
@@ -44,48 +41,42 @@ interagiscono con regolarità:
   qualche alunno è rimasto ai margini.
 - **Il gruppo di lavoro**: per capire chi collabora con chi e chi fa da punto di
   riferimento per i colleghi.
-- **La squadra sportiva**: per osservare l'affiatamento tra i giocatori e
-  l'inserimento dei nuovi arrivati.
 
 ## Cosa serve per iniziare
 
-Non servono competenze tecniche: bastano **un elenco di nomi** e **le scelte e i
-rifiuti raccolti nel gruppo**.
+Non servono competenze tecniche: bastano **un elenco di nomi** e **le scelte e i rifiuti raccolti nel gruppo**.
 
-1. **L'elenco dei membri.** È la lista delle persone che fanno parte del gruppo,
-   scritte una dopo l'altra, ad esempio:
+AB-Gram non si occupa della raccolta: è chi utilizza l'app a chiedere le preferenze ai membri, con gli strumenti che ritiene più adatti (un colloquio, un questionario cartaceo, un modulo online), **prima e al di fuori dell'app**. AB-Gram interviene dopo, a partire dai dati già raccolti.
+
+1. **L'elenco dei membri.** È la lista delle persone che fanno parte del gruppo, scritte una dopo l'altra, ad esempio:
 
 ```txt
-Rossi Mario
-Verdi Giuseppe
-Grandi Francesca
-Bianchi Elena
+   Rossi Mario
+   Verdi Giuseppe
+   Grandi Francesca
+   Bianchi Elena
 ```
 
-2. **Le scelte e i rifiuti raccolti nel gruppo.** Si chiede a ciascun membro di
-   indicare con chi vorrebbe stare (ad esempio, "con chi ti piacerebbe lavorare
-   a un progetto?") ed eventualmente con chi preferirebbe non stare. Il numero
-   di scelte e di rifiuti non è limitato, ma conviene invitare i membri a
-   concentrarsi sulle persone verso cui l'affinità o la distanza sono più forti.
+2. **Le scelte e i rifiuti raccolti nel gruppo.** Si chiede a ciascun membro di indicare con chi vorrebbe stare (ad esempio: "con chi ti piacerebbe lavorare a un progetto?") ed eventualmente con chi preferirebbe non lavorare. Il numero di scelte e di rifiuti non è vincolato, ma conviene invitare i membri a concentrarsi sulle persone verso cui l'affinità o la distanza sono più forti.
 
-Una volta inseriti questi dati, AB-Gram costruisce il sociogramma e calcola le
-metriche per te. I dati li raccogli e li inserisci tu, quando sei pronto:
-AB-Gram non li invia a un server e non li memorizza in modo permanente.
+Una volta inseriti questi dati, AB-Gram calcola le metriche e genera i grafici per te.
 
 ## Un caso concreto
 
-Un insegnante può caricare la classe e scoprire in **pochi minuti** se esiste un
+Un insegnante può analizzare la classe e scoprire in **pochi minuti** se esiste un
 alunno isolato o un sottogruppo chiuso.
 
 Supponiamo che a inizio anno chieda a ciascun alunno con chi vorrebbe fare un
 lavoro di gruppo e con chi preferirebbe non farlo. Dopo aver inserito le risposte, 
 AB-Gram può mostrare, ad esempio, che un alunno non è stato scelto
 da nessuno, oppure che cinque compagni si scelgono solo tra loro e non hanno
-contatti con il resto della classe. Sono situazioni che nel registro o in un
+contatti con il resto della classe.
+
+Sono situazioni che nel registro o in un
 elenco di risposte passerebbero facilmente inosservate. Conoscerle permette di
 intervenire con cognizione, ad esempio modificando la composizione dei gruppi di
 lavoro o favorendo l'inserimento dell'alunno rimasto isolato.
 
-I risultati descrivono il gruppo in un preciso momento e rispetto a una precisa
+*Attenzione*: i risultati descrivono il gruppo in un preciso momento e rispetto a una precisa
 domanda: sono un punto di partenza per capire e per intervenire, non un giudizio
 sulle persone.

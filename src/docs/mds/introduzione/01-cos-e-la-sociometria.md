@@ -84,13 +84,16 @@ famiglie:
 - gli indici **di gruppo**, che misurano -- ad esempio -- quanto il gruppo è coeso o quanto è
   conflittuale.
 
+La definizione di ciascuna metrica di Moreno (o successivi autori) e calcolata da AB-Gram 
+si trova in un'apposita sezione della documentazione.
+
 Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
 confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
 differenza rispetto alle misure della Social Network Analysis, che AB-Gram
 calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
 *Cos'è la Social Network Analysis*).
 
-## Perché è utile
+## In sintesi
 
 La sociometria permette di rispondere a domande che difficilmente emergono dalla
 semplice osservazione esterna: chi è isolato, chi è popolare, chi fa da ponte tra i
