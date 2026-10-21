@@ -57,7 +57,7 @@ onMounted(() => {
       donation card is the dashed "isolated" one — the member nobody has
       chosen yet.
     -->
-    <div class="page home">
+    <div class="page home space-y-9 py-9 sm:space-y-12 sm:py-12">
         <div class="flex flex-col items-center text-center space-y-18">
 
             <!-- Hero -->

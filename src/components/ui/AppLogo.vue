@@ -32,10 +32,14 @@ import { RouterLink } from "vue-router";
       equal width, so the colour split lands exactly at the centre of the block
       regardless of how wide the two letters are.
     -->
-    <RouterLink to="/" class="logo" aria-label="AB-Gram, torna alla home">
-        <span class="logo-ab">
-            <span class="logo-a">A</span><span class="logo-b">B</span>
+    <RouterLink
+        to="/"
+        class="inline-flex origin-left items-center text-[1.375rem] font-bold leading-none tracking-[-0.035em] transition-transform duration-200 hover:scale-[1.03] focus-visible:scale-[1.03]"
+        aria-label="AB-Gram, torna alla home"
+    >
+        <span class="inline-flex overflow-hidden rounded-[0.14em]">
+            <span class="w-[1em] bg-accent pt-[0.1em] pb-[0.14em] text-center text-canvas tracking-normal">A</span><span class="w-[1em] bg-reject pt-[0.1em] pb-[0.14em] text-center text-canvas tracking-normal">B</span>
         </span>
-        <span class="logo-word">Gram</span>
+        <span class="ml-[0.16em] text-ink">Gram</span>
     </RouterLink>
 </template>

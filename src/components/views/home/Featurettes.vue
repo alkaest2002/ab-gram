@@ -28,7 +28,7 @@ const features = [
     {
         id: "privacy",
         title: "App attenta alla privacy",
-        text: "I tuoi dati restano sul tuo dispositivo: non vengono inviati a nessuno e non raggiungono server esterni.",
+        text: "I tuoi dati restano sul tuo dispositivo: non raggiungono server esterni e non vengono inviati a nessuno.",
     },
 ];
 
