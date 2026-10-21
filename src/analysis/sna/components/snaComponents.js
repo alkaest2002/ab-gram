@@ -312,6 +312,19 @@ const COMPONENTS = {
 };
 
 /**
+ * Count of a single component type's components that contain `member`.
+ *
+ * @param {string} member - The member id.
+ * @param {string[][]} components - The components of one type.
+ * @returns {number} The count of components. A type with no
+ *   components has nothing to be present in, so it reports `0`.
+ */
+const presenceCount = (member, components) =>
+  components.length === 0
+    ? 0
+    : components.filter((component) => component.includes(member)).length;
+
+/**
  * Percentage of a single component type's components that contain `member`.
  *
  * @param {string} member - The member id.
@@ -340,7 +353,7 @@ const computeMemberInComponents = (members, components) =>
       Object.fromEntries(
         Object.entries(components).map(([type, list]) => [
           type,
-          presencePercentage(member, list),
+          { cnt: presenceCount(member, list), pct: presencePercentage(member, list) },
         ]),
       ),
     ]),

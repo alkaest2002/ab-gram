@@ -56,7 +56,10 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
   for (const counts of Object.values(result)) {
     const total = typeNames.reduce((sum, type) => sum + counts[type], 0);
     for (const type of typeNames) {
-      counts[type] = total === 0 ? 0 : counts[type] / total;
+      counts[type] = {
+        cnt: total === 0 ? 0 : counts[type],
+        pct: total === 0 ? 0 : counts[type] / total
+    };
     }
   }
 
