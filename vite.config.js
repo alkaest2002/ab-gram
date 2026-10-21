@@ -122,7 +122,7 @@ export default defineConfig(({ command }) => ({
   // GitHub Pages serves the production site from /<repo>/
   // (https://alkaest2002.github.io/ab-gram/), so assets and router history must be
   // rooted there when built. In dev we serve from the domain root instead.
-  base: command === "serve" ? "/" : "/ab-gram/",
+  base: command === "serve" ? "/" : "/",
   plugins: [
     vue({
       include: [/\.vue$/, /\.md$/],
