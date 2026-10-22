@@ -55,14 +55,11 @@ mostrati con una cifra decimale):
 - indice di coesione (tipo I e tipo II) nella rete delle scelte, oppure indice
   di conflitto (tipo I e tipo II) nella rete dei rifiuti.
 
-In queste pagine non compaiono ranghi: le metriche riguardano il gruppo nel suo
-insieme, non il singolo membro.
-
 ## Componenti della rete delle scelte e dei rifiuti
 
 Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
 connesse e fortemente reciproche) mostra il **numero di componenti individuate**:
-un punteggio grezzo espresso come conteggio. Non ci sono ranghi né percentuali.
+un punteggio grezzo espresso come conteggio.
 
 ## Tipi di relazione
 
@@ -73,8 +70,14 @@ categoria. Non ci sono ranghi né percentuali.
 
 ## Pagine individuali dei membri
 
-È la pagina più ricca di numeri: combina punteggi grezzi, ranghi e percentuali.
+È la pagina più ricca di informazioni: combina punteggi grezzi, ranghi e percentuali.
 Si divide in quattro blocchi.
+
+### Grafico ego
+
+Mostra il grafo delle relazioni del membro, con lui al centro e gli altri membri
+disposti intorno. Non contiene punteggi: la sua lettura è spiegata nella pagina della
+documentazione dedicata ai grafici.
 
 ### Metriche
 
@@ -90,7 +93,7 @@ Il rango indica la posizione del membro nella classifica del gruppo per quella
 metrica: il valore più alto riceve il rango 1, e a pari merito due membri
 condividono lo stesso rango. Il **rango massimo** è il rango più alto assegnato
 per quella metrica, cioè il numero di valori distinti presenti nel gruppo (non
-necessariamente il numero di membri, proprio perché i pari merito vengono
+necessariamente il numero di membri, proprio perché i pari-merito vengono
 contati una sola volta).
 
 Per esempio, un riquadro che mostra `GP 10 (1/10)` significa che il membro ha
@@ -135,12 +138,12 @@ significato esteso.
 ## In sintesi
 
 | Pagina | Punteggi grezzi | Ranghi | Percentuali |
-| --- | --- | :---: | :---: |
+| --- | :---: | :---: | :---: |
 | Copertina | – | – | – |
 | Elenco dei membri | – | – | – |
-| Scelte e rifiuti | identificativi (`+`/`-`) | – | – |
-| Rete delle scelte / dei rifiuti | conteggi (membri, legami, reciproci) | – | sì (indici di rete e di gruppo) |
-| Componenti della rete | conteggi (componenti per categoria) | – | – |
-| Tipi di relazione | conteggi (per tipo e per fascia) | – | – |
+| Scelte e rifiuti | identificativi (+/-) | – | – |
+| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs  text-muted">indici di rete e di gruppo</span> |
+| Componenti della rete | conteggi <br><span class="text-xs  text-muted">componenti per categoria</span> | – | – |
+| Tipi di relazione | conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span> | – | – |
 | Pagine individuali | conteggi e decimali | sì | sì |
 | Glossario | – | – | – |
