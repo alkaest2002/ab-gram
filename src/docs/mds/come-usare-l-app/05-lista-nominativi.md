@@ -1,6 +1,6 @@
 ---
 title: Gestire i membri del gruppo
-order: 4
+order: 5
 description: Come rivedere, modificare e correggere l'elenco dei nominativi.
 ---
 

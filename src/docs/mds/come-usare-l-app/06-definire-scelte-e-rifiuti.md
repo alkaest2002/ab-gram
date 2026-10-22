@@ -1,6 +1,6 @@
 ---
 title: Definire scelte e rifiuti
-order: 5
+order: 6
 description: Come indicare per ogni membro le scelte e i rifiuti del gruppo, con la tastiera o con il mouse.
 ---
 

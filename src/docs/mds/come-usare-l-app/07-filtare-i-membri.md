@@ -1,6 +1,6 @@
 ---
 title: Filtrare i membri con la ricerca fuzzy
-order: 6
+order: 7
 description: Come trovare un nome in fretta con la ricerca tollerante alle imprecisioni.
 ---
 
