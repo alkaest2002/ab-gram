@@ -5,7 +5,7 @@ export default {
   name: "home",
   component: Home,
   meta: {
-    title: "Sociogrammi di gruppo",
+    title: "AB-Gram · Home",
     inMenu: false,
     layout: "DefaultLayout",
   },

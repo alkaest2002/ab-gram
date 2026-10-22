@@ -3,7 +3,7 @@ export default {
   name: "not-found",
   component: () => import("@/components/views/NotFound.vue"),
   meta: {
-    title: "Pagina non trovata",
+    title: "AB-Gram · 404",
     inMenu: false,
     layout: "EmptyLayout",
   },

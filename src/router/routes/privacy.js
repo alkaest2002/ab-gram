@@ -3,7 +3,7 @@ export default {
   name: "privacy",
   component: () => import("@/components/views/privacy/Privacy.vue"),
   meta: {
-    title: "Informativa privacy",
+    title: "AB-Gram · Privacy",
     inMenu: true,
     typeOfMenu: ["footer"],
     layout: "DefaultLayout",

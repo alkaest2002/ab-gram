@@ -19,7 +19,7 @@ export default {
     };
   },
   meta: {
-    title: "Report",
+    title: "AB-Gram · Report",
     inMenu: false,
     typeOfMenu: null,
   },
@@ -29,7 +29,7 @@ export default {
       name: "report",
       component: () => import("@/components/views/report/Report.vue"),
       meta: {
-        title: "Report",
+        title: "AB-Gram · Report",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -49,7 +49,7 @@ export default {
         return { name: "report" };
       },
       meta: {
-        title: "Report",
+        title: "AB-Gram · Report",
         inMenu: false,
         typeOfMenu: null,
         layout: "ReportLayout",

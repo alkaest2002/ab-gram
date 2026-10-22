@@ -4,7 +4,7 @@ export default {
   component: "",
   redirect: "/notify/generic-error",
   meta: {
-    title: "Notify",
+    title: "AB-Gram · Notify",
     inMenu: false,
     typeOfMenu: null,
     layout: "EmptyLayout",
