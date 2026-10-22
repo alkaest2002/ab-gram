@@ -9,23 +9,76 @@ import router from "@/router";
 
 const app = createApp(App);
 
-app.use(createPinia());
+app.app = app.use(createPinia());
 app.use(router);
 
+// 1. Mount the app as fast as possible to unblock initial rendering
 await router.isReady();
 app.mount("#app");
 
-function preloadRoutes() {
-  router.getRoutes().forEach((route) => {
-    const component = route.components?.default
-    if (typeof component === 'function') component()
-  })
+// 2. Define the exact route paths you want to prioritize
+const PRIORITY_PATHS = ["/sociogram", "/docs", "/about"];
+
+/**
+ * Safely triggers the dynamic import function for a route component.
+ */
+function preloadComponent(componentLoader, identifier) {
+  if (typeof componentLoader === "function") {
+    componentLoader().catch((error) => {
+      console.warn(`[Preloader] Failed to preload "${identifier}":`, error);
+    });
+  }
 }
 
-window.addEventListener('load', () => {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(preloadRoutes)
-  } else {
-    setTimeout(preloadRoutes, 2000)
+/**
+ * Recursively extracts and preloads route components, including nested children.
+ */
+function preloadAllRoutesRecursive() {
+  const allRoutes = router.getRoutes();
+  const routeMap = new Map();
+  const preloadedPaths = new Set();
+
+  // Helper to recursively collect route records (handling nested children)
+  function flattenRoutes(routesList) {
+    routesList.forEach((route) => {
+      if (route.path) {
+        routeMap.set(route.path, route);
+      }
+      // If the route record has nested children, traverse them recursively
+      if (route.children && Array.isArray(route.children)) {
+        flattenRoutes(route.children);
+      }
+    });
   }
-})
+
+  // Flatten both top-level records and their children
+  flattenRoutes(allRoutes);
+
+  // Step A: Preload priority routes first in exact order
+  PRIORITY_PATHS.forEach((path) => {
+    const route = routeMap.get(path);
+    if (route) {
+      // Check default component or named views components if any
+      const loader = route.components?.default;
+      preloadComponent(loader, path);
+      preloadedPaths.add(path);
+    }
+  });
+
+  // Step B: Preload all remaining routes and child routes
+  routeMap.forEach((route, path) => {
+    if (!preloadedPaths.has(path)) {
+      const loader = route.components?.default;
+      preloadComponent(loader, path);
+    }
+  });
+}
+
+// 3. Defer preloading until after the initial page has finished loading
+window.addEventListener("load", () => {
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(preloadAllRoutesRecursive, { timeout: 3000 });
+  } else {
+    setTimeout(preloadAllRoutesRecursive, 2000);
+  }
+});
