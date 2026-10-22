@@ -2,16 +2,17 @@
  * Worker instantiation helpers.
  *
  * The actual worker entry scripts live in `src/workers` and are imported here
- * with Vite's `?worker` suffix. This module is the single place that knows how
- * to construct them, so the instantiation/error-handling boilerplate is shared
- * instead of being duplicated per worker.
+ * with Vite's `?worker` suffix (for the constructor) and `?worker&url` (for the
+ * built chunk URL, used to warm the browser cache). This module is the single
+ * place that knows how to construct them, so the instantiation/error-handling
+ * boilerplate is shared instead of being duplicated per worker.
  *
  * Usage:
  * ```js
  * import { createReportWorker, preloadReportWorker } from "@/utils/worker";
  *
- * // Warm the (large) report chunk in the background, e.g. in Home.vue.
- * requestIdleCallback(() => preloadReportWorker().catch(console.warn));
+ * // Warm the (large) report chunk in the background.
+ * preloadReportWorker();
  *
  * // Run the analysis.
  * const worker = createReportWorker();
@@ -22,9 +23,11 @@
 
 import ReportWorker from "@/workers/reportWorker.js?worker";
 import SnaPlotWorker from "@/workers/snaPlotWorker.js?worker";
+import reportWorkerUrl from "@/workers/reportWorker.js?worker&url";
+import snaPlotWorkerUrl from "@/workers/snaPlotWorker.js?worker&url";
 
-// Track which worker chunks have already been preloaded, keyed by their
-// creator so the bookkeeping is shared rather than duplicated per worker.
+// Track which worker chunks have already been preloaded, keyed by their URL so
+// the bookkeeping is shared rather than duplicated per worker.
 const preloadedWorkers = new Set();
 
 /**
@@ -63,37 +66,44 @@ export const createReportWorker = () => instantiate(ReportWorker, "Report");
 export const createSnaPlotWorker = () => instantiate(SnaPlotWorker, "SNA plot");
 
 /**
- * Preload a worker chunk in the background.
+ * Warm the browser's HTTP cache for a worker chunk in the background.
  *
- * Constructing the worker triggers the browser to fetch its chunk; the worker's
- * top-level scope has no side effects, so it's discarded right away. The real
- * instantiation (via `createReportWorker`/`createSnaPlotWorker`) is then served
- * from cache. Each worker is preloaded at most once.
+ * The chunk is fetched directly rather than constructed and immediately
+ * terminated: `new Worker(url).terminate()` can abort the download before it
+ * completes, leaving the chunk uncached when the real worker is created.
+ * Prefetching the URL populates the cache so `createReportWorker` /
+ * `createSnaPlotWorker` is served locally. Each chunk is prefetched at most once.
  *
- * @param {() => Worker} createWorker - The worker creator.
+ * @param {string} url - The built worker chunk URL.
  * @param {string} label - Human-readable name used in logs.
+ * @returns {Promise<void>} Resolves once the prefetch settles (never rejects).
  */
-const preloadWorker = (createWorker, label) => {
-  if (preloadedWorkers.has(createWorker)) return;
+const prefetchWorker = async (url, label) => {
+  if (preloadedWorkers.has(url)) return;
+  preloadedWorkers.add(url);
 
-  createWorker().terminate();
-
-  preloadedWorkers.add(createWorker);
-  console.debug(`✓ ${label} worker module preloaded`);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    console.debug(`✓ ${label} worker module prefetched`);
+  } catch (error) {
+    // Best-effort: on failure the worker simply loads on demand.
+    console.warn(`Failed to prefetch ${label} worker module:`, error);
+  }
 };
 
 /**
  * Preload the report worker chunk in the background.
  *
- * @returns {Promise<void>} A promise that rejects if preloading fails.
+ * @returns {Promise<void>} A promise that resolves once the prefetch settles.
  */
-export const preloadReportWorker = async () =>
-  preloadWorker(createReportWorker, "Report");
+export const preloadReportWorker = () =>
+  prefetchWorker(reportWorkerUrl, "Report");
 
 /**
  * Preload the SNA plot worker chunk in the background.
  *
- * @returns {Promise<void>} A promise that rejects if preloading fails.
+ * @returns {Promise<void>} A promise that resolves once the prefetch settles.
  */
-export const preloadSnaPlotWorker = async () =>
-  preloadWorker(createSnaPlotWorker, "SNA plot");
+export const preloadSnaPlotWorker = () =>
+  prefetchWorker(snaPlotWorkerUrl, "SNA plot");

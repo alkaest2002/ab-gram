@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 
 import App from "@/App.vue";
 import router from "@/router";
+import { preloadReportWorker, preloadSnaPlotWorker } from "@/utils/worker";
 
 const app = createApp(App);
 
@@ -74,11 +75,28 @@ function preloadAllRoutesRecursive() {
   });
 }
 
+/**
+ * Warm the Web Worker chunks (report analysis + SNA plot regeneration) so the
+ * first "generate report" action doesn't wait on a network fetch.
+ */
+function preloadWorkers() {
+  [preloadReportWorker, preloadSnaPlotWorker].forEach((preload) => {
+    preload().catch((error) => {
+      console.warn("Worker preload failed, will load on-demand:", error);
+    });
+  });
+}
+
 // 3. Defer preloading until after the initial page has finished loading
 window.addEventListener("load", () => {
+  const preloadDeferredResources = () => {
+    preloadAllRoutesRecursive();
+    preloadWorkers();
+  };
+
   if ("requestIdleCallback" in window) {
-    requestIdleCallback(preloadAllRoutesRecursive, { timeout: 3000 });
+    requestIdleCallback(preloadDeferredResources, { timeout: 3000 });
   } else {
-    setTimeout(preloadAllRoutesRecursive, 2000);
+    setTimeout(preloadDeferredResources, 2000);
   }
 });

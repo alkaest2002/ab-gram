@@ -1,8 +1,5 @@
 <script setup>
 // --- Imports ------------
-//   -- From vue
-import { onMounted } from "vue";
-
 //   -- From components
 import DonationCard from "@/components/ui/AppCardDonate.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
@@ -10,9 +7,6 @@ import Hero from "@/components/views/home/Hero.vue";
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
 import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
 import Featurettes from "@/components/views/home/Featurettes.vue";
-
-//   -- From utils
-import { preloadReportWorker, preloadSnaPlotWorker } from "@/utils/worker";
 
 // --- Props --------------
 
@@ -31,20 +25,6 @@ import { preloadReportWorker, preloadSnaPlotWorker } from "@/utils/worker";
 // --- Watchers -----------
 
 // --- Lifecycle ----------
-onMounted(() => {
-    if ("requestIdleCallback" in window) {
-        requestIdleCallback(() => {
-            [preloadReportWorker, preloadSnaPlotWorker].forEach((preload) => {
-                preload().catch((err) => {
-                    console.warn(
-                        "Worker preload failed, will load on-demand:",
-                        err,
-                    );
-                });
-            });
-        });
-    }
-});
 
 // --- Methods ------------
 </script>
