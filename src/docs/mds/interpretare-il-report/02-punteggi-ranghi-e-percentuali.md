@@ -87,7 +87,7 @@ Mostra tre righe di sei riquadri: i primi dodici sono gli **indici di Moreno**
 
 - il **punteggio grezzo**: un numero intero per gli indici di Moreno, un
   decimale tra 0 e 1 (arrotondato a due cifre) per le centralità SNA;
-- il **rango**, nella forma `rango / rango massimo`.
+- il **rango**, nella forma `rango/rango massimo`.
 
 Il rango indica la posizione del membro nella classifica del gruppo per quella
 metrica: il valore più alto riceve il rango 1, e a pari merito due membri
