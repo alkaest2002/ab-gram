@@ -115,11 +115,11 @@
     @apply bg-reject/90;
   }
 
-  .prose {
-    --tw-prose-bullets: var(--color-ink) !important;
-  }
-
   .eyebrow {
     @apply font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase;
   }
+}
+
+.prose {
+  --tw-prose-bullets: var(--color-ink);
 }
