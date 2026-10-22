@@ -3,7 +3,7 @@ export default {
   name: "sociogram",
   component: () => import("@/components/views/sociogram/Sociogram.vue"),
   meta: {
-    title: "AB-Gram · App",
+    title: "App",
     inMenu: true,
     typeOfMenu: ["header"],
     layout: "DefaultLayout",

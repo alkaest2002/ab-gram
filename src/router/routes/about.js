@@ -3,7 +3,7 @@ export default {
   name: "about",
   component: () => import("@/components/views/About.vue"),
   meta: {
-    title: "AB-Gram · About",
+    title: "About",
     inMenu: true,
     typeOfMenu: ["header", "footer"],
     layout: "DefaultLayout",

@@ -29,7 +29,7 @@ export default {
       name: "report",
       component: () => import("@/components/views/report/Report.vue"),
       meta: {
-        title: "AB-Gram · Report",
+        title: "Report",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",

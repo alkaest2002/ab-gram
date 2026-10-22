@@ -23,7 +23,7 @@ export default {
   component: Docs,
   redirect: flatOrdered[0]?.path,
   meta: {
-    title: "B-Gram · Docs",
+    title: "Docs",
     inMenu: true,
     typeOfMenu: ["header"],
     layout: "DefaultLayout",

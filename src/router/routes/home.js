@@ -5,7 +5,7 @@ export default {
   name: "home",
   component: Home,
   meta: {
-    title: "AB-Gram · Home",
+    title: "Home",
     inMenu: false,
     layout: "DefaultLayout",
   },

@@ -4,7 +4,7 @@ export default {
   component: "",
   redirect: "/notify/generic-error",
   meta: {
-    title: "AB-Gram · Notify",
+    title: "Notify",
     inMenu: false,
     typeOfMenu: null,
     layout: "EmptyLayout",
@@ -15,7 +15,7 @@ export default {
       name: "genericError",
       component: () => import("@/components/views/notify/GenericError.vue"),
       meta: {
-        title: "Informazione",
+        title: "Errore Generico",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -26,7 +26,7 @@ export default {
       name: "sociogramValidatioError",
       component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
       meta: {
-        title: "Informazione",
+        title: "Errore di Validazione",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -37,7 +37,7 @@ export default {
       name: "reportNoDataError",
       component: () => import("@/components/views/notify/ReportNoDataError.vue"),
       meta: {
-        title: "Informazione",
+        title: "Errore per Dati Mancanti",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -48,7 +48,7 @@ export default {
       name: "reportIncompleteDataError",
       component: () => import("@/components/views/notify/ReportIncompleteDataError.vue"),
       meta: {
-        title: "Informazione",
+        title: "Errore per Dati Incompleti",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -59,7 +59,7 @@ export default {
       name: "reportError",
       component: () => import("@/components/views/notify/ReportError.vue"),
       meta: {
-        title: "Informazione",
+        title: "Errore nella Generazione del Report",
         inMenu: false,
         typeOfMenu: null,
         layout: "EmptyLayout",
@@ -67,7 +67,7 @@ export default {
     },
     {
       path: "report-stopped",
-      name: "reportStopped",
+      name: "Avviso di Annullamento della Generazione del Report",
       component: () => import("@/components/views/notify/ReportStopped.vue"),
       meta: {
         title: "Informazione",
@@ -78,7 +78,7 @@ export default {
     },
     {
       path: "file-input-error",
-      name: "fileInputError",
+      name: "Errore nel File di Input",
       component: () => import("@/components/views/notify/FileInputError.vue"),
       meta: {
         title: "Informazione",
