@@ -119,10 +119,6 @@
     --tw-prose-bullets: var(--color-ink) !important;
   }
 
-  .lede {
-    @apply text-base sm:text-[1.0625rem];
-  }
-
   .eyebrow {
     @apply font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase;
   }

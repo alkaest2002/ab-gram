@@ -36,7 +36,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 
         <div class="min-w-0 flex-1 space-y-8">
             <h1>Informativa privacy</h1>
-            <p class="lede">
+            <p>
                 La presente informativa descrive, ai sensi del Regolamento (UE)
                 2016/679 ("GDPR"), le modalità di trattamento dei dati personali
                 degli utenti che consultano questo sito. Ultimo aggiornamento:
