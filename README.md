@@ -25,7 +25,7 @@ From the collected data, AB-Gram produces:
 
 1. Enter the list of members (or import an archived project).
 2. Define each member's choices and rejections.
-3. Generate the report. Analysis runs in a Web Worker so the UI stays responsive.
+3. Generate the report. Analysis and plot layout run in Web Workers so the UI stays responsive.
 4. Read, filter, and archive the results.
 
 ## Tech stack
@@ -61,8 +61,11 @@ pnpm build
 # Preview the production build
 pnpm preview
 
-# Run the test suite
+# Run the test suite in watch mode
 pnpm test
+
+# Run the test suite once (e.g. for CI)
+pnpm test:run
 ```
 
 ## Project structure
@@ -77,7 +80,7 @@ src/
 ├── router/          # Route definitions
 ├── stores/          # Pinia stores (app, sociogram, report)
 ├── utils/           # Sociogram helpers and worker loader
-└── workers/         # Web Worker that runs report analysis off the main thread
+└── workers/         # Web Workers that run report analysis and plot layout off the main thread
 
 tests/               # Vitest unit tests (analysis and sociogram helpers)
 ```
@@ -86,3 +89,4 @@ tests/               # Vitest unit tests (analysis and sociogram helpers)
 
 - **Privacy-first:** entered data is processed in the browser and is not sent to a server or stored permanently.
 - The report analysis (`src/analysis/analysisMain.js`) is orchestrated in a Web Worker (`src/workers/reportWorker.js`) and returns a single combined result consumed by the report store.
+- SNA plot layout regeneration (`src/workers/snaPlotWorker.js`) also runs off the main thread so adjusting ForceAtlas2 settings doesn't freeze the UI.
