@@ -122,15 +122,18 @@ describe("getSnaComponents", () => {
     const { memberInComponents } = getSnaComponents(graph);
 
     // Three dyads; every member appears in exactly two of them.
-    expect(memberInComponents.a.dyads).toBeCloseTo(2 / 3);
-    expect(memberInComponents.b.dyads).toBeCloseTo(2 / 3);
-    expect(memberInComponents.c.dyads).toBeCloseTo(2 / 3);
+    expect(memberInComponents.a.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
+    expect(memberInComponents.b.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
+    expect(memberInComponents.c.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
 
     // The single clique / strong / weak component contains everyone.
-    expect(memberInComponents.a.cliques).toBe(1);
-    expect(memberInComponents.a.strongComponentsWithReciprocalEdges).toBe(1);
-    expect(memberInComponents.a.strongComponents).toBe(1);
-    expect(memberInComponents.a.weakComponents).toBe(1);
+    expect(memberInComponents.a.cliques).toEqual({ cnt: 1, pct: 1 });
+    expect(memberInComponents.a.strongComponentsWithReciprocalEdges).toEqual({
+      cnt: 1,
+      pct: 1,
+    });
+    expect(memberInComponents.a.strongComponents).toEqual({ cnt: 1, pct: 1 });
+    expect(memberInComponents.a.weakComponents).toEqual({ cnt: 1, pct: 1 });
   });
 
   it("reports 0% for a component type with no components", () => {
@@ -146,7 +149,7 @@ describe("getSnaComponents", () => {
 
     // No dyads exist, so no member can be present in one.
     ["a", "b", "c", "d"].forEach((id) =>
-      expect(memberInComponents[id].dyads).toBe(0),
+      expect(memberInComponents[id].dyads).toEqual({ cnt: 0, pct: 0 }),
     );
   });
 });

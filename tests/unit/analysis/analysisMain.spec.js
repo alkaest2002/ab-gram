@@ -166,18 +166,18 @@ describe("getSociogramAnalysis", () => {
       weakComponents: [],
       memberInComponents: {
         a: {
-          dyads: 1,
-          cliques: 0,
-          strongComponentsWithReciprocalEdges: 0,
-          strongComponents: 0,
-          weakComponents: 0,
+          dyads: { cnt: 1, pct: 1 },
+          cliques: { cnt: 0, pct: 0 },
+          strongComponentsWithReciprocalEdges: { cnt: 0, pct: 0 },
+          strongComponents: { cnt: 0, pct: 0 },
+          weakComponents: { cnt: 0, pct: 0 },
         },
         b: {
-          dyads: 1,
-          cliques: 0,
-          strongComponentsWithReciprocalEdges: 0,
-          strongComponents: 0,
-          weakComponents: 0,
+          dyads: { cnt: 1, pct: 1 },
+          cliques: { cnt: 0, pct: 0 },
+          strongComponentsWithReciprocalEdges: { cnt: 0, pct: 0 },
+          strongComponents: { cnt: 0, pct: 0 },
+          weakComponents: { cnt: 0, pct: 0 },
         },
       },
     });

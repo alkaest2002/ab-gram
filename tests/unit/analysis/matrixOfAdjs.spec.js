@@ -269,42 +269,42 @@ describe("getEdgeTypes", () => {
     );
 
     expect(result.memberInEdges.a).toEqual({
-      typeI: 0,
-      typeII: 0.5,
-      typeIII: 0,
-      typeIV: 0.5,
-      typeV: 0,
-      typeVI: 0,
-      typeVII: 0,
+      typeI: { cnt: 0, pct: 0 },
+      typeII: { cnt: 1, pct: 0.5 },
+      typeIII: { cnt: 0, pct: 0 },
+      typeIV: { cnt: 1, pct: 0.5 },
+      typeV: { cnt: 0, pct: 0 },
+      typeVI: { cnt: 0, pct: 0 },
+      typeVII: { cnt: 0, pct: 0 },
     });
     // `b` only receives a one-sided like; it never chooses anyone, so it has
     // no attributed edges of its own.
     expect(result.memberInEdges.b).toEqual({
-      typeI: 0,
-      typeII: 0,
-      typeIII: 0,
-      typeIV: 0,
-      typeV: 0,
-      typeVI: 0,
-      typeVII: 0,
+      typeI: { cnt: 0, pct: 0 },
+      typeII: { cnt: 0, pct: 0 },
+      typeIII: { cnt: 0, pct: 0 },
+      typeIV: { cnt: 0, pct: 0 },
+      typeV: { cnt: 0, pct: 0 },
+      typeVI: { cnt: 0, pct: 0 },
+      typeVII: { cnt: 0, pct: 0 },
     });
     expect(result.memberInEdges.c).toEqual({
-      typeI: 0,
-      typeII: 0,
-      typeIII: 0,
-      typeIV: 1,
-      typeV: 0,
-      typeVI: 0,
-      typeVII: 0,
+      typeI: { cnt: 0, pct: 0 },
+      typeII: { cnt: 0, pct: 0 },
+      typeIII: { cnt: 0, pct: 0 },
+      typeIV: { cnt: 1, pct: 1 },
+      typeV: { cnt: 0, pct: 0 },
+      typeVI: { cnt: 0, pct: 0 },
+      typeVII: { cnt: 0, pct: 0 },
     });
     expect(result.memberInEdges.d).toEqual({
-      typeI: 0,
-      typeII: 0,
-      typeIII: 0,
-      typeIV: 0,
-      typeV: 0,
-      typeVI: 0,
-      typeVII: 0,
+      typeI: { cnt: 0, pct: 0 },
+      typeII: { cnt: 0, pct: 0 },
+      typeIII: { cnt: 0, pct: 0 },
+      typeIV: { cnt: 0, pct: 0 },
+      typeV: { cnt: 0, pct: 0 },
+      typeVI: { cnt: 0, pct: 0 },
+      typeVII: { cnt: 0, pct: 0 },
     });
   });
 
@@ -322,13 +322,13 @@ describe("getEdgeTypes", () => {
     );
 
     const zeroShares = {
-      typeI: 0,
-      typeII: 0,
-      typeIII: 0,
-      typeIV: 0,
-      typeV: 0,
-      typeVI: 0,
-      typeVII: 0,
+      typeI: { cnt: 0, pct: 0 },
+      typeII: { cnt: 0, pct: 0 },
+      typeIII: { cnt: 0, pct: 0 },
+      typeIV: { cnt: 0, pct: 0 },
+      typeV: { cnt: 0, pct: 0 },
+      typeVI: { cnt: 0, pct: 0 },
+      typeVII: { cnt: 0, pct: 0 },
     };
 
     expect(result.memberInEdges.a).toEqual(zeroShares);
