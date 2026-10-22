@@ -159,6 +159,11 @@ chi ne riceve molte e discordanti (controverso), passando per situazioni in cui
 prevale poca attenzione (ignorato, marginale), il consenso (apprezzato,
 popolare) oppure il rifiuto (rifiutato, respinto).
 
+La regola che assegna il codice è più complessa delle formule viste finora,
+perché procede in più passaggi successivi: ogni passaggio è matematicamente
+semplice, ma nel loro insieme sono troppi per essere riassunti in una formula
+leggibile. Per questo motivo la formula non viene riportata.
+
 ### Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
@@ -331,6 +336,33 @@ Qualche esempio di come si arriva ai numeri:
   numeratore, che diviso per $(n-1)(n-2) = 6$ dà $0{,}50$. Il membro $1$ è
   dunque il vero "ponte" del gruppo: ad esempio, il membro $4$ sceglie soltanto
   lui, e tutte le sue strade verso gli altri passano da lì.
+
+Per **PageRank** e **HITS** il calcolo è iterativo, quindi qui riportiamo i
+valori a cui si arriva dopo la convergenza, normalizzati in modo che la somma
+dei quattro membri sia $1$:
+
+| Metrica | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
+| ------- | :------: | :------: | :------: | :------: |
+| PageRank ($PR$) | 0,337 | 0,258 | 0,181 | 0,224 |
+| Autorità HITS ($a$) | 0,227 | 0,305 | 0,121 | 0,347 |
+| Hub HITS ($h$) | 0,227 | 0,305 | 0,347 | 0,121 |
+
+Come si leggono questi numeri:
+
+- **PageRank.** Il membro $1$ è il più importante: lo scelgono il $2$ e il $4$, e
+  il $4$ ha *come unica scelta* proprio il $1$, quindi gli cede tutta la propria
+  importanza. Come verifica, per il membro $1$ si ha
+  $PR(1) = \frac{0{,}15}{4} + 0{,}85\left(\frac{PR(2)}{2} + \frac{PR(4)}{1}\right)
+  \approx 0{,}0375 + 0{,}85\,(0{,}129 + 0{,}224) \approx 0{,}337$,
+  dove il $2$ divide la propria importanza tra due scelte (il $1$ e il $4$),
+  mentre il $4$ la dà tutta al $1$. Il membro $3$ ha il valore più basso perché
+  riceve una sola scelta, e per di più da un membro che ne fa due.
+- **HITS.** Il membro $4$ è la **migliore autorità**: è scelto da $2$ e $3$, che
+  sono ottimi hub. Il membro $3$ è invece il **miglior hub**: indica proprio il
+  $2$ e il $4$, le due autorità più forti. Il membro $2$ è il più equilibrato,
+  perché è alto in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
+  i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
+  nel grafo i loro ruoli sono speculari.
 
 ## In sintesi
 
