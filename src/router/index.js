@@ -33,13 +33,20 @@ const router = createRouter({
     if (to.hash) {
       return { el: to.hash, top: HEADER_OFFSET, behavior: "smooth" };
     }
-    return savedPosition ?? { top: 0 };
+    if (savedPosition) {
+      return savedPosition;
+    }
+    // Wait for the 200ms route fade-in (AppContentTransition) so the jump to
+    // top lands on the incoming page instead of flashing the outgoing one.
+    return new Promise((resolve) =>
+      setTimeout(() => resolve({ top: 0, behavior: "instant" }), 200),
+    );
   },
 });
 
 router.afterEach((to) => {
   document.title = to.meta.title
-    ? `${to.meta.title} — ${SITE_NAME}`
+    ? `${SITE_NAME} · ${to.meta.title}  `
     : SITE_NAME;
 });
 
