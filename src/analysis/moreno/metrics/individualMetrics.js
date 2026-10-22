@@ -176,58 +176,68 @@ export const computeAffiliation = (balance, orientation) =>
 export const computeInfluence = (rp, mp) => rp.add(mp);
 
 /**
- * Classify members into sociometric status (0-8) using:
+ * Status codes (9 categories).
+ */
+export const SOCIOMETRIC_STATUS = Object.freeze({
+  ISOLATED: 0, //      no opinions received, none given
+  IGNORED: 1, //       no opinions received, but gave opinions
+  MARGINAL: 2, //      low impact
+  APPRECIATED: 3, //   average impact, positive balance
+  POPULAR: 4, //       high impact, positive balance
+  DISLIKED: 5, //      average impact, negative balance
+  REJECTED: 6, //      high impact, negative balance
+  AMBIVALENT: 7, //    average impact, neutral balance
+  CONTROVERSIAL: 8, // high impact, neutral balance
+});
+
+/**
+ * Classify members into sociometric status (0-8).
  *
- * IMPACT CLASSIFICATION (Percentile-based)
+ * VISIBILITY (takes precedence over everything else)
+ * - Isolated: impact = 0 and expressivity = 0
+ * - Ignored:  impact = 0 and expressivity > 0
+ *
+ * IMPACT CLASSIFICATION (nearest-rank percentiles)
+ * Percentiles are computed only over members who received at least one
+ * opinion (impact > 0). Isolated/ignored members would otherwise pile up at
+ * zero and push the thresholds down, making "Marginal" unreachable in sparse
+ * networks.
  * - Low impact:     impact ≤ 20th percentile
  * - High impact:    impact ≥ 80th percentile
- * - Average impact: between the 20th and 80th percentiles
+ * - Average impact: everything in between
  *
- * When the 20th and 80th percentiles collapse to the same value, classification
- * falls back to min/max when the impact distribution shows meaningful
- * inequality: a Gini coefficient ≥ 0.3, or a Gini ≥ 0.2 combined with a
- * peak-to-peak spread (max − min) ≥ 3. Otherwise everyone is treated as
- * average impact.
+ * Because comparisons are inclusive (≤ / ≥), ties at a threshold can classify
+ * more than 20% of members as low or high.
  *
- * BALANCE CLASSIFICATION (Dynamic ratio threshold)
- * - Positive:  rp > threshold × rr  (threshold depends on sample size)
- * - Negative:  rr > threshold × rp
- * - Neutral:   neither condition met
+ * If the 20th and 80th percentiles collapse to the same value, classification
+ * falls back to min/max when the distribution shows meaningful inequality
+ * (Gini ≥ 0.3, or Gini ≥ 0.2 with peak-to-peak spread ≥ 3). Otherwise
+ * everyone is treated as average impact.
  *
- * Dynamic threshold scales with sample size:
- * - Few opinions (n≤3):  threshold = 2.0:1 ratio (strict, uncertain)
- * - Many opinions (n≥15): threshold = 1.5:1 ratio (lenient, confident)
- * - Linear interpolation between 3 and 15 opinions
+ * BALANCE CLASSIFICATION (dynamic ratio threshold)
+ * - Positive: rp > threshold × rr
+ * - Negative: rr > threshold × rp
+ * - Neutral:  neither
  *
- * STATUS CODES (9 categories):
- *   0: Isolated     – no opinions received, none given
- *   1: Ignored      – no opinions received, but gave opinions
- *   2: Marginal     – low impact (below the 20th percentile)
- *   3: Appreciated  – average impact, positive balance
- *   4: Popular      – high impact, positive balance
- *   5: Disliked     – average impact, negative balance
- *   6: Rejected     – high impact, negative balance
- *   7: Ambivalent   – average impact, neutral balance
- *   8: Controversial– high impact, neutral balance
+ * The threshold depends on impact (total opinions received, n):
+ * - n ≤ 3:  2.0 (strict, little evidence)
+ * - n ≥ 15: 1.5 (lenient, more evidence)
+ * - linear interpolation in between
  *
- * @param {import("numpy-ts").NDArray} rp - Received positive nominations
- *   (in-degree from likes).
- * @param {import("numpy-ts").NDArray} rr - Received negative nominations
- *   (in-degree from dislikes).
- * @param {import("numpy-ts").NDArray} expressivity - Expressivity index
- *   (gp + gr, opinions given).
- * @param {import("numpy-ts").NDArray} impact - Impact index (rp + rr, total
- *   opinions received).
- * @returns {import("numpy-ts").NDArray} Status codes, shape matches input arrays.
+ * Note: low impact deliberately overrides balance. A member in the bottom
+ * impact tier is "Marginal" even if their few opinions are mostly negative.
+ *
+ * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
+ * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
+ * @param {import("numpy-ts").NDArray} expressivity - Opinions given (gp + gr).
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
-  // Get impact size
   const impactSize = impact.size;
 
-  // VISIBILITY CLASSIFICATION: Isolation and Ignorance
+  // VISIBILITY CLASSIFICATION
   // ============================================================================
-  // Members with no opinions received are isolated or ignored (can't be ranked).
-  // These take precedence over impact/balance classification.
   const hasNoOpinionsReceived = impact.equal(0);
   const hasNoOpinionsGiven = expressivity.equal(0);
 
@@ -238,130 +248,117 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
 
   // IMPACT CLASSIFICATION
   // ============================================================================
-  // Set percentile thresholds.
   const LOW_IMPACT_PERCENTILE = 20;
   const HIGH_IMPACT_PERCENTILE = 80;
+  const GINI_STRONG = 0.3;
+  const GINI_MODERATE = 0.2;
+  const PTP_MIN_FOR_MODERATE_GINI = 3;
 
-  // Define initial isLowImpact, isAverageImpact, isHighImpact
-  // So that every member is considered having average impact.
-  let isLowImpact = np.full([impactSize], 0);
-  let isHighImpact = np.full([impactSize], 0);
-  let isAverageImpact = np.full([impactSize], 1);
+  // Default: everyone is average impact. Built as boolean arrays (impact is
+  // non-negative), so np.select and logical_* always receive booleans.
+  // Since impact is non-negative, these comparisons are always false.
+  let isLowImpact = impact.less(0);
+  let isHighImpact = impact.less(0);
 
-  // Calculate 20th and 80th percentiles
-  // -------------------------------------------------
-  // Sort impact values and define percentile index function.
-  const impactSorted = impact.flatten().sort();
-  const percentileIndex = (percentile) =>
-    Math.floor((impactSize * percentile) / 100);
+  // Only members who received opinions take part in the percentile calculation.
+  const visibleImpacts = impact
+    .flatten()
+    .toArray()
+    .filter((value) => value > 0)
+    .sort((a, b) => a - b); // numeric sort (default JS sort is lexicographic)
 
-  // Calculate low impact threshold.
-  const lowImpactThreshold = impactSorted.get([
-    percentileIndex(LOW_IMPACT_PERCENTILE),
-  ]);
+  if (visibleImpacts.length > 0) {
+    // Nearest-rank percentile, clamped so the index is always valid.
+    const percentileValue = (percentile) =>
+      visibleImpacts[
+        Math.min(
+          visibleImpacts.length - 1,
+          Math.floor((visibleImpacts.length * percentile) / 100),
+        )
+      ];
 
-  // Calculate high impact threshold.
-  const highImpactThreshold = impactSorted.get([
-    percentileIndex(HIGH_IMPACT_PERCENTILE),
-  ]);
+    const lowImpactThreshold = percentileValue(LOW_IMPACT_PERCENTILE);
+    const highImpactThreshold = percentileValue(HIGH_IMPACT_PERCENTILE);
 
-  // If low and high impact thresholds are equal...
-  // do not use percentile-based thresholds; use min/max instead
-  // under certain conditions, otherwise everyone is considered
-  // as having average impact.
-  if (lowImpactThreshold === highImpactThreshold) {
-    // Compute once and reuse.
-    const gini = computeGiniCoefficient(impact);
-    const ptp = np.ptp(impact);
+    if (lowImpactThreshold !== highImpactThreshold) {
+      isLowImpact = impact.less_equal(lowImpactThreshold);
+      isHighImpact = impact.greater_equal(highImpactThreshold);
+    } else {
+      // Percentiles collapsed: fall back to min/max only if the distribution
+      // is unequal enough (measured over visible members only).
+      const minVal = visibleImpacts[0];
+      const maxVal = visibleImpacts[visibleImpacts.length - 1];
+      const ptp = maxVal - minVal;
+      const gini = computeGiniCoefficient(np.array(visibleImpacts));
 
-    // If Gini coefficient is high or PTP is large, use min/max thresholds.
-    if (gini >= 0.3 || (gini >= 0.2 && ptp >= 3)) {
-      const minVal = np.min(impact);
-      const maxVal = np.max(impact);
-      isLowImpact = impact.less_equal(minVal);
-      isHighImpact = impact.greater_equal(maxVal);
-      isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
+      if (
+        gini >= GINI_STRONG ||
+        (gini >= GINI_MODERATE && ptp >= PTP_MIN_FOR_MODERATE_GINI)
+      ) {
+        isLowImpact = impact.less_equal(minVal);
+        isHighImpact = impact.greater_equal(maxVal);
+      }
     }
-  } else {
-    isLowImpact = impact.less_equal(lowImpactThreshold);
-    isHighImpact = impact.greater_equal(highImpactThreshold);
-    isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
   }
 
-  // BALANCE CLASSIFICATION: Dynamic ratio threshold
-  // ============================================================================
-  // Intuition: fewer opinions received → we're less certain → require stronger ratio
-  // more opinions received → we're more certain → accept weaker ratio
-  //
-  // Parameters (tune these based on social context)
-  const LESS_LENIENT_RATIO = 2.0; // Ratio threshold when few opinions
-  const MORE_LENIENT_RATIO = 1.5; // Ratio threshold when many opinions
-  const MIN_OPINIONS_FOR_THRESHOLD = 3; // Opinion count where MIN_RATIO applies
-  const MAX_OPINIONS_FOR_THRESHOLD = 15; // Opinion count where MAX_RATIO applies
+  // A member can't be both low and high (the min/max fallback only applies
+  // when ptp > 0 in practice, since Gini is 0 for a constant distribution),
+  // but guard anyway so low wins deterministically.
+  isHighImpact = isHighImpact.logical_and(isLowImpact.logical_not());
+  const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
 
-  // Compute dynamic threshold per member (vectorized)
-  // Formula: threshold(n) = LESS_LENIENT_RATIO + (MORE_LENIENT_RATIO - LESS_LENIENT_RATIO) × (n - minN) / (maxN - minN)
+  // BALANCE CLASSIFICATION: dynamic ratio threshold
+  // ============================================================================
+  // Fewer opinions received -> less certain -> require a stronger ratio.
+  const LESS_LENIENT_RATIO = 2.0; // threshold at or below MIN_OPINIONS
+  const MORE_LENIENT_RATIO = 1.5; // threshold at or above MAX_OPINIONS
+  const MIN_OPINIONS_FOR_THRESHOLD = 3;
+  const MAX_OPINIONS_FOR_THRESHOLD = 15;
+
+  // threshold(n) = LESS + (MORE - LESS) * clamp((n - minN) / (maxN - minN), 0, 1)
   const ratioSpan = MORE_LENIENT_RATIO - LESS_LENIENT_RATIO;
   const opinionSpan = MAX_OPINIONS_FOR_THRESHOLD - MIN_OPINIONS_FOR_THRESHOLD;
 
-  // Offset: how far above minimum opinion count
-  const opinionOffset = impact.subtract(MIN_OPINIONS_FOR_THRESHOLD);
+  const clampedOffset = np.minimum(
+    np.maximum(impact.subtract(MIN_OPINIONS_FOR_THRESHOLD), 0),
+    opinionSpan,
+  );
+  const dynamicThreshold = clampedOffset
+    .divide(opinionSpan)
+    .multiply(ratioSpan)
+    .add(LESS_LENIENT_RATIO);
 
-  // Clamp offset to valid range [0, opinionSpan]
-  const clampedLower = np.maximum(opinionOffset, 0); // Floor at 0 (below minN)
-  const clampedOffset = np.minimum(clampedLower, opinionSpan); // Cap at opinionSpan (above maxN)
-
-  // Normalize to [0, 1] and interpolate the ratio adjustment
-  const normalizedOffset = clampedOffset.divide(opinionSpan);
-  const thresholdAdjustment = normalizedOffset.multiply(ratioSpan);
-
-  // Final per-member threshold (ranges 2.0 to 1.5 as opinions increase)
-  const dynamicThreshold = np
-    .full([impactSize], LESS_LENIENT_RATIO)
-    .add(thresholdAdjustment);
-
-  // Balance classification using the dynamic threshold
-  // Positive:  "I have lots of likes relative to dislikes"
-  // Negative:  "I have lots of dislikes relative to likes"
-  // Neutral:   "I'm roughly balanced or unclear"
   const isPositiveBalance = rp.greater(rr.multiply(dynamicThreshold));
   const isNegativeBalance = rr.greater(rp.multiply(dynamicThreshold));
   const isNeutralBalance = isPositiveBalance
     .logical_or(isNegativeBalance)
     .logical_not();
 
-  // STATUS ASSIGNMENT: Decision tree
+  // STATUS ASSIGNMENT: decision tree (first match wins)
   // ============================================================================
-  // Priority order (first match wins):
-  // 1. Isolation (no visibility → can't be ranked)
-  // 2. Ignorance (no visibility but gave opinions)
-  // 3. Low impact (overrides balance—marginal members)
-  // 4. High impact + balance combination
-  // 5. Average impact + balance combination
-  //
-  // This uses np.select which is like a vectorized if-else chain:
-  // returns values[i] where conditions[i] is first true, else default
-
   return np.select(
     [
-      // Tier 1: Visibility (short-circuit before impact/balance)
-      isolated, // 0: isolated
-      ignored, // 1: ignored
-
-      // Tier 2: Low impact (short-circuit before balance nuance)
-      isLowImpact, // 2: marginal
-
-      // Tier 3: High impact × balance combinations
-      isHighImpact.logical_and(isPositiveBalance), // 4: popular
-      isHighImpact.logical_and(isNegativeBalance), // 6: rejected
-      isHighImpact.logical_and(isNeutralBalance), // 8: controversial
-
-      // Tier 4: Average impact × balance combinations
-      isAverageImpact.logical_and(isPositiveBalance), // 3: appreciated
-      isAverageImpact.logical_and(isNegativeBalance), // 5: disliked
-      isAverageImpact.logical_and(isNeutralBalance), // 7: ambivalent
+      isolated,
+      ignored,
+      isLowImpact,
+      isHighImpact.logical_and(isPositiveBalance),
+      isHighImpact.logical_and(isNegativeBalance),
+      isHighImpact.logical_and(isNeutralBalance),
+      isAverageImpact.logical_and(isPositiveBalance),
+      isAverageImpact.logical_and(isNegativeBalance),
+      isAverageImpact.logical_and(isNeutralBalance),
     ],
-    [0, 1, 2, 4, 6, 8, 3, 5, 7], // Status codes (order matches conditions)
+    [
+      SOCIOMETRIC_STATUS.ISOLATED,
+      SOCIOMETRIC_STATUS.IGNORED,
+      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.POPULAR,
+      SOCIOMETRIC_STATUS.REJECTED,
+      SOCIOMETRIC_STATUS.CONTROVERSIAL,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.DISLIKED,
+      SOCIOMETRIC_STATUS.AMBIVALENT,
+    ],
     -1, // Safety default (unreachable for valid inputs)
   );
 };
