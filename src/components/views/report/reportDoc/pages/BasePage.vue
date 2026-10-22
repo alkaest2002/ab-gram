@@ -132,6 +132,12 @@ onMounted(() => {
     page-break-after: always;
 }
 
+/* Report page typography:  */
+.report-page p,
+.report-page li {
+  font-size: inherit;
+}
+
 /* The layout table fills the A4 content box. */
 .page-table {
     width: 100%;

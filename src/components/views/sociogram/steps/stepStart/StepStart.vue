@@ -77,14 +77,14 @@ function startFromScratch(step) {
         </section>
 
         <section
-            class="rounded-lg border border-line bg-white p-5"
+            class="rounded-lg border border-line bg-white text-muted p-5"
             role="note"
             aria-label="Avviso"
         >
-            <p class="eyebrow flex items-center gap-1">
+            <p class="eyebrow flex items-center gap-1 text-muted">
                 <WarningIcon size="size-3" /> Avviso
             </p>
-            <p class="mt-1.5 text-sm leading-relaxed">
+            <p class="mt-1.5 text-sm leading-relaxed text-muted">
                 I dati del sociogramma vengono salvati nella memoria RAM: al fine di evitare la perdita dei dati, ti
                 consigliamo di
                 <span class="font-medium"
@@ -92,7 +92,7 @@ function startFromScratch(step) {
                     i tasti back e forward del browser</span
                 >. Potrai comunque "mettere in pausa" e riprendere un lavoro avviato e non concluso.
             </p>
-            <p class="mt-3 text-sm leading-relaxed">
+            <p class="mt-3 text-sm leading-relaxed text-muted">
                 L'app è stata testata con i seguenti browser:
 
                 <a

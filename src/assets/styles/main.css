@@ -1,11 +1,7 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
-/* Semantic tokens: the whole site re-themes by changing these values;
-   no component ever names a default Tailwind color. */
 @theme {
-  /* Humanist sans for prose and headings; the mono is not decoration — it marks
-     everything that is a label or a reading rather than a sentence. */
   --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-sans);
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -19,7 +15,6 @@
   --color-accent: #2563eb;
   --color-reject: #dc2626;
 
-  /* Fade-in used by AppKeepAliveTransition to animate kept-alive (re)activations. */
   --animate-fade-in: fade-in 0.2s ease-out both;
 }
 
@@ -35,10 +30,8 @@
 }
 
 @layer base {
-  /* Header height: the menu panel opens just below. */
   :root {
     --header-h: 4.25rem;
-    /* Root font size: every rem-based size in the site scales off this. */
     font-size: 1.125rem;
   }
 
@@ -46,16 +39,10 @@
     @apply bg-canvas font-sans text-ink antialiased;
   }
 
-  /* Cap and center the app shell only — not every direct child of <body>.
-     Vue <Teleport> mounts overlays (e.g. modals) directly under <body>, and a
-     `body > *` selector would clamp their fixed backdrops to the 62.5rem max
-     width on large screens instead of letting them cover the full viewport. */
   body > #app {
     @apply max-w-250 mx-auto;
   }
 
-  /* Typography lives here, so the templates stay nearly class-free.
-     This is a tool: hierarchy is set with bold weight, not light weight. */
   h1 {
     @apply font-display text-3xl font-bold tracking-[-0.015em] sm:text-4xl;
   }
@@ -73,24 +60,10 @@
     @apply text-[0.975rem] leading-relaxed text-ink;
   }
 
-  /* The report is a print document with its own point-based type scale. It opts
-     out of the rem prose sizing above so its body text inherits the page's base
-     size (11pt, set in BasePage) instead of the site-wide 0.975rem. Explicit
-     `text-[xpt]` utilities on labels and headings still override this. */
-  .report-page p,
-  .report-page li {
-    font-size: inherit;
-  }
-
-  /* MathJax's SVG output typesets inline math as an inline <svg>, but Tailwind's
-     preflight resets svg to display:block — which breaks inline math onto its own
-     line. Restore inline flow inside MathJax's SVG containers. */
   mjx-container[jax="SVG"] > svg {
     display: inline;
   }
 
-  /* Preflight resets link styles: we restore them only on plain text links;
-     those with classes (RouterLink, .btn) stay unstyled. */
   a:not([class]) {
     @apply text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
   }
@@ -105,7 +78,6 @@
 }
 
 @layer components {
-  /* Every view covers the viewport and extends beyond it when needed. */
   .page {
     @apply mx-auto w-full space-y-8 px-6 py-14;
   }
@@ -114,17 +86,11 @@
     @apply space-y-3 rounded-lg border border-line bg-white p-6;
   }
 
-  /* Buttons are black, outline-black, or red — never a tint.
-     pointer-events stays on for disabled buttons: removing it would stop the
-     browser from resolving the cursor to the button, so cursor-not-allowed
-     could never show. A native disabled button already ignores clicks. */
   .btn {
     @apply inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold
       transition-colors disabled:cursor-not-allowed disabled:opacity-40;
   }
 
-  /* Hover is gated on :not(:disabled) so a disabled button stays inert instead
-     of highlighting when hovered. */
   .btn-solid {
     @apply bg-ink text-white;
   }
@@ -149,10 +115,6 @@
     @apply bg-reject/90;
   }
 
-  /* Typography tints list markers with a muted gray; keep bullets in ink to
-     match the surrounding prose text. `prose-neutral` re-declares this variable
-     later in the cascade with equal specificity, so `!important` is required
-     to win. */
   .prose {
     --tw-prose-bullets: var(--color-ink) !important;
   }
@@ -161,7 +123,6 @@
     @apply text-base sm:text-[1.0625rem];
   }
 
-  /* Eyebrow: small, letter-spaced, uppercase — mono, like a column header. */
   .eyebrow {
     @apply font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase;
   }
