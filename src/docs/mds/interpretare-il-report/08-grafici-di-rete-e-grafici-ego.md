@@ -1,5 +1,5 @@
 ---
-title: Grafici
+title: Grafici di rete e i grafici ego
 order: 8
 description: Come leggere i grafici prodotti dal report.
 ---
