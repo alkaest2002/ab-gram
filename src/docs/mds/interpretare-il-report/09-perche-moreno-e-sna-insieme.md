@@ -80,7 +80,7 @@ sono proprio quelle a tenere unito il gruppo.
 ## Come leggere le due cose insieme
 
 - Non fermarti allo status sociometrico: abbinalo sempre alle centralità della
-  pagina sulle <RouterLink to="/docs/interpretare-il-report/05-metriche-individuali">metriche individuali</RouterLink>.
+  pagina sulle metriche individuali.
 - Un membro **poco scelto con intermediazione alta** è probabilmente un ponte:
   la sua importanza non sta nelle scelte che riceve, ma nel collegare persone
   che altrimenti non comunicherebbero.

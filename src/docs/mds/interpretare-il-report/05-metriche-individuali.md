@@ -162,7 +162,7 @@ popolare) oppure il rifiuto (malvisto, rifiutato).
 La regola che assegna il codice è più complessa delle formule viste finora,
 perché procede in più passaggi successivi: ogni passaggio è matematicamente
 semplice, ma nel loro insieme sono troppi per essere riassunti in una formula
-leggibile. Per questo motivo la formula viene riportata nel <RouterLink to="/docs/interpretare-il-report/06-status-sociometrico">documento successivo</RouterLink>.
+leggibile. Per questo motivo la formula viene riportata nel documento successivo.
 
 ### Un esempio svolto
 
