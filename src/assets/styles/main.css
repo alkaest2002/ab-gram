@@ -120,9 +120,7 @@
   }
 }
 
-.prose {
-  --tw-prose-bullets: var(--color-ink);
-}
+/* Custom */
 
 html,
 body {
@@ -136,4 +134,12 @@ body::-webkit-scrollbar {       /* older Chrome, Safari, Edge (Chromium), Opera 
     width: 0;
     height: 0;
     background: transparent;
+}
+
+blockquote p {
+    color: #666666;
+}
+
+.prose {
+  --tw-prose-bullets: var(--color-ink);
 }
