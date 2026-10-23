@@ -53,17 +53,13 @@ watch(isOpen, (open) =>
 onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
 
 // --- Methods ------------
-// A header item is active on its own route and on any child route, so the
-// "Docs" link stays highlighted across every /docs/… page.
+// A header item is active on its own route and on any child route.
 const isActive = (path) =>
     route.path === path || route.path.startsWith(`${path}/`);
 </script>
 
 <template>
     <header class="sticky top-0 z-20 border-b border-line">
-        <!-- Blur sits on its own layer behind the header content, not on the
-             header itself: a backdrop-filter would create a containing block
-             for the fixed children (overlay and menu panel). -->
         <div
             class="pointer-events-none absolute inset-0 -z-10 bg-canvas/85 backdrop-blur"
             aria-hidden="true"

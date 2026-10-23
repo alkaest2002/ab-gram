@@ -26,8 +26,10 @@ onDeactivated(() => window.scrollTo(0, 0));
 
 // --- Methods ------------
 function fadeIn() {
+    // Return early if motion is reduced
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    // Get element or return if not available
     const el = rootEl.value;
     if (!el) return;
 
