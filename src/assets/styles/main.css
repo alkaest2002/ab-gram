@@ -123,3 +123,17 @@
 .prose {
   --tw-prose-bullets: var(--color-ink);
 }
+
+html,
+body {
+    -ms-overflow-style: none;   /* IE 10+ and legacy Edge */
+    scrollbar-width: none;      /* Firefox, Chrome 121+, Safari 18.2+ */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {       /* older Chrome, Safari, Edge (Chromium), Opera */
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+}
