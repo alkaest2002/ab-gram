@@ -1,6 +1,6 @@
 ---
 title: Grafici
-order: 7
+order: 8
 description: Come leggere i grafici prodotti dal report.
 ---
 

@@ -121,14 +121,20 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ab-gram.com/docs/interpretare-il-report/06-metriche-di-gruppo</loc>
-    <lastmod>2026-10-22</lastmod>
+    <loc>https://ab-gram.com/docs/interpretare-il-report/06-status-sociomentrico</loc>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ab-gram.com/docs/interpretare-il-report/07-grafici</loc>
-    <lastmod>2026-10-22</lastmod>
+    <loc>https://ab-gram.com/docs/interpretare-il-report/07-metriche-di-gruppo</loc>
+    <lastmod>2026-10-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ab-gram.com/docs/interpretare-il-report/08-grafici</loc>
+    <lastmod>2026-10-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
