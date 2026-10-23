@@ -27,9 +27,9 @@ ma non *da dove* arrivano: poche scelte possono essere proprio le uniche che
 tengono collegati due sottogruppi, e in quel caso il membro, pur poco visibile,
 è strutturalmente centrale.
 
-## Un esempio: il ponte poco scelto
+## Un esempio
 
-Consideriamo un gruppo di nove membri. Due sottogruppi di quattro persone,
+Consideriamo un gruppo di 9 membri. Due sottogruppi di quattro persone,
 $A = \{1, 2, 3, 4\}$ e $B = \{5, 6, 7, 8\}$, sono molto coesi: dentro ciascuno
 tutti si scelgono a vicenda. Il membro $9$ è l'unico anello di congiunzione:
 
@@ -73,9 +73,8 @@ periferico in più, insieme al ponte.
 | 9      | ponte                | **2**           | **$0{,}57$**            |
 
 Il membro $9$ ha il valore più basso della colonna delle scelte e il più alto
-di quella dell'intermediazione. Per Moreno è il meno visibile, per la SNA è il
-**nodo più centrale**: le sue poche scelte in arrivo non lo rendono visibile, ma
-sono proprio quelle a tenere unito il gruppo.
+di quella dell'intermediazione. Per Moreno è il meno rilevante, per la SNA è un
+nodo **assolutamente centrale**: sono proprio i suoi legami a tenere unito il gruppo.
 
 ## Come leggere le due cose insieme
 
@@ -89,9 +88,9 @@ sono proprio quelle a tenere unito il gruppo.
   sottogruppo, non necessariamente di tutto il gruppo. Nell'esempio sopra non
   compare, perché i membri più scelti ($4$ e $5$) sono anche gatekeeper; lo
   vedrai nei gruppi in cui il sottogruppo più popolare non ha legami esterni.
-- Incrocia anche le altre centralità: grado e PageRank confermano la visibilità,
-  la vicinanza dice quanto il membro è "a portata di mano", l'intermediazione
-  rivela i ponti.
+- Incrocia anche le altre centralità: grado e PageRank confermano l'importanza di un membro,
+  la vicinanza dice quanto sia "a portata di mano", l'intermediazione
+  rivela una sua eventuale funzione di ponte.
 
 In breve: Moreno risponde a "quanto è scelto e visibile?", la SNA a "dove si
 trova nella struttura?". Solo incrociando le due risposte si evita di scambiare
