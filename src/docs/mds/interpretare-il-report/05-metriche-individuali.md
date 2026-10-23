@@ -149,20 +149,20 @@ codice, sono:
 | 2 | marginale |
 | 3 | apprezzato |
 | 4 | popolare |
-| 5 | rifiutato |
-| 6 | respinto |
+| 5 | malvisto |
+| 6 | rifiutato |
 | 7 | ambivalente |
 | 8 | controverso |
 
 In generale, le categorie vanno da chi non riceve alcuna opinione (isolato) a
 chi ne riceve molte e discordanti (controverso), passando per situazioni in cui
 prevale poca attenzione (ignorato, marginale), il consenso (apprezzato,
-popolare) oppure il rifiuto (rifiutato, respinto).
+popolare) oppure il rifiuto (malvisto, rifiutato).
 
 La regola che assegna il codice è più complessa delle formule viste finora,
 perché procede in più passaggi successivi: ogni passaggio è matematicamente
 semplice, ma nel loro insieme sono troppi per essere riassunti in una formula
-leggibile. Per questo motivo la formula non viene riportata.
+leggibile. Per questo motivo la formula viene riportata nel [documento successivo](/docs/interpretare-il-report/06-status-sociometrico).
 
 ### Un esempio svolto
 

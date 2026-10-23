@@ -37,8 +37,8 @@ Ogni codice corrisponde a una categoria ben precisa:
 |   2    | marginale   |       basso      | qualunque |
 |   3    | apprezzato  |       medio      |  positivo |
 |   4    | popolare    |       alto       |  positivo |
-|   5    | rifiutato   |       medio      |  negativo |
-|   6    | respinto    |       alto       |  negativo |
+|   5    | malvisto    |       medio      |  negativo |
+|   6    | rifiutato   |       alto       |  negativo |
 |   7    | ambivalente |       medio      |   neutro  |
 |   8    | controverso |       alto       |   neutro  |
 
@@ -49,8 +49,7 @@ classificato solo in base al fatto che ne abbia espresse o meno.
 
 ## I dati in ingresso
 
-L'algoritmo riceve quattro valori per ogni membro, tutti già calcolati nella
-pagina precedente:
+L'algoritmo riceve quattro valori per ogni membro:
 
 - $rp_i$: **preferenze ricevute**;
 - $rr_i$: **rifiuti ricevuti**;
@@ -94,7 +93,7 @@ anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
 mai raggiunta.
 
-**Il percentile per rango.** Ordinati in senso crescente gli impatti dei soli
+Ordinati in senso crescente gli impatti dei soli
 membri visibili, $x_0 \le x_1 \le \dots \le x_{N-1}$, il percentile $P$ è il
 valore che occupa la posizione $\lfloor N \cdot P / 100 \rfloor$ (l'indice parte
 da $0$):
@@ -149,7 +148,7 @@ Se un membro risultasse sia basso sia alto, prevale sempre "basso".
 
 Il bilancio confronta preferenze e rifiuti ricevuti, ma non in modo "secco"
 ($rp$ contro $rr$): la soglia che separa "prevale il positivo" da "prevale il
-negativo" è un **rapporto dinamico**, che si fa più severo quando le prove sono
+negativo" è un **rapporto dinamico**, che si fa più severo quando le opinioni del gruppo sono
 poche. La logica è: poche opinioni ricevute $\Rightarrow$ meno certezza
 $\Rightarrow$ serve uno squilibrio più netto per parlare di prevalenza.
 
@@ -189,10 +188,10 @@ L'ordine conta, perché garantisce le priorità giuste.
 |    2     | nessuna opinione ricevuta, ma ne ha date  | ignorato    |   1    |
 |    3     | impatto basso                             | marginale   |   2    |
 |    4     | impatto alto e bilancio positivo          | popolare    |   4    |
-|    5     | impatto alto e bilancio negativo          | respinto    |   6    |
+|    5     | impatto alto e bilancio negativo          | rifiutato   |   6    |
 |    6     | impatto alto e bilancio neutro            | controverso |   8    |
 |    7     | impatto medio e bilancio positivo         | apprezzato  |   3    |
-|    8     | impatto medio e bilancio negativo         | rifiutato   |   5    |
+|    8     | impatto medio e bilancio negativo         | malvisto    |   5    |
 |    9     | impatto medio e bilancio neutro           | ambivalente |   7    |
 
 Nota una conseguenza della priorità 3: **l'impatto basso vince sul bilancio**.
@@ -257,7 +256,7 @@ $n = 4$). Ne risulta:
 |   2    | nessuna opinione ricevuta, ma ne ha date   | ignorato   |   1    |
 |   3    | impatto basso (il bilancio non conta)      | marginale  |   2    |
 |   4    | alto + positivo                            | popolare   |   4    |
-|   5    | alto + negativo                            | respinto   |   6    |
+|   5    | alto + negativo                            | rifiutato  |   6    |
 |   6    | medio + positivo                           | apprezzato |   3    |
 
 Il membro $3$ mostra bene la priorità dell'impatto sul bilancio: riceve una sola
