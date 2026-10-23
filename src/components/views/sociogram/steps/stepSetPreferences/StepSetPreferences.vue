@@ -1,7 +1,15 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue
-import { computed, ref, watch, onActivated, onDeactivated, onBeforeUnmount, useTemplateRef } from "vue";
+import {
+    computed,
+    ref,
+    watch,
+    onActivated,
+    onDeactivated,
+    onBeforeUnmount,
+    useTemplateRef,
+} from "vue";
 
 //   -- From pinia
 import { storeToRefs } from "pinia";
@@ -98,12 +106,9 @@ watch(
 // Keyboard shortcuts live on `window` and must only be active while this step
 // is shown. The component is kept alive, so bind on activation and unbind on
 // deactivation/unmount to avoid leaking the listener onto other steps.
-onActivated(() => {
-    window.scrollTo(0, 0);
-    window.addEventListener("keydown", handleWindowKeydown);
-});
+onActivated(() => window.addEventListener("keydown", handleWindowKeydown));
 onDeactivated(() => window.removeEventListener("keydown", handleWindowKeydown));
-onBeforeUnmount(() => window.removeEventListener("keydown", handleWindowKeydown));
+onBeforeUnmount(() =>window.removeEventListener("keydown", handleWindowKeydown));
 
 // --- Methods ------------
 // Two-way binding to a field on the current member, falling back to an empty
@@ -174,9 +179,7 @@ function handleWindowKeydown(event) {
 </script>
 
 <template>
-    <section
-        class="card space-y-3"
-    >
+    <section class="card space-y-3">
         <StepHeader>
             <template #eyebrow>Passaggio 3 di 4</template>
             <template #title
