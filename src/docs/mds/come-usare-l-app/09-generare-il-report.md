@@ -36,4 +36,4 @@ Se una di queste condizioni non è soddisfatta, l'applicazione segnala il proble
 invece di produrre un report incompleto.
 
 Una volta generato, puoi passare alla sezione
-[Interpretare il report](/docs/interpretare-il-report/01-struttura-del-report).
+<RouterLink to="/docs/interpretare-il-report/01-struttura-del-report">Interpretare il report</RouterLink>.

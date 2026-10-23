@@ -30,8 +30,7 @@ dati-2026-10-10T14-30-00.txt
 ## Riprendere un progetto
 
 Per riaprire un archivio, avvia l'applicazione e scegli **Importa progetto**
-nella schermata iniziale, oppure consulta [Importare un progetto
-archiviato](/docs/come-usare-l-app/03-importare-un-progetto-archiviato).
+nella schermata iniziale, oppure consulta <RouterLink to="/docs/come-usare-l-app/03-importare-un-progetto-archiviato">Importare un progetto archiviato</RouterLink>.
 
 Il progetto viene ricostruito esattamente da dove lo avevi interrotto, inclusi
 i passaggi già completati.

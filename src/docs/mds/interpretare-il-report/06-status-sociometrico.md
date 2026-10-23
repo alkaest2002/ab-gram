@@ -6,7 +6,7 @@ description: Come viene assegnato a ogni membro il codice di status sociometrico
 
 Lo **status sociometrico** ($ss_i$) è l'etichetta finale che riassume la
 posizione di ciascun membro nel gruppo. A differenza degli indici visti nella
-pagina sulle [metriche individuali](/docs/interpretare-il-report/05-metriche-individuali),
+pagina sulle <RouterLink to="/docs/interpretare-il-report/05-metriche-individuali">metriche individuali</RouterLink>,
 che sono numeri, qui si tratta di una **categoria**: l'algoritmo combina due
 informazioni già incontrate — l'**impatto** ricevuto (quanto il membro è
 visibile agli occhi degli altri) e il **bilancio** tra preferenze e rifiuti

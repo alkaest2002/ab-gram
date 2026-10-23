@@ -85,4 +85,4 @@ disattivato finché non hai completato tutti i membri.
 Negli elenchi delle scelte e dei rifiuti c'è un campo *Cerca un nome…* per
 raggiungere subito una persona: è il punto di partenza ideale per lavorare con
 la tastiera. Il funzionamento della ricerca è descritto in
-[Filtrare i membri con la ricerca fuzzy](/docs/come-usare-l-app/06-filtare-i-membri).
+<RouterLink to="/docs/come-usare-l-app/07-filtare-i-membri">Filtrare i membri con la ricerca fuzzy</RouterLink>.
