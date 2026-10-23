@@ -209,10 +209,13 @@ export const SOCIOMETRIC_STATUS = Object.freeze({
  * Because comparisons are inclusive (≤ / ≥), ties at a threshold can classify
  * more than 20% of members as low or high.
  *
- * If the 20th and 80th percentiles collapse to the same value, classification
- * falls back to min/max when the distribution shows meaningful inequality
- * (Gini ≥ 0.3, or Gini ≥ 0.2 with peak-to-peak spread ≥ 3). Otherwise
- * everyone is treated as average impact.
+ * If the 20th and 80th percentiles collapse to the same value (that value is
+ * then the median), and the distribution shows meaningful inequality
+ * (Gini ≥ 0.3, or Gini ≥ 0.2 with peak-to-peak spread ≥ 3), the fallback is:
+ *   1. Outer percentiles (5th / 95th, inclusive), only for ≥ 20 visible
+ *      members, each side used only if strictly beyond the median.
+ *   2. Otherwise median-strict: impact < median is low, > median is high.
+ * If the Gini condition is not met, everyone is treated as average impact.
  *
  * BALANCE CLASSIFICATION (dynamic ratio threshold)
  * - Positive: rp > threshold × rr
@@ -250,13 +253,16 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // ============================================================================
   const LOW_IMPACT_PERCENTILE = 20;
   const HIGH_IMPACT_PERCENTILE = 80;
+  const OUTER_LOW_PERCENTILE = 5;
+  const OUTER_HIGH_PERCENTILE = 95;
+  // With nearest-rank, 5/95 differ from min/max only from 20 members up.
+  const MIN_VISIBLE_FOR_OUTER_PERCENTILES = 20;
   const GINI_STRONG = 0.3;
   const GINI_MODERATE = 0.2;
   const PTP_MIN_FOR_MODERATE_GINI = 3;
 
   // Default: everyone is average impact. Built as boolean arrays (impact is
   // non-negative), so np.select and logical_* always receive booleans.
-  // Since impact is non-negative, these comparisons are always false.
   let isLowImpact = impact.less(0);
   let isHighImpact = impact.less(0);
 
@@ -284,19 +290,39 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
       isLowImpact = impact.less_equal(lowImpactThreshold);
       isHighImpact = impact.greater_equal(highImpactThreshold);
     } else {
-      // Percentiles collapsed: fall back to min/max only if the distribution
-      // is unequal enough (measured over visible members only).
-      const minVal = visibleImpacts[0];
-      const maxVal = visibleImpacts[visibleImpacts.length - 1];
-      const ptp = maxVal - minVal;
+      // Percentiles collapsed: the shared value is the median (at least 60%
+      // of visible members sit on it). Only split the group if the
+      // distribution is unequal enough (measured over visible members only).
+      const medianValue = lowImpactThreshold;
+      const ptp =
+        visibleImpacts[visibleImpacts.length - 1] - visibleImpacts[0];
       const gini = computeGiniCoefficient(np.array(visibleImpacts));
 
       if (
         gini >= GINI_STRONG ||
         (gini >= GINI_MODERATE && ptp >= PTP_MIN_FOR_MODERATE_GINI)
       ) {
-        isLowImpact = impact.less_equal(minVal);
-        isHighImpact = impact.greater_equal(maxVal);
+        // Outer percentiles (5/95) are a distinct strategy only for larger
+        // groups; below that they equal min/max and ties could flag most of
+        // the group. Each side is used only if it lies strictly beyond the
+        // median, so the bulk of tied members is never swept into a tail.
+        const outerLow = percentileValue(OUTER_LOW_PERCENTILE);
+        const outerHigh = percentileValue(OUTER_HIGH_PERCENTILE);
+        const useOuterLow =
+          visibleImpacts.length >= MIN_VISIBLE_FOR_OUTER_PERCENTILES &&
+          outerLow < medianValue;
+        const useOuterHigh =
+          visibleImpacts.length >= MIN_VISIBLE_FOR_OUTER_PERCENTILES &&
+          outerHigh > medianValue;
+
+        if (useOuterLow || useOuterHigh) {
+          if (useOuterLow) isLowImpact = impact.less_equal(outerLow);
+          if (useOuterHigh) isHighImpact = impact.greater_equal(outerHigh);
+        } else {
+          // Median-strict: strictly below / above the typical value.
+          isLowImpact = impact.less(medianValue);
+          isHighImpact = impact.greater(medianValue);
+        }
       }
     }
   }
@@ -336,6 +362,8 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
 
   // STATUS ASSIGNMENT: decision tree (first match wins)
   // ============================================================================
+  const S = SOCIOMETRIC_STATUS;
+
   return np.select(
     [
       isolated,
@@ -349,16 +377,16 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
       isAverageImpact.logical_and(isNeutralBalance),
     ],
     [
-      SOCIOMETRIC_STATUS.ISOLATED,
-      SOCIOMETRIC_STATUS.IGNORED,
-      SOCIOMETRIC_STATUS.MARGINAL,
-      SOCIOMETRIC_STATUS.POPULAR,
-      SOCIOMETRIC_STATUS.REJECTED,
-      SOCIOMETRIC_STATUS.CONTROVERSIAL,
-      SOCIOMETRIC_STATUS.APPRECIATED,
-      SOCIOMETRIC_STATUS.DISLIKED,
-      SOCIOMETRIC_STATUS.AMBIVALENT,
+      S.ISOLATED,
+      S.IGNORED,
+      S.MARGINAL,
+      S.POPULAR,
+      S.REJECTED,
+      S.CONTROVERSIAL,
+      S.APPRECIATED,
+      S.DISLIKED,
+      S.AMBIVALENT,
     ],
     -1, // Safety default (unreachable for valid inputs)
   );
-};
+};;
