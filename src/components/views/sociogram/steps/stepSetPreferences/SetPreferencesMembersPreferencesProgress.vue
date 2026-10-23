@@ -64,7 +64,7 @@ const remainingMembersCount = computed(
             aria-valuemax="100"
         >
             <div
-                class="h-full rounded-full bg-accent transition-[width] duration-300 ease-out"
+                class="h-full rounded-full bg-ink transition-[width] duration-300 ease-out"
                 :style="{ width: `${completedPercentage}%` }"
             ></div>
         </div>
