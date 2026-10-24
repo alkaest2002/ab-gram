@@ -108,6 +108,22 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                         informativa sulla privacy di Discord
                     </a>.
                 </p>
+
+                <h3 id="cloudflare" class="scroll-mt-24">4.3 Cloudflare (CDN)</h3>
+                <p>
+                    Il sito è distribuito tramite la rete di distribuzione dei
+                    contenuti (CDN) di Cloudflare, che può trattare dati tecnici
+                    (ad esempio l'indirizzo IP o i log di accesso) necessari per
+                    la sicurezza e la distribuzione dei contenuti. Per maggiori
+                    informazioni si rimanda alla
+                    <a
+                        href="https://www.cloudflare.com/privacypolicy/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        informativa sulla privacy di Cloudflare
+                    </a>.
+                </p>
             </section>
 
             <section class="space-y-3">

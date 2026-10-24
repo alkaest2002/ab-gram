@@ -20,6 +20,7 @@ const sections = [
         children: [
             { id: "github-pages", label: "4.1 GitHub Pages (hosting)" },
             { id: "discord", label: "4.2 Discord (community)" },
+            { id: "cloudflare", label: "4.3 Cloudflare (CDN)" },
         ],
     },
     { id: "cookie", label: "5. Cookie" },
