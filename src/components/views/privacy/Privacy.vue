@@ -78,18 +78,19 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 
             <section class="space-y-3">
                 <h2 id="servizi-terze-parti" class="scroll-mt-24">4. Servizi di terze parti</h2>
-                <h3 id="github-pages" class="scroll-mt-24">4.1 GitHub Pages (hosting)</h3>
+                <h3 id="cloudflare" class="scroll-mt-24">4.1 Cloudflare (hosting e CDN)</h3>
                 <p>
-                    Il sito è ospitato sulla piattaforma GitHub Pages. GitHub può
-                    trattare dati tecnici (ad esempio l'indirizzo IP o i log di
-                    accesso) in qualità di fornitore del servizio di hosting. Per
-                    maggiori informazioni si rimanda alla
+                    Il sito è ospitato e distribuito tramite Cloudflare (hosting
+                    e rete di distribuzione dei contenuti, CDN), che può trattare
+                    dati tecnici (ad esempio l'indirizzo IP o i log di accesso)
+                    necessari per la sicurezza e la distribuzione dei contenuti.
+                    Per maggiori informazioni si rimanda alla
                     <a
-                        href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+                        href="https://www.cloudflare.com/privacypolicy/"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        informativa sulla privacy di GitHub
+                        informativa sulla privacy di Cloudflare
                     </a>.
                 </p>
 
@@ -106,22 +107,6 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                         rel="noopener noreferrer"
                     >
                         informativa sulla privacy di Discord
-                    </a>.
-                </p>
-
-                <h3 id="cloudflare" class="scroll-mt-24">4.3 Cloudflare (CDN)</h3>
-                <p>
-                    Il sito è distribuito tramite la rete di distribuzione dei
-                    contenuti (CDN) di Cloudflare, che può trattare dati tecnici
-                    (ad esempio l'indirizzo IP o i log di accesso) necessari per
-                    la sicurezza e la distribuzione dei contenuti. Per maggiori
-                    informazioni si rimanda alla
-                    <a
-                        href="https://www.cloudflare.com/privacypolicy/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        informativa sulla privacy di Cloudflare
                     </a>.
                 </p>
             </section>
