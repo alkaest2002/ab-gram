@@ -13,16 +13,46 @@ gruppo fino alla preparazione dei dati.
 
 Il primo passaggio è decidere **quale domanda porre al gruppo**. Questa domanda
 si chiama *criterio sociometrico*: è la situazione concreta, l'attività o il
-contesto specifico su cui si fonda la richiesta di scelta o di rifiuto in un questionario
-sociometrico.
+contesto specifico su cui si fonda la richiesta di scelta o di rifiuto in un
+questionario sociometrico.
+
+Il questionario sociometrico si presta a essere modellato su scopi diversi. Ciò
+che conta è partire da una domanda precisa: quale aspetto della vita del gruppo
+vuoi esplorare? Una volta chiarito questo, il criterio da adottare e le parole
+con cui formulare la domanda diventano molto più semplici da individuare.
+
+### Due famiglie di criteri
+
+Nella pratica, i criteri si possono ricondurre a due grandi famiglie.
+
+**1. Criteri affettivo-relazionali.** Riguardano il tempo trascorso insieme e la
+convivenza: con chi si desidera, o non si desidera, condividere un viaggio, un
+alloggio, una pausa, un momento di svago. Le relazioni che emergono sono quelle
+dettate dall'intesa personale e dalla sintonia, non dalla competenza di chi viene
+nominato.
+
+**2. Criteri strumentali.** Riguardano ciò che il gruppo deve fare, non solo lo
+stare insieme. Rientrano in questa famiglia sia le situazioni in cui si cerca una
+guida (esempi: *chi vorresti, o non vorresti, come portavoce, referente o
+coordinatore*), sia quelle in cui si lavora a uno scopo comune (esempi: *con chi
+vorresti, o non vorresti, portare avanti un progetto, preparare un esame insieme
+o svolgere un incarico*).
+
+In entrambi i casi la logica della scelta cambia rispetto al caso affettivo:
+chi risponde è chiamato a valutare le competenze e l'affidabilità degli altri.
+Non conta più quanto una persona sia gradevole o meno, ma quanto appaia
+disponibile a cooperare, seria nell'impegno, capace di orientare il gruppo e di
+concludere ciò che le viene affidato.
+
+### Come formulare un buon criterio
 
 Un buon criterio non è astratto. Deve fare riferimento a una situazione **reale e
 significativa per il gruppo**, in modo che ciascuno sappia con precisione a cosa
 sta rispondendo. Alcuni esempi:
 
-- *«Chi sceglieresti come compagno di banco?»*
-- *«Con chi vorresti collaborare per questo progetto?»*
-- *«Con chi faresti una gita?»*
+- *«Con chi faresti una gita?»* (criterio affettivo-relazionale)
+- *«Con chi vorresti collaborare per questo progetto?»* (criterio strumentale)
+- *«Chi vorresti come responsabile di questa attività?»* (criterio strumentale)
 
 Domande generiche come «chi ti piace di più?» producono risposte vaghe e difficili
 da interpretare, perché ognuno le intende a modo suo. Un criterio concreto, invece,
@@ -38,13 +68,6 @@ Qualche accorgimento utile:
   informazioni siano coerenti tra loro;
 - **comunica il criterio al gruppo prima di raccogliere le risposte**, spiegando a
   cosa serve la rilevazione.
-
-## 2. Identificare il gruppo
-
-Il secondo passaggio è definire il gruppo su cui vuoi lavorare: una classe, una
-squadra, un team di lavoro. Prepara l'elenco dei membri, cioè le persone che
-parteciperanno al questionario sociometrico. A ciascuna di loro chiederai di
-rispondere al criterio che hai stabilito, esprimendo le proprie preferenze.
 
 ## 3. Cosa raccogliere
 
