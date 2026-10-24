@@ -42,7 +42,7 @@ defineProps({
         <div class="min-w-0">
             <RouterLink v-if="prev" :to="prev.path" class="group block text-left">
                 <span class="block text-xs font-medium tracking-wider text-muted uppercase">
-                    Indietro
+                    indietro
                 </span>
                 <span
                     class="mt-1 block truncate font-medium text-ink transition-colors group-hover:text-accent"

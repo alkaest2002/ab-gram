@@ -39,7 +39,7 @@ defineProps({
         <div class="mt-3 space-y-3">
             <p class="eyebrow">Errore</p>
             <h2 class="text-3xl">
-                <slot name="title"> Ooops! Qualcosa è andato storto </slot>
+                <slot name="title"> Ops! Qualcosa è andato storto </slot>
             </h2>
             <p class="mx-auto max-w-[52ch] text-sm">
                 <slot name="text">
