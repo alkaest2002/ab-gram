@@ -94,7 +94,7 @@ function routerLinks(md) {
   };
 }
 
-// GitHub Pages has no SPA rewrite rules, so reloading a deep link (e.g.
+// For GitHub Pages has no SPA rewrite rules, so reloading a deep link (e.g.
 // /docs/introduzione/…) 404s before the app can boot. GitHub serves a root
 // `404.html` for any missing path while keeping the original URL in the
 // address bar, so an exact copy of `index.html` lets Vue Router read that URL
