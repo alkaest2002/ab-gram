@@ -11,7 +11,7 @@ percorsi:
 - **Importa progetto** — riprende un progetto archiviato in precedenza.
 
 Entrambi i pulsanti azzerano i dati in memoria, così ogni nuovo
-lavoro parte sempreda zero.
+lavoro parte sempre da zero.
 
 ## Avviare un nuovo progetto
 
@@ -43,6 +43,18 @@ Prima di caricare il file puoi scegliere come ordinare i nomi:
 
 Dopo il caricamento, l'applicazione mostra un riepilogo con il numero di nomi
 caricati, oppure un messaggio che spiega l'eventuale errore nel caricamento del file.
+
+## Una nota sul genere
+
+Nelle versioni classiche del sociogramma il genere delle persone viene preso in
+considerazione, per esempio distinguendo i nominativi con simboli o colori
+diversi. **AB-Gram non registra questa differenza**: nel file caricato c'è solo
+il nominativo, e nessuna informazione sul genere viene richiesta o salvata.
+
+Si tratta di una scelta teorica. Il genere è un'esperienza fluida, che
+difficilmente si presta a essere ridotta a una classificazione binaria:
+imporre una distinzione di questo tipo rischierebbe di escludere o di
+rappresentare in modo scorretto una parte delle persone coinvolte.
 
 ## Un avviso importante sui dati
 
