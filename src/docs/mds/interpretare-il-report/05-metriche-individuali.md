@@ -136,7 +136,7 @@ $$
 
 ### Status sociometrico
 
-Lo **stato sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
+Lo **status sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,
 l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra preferenze e
 rifiuti (se prevalgono gli uni o le altre). Le categorie, con il relativo

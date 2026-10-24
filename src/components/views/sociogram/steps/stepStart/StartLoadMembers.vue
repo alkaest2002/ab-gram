@@ -30,7 +30,7 @@ const emit = defineEmits(["sociogram-start-load-members"]);
         <p class="eyebrow">Nuovo progetto</p>
         <h3>Carica una nuova lista di nomi</h3>
         <p class="text-sm">
-            Crea un nuovo progettoa partire da una lista di nomi.
+            Crea un nuovo progetto a partire da una lista di nomi.
         </p>
     </div>
     <BaseButton

@@ -1,5 +1,5 @@
 ---
-title: Tipo di legami
+title: Tipi di legami
 order: 3
 description: Come classificare le relazioni tra i membri del gruppo.
 ---

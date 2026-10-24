@@ -96,7 +96,7 @@ const METRIC_CONFIG = {
     numberOfMutualEdges: { label: config.mutualEdgeLabel, kind: "count" },
     networkDensity: { label: "Densità della rete", kind: "ratio" },
     networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
-    networkReciprocity: { label: "Reciprocità delle rete", kind: "ratio" },
+    networkReciprocity: { label: "Reciprocità della rete", kind: "ratio" },
     networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
 };
 

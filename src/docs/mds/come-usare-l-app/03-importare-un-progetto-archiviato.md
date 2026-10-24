@@ -10,7 +10,7 @@ dove avevi interrotto, senza reinserire nomi e relazioni.
 ## Perché serve archiviare il progetto
 
 Per tutelare la tua privacy, l'applicazione **non conserva alcun dato** tra una
-sessione e l'altra: non usa alcun meccanismo di di memorizzazione nel browser,
+sessione e l'altra: non usa alcun meccanismo di memorizzazione nel browser,
 e non salva nulla per recuperarlo in seguito.
 Nomi e relazioni restano soltanto nella sessione in corso.
 

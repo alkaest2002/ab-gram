@@ -29,7 +29,7 @@ const emit = defineEmits(["update:modelValue"]);
 const groupName = useId();
 
 const options = [
-    { value: "as-is", label: "Mantienti l'ordine del file" },
+    { value: "as-is", label: "Mantieni l'ordine del file" },
     { value: "alphabetical", label: "Ordina alfabeticamente" },
     { value: "shuffle", label: "Mescola in modo casuale" },
 ];

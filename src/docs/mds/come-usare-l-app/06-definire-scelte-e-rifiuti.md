@@ -50,7 +50,7 @@ Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 2. **Spostati** tra i risultati e le caselle con **Tab** (avanti) e
    **Maiusc + Tab** (indietro).
 3. **Seleziona o deseleziona** la persona evidenziata con il **tasto invio**.
-4. Usa le frecce per **passa al membro successivo (o precedente)** non appena il membro corrente è completo.
+4. Usa le frecce per **passare al membro successivo (o precedente)** non appena il membro corrente è completo.
 
 > **Consiglio:** dedica qualche minuto a provare la tastiera sul primo membro.
 > Dal secondo in poi il vantaggio in termini di velocità diventa evidente, e i

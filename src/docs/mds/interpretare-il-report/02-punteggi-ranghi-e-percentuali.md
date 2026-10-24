@@ -142,8 +142,8 @@ significato esteso.
 | Copertina | – | – | – |
 | Elenco dei membri | – | – | – |
 | Scelte e rifiuti | identificativi (+/-) | – | – |
-| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs  text-muted">indici di rete e di gruppo</span> |
-| Componenti della rete | conteggi <br><span class="text-xs  text-muted">componenti per categoria</span> | – | – |
+| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
+| Componenti della rete | conteggi <br><span class="text-xs text-muted">componenti per categoria</span> | – | – |
 | Tipi di relazione | conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span> | – | – |
 | Pagine individuali | conteggi e decimali | sì | sì |
 | Glossario | – | – | – |

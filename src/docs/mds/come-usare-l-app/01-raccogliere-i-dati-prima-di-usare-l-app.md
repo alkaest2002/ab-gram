@@ -9,7 +9,7 @@ ha espresso verso gli altri. Prima di usare l'applicazione devi quindi averli gi
 raccolti. Questa pagina ti guida passo dopo passo: dalla domanda da porre al
 gruppo fino alla preparazione dei dati.
 
-## 1. Stabilire il criterio sociometrico
+## Stabilire il criterio sociometrico
 
 Il primo passaggio è decidere **quale domanda porre al gruppo**. Questa domanda
 si chiama *criterio sociometrico*: è la situazione concreta, l'attività o il
@@ -69,7 +69,7 @@ Qualche accorgimento utile:
 - **comunica il criterio al gruppo prima di raccogliere le risposte**, spiegando a
   cosa serve la rilevazione.
 
-## 3. Cosa raccogliere
+## Cosa raccogliere
 
 Per ogni membro del gruppo, in relazione al criterio scelto, devi annotare due
 informazioni:
@@ -96,7 +96,7 @@ invece di nominare chiunque. Non è un vincolo, ma un invito alla responsabilit�
 spetta a te spiegarne il motivo al gruppo e sollecitare ciascuno a rispondere con
 sincerità e misura.
 
-## 4. Come raccogliere i dati
+## Come raccogliere i dati
 
 La raccolta può avvenire in due modi, e la scelta spetta a te:
 

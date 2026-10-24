@@ -1,5 +1,5 @@
 ---
-title: Grafici di rete e i grafici ego
+title: Grafici di rete e grafici ego
 order: 8
 description: Come leggere i grafici prodotti dal report.
 ---
@@ -39,7 +39,7 @@ La disposizione è calcolata con un algoritmo di posizionamento force-directed (
 
 È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete.
 
-Inoltre, poiché l’inizializzazione è casuale, l’algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafo, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
+Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafo, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
 
 ### Rigenerare la disposizione
 
