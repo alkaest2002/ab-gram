@@ -83,18 +83,70 @@ Ricorda che la direzione conta: la scelta parte da **chi** la esprime e arriva a
 **chi** è scelto. Se un membro non ha espresso scelte o rifiuti, annotalo: potrai
 registrarlo nell'app.
 
-### Nessun limite al numero di scelte e rifiuti
+### Quante scelte e quanti rifiuti raccogliere
 
-AB-Gram non pone alcun limite al numero di scelte e di rifiuti che ogni membro
-può esprimere: puoi registrare tutte le preferenze raccolte, senza doverne
+AB-Gram non pone alcun vincolo rigido al numero di scelte e di rifiuti che ogni
+membro può esprimere: puoi registrare tutte le preferenze raccolte, senza doverne
 scartare nessuna.
 
-Tuttavia, AB-Gram produce risultati più chiari quando le preferenze sono
-focalizzate. Invita quindi i membri a **concentrare le proprie risposte**,
-indicando le persone con cui l'affinità o la distanza sono davvero più forti,
-invece di nominare chiunque. Non è un vincolo, ma un invito alla responsabilità:
-spetta a te spiegarne il motivo al gruppo e sollecitare ciascuno a rispondere con
-sincerità e misura.
+Questo non significa che il numero sia irrilevante. I risultati sono più chiari
+quando le preferenze sono focalizzate, cioè quando ciascuno indica le persone con
+cui l'affinità o la distanza sono davvero più forti. Per questo conviene lavorare
+*prima* della raccolta, aiutando il gruppo a rispondere con misura.
+
+#### Come ridurre le risposte generalizzate
+
+Alcuni membri tendono a scegliere o a rifiutare quasi tutti. Non puoi (e non
+devi) impedirlo, ma puoi ridurne la frequenza con qualche strategia persuasiva:
+
+- **spiega a cosa serve la rilevazione** e perché la precisione conta: se tutti
+  sono scelti, o tutti rifiutati, la risposta non dice più nulla di nessuno;
+- **riporta sempre il criterio** e invita a pensare alla situazione concreta
+  («con chi faresti davvero questa gita?»), non a una simpatia generica;
+- **chiedi di partire da chi verrebbe in mente per primo**, e di fermarsi quando
+  i nomi successivi non sono più davvero importanti;
+- **suggerisci un ordine di grandezza a voce**, ad esempio «poche persone, quelle
+  che contano davvero per te», senza fissare un tetto;
+- **chiarisci che lasciare vuoto è lecito**: non esiste l'obbligo di scegliere o
+  di rifiutare qualcuno;
+- **per i rifiuti, distingui la distanza dalla antipatia**: si indica solo chi si
+  preferirebbe non avere accanto *per quella specifica situazione*;
+- **rassicura sulla sincerità e sulla riservatezza**: non ci sono risposte giuste
+  o sbagliate, e le risposte non saranno mostrate al gruppo.
+
+Se nonostante questo qualcuno risponde in modo generalizzato, **registra comunque
+le sue risposte**. Il fenomeno ha infatti una propria rilevanza psicologica: può
+segnalare un forte bisogno di inclusione, il desiderio di compiacere, difficoltà
+a discriminare tra i compagni o, nel caso dei rifiuti, un'ostilità diffusa o un
+clima di gruppo teso. Non va interpretato in modo meccanico, ma merita di essere
+osservato e, se opportuno, approfondito con la persona.
+
+#### Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
+
+In casi particolari AB-Gram permette di inserire, per ciascun membro, soltanto le
+**prime *n* scelte** e/o i **primi *n* rifiuti**. Il valore di *n* lo stabilisci tu
+caso per caso, e può essere diverso per le scelte e per i rifiuti.
+
+**Usa questa possibilità il meno possibile.** Il troncamento comporta infatti
+alcuni costi:
+
+- si **perde informazione**, comprese quelle risposte generalizzate che, come
+  visto, hanno un significato in sé;
+- si **assume che l'ordine dei nomi rifletta l'intensità** della preferenza, cosa
+  che vale solo se la raccolta è stata impostata in questo modo;
+- si introduce una **scelta arbitraria** (il valore di *n*) che può modificare i
+  risultati.
+
+Può essere ragionevole solo quando i dati sono già stati raccolti, le risposte
+indiscriminate rendono il risultato poco leggibile e non è possibile ripetere la
+rilevazione. In questo caso:
+
+- **prima prova le strategie descritte sopra** per orientare le risposte;
+- **raccogli i nomi in ordine di preferenza** (dal più al meno importante),
+  altrimenti «le prime *n*» non ha significato;
+- **scegli *n* dopo aver guardato la distribuzione delle risposte**, non prima;
+- **conserva i dati completi** e **dichiara il troncamento** quando presenti o
+  discuti i risultati.
 
 ## Come raccogliere i dati
 
