@@ -18,10 +18,6 @@ const props = defineProps({
     // `getSnaComponents` result for the rejection ("dislikes") network, exposing
     // `memberInComponents`.
     dislikesComponents: { type: Object, default: () => ({}) },
-    // The received likes score for this member.
-    receivedLikesScore: { type: Number, default: 0 },
-    // The received dislikes score for this member.
-    receivedDislikesScore: { type: Number, default: 0 },
 });
 
 // --- Emits --------------
@@ -263,6 +259,23 @@ function buildChip(label, key, source) {
         maxRank: readMaxRank(metrics, metricIndex),
     };
 }
+
+// Bonus and malus are computed during analysis and stored as Moreno individual
+// metrics (`bns` / `mls`), so the report reads them from `morenoMetrics` rather
+// than recomputing them from the raw preference lists.
+const receivedLikesScore = (() => {
+    const metrics = props.morenoMetrics;
+    const memberIndex = memberIndexIn(metrics);
+    const metricIndex = metricIndexOf(metrics, "bns");
+    return Number(readRaw(metrics, memberIndex, metricIndex));
+})();
+
+const receivedDislikesScore = (() => {
+    const metrics = props.morenoMetrics;
+    const memberIndex = memberIndexIn(metrics);
+    const metricIndex = metricIndexOf(metrics, "mls");
+    return Number(readRaw(metrics, memberIndex, metricIndex));
+})();
 
 // Raw values are whole numbers for the Moreno indices and decimals in [0, 1]
 // for the SNA centralities; show integers verbatim and trim floats to 2 decimals

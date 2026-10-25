@@ -1,24 +1,14 @@
 <script setup>
 // --- Imports ------------
-//   -- From vue
-import { computed } from "vue";
-
 //   -- From relative
 import BasePage from "../BasePage.vue";
 import MemberEgoPlot from "./MemberEgoPlot.vue";
 import MemberStats from "./MemberStats.vue";
 
-//   -- From utils
-import { receivedPreferenceScore } from "@/utils/sociogram/memberHelpers";
-
 // --- Props --------------
 const props = defineProps({
     // The member this page reports on (`{ id, name, ... }`).
     member: { type: Object, default: null },
-    // All the members in the report.
-    members: { type: Array, default: () => [] },
-    // Max members count
-    maxMembersCount: { type: Number },
     // The Moreno ego plot for this member (`{ memberId, svg }`).
     egoPlot: { type: Object, default: null },
     // Individual-level Moreno metrics (likes + dislikes combined).
@@ -46,23 +36,6 @@ const props = defineProps({
 // --- Composables --------
 
 // --- Computed -----------
-const receivedLikesScore = computed(() =>
-  receivedPreferenceScore(
-    props.member.id,
-    props.members,
-    props.maxMembersCount,
-    "likes",
-  ),
-);
-
-const receivedDislikesScore = computed(() =>
-  receivedPreferenceScore(
-    props.member.id,
-    props.members,
-    props.maxMembersCount,
-    "dislikes",
-  ),
-);
 
 // --- Watchers -----------
 
@@ -93,8 +66,6 @@ const receivedDislikesScore = computed(() =>
                     :edge-types="edgeTypes"
                     :likes-components="likesComponents"
                     :dislikes-components="dislikesComponents"
-                    :received-likes-score="receivedLikesScore"
-                    :received-dislikes-score="receivedDislikesScore"
                 />
             </div>
 

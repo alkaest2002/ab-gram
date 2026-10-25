@@ -57,7 +57,7 @@ export const getSociogramAnalysis = (members) => {
   const morenoGroupLevelMetrics = morGroupLevel(adjLikes, adjDislikes);
 
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
-  const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices);
+  const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices, members);
 
   // Build one ego plot per member. The likes directed-paths map is computed
   // once inside `getMorenoEgoPlots` and reused across members (caching).

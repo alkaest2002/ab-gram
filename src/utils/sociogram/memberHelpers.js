@@ -138,28 +138,3 @@ export function getMembersNameIssues(members) {
     duplicateNamesCount: nonEmptyNames.length - new Set(nonEmptyNames).size,
   };
 }
-
-/**
- * Weighted score for how early `memberId` is placed in other members' preference
- * lists. Used as the report's "bonus" (for `likes`) and "malus" (for `dislikes`):
- * a member chosen (or rejected) first weighs `maxMembersCount`, and each later
- * position weighs one less — the report's `M - p + 1` term with a 1-based
- * position `p`.
- *
- * @param {string} memberId - The member whose score is computed.
- * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members.
- * @param {number} maxMembersCount - The maximum theoretical member count (`M`).
- * @param {"likes" | "dislikes"} field - Which preference list to score.
- * @returns {number} The weighted received-preference score.
- */
-export function receivedPreferenceScore(memberId, members, maxMembersCount, field) {
-  return members.reduce((total, member) => {
-    if (member.id === memberId) return total;
-
-    const preferences = member[field] ?? [];
-    const index = preferences.indexOf(memberId);
-    if (index === -1) return total;
-
-    return total + (maxMembersCount - index);
-  }, 0);
-}

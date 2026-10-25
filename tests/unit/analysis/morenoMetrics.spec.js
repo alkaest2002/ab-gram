@@ -5,6 +5,7 @@ import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
 } from "@/analysis/moreno/metrics/morenoMetrics.js";
+import { createAdjacencyMatrices } from "@/analysis/common/adjacencyMatrices.js";
 
 const GROUP_COLUMNS = [
   "cohesion",
@@ -29,6 +30,8 @@ const INDIVIDUAL_COLUMNS = [
   "ai",
   "ii",
   "ss",
+  "bns",
+  "mls",
 ];
 
 describe("getGroupLevelMetrics", () => {
@@ -92,24 +95,33 @@ describe("getIndividualLevelMetrics", () => {
       [1, 0, 0],
     ]);
 
+    // Bonus/malus read the ordered preference lists, so the members must mirror
+    // the adjacency matrices above: a -> [b], b -> [a], c -> [a] for likes and
+    // a -> [c], c -> [a] for dislikes.
+    const members = [
+      { id: "a", likes: ["b"], dislikes: ["c"] },
+      { id: "b", likes: ["a"], dislikes: [] },
+      { id: "c", likes: ["a"], dislikes: ["a"] },
+    ];
+
     const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
       "a",
       "b",
       "c",
-    ]);
+    ], members);
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
     expect(result.rawValuesById).toEqual([
-      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8],
-      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2],
-      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2],
+      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8, 70, 35],
+      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2, 35, 0],
+      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2, 0, 35],
     ]);
     // Ranks are column-wise, with the highest raw score ranked first (1).
     expect(result.rankedValuesById).toEqual([
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1],
-      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2],
-      [3, 1, 1, 1, 2, 1, 2, 2, 1, 2, 3, 3, 2],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1],
+      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2],
+      [3, 1, 1, 1, 2, 1, 2, 2, 1, 2, 3, 3, 2, 3, 1],
     ]);
   });
 
@@ -123,10 +135,15 @@ describe("getIndividualLevelMetrics", () => {
       [0, 0],
     ]);
 
+    const members = [
+      { id: "a", likes: [], dislikes: [] },
+      { id: "b", likes: [], dislikes: [] },
+    ];
+
     const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
       "a",
       "b",
-    ]);
+    ], members);
 
     const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
     expect(result.rawValuesById[0][statusColumn]).toBe(0);
@@ -143,17 +160,76 @@ describe("getIndividualLevelMetrics", () => {
       [0, 0],
     ]);
 
+    const members = [
+      { id: "a", likes: ["b"], dislikes: [] },
+      { id: "b", likes: [], dislikes: [] },
+    ];
+
     const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
       "a",
       "b",
-    ]);
+    ], members);
 
     // a gives a like but receives none (ignored); b receives a like and gives
     // none. With only one member receiving opinions there is no impact spread,
     // so b is appreciated (average impact, positive balance) rather than popular.
     expect(result.rawValuesById).toEqual([
-      [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
-      [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 3],
+      [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0],
+      [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 3, 35, 0],
     ]);
+  });
+
+  it("computes the order-weighted bonus from the documented example", () => {
+    const members = [
+      { id: "1", likes: ["2", "3", "4", "5", "6"], dislikes: [] },
+      { id: "2", likes: ["1", "3", "4", "5", "6"], dislikes: [] },
+      { id: "3", likes: ["1", "2", "4"], dislikes: [] },
+      { id: "4", likes: ["1", "2"], dislikes: [] },
+      { id: "5", likes: ["1", "2"], dislikes: [] },
+      { id: "6", likes: ["1", "2"], dislikes: [] },
+    ];
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const bonusColumn = INDIVIDUAL_COLUMNS.indexOf("bns");
+    const malusColumn = INDIVIDUAL_COLUMNS.indexOf("mls");
+
+    expect(result.rawValuesById[0][bonusColumn]).toBe(175);
+    expect(result.rawValuesById[1][bonusColumn]).toBe(171);
+    expect(result.rawValuesById[3][bonusColumn]).toBe(99);
+    expect(result.rawValuesById[0][malusColumn]).toBe(0);
+  });
+
+  it("computes the order-weighted malus from the documented example", () => {
+    const members = [
+      { id: "1", likes: [], dislikes: ["4", "5", "2"] },
+      { id: "2", likes: [], dislikes: ["4", "5", "3"] },
+      { id: "3", likes: [], dislikes: ["4", "5", "6"] },
+      { id: "4", likes: [], dislikes: ["5", "1"] },
+      { id: "5", likes: [], dislikes: ["4", "6"] },
+      { id: "6", likes: [], dislikes: ["4", "5"] },
+    ];
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const bonusColumn = INDIVIDUAL_COLUMNS.indexOf("bns");
+    const malusColumn = INDIVIDUAL_COLUMNS.indexOf("mls");
+
+    expect(result.rawValuesById[3][malusColumn]).toBe(175);
+    expect(result.rawValuesById[4][malusColumn]).toBe(171);
+    expect(result.rawValuesById[5][malusColumn]).toBe(67);
+    expect(result.rawValuesById[0][bonusColumn]).toBe(0);
   });
 });

@@ -1,5 +1,6 @@
 import * as np from "numpy-ts";
 import { computeRankedScores } from "@/analysis/common/commonMetrics";
+import { MAX_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions.js";
 import {
   computeCohesion,
   computeCohesionTypeII,
@@ -22,6 +23,7 @@ import {
   computeAffiliation,
   computeInfluence,
   computeSociometricStatus,
+  computeReceivedPreferenceScore,
 } from "./individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -94,6 +96,8 @@ MORENO INDIVIDUAL LEVEL METRICS
 - "ai": Affiliation index (bl + or)
 - "ii": Influence index (rp + mp)
 - "ss": Sociometric status (codes 0-8, see `computeSociometricStatus`)
+- "bns": Bonus, the order-weighted received likes (`computeReceivedPreferenceScore`)
+- "mls": Malus, the order-weighted received dislikes (`computeReceivedPreferenceScore`)
 */
 const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "rp",
@@ -109,6 +113,8 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "ai",
   "ii",
   "ss",
+  "bns",
+  "mls",
 ];
 
 /**
@@ -121,12 +127,13 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
  *
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
+ * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members, in matrix row/column order, used for the order-weighted bonus/malus scores.
  * @returns {import("numpy-ts").NDArray}
  *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are members
  *   (aligned with the matrix row/column order) and columns are the metrics in
  *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order.
  */
-const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
+const computeIndividualLevelMetrics = (adjLikes, adjDislikes, members) => {
   const size = adjLikes.shape[0];
   if (size === 0) return np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]);
 
@@ -151,6 +158,11 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
   const influence = computeInfluence(rp, mp);
   const sociometricStatus = computeSociometricStatus(rp, rr, expressivity, impact);
 
+  // Bonus/malus depend on the order of the preference lists, which the 0/1
+  // adjacency matrices do not retain, so they are derived from `members`.
+  const bonus = computeReceivedPreferenceScore(members, "likes", MAX_MEMBERS_COUNT);
+  const malus = computeReceivedPreferenceScore(members, "dislikes", MAX_MEMBERS_COUNT);
+
   // Stack every metric as a column, keeping the numpy array until export.
   return np.column_stack([
     rp,
@@ -166,6 +178,8 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes) => {
     affiliation,
     influence,
     sociometricStatus,
+    bonus,
+    malus,
   ]);
 };
 
@@ -227,6 +241,7 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
  *   `adjDislikes[i][j] === 1` means member `i` dislikes member `j`.
  * @param {string[]} memberIndices - Member ids aligned with the matrix row/column
  *   order.
+ * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members, in the same order as `memberIndices`, used for the order-weighted bonus/malus scores.
  * @returns {{
  *   ids: string[],
  *   metrics: string[],
@@ -246,8 +261,9 @@ export const getIndividualLevelMetrics = (
   adjLikes,
   adjDislikes,
   memberIndices,
+  members,
 ) => {
-  const rawValues = computeIndividualLevelMetrics(adjLikes, adjDislikes);
+  const rawValues = computeIndividualLevelMetrics(adjLikes, adjDislikes, members);
   const rankedValues = computeRankedScores(rawValues);
 
   return {

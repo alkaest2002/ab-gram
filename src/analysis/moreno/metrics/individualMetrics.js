@@ -389,4 +389,33 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
     ],
     -1, // Safety default (unreachable for valid inputs)
   );
-};;
+};
+
+/**
+ * Weighted score for how early each member is placed in the other members'
+ * preference lists.
+ *
+ * Bonus (for likes) and malus (for dislikes) weight each received nomination
+ * by how early it appears in the nominator's ordered preference list: a member
+ * listed first weighs `maxMembersCount`, and each later position weighs one
+ * less — the report's `M - p + 1` term with a 1-based position `p`.
+ *
+ * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members, in matrix row/column order.
+ * @param {"likes" | "dislikes"} field - Which preference list to score.
+ * @param {number} maxMembersCount - The maximum theoretical member count (`M`).
+ * @returns {import("numpy-ts").NDArray} One value per member (aligned with `members` order).
+ */
+export const computeReceivedPreferenceScore = (members, field, maxMembersCount) =>
+  np.array(
+    members.map((member) =>
+      members.reduce((total, other) => {
+        if (other.id === member.id) return total;
+
+        const preferences = other[field] ?? [];
+        const index = preferences.indexOf(member.id);
+        if (index === -1) return total;
+
+        return total + (maxMembersCount - index);
+      }, 0),
+    ),
+  );
