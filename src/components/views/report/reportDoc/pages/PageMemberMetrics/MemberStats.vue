@@ -80,6 +80,11 @@ const COMPONENT_CONFIG = [
 // Moreno's sociometric status codes (0-8) with an Italian label, a short reading
 // and an emphasis tone from the report's accent/reject/ink/muted palette.
 const STATUS_CONFIG = {
+    99: {
+        label: "Non classificato",
+        description: "",
+        tone: "muted",
+    },
     0: {
         label: "Isolato",
         description: "nessuna scelta ricevuta né espressa.",
