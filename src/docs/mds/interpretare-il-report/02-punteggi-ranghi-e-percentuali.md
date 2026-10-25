@@ -130,6 +130,17 @@ Traduce l'indice `ss` in un'etichetta (ad esempio "Popolare" o "Rifiutato") con
 una breve descrizione. È una categoria, non un punteggio: non ha rango né
 percentuale.
 
+Accanto all'etichetta compaiono due **punteggi grezzi**, il **bonus** (`BNS`) e
+il **malus** (`MLS`): sono numeri interi che pesano le scelte e i rifiuti
+ricevuti in base **all'ordine** con cui il membro è stato indicato nelle
+preferenze degli altri (essere indicati per primi "pesa" di più). Non hanno
+rango né percentuale.
+
+Il loro scopo è distinguere due membri che ricadono nella **stessa** categoria
+di status: a parità di etichetta, un bonus più alto (o un malus più basso)
+indica una posizione più favorevole nel gruppo. Il calcolo e il significato sono
+spiegati nella pagina dedicata allo status sociometrico.
+
 ## Glossario
 
 Non contiene punteggi. Riporta l'elenco delle sigle usate nelle pagine e il loro

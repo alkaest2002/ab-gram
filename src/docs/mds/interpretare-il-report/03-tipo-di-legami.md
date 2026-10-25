@@ -83,7 +83,7 @@ quali di questi quattro sentimenti ci sono e quali no.
 Sono i legami in cui non compare alcun rifiuto: c'è almeno una scelta, e
 nessuno dei due membri respinge l'altro.
 
-### Preferenza a senso unico
+### Scelta a senso unico
 
 Un membro sceglie l'altro, ma l'altro non risponde in nessun modo: non lo
 sceglie e non lo rifiuta.
@@ -95,7 +95,7 @@ $$
 In parole: $i$ sceglie $j$, **e** $i$ non lo rifiuta, **e** $j$ non sceglie $i$,
 **e** $j$ non rifiuta $i$.
 
-### Preferenza reciproca
+### Scelta reciproca
 
 I due membri si scelgono a vicenda, e nessuno dei due rifiuta l'altro. È il
 legame più positivo possibile.
@@ -107,7 +107,7 @@ $$
 In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$, senza alcun rifiuto da
 nessuna delle due parti.
 
-## Legami problematici
+## Legami potenzialmente problematici e problematici
 
 Sono i legami in cui compare almeno un rifiuto, oppure in cui i due membri
 provano sentimenti opposti l'uno verso l'altro. Meritano attenzione perché
@@ -154,7 +154,7 @@ In parole:
 
 Basta che si verifichi uno dei due casi perché il legame sia di questo tipo.
 
-## Legami ambivalenti
+### Legami ambivalenti
 
 Un legame è ambivalente quando un membro sceglie e rifiuta
 lo stesso membro.
