@@ -1,6 +1,6 @@
 ---
 title: Archiviare e riprendere un progetto
-order: 8
+order: 7
 description: Come salvare e riprendere un sociogramma senza perdere il lavoro, e perché l'archivio è l'unico modo per interrompere un progetto.
 ---
 
