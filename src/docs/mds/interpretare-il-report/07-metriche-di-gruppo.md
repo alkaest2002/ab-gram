@@ -126,8 +126,8 @@ $$
 ### Indice di conflitto
 
 L'indice di conflitto è il "gemello" della coesione applicato ai rifiuti:
-misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $d_{ij}$
-vale $1$ se $i$ rifiuta $j$ e $0$ altrimenti, quindi $d_{ij}d_{ji}$ vale $1$
+misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $b_{ij}$
+vale $1$ se $i$ rifiuta $j$ e $0$ altrimenti, quindi $b_{ij}b_{ji}$ vale $1$
 solo quando il rifiuto è ricambiato. Anche in questo caso si distinguono due
 versioni.
 
@@ -136,7 +136,7 @@ versioni.
 rifiuto è ricambiato.
 
 $$
-Con_I = \frac{\sum_{i,j} d_{ij} d_{ji}}{N(N-1)}
+Con_I = \frac{\sum_{i,j} b_{ij} b_{ji}}{N(N-1)}
 $$
 
 **Conflitto di tipo II.** Rapporto tra i rifiuti reciproci e i rifiuti
@@ -144,13 +144,13 @@ effettivamente *espressi*: misura quanta parte dei rifiuti fatti viene
 ricambiata.
 
 $$
-Con_{II} = \frac{\sum_{i,j} d_{ij} d_{ji}}{\sum_{i,j} d_{ij}}
+Con_{II} = \frac{\sum_{i,j} b_{ij} b_{ji}}{\sum_{i,j} b_{ij}}
 $$
 
 ## Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
-($A$) e dei rifiuti ($D$):
+($A$) e dei rifiuti ($B$):
 
 $$
 A =
@@ -161,7 +161,7 @@ A =
 1 & 0 & 0 & 0
 \end{pmatrix}
 \qquad
-D =
+B =
 \begin{pmatrix}
 0 & 0 & 1 & 0 \\\\
 1 & 0 & 0 & 0 \\\\
@@ -171,7 +171,7 @@ D =
 $$
 
 Nella matrice $A$ ogni $1$ è una scelta ($1 \to 2$, $1 \to 3$, $2 \to 1$,
-$2 \to 4$, $3 \to 2$, $3 \to 4$, $4 \to 1$); nella matrice $D$ ogni $1$ è un
+$2 \to 4$, $3 \to 2$, $3 \to 4$, $4 \to 1$); nella matrice $B$ ogni $1$ è un
 rifiuto ($1 \to 3$, $2 \to 1$, $3 \to 4$, $4 \to 2$).
 
 **Numero di nodi e di legami.** Il gruppo ha $N = 4$ nodi. Le frecce delle
@@ -238,7 +238,7 @@ $$
 La coesione di tipo II coincide con la reciprocità, come previsto.
 
 **Conflitto.** Nei rifiuti non c'è nessuna coppia reciproca
-($\sum_{i,j} d_{ij} d_{ji} = 0$), quindi entrambi gli indici di conflitto
+($\sum_{i,j} b_{ij} b_{ji} = 0$), quindi entrambi gli indici di conflitto
 valgono $0$: il gruppo non ha tensioni ricambiate.
 
 Riassumendo:

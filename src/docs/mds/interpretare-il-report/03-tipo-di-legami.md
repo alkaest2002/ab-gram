@@ -13,7 +13,7 @@ usarli per classificare il loro legame.
 Per farlo in modo preciso, usiamo due simboli:
 
 - $a_{ij} = 1$ se il membro $i$ **sceglie** il membro $j$ (altrimenti vale $0$);
-- $d_{ij} = 1$ se il membro $i$ **rifiuta** il membro $j$ (altrimenti vale $0$).
+- $b_{ij} = 1$ se il membro $i$ **rifiuta** il membro $j$ (altrimenti vale $0$).
 
 Le lettere $i$ e $j$ sono semplici etichette: indicano due membri qualsiasi del
 gruppo, ad esempio il membro $1$ e il membro $2$.
@@ -24,7 +24,7 @@ Un modo comodo per tenere in ordine tutte le scelte e i rifiuti è una tabella
 quadrata, detta **matrice di adiacenza**. Righe e colonne rappresentano gli
 stessi membri del gruppo, nello stesso ordine, e ogni casella contiene $1$ se
 quella relazione esiste e $0$ se non esiste. Ne servono due: una per le scelte
-($A$) e una per i rifiuti ($D$).
+($A$) e una per i rifiuti ($B$).
 
 Per leggere la tabella basta ricordare due regole:
 
@@ -47,7 +47,7 @@ A =
 1 & 0 & 0 & 0
 \end{pmatrix}
 \qquad
-D =
+B =
 \begin{pmatrix}
 0 & 0 & 1 & 0 \\\\
 1 & 0 & 0 & 0 \\\\
@@ -60,7 +60,7 @@ Per trovare un valore, si parte dalla riga di chi esprime il sentimento e si
 scende fino alla colonna di chi lo riceve:
 
 - $a_{12} = 1$ (riga 1, colonna 2): il membro $1$ **sceglie** il membro $2$;
-- $d_{31} = 0$ (riga 3, colonna 1): il membro $3$ **non rifiuta** il membro $1$.
+- $b_{31} = 0$ (riga 3, colonna 1): il membro $3$ **non rifiuta** il membro $1$.
 
 ## Come leggere le formule
 
@@ -70,12 +70,12 @@ leggono come parole di uso comune:
 | Simbolo | Si legge | Esempio |
 | ------- | -------- | ------- |
 | $\land$ | "e" (devono valere entrambe le condizioni) | $a_{ij} \land a_{ji}$: $i$ sceglie $j$ **e** $j$ sceglie $i$ |
-| $\neg$  | "non" (la condizione è falsa) | $\neg d_{ij}$: $i$ **non** rifiuta $j$ |
+| $\neg$  | "non" (la condizione è falsa) | $\neg b_{ij}$: $i$ **non** rifiuta $j$ |
 | $\lor$  | "oppure" (basta che valga almeno una delle due) | usato solo nei sentimenti contrapposti |
 
 In ogni formula consideriamo quattro sentimenti possibili, due per ciascuna
-direzione: $i$ sceglie $j$ ($a_{ij}$), $i$ rifiuta $j$ ($d_{ij}$), $j$ sceglie
-$i$ ($a_{ji}$) e $j$ rifiuta $i$ ($d_{ji}$). Ogni tipo di legame stabilisce
+direzione: $i$ sceglie $j$ ($a_{ij}$), $i$ rifiuta $j$ ($b_{ij}$), $j$ sceglie
+$i$ ($a_{ji}$) e $j$ rifiuta $i$ ($b_{ji}$). Ogni tipo di legame stabilisce
 quali di questi quattro sentimenti ci sono e quali no.
 
 ## Legami non problematici
@@ -89,7 +89,7 @@ Un membro sceglie l'altro, ma l'altro non risponde in nessun modo: non lo
 sceglie e non lo rifiuta.
 
 $$
-a_{ij} \land \neg d_{ij} \land \neg a_{ji} \land \neg d_{ji}
+a_{ij} \land \neg b_{ij} \land \neg a_{ji} \land \neg b_{ji}
 $$
 
 In parole: $i$ sceglie $j$, **e** $i$ non lo rifiuta, **e** $j$ non sceglie $i$,
@@ -101,7 +101,7 @@ I due membri si scelgono a vicenda, e nessuno dei due rifiuta l'altro. È il
 legame più positivo possibile.
 
 $$
-a_{ij} \land \neg d_{ij} \land a_{ji} \land \neg d_{ji}
+a_{ij} \land \neg b_{ij} \land a_{ji} \land \neg b_{ji}
 $$
 
 In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$, senza alcun rifiuto da
@@ -119,7 +119,7 @@ Un membro rifiuta l'altro, ma l'altro non esprime né scelta né rifiuto (magari
 non si è nemmeno accorto della cosa).
 
 $$
-d_{ij} \land \neg a_{ij} \land \neg a_{ji} \land \neg d_{ji}
+b_{ij} \land \neg a_{ij} \land \neg a_{ji} \land \neg b_{ji}
 $$
 
 In parole: $i$ rifiuta $j$, **e** non lo sceglie, **e** $j$ non sceglie $i$,
@@ -130,7 +130,7 @@ In parole: $i$ rifiuta $j$, **e** non lo sceglie, **e** $j$ non sceglie $i$,
 I due membri si rifiutano a vicenda, e nessuno dei due esprime una scelta.
 
 $$
-d_{ij} \land \neg a_{ij} \land d_{ji} \land \neg a_{ji}
+b_{ij} \land \neg a_{ij} \land b_{ji} \land \neg a_{ji}
 $$
 
 In parole: $i$ rifiuta $j$ **e** $j$ rifiuta $i$, senza alcuna scelta da
@@ -143,8 +143,8 @@ direzioni opposte. Può succedere in due modi, a seconda di chi sceglie e di chi
 rifiuta; per questo la formula ha due parti collegate da "oppure" ($\lor$).
 
 $$
-(a_{ij} \land \neg d_{ij} \land \neg a_{ji} \land d_{ji}) \lor
-(\neg a_{ij} \land d_{ij} \land a_{ji} \land \neg d_{ji})
+(a_{ij} \land \neg b_{ij} \land \neg a_{ji} \land b_{ji}) \lor
+(\neg a_{ij} \land b_{ij} \land a_{ji} \land \neg b_{ji})
 $$
 
 In parole:
@@ -160,7 +160,7 @@ Un legame è ambivalente quando un membro sceglie e rifiuta
 lo stesso membro.
 
 $$
-a_{ij} \land d_{ij}
+a_{ij} \land b_{ij}
 $$
 
 ## In sintesi

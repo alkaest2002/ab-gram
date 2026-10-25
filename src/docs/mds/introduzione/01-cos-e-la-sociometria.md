@@ -49,7 +49,7 @@ rifiuto.
 Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna.
 
 La tabella si può separare in due **matrici di adiacenza**: una per le scelte
-($A$) e una per i rifiuti ($D$). Righe e colonne sono sempre i membri nello
+($A$) e una per i rifiuti ($B$). Righe e colonne sono sempre i membri nello
 stesso ordine (Anna, Bea, Carlo); ogni elemento vale $1$ se la relazione esiste
 e $0$ se non esiste. La diagonale vale sempre $0$, perché nessuno sceglie o
 rifiuta se stesso.
@@ -62,7 +62,7 @@ A =
 1 & 0 & 0
 \end{pmatrix}
 \qquad
-D =
+B =
 \begin{pmatrix}
 0 & 0 & 0 \\\\
 0 & 0 & 1 \\\\

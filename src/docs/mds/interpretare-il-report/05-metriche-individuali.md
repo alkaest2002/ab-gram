@@ -24,7 +24,7 @@ sociogramma) si ricavano da semplici somme sulle righe e sulle colonne delle
 tabelle che registrano le relazioni, dette *matrici di adiacenza*:
 
 - $a_{ij} = 1$ se il membro $i$ **sceglie** il membro $j$, altrimenti $0$;
-- $d_{ij} = 1$ se il membro $i$ **rifiuta** il membro $j$, altrimenti $0$.
+- $b_{ij} = 1$ se il membro $i$ **rifiuta** il membro $j$, altrimenti $0$.
 
 Per orientarsi nelle formule, basta ricordare che:
 
@@ -50,7 +50,7 @@ $$
 - **Scelte ricevute negative** ($rr_i$): quanti rifiuti ha ricevuto.
 
 $$
-rr_i = \sum_{j} d_{ji}
+rr_i = \sum_{j} b_{ji}
 $$
 
 - **Scelte date positive** ($gp_i$): quante preferenze ha espresso.
@@ -62,7 +62,7 @@ $$
 - **Scelte date negative** ($gr_i$): quanti rifiuti ha espresso.
 
 $$
-gr_i = \sum_{j} d_{ij}
+gr_i = \sum_{j} b_{ij}
 $$
 
 ### Scelte reciproche
@@ -80,7 +80,7 @@ $$
   cioè con quante persone c'è un rifiuto a vicenda.
 
 $$
-mr_i = \sum_{j} d_{ij} d_{ji}
+mr_i = \sum_{j} b_{ij} b_{ji}
 $$
 
 ### Indici derivati
@@ -167,7 +167,7 @@ leggibile. Per questo motivo la formula viene riportata nel documento successivo
 ### Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
-($A$) e dei rifiuti ($D$):
+($A$) e dei rifiuti ($B$):
 
 $$
 A =
@@ -178,7 +178,7 @@ A =
 1 & 0 & 0 & 0
 \end{pmatrix}
 \qquad
-D =
+B =
 \begin{pmatrix}
 0 & 0 & 1 & 0 \\\\
 1 & 0 & 0 & 0 \\\\
@@ -222,7 +222,7 @@ scelto da persone a loro volta importanti.
 
 Un'avvertenza sulla notazione: in questa sezione $d(i)$ e $d(i,j)$ (con le
 parentesi) indicano rispettivamente il **numero di legami** di un nodo e la
-**distanza** tra due nodi, e non vanno confusi con $d_{ij}$ (senza parentesi),
+**distanza** tra due nodi, e non vanno confusi con $b_{ij}$ (senza parentesi),
 che nella sezione precedente indicava il rifiuto.
 
 ### Grado
