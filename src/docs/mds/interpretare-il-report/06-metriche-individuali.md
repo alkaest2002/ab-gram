@@ -1,6 +1,6 @@
 ---
 title: Metriche individuali
-order: 5
+order: 6
 description: Le misure che descrivono il ruolo di ogni singolo membro.
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Status sociometrico
-order: 6
+order: 7
 description: Come viene assegnato a ogni membro il codice di status sociometrico.
 ---
 

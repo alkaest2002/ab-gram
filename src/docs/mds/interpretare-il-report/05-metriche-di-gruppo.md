@@ -1,6 +1,6 @@
 ---
 title: Metriche di gruppo
-order: 7
+order: 5
 description: Le misure che descrivono il gruppo nel suo insieme.
 ---
 
