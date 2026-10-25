@@ -48,7 +48,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                 <p>
                     Il titolare del trattamento è il soggetto che gestisce il
                     presente sito, contattabile all'indirizzo di posta
-                    elettronica <a href="mailto:ab_gram@icloud.com">ab_gram@icloud.com</a>.
+                    elettronica <a href="mailto:info@ab-gram.com">info@ab-gram.com</a>.
                 </p>
             </section>
 
