@@ -149,10 +149,11 @@ describe("getIndividualLevelMetrics", () => {
     ]);
 
     // a gives a like but receives none (ignored); b receives a like and gives
-    // none (popular).
+    // none. With only one member receiving opinions there is no impact spread,
+    // so b is appreciated (average impact, positive balance) rather than popular.
     expect(result.rawValuesById).toEqual([
       [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1],
-      [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 4],
+      [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 3],
     ]);
   });
 });
