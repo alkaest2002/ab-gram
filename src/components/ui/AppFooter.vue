@@ -48,7 +48,7 @@ const currentYear = new Date().getFullYear();
                     class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink cursor-pointer"
                 >
                     <ShieldIcon />
-                    Privacy
+                    GDPR | Privacy
                 </RouterLink>
             </nav>
         </div>

@@ -35,12 +35,12 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
         </aside>
 
         <div class="min-w-0 flex-1 space-y-8">
-            <h1>Informativa privacy</h1>
+            <h1>GDPR e privacy</h1>
             <p>
                 La presente informativa descrive, ai sensi del Regolamento (UE)
                 2016/679 ("GDPR"), le modalità di trattamento dei dati personali
                 degli utenti che consultano questo sito. Ultimo aggiornamento:
-                ottobre 2026.
+                25 ottobre 2026.
             </p>
 
             <section class="space-y-3">
@@ -48,8 +48,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                 <p>
                     Il titolare del trattamento è il soggetto che gestisce il
                     presente sito, contattabile all'indirizzo di posta
-                    elettronica indicato nella sezione Contatti
-                    (<a href="mailto:info@ab-gram.example">info@ab-gram.example</a>).
+                    elettronica <a href="mailto:ab_gram@icloud.com">ab_gram@icloud.com</a>.
                 </p>
             </section>
 
@@ -80,10 +79,59 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                 <h2 id="servizi-terze-parti" class="scroll-mt-24">4. Servizi di terze parti</h2>
                 <h3 id="cloudflare" class="scroll-mt-24">4.1 Cloudflare (hosting e CDN)</h3>
                 <p>
-                    Il sito è ospitato e distribuito tramite Cloudflare (hosting
-                    e rete di distribuzione dei contenuti, CDN), che può trattare
-                    dati tecnici (ad esempio l'indirizzo IP o i log di accesso)
-                    necessari per la sicurezza e la distribuzione dei contenuti.
+                    Il sito è ospitato e distribuito tramite Cloudflare, Inc.
+                    (hosting e rete di distribuzione dei contenuti, CDN). Quando
+                    si visita il sito, la richiesta transita attraverso
+                    l'infrastruttura di Cloudflare, che può trattare
+                    automaticamente alcuni dati tecnici di navigazione, quali:
+                </p>
+                <ul class="list-disc space-y-1 pl-6">
+                    <li>l'indirizzo IP del dispositivo;</li>
+                    <li>
+                        le informazioni contenute nella richiesta HTTP (ad
+                        esempio URL richiesto, tipo di browser e sistema
+                        operativo, lingua, pagina di provenienza);
+                    </li>
+                    <li>data e ora della richiesta e relativo esito;</li>
+                    <li>
+                        dati di connessione e di sicurezza (ad esempio
+                        informazioni sul protocollo TLS e segnali utili a
+                        individuare traffico anomalo o malevolo).
+                    </li>
+                </ul>
+                <p>
+                    Questi dati sono trattati al solo scopo di erogare il sito,
+                    garantirne la sicurezza e la disponibilità (ad esempio
+                    protezione da attacchi DDoS e da traffico automatizzato) e
+                    ottimizzarne le prestazioni tramite la memorizzazione
+                    temporanea dei contenuti (caching) sui server più vicini
+                    all'utente. Il titolare non utilizza tali dati per
+                    identificare i visitatori né per finalità di profilazione o
+                    marketing.
+                </p>
+                <p>
+                    Per questo trattamento Cloudflare agisce in qualità di
+                    responsabile del trattamento per conto del titolare, sulla
+                    base di un accordo sul trattamento dei dati (DPA) ai sensi
+                    dell'art. 28 GDPR. Per alcune attività necessarie al
+                    funzionamento e alla sicurezza della propria rete globale,
+                    Cloudflare può trattare i dati tecnici anche in qualità di
+                    titolare autonomo. La base giuridica del trattamento è il
+                    legittimo interesse a rendere il sito disponibile, sicuro e
+                    funzionante (art. 6, par. 1, lett. f, GDPR).
+                </p>
+                <p>
+                    Poiché la rete di Cloudflare è distribuita a livello
+                    mondiale, i dati tecnici possono essere trattati anche in
+                    Paesi al di fuori dello Spazio economico europeo, tra cui
+                    gli Stati Uniti. Tali trasferimenti avvengono sulla base
+                    delle garanzie previste dal GDPR, come l'adesione al
+                    EU-U.S. Data Privacy Framework e le clausole contrattuali
+                    standard approvate dalla Commissione europea. I tempi di
+                    conservazione dei log sono stabiliti da Cloudflare e
+                    descritti nella sua documentazione.
+                </p>
+                <p>
                     Per maggiori informazioni si rimanda alla
                     <a
                         href="https://www.cloudflare.com/privacypolicy/"
@@ -91,22 +139,64 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                         rel="noopener noreferrer"
                     >
                         informativa sulla privacy di Cloudflare
+                    </a>
+                    e al
+                    <a
+                        href="https://www.cloudflare.com/cloudflare-customer-dpa/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Data Processing Addendum di Cloudflare
                     </a>.
                 </p>
 
                 <h3 id="discord" class="scroll-mt-24">4.2 Discord (community)</h3>
                 <p>
-                    Tramite il sito è possibile accedere al server della community
-                    su Discord. Discord può trattare dati personali (ad esempio
-                    l'indirizzo IP, i dati dell'account o le informazioni relative
-                    all'utilizzo del servizio) in qualità di titolare autonomo del
-                    trattamento. Per maggiori informazioni si rimanda alla
+                    Il sito contiene un collegamento al server della community
+                    su Discord, servizio fornito da Discord Inc. Il semplice
+                    accesso al sito non comporta alcuna comunicazione di dati a
+                    Discord: il trattamento ha inizio solo se l'utente sceglie
+                    di seguire il collegamento e di utilizzare la piattaforma.
+                </p>
+                <p>
+                    Una volta su Discord, il servizio può trattare, ad esempio,
+                    i dati dell'account (nome utente, indirizzo email, immagine
+                    del profilo), l'indirizzo IP, le informazioni sul
+                    dispositivo e sull'utilizzo del servizio, nonché i
+                    contenuti pubblicati dall'utente nel server, che possono
+                    essere visibili agli altri membri. Discord agisce come
+                    titolare autonomo del trattamento, secondo le proprie
+                    condizioni e la propria informativa. Il titolare del
+                    presente sito non ha accesso ai dati di registrazione
+                    dell'account Discord degli utenti e non determina le
+                    modalità con cui Discord li tratta.
+                </p>
+                <p>
+                    Discord ha sede negli Stati Uniti: i dati possono quindi
+                    essere trasferiti e trattati al di fuori dello Spazio
+                    economico europeo, sulla base delle garanzie indicate da
+                    Discord nella propria informativa. L'utilizzo del servizio
+                    è inoltre soggetto ai requisiti di età e alle condizioni
+                    d'uso di Discord. L'iscrizione alla community è facoltativa
+                    e non è necessaria per consultare il sito.
+                </p>
+                <p>
+                    Per maggiori informazioni, anche sull'esercizio dei diritti
+                    nei confronti di Discord, si rimanda alla
                     <a
                         href="https://discord.com/privacy"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         informativa sulla privacy di Discord
+                    </a>
+                    e alle
+                    <a
+                        href="https://discord.com/terms"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        condizioni di servizio di Discord
                     </a>.
                 </p>
             </section>
