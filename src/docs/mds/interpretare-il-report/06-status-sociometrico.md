@@ -42,6 +42,12 @@ Ogni codice corrisponde a una categoria ben precisa:
 |   7    | ambivalente |       medio      |   neutro  |
 |   8    | controverso |       alto       |   neutro  |
 
+> **Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
+> soltanto una convenzione per identificare le categorie: non indicano un ordine,
+> un punteggio o una gravità crescente. Due codici vicini non sono più simili tra
+> loro di due codici lontani; ciò che conta è esclusivamente la categoria a cui
+> il codice è associato.
+
 La categoria dipende dal **livello di impatto** (basso, medio, alto) e, per i
 livelli medio e alto, dal **bilancio** (positivo, negativo, neutro). Le prime due
 righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
