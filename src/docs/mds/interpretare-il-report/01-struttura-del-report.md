@@ -46,16 +46,8 @@ tramite gli identificativi dei membri a cui si riferiscono.
 
 ### 1.4 Rete delle scelte
 
-Presenta il graficoo della rete delle scelte (la rete dei "likes") insieme alle metriche di
-gruppo:
-
-- numero di membri;
-- numero di scelte;
-- scelte reciproche;
-- densità;
-- centralizzazione;
-- reciprocità;
-- transitività.
+Presenta il grafico della rete delle scelte insieme alle metriche di
+gruppo.
 
 ### 1.5 Componenti della rete delle scelte
 
