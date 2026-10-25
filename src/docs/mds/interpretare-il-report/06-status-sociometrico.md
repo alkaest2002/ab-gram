@@ -12,7 +12,7 @@ informazioni già incontrate — l'**impatto** ricevuto (quanto il membro è
 visibile agli occhi degli altri) e il **bilancio** tra preferenze e rifiuti
 (se prevalgono le une o gli altri) — e restituisce un codice da $0$ a $8$.
 
-## In sintesi
+## 1 In sintesi
 
 L'algoritmo risponde a tre domande, nell'ordine:
 
@@ -26,7 +26,7 @@ L'algoritmo risponde a tre domande, nell'ordine:
 Le risposte si combinano in una delle nove categorie. L'impatto basso ha la
 precedenza sul bilancio.
 
-## Le nove categorie
+## 2 Le nove categorie
 
 Ogni codice corrisponde a una categoria ben precisa:
 
@@ -53,7 +53,7 @@ livelli medio e alto, dal **bilancio** (positivo, negativo, neutro). Le prime du
 righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
 classificato solo in base al fatto che ne abbia espresse o meno.
 
-## I dati in ingresso
+## 3 I dati in ingresso
 
 L'algoritmo riceve quattro valori per ogni membro:
 
@@ -67,13 +67,13 @@ L'algoritmo riceve quattro valori per ogni membro:
 > gruppo, indicato altrove con $n$. Con $N$ indichiamo invece il numero di
 > membri **visibili**, cioè con $n_i > 0$.
 
-## L'algoritmo di assegnazione
+## 4 L'algoritmo di assegnazione
 
 L'assegnazione procede in **quattro passi successivi**. Ogni passo è
 matematicamente semplice; la complessità sta nel fatto che si susseguono e che
 alcuni hanno priorità sugli altri.
 
-### Passo 1 — Visibilità: isolato e ignorato
+### 4.1 Passo 1 — Visibilità: isolato e ignorato
 
 Questo passo ha **la precedenza su tutto il resto**. Si guarda soltanto se il
 membro ha ricevuto opinioni ($n_i > 0$) e se ne ha espresse
@@ -88,7 +88,7 @@ In pratica l'isolato non partecipa affatto allo scambio di opinioni, mentre
 l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 ($n_i > 0$) procedono al passo successivo.
 
-### Passo 2 — Classificazione dell'impatto
+### 4.2 Passo 2 — Classificazione dell'impatto
 
 Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**, usando i
 percentili. Due dettagli sono importanti.
@@ -122,7 +122,7 @@ questo una classe può superare il $20\%$ teorico. Nei gruppi piccoli il
 $20$-esimo percentile coincide spesso con il minimo e l'$80$-esimo con il
 massimo: i percentili sono "grossolani" quando i membri sono pochi.
 
-#### Il caso limite: percentili che collassano
+#### 4.2.1 Il caso limite: percentili che collassano
 
 Può capitare che soglia bassa e soglia alta **coincidano**. Succede quando
 almeno il $60\%$ dei membri visibili condivide lo stesso valore, che diventa
@@ -150,7 +150,7 @@ tra massimo e minimo). Tutto si calcola sui soli membri visibili.
 
 Se un membro risultasse sia basso sia alto, prevale sempre "basso".
 
-### Passo 3 — Classificazione del bilancio
+### 4.3 Passo 3 — Classificazione del bilancio
 
 Il bilancio confronta preferenze e rifiuti ricevuti, ma non in modo "secco"
 ($rp$ contro $rr$): la soglia che separa "prevale il positivo" da "prevale il
@@ -181,7 +181,7 @@ sempre bilancio positivo, e viceversa per chi riceve solo rifiuti; il bilancio
 neutro compare solo quando preferenze e rifiuti sono abbastanza vicini da non
 superare la soglia.
 
-### Passo 4 — Assegnazione finale: l'albero di decisione
+### 4.4 Passo 4 — Assegnazione finale: l'albero di decisione
 
 L'ultimo passo combina i risultati dei tre precedenti con una regola a
 **"prima corrispondenza vince"**: si scorre la lista di condizioni in ordine e,
@@ -205,7 +205,7 @@ Un membro nella fascia bassa è "marginale" anche se le sue poche opinioni sono
 per lo più negative. È una scelta voluta: con così poche opinioni il bilancio
 non è un'informazione affidabile.
 
-## Riepilogo dei parametri
+## 5 Riepilogo dei parametri
 
 | Parametro                                  | Valore                          |
 | ------------------------------------------ | ------------------------------- |
@@ -216,7 +216,7 @@ non è un'informazione affidabile.
 | Rapporto soglia del bilancio, pochi dati   | $2{,}0$ (per $n_i \le 3$)       |
 | Rapporto soglia del bilancio, molti dati   | $1{,}5$ (per $n_i \ge 15$)      |
 
-## Bonus e malus: distinguere dentro lo stesso status
+## 6 Bonus e malus: distinguere dentro lo stesso status
 
 Lo status sociometrico raggruppa i membri in **nove categorie**, ma non dice
 nulla sull'ordine tra due membri che ricadono nella **stessa** categoria. Per
@@ -253,9 +253,9 @@ ricadono nello stesso status sociometrico: a parità di categoria, chi ha un
 bonus più alto (o un malus più basso) occupa una posizione più favorevole
 all'interno del gruppo.
 
-## Un esempio svolto
+## 7 Un esempio svolto
 
-### Calcolo dello status sociometrico
+### 7.1 Calcolo dello status sociometrico
 
 Consideriamo un gruppo di sei membri che esprimono le proprie preferenze, in
 ordine dalla prima all'ultima (per semplicità non ci sono rifiuti):
@@ -314,7 +314,7 @@ stesso numero di scelte ($5$) e hanno lo stesso status. Per distinguerli serve
 guardare **all'ordine** con cui sono stati scelti: è qui che entrano in gioco
 bonus e malus.
 
-### Calcolo del bonus/malus
+### 7.2 Calcolo del bonus/malus
 
 Con $M = 35$, il contributo di chi indica $i$ al posto $p_j(i)$ è
 $M - p_j(i) + 1$. Calcoliamo il bonus dei due membri **popolari**:
@@ -341,9 +341,9 @@ avendo lo stesso numero di scelte ricevute: è stato indicato **prima** nelle
 preferenze altrui. A parità di status **popolare**, il membro $1$ occupa quindi
 la posizione più favorevole.
 
-## Un secondo esempio: rifiuti e malus
+## 8 Un secondo esempio: rifiuti e malus
 
-### Calcolo dello status sociometrico
+### 8.1 Calcolo dello status sociometrico
 
 Riprendiamo la stessa idea, ma con soli rifiuti (nessuna scelta), sempre in
 ordine dal primo all'ultimo:
@@ -401,7 +401,7 @@ I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**: ricevono lo
 stesso numero di rifiuti ($5$) e hanno lo stesso status. Anche qui, per
 distinguerli serve guardare **all'ordine** dei rifiuti.
 
-### Calcolo del bonus/malus
+### 8.2 Calcolo del bonus/malus
 
 Calcoliamo il malus dei due membri **rifiutati**:
 

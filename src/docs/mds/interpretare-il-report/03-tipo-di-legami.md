@@ -18,7 +18,7 @@ Per farlo in modo preciso, usiamo due simboli:
 Le lettere $i$ e $j$ sono semplici etichette: indicano due membri qualsiasi del
 gruppo, ad esempio il membro $1$ e il membro $2$.
 
-## Come registrare le relazioni: la matrice di adiacenza
+## 1 Come registrare le relazioni: la matrice di adiacenza
 
 Un modo comodo per tenere in ordine tutte le scelte e i rifiuti è una tabella
 quadrata, detta **matrice di adiacenza**. Righe e colonne rappresentano gli
@@ -62,7 +62,7 @@ scende fino alla colonna di chi lo riceve:
 - $a_{12} = 1$ (riga 1, colonna 2): il membro $1$ **sceglie** il membro $2$;
 - $b_{31} = 0$ (riga 3, colonna 1): il membro $3$ **non rifiuta** il membro $1$.
 
-## Come leggere le formule
+## 2 Come leggere le formule
 
 Nelle definizioni che seguono compaiono tre simboli della logica, che si
 leggono come parole di uso comune:
@@ -78,12 +78,12 @@ direzione: $i$ sceglie $j$ ($a_{ij}$), $i$ rifiuta $j$ ($b_{ij}$), $j$ sceglie
 $i$ ($a_{ji}$) e $j$ rifiuta $i$ ($b_{ji}$). Ogni tipo di legame stabilisce
 quali di questi quattro sentimenti ci sono e quali no.
 
-## Legami non problematici
+## 3 Legami non problematici
 
 Sono i legami in cui non compare alcun rifiuto: c'è almeno una scelta, e
 nessuno dei due membri respinge l'altro.
 
-### Scelta a senso unico
+### 3.1 Scelta a senso unico
 
 Un membro sceglie l'altro, ma l'altro non risponde in nessun modo: non lo
 sceglie e non lo rifiuta.
@@ -95,7 +95,7 @@ $$
 In parole: $i$ sceglie $j$, **e** $i$ non lo rifiuta, **e** $j$ non sceglie $i$,
 **e** $j$ non rifiuta $i$.
 
-### Scelta reciproca
+### 3.2 Scelta reciproca
 
 I due membri si scelgono a vicenda, e nessuno dei due rifiuta l'altro. È il
 legame più positivo possibile.
@@ -107,13 +107,13 @@ $$
 In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$, senza alcun rifiuto da
 nessuna delle due parti.
 
-## Legami potenzialmente problematici e problematici
+## 4 Legami potenzialmente problematici e problematici
 
 Sono i legami in cui compare almeno un rifiuto, oppure in cui i due membri
 provano sentimenti opposti l'uno verso l'altro. Meritano attenzione perché
 possono creare tensioni nel gruppo.
 
-### Rifiuto a senso unico
+### 4.1 Rifiuto a senso unico
 
 Un membro rifiuta l'altro, ma l'altro non esprime né scelta né rifiuto (magari
 non si è nemmeno accorto della cosa).
@@ -125,7 +125,7 @@ $$
 In parole: $i$ rifiuta $j$, **e** non lo sceglie, **e** $j$ non sceglie $i$,
 **e** non lo rifiuta.
 
-### Rifiuto reciproco
+### 4.2 Rifiuto reciproco
 
 I due membri si rifiutano a vicenda, e nessuno dei due esprime una scelta.
 
@@ -136,7 +136,7 @@ $$
 In parole: $i$ rifiuta $j$ **e** $j$ rifiuta $i$, senza alcuna scelta da
 nessuna delle due parti.
 
-### Sentimenti contrapposti
+### 4.3 Sentimenti contrapposti
 
 Uno dei due membri sceglie l'altro, che però lo rifiuta: i sentimenti vanno in
 direzioni opposte. Può succedere in due modi, a seconda di chi sceglie e di chi
@@ -154,7 +154,7 @@ In parole:
 
 Basta che si verifichi uno dei due casi perché il legame sia di questo tipo.
 
-### Legami ambivalenti
+### 4.4 Legami ambivalenti
 
 Un legame è ambivalente quando un membro sceglie e rifiuta
 lo stesso membro.
@@ -163,7 +163,7 @@ $$
 a_{ij} \land b_{ij}
 $$
 
-## In sintesi
+## 5 In sintesi
 
 | Tipo di legame | Cosa succede | Problematico? |
 | -------------- | ------------ | :-----------: |

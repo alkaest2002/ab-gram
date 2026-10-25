@@ -11,7 +11,7 @@ Sono complementari, non alternative: lette separatamente possono restituire
 un'immagine incompleta, e a volte fuorviante, della posizione di un membro nel
 gruppo.
 
-## Due domande diverse
+## 1 Due domande diverse
 
 - **Moreno** conta le scelte e i rifiuti **diretti**, dati e ricevuti. L'impatto
   (quante opinioni si ricevono) dice **quanto un membro è visibile** agli occhi
@@ -27,7 +27,7 @@ ma non *da dove* arrivano: poche scelte possono essere proprio le uniche che
 tengono collegati due sottogruppi, e in quel caso il membro, pur poco visibile,
 è strutturalmente centrale.
 
-## Un esempio
+## 2 Un esempio
 
 Consideriamo un gruppo di 9 membri. Due sottogruppi di quattro persone,
 $A = \{1, 2, 3, 4\}$ e $B = \{5, 6, 7, 8\}$, sono molto coesi: dentro ciascuno
@@ -76,7 +76,7 @@ Il membro $9$ ha il valore più basso della colonna delle scelte e il più alto
 di quella dell'intermediazione. Per Moreno è il meno rilevante, per la SNA è un
 nodo **assolutamente centrale**: sono proprio i suoi legami a tenere unito il gruppo.
 
-## Come leggere le due cose insieme
+## 3 Come leggere le due cose insieme
 
 - Non fermarti allo status sociometrico: abbinalo sempre alle centralità della
   pagina sulle metriche individuali.

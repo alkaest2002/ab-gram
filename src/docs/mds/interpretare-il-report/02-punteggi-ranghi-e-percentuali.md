@@ -18,25 +18,25 @@ Il report presenta i risultati con tre tipi di valori:
 
 Non tutte le pagine contengono tutti e tre i tipi di valori.
 
-## Copertina
+## 1 Copertina
 
 Non contiene punteggi. Riporta il titolo e le note di avviso: la nota di
 riservatezza e la nota sui limiti interpretativi del report.
 
-## Elenco dei membri
+## 2 Elenco dei membri
 
 Elenca i membri con il rispettivo identificativo numerico e il nome. Gli
 identificativi non sono punteggi: servono soltanto a riconoscere ogni membro
 nelle pagine successive.
 
-## Scelte e rifiuti
+## 3 Scelte e rifiuti
 
 Per ogni membro mostra gli identificativi delle persone scelte (preceduti da
 `+`) e di quelle rifiutate (preceduti da `-`). È l'elenco grezzo delle
 preferenze espresse: qui non ci sono punteggi calcolati, ma è da questo elenco
 che derivano tutte le metriche.
 
-## Rete delle scelte e rete dei rifiuti
+## 4 Rete delle scelte e rete dei rifiuti
 
 Ogni pagina mostra il grafo di rete e una tabella di **metriche di gruppo**. Le
 prime righe sono punteggi grezzi espressi come conteggi (numeri interi):
@@ -55,31 +55,31 @@ mostrati con una cifra decimale):
 - indice di coesione (tipo I e tipo II) nella rete delle scelte, oppure indice
   di conflitto (tipo I e tipo II) nella rete dei rifiuti.
 
-## Componenti della rete delle scelte e dei rifiuti
+## 5 Componenti della rete delle scelte e dei rifiuti
 
 Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
 connesse e fortemente reciproche) mostra il **numero di componenti individuate**:
 un punteggio grezzo espresso come conteggio.
 
-## Tipi di relazione
+## 6 Tipi di relazione
 
 Classifica le relazioni in sette tipi, raggruppati in tre fasce (relazioni sane,
 potenzialmente problematiche e problematiche). Per ogni tipo e per ogni fascia
 mostra un **conteggio grezzo**: quante coppie di membri ricadono in quella
 categoria. Non ci sono ranghi né percentuali.
 
-## Pagine individuali dei membri
+## 7 Pagine individuali dei membri
 
 È la pagina più ricca di informazioni: combina punteggi grezzi, ranghi e percentuali.
 Si divide in quattro blocchi.
 
-### Grafico ego
+### 7.1 Grafico ego
 
 Mostra il grafo delle relazioni del membro, con lui al centro e gli altri membri
 disposti intorno. Non contiene punteggi: la sua lettura è spiegata nella pagina della
 documentazione dedicata ai grafici.
 
-### Metriche
+### 7.2 Metriche
 
 Mostra tre righe di sei riquadri: i primi dodici sono gli **indici di Moreno**
 (GP, RP, MP, GR, RR, MR, IM, BL, EI, OR, AI, II), gli ultimi sei le
@@ -105,7 +105,7 @@ significa automaticamente "meglio". Per una metrica come i rifiuti ricevuti
 (RR), il rango 1 spetta a chi ne ha ricevuti di più: per capire se quel valore è
 positivo o negativo bisogna guardare il significato della metrica.
 
-### Relazioni
+### 7.3 Relazioni
 
 Mostra i tipi di legame T1–T6 (il tipo 7, "scelte e rifiuti insieme", non
 compare in questa sezione). Per ogni tipo ci sono due numeri:
@@ -114,7 +114,7 @@ compare in questa sezione). Per ogni tipo ci sono due numeri:
 - la **percentuale**: la quota di quel tipo sul totale delle relazioni del
   membro, arrotondata a numero intero.
 
-### Componenti
+### 7.4 Componenti
 
 Mostra, per la rete delle scelte (prefisso `L-`) e per quella dei rifiuti
 (prefisso `D-`), le cinque categorie DYD, CLQ, WCC, SCC e SCM. Per ogni
@@ -124,7 +124,7 @@ categoria ci sono due numeri:
 - la **percentuale**: la quota sul totale delle componenti di quel tipo,
   arrotondata a numero intero.
 
-### Status sociometrico
+### 7.5 Status sociometrico
 
 Traduce l'indice `ss` in un'etichetta (ad esempio "Popolare" o "Rifiutato") con
 una breve descrizione. È una categoria, non un punteggio: non ha rango né
@@ -141,12 +141,12 @@ di status: a parità di etichetta, un bonus più alto (o un malus più basso)
 indica una posizione più favorevole nel gruppo. Il calcolo e il significato sono
 spiegati nella pagina dedicata allo status sociometrico.
 
-## Glossario
+## 8 Glossario
 
 Non contiene punteggi. Riporta l'elenco delle sigle usate nelle pagine e il loro
 significato esteso.
 
-## In sintesi
+## 9 In sintesi
 
 | Pagina | Punteggi grezzi | Ranghi | Percentuali |
 | --- | :---: | :---: | :---: |

@@ -13,12 +13,12 @@ percorsi:
 Entrambi i pulsanti azzerano i dati in memoria, così ogni nuovo
 lavoro parte sempre da zero.
 
-## Avviare un nuovo progetto
+## 1 Avviare un nuovo progetto
 
 Scegli **Crea progetto** per iniziare un nuovo progetto. Verrai portato al primo
 passaggio, dove caricherai l'elenco dei nominativi.
 
-### Formato del file
+### 1.1 Formato del file
 
 L'applicazione accetta un file di testo (.txt) con **un nominativo per riga**:
 
@@ -28,12 +28,12 @@ Bianchi Anna
 Verdi Luca
 ```
 
-#### Limiti
+#### 1.1.1 Limiti
 
 - Al massimo **35 nominativi**.
 - Ogni nominativo può contenere al massimo **150 caratteri**.
 
-### Ordinare i nominativi
+### 1.2 Ordinare i nominativi
 
 Prima di caricare il file puoi scegliere come ordinare i nomi:
 
@@ -44,7 +44,7 @@ Prima di caricare il file puoi scegliere come ordinare i nomi:
 Dopo il caricamento, l'applicazione mostra un riepilogo con il numero di nomi
 caricati, oppure un messaggio che spiega l'eventuale errore nel caricamento del file.
 
-## Una nota sul genere
+## 2 Una nota sul genere
 
 Nelle versioni classiche del sociogramma il genere delle persone viene preso in
 considerazione, per esempio distinguendo i nominativi con simboli o colori
@@ -56,7 +56,7 @@ difficilmente si presta a essere ridotta a una classificazione binaria:
 imporre una distinzione di questo tipo rischierebbe di escludere o di
 rappresentare in modo scorretto una parte delle persone coinvolte.
 
-## Un avviso importante sui dati
+## 3 Un avviso importante sui dati
 
 AB-Gram **non salva nulla nella cache del browser**: i dati restano nella memoria
 dell'applicazione finché la pagina è aperta. Per questo motivo:

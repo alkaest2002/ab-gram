@@ -9,7 +9,7 @@ ha espresso verso gli altri. Prima di usare l'applicazione devi quindi averli gi
 raccolti. Questa pagina ti guida passo dopo passo: dalla domanda da porre al
 gruppo fino alla preparazione dei dati.
 
-## Stabilire il criterio sociometrico
+## 1 Stabilire il criterio sociometrico
 
 Il primo passaggio è decidere **quale domanda porre al gruppo**. Questa domanda
 si chiama *criterio sociometrico*: è la situazione concreta, l'attività o il
@@ -21,17 +21,17 @@ che conta è partire da una domanda precisa: quale aspetto della vita del gruppo
 vuoi esplorare? Una volta chiarito questo, il criterio da adottare e le parole
 con cui formulare la domanda diventano molto più semplici da individuare.
 
-### Due famiglie di criteri
+### 1.1 Due famiglie di criteri
 
 Nella pratica, i criteri si possono ricondurre a due grandi famiglie.
 
-**1. Criteri affettivo-relazionali.** Riguardano il tempo trascorso insieme e la
+- **Criteri affettivo-relazionali.** Riguardano il tempo trascorso insieme e la
 convivenza: con chi si desidera, o non si desidera, condividere un viaggio, un
 alloggio, una pausa, un momento di svago. Le relazioni che emergono sono quelle
 dettate dall'intesa personale e dalla sintonia, non dalla competenza di chi viene
 nominato.
 
-**2. Criteri strumentali.** Riguardano ciò che il gruppo deve fare, non solo lo
+- **Criteri strumentali.** Riguardano ciò che il gruppo deve fare, non solo lo
 stare insieme. Rientrano in questa famiglia sia le situazioni in cui si cerca una
 guida (esempi: *chi vorresti, o non vorresti, come portavoce, referente o
 coordinatore*), sia quelle in cui si lavora a uno scopo comune (esempi: *con chi
@@ -44,7 +44,7 @@ Non conta più quanto una persona sia gradevole o meno, ma quanto appaia
 disponibile a cooperare, seria nell'impegno, capace di orientare il gruppo e di
 concludere ciò che le viene affidato.
 
-### Come formulare un buon criterio
+### 1.2 Come formulare un buon criterio
 
 Un buon criterio non è astratto. Deve fare riferimento a una situazione **reale e
 significativa per il gruppo**, in modo che ciascuno sappia con precisione a cosa
@@ -69,7 +69,7 @@ Qualche accorgimento utile:
 - **comunica il criterio al gruppo prima di raccogliere le risposte**, spiegando a
   cosa serve la rilevazione.
 
-## Cosa raccogliere
+## 2 Cosa raccogliere
 
 Per ogni membro del gruppo, in relazione al criterio scelto, devi annotare due
 informazioni:
@@ -83,7 +83,7 @@ Ricorda che la direzione conta: la scelta parte da **chi** la esprime e arriva a
 **chi** è scelto. Se un membro non ha espresso scelte o rifiuti, annotalo: potrai
 registrarlo nell'app.
 
-### Quante scelte e quanti rifiuti raccogliere
+### 2.1 Quante scelte e quanti rifiuti raccogliere
 
 AB-Gram non pone alcun vincolo rigido al numero di scelte e di rifiuti che ogni
 membro può esprimere: puoi registrare tutte le preferenze raccolte, senza doverne
@@ -94,7 +94,7 @@ quando le preferenze sono focalizzate, cioè quando ciascuno indica le persone c
 cui l'affinità o la distanza sono davvero più forti. Per questo conviene lavorare
 *prima* della raccolta, aiutando il gruppo a rispondere con misura.
 
-#### Come ridurre le risposte generalizzate
+#### 2.1.1 Come ridurre le risposte generalizzate
 
 Alcuni membri tendono a scegliere o a rifiutare quasi tutti. Non puoi (e non
 devi) impedirlo, ma puoi ridurne la frequenza con qualche strategia persuasiva:
@@ -121,7 +121,7 @@ a discriminare tra i compagni o, nel caso dei rifiuti, un'ostilità diffusa o un
 clima di gruppo teso. Non va interpretato in modo meccanico, ma merita di essere
 osservato e, se opportuno, approfondito con la persona.
 
-#### Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
+#### 2.1.2 Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
 
 In casi particolari AB-Gram permette di inserire, per ciascun membro, soltanto le
 **prime *n* scelte** e/o i **primi *n* rifiuti**. Il valore di *n* lo stabilisci tu
@@ -148,7 +148,7 @@ rilevazione. In questo caso:
 - **conserva i dati completi** e **dichiara il troncamento** quando presenti o
   discuti i risultati.
 
-## Come raccogliere i dati
+## 3 Come raccogliere i dati
 
 La raccolta può avvenire in due modi, e la scelta spetta a te:
 
@@ -162,7 +162,7 @@ La raccolta può avvenire in due modi, e la scelta spetta a te:
 In entrambi i casi il principio è lo stesso: per ciascun membro, registra le sue
 scelte e i suoi rifiuti.
 
-## 5. Una scelta di "privacy by design"
+## 4 Una scelta di "privacy by design"
 
 Il fatto che i dati vengano raccolti da te, e non direttamente dall'applicazione,
 è una decisione voluta. AB-Gram:

@@ -8,7 +8,7 @@ Le metriche di gruppo **riassumono la struttura sociale con pochi numeri**.
 Sono utili per confrontare gruppi diversi, oppure lo stesso gruppo in momenti
 diversi.
 
-### Numero di nodi
+### 1 Numero di nodi
 
 Il numero di membri del gruppo. Nella formula, $V$ è l'insieme dei nodi e le
 barre verticali $|\cdot|$ significano "quanti elementi contiene".
@@ -17,7 +17,7 @@ $$
 N = |V|
 $$
 
-### Numero di legami
+### 2 Numero di legami
 
 Il numero di frecce presenti nel grafo, cioè il numero di scelte espresse
 (oppure di rifiuti). Qui $\mathcal{E}$ è l'insieme dei legami.
@@ -26,7 +26,7 @@ $$
 E = |\mathcal{E}|
 $$
 
-### Legami reciproci
+### 3 Legami reciproci
 
 Un legame è **reciproco** quando esiste anche la freccia nella direzione opposta
 (se $u$ sceglie $v$, anche $v$ sceglie $u$). La formula passa in rassegna ogni
@@ -41,7 +41,7 @@ $$
 Attenzione: ogni coppia reciproca è formata da due legami, quindi viene contata
 due volte.
 
-### Densità
+### 4 Densità
 
 Indica **quanto la rete è "fitta"**: è il rapporto tra i legami che ci sono e
 quelli che potrebbero esserci. Vale $1$ in un grafo completo (tutti hanno
@@ -51,7 +51,7 @@ $$
 \Delta = \frac{E}{N(N-1)}
 $$
 
-### Centralizzazione
+### 5 Centralizzazione
 
 Indica **quanto la rete ruota attorno a una sola persona**. Ogni nodo ha una
 *centralità* $C_i$, un valore che misura quanto è "importante" nella rete (ad
@@ -68,7 +68,7 @@ $$
 C = \frac{\sum_{i=1}^{N} (C_{\max} - C_i)}{(N - 1)^2}
 $$
 
-### Reciprocità
+### 6 Reciprocità
 
 Indica **quanta parte dei legami viene ricambiata**: è il rapporto tra i legami
 ricambiati e tutti i legami presenti.
@@ -77,7 +77,7 @@ $$
 R = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
 $$
 
-### Transitività
+### 7 Transitività
 
 Misura la tendenza dei "vicini" di un nodo a essere collegati anche tra loro:
 in altre parole, se $A$ è collegato a $B$ e a $C$, quanto è probabile che anche
@@ -94,7 +94,7 @@ $$
 T = \frac{3 t_{\triangle}}{\sum_{v \in V} \binom{d_v}{2}}
 $$
 
-### Indice di coesione
+### 8 Indice di coesione
 
 L'indice di coesione misura **quanto il gruppo è unito**, contando le scelte
 reciproche. Qui $a_{ij}$ vale $1$ se $i$ sceglie $j$ e $0$ altrimenti, così il
@@ -123,7 +123,7 @@ $$
 Coh_{II} = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
 $$
 
-### Indice di conflitto
+### 9 Indice di conflitto
 
 L'indice di conflitto è il "gemello" della coesione applicato ai rifiuti:
 misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $b_{ij}$
@@ -147,7 +147,7 @@ $$
 Con_{II} = \frac{\sum_{i,j} b_{ij} b_{ji}}{\sum_{i,j} b_{ij}}
 $$
 
-## Un esempio svolto
+## 10 Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
 ($A$) e dei rifiuti ($B$):

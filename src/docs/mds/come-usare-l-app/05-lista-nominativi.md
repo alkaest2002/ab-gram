@@ -10,7 +10,7 @@ aggiungere chi manca e togliere chi non deve far parte del sociogramma: una
 volta avviata la raccolta delle relazioni, avere un elenco già pulito ti
 eviterà correzioni più laboriose.
 
-## Modificare l'elenco
+## 1 Modificare l'elenco
 
 Puoi intervenire sull'elenco in qualsiasi momento di questo passaggio:
 
@@ -26,7 +26,7 @@ dell'elenco: il numero di persone, il numero di nomi duplicati e il numero di
 nomi vuoti. Tienilo d'occhio mentre lavori: ti permette di capire subito se
 l'elenco è pronto o se c'è ancora qualcosa da sistemare.
 
-## Gli identificativi (ID)
+## 2 Gli identificativi (ID)
 
 A ogni membro del gruppo viene associato un **identificativo (ID)**. Ci sono
 **35 ID disponibili**, quindi l'elenco può contenere **al massimo 35 nomi**,
@@ -48,7 +48,7 @@ Per questo motivo, quando consulti il sociogramma non cercare regole dietro
 alla numerazione: due persone con ID vicini non hanno necessariamente
 qualcosa in comune.
 
-## Controlli automatici
+## 3 Controlli automatici
 
 Per poter proseguire, l'elenco deve rispettare due condizioni:
 
@@ -66,7 +66,7 @@ se il numero di nomi vuoti o duplicati è maggiore di zero, individua le voci
 interessate e correggile oppure eliminale. Appena l'elenco è in regola, il
 pulsante si riattiva e puoi proseguire.
 
-## Consigli prima di proseguire
+## 4 Consigli prima di proseguire
 
 - Rileggi l'elenco una volta completo: è più facile correggere un nome qui che
   in una fase successiva.

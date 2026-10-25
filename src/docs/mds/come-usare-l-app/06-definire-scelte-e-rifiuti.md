@@ -12,7 +12,7 @@ Puoi compilare tutto **con il mouse**, in modo visivo, oppure **con la tastiera*
 che è molto più veloce, soprattutto nei gruppi numerosi. I due metodi si possono
 combinare liberamente.
 
-## Scegliere il membro
+## 1 Scegliere il membro
 
 Un **carosello** ti presenta un membro alla volta, mostrandone il numero e il
 nome. Per spostarti usa le frecce:
@@ -24,7 +24,7 @@ La freccia *successiva* si attiva solo quando il membro corrente è completo:
 devi aver indicato sia le scelte sia i rifiuti, oppure aver dichiarato che il
 membro non ne ha espressi.
 
-## Indicare scelte e rifiuti
+## 2 Indicare scelte e rifiuti
 
 Per ogni membro trovi due elenchi affiancati:
 
@@ -34,20 +34,20 @@ Per ogni membro trovi due elenchi affiancati:
 Il membro corrente non compare negli elenchi: nessuno può scegliere o rifiutare
 se stesso. Un contatore in alto mostra quante persone hai selezionato.
 
-### Con il mouse
+### 2.1 Con il mouse
 
 Clicca sulla casella accanto a un nome per selezionarlo; clicca di nuovo per
 rimuoverlo. È l'approccio più immediato, ideale per i primi tentativi o per
 gruppi piccoli.
 
-### Con la tastiera (consigliato)
+### 2.2 Con la tastiera (consigliato)
 
 Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 
 1. **Cerca** il nome digitandone alcune lettere nel campo *Cerca un nome…*
    (la ricerca perdona piccoli errori di battitura).
 2. **Seleziona o deseleziona** il primo risultato premendo **Invio**
-   (vedi [Selezionare con il tasto Invio](#selezionare-con-il-tasto-invio)).
+   (vedi [Selezionare con il tasto Invio](#55-selezionare-con-il-tasto-invio)).
 3. **Spostati** tra i campi e le caselle con **Tab** (avanti) e
    **Maiusc + Tab** (indietro).
 4. Quando il membro corrente è completo, usa le frecce per **passare al membro
@@ -56,7 +56,7 @@ Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 > **Consiglio:** dedica qualche minuto a provare la tastiera sul primo membro.
 > Dal secondo in poi il vantaggio in termini di velocità diventa evidente.
 
-### Se un membro non ha espresso scelte o rifiuti
+### 2.3 Se un membro non ha espresso scelte o rifiuti
 
 Spunta la casella corrispondente:
 
@@ -67,26 +67,26 @@ Le due indicazioni si escludono a vicenda con l'elenco: selezionare una persona
 azzera automaticamente la casella "non ha espresso…", e spuntare la casella
 svuota l'elenco.
 
-## Una persona scelta e rifiutata
+## 3 Una persona scelta e rifiutata
 
 Puoi selezionare la stessa persona sia tra le scelte sia tra i rifiuti. In quel
 caso il nome viene contrassegnato con un avviso, per segnalare la contraddizione
 senza impedirti di registrarla.
 
-## Avanzamento
+## 4 Avanzamento
 
 La barra **Avanzamento** mostra quanti membri hai già completato, con contatore
 e percentuale che si aggiornano mentre compili. Il pulsante **Avanti** resta
 disattivato finché non hai completato tutti i membri.
 
-## Trovare un nome con la ricerca fuzzy
+## 5 Trovare un nome con la ricerca fuzzy
 
 Nelle liste delle **scelte** e dei **rifiuti** c'è un campo *Cerca un nome…*.
 La ricerca non richiede di scrivere il nome completo né di rispettarne la
 grafia: è una **ricerca fuzzy**, pensata per trovare un nome anche quando digiti
 poche lettere o le scrivi in un ordine diverso.
 
-### La regola d'oro
+### 5.1 La regola d'oro
 
 Perché un nome compaia tra i risultati, deve contenere **tutte le lettere** che
 digiti, ognuna per il numero di volte in cui la scrivi:
@@ -102,7 +102,7 @@ Ne derivano due conseguenze utili:
 Non puoi invece digitare una lettera che nel nome non c'è: `rossa` non trova
 *Rossi*, perché la `a` non esiste.
 
-### Come sono ordinati i risultati
+### 5.2 Come sono ordinati i risultati
 
 I nomi sono elencati dal più pertinente al meno pertinente:
 
@@ -117,7 +117,7 @@ A parità di pertinenza contano, in misura minore, la lunghezza del nome e
 l'ordine alfabetico. In pratica, il nome che cerchi finisce in alto, anche in un
 gruppo numeroso.
 
-### Cosa viene ignorato
+### 5.3 Cosa viene ignorato
 
 La ricerca ignora:
 
@@ -125,38 +125,38 @@ La ricerca ignora:
 - **accenti** (una `e` digitata trova anche *è* ed *é*);
 - **punteggiatura**: apostrofi e trattini valgono come spazi.
 
-### Consigli per restringere i risultati
+### 5.4 Consigli per restringere i risultati
 
-#### Punta sulle consonanti
+#### 5.4.1 Punta sulle consonanti
 
 Le vocali sono comuni e distinguono poco; le consonanti sono più informative.
 `rss` basta per *Rossi*, `vrd` per *Verdi*.
 
-#### Usa le iniziali dei nomi composti
+#### 5.4.2 Usa le iniziali dei nomi composti
 
 Per *Francesco Battaglia* bastano le iniziali: `fb`. Se più persone condividono
 le iniziali, aggiungi una lettera della seconda parola, ad esempio `fbt`.
 
-#### Aggiungi lettere per separare i nomi simili
+#### 5.4.3 Aggiungi lettere per separare i nomi simili
 
 Se due nomi hanno lettere in comune (*Elena Bandiera* e *Francesco Battaglia*),
 `ban` li fa comparire entrambi: aggiungi una lettera che distingue, come la `d`
 (`band`) o la `t` (`batt`). In generale, se la lista è ancora troppo lunga,
 **scrivi una lettera in più**.
 
-#### Attenzione agli errori di battitura
+#### 5.4.4 Attenzione agli errori di battitura
 
 Uno scambio di lettere non rovina la ricerca: `vedri` trova ancora *Verdi*,
 perché le lettere ci sono tutte. Una lettera sbagliata invece sì: `verti` non
 trova *Verdi*, perché la `t` non fa parte del nome. Se la ricerca non dà
 risultati, controlla di non aver digitato una lettera estranea al nome.
 
-#### Rivedere tutti i nomi
+#### 5.4.5 Rivedere tutti i nomi
 
 Per tornare a vedere tutti i membri, cancella il testo oppure premi **Esc**,
 che svuota il campo di ricerca.
 
-### Selezionare con il tasto Invio
+### 5.5 Selezionare con il tasto Invio
 
 Con una ricerca attiva, **Invio** seleziona (o deseleziona) **solo il primo
 membro** dell'elenco filtrato, cioè il più pertinente. Si agisce su un membro
@@ -173,7 +173,7 @@ Se la persona che vuoi indicare **non è il primo elemento** dell'elenco, contin
 ad aggiungere caratteri finché non lo diventa: più precisa è la ricerca, più sei
 certo di selezionare la persona giusta.
 
-### Esempi rapidi
+### 5.6 Esempi rapidi
 
 | Digiti | Trovi |
 |--------|-------|

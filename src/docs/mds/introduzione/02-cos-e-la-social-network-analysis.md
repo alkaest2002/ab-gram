@@ -9,7 +9,7 @@ le **reti sociali**, cioè gli insiemi di persone (o di altri "attori") e delle
 relazioni che li collegano. Si sviluppa dall'incontro di più ambiti di ricerca,
 come la teoria dei grafi, l'antropologia e la psicologia sociale.
 
-## L'eredità di Jacob Moreno
+## 1 L'eredità di Jacob Moreno
 
 La SNA non nasce dalla sociometria, ma ha con essa un legame concettuale
 profondo. L'idea di **Jacob L. Moreno** di rappresentare un gruppo come un
@@ -18,7 +18,7 @@ relazioni** invece degli individui presi singolarmente è il fondamento su cui l
 SNA costruisce i suoi strumenti. Per questo AB-Gram può partire da un questionario
 sociometrico e "leggerlo" con le metriche della SNA.
 
-## Attori e legami
+## 2 Attori e legami
 
 Ogni rete è costituita di due elementi:
 
@@ -31,7 +31,7 @@ Quando un legame ha una direzione (per esempio, "Anna sceglie Bea"), la rete si
 dice **orientata**. Quando invece il legame è reciproco o senza direzione, la
 rete è **non orientata**.
 
-## Le misure
+## 3 Le misure
 
 La SNA, almeno nella sua incarnazione classica, offre misure che si dividono grosso modo in due famiglie:
 
@@ -46,7 +46,7 @@ La SNA, almeno nella sua incarnazione classica, offre misure che si dividono gro
 La definizione di ciascuna metrica SNA calcolata da AB-Gram si trova in
 un'apposita sezione della documentazione.
 
-## In sintesi
+## 4 In sintesi
 
 AB-Gram applica le idee della Social Network Analysis a un gruppo reale:
 trasforma le scelte e i rifiuti raccolti in due reti, la rete delle scelte e

@@ -9,7 +9,7 @@ relazioni tra i membri di un gruppo. Il suo scopo è misurare e rappresentare i
 legami — di scelta, di rifiuto — che si creano tra le
 persone, per capire come il gruppo è organizzato al suo interno.
 
-## Le origini
+## 1 Le origini
 
 La sociometria nasce negli anni Trenta del '900 grazie allo psichiatra e sociologo
 **Jacob L. Moreno**. L'intuizione di Moreno fu semplice ma decisiva: i legami di un
@@ -17,7 +17,7 @@ gruppo non emergono con certezza dall'osservazione esterna, ma si possono
 **misurare** chiedendo ai membri con chi preferiscono interagire e con chi no. Da
 queste risposte si ricava una "fotografia" delle preferenze del gruppo e dunque delle sue dinamiche.
 
-## L'idea di base
+## 2 L'idea di base
 
 Il punto di partenza è il **questionario sociometrico**: a ogni membro si chiede di
 indicare, per una situazione concreta, le persone che sceglierebbe e quelle che
@@ -34,7 +34,7 @@ struttura del gruppo. Due strumenti riassumono questi dati:
 - il **sociogramma**, la rappresentazione grafica della stessa informazione, in
   cui le persone sono punti e le relazioni sono linee.
 
-### Un esempio
+### 2.1 Un esempio
 
 Nella matrice qui sotto le righe indicano **chi esprime** una scelta o un rifiuto e le
 colonne **chi la riceve**. Il segno `+` indica una scelta, il segno `−` un
@@ -70,7 +70,7 @@ B =
 \end{pmatrix}
 $$
 
-## Gli indici sociometrici
+## 3 Gli indici sociometrici
 
 Dalla matrice sociometrica si ricavano degli **indici** che sintetizzano la
 posizione di ciascun membro e le caratteristiche del gruppo. Si dividono in due
@@ -93,7 +93,7 @@ differenza rispetto alle misure della Social Network Analysis, che AB-Gram
 calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
 *Cos'è la Social Network Analysis*).
 
-## In sintesi
+## 4 In sintesi
 
 La sociometria permette di rispondere a domande che difficilmente emergono dalla
 semplice osservazione esterna: chi è isolato, chi è popolare, chi fa da ponte tra i

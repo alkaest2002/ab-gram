@@ -17,7 +17,7 @@ gli altri. Si dividono in due famiglie:
 In tutte le formule, $n$ è il **numero di membri** del gruppo e $i$ indica il
 membro di cui stiamo calcolando la metrica.
 
-## Indici di Moreno
+## 1 Indici di Moreno
 
 Gli indici di Moreno (dal nome dello psicologo Jacob Moreno, ideatore del
 sociogramma) si ricavano da semplici somme sulle righe e sulle colonne delle
@@ -35,7 +35,7 @@ Per orientarsi nelle formule, basta ricordare che:
 - il prodotto $a_{ij} a_{ji}$ vale $1$ solo se $i$ sceglie $j$ **e** $j$ sceglie
   $i$, cioè se la scelta è **reciproca**.
 
-### Scelte ricevute e date
+### 1.1 Scelte ricevute e date
 
 Sono i conteggi di base: quante opinioni, positive e negative, un membro riceve
 dagli altri e quante ne esprime verso gli altri.
@@ -65,7 +65,7 @@ $$
 gr_i = \sum_{j} b_{ij}
 $$
 
-### Scelte reciproche
+### 1.2 Scelte reciproche
 
 Contano i casi in cui il sentimento espresso dal membro viene ricambiato.
 
@@ -83,7 +83,7 @@ $$
 mr_i = \sum_{j} b_{ij} b_{ji}
 $$
 
-### Indici derivati
+### 1.3 Indici derivati
 
 Si ottengono combinando i conteggi precedenti con somme e differenze, per
 rispondere a domande più specifiche.
@@ -134,7 +134,7 @@ $$
 ii_i = rp_i + mp_i
 $$
 
-### Status sociometrico
+### 1.4 Status sociometrico
 
 Lo **status sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,
@@ -164,7 +164,7 @@ perché procede in più passaggi successivi: ogni passaggio è matematicamente
 semplice, ma nel loro insieme sono troppi per essere riassunti in una formula
 leggibile. Per questo motivo la formula viene riportata nel documento successivo.
 
-### Un esempio svolto
+### 1.5 Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
 ($A$) e dei rifiuti ($B$):
@@ -211,7 +211,7 @@ I membri $1$ e $2$ risultano i più coinvolti: sono gli unici ad avere una scelt
 reciproca (si scelgono tra loro) e hanno i valori più alti di affiliazione e
 influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
 
-## Centralità SNA
+## 2 Centralità SNA
 
 Le centralità misurano **quanto un nodo è importante nella rete del gruppo**.
 In questo contesto la rete è un **grafo diretto**: ogni membro è un *nodo* (un
@@ -225,7 +225,7 @@ parentesi) indicano rispettivamente il **numero di legami** di un nodo e la
 **distanza** tra due nodi, e non vanno confusi con $b_{ij}$ (senza parentesi),
 che nella sezione precedente indicava il rifiuto.
 
-### Grado
+### 2.1 Grado
 
 La **centralità di grado** conta quanti legami ha il membro, rapportati al
 numero massimo possibile ($n-1$, cioè tutti gli altri membri). È la misura più
@@ -243,7 +243,7 @@ $$
 C_D^{\text{in}}(i) = \frac{d_{\text{in}}(i)}{n - 1}, \qquad C_D^{\text{out}}(i) = \frac{d_{\text{out}}(i)}{n - 1}
 $$
 
-### Vicinanza
+### 2.2 Vicinanza
 
 La **centralità di vicinanza** misura quanto il membro è **vicino** agli altri,
 cioè quanti pochi "passaggi" servono in media per raggiungerli seguendo le
@@ -256,7 +256,7 @@ $$
 C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(i,j)}
 $$
 
-### Intermediazione
+### 2.3 Intermediazione
 
 La **centralità di intermediazione** misura quanto il membro **fa da ponte**:
 quante volte si trova sulla strada più breve tra due altri membri. Chi ha
@@ -272,7 +272,7 @@ $$
 C_B(i) = \frac{\sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)}
 $$
 
-### PageRank
+### 2.4 PageRank
 
 Il **PageRank** (l'algoritmo ideato per ordinare le pagine web) dà importanza ai
 legami ricevuti **in base all'importanza di chi li esprime**: essere scelti da
@@ -292,7 +292,7 @@ $$
 PR(i) = \frac{1 - \alpha}{n} + \alpha \sum_{j \in \text{In}(i)} \frac{PR(j)}{d_{\text{out}}(j)}, \qquad \alpha = 0.85
 $$
 
-### HITS
+### 2.5 HITS
 
 **HITS** distingue **due ruoli complementari** che un membro può avere
 contemporaneamente:
@@ -309,7 +309,7 @@ $$
 a(i) = \sum_{j \in \text{In}(i)} h(j), \qquad h(i) = \sum_{j \in \text{Out}(i)} a(j)
 $$
 
-### Un esempio svolto
+### 2.6 Un esempio svolto
 
 Riprendiamo il gruppo di quattro membri di prima, usando solo la matrice delle
 scelte $A$ (le frecce sono: $1 \to 2$, $1 \to 3$, $2 \to 1$, $2 \to 4$,
@@ -364,7 +364,7 @@ Come si leggono questi numeri:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
   nel grafo i loro ruoli sono speculari.
 
-## In sintesi
+## 3 In sintesi
 
 | Centralità | Domanda a cui risponde | Valore alto significa |
 | ---------- | ---------------------- | --------------------- |

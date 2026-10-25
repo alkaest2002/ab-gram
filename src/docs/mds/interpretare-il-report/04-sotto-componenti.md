@@ -21,7 +21,7 @@ Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 > "sottogruppo affiatato". Per questo ti consigliamo di concentrare l'analisi
 > sulle scelte.
 
-## Diadi
+## 1 Diadi
 
 Una **diade** è una coppia di membri che si scelgono a vicenda:
 
@@ -34,7 +34,7 @@ In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$.
 È l'unità più piccola possibile di reciprocità: un legame "confermato" da
 entrambe le parti, e non solo dichiarato da una.
 
-## Clique
+## 2 Clique
 
 Una **clique** è un sottogruppo in cui ognuno è collegato direttamente a tutti
 gli altri, senza considerare chi ha scelto chi. Pensa a una cerchia di amici in
@@ -65,7 +65,7 @@ Due precisazioni utili:
 Le clique mettono in evidenza i sottogruppi **più compatti**, quelli in cui le
 relazioni sono particolarmente fitte.
 
-## Componenti connesse
+## 3 Componenti connesse
 
 Una **componente connessa** è un insieme di membri che sono *raggiungibili* tra
 loro: da ciascuno si può arrivare a ciascun altro passando, se serve, per altri
@@ -87,7 +87,7 @@ scelte (cioè del verso delle frecce):
   direzione non pesa più: si tratta semplicemente dei "blocchi" che si formano
   unendo le diadi.
 
-### Un esempio
+### 3.1 Un esempio
 
 Immagina tre membri in catena: il membro $1$ sceglie il $2$, e il $2$ sceglie
 il $3$ (nessun'altra scelta).
@@ -104,7 +104,7 @@ $$
 - Come componente forte con **soli legami reciproci** non lo è nemmeno, perché
   non c'è nessuna scelta reciproca.
 
-### Quanto è severo il criterio
+### 3.2 Quanto è severo il criterio
 
 Le tre varianti sono annidate: ogni legame reciproco è anche un legame
 orientato, e ogni legame orientato è anche un legame se ignoriamo la direzione.
@@ -123,12 +123,12 @@ piccoli.
 Le componenti aiutano così a capire se il gruppo è **unito** oppure **diviso in
 sottogruppi separati**, senza contatti tra loro.
 
-## Clique o componenti: che differenza c'è?
+## 4 Clique o componenti: che differenza c'è?
 
 Clique e componenti connesse descrivono due idee diverse di "stare insieme", e
 vanno tenute distinte.
 
-### Cosa richiedono
+### 4.1 Cosa richiedono
 
 - **La clique chiede un legame diretto tra ogni coppia.** Se $i$ e $j$ fanno
   parte della stessa clique, tra loro c'è per forza una scelta, in almeno una
@@ -141,14 +141,14 @@ Per questo le componenti sono strutture **meno compatte** delle clique: possono
 contenere legami radi e lunghe catene di intermediari, mentre una clique impone
 un legame diretto tra ogni coppia.
 
-### Sovrapposizione
+### 4.2 Sovrapposizione
 
 Le componenti **dividono** il gruppo: ogni membro appartiene a una sola
 componente (un membro isolato forma una componente da solo). Le clique invece
 possono **sovrapporsi**: lo stesso membro può far parte di più clique, e molti
 membri possono non far parte di nessuna clique di dimensione apprezzabile.
 
-### Una clique non è per forza una componente forte
+### 4.3 Una clique non è per forza una componente forte
 
 Qui conta la direzione. Nella nostra definizione di clique basta una scelta in
 un solo verso, mentre le componenti forti richiedono di poter percorrere le
@@ -161,7 +161,7 @@ Esempio: il membro $1$ sceglie il $2$ e il $3$, e il $2$ sceglie il $3$.
 - Ma dal $3$ non si raggiunge nessuno, quindi **non** è una componente forte.
   È invece una componente debole.
 
-### Una componente non è per forza una clique
+### 4.4 Una componente non è per forza una clique
 
 Esempio: quattro membri in cerchio, con $1$ che sceglie il $2$, il $2$ il $3$,
 il $3$ il $4$ e il $4$ l'$1$.
@@ -175,7 +175,7 @@ $$
 - Ma $1$ e $3$ non si sono scelti direttamente (e lo stesso vale per $2$ e $4$),
   quindi **non** è una clique.
 
-### Il legame tra le due nozioni
+### 4.5 Il legame tra le due nozioni
 
 Una sola implicazione vale sempre: **ogni clique sta dentro una componente
 debole**, perché i suoi membri sono già collegati direttamente tra loro. Non
@@ -193,7 +193,7 @@ diverso, che misura la compattezza e non la raggiungibilità.
 | Sovrapposizione | Possibile | No, dividono il gruppo | No, dividono il gruppo |
 | Risponde alla domanda | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?" | "Si può arrivare a tutti seguendo le scelte?" |
 
-## In sintesi
+## 5 In sintesi
 
 | Struttura | Cosa richiede | Quanto è compatta |
 | --------- | ------------- | ----------------- |

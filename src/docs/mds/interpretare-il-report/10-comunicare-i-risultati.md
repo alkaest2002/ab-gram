@@ -12,23 +12,23 @@ conseguenza.
 Questa pagina ti aiuta a usare bene i risultati: come trasformarli in interventi, con chi
 condividerli e che cosa è opportuno, o meno, restituire al gruppo.
 
-## Dai dati all'intervento
+## 1 Dai dati all'intervento
 
 Un risultato è *azionabile* quando permette di prendere una decisione, e non si
 limita a descrivere una situazione. Il sociogramma può ispirare uno o più
 interventi, con tre obiettivi principali.
 
-**1. Ridurre i conflitti.** Le scelte e i rifiuti incrociati aiutano a individuare
+- **Ridurre i conflitti.** Le scelte e i rifiuti incrociati aiutano a individuare
 le aree di tensione, ad esempio coppie o sottogruppi in forte contrapposizione.
 Puoi intervenire sulla composizione dei gruppi di lavoro, sulla distribuzione
 degli spazi e dei compiti, o su momenti di mediazione e confronto guidato.
 
-**2. Consolidare la rete di relazioni positive.** Le affinità reciproche e i
+- **Consolidare la rete di relazioni positive.** Le affinità reciproche e i
 sottogruppi coesi sono una risorsa. Puoi valorizzarli affidando incarichi in cui
 la collaborazione funziona già e usando le persone più connesse come ponte verso
 chi lo è meno.
 
-**3. Migliorare la posizione di chi si trova ai margini.** Chi risulta isolato o
+- **Migliorare la posizione di chi si trova ai margini.** Chi risulta isolato o
 rifiutato è chi ha più bisogno di attenzione. Gli interventi possibili vanno
 dall'inserirlo in gruppi di lavoro scelti con cura, all'affiancarlo a persone con
 cui ha affinità, fino al colloquio individuale (vedi più avanti).
@@ -46,7 +46,7 @@ Gli interventi funzionano meglio se sono pochi, mirati e verificabili. Dopo un
 congruo intervallo di tempo ragionevole (6/12 mesi), ripetere la rilevazione con lo stesso criterio
 permette di capire se qualcosa è cambiato.
 
-## Condividere gli esiti con chi può agire
+## 2 Condividere gli esiti con chi può agire
 
 Gli esiti vanno portati a chi ha un ruolo di guida o di responsabilità nel gruppo
 e può leggerli insieme a ciò che già conosce:
@@ -61,20 +61,20 @@ Il sociogramma da solo racconta una parte della storia. Prende pieno valore
 quando viene affiancato alla conoscenza diretta di chi vive il gruppo ogni
 giorno, ed è da questo confronto che nascono interventi davvero adatti.
 
-## Restituire gli esiti al gruppo
+## 3 Restituire gli esiti al gruppo
 
 Rispondere a un questionario sociometrico suscita di solito curiosità, e il gruppo chiede
 spesso di sapere come è andata. La richiesta è legittima, ma va gestita senza
 perdere di vista la **riservatezza** con cui la rilevazione è stata presentata e
 condotta.
 
-### Che cosa tenere per sé
+### 3.1 Che cosa tenere per sé
 
 Non vanno resi noti al gruppo i dati individuali che identificano lo status sociometrico di ciascuno. Diffonderli non rafforzerebbe la coesione: rischierebbe anzi di compromettere proprio quella rete di rapporti che, magari perché fragile, aveva reso utile il ricorso all'indagine sociometrica.
 
 C'è poi un secondo pericolo, quello dell'*identificazione nel ruolo*. Rendere noto lo status sociometrico significa attribuire a ciascuno un'etichetta, che il gruppo tende a considerare stabile e che la persona stessa può finire per sentire come propria. Ad esempio, chi è indicato come rifiutato rischia di essere trattato di conseguenza e di comportarsi di conseguenza, rafforzando la posizione marginale che si voleva invece migliorare; chi è indicato come popolare può sentirsi vincolato a un ruolo di leader che non ha scelto. Il sociogramma fotografa una situazione in un momento preciso, in relazione a un criterio specifico, e non descrive ciò che una persona è: un'etichetta diffusa lo fa sembrare tale, e rende più difficile il cambiamento.
 
-### Che cosa si può condividere
+### 3.2 Che cosa si può condividere
 
 Si possono invece illustrare gli **indici globali**, che descrivono il gruppo nel
 suo insieme senza nominare nessuno. Presentati con cura, questi dati offrono al gruppo l'occasione per riflettere
@@ -83,7 +83,7 @@ su quanto stare insieme risulti appagante e su come costruire un buon rapporto
 anche con chi ha un ruolo di guida (insegnanti, responsabili). In questo modo la
 restituzione diventa essa stessa un primo intervento.
 
-## Parlarne in un colloquio individuale
+## 4 Parlarne in un colloquio individuale
 
 I dati personali non si diffondono, ma possono avere un uso mirato e protetto.
 **Con delicatezza e prudenza**, puoi portarli in un **colloquio a tu per tu** con
@@ -91,7 +91,7 @@ chi risulta avere una posizione fragile nel gruppo. Lo scopo è aiutare la perso
 coscienza della propria situazione e a trovare la motivazione per cambiare, con
 un sostegno concreto da parte tua.
 
-## Riepilogo
+## 5 Riepilogo
 
 | A chi | Che cosa | A quale scopo |
 |---|---|---|

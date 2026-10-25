@@ -13,7 +13,7 @@ Di conseguenza, **scaricare l'archivio e ricaricarlo più tardi è l'unico modo
 per mettere in pausa un progetto**. Se chiudi o ricarichi la pagina senza
 aver scaricato l'archivio, il lavoro non salvato andrà perso.
 
-## Scaricare l'archivio
+## 1 Scaricare l'archivio
 
 Il pulsante **Scarica archivio** è disponibile nei passaggi del flusso non appena
 ci sono dati da salvare. Cliccandolo, l'applicazione scarica un file di testo
@@ -28,7 +28,7 @@ dati-2026-10-10T14-30-00.txt
 Il nome riporta la data e l'ora del salvataggio, così puoi distinguere
 facilmente le versioni successive dello stesso progetto.
 
-### Quando usarlo
+### 1.1 Quando usarlo
 
 - Prima di chiudere o ricaricare la pagina, per non perdere il lavoro.
 - Per mettere in pausa un progetto lungo e riprenderlo in un secondo momento.
@@ -37,7 +37,7 @@ facilmente le versioni successive dello stesso progetto.
   abitudine, perché limita il lavoro da rifare in caso di imprevisti.
 - Per condividere lo stato del lavoro con un collaboratore.
 
-## Riprendere un progetto
+## 2 Riprendere un progetto
 
 Per riaprire un archivio, avvia l'applicazione e scegli **Importa progetto**
 nella schermata iniziale, oppure consulta "Importare un progetto archiviato".
@@ -47,7 +47,7 @@ i passaggi già completati. Prima di caricare i dati, l'applicazione verifica
 che il file sia un archivio valido e coerente; se qualcosa non va, mostra un
 messaggio che spiega il problema.
 
-## Buone pratiche
+## 3 Buone pratiche
 
 1. Scarica l'archivio ogni volta che raggiungi un punto fermo, e sempre prima
    di chiudere la pagina.
@@ -59,7 +59,7 @@ messaggio che spiega il problema.
 4. Non modificare il contenuto del file: l'import verifica che i dati siano
    validi e coerenti, e un archivio alterato potrebbe essere rifiutato.
 
-## Privacy e conservazione dei file
+## 4 Privacy e conservazione dei file
 
 L'archivio contiene i nomi e le relazioni del gruppo. Poiché l'applicazione
 non conserva nulla per conto tuo, la custodia del file è interamente nelle

@@ -9,7 +9,7 @@ persone fittizie con scelte e rifiuti già impostati. È il modo più rapido per
 fare un giro completo dell'applicazione senza dover raccogliere e inserire dati
 a mano.
 
-## A cosa serve
+## 1 A cosa serve
 
 I dati di esempio servono a prendere confidenza con l'applicazione. Puoi usarli
 per:
@@ -18,14 +18,14 @@ per:
 - provare la definizione di scelte e rifiuti;
 - generare un report e osservarne i risultati.
 
-## Come caricarli
+## 2 Come caricarli
 
 Nella schermata iniziale, nella sezione dedicata ai progetti archiviati, premi
 il pulsante **Dati demo**. L'applicazione carica il gruppo di esempio e ti porta
 direttamente all'elenco dei membri, da cui puoi proseguire come in un progetto
 normale.
 
-## Cosa contengono
+## 3 Cosa contengono
 
 I dati di esempio riprendono alcuni personaggi della saga di Harry Potter. Si
 tratta di **dati fittizi**, ma non casuali. Le scelte e i rifiuti seguono un criterio 
@@ -33,7 +33,7 @@ di semplice buonsenso, ispirato a ciò che emerge a grandi linee dai libri e
 dai film (chi va d'accordo con chi, chi proprio no), senza alcuna pretesa 
 di fedeltà o di analisi.
 
-## Un'avvertenza per i fan di Harry Potter
+## 4 Un'avvertenza per i fan di Harry Potter
 
 Prima che qualcuno corra a scrivere una Strillettera: i dati sono un semplice
 contenuto dimostrativo e **non intendono rappresentare le vere dinamiche di
@@ -51,7 +51,7 @@ In breve: **ogni somiglianza con i veri rapporti di Hogwarts è puramente
 casuale**, e le discussioni su chi sia davvero amico di chi vanno risolte, come
 da tradizione, nei commenti dei fan.
 
-## Modificare i dati di esempio
+## 5 Modificare i dati di esempio
 
 Una volta caricati, i dati di esempio si comportano come qualunque altro
 progetto: puoi modificarli, archiviarli o ripartire da zero. Come per ogni

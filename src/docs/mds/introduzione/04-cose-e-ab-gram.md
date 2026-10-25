@@ -10,7 +10,7 @@ dover imparare strumenti complessi. Non occorre conoscere la matematica o
 l'informatica: basta raccogliere le **scelte** e i **rifiuti** del gruppo, e
 AB-Gram li trasforma in una mappa e in alcuni numeri facili da leggere.
 
-## Come funziona
+## 1 Come funziona
 
 AB-Gram combina due approcci complementari:
 
@@ -21,7 +21,7 @@ A partire dai dati inseriti, AB-Gram disegna il **sociogramma** e calcola gli
 indici sociometrici e le misure di rete, sia per l'intero gruppo sia per ogni
 singolo membro.
 
-## Destinatari
+## 2 Destinatari
 
 L'applicazione si rivolge principalmente a:
 
@@ -32,7 +32,7 @@ L'applicazione si rivolge principalmente a:
 - **Coordinatori di gruppi di lavoro**, che vogliono comprendere come
   collaborano i membri del team e come migliorarne l'affiatamento.
 
-### Contesti d'uso
+### 2.1 Contesti d'uso
 
 Il sociogramma è utile in molti ambiti, ovunque ci sia un gruppo di persone che
 interagiscono con regolarità:
@@ -42,7 +42,7 @@ interagiscono con regolarità:
 - **Il gruppo di lavoro**: per capire chi collabora con chi e chi fa da punto di
   riferimento per i colleghi.
 
-## Cosa serve per iniziare
+## 3 Cosa serve per iniziare
 
 Non servono competenze tecniche: bastano **un elenco di nomi** e **le scelte e i rifiuti raccolti nel gruppo**.
 
@@ -61,7 +61,7 @@ AB-Gram non si occupa della raccolta: è chi utilizza l'app a chiedere le prefer
 
 Una volta inseriti questi dati, AB-Gram calcola le metriche e genera i grafici per te.
 
-## Un caso concreto
+## 4 Un caso concreto
 
 Un insegnante può analizzare la classe e scoprire in **pochi minuti** se esiste un
 alunno isolato o un sottogruppo chiuso.
