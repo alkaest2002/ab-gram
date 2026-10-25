@@ -1,10 +1,12 @@
 import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
 
 /**
- * Sociogram member helpers shared by the "load members" step.
+ * Pure helpers for sociogram members, shared across the load-members step, the
+ * preferences step, and the report's member pages.
  *
- * Kept as pure functions so both the file-reader component and the view can
- * normalise and parse names without duplicating logic.
+ * Kept free of component and store dependencies so the file-reader component,
+ * the views, and the report can normalise names, build members, and derive
+ * preference-based metrics without duplicating logic.
  */
 
 /**
@@ -135,4 +137,29 @@ export function getMembersNameIssues(members) {
     emptyNamesCount: names.filter((name) => name === "").length,
     duplicateNamesCount: nonEmptyNames.length - new Set(nonEmptyNames).size,
   };
+}
+
+/**
+ * Weighted score for how early `memberId` is placed in other members' preference
+ * lists. Used as the report's "bonus" (for `likes`) and "malus" (for `dislikes`):
+ * a member chosen (or rejected) first weighs `maxMembersCount`, and each later
+ * position weighs one less — the report's `M - p + 1` term with a 1-based
+ * position `p`.
+ *
+ * @param {string} memberId - The member whose score is computed.
+ * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members.
+ * @param {number} maxMembersCount - The maximum theoretical member count (`M`).
+ * @param {"likes" | "dislikes"} field - Which preference list to score.
+ * @returns {number} The weighted received-preference score.
+ */
+export function receivedPreferenceScore(memberId, members, maxMembersCount, field) {
+  return members.reduce((total, member) => {
+    if (member.id === memberId) return total;
+
+    const preferences = member[field] ?? [];
+    const index = preferences.indexOf(memberId);
+    if (index === -1) return total;
+
+    return total + (maxMembersCount - index);
+  }, 0);
 }

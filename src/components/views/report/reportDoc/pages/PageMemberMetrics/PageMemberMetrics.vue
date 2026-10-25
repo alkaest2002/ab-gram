@@ -8,6 +8,9 @@ import BasePage from "../BasePage.vue";
 import MemberEgoPlot from "./MemberEgoPlot.vue";
 import MemberStats from "./MemberStats.vue";
 
+//   -- From utils
+import { receivedPreferenceScore } from "@/utils/sociogram/memberHelpers";
+
 // --- Props --------------
 const props = defineProps({
     // The member this page reports on (`{ id, name, ... }`).
@@ -43,25 +46,23 @@ const props = defineProps({
 // --- Composables --------
 
 // --- Computed -----------
-const receivedLikesScore = computed(() => {
-  const memberId = props.member.id;
-  return props.members
-    .filter(m => m.id !== memberId && m.likes.includes(memberId))
-    .reduce((acc, m) => {
-      const idx = m.likes.indexOf(memberId);
-      return acc + (props.maxMembersCount - idx);
-    }, 0);
-});
+const receivedLikesScore = computed(() =>
+  receivedPreferenceScore(
+    props.member.id,
+    props.members,
+    props.maxMembersCount,
+    "likes",
+  ),
+);
 
-const receivedDislikesScore = computed(() => {
-  const memberId = props.member.id;
-  return props.members
-    .filter(m => m.id !== memberId && m.dislikes.includes(memberId))
-    .reduce((acc, m) => {
-      const idx = m.dislikes.indexOf(memberId);
-      return acc + (props.maxMembersCount - idx);
-    }, 0);
-});
+const receivedDislikesScore = computed(() =>
+  receivedPreferenceScore(
+    props.member.id,
+    props.members,
+    props.maxMembersCount,
+    "dislikes",
+  ),
+);
 
 // --- Watchers -----------
 

@@ -1,13 +1,14 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue
-import { computed } from "vue";
+import { computed, toRef } from "vue";
 
 //   -- From components
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 //   -- From composables
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
+import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramPreferencesSelection";
 
 // --- Props --------------
 const props = defineProps({
@@ -62,12 +63,14 @@ const selectableMembers = computed(() => props.members.filter((member) => member
 // Search state and the ranked result list, shared via the search composable.
 const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
 
-// --- Computed -----------
-// v-model: read the ids from `modelValue` and write them back by emitting
+// Selection state: v-model reads `modelValue` and writes back through
 // `update:modelValue`, so the parent stays the single source of truth.
-const selectedIds = computed({
-    get: () => props.modelValue ?? [],
-    set: (value) => emit("update:modelValue", value),
+const modelValue = toRef(props, "modelValue");
+const { selectedIds, toggle, toggleFiltered } = useSociogramPreferencesSelection({
+    query,
+    filteredMembers,
+    modelValue,
+    emit,
 });
 
 // Optimize: use a Set for faster lookups.
@@ -97,30 +100,6 @@ function isConflicting(member) {
     return selected.value.has(member.id) && opposing.value.has(member.id);
 }
 
-function toggle(member) {
-    const current = selectedIds.value;
-    selectedIds.value = isChecked(member)
-        ? current.filter((id) => id !== member.id)
-        : [...current, member.id];
-}
-
-function handleEnter() {
-    const targets = filteredMembers.value;
-    if (targets.length === 0) return;
-
-    const current = selectedIds.value;
-    const targetIds = new Set(targets.map((member) => member.id));
-
-    // Flip each target: drop the checked ids, add the unchecked ones.
-    selectedIds.value = [
-        ...current.filter((id) => !targetIds.has(id)),
-        ...targets
-            .filter((member) => !current.includes(member.id))
-            .map((member) => member.id),
-    ];
-    query.value = "";
-}
-
 function clearQuery() {
     query.value = "";
 }
@@ -139,7 +118,7 @@ function clearQuery() {
             class="w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink transition-colors outline-none focus:border-accent"
             placeholder="Cerca un nome…"
             :aria-label="`Cerca tra i membri per ${label}`"
-            @keydown.enter.prevent="handleEnter"
+            @keydown.enter.prevent="toggleFiltered"
             @keydown.esc="clearQuery"
         />
 
@@ -151,7 +130,7 @@ function clearQuery() {
             v-else-if="filteredMembers.length > 0"
             class="list-none divide-y divide-line rounded-lg border border-line"
         >
-            <li v-for="member in filteredMembers" :key="member.id">
+            <li v-for="(member) in filteredMembers" :key="member.id">
                 <label
                     class="flex cursor-pointer items-center gap-3 px-3 py-2 text-sm transition-colors hover:bg-ink/5"
                 >
