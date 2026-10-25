@@ -210,84 +210,212 @@ non è un'informazione affidabile.
 | Rapporto soglia del bilancio, pochi dati   | $2{,}0$ (per $n_i \le 3$)       |
 | Rapporto soglia del bilancio, molti dati   | $1{,}5$ (per $n_i \ge 15$)      |
 
+## Bonus e malus: distinguere dentro lo stesso status
+
+Lo status sociometrico raggruppa i membri in **nove categorie**, ma non dice
+nulla sull'ordine tra due membri che ricadono nella **stessa** categoria. Per
+questo si usano due punteggi complementari, il **bonus** ($bns_i$) e il **malus**
+($mls_i$), che tengono conto **dell'ordine** con cui un membro viene scelto o
+rifiutato, e non solo del numero di scelte e rifiuti ricevuti (cioè di $rp_i$ e
+$rr_i$).
+
+Per calcolarli si immagina che le scelte e i rifiuti di ciascun membro siano
+espressi **in ordine di preferenza**: la prima persona indicata è quella che si
+sceglie (o si rifiuta) per prima, l'ultima è quella indicata per ultima. Sia
+$p_j(i)$ la posizione, a partire da $1$, del membro $i$ nella sequenza
+ordinata delle scelte (per il bonus) o dei rifiuti (per il malus) del membro
+$j$. Ogni scelta o rifiuto ricevuto "pesa" di più se il membro è indicato tra i
+primi e di meno se è indicato tra gli ultimi:
+
+$$
+bns_i = \sum_{j \in S_i} (M - p_j(i) + 1), \qquad mls_i = \sum_{j \in R_i} (M - p_j(i) + 1)
+$$
+
+dove $M$ è il numero massimo teorico di membri ($35$), $S_i$ è l'insieme dei membri
+che scelgono $i$ e $R_i$ è l'insieme dei membri che lo rifiutano. Il termine
+$M - p_j(i) + 1$ vale $M$ quando $i$ è indicato per primo e diminuisce di $1$
+per ogni posizione successiva.
+
+- Un **bonus alto** ($bns_i$) significa che il membro è stato **scelto tra i
+  primi** nelle sequenze di preferenza degli altri: non solo è apprezzato, ma è
+  tra le prime persone a cui gli altri pensano.
+- Un **malus alto** ($mls_i$) significa che il membro è stato **rifiutato tra i
+  primi**: è tra le prime persone indicate come rifiuto.
+
+Questi punteggi aiutano quindi a **ipotizzare una graduatoria** tra membri che
+ricadono nello stesso status sociometrico: a parità di categoria, chi ha un
+bonus più alto (o un malus più basso) occupa una posizione più favorevole
+all'interno del gruppo.
+
 ## Un esempio svolto
 
-Consideriamo un gruppo di sei membri con questi valori (per semplicità, quasi
-nessuno esprime opinioni, così i numeri da seguire sono pochi):
+### Calcolo dello status sociometrico
 
-| Membro | $rp$ | $rr$ | $gp$ | $gr$ | $n = rp + rr$ | espressività |
-| :----: | :--: | :--: | :--: | :--: | :-----------: | :----------: |
-|   1    |  0   |  0   |  0   |  0   |       0       |      0       |
-|   2    |  0   |  0   |  2   |  0   |       0       |      2       |
-|   3    |  1   |  0   |  0   |  0   |       1       |      0       |
-|   4    |  5   |  1   |  0   |  0   |       6       |      0       |
-|   5    |  1   |  5   |  0   |  0   |       6       |      0       |
-|   6    |  3   |  1   |  0   |  0   |       4       |      0       |
+Consideriamo un gruppo di sei membri che esprimono le proprie preferenze, in
+ordine dalla prima all'ultima (per semplicità non ci sono rifiuti):
 
-**Passo 1 — Visibilità.** Il membro $1$ non riceve e non dà opinioni: è
-**isolato**. Il membro $2$ non riceve opinioni ma ne dà due: è **ignorato**. Gli
-altri quattro hanno $n > 0$ e proseguono.
+| Membro | Scelte (in ordine) |
+| :----: | ------------------ |
+|   1    | 2, 3, 4, 5, 6      |
+|   2    | 1, 3, 4, 5, 6      |
+|   3    | 1, 2, 4            |
+|   4    | 1, 2               |
+|   5    | 1, 2               |
+|   6    | 1, 2               |
 
-**Passo 2 — Impatto.** Gli impatti dei membri visibili sono
-$[1,\ 6,\ 6,\ 4]$, che ordinati danno $[1,\ 4,\ 6,\ 6]$ con $N = 4$. La soglia
-bassa è $\text{percentile}(20) = x_{\lfloor 4 \cdot 20 / 100 \rfloor} = x_0 = 1$,
-la soglia alta è $\text{percentile}(80) = x_{\lfloor 4 \cdot 80 / 100 \rfloor} = x_3 = 6$.
+Dalle scelte ricaviamo $rp$ (scelte ricevute), $gp$ (scelte date) e l'impatto
+$n = rp$ (non essendoci rifiuti, $rr = 0$):
+
+| Membro | $rp$ | $gp$ | $n = rp$ |
+| :----: | :--: | :--: | :------: |
+|   1    |  5   |  5   |    5     |
+|   2    |  5   |  5   |    5     |
+|   3    |  2   |  3   |    2     |
+|   4    |  3   |  2   |    3     |
+|   5    |  2   |  2   |    2     |
+|   6    |  2   |  2   |    2     |
+
+**Passo 1 — Visibilità.** Tutti hanno $n > 0$, quindi nessuno è isolato o
+ignorato: tutti proseguono.
+
+**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
+$N = 6$. La soglia bassa è
+$\text{percentile}(20) = x_{\lfloor 6 \cdot 20 / 100 \rfloor} = x_1 = 2$
+e la soglia alta è
+$\text{percentile}(80) = x_{\lfloor 6 \cdot 80 / 100 \rfloor} = x_4 = 5$.
 Le due soglie sono diverse, quindi non siamo nel caso limite. Ne risulta:
 
-- impatto basso ($\le 1$): membro $3$;
-- impatto alto ($\ge 6$): membri $4$ e $5$;
-- impatto medio: membro $6$.
+- impatto basso ($\le 2$): membri $3$, $5$ e $6$;
+- impatto alto ($\ge 5$): membri $1$ e $2$;
+- impatto medio: membro $4$.
 
-**Passo 3 — Bilancio.** La soglia vale $t = 2$ per il membro $3$ (con $n = 1$),
-$t = 2 - 0{,}5 \cdot \frac{3}{12} = 1{,}875$ per i membri $4$ e $5$ (con $n = 6$)
-e $t = 2 - 0{,}5 \cdot \frac{1}{12} \approx 1{,}958$ per il membro $6$ (con
-$n = 4$). Ne risulta:
-
-- membro $3$: $1 > 2 \cdot 0$, bilancio positivo (ma è basso, vedi sotto);
-- membro $4$: $5 > 1{,}875 \cdot 1$, positivo;
-- membro $5$: $5 > 1{,}875 \cdot 1$ per i rifiuti, negativo;
-- membro $6$: $3 > 1{,}958 \cdot 1$, positivo.
+**Passo 3 — Bilancio.** Non ci sono rifiuti ($rr = 0$), quindi il bilancio è
+sempre positivo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso                                   | Status     | Codice |
-| :----: | ------------------------------------------ | ---------- | :----: |
-|   1    | nessuna opinione ricevuta né data          | isolato    |   0    |
-|   2    | nessuna opinione ricevuta, ma ne ha date   | ignorato   |   1    |
-|   3    | impatto basso (il bilancio non conta)      | marginale  |   2    |
-|   4    | alto + positivo                            | popolare   |   4    |
-|   5    | alto + negativo                            | rifiutato  |   6    |
-|   6    | medio + positivo                           | apprezzato |   3    |
+| Membro | Percorso                    | Status     | Codice |
+| :----: | --------------------------- | ---------- | :----: |
+|   1    | alto + positivo             | popolare   |   4    |
+|   2    | alto + positivo             | popolare   |   4    |
+|   3    | basso                       | marginale  |   2    |
+|   4    | medio + positivo            | apprezzato |   3    |
+|   5    | basso                       | marginale  |   2    |
+|   6    | basso                       | marginale  |   2    |
 
-Il membro $3$ mostra bene la priorità dell'impatto sul bilancio: riceve una sola
-opinione, positiva, ma resta **marginale** perché è nella fascia bassa
-dell'impatto.
+I membri $1$ e $2$ finiscono entrambi nella categoria **popolare**: ricevono lo
+stesso numero di scelte ($5$) e hanno lo stesso status. Per distinguerli serve
+guardare **all'ordine** con cui sono stati scelti: è qui che entrano in gioco
+bonus e malus.
 
-## Un secondo esempio: percentili che collassano
+### Calcolo del bonus/malus
 
-Prendiamo $N = 10$ membri visibili, con impatti già ordinati:
+Con $M = 35$, il contributo di chi indica $i$ al posto $p_j(i)$ è
+$M - p_j(i) + 1$. Calcoliamo il bonus dei due membri **popolari**:
 
-$$
-[1,\ 2,\ 2,\ 2,\ 2,\ 2,\ 2,\ 2,\ 2,\ 8]
-$$
+- **Membro 1.** È indicato per primo da tutti e cinque i membri che lo scelgono:
+  $bns_1 = 5 \cdot 35 = 175$.
+- **Membro 2.** È indicato per primo solo dal membro $1$ e per secondo dagli
+  altri quattro: $bns_2 = 35 + 4 \cdot 34 = 171$.
 
-**Soglie.** $\text{percentile}(20) = x_{2} = 2$ e
-$\text{percentile}(80) = x_{8} = 2$: coincidono, quindi siamo nel caso limite e
-$2$ è la mediana.
+Non essendoci rifiuti, il malus è $0$ per tutti. Ripetendo per gli altri si
+ottiene:
 
-**Condizione di disuguaglianza.** L'escursione è $8 - 1 = 7 \ge 3$ e il
-coefficiente di Gini vale circa $0{,}25$, quindi $G \ge 0{,}2$ con escursione
-$\ge 3$: la distribuzione è considerata abbastanza diseguale e il gruppo va
-diviso. Senza questa condizione, tutti sarebbero stati trattati come impatto
-medio.
+| Membro | Status     | $bns_i$ | $mls_i$ |
+| :----: | ---------- | :-----: | :-----: |
+|   1    | popolare   |   175   |    0    |
+|   2    | popolare   |   171   |    0    |
+|   3    | marginale  |    68   |    0    |
+|   4    | apprezzato |    99   |    0    |
+|   5    | marginale  |    64   |    0    |
+|   6    | marginale  |    62   |    0    |
 
-**Strategia.** Con $N = 10 < 20$ i percentili esterni non si usano; si applica la
-regola stretta sulla mediana:
+Il membro $1$ ha un bonus più alto del membro $2$ ($175$ contro $171$) pur
+avendo lo stesso numero di scelte ricevute: è stato indicato **prima** nelle
+preferenze altrui. A parità di status **popolare**, il membro $1$ occupa quindi
+la posizione più favorevole.
 
-- impatto basso ($< 2$): il membro con impatto $1$;
-- impatto alto ($> 2$): il membro con impatto $8$;
-- impatto medio: gli altri otto membri, con impatto $2$.
+## Un secondo esempio: rifiuti e malus
 
-Notare l'effetto della regola stretta: con una soglia inclusiva ($\le 2$) otto
-membri su dieci sarebbero finiti in fascia bassa, mentre così restano tutti
-nella fascia media, che è dove ci si aspetta di trovare il gruppo "tipico".
+### Calcolo dello status sociometrico
+
+Riprendiamo la stessa idea, ma con soli rifiuti (nessuna scelta), sempre in
+ordine dal primo all'ultimo:
+
+| Membro | Rifiuti (in ordine) |
+| :----: | ------------------- |
+|   1    | 4, 5, 2             |
+|   2    | 4, 5, 3             |
+|   3    | 4, 5, 6             |
+|   4    | 5, 1                |
+|   5    | 4, 6                |
+|   6    | 4, 5                |
+
+Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n = rr$
+(non essendoci scelte, $rp = 0$):
+
+| Membro | $rr$ | $gr$ | $n = rr$ |
+| :----: | :--: | :--: | :------: |
+|   1    |  1   |  3   |    1     |
+|   2    |  1   |  3   |    1     |
+|   3    |  1   |  3   |    1     |
+|   4    |  5   |  2   |    5     |
+|   5    |  5   |  2   |    5     |
+|   6    |  2   |  2   |    2     |
+
+**Passo 1 — Visibilità.** Tutti hanno $n > 0$, quindi nessuno è isolato o
+ignorato: tutti proseguono.
+
+**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
+$N = 6$. La soglia bassa è
+$\text{percentile}(20) = x_{\lfloor 6 \cdot 20 / 100 \rfloor} = x_1 = 1$
+e la soglia alta è
+$\text{percentile}(80) = x_{\lfloor 6 \cdot 80 / 100 \rfloor} = x_4 = 5$.
+Le due soglie sono diverse, quindi non siamo nel caso limite. Ne risulta:
+
+- impatto basso ($\le 1$): membri $1$, $2$ e $3$;
+- impatto alto ($\ge 5$): membri $4$ e $5$;
+- impatto medio: membro $6$.
+
+**Passo 3 — Bilancio.** Non ci sono scelte ($rp = 0$), quindi il bilancio è
+sempre negativo.
+
+**Passo 4 — Assegnazione.**
+
+| Membro | Percorso                    | Status    | Codice |
+| :----: | --------------------------- | --------- | :----: |
+|   1    | basso                       | marginale |   2    |
+|   2    | basso                       | marginale |   2    |
+|   3    | basso                       | marginale |   2    |
+|   4    | alto + negativo             | rifiutato |   6    |
+|   5    | alto + negativo             | rifiutato |   6    |
+|   6    | medio + negativo            | malvisto  |   5    |
+
+I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**: ricevono lo
+stesso numero di rifiuti ($5$) e hanno lo stesso status. Anche qui, per
+distinguerli serve guardare **all'ordine** dei rifiuti.
+
+### Calcolo del bonus/malus
+
+Calcoliamo il malus dei due membri **rifiutati**:
+
+- **Membro 4.** È indicato per primo da tutti e cinque i membri che lo
+  rifiutano: $mls_4 = 5 \cdot 35 = 175$.
+- **Membro 5.** È indicato per primo solo dal membro $4$ e per secondo dagli
+  altri quattro: $mls_5 = 35 + 4 \cdot 34 = 171$.
+
+Non essendoci scelte, il bonus è $0$ per tutti. Ripetendo per gli altri si
+ottiene:
+
+| Membro | Status    | $bns_i$ | $mls_i$ |
+| :----: | --------- | :-----: | :-----: |
+|   1    | marginale |    0    |   34    |
+|   2    | marginale |    0    |   33    |
+|   3    | marginale |    0    |   33    |
+|   4    | rifiutato |    0    |   175   |
+|   5    | rifiutato |    0    |   171   |
+|   6    | malvisto  |    0    |   67    |
+
+Il membro $4$ ha un malus più alto del membro $5$ ($175$ contro $171$): è stato
+rifiutato **prima** nelle sequenze di rifiuto altrui. A parità di status
+**rifiutato**, il membro $4$ occupa quindi la posizione meno favorevole.

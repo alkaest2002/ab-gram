@@ -1,5 +1,8 @@
 <script setup>
 // --- Imports ------------
+//   -- From vue
+import { computed } from "vue";
+
 //   -- From relative
 import BasePage from "../BasePage.vue";
 import MemberEgoPlot from "./MemberEgoPlot.vue";
@@ -9,6 +12,10 @@ import MemberStats from "./MemberStats.vue";
 const props = defineProps({
     // The member this page reports on (`{ id, name, ... }`).
     member: { type: Object, default: null },
+    // All the members in the report.
+    members: { type: Array, default: () => [] },
+    // Max members count
+    maxMembersCount: { type: Number },
     // The Moreno ego plot for this member (`{ memberId, svg }`).
     egoPlot: { type: Object, default: null },
     // Individual-level Moreno metrics (likes + dislikes combined).
@@ -36,6 +43,25 @@ const props = defineProps({
 // --- Composables --------
 
 // --- Computed -----------
+const receivedLikesScore = computed(() => {
+  const memberId = props.member.id;
+  return props.members
+    .filter(m => m.id !== memberId && m.likes.includes(memberId))
+    .reduce((acc, m) => {
+      const idx = m.likes.indexOf(memberId);
+      return acc + (props.maxMembersCount - idx);
+    }, 0);
+});
+
+const receivedDislikesScore = computed(() => {
+  const memberId = props.member.id;
+  return props.members
+    .filter(m => m.id !== memberId && m.dislikes.includes(memberId))
+    .reduce((acc, m) => {
+      const idx = m.dislikes.indexOf(memberId);
+      return acc + (props.maxMembersCount - idx);
+    }, 0);
+});
 
 // --- Watchers -----------
 
@@ -66,6 +92,8 @@ const props = defineProps({
                     :edge-types="edgeTypes"
                     :likes-components="likesComponents"
                     :dislikes-components="dislikesComponents"
+                    :received-likes-score="receivedLikesScore"
+                    :received-dislikes-score="receivedDislikesScore"
                 />
             </div>
 

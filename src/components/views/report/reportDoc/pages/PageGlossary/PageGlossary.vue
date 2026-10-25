@@ -24,6 +24,8 @@ const GLOSSARY = [
     { label: "GR", extended: "Rifiuti dati" },
     { label: "RR", extended: "Rifiuti ricevuti" },
     { label: "MR", extended: "Rifiuti reciproci" },
+    { label: "BNS", extended: "Bonus (scelte ricevute)" },
+    { label: "MLS", extended: "Malus (rifiuti ricevuti)" },
     { label: "IM", extended: "Impatto" },
     { label: "BL", extended: "Bilancio" },
     { label: "EI", extended: "Espressività" },

@@ -18,6 +18,10 @@ const props = defineProps({
     // `getSnaComponents` result for the rejection ("dislikes") network, exposing
     // `memberInComponents`.
     dislikesComponents: { type: Object, default: () => ({}) },
+    // The received likes score for this member.
+    receivedLikesScore: { type: Number, default: 0 },
+    // The received dislikes score for this member.
+    receivedDislikesScore: { type: Number, default: 0 },
 });
 
 // --- Emits --------------
@@ -427,7 +431,7 @@ function formatShare(value) {
                 </h3>
             </header>
 
-            <div class="flex items-center gap-[2.5mm]">
+            <div class="flex items-center justify-between gap-[2.5mm]">
                 <div class="min-w-0">
                     <p class="font-display leading-none">
                         <span
@@ -440,6 +444,28 @@ function formatShare(value) {
                             status.description
                         }}</span>
                     </p>
+                </div>
+                <div class="flex shrink-0 items-center gap-[1mm]">
+                    <span
+                        class="flex items-center gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                    >
+                        <span class="font-mono text-[9pt] font-medium text-muted"
+                            >BNS</span
+                        >
+                        <span class="font-mono text-[9pt] font-semibold leading-none">{{
+                            formatValue(receivedLikesScore)
+                        }}</span>
+                    </span>
+                    <span
+                        class="flex items-center gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                    >
+                        <span class="font-mono text-[9pt] font-medium text-muted"
+                            >MLS</span
+                        >
+                        <span class="font-mono text-[9pt] font-semibold leading-none">{{
+                            formatValue(receivedDislikesScore)
+                        }}</span>
+                    </span>
                 </div>
             </div>
         </section>

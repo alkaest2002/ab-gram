@@ -14,6 +14,9 @@ import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMem
 import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary/PageGlossary.vue";
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
+//   -- From utils
+import { MAX_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions.js";
+
 // --- Props --------------
 const props = defineProps({
     reportData: { type: Object, required: true },
@@ -99,6 +102,8 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             v-for="member in members"
             :key="member.id"
             :member="member"
+            :members="members"
+            :max-members-count="MAX_MEMBERS_COUNT"
             :ego-plot="egoPlotByMemberId[member.id] ?? null"
             :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
             :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
