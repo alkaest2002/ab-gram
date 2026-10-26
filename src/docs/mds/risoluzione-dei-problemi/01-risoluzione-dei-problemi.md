@@ -127,7 +127,7 @@ coerenti**. Se il controllo non passa, mostra un errore di validazione.
 
 ## 9 Il grafico di rete è confuso o sovrapposto
 
-Con molti membri o molti legami, le linee del grafo possono accavallarsi e la
+Con molti membri o molti legami, le linee del grafico possono accavallarsi e la
 disposizione dei nodi può risultare poco leggibile. La posizione dei nodi è
 calcolata con un algoritmo a forze simulate (ForceAtlas2) che parte da una
 configurazione casuale: non ha un significato preciso e può cambiare a ogni
@@ -135,13 +135,13 @@ generazione.
 
 ### 9.1 Soluzione
 
-- Usa il pulsante **Rigenera il grafico** (in basso a destra del grafo, visibile
+- Usa il pulsante **Rigenera il grafico** (in basso a destra del grafico, visibile
   a schermo) per ricalcolare la disposizione e aprire i parametri di layout.
-- Aumenta lo **Scaling ratio** per ottenere un grafo più **arioso**, con i
+- Aumenta lo **Scaling ratio** per ottenere un grafico più **arioso**, con i
   gruppi più distanziati e leggibili; abbassalo per una disposizione più
   compatta. È il primo valore da ritoccare con i gruppi numerosi.
 - Regola la **Gravity** per tenere i nodi più **vicini al centro**: valori alti
-  compattano il grafo, valori troppo alti ne schiacciano la struttura.
+  compattano il grafico, valori troppo alti ne schiacciano la struttura.
 - Rigenera più volte: a parità di dati possono emergere disposizioni più chiare.
 
 Ricorda che **la disposizione è solo visiva**: la distanza dal centro o tra i

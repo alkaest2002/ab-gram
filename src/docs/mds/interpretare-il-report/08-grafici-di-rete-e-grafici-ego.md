@@ -4,13 +4,13 @@ order: 8
 description: Come leggere i grafici prodotti dal report.
 ---
 
-Il report contiene due tipi di grafico: il grafo di rete, che mostra il
+Il report contiene due tipi di grafico: il grafico di rete, che mostra il
 gruppo nel suo insieme, e il grafico ego, che mostra le relazioni dal punto di
 vista di un singolo membro.
 
-## 1 Il grafo di rete
+## 1 Il grafico di rete
 
-Il grafo di rete compare nelle pagine "Rete delle scelte" e "Rete dei
+Il grafico di rete compare nelle pagine "Rete delle scelte" e "Rete dei
 rifiuti". Ogni pagina mostra una sola rete: le scelte sono disegnate in blu, i
 rifiuti in rosso.
 
@@ -31,7 +31,7 @@ La direzione e il tipo di legame sono codificati dalla linea:
 ### 1.3 Membri isolati
 
 I membri che non hanno alcuna relazione sono disegnati separatamente, in nero,
-sotto il grafo principale.
+sotto il grafico principale.
 
 ### 1.4 Posizione dei nodi
 
@@ -39,23 +39,23 @@ La disposizione è calcolata con un algoritmo di posizionamento force-directed (
 
 È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete.
 
-Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafo, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
+Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafico, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
 
 ### 1.5 Rigenerare la disposizione
 
-Se il grafo risulta troppo affollato o poco leggibile, un pulsante **Rigenera
-il grafico** in basso a destra del grafo (visibile a schermo, non in stampa)
+Se il grafico risulta troppo affollato o poco leggibile, un pulsante **Rigenera
+il grafico** in basso a destra del grafico (visibile a schermo, non in stampa)
 permette di ricalcolare la disposizione dei nodi. Aprendolo puoi regolare due
 parametri:
 
-- lo **Scaling ratio** governa quanto il grafo è disteso: valori più alti
+- lo **Scaling ratio** governa quanto il grafico è disteso: valori più alti
   distanziano i gruppi e li rendono più leggibili, valori più bassi li
   compattano. È il primo valore da aumentare con i gruppi numerosi.
-- la **Gravity** attira i nodi verso il centro: valori alti mantengono il grafo
+- la **Gravity** attira i nodi verso il centro: valori alti mantengono il grafico
   raccolto, valori troppo alti ne schiacciano la struttura nascondendo i
   sottogruppi.
 
-Poiché la disposizione iniziale è casuale, rigenerare il grafo anche con gli
+Poiché la disposizione iniziale è casuale, rigenerare il grafico anche con gli
 stessi parametri può produrre un layout diverso: prova più volte finché non
 ottieni una disposizione chiara.
 

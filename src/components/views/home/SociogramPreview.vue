@@ -36,7 +36,7 @@
                     class="graph-svg"
                     role="img"
                     aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre preferenze ed è al
-            centro del grafo; Bruno e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
+            centro del grafico; Bruno e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
             Bruno si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
             Iris, Luca e Marta scelgono senza essere scelti: Iris e Luca ricevono un rifiuto, Marta
             non riceve né preferenze né rifiuti."

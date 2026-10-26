@@ -19,7 +19,7 @@ $$
 
 ### 2 Numero di legami
 
-Il numero di frecce presenti nel grafo, cioè il numero di scelte espresse
+Il numero di frecce presenti nel grafico, cioè il numero di scelte espresse
 (oppure di rifiuti). Qui $\mathcal{E}$ è l'insieme dei legami.
 
 $$
@@ -44,8 +44,8 @@ due volte.
 ### 4 Densità
 
 Indica **quanto la rete è "fitta"**: è il rapporto tra i legami che ci sono e
-quelli che potrebbero esserci. Vale $1$ in un grafo completo (tutti hanno
-scelto tutti) e $0$ in un grafo senza legami.
+quelli che potrebbero esserci. Vale $1$ in un grafico completo (tutti hanno
+scelto tutti) e $0$ in un grafico senza legami.
 
 $$
 \Delta = \frac{E}{N(N-1)}
@@ -85,7 +85,7 @@ $B$ e $C$ siano collegati? È il modo di tradurre in numeri il detto "gli amici
 dei miei amici sono miei amici" (in tecnico, *coefficiente di clustering
 globale*). Nella formula, $t_{\triangle}$ è il numero di **triangoli** presenti
 nella rete (tre membri tutti collegati tra loro) e $d_v$ è il **numero di
-legami** del nodo $v$ (grado, calcolato sul grafo non orientato: due membri
+legami** del nodo $v$ (grado, calcolato sul grafico non orientato: due membri
 sono collegati se almeno uno dei due sceglie l'altro); il termine $\binom{d_v}{2}$ conta in quanti modi si
 possono scegliere due dei suoi vicini. Il risultato vale $1$ quando ogni terna
 di nodi collegati forma un triangolo.
@@ -211,11 +211,11 @@ $$
 
 Meno di un terzo delle scelte viene ricambiato.
 
-**Transitività.** Per questa misura guardiamo il grafo come *non orientato*,
+**Transitività.** Per questa misura guardiamo il grafico come *non orientato*,
 cioè consideriamo solo se due membri sono collegati (in un senso o nell'altro).
 Qui tutti e sei i possibili collegamenti tra coppie esistono (le frecce coprono
 le coppie $\{1,2\}$, $\{1,3\}$, $\{1,4\}$, $\{2,3\}$, $\{2,4\}$, $\{3,4\}$),
-quindi il grafo è completo: ogni terna di membri forma un triangolo,
+quindi il grafico è completo: ogni terna di membri forma un triangolo,
 $t_{\triangle} = \binom{4}{3} = 4$. Ogni nodo ha grado $d_v = 3$, quindi
 $\sum_v \binom{d_v}{2} = 4 \cdot \binom{3}{2} = 12$:
 

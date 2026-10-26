@@ -38,7 +38,7 @@ che derivano tutte le metriche.
 
 ## 4 Rete delle scelte e rete dei rifiuti
 
-Ogni pagina mostra il grafo di rete e una tabella di **metriche di gruppo**. Le
+Ogni pagina mostra il grafico di rete e una tabella di **metriche di gruppo**. Le
 prime righe sono punteggi grezzi espressi come conteggi (numeri interi):
 
 - numero di membri nel gruppo;
@@ -75,7 +75,7 @@ Si divide in quattro blocchi.
 
 ### 7.1 Grafico ego
 
-Mostra il grafo delle relazioni del membro, con lui al centro e gli altri membri
+Mostra il grafico delle relazioni del membro, con lui al centro e gli altri membri
 disposti intorno. Non contiene punteggi: la sua lettura è spiegata nella pagina della
 documentazione dedicata ai grafici.
 

@@ -214,7 +214,7 @@ influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
 ## 2 Centralità SNA
 
 Le centralità misurano **quanto un nodo è importante nella rete del gruppo**.
-In questo contesto la rete è un **grafo diretto**: ogni membro è un *nodo* (un
+In questo contesto la rete è un **grafico diretto**: ogni membro è un *nodo* (un
 punto) e ogni scelta è una *freccia* che va da chi sceglie a chi è scelto.
 Esistono molti modi di definire l'"importanza", e ogni centralità ne misura uno
 diverso: chi ha più legami, chi è più vicino a tutti, chi fa da ponte, chi è
@@ -362,7 +362,7 @@ Come si leggono questi numeri:
   $2$ e il $4$, le due autorità più forti. Il membro $2$ è il più equilibrato,
   perché è alto in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
-  nel grafo i loro ruoli sono speculari.
+  nel grafico i loro ruoli sono speculari.
 
 ## 3 In sintesi
 

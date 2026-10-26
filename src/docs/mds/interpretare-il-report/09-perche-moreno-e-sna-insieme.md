@@ -49,7 +49,7 @@ verrebbe archiviato come periferico.
 **Con gli occhi della SNA.** Ogni percorso più breve tra un membro di $A$ e uno
 di $B$, in entrambi i versi, deve passare per $9$. Le coppie ordinate $(s, t)$,
 con $s, t \neq 9$, per cui $9$ sta sul percorso più breve sono
-$4 \times 4 + 4 \times 4 = 32$. Normalizzando per un grafo orientato, cioè
+$4 \times 4 + 4 \times 4 = 32$. Normalizzando per un grafico orientato, cioè
 dividendo per $(n-1)(n-2) = 8 \cdot 7 = 56$:
 
 $$
