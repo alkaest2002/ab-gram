@@ -8,7 +8,7 @@ import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 //   -- From composables
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
-import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramPreferencesSelection";
+import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramSelectPreferences";
 
 // --- Props --------------
 const props = defineProps({

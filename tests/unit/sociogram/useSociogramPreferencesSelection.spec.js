@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { describe, it, expect, vi } from "vitest";
 
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers.js";
-import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramPreferencesSelection.js";
+import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramSelectPreferences.js";
 
 const DEFAULT_MEMBERS = [
   { id: "alice", name: "Alice" },

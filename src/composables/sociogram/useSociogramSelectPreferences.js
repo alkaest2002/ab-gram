@@ -39,12 +39,12 @@ export function useSociogramPreferencesSelection({
         // member of the roster without a deliberate search.
         if (query.value.trim() === "") return;
 
-        const first = filteredMembers.value[0];
-        if (!first) return;
-
         // Toggle only the top result. Adding one member at a time keeps the
         // preference list in the order the user builds it, which several
         // metrics (e.g. bonus/malus) rely on.
+        const first = filteredMembers.value[0];
+        if (!first) return;
+
         toggle(first);
         query.value = "";
     }
