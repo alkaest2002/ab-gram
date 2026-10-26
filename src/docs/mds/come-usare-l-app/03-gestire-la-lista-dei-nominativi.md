@@ -1,6 +1,6 @@
 ---
-title: Gestire i membri del gruppo
-order: 5
+title: Gestire la lista dei nominativi
+order: 3
 description: Come rivedere, modificare e correggere l'elenco dei nominativi, e come funzionano gli identificativi assegnati a ciascun membro.
 ---
 

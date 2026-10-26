@@ -1,6 +1,6 @@
 ---
 title: Archiviare e riprendere un progetto
-order: 7
+order: 6
 description: Come salvare e riprendere un sociogramma senza perdere il lavoro, e perché l'archivio è l'unico modo per interrompere un progetto.
 ---
 
@@ -47,7 +47,26 @@ i passaggi già completati. Prima di caricare i dati, l'applicazione verifica
 che il file sia un archivio valido e coerente; se qualcosa non va, mostra un
 messaggio che spiega il problema.
 
-## 3 Buone pratiche
+## 3 Cosa succede durante l'importazione di un progetto archiviato
+
+L'applicazione:
+
+1. Legge il file di testo.
+2. Decodifica il contenuto.
+3. Verifica che l'archivio sia valido e coerente.
+4. Se tutto è corretto, carica i dati.
+
+In caso di errore, viene mostrato un messaggio che spiega il problema (ad
+esempio un file che non è un archivio valido).
+
+## 4 Conservare gli archivi
+
+Poiché il file archiviato contiene i dati del tuo sociogramma, trattalo con la
+stessa cura che riserveresti a qualsiasi documento con informazioni sulle
+persone: salvalo in un luogo sicuro e condividilo solo con chi è autorizzato a
+vederlo.
+
+## 5 Buone pratiche
 
 1. Scarica l'archivio ogni volta che raggiungi un punto fermo, e sempre prima
    di chiudere la pagina.
