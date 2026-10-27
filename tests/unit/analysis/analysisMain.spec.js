@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import { describe, it, expect, vi } from "vitest";
 
 // The full pipeline renders SVG at the end. Stub the plotting step (which needs

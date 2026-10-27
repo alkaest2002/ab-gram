@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import { createAdjacencyMatrices, getMemberIndices } from "./common/adjacencyMatrices.js";
 import { getEdgeTypes } from "./edges/edgeTypes.js";
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno/metrics/morenoMetrics.js";

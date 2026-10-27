@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import * as np from "numpy-ts";
 import { toUndirected } from "graphology-operators";
 import { simmelianStrength } from "graphology-metrics/edge";

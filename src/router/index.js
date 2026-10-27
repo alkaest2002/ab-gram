@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import { createRouter, createWebHistory } from "vue-router";
 
 import homeRoutes from "@/router/routes/home";

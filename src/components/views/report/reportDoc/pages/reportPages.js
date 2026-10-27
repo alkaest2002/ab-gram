@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 // Shared injection keys for the report document.
 //
 // `ReportDoc` provides a page registry under this key and `BasePage`

@@ -1,3 +1,8 @@
+<!--
+  Copyright (c) 2026 Your Name
+  SPDX-License-Identifier: MIT
+-->
+
 <script setup>
 // --- Imports ------------
 //   -- From vue-router

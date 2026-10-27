@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import { describe, it, expect, vi } from "vitest";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";

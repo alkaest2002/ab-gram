@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 /**
  * Ordered list of the sociogram steps.
  * @type {import('@/stores/sociogram').SociogramStep[]}

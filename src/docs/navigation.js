@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 /**
  * Documentation navigation, derived from the Markdown files in `./mds`.
  *

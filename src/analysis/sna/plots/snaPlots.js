@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import forceAtlas2 from 'graphology-layout-forceatlas2';
 
 //////////////////////////////////////////////////////////////////////////////////

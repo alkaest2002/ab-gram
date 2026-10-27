@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import "@/assets/styles/fonts/fonts.css";
 import "@/assets/styles/main.css";
 

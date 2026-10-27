@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import {
   SNAPSHOT_CHECKS,
   MEMBER_CHECKS,

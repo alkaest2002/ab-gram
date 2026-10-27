@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import { ref } from "vue";
 
 /** Default ceiling on how many bytes are read from a file. */

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 /**
  * Generate an ISO timestamp for filenames.
  * @returns {string} A filename-safe ISO timestamp (colons/dots replaced, milliseconds removed).

@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import * as np from "numpy-ts";
 
 /** Edge types where `A -> B` and `B -> A` describe the same relationship. */

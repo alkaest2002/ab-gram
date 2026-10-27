@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import * as np from "numpy-ts";
 import { computeRankedScores } from "@/analysis/common/commonMetrics";
 import { MAX_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions.js";

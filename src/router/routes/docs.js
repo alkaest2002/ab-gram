@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
 import Docs from "@/components/views/docs/Docs.vue";
 import { navigation, flatOrdered } from "@/docs/navigation";
 
