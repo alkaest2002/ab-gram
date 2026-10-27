@@ -120,7 +120,28 @@ Ricorda che la direzione conta: la scelta parte da **chi** la esprime e arriva a
 **chi** è scelto. Se un membro non ha espresso scelte o rifiuti, annotalo: potrai
 registrarlo nell'app.
 
-### 3.1 Quante scelte e quanti rifiuti raccogliere
+### 3.1 È possibile raccogliere solo le scelte
+
+Le **scelte** e i **rifiuti** sono complementari e, nella maggior parte dei casi,
+conviene raccoglierle entrambe. È comunque possibile limitarsi alle sole
+**scelte**, rinunciando ai rifiuti: l'applicazione accetta un gruppo in cui ogni
+membro ha espresso solo le scelte e nessun rifiuto.
+
+Questa scelta, però, ha dei costi:
+
+- il **report è meno informativo**: senza rifiuti mancano le informazioni sul
+  conflitto, la rete dei rifiuti è vuota e gran parte dei tipi di legame — quelli
+  che coinvolgono almeno un rifiuto — non può presentarsi;
+- in **alcuni casi limite**, alcuni algoritmi possono **non convergere
+  facilmente**. In particolare, le misure di centralità calcolate per iterazioni
+  successive — come PageRank e HITS — possono non stabilizzarsi quando la rete
+  delle scelte è molto rada (poche relazioni, nodi isolati o nodi senza legami
+  in uscita). In questi casi alcune metriche possono risultare mancanti o nulle.
+
+Se decidi di raccogliere solo le scelte, tieni conto di questi limiti quando leggi
+e interpreti il report.
+
+### 3.2 Quante scelte e quanti rifiuti raccogliere
 
 AB-Gram non pone alcun vincolo rigido al numero di scelte e di rifiuti che ogni
 membro può esprimere: puoi registrare tutte le preferenze raccolte, senza doverne
@@ -131,7 +152,7 @@ quando le preferenze sono focalizzate, cioè quando ciascuno indica le persone c
 cui l'affinità o la distanza sono davvero più forti. Per questo conviene lavorare
 *prima* della raccolta, aiutando il gruppo a rispondere con misura.
 
-#### 3.1.1 Come ridurre le risposte generalizzate
+#### 3.2.1 Come ridurre le risposte generalizzate
 
 Alcuni membri tendono a scegliere o a rifiutare quasi tutti. Non puoi (e non
 devi) impedirlo, ma puoi ridurne la frequenza con qualche strategia persuasiva:
@@ -158,7 +179,7 @@ a discriminare tra i compagni o, nel caso dei rifiuti, un'ostilità diffusa o un
 clima di gruppo teso. Non va interpretato in modo meccanico, ma merita di essere
 osservato e, se opportuno, approfondito con la persona.
 
-#### 3.1.2 Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
+#### 3.2.2 Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
 
 In casi particolari AB-Gram permette di inserire, per ciascun membro, soltanto le
 **prime *n* scelte** e/o i **primi *n* rifiuti**. Il valore di *n* lo stabilisci tu

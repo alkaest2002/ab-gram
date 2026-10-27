@@ -71,6 +71,10 @@ pulsante si riattiva e puoi proseguire.
 - Rileggi l'elenco una volta completo: è più facile correggere un nome qui che
   in una fase successiva.
 - Usa nomi chiari e riconoscibili da chi compilerà o leggerà il sociogramma.
+- Nel passaggio successivo puoi limitarti alle sole **scelte**, senza rifiuti:
+  il report sarà però **meno informativo** e, in alcuni casi limite, alcuni
+  algoritmi potrebbero **non convergere facilmente** (per i dettagli, vedi
+  "Raccogliere i dati prima di usare l'app").
 - Ricorda che l'applicazione non conserva i dati tra una sessione e l'altra:
   se vuoi interrompere il lavoro, archivia il progetto e importalo di nuovo
   in seguito.

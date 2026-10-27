@@ -67,6 +67,23 @@ Le due indicazioni si escludono a vicenda con l'elenco: selezionare una persona
 azzera automaticamente la casella "non ha espresso…", e spuntare la casella
 svuota l'elenco.
 
+### 2.4 Indicare solo le scelte
+
+Puoi compilare la rilevazione limitandoti alle sole **scelte**, senza rifiuti:
+per ogni membro spunta **Non ha espresso rifiuti** e lascia vuoto l'elenco dei
+rifiuti.
+
+Questa possibilità è lecita, ma va usata con consapevolezza:
+
+- il **report sarà meno informativo**: senza rifiuti mancano le informazioni sul
+  conflitto, la rete dei rifiuti è vuota e gran parte dei tipi di legame non può
+  presentarsi;
+- in **alcuni casi limite**, alcuni algoritmi possono **non convergere
+  facilmente**. In particolare PageRank e HITS possono non stabilizzarsi quando
+  la rete delle scelte è molto rada (poche relazioni, nodi isolati o nodi senza
+  legami in uscita). In questi casi alcune metriche possono risultare mancanti o
+  nulle.
+
 ## 3 Una persona scelta e rifiutata
 
 Puoi selezionare la stessa persona sia tra le scelte sia tra i rifiuti. In quel
