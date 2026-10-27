@@ -11,6 +11,7 @@ defineProps({
     size: { type: String, default: "size-5" },
     strokeWidth: { type: Number, default: 1.5 },
     strokeClass: { type: String, default: "stroke-current" },
+    fillClass: { type: String, default: "fill-none" },
 });
 
 // --- Emits --------------
@@ -35,7 +36,7 @@ defineProps({
 <template>
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        :class="[size, strokeClass]"
+        :class="[size, strokeClass, fillClass]"
         class="shrink-0"
         viewBox="0 0 24 24"
         fill="none"

@@ -9,6 +9,7 @@
 // --- Props --------------
 defineProps({
     size: { type: String, default: "size-5" },
+    fillClass: { type: String, default: "fill-current" },
 });
 
 // --- Emits --------------
@@ -32,10 +33,9 @@ defineProps({
 
 <template>
     <svg
-        :class="size"
+        :class="[size, fillClass]"
         class="shrink-0"
         viewBox="0 0 24 24"
-        fill="#FFFFFF"
         aria-hidden="true"
     >
         <path
