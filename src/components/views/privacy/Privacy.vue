@@ -49,7 +49,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </p>
 
             <section class="space-y-3">
-                <h2 id="titolare" class="scroll-mt-24">1. Titolare del trattamento</h2>
+                <h2 id="titolare" class="scroll-mt-24">1 Titolare del trattamento</h2>
                 <p>
                     Il titolare del trattamento è il soggetto che gestisce il
                     presente sito, contattabile all'indirizzo di posta
@@ -58,7 +58,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="dati-trattati" class="scroll-mt-24">2. Dati trattati e finalità</h2>
+                <h2 id="dati-trattati" class="scroll-mt-24">2 Dati trattati e finalità</h2>
                 <p>
                     Il sito non raccoglie, non trasmette e non conserva alcun
                     dato personale. Non prevede registrazioni, moduli inviati a
@@ -70,7 +70,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="base-giuridica" class="scroll-mt-24">3. Base giuridica</h2>
+                <h2 id="base-giuridica" class="scroll-mt-24">3 Base giuridica</h2>
                 <p>
                     Poiché il sito non effettua alcun trattamento di dati
                     personali per proprio conto, non è necessaria una base
@@ -81,7 +81,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="servizi-terze-parti" class="scroll-mt-24">4. Servizi di terze parti</h2>
+                <h2 id="servizi-terze-parti" class="scroll-mt-24">4 Servizi di terze parti</h2>
                 <h3 id="cloudflare" class="scroll-mt-24">4.1 Cloudflare (hosting e CDN)</h3>
                 <p>
                     Il sito è ospitato e distribuito tramite Cloudflare, Inc.
@@ -207,7 +207,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="cookie" class="scroll-mt-24">5. Cookie</h2>
+                <h2 id="cookie" class="scroll-mt-24">5 Cookie</h2>
                 <p>
                     Il sito non utilizza cookie di profilazione né strumenti di
                     analisi di terze parti e non imposta alcun cookie per proprio
@@ -216,7 +216,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="conservazione" class="scroll-mt-24">6. Conservazione dei dati</h2>
+                <h2 id="conservazione" class="scroll-mt-24">6 Conservazione dei dati</h2>
                 <p>
                     Poiché il sito non memorizza dati personali, non è previsto
                     alcun periodo di conservazione. I dati eventualmente
@@ -227,7 +227,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="diritti-interessato" class="scroll-mt-24">7. Diritti dell'interessato</h2>
+                <h2 id="diritti-interessato" class="scroll-mt-24">7 Diritti dell'interessato</h2>
                 <p>
                     Ai sensi degli articoli da 15 a 22 del GDPR, l'interessato
                     ha il diritto di chiedere l'accesso ai propri dati, la
@@ -242,7 +242,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="diritto-di-reclamo" class="scroll-mt-24">8. Diritto di reclamo</h2>
+                <h2 id="diritto-di-reclamo" class="scroll-mt-24">8 Diritto di reclamo</h2>
                 <p>
                     L'interessato che ritenga che il trattamento dei propri dati
                     avvenga in violazione del GDPR ha il diritto di proporre
@@ -252,7 +252,7 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             </section>
 
             <section class="space-y-3">
-                <h2 id="modifiche" class="scroll-mt-24">9. Modifiche alla presente informativa</h2>
+                <h2 id="modifiche" class="scroll-mt-24">9 Modifiche alla presente informativa</h2>
                 <p>
                     La presente informativa può essere aggiornata nel tempo, ad
                     esempio in seguito a modifiche del sito o della normativa.

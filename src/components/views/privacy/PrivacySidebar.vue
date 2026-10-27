@@ -16,22 +16,22 @@
 
 // --- State --------------
 const sections = [
-    { id: "titolare", label: "1. Titolare del trattamento" },
-    { id: "dati-trattati", label: "2. Dati trattati e finalità" },
-    { id: "base-giuridica", label: "3. Base giuridica" },
+    { id: "titolare", label: "1 Titolare del trattamento" },
+    { id: "dati-trattati", label: "2 Dati trattati e finalità" },
+    { id: "base-giuridica", label: "3 Base giuridica" },
     {
         id: "servizi-terze-parti",
-        label: "4. Servizi di terze parti",
+        label: "4 Servizi di terze parti",
         children: [
             { id: "cloudflare", label: "4.1 Cloudflare (hosting e CDN)" },
             { id: "discord", label: "4.2 Discord (community)" },
         ],
     },
-    { id: "cookie", label: "5. Cookie" },
-    { id: "conservazione", label: "6. Conservazione dei dati" },
-    { id: "diritti-interessato", label: "7. Diritti dell'interessato" },
-    { id: "diritto-di-reclamo", label: "8. Diritto di reclamo" },
-    { id: "modifiche", label: "9. Modifiche alla presente informativa" },
+    { id: "cookie", label: "5 Cookie" },
+    { id: "conservazione", label: "6 Conservazione dei dati" },
+    { id: "diritti-interessato", label: "7 Diritti dell'interessato" },
+    { id: "diritto-di-reclamo", label: "8 Diritto di reclamo" },
+    { id: "modifiche", label: "9 Modifiche alla presente informativa" },
 ];
 
 // --- Composables --------
