@@ -72,7 +72,9 @@
     @apply outline-2 outline-offset-2 outline-accent;
   }
 
-  button {
+  button,
+  input[type="checkbox"],
+  label:has(> input[type="checkbox"]) {
     @apply cursor-pointer;
   }
 }
