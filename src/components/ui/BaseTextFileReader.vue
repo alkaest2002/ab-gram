@@ -10,7 +10,6 @@ import { ref } from "vue";
 
 //   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
-import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
 //   -- From composables
 import {
