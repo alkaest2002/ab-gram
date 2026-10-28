@@ -16,16 +16,14 @@ Le pagine si susseguono in quest'ordine:
 - Elenco dei membri
 - Scelte e rifiuti
 - Rete delle scelte
-- Componenti della rete delle scelte
 - Rete dei rifiuti *(solo se presenti rifiuti)*
-- Componenti della rete dei rifiuti *(solo se presenti rifiuti)*
 - Tipi di relazione
+- Componenti della rete delle scelte
 - Pagine individuali dei membri
 - Glossario
 
-> Le sezioni 6 e 7 compaiono solo quando almeno un membro ha espresso un
-> rifiuto. In loro assenza, la numerazione delle pagine successive scala di
-> conseguenza.
+> La sezione 5 compare solo quando almeno un membro ha espresso un rifiuto. In
+> sua assenza, la numerazione delle pagine successive scala di conseguenza.
 
 ### 1.1 Copertina
 
@@ -49,28 +47,23 @@ tramite gli identificativi dei membri a cui si riferiscono.
 Presenta il grafico della rete delle scelte insieme alle metriche di
 gruppo.
 
-### 1.5 Componenti della rete delle scelte
+### 1.5 Rete dei rifiuti
+
+Analoga alla rete delle scelte, ma riferita ai rifiuti. Compare solo quando
+almeno un membro ha espresso un rifiuto.
+
+### 1.6 Tipi di relazione
+
+Classifica ogni relazione in sette tipi, raggruppati in tre fasce: relazioni
+sane, relazioni potenzialmente problematiche e relazioni problematiche.
+
+### 1.7 Componenti della rete delle scelte
 
 Scompone la rete delle scelte in cinque categorie: diadi, clique, componenti
 debolmente connesse, componenti fortemente connesse e componenti fortemente
 connesse e reciproche.
 
-### 1.6 Rete dei rifiuti
-
-Analoga alla rete delle scelte, ma riferita ai rifiuti. Compare solo quando
-almeno un membro ha espresso un rifiuto.
-
-### 1.7 Componenti della rete dei rifiuti
-
-Scompone la rete dei rifiuti nelle stesse categorie usate per la rete delle
-scelte. Compare solo quando almeno un membro ha espresso un rifiuto.
-
-### 1.8 Tipi di relazione
-
-Classifica ogni relazione in sette tipi, raggruppati in tre fasce: relazioni
-sane, relazioni potenzialmente problematiche e relazioni problematiche.
-
-### 1.9 Pagine individuali dei membri
+### 1.8 Pagine individuali dei membri
 
 Per ogni membro viene generata una pagina dedicata, che contiene:
 
@@ -80,7 +73,7 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 - le componenti di appartenenza;
 - lo status sociometrico.
 
-### 1.10 Glossario
+### 1.9 Glossario
 
 Chiude il report con le sigle utilizzate nelle pagine e il loro significato
 esteso.

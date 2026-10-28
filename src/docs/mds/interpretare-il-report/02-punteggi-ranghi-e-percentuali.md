@@ -55,18 +55,18 @@ mostrati con una cifra decimale):
 - indice di coesione (tipo I e tipo II) nella rete delle scelte, oppure indice
   di conflitto (tipo I e tipo II) nella rete dei rifiuti.
 
-## 5 Componenti della rete delle scelte e dei rifiuti
-
-Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
-connesse e fortemente reciproche) mostra il **numero di componenti individuate**:
-un punteggio grezzo espresso come conteggio.
-
-## 6 Tipi di relazione
+## 5 Tipi di relazione
 
 Classifica le relazioni in sette tipi, raggruppati in tre fasce (relazioni sane,
 potenzialmente problematiche e problematiche). Per ogni tipo e per ogni fascia
 mostra un **conteggio grezzo**: quante coppie di membri ricadono in quella
 categoria. Non ci sono ranghi né percentuali.
+
+## 6 Componenti della rete delle scelte
+
+Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
+connesse e fortemente reciproche) mostra il **numero di componenti individuate**:
+un punteggio grezzo espresso come conteggio.
 
 ## 7 Pagine individuali dei membri
 
@@ -154,7 +154,7 @@ significato esteso.
 | Elenco dei membri | – | – | – |
 | Scelte e rifiuti | identificativi (+/-) | – | – |
 | Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
-| Componenti della rete | conteggi <br><span class="text-xs text-muted">componenti per categoria</span> | – | – |
 | Tipi di relazione | conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span> | – | – |
+| Componenti della rete | conteggi <br><span class="text-xs text-muted">componenti per categoria</span> | – | – |
 | Pagine individuali | conteggi e decimali | sì | sì |
 | Glossario | – | – | – |

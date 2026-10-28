@@ -81,10 +81,6 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
             @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
         />
-        <PageSnaComponents
-            type-of-sna="likes"
-            :components="reportData.analysisData?.snaLikesComponents ?? {}"
-        />
         <PageSnaGroupMetrics
             v-if="!reportData.membersData.allMembersHaveNoDislikes"
             type-of-sna="dislikes"
@@ -94,12 +90,11 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
             @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
         />
-        <PageSnaComponents
-            v-if="!reportData.membersData.allMembersHaveNoDislikes"
-            type-of-sna="dislikes"
-            :components="reportData.analysisData?.snaDislikesComponents ?? {}"
-        />
         <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
+        <PageSnaComponents
+            type-of-sna="likes"
+            :components="reportData.analysisData?.snaLikesComponents ?? {}"
+        />
         <PageMemberMetrics
             v-for="member in members"
             :key="member.id"
