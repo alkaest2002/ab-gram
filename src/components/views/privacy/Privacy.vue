@@ -213,6 +213,53 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
                     analisi di terze parti e non imposta alcun cookie per proprio
                     conto.
                 </p>
+                <p>
+                    Tuttavia, Cloudflare (descritto al punto 4.1) può impostare
+                    alcuni cookie tecnici, strettamente necessari, tramite la
+                    propria infrastruttura di hosting e CDN, al fine di garantire
+                    la sicurezza, l'affidabilità e il corretto funzionamento del
+                    sito. Tali cookie non vengono utilizzati per identificare i
+                    visitatori né per finalità di profilazione o marketing e, in
+                    quanto strettamente necessari, non richiedono il consenso
+                    dell'utente ai sensi della normativa applicabile.
+                </p>
+                <p>In particolare, possono essere impostati i seguenti cookie:</p>
+                <ul class="list-disc space-y-1 pl-6">
+                    <li>
+                        <code>__cf_bm</code>: utilizzato per distinguere gli
+                        utenti umani dai bot e proteggere il sito da traffico
+                        automatizzato e malevolo;
+                    </li>
+                    <li>
+                        <code>cf_clearance</code>: conserva la prova del
+                        superamento di una verifica di sicurezza (challenge) e
+                        consente di non ripetere la verifica durante la sessione;
+                    </li>
+                    <li>
+                        <code>__cfruid</code>: cookie di sessione utilizzato
+                        dalle funzioni di limitazione della velocità (rate
+                        limiting) di Cloudflare per applicare le impostazioni di
+                        sicurezza ai singoli client;
+                    </li>
+                    <li>
+                        <code>__cflb</code>: utilizzato dalle funzioni di
+                        bilanciamento del carico (load balancing) di Cloudflare
+                        per distribuire il traffico tra i server.
+                    </li>
+                </ul>
+                <p>
+                    La durata di questi cookie varia in base alla funzione (alcuni
+                    sono cookie di sessione e vengono eliminati alla chiusura del
+                    browser) ed è determinata da Cloudflare. Per maggiori
+                    dettagli si rimanda alla
+                    <a
+                        href="https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        documentazione di Cloudflare sui cookie
+                    </a>.
+                </p>
             </section>
 
             <section class="space-y-3">
