@@ -4,9 +4,11 @@ order: 1
 description: Le parti che compongono il report generato da AB-Gram e l'ordine in cui conviene leggerle.
 ---
 
-Il report prodotto da AB-Gram è organizzato in pagine da leggere in sequenza:
-prima il quadro generale del gruppo, poi l'analisi delle reti e dei tipi di
-relazione, infine il dettaglio di ciascun membro.
+Il report prodotto da AB-Gram è organizzato in pagine da leggere in sequenza,
+dalla copertina al glossario. La copertina e l'elenco dei membri inquadrano il
+gruppo; scelte e rifiuti, le reti, i tipi di relazione e le componenti della
+rete delle scelte ne analizzano i legami; le pagine individuali approfondiscono
+la posizione di ciascun membro e il glossario chiude il documento.
 
 ## 1 Le sezioni del report
 
