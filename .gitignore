@@ -137,5 +137,5 @@ dist
 
 
 # custom
-.DS_Store
+**/.DS_Store
 .vitest/
