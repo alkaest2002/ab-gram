@@ -28,6 +28,7 @@ const stripRange = (version) => version.replace(/^[\^~]/, "");
 // Public GitHub repositories for the runtime dependencies.
 const repositories = {
     "graphology": "https://github.com/graphology/graphology",
+    "graphology-communities-louvain": "https://github.com/graphology/graphology",
     "graphology-components": "https://github.com/graphology/graphology",
     "graphology-layout": "https://github.com/graphology/graphology",
     "graphology-layout-forceatlas2": "https://github.com/graphology/graphology",
