@@ -117,7 +117,8 @@ $$
 **Coesione di tipo II.** Rapporto tra le scelte reciproche e le scelte
 effettivamente *espresse*: misura quanta parte delle scelte fatte viene
 ricambiata, senza tener conto di quante scelte si sarebbero potute fare.
-Coincide con la *reciprocità* delle scelte vista sopra.
+Coincide con l'*indice di reciprocità* della rete, ossia con la stessa misura
+di reciprocità vista sopra applicata alle scelte.
 
 $$
 Coh_{II} = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
@@ -141,7 +142,9 @@ $$
 
 **Conflitto di tipo II.** Rapporto tra i rifiuti reciproci e i rifiuti
 effettivamente *espressi*: misura quanta parte dei rifiuti fatti viene
-ricambiata.
+ricambiata. Coincide con l'*indice di reciprocità* della rete dei rifiuti,
+ossia con la stessa misura di reciprocità vista sopra, applicata però ai
+legami negativi.
 
 $$
 Con_{II} = \frac{\sum_{i,j} b_{ij} b_{ji}}{\sum_{i,j} b_{ij}}

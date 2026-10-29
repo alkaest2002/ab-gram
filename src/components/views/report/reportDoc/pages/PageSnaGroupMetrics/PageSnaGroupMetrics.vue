@@ -51,8 +51,7 @@ const SNA_CONFIG = {
         directedLegend: "Scelta non reciproca",
         mutualLegend: "Scelta reciproca",
         morenoIndexes: [
-            { key: "cohesion", label: "Indice di coesione (tipo I)" },
-            { key: "cohesionTypeII", label: "Indice di coesione (tipo II)" },
+            { key: "cohesion", label: "Indice di coesione" },
         ],
     },
     dislikes: {
@@ -63,8 +62,7 @@ const SNA_CONFIG = {
         directedLegend: "Rifiuto non reciproco",
         mutualLegend: "Rifiuto reciproco",
         morenoIndexes: [
-            { key: "conflict", label: "Indice di conflitto (tipo I)" },
-            { key: "conflictTypeII", label: "Indice di conflitto (tipo II)" },
+            { key: "conflict", label: "Indice di conflitto" },
         ],
     },
 };
