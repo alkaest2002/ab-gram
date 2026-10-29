@@ -62,7 +62,7 @@ const remainingMembersCount = computed(
                 aria-hidden="true"
             >
                 <span
-                    v-for="index in totalCount"
+                    v-for="index of totalCount"
                     :key="index"
                     class="size-1.5 rounded-full transition-colors duration-300"
                     :class="
@@ -73,7 +73,7 @@ const remainingMembersCount = computed(
                 ></span>
             </div>
             <p class="text-xs text-muted">
-                {{ completedPercentage }}% completato
+                completato {{ completedPercentage }}%
             </p>
         </div>
         <div>
