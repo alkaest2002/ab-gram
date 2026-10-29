@@ -44,13 +44,6 @@ const remainingMembersCount = computed(
     () => totalCount.value - completedMembersCount.value,
 );
 
-/** Number of node dots to draw (one per member, capped for large groups). */
-const MAX_DOTS = 24;
-
-const progressDots = computed(() =>
-    Math.min(totalCount.value, MAX_DOTS),
-);
-
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -69,7 +62,7 @@ const progressDots = computed(() =>
                 aria-hidden="true"
             >
                 <span
-                    v-for="index in progressDots"
+                    v-for="index in totalCount"
                     :key="index"
                     class="size-1.5 rounded-full transition-colors duration-300"
                     :class="
