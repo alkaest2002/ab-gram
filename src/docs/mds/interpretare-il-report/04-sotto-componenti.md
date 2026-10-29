@@ -8,18 +8,41 @@ Oltre alle metriche, il sociogramma (la mappa del gruppo, in cui i membri sono
 punti e le scelte sono frecce) può essere scomposto in parti più piccole. Queste
 **sotto-strutture** rivelano come il gruppo è organizzato al suo interno: ci
 sono coppie affiatate, sottogruppi molto compatti e, a volte, gruppi che non
-hanno alcun contatto tra loro. Ne vediamo tre tipi: le diadi, le clique e le
-componenti connesse.
+hanno alcun contatto tra loro. Ne vediamo quattro tipi: le diadi, le clique, le
+componenti connesse e le comunità di Louvain.
 
 Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 **sceglie** il membro $j$, e $a_{ij} = 0$ che non lo sceglie.
 
-> **Scelte, non rifiuti.** In questa sezione analizziamo le **scelte**, cioè i
-> legami positivi descritti dalla matrice $A$. Le stesse definizioni valgono
-> anche per i rifiuti (matrice $B$), ma il loro significato è molto meno
-> intuitivo: un insieme di persone che si rifiutano a vicenda non forma un
-> "sottogruppo affiatato". Per questo ti consigliamo di concentrare l'analisi
-> sulle scelte.
+## Che cos'è una componente
+
+Con **componente** indichiamo una parte del gruppo — una coppia, un sottogruppo
+o una comunità — che possiamo isolare dal resto per studiarla. Le strutture
+descritte in questa pagina individuano queste parti in modi diversi: alcune
+seguono regole precise (le diadi, le clique e le componenti connesse), altre
+nascono da un algoritmo che cerca la suddivisione migliore (le comunità di
+Louvain).
+
+In ogni caso si tratta di **ipotesi, non di certezze**. Gli algoritmi che le
+individuano sono strumenti **euristici**: suggeriscono strutture plausibili a
+partire dai dati, ma non osservano direttamente le relazioni reali. Anche quando
+la regola è esatta (come per le clique), il risultato va letto come un
+**candidato da verificare** osservando il gruppo nella realtà.
+
+## Perché analizziamo solo le scelte
+
+Tutte le strutture di questa sezione si basano sulle **scelte** ($a_{ij} = 1$),
+cioè sui legami positivi della matrice $A$. Il motivo è di fondo: una componente
+è un sottogruppo che sta insieme per **affinità** o **attrazione**, e l'affinità
+si manifesta con una scelta, non con un rifiuto. Un insieme di persone che si
+rifiutano a vicenda non forma un "sottogruppo affiatato": è solo un insieme di
+persone in conflitto, e non ha senso chiamarlo componente.
+
+Le stesse definizioni valgono formalmente anche per i rifiuti (matrice $B$), ma
+il risultato sarebbe fuorviante: dire che due membri "si raggiungono" lungo una
+catena di rifiuti, o che formano una "clique" perché tutti si rifiutano a
+vicenda, descrive un'ostilità, non una struttura di appartenenza. Per questo,
+per diadi, clique e componenti consideriamo solo le scelte.
 
 ## 1 Diadi
 
@@ -193,7 +216,42 @@ diverso, che misura la compattezza e non la raggiungibilità.
 | Sovrapposizione | Possibile | No, dividono il gruppo | No, dividono il gruppo |
 | Risponde alla domanda | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?" | "Si può arrivare a tutti seguendo le scelte?" |
 
-## 5 In sintesi
+## 5 Comunità di Louvain
+
+Le strutture viste finora (diadi, clique, componenti) seguono una regola netta e
+deterministica: un membro o soddisfa la condizione, o non la soddisfa. Le
+**comunità di Louvain** seguono un'idea diversa: invece di imporre una regola
+fissa, l'algoritmo cerca la suddivisione del gruppo che **massimizza la
+modularità**, cioè quella in cui i legami sono più densi *dentro* ogni comunità
+di quanto ci si aspetterebbe se fossero distribuiti a caso.
+
+In pratica, Louvain raggruppa i membri in modo da avere **tante scelte dentro
+ogni gruppo** e **poche scelte tra gruppi diversi**.
+
+### 5.1 La modularità Q
+
+La qualità della suddivisione trovata è misurata da un numero chiamato
+**modularità** ($Q$). Non ha un'unità di misura: serve solo a confrontare quanto
+la suddivisione è "migliore del caso".
+
+- $Q$ vicino a $0$: i legami sono distribuiti quasi come se fossero casuali; il
+  gruppo non mostra una struttura a comunità marcata.
+- $Q$ più alto: i legami sono concentrati dentro le comunità; la struttura è
+  più netta.
+
+### 5.2 Cosa cambia rispetto alle componenti
+
+- Le componenti **dividono** il gruppo seguendo una regola fissa (esiste un
+  percorso?) e ogni membro appartiene a una sola componente.
+- Le comunità di Louvain nascono da una **ottimizzazione**: non c'è una regola
+  unica, ma la suddivisione che meglio separa i legami interni da quelli esterni.
+- Anche qui ogni membro appartiene a **una sola** comunità, ma i confini possono
+  cambiare se cambia la rete.
+
+Le comunità di Louvain aiutano a cogliere l'organizzazione **d'insieme** del
+gruppo quando i confini tra i sottogruppi non sono ovvi.
+
+## 6 In sintesi
 
 | Struttura | Cosa richiede | Quanto è compatta |
 | --------- | ------------- | ----------------- |
@@ -202,3 +260,4 @@ diverso, che misura la compattezza e non la raggiungibilità.
 | Componente forte con soli legami reciproci | Percorso tra ogni coppia usando solo legami reciproci | Media: catene di diadi |
 | Componente forte | Percorso tra ogni coppia seguendo le frecce | Più bassa |
 | Componente debole | Percorso tra ogni coppia ignorando le frecce | La più bassa: può contenere lunghe catene di intermediari |
+| Comunità di Louvain | Suddivisione che massimizza la modularità | Variabile: dipende dalla rete |
