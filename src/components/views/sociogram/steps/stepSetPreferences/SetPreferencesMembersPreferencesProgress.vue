@@ -55,10 +55,10 @@ const remainingMembersCount = computed(
     <div
         class="flex flex-wrap justify-between gap-x-4 gap-y-2"
     >
-        <div class="flex items-center gap-3">
-            <!-- One node per member: filled when complete, outlined otherwise. -->
-            <div
-                class="flex items-center gap-1"
+        <p class="text-xs text-muted">
+            <!-- One node per member: black when complete, gray otherwise. -->
+            <span
+                class="mr-3 inline-flex items-center gap-1 align-middle"
                 aria-hidden="true"
             >
                 <span
@@ -68,18 +68,14 @@ const remainingMembersCount = computed(
                     :class="
                         index <= completedMembersCount
                             ? 'bg-ink'
-                            : 'border border-line bg-line'
+                            : 'bg-line'
                     "
                 ></span>
-            </div>
-            <p class="text-xs text-muted">
-                completato {{ completedPercentage }}%
-            </p>
-        </div>
-        <div>
-            <p class="text-xs text-muted">
-                {{ remainingMembersCount }} da compilare
-            </p>
-        </div>
+            </span>
+            completato {{ completedPercentage }}%
+        </p>
+        <p class="text-xs text-muted">
+            {{ remainingMembersCount }} da compilare
+        </p>
     </div>
 </template>
