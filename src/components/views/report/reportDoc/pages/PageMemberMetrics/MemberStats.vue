@@ -17,11 +17,11 @@ const props = defineProps({
     snaMetrics: { type: Object, default: () => ({}) },
     // `getEdgeTypes` result, exposing `memberInEdges`.
     edgeTypes: { type: Object, default: () => ({}) },
-    // `getSnaComponents` result for the choice ("likes") network, exposing
-    // `memberInComponents`.
+    // `getSnaComponents` result for the choice ("likes") network, exposing the
+    // component lists per category.
     likesComponents: { type: Object, default: () => ({}) },
     // `getSnaComponents` result for the rejection ("dislikes") network, exposing
-    // `memberInComponents`.
+    // the component lists per category.
     dislikesComponents: { type: Object, default: () => ({}) },
 });
 
@@ -187,18 +187,19 @@ const edgeShares = (() => {
     });
 })();
 
-// `memberInComponents` is keyed by member id and holds a `{ cnt, pct }` per
-// component category: the number of that type's components containing the member
-// (`cnt`) and the 0-1 fraction of the type's components it is present in (`pct`).
+// Each component category is a list of components, where a component is a list
+// of member ids. The shares count how many of that category's components contain
+// the member (`cnt`) and the 0-1 fraction it is present in (`pct`).
 const buildComponentShares = (components, prefix) => {
-    const shares = components?.memberInComponents?.[props.memberId] ?? {};
     return COMPONENT_CONFIG.map(({ key, label }) => {
-        const value = shares[key] ?? {};
+        const list = components?.[key] ?? [];
+        const count = list.filter((component) => component.includes(props.memberId)).length;
+        const share = list.length === 0 ? 0 : count / list.length;
         return {
             key: `${prefix}-${key}`,
             label: `${prefix}-${label}`,
-            count: Number(value.cnt ?? 0),
-            share: Number(value.pct ?? 0),
+            count,
+            share,
         };
     });
 };

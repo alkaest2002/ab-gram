@@ -56,6 +56,16 @@ const categories = CATEGORIES.map((category) => ({
     components: props.components?.[category.key] ?? [],
 }));
 
+// Louvain communities are a partition of the group with an associated
+// modularity Q value, reported next to the section title.
+const louvainCommunities = props.components?.louvainCommunities?.communities ?? [];
+const louvainQ = props.components?.louvainCommunities?.q ?? null;
+
+const formatQ = (value) => {
+    if (value === null || value === undefined || !Number.isFinite(value)) return "—";
+    return `Q = ${Number(value).toFixed(3)}`;
+};
+
 // --- Composables --------
 
 // --- Computed -----------
@@ -100,6 +110,34 @@ const categories = CATEGORIES.map((category) => ({
 
                     <p v-else class="pt-[2mm] font-mono text-[9pt] text-muted italic">
                         nessuna componente di questo tipo
+                    </p>
+                </section>
+
+                <section class="shrink-0">
+                    <header class="flex items-baseline justify-between border-b border-line">
+                        <h3 class="font-mono text-[9pt] font-medium tracking-[0.08em] text-muted uppercase">
+                            Comunità di Louvain ({{ formatQ(louvainQ) }})
+                        </h3>
+                        <span class="font-mono text-[9pt] font-semibold text-ink">
+                            {{ louvainCommunities.length }}
+                        </span>
+                    </header>
+
+                    <div v-if="louvainCommunities.length" class="pt-[2mm]">
+                        <div class="flex flex-wrap gap-[1.5mm]">
+                            <span
+                                v-for="(community, index) in louvainCommunities"
+                                :key="`louvain-${index}`"
+                                class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] font-mono text-[9pt] font-semibold text-muted"
+                                :class="{'py-[1mm]': community.length > 24}"
+                            >
+                                {{ community.join(" · ") }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <p v-else class="pt-[2mm] font-mono text-[9pt] text-muted italic">
+                        nessuna comunità di questo tipo
                     </p>
                 </section>
             </div>
