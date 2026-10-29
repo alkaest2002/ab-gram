@@ -59,7 +59,7 @@ const columns = [members.slice(0, half), members.slice(half)];
                             :key="row.id"
                             class="py-1"
                         >
-                            <div class="flex items-start gap-x-2.5">
+                            <div class="flex items-start gap-x-2.5 py-[2pt]">
                                 <span
                                     class="inline-flex h-5 min-w-7 shrink-0 items-center justify-center rounded-md border border-ink px-1.5 font-mono text-[10pt] font-semibold text-ink"
                                 >
