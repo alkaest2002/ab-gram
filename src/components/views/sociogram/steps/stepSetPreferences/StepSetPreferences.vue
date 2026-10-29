@@ -202,11 +202,6 @@ function handleWindowKeydown(event) {
         </p>
 
         <template v-else>
-            <!-- Progress: percentage of members whose data has been collected. -->
-            <SetPreferencesMembersPreferencesProgress
-                :members="members"
-                class="mt-6"
-            />
 
             <!-- Carousel: select the subject, one member at a time. -->
             <div class="mt-6">
@@ -292,6 +287,12 @@ function handleWindowKeydown(event) {
                 @carousel-previous="carouselGoPreviousMember"
                 @carousel-next="carouselGoNextMember"
                 class="mt-9"
+            />
+
+            <!-- Progress: percentage of members whose data has been collected. -->
+            <SetPreferencesMembersPreferencesProgress
+                :members="members"
+                class="mt-6"
             />
         </template>
     </section>

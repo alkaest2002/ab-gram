@@ -44,6 +44,13 @@ const remainingMembersCount = computed(
     () => totalCount.value - completedMembersCount.value,
 );
 
+/** Number of node dots to draw (one per member, capped for large groups). */
+const MAX_DOTS = 24;
+
+const progressDots = computed(() =>
+    Math.min(totalCount.value, MAX_DOTS),
+);
+
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -52,34 +59,34 @@ const remainingMembersCount = computed(
 </script>
 
 <template>
-    <div>
-        <div class="mb-2 flex items-baseline justify-between">
-            <p class="eyebrow">AVANZAMENTO</p>
-            <p class="font-mono text-xs font-medium text-muted">
-                {{ completedMembersCount }} di {{ totalCount }} membri
+    <div
+        class="flex flex-wrap justify-between gap-x-4 gap-y-2"
+    >
+        <div class="flex items-center gap-3">
+            <!-- One node per member: filled when complete, outlined otherwise. -->
+            <div
+                class="flex items-center gap-1"
+                aria-hidden="true"
+            >
+                <span
+                    v-for="index in progressDots"
+                    :key="index"
+                    class="size-1.5 rounded-full transition-colors duration-300"
+                    :class="
+                        index <= completedMembersCount
+                            ? 'bg-ink'
+                            : 'border border-line bg-line'
+                    "
+                ></span>
+            </div>
+            <p class="text-xs text-muted">
+                {{ completedPercentage }}% completato
             </p>
         </div>
-
-        <div
-            class="h-2 w-full overflow-hidden rounded-full bg-line"
-            role="progressbar"
-            aria-label="Membri con dati compilati"
-            :aria-valuenow="completedPercentage"
-            aria-valuemin="0"
-            aria-valuemax="100"
-        >
-            <div
-                class="h-full rounded-full bg-ink transition-[width] duration-300 ease-out"
-                :style="{ width: `${completedPercentage}%` }"
-            ></div>
+        <div>
+            <p class="text-xs text-muted">
+                {{ remainingMembersCount }} ancora da compilare
+            </p>
         </div>
-
-        <p class="mt-2 text-xs text-muted">
-            {{ completedPercentage }}% completato<span
-                v-if="remainingMembersCount > 0"
-            >
-                — {{ remainingMembersCount }} ancora da compilare</span
-            >.
-        </p>
     </div>
 </template>
