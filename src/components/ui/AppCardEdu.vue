@@ -7,7 +7,9 @@
 // --- Imports ------------
 //   -- From components
 import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
+import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
+import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
 // --- Props --------------
 defineProps({
@@ -24,6 +26,7 @@ defineProps({
 // --- Stores -------------
 
 // --- State --------------
+const brochureUrl = `${import.meta.env.BASE_URL}ab-gram%20depliant.pdf`;
 
 // --- Composables --------
 
@@ -34,6 +37,8 @@ defineProps({
 // --- Lifecycle ----------
 
 // --- Methods ------------
+const openBrochure = () =>
+    window.open(brochureUrl, "_blank", "noopener,noreferrer");
 </script>
 
 <template>
@@ -46,6 +51,12 @@ defineProps({
 
         <template #actions>
             <AppCopyLinkButton :buttonVariant="buttonVariant" />
+            <BaseButton :buttonVariant="buttonVariant" @click="openBrochure">
+                <template #icon>
+                    <FileIcon size="size-4" />
+                </template>
+                Apri il dépliant
+            </BaseButton>
         </template>
     </BaseCard>
 </template>
