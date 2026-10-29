@@ -87,7 +87,9 @@ const isComplete = computed(() => isMemberComplete(currentMember.value));
 
 const canGoNext = computed(() => membersStatus.value === "completed");
 
-const carouselCanGoPreviousMember = computed(() => currentIndex.value > 0);
+const carouselCanGoPreviousMember = computed(
+    () => isComplete.value && currentIndex.value > 0
+);
 
 const carouselCanGoNextMember = computed(
     () => isComplete.value && currentIndex.value < members.value.length - 1,
@@ -292,6 +294,7 @@ function handleWindowKeydown(event) {
             <!-- Progress: percentage of members whose data has been collected. -->
             <SetPreferencesMembersPreferencesProgress
                 :members="members"
+                :current-index="currentIndex"
                 class="mt-6"
             />
         </template>
