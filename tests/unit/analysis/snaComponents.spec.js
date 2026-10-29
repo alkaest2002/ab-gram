@@ -17,7 +17,7 @@ const COMPONENT_KEYS = [
 ];
 
 describe("getSnaComponents", () => {
-  it("returns one array per component type and a memberInComponents object", () => {
+  it("returns one array per component type and the louvain communities", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -27,9 +27,13 @@ describe("getSnaComponents", () => {
 
     const result = getSnaComponents(graph);
 
-    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "memberInComponents"]);
+    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "louvainCommunities"]);
     COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
-    expect(result.memberInComponents).toBeInstanceOf(Object);
+
+    expect(result.louvainCommunities).toHaveProperty("communities");
+    expect(result.louvainCommunities).toHaveProperty("q");
+    expect(result.louvainCommunities.communities).toBeInstanceOf(Array);
+    expect(typeof result.louvainCommunities.q).toBe("number");
   });
 
   it("reports dyads and cliques for a mutual triangle", () => {
@@ -114,7 +118,7 @@ describe("getSnaComponents", () => {
     expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
   });
 
-  it("reports, per member, the fraction of each type's components containing it", () => {
+  it("reports louvain communities as a partition of every member", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -122,37 +126,24 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { memberInComponents } = getSnaComponents(graph);
+    const { louvainCommunities } = getSnaComponents(graph, { seed: 42, runs: 5 });
 
-    // Three dyads; every member appears in exactly two of them.
-    expect(memberInComponents.a.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
-    expect(memberInComponents.b.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
-    expect(memberInComponents.c.dyads).toEqual({ cnt: 2, pct: 2 / 3 });
-
-    // The single clique / strong / weak component contains everyone.
-    expect(memberInComponents.a.cliques).toEqual({ cnt: 1, pct: 1 });
-    expect(memberInComponents.a.strongComponentsWithReciprocalEdges).toEqual({
-      cnt: 1,
-      pct: 1,
-    });
-    expect(memberInComponents.a.strongComponents).toEqual({ cnt: 1, pct: 1 });
-    expect(memberInComponents.a.weakComponents).toEqual({ cnt: 1, pct: 1 });
+    // A partition: every member appears exactly once across the communities.
+    expect(louvainCommunities.communities.flat().sort()).toEqual(["a", "b", "c"]);
+    expect(Number.isFinite(louvainCommunities.q)).toBe(true);
   });
 
-  it("reports 0% for a component type with no components", () => {
+  it("returns singleton communities and q = 0 for an edgeless graph", () => {
     const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["c"]),
-      makeMember("c", ["d"]),
-      makeMember("d", []),
+      makeMember("a"),
+      makeMember("b"),
+      makeMember("c"),
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { memberInComponents } = getSnaComponents(graph);
+    const { louvainCommunities } = getSnaComponents(graph);
 
-    // No dyads exist, so no member can be present in one.
-    ["a", "b", "c", "d"].forEach((id) =>
-      expect(memberInComponents[id].dyads).toEqual({ cnt: 0, pct: 0 }),
-    );
+    expect(louvainCommunities.q).toBe(0);
+    expect(louvainCommunities.communities).toEqual([["a"], ["b"], ["c"]]);
   });
 });
