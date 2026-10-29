@@ -85,7 +85,7 @@ const progressDots = computed(() =>
         </div>
         <div>
             <p class="text-xs text-muted">
-                {{ remainingMembersCount }} ancora da compilare
+                {{ remainingMembersCount }} da compilare
             </p>
         </div>
     </div>
