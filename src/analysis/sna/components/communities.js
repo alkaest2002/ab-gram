@@ -87,7 +87,9 @@ function bestLouvain(graph, runs = 5, rng = Math.random) {
     if (best === null || result.modularity > best.modularity) {
       best = {
         modularity: result.modularity,
-        assignments: { ...result.communities }
+        assignments: {
+          ...result.communities
+        }
       };
     }
   }
@@ -101,9 +103,10 @@ function bestLouvain(graph, runs = 5, rng = Math.random) {
     groups.get(id).push(node);
   }
 
+  // Note: restrict communities to communities gt than 2
   return {
     q: best.modularity,
-    communities: Array.from(groups.values())
+    communities: Array.from(groups.values()).filter(c => c.length > 2)
   };
 }
 
