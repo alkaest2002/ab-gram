@@ -1,5 +1,5 @@
 ---
-title: Struttura del report
+title: Anatonomia di un report AB-Gram
 order: 1
 description: Le parti che compongono il report generato da AB-Gram e l'ordine in cui conviene leggerle.
 ---
