@@ -14,6 +14,7 @@ import { RouterLink } from "vue-router";
 // --- Props --------------
 const props = defineProps({
     to: { type: [String, Object], default: null },
+    replace: { type: Boolean, default: false },
     buttonVariant: {
         type: String,
         default: "solid",
@@ -51,6 +52,7 @@ const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);
     <component
         :is="to ? RouterLink : 'button'"
         :to="to ?? undefined"
+        :replace="to ? replace : undefined"
         :class="classes"
     >
         <slot name="icon" />

@@ -30,7 +30,7 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/sociogram">
+    <BaseNotify to="/sociogram" replace>
         <template #title> Nessun dato da elaborare </template>
         <template #buttonLabel> Torna al sociogramma </template>
     </BaseNotify>

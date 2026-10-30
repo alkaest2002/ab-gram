@@ -42,7 +42,7 @@ const { downloadJson } = useDownload();
 
 // --- Methods ------------
 function goBack() {
-    router.push({ name: "sociogram" });
+    router.replace({ name: "sociogram" });
 }
 
 function printReport() {

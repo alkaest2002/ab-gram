@@ -12,6 +12,7 @@ import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
 // --- Props --------------
 defineProps({
     to: { type: [String, Object], default: null },
+    replace: { type: Boolean, default: false },
 });
 
 // --- Emits --------------
@@ -56,7 +57,7 @@ defineProps({
         <div
             class="mt-10 flex w-full flex-col items-center gap-4 border-t border-line pt-8"
         >
-            <BaseButton :to="to" buttonVariant="solid">
+            <BaseButton :to="to" :replace="replace" buttonVariant="solid">
                 <slot name="buttonLabel" />
             </BaseButton>
         </div>

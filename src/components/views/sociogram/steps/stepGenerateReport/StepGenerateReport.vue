@@ -80,7 +80,7 @@ function goNext() {
     router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
     return;
   };
-  router.push({ name: "report" });
+  router.replace({ name: "report" });
 }
 </script>
 

@@ -30,7 +30,7 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/sociogram">
+    <BaseNotify to="/sociogram" replace>
         <template #title> Il file non può essere caricato </template>
         <template #text>
             Controlla che i dati archiviati siano validi, poi riprova.

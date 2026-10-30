@@ -30,7 +30,7 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/sociogram">
+    <BaseNotify to="/sociogram" replace>
         <template #title> Generazione interrotta </template>
         <template #text>
             I dati inseriti non sono andati persi. Puoi tornare al sociogramma e
