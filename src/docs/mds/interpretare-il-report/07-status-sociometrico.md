@@ -253,6 +253,13 @@ ricadono nello stesso status sociometrico: a parità di categoria, chi ha un
 bonus più alto (o un malus più basso) occupa una posizione più favorevole
 all'interno del gruppo.
 
+Il **valore assoluto** di $bns_i$ e $mls_i$ **non ha di per sé alcun significato**:
+non esiste una soglia oltre la quale un punteggio è "buono" o "cattivo", né un
+valore da considerare normale o anormale. Il punteggio dipende infatti da quanti
+membri scelgono o rifiutano il soggetto e dalla posizione che gli assegnano, e
+per questo va usato **solo per confronti** — tra membri dello stesso gruppo,
+tipicamente dentro la stessa categoria di status — e non come misura assoluta.
+
 ## 7 Un esempio svolto
 
 ### 7.1 Calcolo dello status sociometrico
