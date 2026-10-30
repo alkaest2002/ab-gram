@@ -43,7 +43,7 @@ const CATEGORIES = [
     { key: "cliques", label: "Clique" },
     { key: "weakComponents", label: "Componenti debolmente connesse" },
     { key: "strongComponents", label: "Componenti fortemente connesse" },
-    { key: "strongComponentsWithReciprocalEdges", label: "Componenti fortemente reciproche" },
+    { key: "strongComponentsWithReciprocalEdges", label: "Componenti fortemente connesse con legami reciproci" },
 ];
 
 const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
