@@ -72,11 +72,11 @@ const singleSource = (graph, source) => {
  * - `oneHop`:       `A` likes `B`, but `B` does not like `A`
  * - `twoHops`:      reached through exactly one intermediary — `A → C → B`
  * - `multipleHops`: reached through two or more intermediaries — `A → C → D → B`
- * - `unreachable`:  no directed likes path leads from `A` to `B`, or `A`
- *                   dislikes `B`
+ * - `difficultToReach`: no directed likes path leads from `A` to `B`, or `A`
+ *                       dislikes `B`
  *
  * Distances come from a local breadth-first search over outgoing likes edges,
- * and a node the source dislikes is always placed in `unreachable`, so every
+ * and a node the source dislikes is always placed in `difficultToReach`, so every
  * ordered pair appears in exactly one bucket.
  *
  * @param {import("graphology").DirectedGraph} likesGraph - The directed likes
@@ -84,7 +84,7 @@ const singleSource = (graph, source) => {
  * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
  *   dislikes network (same edge direction convention; nodes are keyed by the
  *   same member ids).
- * @returns {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>}
+ * @returns {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]}>}
  *   An object keyed by each node's `memberId` attribute. Each value lists the
  *   target node ids, split by their relationship to that source.
  */
@@ -104,7 +104,7 @@ export const getNodePaths = (likesGraph, dislikesGraph) => {
       oneHop: [],
       twoHops: [],
       multipleHops: [],
-      unreachable: [],
+      difficultToReach: [],
     };
 
     likesGraph.forEachNode((target) => {
@@ -113,13 +113,13 @@ export const getNodePaths = (likesGraph, dislikesGraph) => {
 
       const distance = distances[targetId];
 
-      // A node the source dislikes is treated as unreachable regardless of any
-      // likes path, so it lands on the outer ring and can be stroked red.
+      // A node the source dislikes is treated as difficult to reach regardless
+      // of any likes path, so it lands on the outer ring and can be stroked red.
       if (
         dislikesGraph.hasDirectedEdge(source, target) ||
         distance === undefined
       ) {
-        categories.unreachable.push(targetId);
+        categories.difficultToReach.push(targetId);
       } else if (distance === 1) {
         // A directly likes the target; mutual only when the feeling is
         // reciprocated.
@@ -151,10 +151,10 @@ export const getNodePaths = (likesGraph, dislikesGraph) => {
  * This is a plain lookup into the result of {@link getNodePaths}, so it runs in
  * constant time and never re-runs the shortest-path computation.
  *
- * @param {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>} nodePaths -
+ * @param {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]}>} nodePaths -
  *   The map returned by {@link getNodePaths}.
  * @param {string} memberId - The `memberId` of the node whose categories are requested.
- * @returns {{mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]} | undefined}
+ * @returns {{mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]} | undefined}
  *   The target node ids, split by their relationship to `memberId`, or
  *   `undefined` when the node is not present in the map.
  */
@@ -219,7 +219,7 @@ const BOUNDARY_DASH = "4 4";
 // Region names, ordered from the innermost ring to the outermost ring. The
 // center (where the ego node lies) is intentionally not labelled, so these five
 // names correspond one-to-one with the five rings in `buildMorenoEgoPlot`.
-const REGION_LABELS = ["0MU", "0HP", "1HP", "2HP+", "UNR"];
+const REGION_LABELS = ["0MU", "0HP", "1HP", "2HP+", "DTR"];
 const REGION_LABEL_FONT_SIZE = 13;
 const REGION_LABEL_COLOR = "#333333";
 
@@ -413,7 +413,7 @@ const regionLabelsMarkup = () =>
  * - ring 3: reached through exactly one intermediary (two edges) — `1HP`
  * - ring 4: reached through two or more intermediaries (three or more edges) —
  *   `2HP+`
- * - ring 5: unreachable from the ego, including nodes the ego dislikes — `UNR`
+ * - ring 5: difficult to reach from the ego, including nodes the ego dislikes — `DTR`
  *
  * Within a ring, nodes are spaced at equal angular intervals and each ring
  * starts at a random angle so the regions don't all align; empty rings are not
@@ -425,7 +425,7 @@ const regionLabelsMarkup = () =>
  * concentric regions, and the square canvas is padded so the outermost boundary
  * stays clear of the edges. Nodes are colored in priority order: red when the
  * node is disliked by the ego or dislikes the ego, blue when the node is liked
- * by the ego or likes the ego, and gray otherwise (neutral/unreachable). The ego
+ * by the ego or likes the ego, and gray otherwise (neutral/difficult to reach). The ego
  * at the center is light gray, stroke and fill. A direct like
  * or dislike between the node and the ego additionally carries a small triangle
  * tangent to the node's circle: pointing toward the ego when the node feels
@@ -439,7 +439,7 @@ const regionLabelsMarkup = () =>
  *   graph (edges point from the choosing member to the chosen one).
  * @param {import("graphology").DirectedGraph} dislikesGraph - The directed
  *   dislikes graph (same edge direction convention).
- * @param {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], unreachable: string[]}>} nodePaths -
+ * @param {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]}>} nodePaths -
  *   The map returned by {@link getNodePaths} for the likes/dislikes graphs,
  *   used to determine reachability and hop distance from `memberId` via
  *   {@link getNodePathsFor}.
@@ -461,7 +461,7 @@ export const buildMorenoEgoPlot = (
     paths?.oneHop ?? [],
     paths?.twoHops ?? [],
     paths?.multipleHops ?? [],
-    paths?.unreachable ?? [],
+    paths?.difficultToReach ?? [],
   ];
 
   const parts = [];

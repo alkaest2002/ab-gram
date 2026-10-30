@@ -77,7 +77,7 @@ al centro e dispone tutti gli altri intorno a lui.
 | 2      | `0HP`  | Scelto direttamente, senza ricambio          |
 | 3      | `1HP`  | Raggiungibile tramite un solo intermediario  |
 | 4      | `2HP+` | Raggiungibile tramite due o più intermediari |
-| 5      | `UNR`  | Non raggiungibile                            |
+| 5      | `DTR`  | Difficile da raggiungere                     |
 
 I cerchi tratteggiati separano gli anelli e le sigle sono riportate lungo la
 linea verticale superiore, dal centro verso l'esterno.

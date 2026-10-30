@@ -40,27 +40,28 @@ describe("morenoPlots", () => {
       const paths = getNodePaths(graph, dislikesGraph);
 
       // a likes b and c. b likes a back (mutual); c leads to d, then e. g likes
-      // a but a does not like g, so g is unreachable from a.
+      // a but a does not like g, so g is difficult to reach from a.
       expect(paths.a).toEqual({
         mutuality: ["b"],
         oneHop: ["c"],
         twoHops: ["d"],
         multipleHops: ["e"],
-        unreachable: ["f", "g"],
+        difficultToReach: ["f", "g"],
       });
 
-      // b likes a (mutual), which leads to c, then d, then e; f and g are not
-      // reachable from b (g likes a, but b's outgoing choices never reach g).
+      // b likes a (mutual), which leads to c, then d, then e; f and g are
+      // difficult to reach from b (g likes a, but b's outgoing choices never
+      // reach g).
       expect(paths.b).toEqual({
         mutuality: ["a"],
         oneHop: [],
         twoHops: ["c"],
         multipleHops: ["d", "e"],
-        unreachable: ["f", "g"],
+        difficultToReach: ["f", "g"],
       });
     });
 
-    it("places nodes the source dislikes in the unreachable bucket", () => {
+    it("places nodes the source dislikes in the difficult-to-reach bucket", () => {
       const dislikeMembers = [
         makeMember("a", "Alice", ["b"], ["c"]),
         makeMember("b", "Bob", ["c"], []),
@@ -72,13 +73,13 @@ describe("morenoPlots", () => {
       const paths = getNodePaths(likes, dislikes);
 
       // c is reachable through b (a -> b -> c), but a dislikes c, so it is
-      // pushed to the unreachable bucket instead of twoHops.
+      // pushed to the difficult-to-reach bucket instead of twoHops.
       expect(paths.a).toEqual({
         mutuality: [],
         oneHop: ["b"],
         twoHops: [],
         multipleHops: [],
-        unreachable: ["c"],
+        difficultToReach: ["c"],
       });
     });
   });
@@ -92,7 +93,7 @@ describe("morenoPlots", () => {
         oneHop: ["c"],
         twoHops: ["d"],
         multipleHops: ["e"],
-        unreachable: ["f", "g"],
+        difficultToReach: ["f", "g"],
       });
     });
 
@@ -155,7 +156,7 @@ describe("morenoPlots", () => {
 
       // Innermost ring first, outermost ring last. The center (ego) is not
       // named, so there are exactly five region labels.
-      const order = ["0MU", "0HP", "1HP", "2HP+", "UNR"];
+      const order = ["0MU", "0HP", "1HP", "2HP+", "DTR"];
       const textOf = (name) => {
         const match = svg.match(
           new RegExp(`<text([^>]*)>${name.replace("+", "\\+")}</text>`),
@@ -293,7 +294,7 @@ describe("morenoPlots", () => {
       expect(countOccurrences(svg, "<polygon")).toBe(2);
     });
 
-    it("strokes a node the ego dislikes red on the unreachable ring", () => {
+    it("strokes a node the ego dislikes red on the difficult-to-reach ring", () => {
       const dislikeMembers = [
         makeMember("a", "Alice", [], ["b"]),
         makeMember("b", "Bob", [], []),
