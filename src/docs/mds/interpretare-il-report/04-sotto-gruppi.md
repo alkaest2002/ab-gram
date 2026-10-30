@@ -1,22 +1,22 @@
 ---
-title: Sotto-componenti
+title: Sotto-Gruppi
 order: 4
-description: Come individuare i sottogruppi e le strutture interne del gruppo.
+description: Come individuare le strutture interne del gruppo.
 ---
 
-Oltre alle metriche, il sociogramma (la mappa del gruppo, in cui i membri sono
-punti e le scelte sono frecce) può essere scomposto in parti più piccole. Queste
-**sotto-strutture** rivelano come il gruppo è organizzato al suo interno: ci
-sono coppie affiatate, sottogruppi molto compatti e, a volte, gruppi che non
+Oltre alle metriche, la mappa del gruppo (in cui i membri sono
+punti e le scelte sono frecce) può essere scomposta in parti più piccole. Queste
+**strutture** rivelano come il gruppo è organizzato al suo interno: ci
+sono coppie affiatate, sotto-gruppi molto compatti o che non
 hanno alcun contatto tra loro. Ne vediamo quattro tipi: le diadi, le clique, le
 componenti connesse e le comunità di Louvain.
 
 Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 **sceglie** il membro $j$, e $a_{ij} = 0$ che non lo sceglie.
 
-## Che cos'è una componente
+## Che cos'è un sotto-gruppo
 
-Con **componente** indichiamo una parte del gruppo — una coppia, un sottogruppo
+Con **sotto-gruppo** indichiamo una parte del gruppo — una coppia, una componente
 o una comunità — che possiamo isolare dal resto per studiarla. Le strutture
 descritte in questa pagina individuano queste parti in modi diversi: alcune
 seguono regole precise (le diadi, le clique e le componenti connesse), altre
@@ -32,11 +32,11 @@ la regola è esatta (come per le clique), il risultato va letto come un
 ## Perché analizziamo solo le scelte
 
 Tutte le strutture di questa sezione si basano sulle **scelte** ($a_{ij} = 1$),
-cioè sui legami positivi della matrice $A$. Il motivo è di fondo: una componente
-è un sottogruppo che sta insieme per **affinità** o **attrazione**, e l'affinità
+cioè sui legami positivi della matrice $A$. Il motivo è di fondo: un sotto-gruppo
+è una struttura che sta insieme per **affinità** o **attrazione**, e l'affinità
 si manifesta con una scelta, non con un rifiuto. Un insieme di persone che si
-rifiutano a vicenda non forma un "sottogruppo affiatato": è solo un insieme di
-persone in conflitto, e non ha senso chiamarlo componente.
+rifiutano a vicenda non forma un "struttura affiatata": è solo un insieme di
+persone in conflitto.
 
 Le stesse definizioni valgono formalmente anche per i rifiuti (matrice $B$), ma
 il risultato sarebbe fuorviante: dire che due membri "si raggiungono" lungo una
@@ -59,7 +59,7 @@ entrambe le parti, e non solo dichiarato da una.
 
 ## 2 Clique
 
-Una **clique** è un sottogruppo in cui ognuno è collegato direttamente a tutti
+Una **clique** è una struttura in cui ognuno è collegato direttamente a tutti
 gli altri, senza considerare chi ha scelto chi. Pensa a una cerchia di amici in
 cui tutti si conoscono personalmente, e non solo tramite qualcuno in comune.
 
