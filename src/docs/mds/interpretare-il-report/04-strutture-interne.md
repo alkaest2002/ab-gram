@@ -1,5 +1,5 @@
 ---
-title: Sotto-Gruppi
+title: Strutture interne
 order: 4
 description: Come individuare le strutture interne del gruppo.
 ---
@@ -14,9 +14,9 @@ componenti connesse e le comunità di Louvain.
 Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 **sceglie** il membro $j$, e $a_{ij} = 0$ che non lo sceglie.
 
-## Che cos'è un sotto-gruppo
+## Che cos'è una struttura interna
 
-Con **sotto-gruppo** indichiamo una parte del gruppo — una coppia, una componente
+Con **struttura interna** indichiamo una parte del gruppo — una coppia, una componente
 o una comunità — che possiamo isolare dal resto per studiarla. Le strutture
 descritte in questa pagina individuano queste parti in modi diversi: alcune
 seguono regole precise (le diadi, le clique e le componenti connesse), altre
