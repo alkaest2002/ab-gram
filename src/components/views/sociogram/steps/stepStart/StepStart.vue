@@ -59,7 +59,7 @@ function startFromScratch(step) {
 </script>
 
 <template>
-    <div class="space-y-6">
+    <div class="space-y-3">
         <section class="card space-y-6">
             <StepHeader>
                 <template #title>È la prima volta che usi l'app?</template>

@@ -85,7 +85,8 @@ function goNext() {
 </script>
 
 <template>
-    <section class="card space-y-8">
+    <section class="card space-y-6">
+
         <StepHeader>
             <template #eyebrow>Passaggio 4 di 4</template>
             <template #title>Riepilogo</template>
@@ -93,7 +94,12 @@ function goNext() {
             il report.
         </StepHeader>
 
+        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+
         <section class="space-y-4">
+            <div class="mt-6">
+                <p class="eyebrow">LISTA DEI MEMBRI</p>
+            </div>
             <div class="grid gap-x-8 gap-y-5 md:grid-cols-2">
                 <GenerateReportMemberCard
                     v-for="member in summary"
