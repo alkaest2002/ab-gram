@@ -44,15 +44,11 @@ const METRIC_CONFIG = {
 const TYPE_CONFIG = {
     likes: {
         edgeLabel: "Totale scelte (di cui reciproche)",
-        morenoIndexes: [
-            { key: "cohesion", label: "Indice di coesione" },
-        ],
+        morenoIndex: "Indice di coesione" ,
     },
     dislikes: {
         edgeLabel: "Totale rifiuti (di cui reciproci)",
-        morenoIndexes: [
-            { key: "conflict", label: "Indice di conflitto" },
-        ],
+        morenoIndex: "Indice di conflitto",
     },
 };
 
@@ -96,24 +92,18 @@ const rows = computed(() => {
             value: values[index] ?? 0,
         });
     }
+    const morenoValue = props.typeOfSna === "likes"
+        ? props.morenoMetrics?.rawValuesById?.[0][0] ?? 0
+        : props.morenoMetrics?.rawValuesById?.[0][2] ?? 0;
 
-    // The Moreno group indices that complement this preference type (cohesion
-    // for likes, conflict for dislikes, in both type I and type II) are
-    // appended as final ratio rows.
-    const morenoKeys = props.morenoMetrics?.metrics ?? [];
-    const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
+    result.push({
+        key: "morenoIndex",
+        label: TYPE_CONFIG[props.typeOfSna].morenoIndex,
+        kind: "ratio",
+        value: morenoValue,
+    });
 
-    for (const { key, label } of typeConfig.morenoIndexes) {
-        const morenoIndex = morenoKeys.indexOf(key);
-        if (morenoIndex !== -1) {
-            result.push({
-                key,
-                label,
-                kind: "ratio",
-                value: morenoValues[morenoIndex] ?? 0,
-            });
-        }
-    }
+
 
     return result;
 });
