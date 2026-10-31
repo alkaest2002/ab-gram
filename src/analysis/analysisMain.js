@@ -5,7 +5,7 @@ import { createAdjacencyMatrices, getMemberIndices } from "./common/adjacencyMat
 import { getEdgeTypes } from "./edges/edgeTypes.js";
 import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno/metrics/morenoMetrics.js";
 import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./sna/metrics/snaMetrics.js";
-import { getSnaComponents } from "./sna/components/snaComponents.js";
+import { getSnaStructures } from "./sna/components/snaStructures.js";
 import { getSnaPlot } from "./sna/plots/snaPlots.js"
 import { createLikesGraph } from "./sna/snaBase.js";
 import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
@@ -72,7 +72,7 @@ export const getSociogramAnalysis = (members) => {
 
   // Group-level SNA metrics for the likes graph.
   const snaLikesGroupLevelMetrics = snaGroupLevel(likesGraph);
-  const snaLikesComponents = getSnaComponents(likesGraph);
+  const snaLikesComponents = getSnaStructures(likesGraph);
   const snaLikesIndividualLevelMetric = snaIndividualLevel(likesGraph);
   const snaLikesPlots = getSnaPlot(likesGraph, "#0000FF");
 
@@ -85,7 +85,7 @@ export const getSociogramAnalysis = (members) => {
   // If the dislikes graph is not empty, compute its SNA metrics.
   if (dislikesGraph.size !== 0) {
     snaDislikesGroupLevelMetrics = snaGroupLevel(dislikesGraph);
-    snaDislikesComponents = getSnaComponents(dislikesGraph);
+    snaDislikesComponents = getSnaStructures(dislikesGraph);
     snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
     snaDislikesPlots = getSnaPlot(dislikesGraph, "#FF0000");
   }

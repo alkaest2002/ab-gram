@@ -4,7 +4,7 @@
 import { describe, it, expect } from "vitest";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
-import { getSnaComponents } from "@/analysis/sna/components/snaComponents.js";
+import { getSnaStructures } from "@/analysis/sna/components/snaStructures.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 
@@ -16,7 +16,7 @@ const COMPONENT_KEYS = [
   "weakComponents",
 ];
 
-describe("getSnaComponents", () => {
+describe("getSnaStructures", () => {
   it("returns one array per component type and the louvain communities", () => {
     const members = [
       makeMember("a", ["b", "c"]),
@@ -25,7 +25,7 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const result = getSnaComponents(graph);
+    const result = getSnaStructures(graph);
 
     expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "louvainCommunities"]);
     COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
@@ -50,7 +50,7 @@ describe("getSnaComponents", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaComponents(graph);
+    } = getSnaStructures(graph);
 
     expect(dyads).toEqual([
       ["a", "b"],
@@ -78,7 +78,7 @@ describe("getSnaComponents", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaComponents(graph);
+    } = getSnaStructures(graph);
 
     expect(dyads).toEqual([]);
     expect(cliques).toEqual([]);
@@ -104,7 +104,7 @@ describe("getSnaComponents", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaComponents(graph);
+    } = getSnaStructures(graph);
 
     expect(dyads).toEqual([
       ["a", "b"],
@@ -126,7 +126,7 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { louvainCommunities } = getSnaComponents(graph, { seed: 42, runs: 5 });
+    const { louvainCommunities } = getSnaStructures(graph, { seed: 42, runs: 5 });
 
     // A partition: every member appears exactly once across the communities.
     expect(louvainCommunities.communities.flat().sort()).toEqual(["a", "b", "c"]);
@@ -141,7 +141,7 @@ describe("getSnaComponents", () => {
     ];
     const graph = createLikesGraph(members, "likes");
 
-    const { louvainCommunities } = getSnaComponents(graph);
+    const { louvainCommunities } = getSnaStructures(graph);
 
     expect(louvainCommunities.q).toBe(0);
     expect(louvainCommunities.communities).toEqual([["a"], ["b"], ["c"]]);

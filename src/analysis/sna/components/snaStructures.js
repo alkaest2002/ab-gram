@@ -28,7 +28,7 @@ import { sortComponents } from "./base.js";
  * }} The components keyed by category, each value a list of member-id lists,
  *   plus the Louvain communities and their modularity `q`.
  */
-export const getSnaComponents = (graph, options = {}) => {
+export const getSnaStructures = (graph, options = {}) => {
   const { communities, q } = getLouvainCommunities(graph, options);
 
   return {

@@ -22,10 +22,10 @@ const props = defineProps({
     snaMetrics: { type: Object, default: () => ({}) },
     // `getEdgeTypes` result, exposing `memberInEdges`.
     edgeTypes: { type: Object, default: () => ({}) },
-    // `getSnaComponents` result for the choice ("likes") network, exposing the
+    // `getSnaStructures` result for the choice ("likes") network, exposing the
     // component lists per category.
     likesComponents: { type: Object, default: () => ({}) },
-    // `getSnaComponents` result for the rejection ("dislikes") network, exposing
+    // `getSnaStructures` result for the rejection ("dislikes") network, exposing
     // the component lists per category.
     dislikesComponents: { type: Object, default: () => ({}) },
 });
