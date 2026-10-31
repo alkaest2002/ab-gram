@@ -30,7 +30,7 @@ const props = defineProps({
 
 // --- Methods ------------
 // Position (0-100) of the median along the min→max range, for the median
-// bar and its value label.
+// dot and its value label.
 function medianPercent() {
     const min = Number(props.value?.min ?? 0);
     const max = Number(props.value?.max ?? 0);
@@ -58,38 +58,26 @@ function formatBoxDecimal(value) {
 
 <template>
     <div class="boxplot">
-        <div class="boxplot-row">
-            <span class="boxplot-end text-ink">{{ formatBoxCount(value.min) }}</span>
-            <div class="boxplot-track">
-                <div class="boxplot-line bg-ink"></div>
-                <div class="boxplot-median bg-ink" :style="medianStyle()"></div>
-                <span class="boxplot-median-label text-ink" :style="medianStyle()">{{ formatBoxCount(value.median) }}</span>
-                <span class="boxplot-iqr text-ink">(IQR {{ formatBoxDecimal(value.iqr) }})</span>
-            </div>
-            <span class="boxplot-end text-ink">{{ formatBoxCount(value.max) }}</span>
+        <div class="boxplot-track">
+            <div class="boxplot-line bg-ink"></div>
+            <div class="boxplot-median bg-ink" :style="medianStyle()"></div>
+            <span class="boxplot-median-label text-ink" :style="medianStyle()">{{ formatBoxCount(value.median) }}</span>
+            <span class="boxplot-min text-ink">{{ formatBoxCount(value.min) }}</span>
+            <span class="boxplot-iqr text-ink">IQR {{ formatBoxCount(value.iqr) }}</span>
+            <span class="boxplot-max text-ink">{{ formatBoxCount(value.max) }}</span>
         </div>
     </div>
 </template>
 
 <style scoped>
-/* Degree box plot: a horizontal range line (min→max), a median dot and the
-   min/median/max values, with the IQR printed underneath. */
+/* Degree box plot: a horizontal range line (min→max) with a median dot (and its
+   value above); min, IQR and max are printed below the line. */
 .boxplot {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     padding-top: 3mm;
-    padding-bottom: 3mm;
-}
-.boxplot-row {
-    display: flex;
-    align-items: center;
-    gap: 1mm;
-}
-.boxplot-end {
-    font-size: 7pt;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
+    padding-bottom: 3.5mm;
 }
 .boxplot-track {
     position: relative;
@@ -121,6 +109,16 @@ function formatBoxDecimal(value) {
     line-height: 1;
     white-space: nowrap;
 }
+.boxplot-min {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.75mm;
+    font-size: 7pt;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+}
 .boxplot-iqr {
     position: absolute;
     top: 100%;
@@ -128,6 +126,16 @@ function formatBoxDecimal(value) {
     transform: translateX(-50%);
     margin-top: 0.75mm;
     font-size: 7pt;
+    line-height: 1;
+    white-space: nowrap;
+}
+.boxplot-max {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.75mm;
+    font-size: 7pt;
+    font-variant-numeric: tabular-nums;
     line-height: 1;
     white-space: nowrap;
 }
