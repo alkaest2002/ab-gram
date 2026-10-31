@@ -5,15 +5,17 @@
 
 <script setup>
 // --- Imports ------------
+//   -- From vue
+import { computed } from "vue";
 
 // --- Props --------------
-defineProps({
+const props = defineProps({
     // Injected SVG markup for the network plot.
     svg: { type: String, default: "" },
     // Accent hue shared by the plot, legend swatches and arrow glyphs.
     accentColor: { type: String, default: "" },
-    directedLegend: { type: String, default: "" },
-    mutualLegend: { type: String, default: "" },
+    // Preference type, selects the per-type legend text below.
+    typeOfSna: { type: String, default: "likes" },
 });
 
 // --- Emits --------------
@@ -24,10 +26,22 @@ const emit = defineEmits(["open-modal"]);
 // --- Stores -------------
 
 // --- State --------------
+// Per-type legend text for the directed and mutual edge glyphs.
+const LEGEND_CONFIG = {
+    likes: {
+        directed: "Scelta non reciproca",
+        mutual: "Scelta reciproca",
+    },
+    dislikes: {
+        directed: "Rifiuto non reciproco",
+        mutual: "Rifiuto reciproco",
+    },
+};
 
 // --- Composables --------
 
 // --- Computed -----------
+const legend = computed(() => LEGEND_CONFIG[props.typeOfSna] ?? LEGEND_CONFIG.likes);
 
 // --- Watchers -----------
 
@@ -64,14 +78,14 @@ const emit = defineEmits(["open-modal"]);
                         <line x1="1" y1="6" x2="15" y2="6" :stroke="accentColor" stroke-width="1" />
                         <polyline points="11,1.5 16,6 11,10.5" fill="none" :stroke="accentColor" stroke-width="1" />
                     </svg>
-                    <span class="font-mono text-[7.5pt] text-muted">{{ directedLegend }}</span>
+                    <span class="font-mono text-[7.5pt] text-muted">{{ legend.directed }}</span>
                 </span>
                 <span class="inline-flex items-center gap-[1.5mm]">
                     <span
                         class="inline-block h-[1mm] w-[4.5mm] rounded-full"
                         :style="{ backgroundColor: accentColor }"
                     ></span>
-                    <span class="font-mono text-[7.5pt] text-muted">{{ mutualLegend }}</span>
+                    <span class="font-mono text-[7.5pt] text-muted">{{ legend.mutual }}</span>
                 </span>
                 <span class="inline-flex items-center gap-[1.5mm]">
                     <span class="inline-block h-[2.5mm] w-[2.5mm] rounded-full bg-black"></span>

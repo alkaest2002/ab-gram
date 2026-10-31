@@ -15,10 +15,8 @@ const props = defineProps({
     snaMetrics: { type: Object, default: () => ({}) },
     // Raw complementary Moreno metrics, shaped like `getGroupLevelMetrics`.
     morenoMetrics: { type: Object, default: () => ({}) },
-    // Label for the combined edge/mutual-edge row.
-    edgeLabel: { type: String, default: "" },
-    // Moreno indices to append as ratio rows.
-    morenoIndexes: { type: Array, default: () => [] },
+    // Preference type, selects the per-type labels below.
+    typeOfSna: { type: String, default: "likes" },
     // Accent color for the ratio bars.
     accentColor: { type: String, default: "" },
 });
@@ -41,10 +39,28 @@ const METRIC_CONFIG = {
     networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
 };
 
+// Per-type labels: the combined edge row and the Moreno indices appended below
+// it (cohesion for likes, conflict for dislikes).
+const TYPE_CONFIG = {
+    likes: {
+        edgeLabel: "Totale scelte (di cui reciproche)",
+        morenoIndexes: [
+            { key: "cohesion", label: "Indice di coesione" },
+        ],
+    },
+    dislikes: {
+        edgeLabel: "Totale rifiuti (di cui reciproci)",
+        morenoIndexes: [
+            { key: "conflict", label: "Indice di conflitto" },
+        ],
+    },
+};
+
 // --- Composables --------
 
 // --- Computed -----------
 const rows = computed(() => {
+    const typeConfig = TYPE_CONFIG[props.typeOfSna] ?? TYPE_CONFIG.likes;
     const keys = props.snaMetrics?.metrics ?? [];
     const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
 
@@ -59,7 +75,7 @@ const rows = computed(() => {
             const mutualIndex = keys.indexOf("numberOfMutualEdges");
             result.push({
                 key,
-                label: props.edgeLabel,
+                label: typeConfig.edgeLabel,
                 kind: "countPair",
                 value: {
                     total: values[index] ?? 0,
@@ -87,7 +103,7 @@ const rows = computed(() => {
     const morenoKeys = props.morenoMetrics?.metrics ?? [];
     const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
 
-    for (const { key, label } of props.morenoIndexes) {
+    for (const { key, label } of typeConfig.morenoIndexes) {
         const morenoIndex = morenoKeys.indexOf(key);
         if (morenoIndex !== -1) {
             result.push({

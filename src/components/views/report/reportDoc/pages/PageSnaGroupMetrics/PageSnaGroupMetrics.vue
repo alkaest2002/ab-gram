@@ -38,30 +38,18 @@ const emit = defineEmits(["regenerate-sna-plot"]);
 // --- Stores -------------
 
 // --- State --------------
-// Per-type presentation details: the network plot is drawn with a hard-coded
-// accent in `analysisMain` (`#0000FF` for likes, `#FF0000` for dislikes), so the
-// fallback below only kicks in when the plot carries no accent of its own. The
-// title, metric labels and legend follow the same likes/dislikes split.
+// Per-type page details: the network plot is drawn with a hard-coded accent in
+// `analysisMain` (`#0000FF` for likes, `#FF0000` for dislikes), so the fallback
+// below only kicks in when the plot carries no accent of its own. Metric labels
+// and legend text live in their respective child components.
 const SNA_CONFIG = {
     likes: {
         accentColor: "#2563eb",
         pageTitle: "Rete delle scelte",
-        edgeLabel: "Totale scelte (di cui reciproche)",
-        directedLegend: "Scelta non reciproca",
-        mutualLegend: "Scelta reciproca",
-        morenoIndexes: [
-            { key: "cohesion", label: "Indice di coesione" },
-        ],
     },
     dislikes: {
         accentColor: "#dc2626",
         pageTitle: "Rete dei rifiuti",
-        edgeLabel: "Totale rifiuti (di cui reciproci)",
-        directedLegend: "Rifiuto non reciproco",
-        mutualLegend: "Rifiuto reciproco",
-        morenoIndexes: [
-            { key: "conflict", label: "Indice di conflitto" },
-        ],
     },
 };
 
@@ -214,15 +202,13 @@ onBeforeUnmount(() => {
                 <SnaPlot
                     :svg="svg"
                     :accent-color="accentColor"
-                    :directed-legend="config.directedLegend"
-                    :mutual-legend="config.mutualLegend"
+                    :type-of-sna="typeOfSna"
                     @open-modal="openModal"
                 />
                 <SnaMetrics
                     :sna-metrics="snaMetrics"
                     :moreno-metrics="morenoMetrics"
-                    :edge-label="config.edgeLabel"
-                    :moreno-indexes="config.morenoIndexes"
+                    :type-of-sna="typeOfSna"
                     :accent-color="accentColor"
                 />
             </div>
