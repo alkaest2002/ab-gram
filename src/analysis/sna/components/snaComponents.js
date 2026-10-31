@@ -8,7 +8,7 @@ import {
   computeStrongComponents,
   computeWeakComponents,
 } from "./connectedComponents.js";
-import { getLouvainCommunities } from "./communities.js";
+import { getLouvainCommunities } from "./louvain.js";
 import { sortComponents } from "./base.js";
 
 /**
