@@ -52,28 +52,27 @@ const remainingMembersCount = computed(
 </script>
 
 <template>
+    <!-- One-line meter: mono fraction, hairline bar, remaining count. -->
     <div
-        class="flex flex-wrap justify-between gap-x-4 gap-y-2"
+        class="flex items-center justify-between gap-4"
+        role="img"
+        :aria-label="`Completato ${completedPercentage}%, ${remainingMembersCount} da compilare`"
     >
-        <p class="text-xs text-muted">
-            <!-- One node per member: black when complete, gray otherwise. -->
-            <span
-                class="mr-3 inline-flex items-center gap-1 align-middle"
-                aria-hidden="true"
-            >
-                <span
-                    v-for="index of totalCount"
-                    :key="index"
-                    class="size-1.5 rounded-full transition-colors duration-300"
-                    :class="
-                        index <= completedMembersCount
-                            ? 'bg-ink'
-                            : 'bg-line'
-                    "
-                ></span>
-            </span>
-            completato {{ completedPercentage }}%
-        </p>
+        <!-- Left: compact progress (fraction + short bar). -->
+        <div class="flex items-center gap-2">
+            <p class="font-mono text-xs text-ink tabular-nums">
+                {{ completedMembersCount }}<span class="text-muted">/{{ totalCount }}</span>
+            </p>
+
+            <div class="h-1 w-20 overflow-hidden rounded-full bg-line">
+                <div
+                    class="h-full rounded-full bg-ink transition-[width] duration-300"
+                    :style="{ width: `${completedPercentage}%` }"
+                ></div>
+            </div>
+        </div>
+
+        <!-- Right: remaining count. -->
         <p class="text-xs text-muted">
             {{ remainingMembersCount }} da compilare
         </p>
