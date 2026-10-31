@@ -19,7 +19,7 @@ Le pagine si susseguono in quest'ordine:
 - Rete delle scelte
 - Rete dei rifiuti *(solo se presenti rifiuti)*
 - Tipi di relazione
-- Componenti della rete delle scelte
+- Strutture interne alla rete delle scelte
 - Pagine individuali dei membri
 - Glossario
 
@@ -58,7 +58,7 @@ almeno un membro ha espresso un rifiuto.
 Classifica ogni relazione in sette tipi, raggruppati in tre fasce: relazioni
 sane, relazioni potenzialmente problematiche e relazioni problematiche.
 
-### 1.7 Componenti della rete delle scelte
+### 1.7 Strutture interne alla rete delle scelte
 
 Scompone la rete delle scelte in cinque categorie: diadi, clique, componenti
 debolmente connesse, componenti fortemente connesse e componenti fortemente

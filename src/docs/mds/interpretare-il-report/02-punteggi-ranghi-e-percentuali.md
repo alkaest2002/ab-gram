@@ -61,7 +61,7 @@ potenzialmente problematiche e problematiche). Per ogni tipo e per ogni fascia
 mostra un **conteggio grezzo**: quante coppie di membri ricadono in quella
 categoria. Non ci sono ranghi né percentuali.
 
-## 6 Componenti della rete delle scelte
+## 6 Strutture interne alla rete delle scelte
 
 Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
 connesse e fortemente reciproche) mostra il **numero di componenti individuate**:

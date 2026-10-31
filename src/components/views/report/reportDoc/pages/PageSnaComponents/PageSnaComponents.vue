@@ -29,7 +29,7 @@ const props = defineProps({
 // component taxonomy, so only the page title changes.
 const SNA_CONFIG = {
     likes: {
-        pageTitle: "Componenti della rete delle scelte",
+        pageTitle: "Strutture interne alla rete delle scelte",
     },
     dislikes: {
         pageTitle: "Componenti della rete dei rifiuti",
