@@ -25,9 +25,9 @@ import { useSociogramStore } from "@/stores/sociogram";
 //   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
-import SetPreferencesCarouselMembers from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarouselMembers.vue";
-import SetPreferencesSelectMembers from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesSelectMembers.vue";
-import SetPreferencesMembersPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesMembersPreferencesProgress.vue";
+import SetPreferencesCarousel from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarousel.vue";
+import SetPreferencesSelect from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesSelect.vue";
+import SetPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesProgress.vue";
 import SetPreferencesNoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesNoPreferences.vue";
 
 //   -- From composables
@@ -213,7 +213,7 @@ function handleWindowKeydown(event) {
                     <p class="eyebrow">CAROSELLO</p>
                 </div>
 
-                <SetPreferencesCarouselMembers
+                <SetPreferencesCarousel
                     :current-index="currentIndex"
                     :current-member="currentMember"
                     :members-count="members.length"
@@ -227,7 +227,7 @@ function handleWindowKeydown(event) {
                 <!-- The subject's likes and dislikes. -->
                 <div class="grid gap-6 md:grid-cols-2">
                     <!-- Likes -->
-                    <SetPreferencesSelectMembers
+                    <SetPreferencesSelect
                         ref="likes"
                         v-model="currentLikes"
                         preference="likes"
@@ -238,7 +238,7 @@ function handleWindowKeydown(event) {
                     />
 
                     <!-- Dislikes-->
-                    <SetPreferencesSelectMembers
+                    <SetPreferencesSelect
                         ref="dislikes"
                         v-model="currentDislikes"
                         preference="dislikes"
@@ -285,7 +285,7 @@ function handleWindowKeydown(event) {
                     </SetPreferencesNoPreferences>
                 </div>
 
-                <SetPreferencesCarouselMembers
+                <SetPreferencesCarousel
                     v-show="membersCount > 8"
                     :current-index="currentIndex"
                     :current-member="currentMember"
@@ -298,7 +298,7 @@ function handleWindowKeydown(event) {
                 />
 
                 <!-- Progress: percentage of members whose data has been collected. -->
-                <SetPreferencesMembersPreferencesProgress
+                <SetPreferencesProgress
                     :members="members"
                     :current-index="currentIndex"
                     class="mt-6"
