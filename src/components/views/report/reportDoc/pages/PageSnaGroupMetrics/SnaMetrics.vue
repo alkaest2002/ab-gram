@@ -9,8 +9,8 @@
 import { computed } from "vue";
 
 //   -- From relative
-import MetricBoxPlot from "./MetricBoxPlot.vue";
-import MetricProgressBar from "./MetricProgressBar.vue";
+import MetricBoxPlot from "./SnaMetricsBoxPlot.vue";
+import MetricProgressBar from "./SnaMetricsProgressBar.vue";
 
 // --- Props --------------
 const props = defineProps({
