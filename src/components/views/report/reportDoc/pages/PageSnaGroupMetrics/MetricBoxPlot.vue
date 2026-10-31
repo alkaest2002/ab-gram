@@ -30,7 +30,9 @@ const props = defineProps({
 
 // --- Methods ------------
 // Position (0-100) of the median along the min→max range, for the median
-// dot and its value label.
+// dot and its value label. No clamping here: the `.boxplot` container provides
+// horizontal padding, so the dot can sit exactly on min/max and still overhang
+// without being clipped.
 function medianPercent() {
     const min = Number(props.value?.min ?? 0);
     const max = Number(props.value?.max ?? 0);
@@ -48,6 +50,8 @@ function medianStyle() {
 function formatBoxCount(value) {
     return String(Math.round(Number(value ?? 0)));
 }
+
+
 </script>
 
 <template>
@@ -70,8 +74,9 @@ function formatBoxCount(value) {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    padding-top: 3mm;
-    padding-bottom: 3.5mm;
+    /* Horizontal padding gives the median dot (and its label) room to overhang
+       the line's endpoints when the median equals the min or the max. */
+    padding: 3mm 2mm 3.5mm;
 }
 .boxplot-track {
     position: relative;
@@ -107,6 +112,7 @@ function formatBoxCount(value) {
     position: absolute;
     top: 100%;
     left: 0;
+    transform: translateX(-50%);
     margin-top: 0.75mm;
     font-size: 7pt;
     font-variant-numeric: tabular-nums;
@@ -127,6 +133,7 @@ function formatBoxCount(value) {
     position: absolute;
     top: 100%;
     right: 0;
+    transform: translateX(50%);
     margin-top: 0.75mm;
     font-size: 7pt;
     font-variant-numeric: tabular-nums;
