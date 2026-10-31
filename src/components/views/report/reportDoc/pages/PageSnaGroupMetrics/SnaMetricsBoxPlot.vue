@@ -4,142 +4,65 @@
 -->
 
 <script setup>
-// --- Imports ------------
-
 // --- Props --------------
 const props = defineProps({
-    // Summary statistics for one degree direction: `{ min, max, median, iqr }`.
+    // Summary statistics for one degree direction: `{ min, q1, median, q3, max }`.
     value: { type: Object, default: () => ({}) },
-    // Accent color for the median dot.
-    accentColor: { type: String, default: "" },
 });
-
-// --- Emits --------------
-
-// --- Routers ------------
-
-// --- Stores -------------
-
-// --- State --------------
-
-// --- Composables --------
-
-// --- Computed -----------
-
-// --- Watchers -----------
-
-// --- Lifecycle ----------
-
-// --- Methods ------------
-// Position (0-100) of the median along the min→max range, for the median
-// dot and its value label. No clamping here: the `.boxplot` container provides
-// horizontal padding, so the dot can sit exactly on min/max and still overhang
-// without being clipped.
-function medianPercent() {
-    const min = Number(props.value?.min ?? 0);
-    const max = Number(props.value?.max ?? 0);
-    const median = Number(props.value?.median ?? 0);
-    const span = max - min;
-
-    if (span === 0) return 50;
-    return ((median - min) / span) * 100;
-}
-
-function medianStyle() {
-    return { left: `${medianPercent()}%` };
-}
-
-function medianDotStyle() {
-    return {
-        left: `${medianPercent()}%`,
-        backgroundColor: props.accentColor,
-    };
-}
 </script>
 
 <template>
-    <div class="boxplot">
-        <div class="boxplot-track">
-            <div class="boxplot-line bg-line h-0.5"></div>
-            <div class="boxplot-median" :style="medianDotStyle()"></div>
-            <span class="boxplot-median-label text-ink" :style="medianStyle()">{{ value.median }}</span>
-            <span class="boxplot-min text-ink">{{ value.min }}</span>
-            <span class="boxplot-iqr text-ink">IQR {{ Math.round(value.iqr) }}</span>
-            <span class="boxplot-max text-ink">{{ value.max }}</span>
-        </div>
-    </div>
+    <table class="boxplot">
+        <thead>
+            <tr>
+                <th>min</th>
+                <th>q1</th>
+                <th>med</th>
+                <th>q3</th>
+                <th>max</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ value.min }}</td>
+                <td>{{ Math.round(value.q1 ?? 0) }}</td>
+                <td>{{ value.median }}</td>
+                <td>{{ Math.round(value.q3 ?? 0) }}</td>
+                <td>{{ value.max }}</td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <style scoped>
-/* Degree box plot: a horizontal range line (min→max) with a median dot (and its
-   value above); min, IQR and max are printed below the line. */
+/* Table-like five-number summary: a wide (horizontal) header/value table with
+   no graphical marks — just labelled columns for min, Q1, median, Q3 and max. */
 .boxplot {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    /* Horizontal padding gives the median dot (and its label) room to overhang
-       the line's endpoints when the median equals the min or the max. */
-    padding: 3mm 2mm 3.5mm;
+    display: inline-table;
+    border-collapse: collapse;
+    vertical-align: baseline;
 }
-.boxplot-track {
-    position: relative;
-    width: 24mm;
-    height: 4mm;
-}
-.boxplot-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    transform: translateY(-50%);
-    border-radius: 3px;
-}
-.boxplot-median {
-    position: absolute;
-    top: 50%;
-    width: 2mm;
-    height: 2mm;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-}
-.boxplot-median-label {
-    position: absolute;
-    top: -2.5mm;
-    transform: translateX(-50%);
-    font-size: 7pt;
-    line-height: 1;
+.boxplot th {
+    padding: 0 1.6mm 0.6mm;
+    border-bottom: 1px solid var(--color-line);
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    text-align: center;
     white-space: nowrap;
 }
-.boxplot-min {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    transform: translateX(-50%);
-    margin-top: 0.75mm;
-    font-size: 7pt;
+.boxplot td {
+    padding: 0.6mm 1.6mm 0;
+    font-family: var(--font-display);
+    font-size: 9pt;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
     line-height: 1;
-    white-space: nowrap;
-}
-.boxplot-iqr {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 0.75mm;
-    font-size: 7pt;
-    line-height: 1;
-    white-space: nowrap;
-}
-.boxplot-max {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    transform: translateX(50%);
-    margin-top: 0.75mm;
-    font-size: 7pt;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
+    color: var(--color-ink);
+    text-align: center;
     white-space: nowrap;
 }
 </style>

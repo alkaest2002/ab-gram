@@ -57,8 +57,8 @@ const TYPE_CONFIG = {
 };
 
 // Degree distribution keys, folded into a single box-plot row per direction.
-const OUT_DEGREE_KEYS = ["minOutDegree", "maxOutDegree", "medianOutDegree", "IQROutDegree"];
-const IN_DEGREE_KEYS = ["minInDegree", "maxInDegree", "medianInDegree", "IQRInDegree"];
+const OUT_DEGREE_KEYS = ["minOutDegree", "Q1OutDegree", "medianOutDegree", "Q3OutDegree", "maxOutDegree"];
+const IN_DEGREE_KEYS = ["minInDegree", "Q1InDegree", "medianInDegree", "Q3InDegree", "maxInDegree"];
 
 // --- Composables --------
 
@@ -86,9 +86,10 @@ const rows = computed(() => {
         kind: "boxplot",
         value: {
             min: valueOf(fields[0]),
-            max: valueOf(fields[1]),
+            q1: valueOf(fields[1]),
             median: valueOf(fields[2]),
-            iqr: valueOf(fields[3]),
+            q3: valueOf(fields[3]),
+            max: valueOf(fields[4]),
         },
     });
 
@@ -157,7 +158,7 @@ function formatValue(row) {
                         {{ row.label }}
                     </td>
                     <td class="py-[1.3mm] text-right">
-                        <MetricBoxPlot v-if="row.kind === 'boxplot'" :value="row.value" :accent-color="accentColor" />
+                        <MetricBoxPlot v-if="row.kind === 'boxplot'" :value="row.value" />
                         <template v-else>
                             <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                 {{ formatValue(row) }}
