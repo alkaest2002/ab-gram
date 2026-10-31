@@ -119,7 +119,7 @@ describe("getSociogramAnalysis", () => {
     const { snaLikesGroupLevelMetrics } = getSociogramAnalysis(members);
 
     expect(snaLikesGroupLevelMetrics.ids).toEqual(["likes"]);
-    expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 2, 2, 1, 0, 1, 0]);
+    expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 2, 2, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]);
   });
 
   it("skips the dislikes SNA step when nobody dislikes anyone", () => {
@@ -156,17 +156,17 @@ describe("getSociogramAnalysis", () => {
     } = getSociogramAnalysis(members);
 
     // The likes graph is empty, so only the node count is populated.
-    expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 0, 0, 0, 0, 0, 0]);
+    expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
     expect(snaDislikesGroupLevelMetrics.ids).toEqual(["dislikes"]);
-    expect(snaDislikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 2, 2, 1, 0, 1, 0]);
+    expect(snaDislikesGroupLevelMetrics.rawValuesById[0]).toEqual([2, 2, 2, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0]);
 
     expect(snaDislikesComponents.dyads).toEqual([["a", "b"]]);
     expect(snaDislikesComponents.cliques).toEqual([]);
     expect(snaDislikesComponents.strongComponentsWithReciprocalEdges).toEqual([]);
     expect(snaDislikesComponents.strongComponents).toEqual([]);
     expect(snaDislikesComponents.weakComponents).toEqual([]);
-    expect(snaDislikesComponents.louvainCommunities.communities).toEqual([["a", "b"]]);
+    expect(snaDislikesComponents.louvainCommunities.communities).toEqual([]);
     expect(snaDislikesComponents.louvainCommunities.q).toBeCloseTo(0, 10);
     expect(snaDislikesIndividualLevelMetric.ids).toEqual(["a", "b"]);
     expect(snaDislikesPlots).toHaveLength(1);

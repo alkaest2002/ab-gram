@@ -8,6 +8,10 @@
 //   -- From vue
 import { computed } from "vue";
 
+//   -- From relative
+import MetricBoxPlot from "./MetricBoxPlot.vue";
+import MetricProgressBar from "./MetricProgressBar.vue";
+
 // --- Props --------------
 const props = defineProps({
     // Raw group-level metrics, shaped like `getGroupLevelMetrics` (metrics and
@@ -17,6 +21,8 @@ const props = defineProps({
     morenoMetrics: { type: Object, default: () => ({}) },
     // Preference type, selects the per-type labels below.
     typeOfSna: { type: String, default: "likes" },
+    // Accent color for the progress bars.
+    accentColor: { type: String, default: "" },
 });
 
 // --- Emits --------------
@@ -90,8 +96,8 @@ const rows = computed(() => {
         ? props.morenoMetrics?.rawValuesById?.[0][0] ?? 0
         : props.morenoMetrics?.rawValuesById?.[0][2] ?? 0;
 
-    // Fixed display order: counts first, then the structural ratios, the
-    // complementary Moreno index, and finally the two degree box plots.
+    // Fixed display order: counts and degree ties first, then the structural
+    // ratios and the complementary Moreno index.
     return [
         metricRow("numberOfNodes"),
         {
@@ -103,6 +109,8 @@ const rows = computed(() => {
                 mutual: valueOf("numberOfMutualEdges"),
             },
         },
+        boxplotRow("outDegree", "Legami uscenti", OUT_DEGREE_KEYS),
+        boxplotRow("inDegree", "Legami entranti", IN_DEGREE_KEYS),
         metricRow("networkDensity"),
         metricRow("networkCentralization"),
         metricRow("networkTransitivity"),
@@ -113,8 +121,6 @@ const rows = computed(() => {
             kind: "ratio",
             value: morenoValue,
         },
-        boxplotRow("outDegree", "Grado uscente", OUT_DEGREE_KEYS),
-        boxplotRow("inDegree", "Grado entrante", IN_DEGREE_KEYS),
     ];
 });
 
@@ -138,58 +144,6 @@ function formatValue(row) {
 
     return String(Math.round(Number(row.value)));
 }
-
-function ratioPercent(row) {
-    if (row.kind !== "ratio") return 0;
-    return Math.max(0, Math.min(100, Number(row.value) * 100));
-}
-
-// Box-plot geometry from the four summary statistics. Only min/max/median/IQR
-// are available, so Q1 and Q3 are reconstructed symmetrically around the median
-// (median ± IQR/2); the numbers are shown explicitly next to the plot.
-function boxplotGeometry(value) {
-    const min = Number(value?.min ?? 0);
-    const max = Number(value?.max ?? 0);
-    const median = Number(value?.median ?? 0);
-    const iqr = Number(value?.iqr ?? 0);
-    const span = max - min;
-
-    if (span === 0) {
-        return { q1Pct: 50, q3Pct: 50, medianPct: 50 };
-    }
-
-    const pct = (v) => ((v - min) / span) * 100;
-    const q1 = Math.max(min, median - iqr / 2);
-    const q3 = Math.min(max, median + iqr / 2);
-    return {
-        q1Pct: pct(q1),
-        q3Pct: pct(q3),
-        medianPct: pct(median),
-    };
-}
-
-function boxStyle(row) {
-    const { q1Pct, q3Pct } = boxplotGeometry(row.value);
-    return {
-        left: `${q1Pct}%`,
-        width: `${q3Pct - q1Pct}%`,
-    };
-}
-
-function medianStyle(row) {
-    const { medianPct } = boxplotGeometry(row.value);
-    return { left: `${medianPct}%` };
-}
-
-function formatBoxCount(value) {
-    return String(Math.round(Number(value ?? 0)));
-}
-
-function formatBoxDecimal(value) {
-    const n = Number(value ?? 0);
-    if (Number.isInteger(n)) return String(n);
-    return String(Number(n.toFixed(2))).replace(".", ",");
-}
 </script>
 
 <template>
@@ -198,39 +152,21 @@ function formatBoxDecimal(value) {
             <tbody>
                 <tr v-for="row in rows" :key="row.key" class="align-baseline">
                     <td
-                        class="py-[1.5mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
+                        class="py-[1.3mm] pr-[4mm] font-mono text-[8pt] font-medium tracking-[0.08em] text-muted uppercase"
                     >
                         {{ row.label }}
                     </td>
-                    <td class="py-[1.5mm] text-right">
-                        <template v-if="row.kind === 'boxplot'">
-                            <div class="boxplot">
-                                <div class="boxplot-track">
-                                    <div class="boxplot-line bg-ink"></div>
-                                    <div class="boxplot-box border-ink bg-ink" :style="boxStyle(row)"></div>
-                                    <div class="boxplot-median bg-white" :style="medianStyle(row)"></div>
-                                </div>
-                                <div class="boxplot-values text-ink">
-                                    <span>min {{ formatBoxCount(row.value.min) }}</span>
-                                    <span>med {{ formatBoxCount(row.value.median) }}</span>
-                                    <span>max {{ formatBoxCount(row.value.max) }}</span>
-                                    <span>IQR {{ formatBoxDecimal(row.value.iqr) }}</span>
-                                </div>
-                            </div>
-                        </template>
+                    <td class="py-[1.3mm] text-right">
+                        <MetricBoxPlot v-if="row.kind === 'boxplot'" :value="row.value" />
                         <template v-else>
                             <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                 {{ formatValue(row) }}
                             </div>
-                            <div
+                            <MetricProgressBar
                                 v-if="row.kind === 'ratio'"
-                                class="mt-[0.75mm] h-0.5 w-full overflow-hidden rounded-full bg-line"
-                            >
-                                <div
-                                    class="h-full rounded-full bg-ink"
-                                    :style="{ width: `${ratioPercent(row)}%` }"
-                                ></div>
-                            </div>
+                                :value="row.value"
+                                :accent-color="accentColor"
+                            />
                         </template>
                     </td>
                 </tr>
@@ -247,47 +183,5 @@ function formatBoxDecimal(value) {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
-
-/* Degree box plot: a full-range whisker (min→max), an IQR box and a median
-   tick, with the four numbers listed underneath. */
-.boxplot {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1mm;
-}
-.boxplot-track {
-    position: relative;
-    width: 24mm;
-    height: 4mm;
-}
-.boxplot-line {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    transform: translateY(-50%);
-}
-.boxplot-box {
-    position: absolute;
-    top: 1mm;
-    bottom: 1mm;
-    border-width: 1px;
-    border-style: solid;
-}
-.boxplot-median {
-    position: absolute;
-    top: 1mm;
-    bottom: 1mm;
-    width: 1.5px;
-}
-.boxplot-values {
-    display: flex;
-    gap: 2.5mm;
-    font-size: 7pt;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
 }
 </style>

@@ -40,7 +40,40 @@ $$
 Attenzione: ogni coppia reciproca è formata da due legami, quindi viene contata
 due volte.
 
-### 4 Densità
+### 4 Legami uscenti ed entranti
+
+Ogni membro esprime dei legami verso gli altri (le sue scelte o i suoi rifiuti)
+e ne riceve dagli altri. Il numero di frecce che **partono** da un membro è il
+suo *grado in uscita* (o **legami uscenti**), mentre il numero di frecce che
+**arrivano** a lui è il suo *grado in ingresso* (o **legami entranti**). Se
+$a_{ij}$ vale $1$ quando $i$ sceglie $j$ e $0$ altrimenti:
+
+$$
+d_i^{\text{out}} = \sum_j a_{ij},
+\qquad
+d_i^{\text{in}} = \sum_j a_{ji}
+$$
+
+Invece di elencare il grado di ogni membro, il report riassume la distribuzione
+di questi valori con un piccolo *box plot* (diagramma a scatola) per ciascuna
+direzione. Il box plot condensa in quattro numeri come sono distribuiti i legami
+nel gruppo:
+
+- **min** — il grado più piccolo, cioè il membro con meno legami uscenti (o
+  entranti);
+- **max** — il grado più grande, cioè il membro con più legami;
+- **mediana** — il valore centrale: metà dei membri ha un grado minore o uguale
+  a questo valore e l'altra metà maggiore o uguale;
+- **IQR** (intervallo interquartile) — la differenza tra il terzo e il primo
+  quartile ($Q_3 - Q_1$), cioè la larghezza dell'intervallo che contiene la metà
+  centrale dei membri. Vale $0$ quando i gradi al centro sono tutti uguali e
+  cresce quando si disperdono.
+
+Nel report il box plot è disegnato come una linea orizzontale che va dal minimo
+al massimo, con una barra verticale in corrispondenza della mediana; sotto, tra
+parentesi, è riportato l'IQR.
+
+### 5 Densità
 
 Indica **quanto la rete è "fitta"**: è il rapporto tra i legami che ci sono e
 quelli che potrebbero esserci. Vale $1$ in un grafico completo (tutti hanno
@@ -50,7 +83,7 @@ $$
 \Delta = \frac{E}{N(N-1)}
 $$
 
-### 5 Centralizzazione
+### 6 Centralizzazione
 
 Indica **quanto la rete ruota attorno a una sola persona**. Ogni nodo ha una
 *centralità* $C_i$, un valore che misura quanto è "importante" nella rete (ad
@@ -67,7 +100,7 @@ $$
 C = \frac{\sum_{i=1}^{N} (C_{\max} - C_i)}{(N - 1)^2}
 $$
 
-### 6 Reciprocità
+### 7 Reciprocità
 
 Indica **quanta parte dei legami viene ricambiata**: è il rapporto tra i legami
 ricambiati e tutti i legami presenti.
@@ -76,7 +109,7 @@ $$
 R = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
 $$
 
-### 7 Transitività
+### 8 Transitività
 
 Misura la tendenza dei "vicini" di un nodo a essere collegati anche tra loro:
 in altre parole, se $A$ è collegato a $B$ e a $C$, quanto è probabile che anche
@@ -93,7 +126,7 @@ $$
 T = \frac{3 t_{\triangle}}{\sum_{v \in V} \binom{d_v}{2}}
 $$
 
-### 8 Indice di coesione
+### 9 Indice di coesione
 
 L'indice di coesione misura **quanto il gruppo è unito**, contando le scelte
 reciproche. Qui $a_{ij}$ vale $1$ se $i$ sceglie $j$ e $0$ altrimenti, così il
@@ -123,7 +156,7 @@ $$
 Coh_{II} = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
 $$
 
-### 9 Indice di conflitto
+### 10 Indice di conflitto
 
 L'indice di conflitto è il "gemello" della coesione applicato ai rifiuti:
 misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $b_{ij}$
@@ -149,7 +182,7 @@ $$
 Con_{II} = \frac{\sum_{i,j} b_{ij} b_{ji}}{\sum_{i,j} b_{ij}}
 $$
 
-## 10 Un esempio svolto
+## 11 Un esempio svolto
 
 Immaginiamo un gruppo di quattro membri, con le seguenti matrici delle scelte
 ($A$) e dei rifiuti ($B$):
@@ -182,6 +215,12 @@ scelte sono $7$, quindi $E = 7$.
 **Legami reciproci.** L'unica coppia in cui $u$ sceglie $v$ *e* $v$ sceglie
 $u$ è quella dei membri $1$ e $2$ (ci sono sia $1 \to 2$ sia $2 \to 1$). I due
 legami vengono contati entrambi, perciò $E_{\leftrightarrow} = 2$.
+
+**Legami uscenti ed entranti.** I gradi in uscita sono $2$, $2$, $2$, $1$ (il
+membro $4$ sceglie solo il membro $1$, tutti gli altri ne scelgono due); i gradi
+in ingresso sono $2$, $2$, $1$, $2$ (il membro $3$ è scelto solo dal membro $1$).
+In entrambi i casi il box plot riporta minimo $1$, massimo $2$, mediana $2$ e
+intervallo interquartile $0{,}25$.
 
 **Densità.** Il rapporto tra i legami presenti e quelli possibili, con
 $N(N-1) = 4 \cdot 3 = 12$ legami possibili:
@@ -250,6 +289,8 @@ Riassumendo:
 | Numero di nodi ($N$) | $4$ |
 | Numero di legami ($E$) | $7$ |
 | Legami reciproci ($E_{\leftrightarrow}$) | $2$ |
+| Legami uscenti (box plot) | min $1$ · mediana $2$ · max $2$ · IQR $0{,}25$ |
+| Legami entranti (box plot) | min $1$ · mediana $2$ · max $2$ · IQR $0{,}25$ |
 | Densità ($\Delta$) | $7/12 \approx 0{,}58$ |
 | Centralizzazione ($C$) | $1/9 \approx 0{,}11$ |
 | Reciprocità ($R$) | $2/7 \approx 0{,}29$ |
