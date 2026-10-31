@@ -5,11 +5,20 @@
 
 <script setup>
 // --- Imports ------------
+//   -- From vue
+import { computed } from "vue";
 
 // --- Props --------------
-defineProps({
-    // Rows to render: `{ key, label, kind, value }`, assembled by the container.
-    rows: { type: Array, default: () => [] },
+const props = defineProps({
+    // Raw group-level metrics, shaped like `getGroupLevelMetrics` (metrics and
+    // `rawValuesById`). Only the first row is read: a group has one graph.
+    snaMetrics: { type: Object, default: () => ({}) },
+    // Raw complementary Moreno metrics, shaped like `getGroupLevelMetrics`.
+    morenoMetrics: { type: Object, default: () => ({}) },
+    // Label for the combined edge/mutual-edge row.
+    edgeLabel: { type: String, default: "" },
+    // Moreno indices to append as ratio rows.
+    morenoIndexes: { type: Array, default: () => [] },
     // Accent color for the ratio bars.
     accentColor: { type: String, default: "" },
 });
@@ -21,10 +30,77 @@ defineProps({
 // --- Stores -------------
 
 // --- State --------------
+// Metric key -> display label and formatting kind. Counts are whole numbers;
+// the four structural indices are proportions in [0, 1], shown as percentages
+// with a small bar so the value reads at a glance.
+const METRIC_CONFIG = {
+    numberOfNodes: { label: "Numero di membri nel gruppo", kind: "count" },
+    networkDensity: { label: "Densità della rete", kind: "ratio" },
+    networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
+    networkReciprocity: { label: "Reciprocità della rete", kind: "ratio" },
+    networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
+};
 
 // --- Composables --------
 
 // --- Computed -----------
+const rows = computed(() => {
+    const keys = props.snaMetrics?.metrics ?? [];
+    const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
+
+    const result = [];
+
+    for (const key of keys) {
+        const index = keys.indexOf(key);
+
+        // Fold the mutual edge count into the total edge row as a single
+        // combined entry, e.g. "Totale scelte (di cui reciproche) ... 10 (5)".
+        if (key === "numberOfEdges") {
+            const mutualIndex = keys.indexOf("numberOfMutualEdges");
+            result.push({
+                key,
+                label: props.edgeLabel,
+                kind: "countPair",
+                value: {
+                    total: values[index] ?? 0,
+                    mutual: mutualIndex === -1 ? 0 : values[mutualIndex] ?? 0,
+                },
+            });
+            continue;
+        }
+
+        if (key === "numberOfMutualEdges") {
+            continue;
+        }
+
+        result.push({
+            key,
+            label: METRIC_CONFIG[key]?.label ?? key,
+            kind: METRIC_CONFIG[key]?.kind ?? "count",
+            value: values[index] ?? 0,
+        });
+    }
+
+    // The Moreno group indices that complement this preference type (cohesion
+    // for likes, conflict for dislikes, in both type I and type II) are
+    // appended as final ratio rows.
+    const morenoKeys = props.morenoMetrics?.metrics ?? [];
+    const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
+
+    for (const { key, label } of props.morenoIndexes) {
+        const morenoIndex = morenoKeys.indexOf(key);
+        if (morenoIndex !== -1) {
+            result.push({
+                key,
+                label,
+                kind: "ratio",
+                value: morenoValues[morenoIndex] ?? 0,
+            });
+        }
+    }
+
+    return result;
+});
 
 // --- Watchers -----------
 
@@ -32,6 +108,12 @@ defineProps({
 
 // --- Methods ------------
 function formatValue(row) {
+    if (row.kind === "countPair") {
+        const total = Math.round(Number(row.value?.total ?? 0));
+        const mutual = Math.round(Number(row.value?.mutual ?? 0));
+        return `${total} (${mutual})`;
+    }
+
     if (row.kind === "ratio") {
         // One decimal, Italian comma separator (e.g. 0.214 -> "21,4%").
         const percent = (Number(row.value) * 100).toFixed(1).replace(".", ",");

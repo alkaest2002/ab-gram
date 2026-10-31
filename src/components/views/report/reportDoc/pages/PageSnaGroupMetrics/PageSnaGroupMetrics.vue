@@ -46,8 +46,7 @@ const SNA_CONFIG = {
     likes: {
         accentColor: "#2563eb",
         pageTitle: "Rete delle scelte",
-        edgeLabel: "Totale scelte effettuate",
-        mutualEdgeLabel: "Totale scelte reciproche effettuate",
+        edgeLabel: "Totale scelte (di cui reciproche)",
         directedLegend: "Scelta non reciproca",
         mutualLegend: "Scelta reciproca",
         morenoIndexes: [
@@ -57,8 +56,7 @@ const SNA_CONFIG = {
     dislikes: {
         accentColor: "#dc2626",
         pageTitle: "Rete dei rifiuti",
-        edgeLabel: "Totale rifiuti effettuati",
-        mutualEdgeLabel: "Totale rifiuti reciproci effettuati",
+        edgeLabel: "Totale rifiuti (di cui reciproci)",
         directedLegend: "Rifiuto non reciproco",
         mutualLegend: "Rifiuto reciproco",
         morenoIndexes: [
@@ -88,52 +86,6 @@ const gravity = ref(1.1);
 
 // The regeneration worker, kept so it can be terminated mid-flight.
 let worker = null;
-
-// Metric key -> display label and formatting kind. Counts are whole numbers;
-// the four structural indices are proportions in [0, 1], shown as percentages
-// with a small bar so the value reads at a glance. The two edge labels depend
-// on the preference type, so the config is assembled from the selected type.
-const METRIC_CONFIG = {
-    numberOfNodes: { label: "Numero di membri nel gruppo", kind: "count" },
-    numberOfEdges: { label: config.edgeLabel, kind: "count" },
-    numberOfMutualEdges: { label: config.mutualEdgeLabel, kind: "count" },
-    networkDensity: { label: "Densità della rete", kind: "ratio" },
-    networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
-    networkReciprocity: { label: "Reciprocità della rete", kind: "ratio" },
-    networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
-};
-
-const metricRows = (() => {
-    const keys = props.snaMetrics?.metrics ?? [];
-    const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
-
-    const rows = keys.map((key, index) => ({
-        key,
-        label: METRIC_CONFIG[key]?.label ?? key,
-        kind: METRIC_CONFIG[key]?.kind ?? "count",
-        value: values[index] ?? 0,
-    }));
-
-    // The Moreno group indices that complement this preference type (cohesion
-    // for likes, conflict for dislikes, in both type I and type II) are
-    // appended as final ratio rows.
-    const morenoKeys = props.morenoMetrics?.metrics ?? [];
-    const morenoValues = props.morenoMetrics?.rawValuesById?.[0] ?? [];
-
-    for (const { key, label } of config.morenoIndexes) {
-        const morenoIndex = morenoKeys.indexOf(key);
-        if (morenoIndex !== -1) {
-            rows.push({
-                key,
-                label,
-                kind: "ratio",
-                value: morenoValues[morenoIndex] ?? 0,
-            });
-        }
-    }
-
-    return rows;
-})();
 
 // --- Composables --------
 
@@ -266,7 +218,13 @@ onBeforeUnmount(() => {
                     :mutual-legend="config.mutualLegend"
                     @open-modal="openModal"
                 />
-                <SnaMetrics :rows="metricRows" :accent-color="accentColor" />
+                <SnaMetrics
+                    :sna-metrics="snaMetrics"
+                    :moreno-metrics="morenoMetrics"
+                    :edge-label="config.edgeLabel"
+                    :moreno-indexes="config.morenoIndexes"
+                    :accent-color="accentColor"
+                />
             </div>
 
             <!-- Regeneration modal: teleported to <body> by the component so it
