@@ -46,19 +46,14 @@ const GLOSSARY = [
     { label: "HA", extended: "HITS autorità" },
     { label: "HU", extended: "HITS hub" },
 
-    // SNA components. In the member pages these labels are prefixed by the
-    // network they belong to: "L-" for likes (scelte) and "D-" for dislikes
-    // (rifiuti).
+    // SNA components. In the member pages these labels are prefixed by "L-" for
+    // likes (scelte).
     { label: "L-DYD", extended: "Diadi (scelte)" },
     { label: "L-CLQ", extended: "Clique (scelte)" },
     { label: "L-WCC", extended: "Comp.ti debolmente connesse (scelte)" },
     { label: "L-SCC", extended: "Comp.ti fortemente connesse (scelte)" },
     { label: "L-SCM", extended: "Comp.ti fortemente connesse e reciproche (scelte)" },
-    { label: "D-DYD", extended: "Diadi (rifiuti)" },
-    { label: "D-CLQ", extended: "Clique (rifiuti)" },
-    { label: "D-WCC", extended: "Comp.ti debolmente connesse (rifiuti)" },
-    { label: "D-SCC", extended: "Comp.ti fortemente connesse (rifiuti)" },
-    { label: "D-SCM", extended: "Comp.ti fortemente connesse e reciproche (rifiuti)" },
+    { label: "L-LVN", extended: "Comunità di Louvain (scelte)" },
 
     // Edge types.
     { label: "T1", extended: "Scelte reciproche" },

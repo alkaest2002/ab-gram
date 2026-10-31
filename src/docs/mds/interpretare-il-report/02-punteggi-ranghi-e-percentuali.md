@@ -13,7 +13,7 @@ Il report presenta i risultati con tre tipi di valori:
   riceve il rango 1; a pari merito i membri condividono lo stesso rango.
 - **Percentuale** — una proporzione espressa su 100, usata per gli indici che
   variano tra 0 e 1 (densità, centralizzazione, ecc.) e per le quote di
-  relazioni o componenti.
+  relazioni o strutture interne alla rete delle scelte.
 
 Non tutte le pagine contengono tutti e tre i tipi di valori.
 
@@ -113,14 +113,14 @@ compare in questa sezione). Per ogni tipo ci sono due numeri:
 - la **percentuale**: la quota di quel tipo sul totale delle relazioni del
   membro, arrotondata a numero intero.
 
-### 7.4 Componenti
+### 7.4 Strutture interne
 
-Mostra, per la rete delle scelte (prefisso `L-`) e per quella dei rifiuti
-(prefisso `D-`), le cinque categorie DYD, CLQ, WCC, SCC e SCM. Per ogni
-categoria ci sono due numeri:
+Mostra, per la rete delle scelte (prefisso `L-`), le sei categorie DYD, CLQ,
+WCC, SCC, SCM e LVN (comunità di Louvain). Per ogni categoria ci sono due
+numeri:
 
-- il **conteggio grezzo**: quante componenti di quel tipo contengono il membro;
-- la **percentuale**: la quota sul totale delle componenti di quel tipo,
+- il **conteggio grezzo**: quante strutture di quel tipo contengono il membro;
+- la **percentuale**: la quota sul totale delle strutture di quel tipo,
   arrotondata a numero intero.
 
 ### 7.5 Status sociometrico
@@ -154,6 +154,6 @@ significato esteso.
 | Scelte e rifiuti | identificativi (+/-) | – | – |
 | Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
 | Tipi di relazione | conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span> | – | – |
-| Componenti della rete | conteggi <br><span class="text-xs text-muted">componenti per categoria</span> | – | – |
+| Strutture interne della rete | conteggi <br><span class="text-xs text-muted">strutture per categoria</span> | – | – |
 | Pagine individuali | conteggi e decimali | sì | sì |
 | Glossario | – | – | – |

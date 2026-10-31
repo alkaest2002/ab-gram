@@ -15,7 +15,7 @@ Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 
 ## Che cos'è una struttura interna
 
-Con **struttura interna** indichiamo una parte del gruppo — una coppia, una componente
+Con **struttura interna** indichiamo una parte del gruppo — una coppia, una componente connessa
 o una comunità — che possiamo isolare dal resto per studiarla. Le strutture
 descritte in questa pagina individuano queste parti in modi diversi: alcune
 seguono regole precise (le diadi, le clique e le componenti connesse), altre
@@ -41,7 +41,7 @@ Le stesse definizioni valgono formalmente anche per i rifiuti (matrice $B$), ma
 il risultato sarebbe fuorviante: dire che due membri "si raggiungono" lungo una
 catena di rifiuti, o che formano una "clique" perché tutti si rifiutano a
 vicenda, descrive un'ostilità, non una struttura di appartenenza. Per questo,
-per diadi, clique e componenti consideriamo solo le scelte.
+per diadi, clique e componenti connesse consideriamo solo le scelte.
 
 ## 1 Diadi
 
@@ -159,13 +159,13 @@ vanno tenute distinte.
   appartenere alla stessa componente senza essersi mai scelti direttamente,
   purché li colleghi una catena di intermediari.
 
-Per questo le componenti sono strutture **meno compatte** delle clique: possono
+Per questo le componenti connesse sono strutture **meno compatte** delle clique: possono
 contenere legami radi e lunghe catene di intermediari, mentre una clique impone
 un legame diretto tra ogni coppia.
 
 ### 4.2 Sovrapposizione
 
-Le componenti **dividono** il gruppo: ogni membro appartiene a una sola
+Le componenti conesse **dividono** il gruppo: ogni membro appartiene a una sola
 componente (un membro isolato forma una componente da solo). Le clique invece
 possono **sovrapporsi**: lo stesso membro può far parte di più clique, e molti
 membri possono non far parte di nessuna clique di dimensione apprezzabile.
@@ -217,7 +217,7 @@ diverso, che misura la compattezza e non la raggiungibilità.
 
 ## 5 Comunità di Louvain
 
-Le strutture viste finora (diadi, clique, componenti) seguono una regola netta e
+Le strutture viste finora (diadi, clique, componenti connesse) seguono una regola netta e
 deterministica: un membro o soddisfa la condizione, o non la soddisfa. Le
 **comunità di Louvain** seguono un'idea diversa: invece di imporre una regola
 fissa, l'algoritmo cerca la suddivisione del gruppo che **massimizza la
@@ -238,9 +238,9 @@ la suddivisione è "migliore del caso".
 - $Q$ più alto: i legami sono concentrati dentro le comunità; la struttura è
   più netta.
 
-### 5.2 Cosa cambia rispetto alle componenti
+### 5.2 Cosa cambia rispetto a diadi, clique e componenti connesse
 
-- Le componenti **dividono** il gruppo seguendo una regola fissa (esiste un
+- Le diadi, clique e componenti connesse **dividono** il gruppo seguendo una regola fissa (esiste un
   percorso?) e ogni membro appartiene a una sola componente.
 - Le comunità di Louvain nascono da una **ottimizzazione**: non c'è una regola
   unica, ma la suddivisione che meglio separa i legami interni da quelli esterni.

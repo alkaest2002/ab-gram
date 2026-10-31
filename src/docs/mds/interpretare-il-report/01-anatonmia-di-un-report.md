@@ -60,9 +60,9 @@ sane, relazioni potenzialmente problematiche e relazioni problematiche.
 
 ### 1.7 Strutture interne alla rete delle scelte
 
-Scompone la rete delle scelte in cinque categorie: diadi, clique, componenti
-debolmente connesse, componenti fortemente connesse e componenti fortemente
-connesse e reciproche.
+Scompone la rete delle scelte in diadi, clique, componenti debolmente
+connesse, componenti fortemente connesse, componenti fortemente connesse e
+reciproche, e comunità di Louvain.
 
 ### 1.8 Pagine individuali dei membri
 
@@ -71,7 +71,7 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 - il grafico ego;
 - le metriche individuali;
 - le relazioni;
-- le componenti di appartenenza;
+- le strutture interne alla rete delle scelte;
 - lo status sociometrico.
 
 ### 1.9 Glossario

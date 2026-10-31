@@ -35,14 +35,20 @@ const COMPONENT_CONFIG = [
     { key: "weakComponents", label: "WCC" },
     { key: "strongComponents", label: "SCC" },
     { key: "strongComponentsWithReciprocalEdges", label: "SCM" },
+    { key: "louvainCommunities", label: "LVN" },
 ];
 
 // Each component category is a list of components, where a component is a list
-// of member ids. The shares count how many of that category's components contain
-// the member (`cnt`) and the 0-1 fraction it is present in (`pct`).
+// of member ids. Louvain communities are nested under `communities` alongside a
+// modularity `q`, so that category is read through its `communities` list. The
+// shares count how many of that category's components contain the member
+// (`cnt`) and the 0-1 fraction it is present in (`pct`).
 const buildComponentShares = (components, prefix) => {
     return COMPONENT_CONFIG.map(({ key, label }) => {
-        const list = components?.[key] ?? [];
+        const list =
+            key === "louvainCommunities"
+                ? components?.[key]?.communities ?? []
+                : components?.[key] ?? [];
         const count = list.filter((component) => component.includes(props.memberId)).length;
         const share = list.length === 0 ? 0 : count / list.length;
         return {
@@ -54,16 +60,11 @@ const buildComponentShares = (components, prefix) => {
     });
 };
 
-// The component stats render as two rows: one for the likes network and one for
-// the dislikes network, each label prefixed to make its network unambiguous.
+// The component stats render as a single row for the likes network.
 const componentRows = [
   {
     name: "likes",
     shares: buildComponentShares(props.likesComponents, "L")
-  },
-  {
-    name: "dislikes",
-    shares: buildComponentShares(props.dislikesComponents, "D")
   },
 ];
 
@@ -82,7 +83,7 @@ const componentRows = [
     <section class="min-w-0">
         <header class="mb-[2mm] border-b border-line pb-[0.5mm]">
             <h3 class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]">
-                Componenti
+                Strutture interne
             </h3>
         </header>
         <div class="flex flex-col gap-[1mm]">
@@ -111,32 +112,7 @@ const componentRows = [
                         >
                     </span>
                 </span>
-                <span
-                    v-if="row.shares.length"
-                    class="invisible flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
-                    aria-hidden="true"
-                >
-                    <span
-                        class="font-mono text-[9pt] font-medium text-muted"
-                        >{{ row.shares[row.shares.length - 1].label }}</span
-                    >
-                    <span class="flex items-center gap-[1mm]">
-                        <span
-                            class="font-mono text-[9pt] font-semibold leading-none"
-                            >{{
-                                row.shares[row.shares.length - 1].count
-                            }}</span
-                        >
-                        <span
-                            class="font-mono text-[7pt] leading-none text-muted"
-                            >{{
-                                formatShare(
-                                    row.shares[row.shares.length - 1].share,
-                                )
-                            }}</span
-                        >
-                    </span>
-                </span>
+
             </div>
         </div>
     </section>
