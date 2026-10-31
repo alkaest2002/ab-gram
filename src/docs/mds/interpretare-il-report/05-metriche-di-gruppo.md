@@ -55,23 +55,20 @@ d_i^{\text{in}} = \sum_j a_{ji}
 $$
 
 Invece di elencare il grado di ogni membro, il report riassume la distribuzione
-di questi valori con un piccolo *box plot* (diagramma a scatola) per ciascuna
-direzione. Il box plot condensa in quattro numeri come sono distribuiti i legami
-nel gruppo:
+di questi valori con una **sintesi a cinque numeri**: minimo, primo quartile,
+mediana, terzo quartile e massimo. I due riepiloghi (uscenti ed entranti) sono
+riuniti in un'unica tabella, con una riga di intestazione e una riga per
+ciascuna direzione:
 
 - **min** — il grado più piccolo, cioè il membro con meno legami uscenti (o
   entranti);
-- **max** — il grado più grande, cioè il membro con più legami;
+- **Q1** (primo quartile) — il valore al di sotto del quale si colloca il 25%
+  dei gradi;
 - **mediana** — il valore centrale: metà dei membri ha un grado minore o uguale
   a questo valore e l'altra metà maggiore o uguale;
-- **IQR** (intervallo interquartile) — la differenza tra il terzo e il primo
-  quartile ($Q_3 - Q_1$), cioè la larghezza dell'intervallo che contiene la metà
-  centrale dei membri. Vale $0$ quando i gradi al centro sono tutti uguali e
-  cresce quando si disperdono.
-
-Nel report il box plot è disegnato come una linea orizzontale che va dal minimo
-al massimo, con una barra verticale in corrispondenza della mediana; sotto, tra
-parentesi, è riportato l'IQR.
+- **Q3** (terzo quartile) — il valore al di sotto del quale si colloca il 75%
+  dei gradi;
+- **max** — il grado più grande, cioè il membro con più legami.
 
 ### 5 Densità
 
@@ -219,8 +216,8 @@ legami vengono contati entrambi, perciò $E_{\leftrightarrow} = 2$.
 **Legami uscenti ed entranti.** I gradi in uscita sono $2$, $2$, $2$, $1$ (il
 membro $4$ sceglie solo il membro $1$, tutti gli altri ne scelgono due); i gradi
 in ingresso sono $2$, $2$, $1$, $2$ (il membro $3$ è scelto solo dal membro $1$).
-In entrambi i casi il box plot riporta minimo $1$, massimo $2$, mediana $2$ e
-intervallo interquartile $0{,}25$.
+In entrambi i casi la sintesi a cinque numeri è: minimo $1$, primo quartile
+$1{,}75$, mediana $2$, terzo quartile $2$ e massimo $2$.
 
 **Densità.** Il rapporto tra i legami presenti e quelli possibili, con
 $N(N-1) = 4 \cdot 3 = 12$ legami possibili:
@@ -289,8 +286,7 @@ Riassumendo:
 | Numero di nodi ($N$) | $4$ |
 | Numero di legami ($E$) | $7$ |
 | Legami reciproci ($E_{\leftrightarrow}$) | $2$ |
-| Legami uscenti (box plot) | min $1$ · mediana $2$ · max $2$ · IQR $0{,}25$ |
-| Legami entranti (box plot) | min $1$ · mediana $2$ · max $2$ · IQR $0{,}25$ |
+| Legami uscenti ed entranti | min $1$ · $Q_1\, 1{,}75$ · mediana $2$ · $Q_3\, 2$ · max $2$ |
 | Densità ($\Delta$) | $7/12 \approx 0{,}58$ |
 | Centralizzazione ($C$) | $1/9 \approx 0{,}11$ |
 | Reciprocità ($R$) | $2/7 \approx 0{,}29$ |
