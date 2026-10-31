@@ -53,6 +53,105 @@ export const computeNumberOfMutualEdges = (graph) => {
   return count;
 };
 
+//////////////////////////////////////////////////////////////////////////////////
+// DEGREE DISTRIBUTION SUMMARY STATISTICS
+//////////////////////////////////////////////////////////////////////////////////
+
+// These summarise the distribution of the raw in-/out-degree across every node
+// (not the normalized centrality). Each returns a single number, and every
+// statistic is `0` on an empty graph. The median and quartiles follow NumPy's
+// default linear interpolation between the two nearest ranks.
+
+/**
+ * Raw in-/out-degree of every node, in `graph.nodes()` order.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @param {"in" | "out"} direction - Which degree to read.
+ * @returns {number[]} One degree per node.
+ */
+const nodeDegrees = (graph, direction) =>
+  graph.nodes().map((node) =>
+    direction === "in" ? graph.inDegree(node) : graph.outDegree(node),
+  );
+
+/**
+ * Minimum out-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The smallest out-degree.
+ */
+export const computeMinOutDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.min(np.array(nodeDegrees(graph, "out"))));
+
+/**
+ * Maximum out-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The largest out-degree.
+ */
+export const computeMaxOutDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.max(np.array(nodeDegrees(graph, "out"))));
+
+/**
+ * Median out-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The median out-degree.
+ */
+export const computeMedianOutDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "out"))));
+
+/**
+ * Interquartile range (Q3 − Q1) of the out-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The interquartile range of out-degrees.
+ */
+export const computeIQROutDegree = (graph) => {
+  if (graph.order === 0) return 0;
+  const degrees = np.array(nodeDegrees(graph, "out"));
+  return Number(np.percentile(degrees, 75)) - Number(np.percentile(degrees, 25));
+};
+
+/**
+ * Minimum in-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The smallest in-degree.
+ */
+export const computeMinInDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.min(np.array(nodeDegrees(graph, "in"))));
+
+/**
+ * Maximum in-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The largest in-degree.
+ */
+export const computeMaxInDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.max(np.array(nodeDegrees(graph, "in"))));
+
+/**
+ * Median in-degree across all nodes.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The median in-degree.
+ */
+export const computeMedianInDegree = (graph) =>
+  graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "in"))));
+
+/**
+ * Interquartile range (Q3 − Q1) of the in-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The interquartile range of in-degrees.
+ */
+export const computeIQRInDegree = (graph) => {
+  if (graph.order === 0) return 0;
+  const degrees = np.array(nodeDegrees(graph, "in"));
+  return Number(np.percentile(degrees, 75)) - Number(np.percentile(degrees, 25));
+};
+
 /**
  * Compute the network centralization of a graph.
  *

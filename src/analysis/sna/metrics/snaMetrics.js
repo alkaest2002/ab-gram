@@ -7,6 +7,14 @@ import {
   computeNumberOfNodes,
   computeNumberOfEdges,
   computeNumberOfMutualEdges,
+  computeMinOutDegree,
+  computeMaxOutDegree,
+  computeMedianOutDegree,
+  computeIQROutDegree,
+  computeMinInDegree,
+  computeMaxInDegree,
+  computeMedianInDegree,
+  computeIQRInDegree,
   computeNetworkDensity,
   computeNetworkCentralization,
   computeNetworkReciprocity,
@@ -31,6 +39,14 @@ SNA GROUP LEVEL METRICS
 - "numberOfNodes":         Number of members in the group.
 - "numberOfEdges":         Number of directed preference edges.
 - "numberOfMutualEdges":   Number of directed edges whose reverse edge exists.
+- "minOutDegree":          Minimum out-degree across members.
+- "maxOutDegree":          Maximum out-degree across members.
+- "medianOutDegree":       Median out-degree across members.
+- "IQROutDegree":          Interquartile range of out-degrees.
+- "minInDegree":           Minimum in-degree across members.
+- "maxInDegree":           Maximum in-degree across members.
+- "medianInDegree":        Median in-degree across members.
+- "IQRInDegree":           Interquartile range of in-degrees.
 - "networkDensity":        Proportion of possible edges that exist.
 - "networkCentralization": Concentration of in-degree around the top node.
 - "networkReciprocity":    Proportion of edges that are reciprocated.
@@ -40,6 +56,14 @@ const GROUP_LEVEL_METRIC_KEYS = [
   "numberOfNodes",
   "numberOfEdges",
   "numberOfMutualEdges",
+  "minOutDegree",
+  "maxOutDegree",
+  "medianOutDegree",
+  "IQROutDegree",
+  "minInDegree",
+  "maxInDegree",
+  "medianInDegree",
+  "IQRInDegree",
   "networkDensity",
   "networkCentralization",
   "networkReciprocity",
@@ -64,6 +88,14 @@ const computeGroupLevelMetrics = (graph) => {
       computeNumberOfNodes(graph),
       computeNumberOfEdges(graph),
       computeNumberOfMutualEdges(graph),
+      computeMinOutDegree(graph),
+      computeMaxOutDegree(graph),
+      computeMedianOutDegree(graph),
+      computeIQROutDegree(graph),
+      computeMinInDegree(graph),
+      computeMaxInDegree(graph),
+      computeMedianInDegree(graph),
+      computeIQRInDegree(graph),
       computeNetworkDensity(graph),
       computeNetworkCentralization(graph),
       computeNetworkReciprocity(graph),

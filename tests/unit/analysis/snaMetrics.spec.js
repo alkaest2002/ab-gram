@@ -15,6 +15,14 @@ const GROUP_COLUMNS = [
   "numberOfNodes",
   "numberOfEdges",
   "numberOfMutualEdges",
+  "minOutDegree",
+  "maxOutDegree",
+  "medianOutDegree",
+  "IQROutDegree",
+  "minInDegree",
+  "maxInDegree",
+  "medianInDegree",
+  "IQRInDegree",
   "networkDensity",
   "networkCentralization",
   "networkReciprocity",
@@ -47,9 +55,14 @@ describe("getGroupLevelMetrics", () => {
 
     expect(result.ids).toEqual(["likes"]);
     expect(result.metrics).toEqual(GROUP_COLUMNS);
-    expect(result.rawValuesById[0]).toEqual([3, 6, 6, 1, 0, 1, 1]);
+    expect(result.rawValuesById[0]).toEqual([
+      3, 6, 6,
+      2, 2, 2, 0,
+      2, 2, 2, 0,
+      1, 0, 1, 1,
+    ]);
     // A single group row means every metric column ranks itself as 1.
-    expect(result.rankedValuesById).toEqual([[1, 1, 1, 1, 1, 1, 1]]);
+    expect(result.rankedValuesById).toEqual([GROUP_COLUMNS.map(() => 1)]);
   });
 
   it("computes density and centralization for a star graph", () => {
@@ -73,6 +86,14 @@ describe("getGroupLevelMetrics", () => {
     expect(byName.numberOfNodes).toBe(4);
     expect(byName.numberOfEdges).toBe(3);
     expect(byName.numberOfMutualEdges).toBe(0);
+    expect(byName.minOutDegree).toBe(0);
+    expect(byName.maxOutDegree).toBe(1);
+    expect(byName.medianOutDegree).toBe(1);
+    expect(byName.IQROutDegree).toBeCloseTo(0.25, 10);
+    expect(byName.minInDegree).toBe(0);
+    expect(byName.maxInDegree).toBe(3);
+    expect(byName.medianInDegree).toBe(0);
+    expect(byName.IQRInDegree).toBeCloseTo(0.75, 10);
     expect(byName.networkDensity).toBeCloseTo(0.25, 10);
     expect(byName.networkCentralization).toBeCloseTo(1, 10);
     expect(byName.networkReciprocity).toBe(0);
@@ -84,7 +105,12 @@ describe("getGroupLevelMetrics", () => {
 
     const result = getGroupLevelMetrics(graph);
 
-    expect(result.rawValuesById[0]).toEqual([1, 0, 0, 0, 0, 0, 0]);
+    expect(result.rawValuesById[0]).toEqual([
+      1, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+    ]);
   });
 });
 
