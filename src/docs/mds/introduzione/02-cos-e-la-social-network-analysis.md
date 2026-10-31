@@ -1,7 +1,6 @@
 ---
 title: Cos'è la Social Network Analysis?
 order: 2
-description: Cos'è la Social Network Analysis e quali sono i suoi concetti fondamentali.
 ---
 
 La **Social Network Analysis** (SNA) è l'insieme di metodi e misure per studiare

@@ -1,7 +1,6 @@
 ---
 title: Cos'è l'app AB-Gram?
 order: 3
-description: I destinatari dell'applicazione, le idee su cui si fonda e i contesti in cui si usa.
 ---
 
 **AB-Gram** è un'applicazione pensata per chi lavora con i gruppi e vuole capirne

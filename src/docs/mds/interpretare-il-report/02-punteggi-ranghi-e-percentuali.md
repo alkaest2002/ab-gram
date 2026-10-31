@@ -1,7 +1,6 @@
 ---
 title: Punteggi, ranghi e percentuali
 order: 2
-description: Come leggere i valori mostrati in ogni pagina del report.
 ---
 
 Il report presenta i risultati con tre tipi di valori:

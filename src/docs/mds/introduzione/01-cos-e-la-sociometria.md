@@ -1,7 +1,6 @@
 ---
 title: Cos'è la sociometria?
 order: 1
-description: Le origini della sociometria e l'idea di misurare le relazioni di un gruppo.
 ---
 
 La **sociometria** è la disciplina che studia in modo **quantitativo** le

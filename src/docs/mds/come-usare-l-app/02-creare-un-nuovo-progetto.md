@@ -1,7 +1,6 @@
 ---
 title: Creare un nuovo progetto
 order: 2
-description: Come avviare un nuovo sociogramma partendo da una lista di nomi.
 ---
 
 Quando apri AB-Gram ti trovi davanti alla schermata iniziale, che propone due

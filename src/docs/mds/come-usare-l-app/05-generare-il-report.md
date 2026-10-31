@@ -1,7 +1,6 @@
 ---
 title: Generare il report
 order: 5
-description: Come controllare il riepilogo, correggere eventuali errori e produrre il report finale.
 ---
 
 Il quarto passaggio è il **riepilogo**: qui controlli i dati raccolti prima di

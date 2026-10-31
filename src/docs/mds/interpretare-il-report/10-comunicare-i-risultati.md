@@ -1,7 +1,6 @@
 ---
 title: Comunicare i risultati
 order: 10
-description: Come trasformare gli esiti del sociogramma in azioni concrete per migliorare le dinamiche di gruppo, a scuola e nei contesti di lavoro, e come comunicarli tutelando la riservatezza.
 ---
 
 Un sociogramma non è un punto d'arrivo: è un **punto di partenza**. Serve a

@@ -1,7 +1,6 @@
 ---
 title: Caricare i dati di esempio
 order: 7
-description: Come esplorare l'app con un sociogramma dimostrativo già compilato, senza dover inserire dati manualmente.
 ---
 
 AB-Gram include un sociogramma dimostrativo già compilato: un gruppo di 11

@@ -1,7 +1,6 @@
 ---
 title: Definire scelte e rifiuti
 order: 4
-description: Come indicare per ogni membro le scelte e i rifiuti del gruppo, con la tastiera o con il mouse, e come trovare un nome con la ricerca fuzzy.
 ---
 
 Nel terzo passaggio raccogli le preferenze di ogni membro del gruppo: per ciascuno

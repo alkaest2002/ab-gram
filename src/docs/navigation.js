@@ -23,7 +23,6 @@ const sectionOrder = [
  * @property {string} title        Page title, from frontmatter.
  * @property {string} path         Absolute route path, e.g. `/docs/come-usare-l-app/generare-il-report`.
  * @property {number} order        Sort order within its section, from frontmatter.
- * @property {string} description  Short description, from frontmatter.
  */
 
 /**
@@ -71,11 +70,10 @@ const navigation = sectionOrder.map((section) => {
     .filter(([path]) => path.startsWith(`./mds/${section.folder}/`))
     .map(([path, raw]) => {
       const { slug } = splitPath(path);
-      const { title, order, description } = parseFrontmatter(raw);
+      const { title, order } = parseFrontmatter(raw);
       return {
         title,
         order: Number(order),
-        description,
         path: `/docs/${section.folder}/${slug}`,
       };
     })

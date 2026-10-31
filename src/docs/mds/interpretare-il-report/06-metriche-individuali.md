@@ -1,7 +1,6 @@
 ---
 title: Metriche individuali
 order: 6
-description: Le misure che descrivono il ruolo di ogni singolo membro.
 ---
 
 Le metriche individuali descrivono **la posizione di ciascun membro nel

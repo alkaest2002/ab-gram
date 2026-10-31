@@ -1,7 +1,6 @@
 ---
 title: Tipi di legami
 order: 3
-description: Come classificare le relazioni tra i membri del gruppo.
 ---
 
 In un gruppo, ogni persona può esprimere un sentimento verso le altre: può

@@ -1,7 +1,6 @@
 ---
 title: Status sociometrico
 order: 7
-description: Come viene assegnato a ogni membro il codice di status sociometrico.
 ---
 
 Lo **status sociometrico** ($ss_i$) è l'etichetta finale che riassume la

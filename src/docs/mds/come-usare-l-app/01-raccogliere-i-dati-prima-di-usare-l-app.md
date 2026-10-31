@@ -1,7 +1,6 @@
 ---
 title: Raccogliere i dati prima di usare l'app
 order: 1
-description: Come definire il criterio sociometrico e preparare, su carta o in formato elettronico, le scelte e i rifiuti da inserire nell'app.
 ---
 
 AB-Gram ha bisogno delle **scelte** e dei **rifiuti** che ogni membro del gruppo

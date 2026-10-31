@@ -1,7 +1,6 @@
 ---
 title: Metriche di gruppo
 order: 5
-description: Le misure che descrivono il gruppo nel suo insieme.
 ---
 
 Le metriche di gruppo **riassumono la struttura sociale con pochi numeri**.

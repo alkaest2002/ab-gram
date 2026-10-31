@@ -1,7 +1,6 @@
 ---
 title: Strutture interne
 order: 4
-description: Come individuare le strutture interne del gruppo.
 ---
 
 Oltre alle metriche, la mappa del gruppo (in cui i membri sono

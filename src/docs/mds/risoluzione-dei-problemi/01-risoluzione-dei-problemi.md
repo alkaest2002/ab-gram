@@ -1,7 +1,6 @@
 ---
 title: Risoluzione dei problemi
 order: 1
-description: Soluzioni ai problemi più comuni nell'uso dell'applicazione.
 ---
 
 Questa pagina raccoglie i problemi più frequenti e come risolverli, seguendo

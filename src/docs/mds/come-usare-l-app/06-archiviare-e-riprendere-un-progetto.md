@@ -1,7 +1,6 @@
 ---
 title: Archiviare e riprendere un progetto
 order: 6
-description: Come salvare e riprendere un sociogramma senza perdere il lavoro, e perché l'archivio è l'unico modo per interrompere un progetto.
 ---
 
 L'archivio è il modo in cui AB-Gram salva il tuo lavoro. Per tutelare la tua

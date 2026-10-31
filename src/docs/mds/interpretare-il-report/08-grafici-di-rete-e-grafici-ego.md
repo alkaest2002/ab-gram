@@ -1,7 +1,6 @@
 ---
 title: Grafici di rete e grafici ego
 order: 8
-description: Come leggere i grafici prodotti dal report.
 ---
 
 Il report contiene due tipi di grafico: il grafico di rete, che mostra il

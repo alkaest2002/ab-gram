@@ -1,7 +1,6 @@
 ---
 title: Anatonomia di un report AB-Gram
 order: 1
-description: Le parti che compongono il report generato da AB-Gram e l'ordine in cui conviene leggerle.
 ---
 
 Il report prodotto da AB-Gram è organizzato in pagine da leggere in sequenza,

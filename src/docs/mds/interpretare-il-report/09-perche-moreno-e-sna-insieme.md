@@ -1,7 +1,6 @@
 ---
 title: Perché Moreno e SNA insieme
 order: 9
-description: Perché gli indici di Moreno e le centralità SNA vanno letti insieme per non fraintendere il ruolo di un membro.
 ---
 
 Le pagine precedenti presentano due famiglie di misure che descrivono la stessa
