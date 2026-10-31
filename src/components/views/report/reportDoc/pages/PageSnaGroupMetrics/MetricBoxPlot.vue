@@ -72,7 +72,7 @@ function formatBoxDecimal(value) {
 </template>
 
 <style scoped>
-/* Degree box plot: a horizontal range line (min→max), a median bar and the
+/* Degree box plot: a horizontal range line (min→max), a median dot and the
    min/median/max values, with the IQR printed underneath. */
 .boxplot {
     display: flex;
@@ -101,14 +101,17 @@ function formatBoxDecimal(value) {
     top: 50%;
     left: 0;
     right: 0;
-    height: 1px;
+    height: 2px;
     transform: translateY(-50%);
+    border-radius: 3px;
 }
 .boxplot-median {
     position: absolute;
-    top: 1mm;
-    bottom: 1mm;
-    width: 1.5px;
+    top: 50%;
+    width: 2mm;
+    height: 2mm;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 .boxplot-median-label {
     position: absolute;
