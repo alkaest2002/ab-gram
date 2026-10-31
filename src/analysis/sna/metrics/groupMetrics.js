@@ -102,6 +102,28 @@ export const computeMedianOutDegree = (graph) =>
   graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "out"))));
 
 /**
+ * First quartile (Q1, the 25th percentile) of the out-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The first quartile of out-degrees.
+ */
+export const computeQ1OutDegree = (graph) =>
+  graph.order === 0
+    ? 0
+    : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 25));
+
+/**
+ * Third quartile (Q3, the 75th percentile) of the out-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The third quartile of out-degrees.
+ */
+export const computeQ3OutDegree = (graph) =>
+  graph.order === 0
+    ? 0
+    : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 75));
+
+/**
  * Interquartile range (Q3 − Q1) of the out-degree distribution.
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
@@ -139,6 +161,28 @@ export const computeMaxInDegree = (graph) =>
  */
 export const computeMedianInDegree = (graph) =>
   graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "in"))));
+
+/**
+ * First quartile (Q1, the 25th percentile) of the in-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The first quartile of in-degrees.
+ */
+export const computeQ1InDegree = (graph) =>
+  graph.order === 0
+    ? 0
+    : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 25));
+
+/**
+ * Third quartile (Q3, the 75th percentile) of the in-degree distribution.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {number} The third quartile of in-degrees.
+ */
+export const computeQ3InDegree = (graph) =>
+  graph.order === 0
+    ? 0
+    : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 75));
 
 /**
  * Interquartile range (Q3 − Q1) of the in-degree distribution.

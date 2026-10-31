@@ -16,12 +16,16 @@ const GROUP_COLUMNS = [
   "numberOfEdges",
   "numberOfMutualEdges",
   "minOutDegree",
-  "maxOutDegree",
+  "Q1OutDegree",
   "medianOutDegree",
+  "Q3OutDegree",
+  "maxOutDegree",
   "IQROutDegree",
   "minInDegree",
-  "maxInDegree",
+  "Q1InDegree",
   "medianInDegree",
+  "Q3InDegree",
+  "maxInDegree",
   "IQRInDegree",
   "networkDensity",
   "networkCentralization",
@@ -57,8 +61,8 @@ describe("getGroupLevelMetrics", () => {
     expect(result.metrics).toEqual(GROUP_COLUMNS);
     expect(result.rawValuesById[0]).toEqual([
       3, 6, 6,
-      2, 2, 2, 0,
-      2, 2, 2, 0,
+      2, 2, 2, 2, 2, 0,
+      2, 2, 2, 2, 2, 0,
       1, 0, 1, 1,
     ]);
     // A single group row means every metric column ranks itself as 1.
@@ -87,12 +91,16 @@ describe("getGroupLevelMetrics", () => {
     expect(byName.numberOfEdges).toBe(3);
     expect(byName.numberOfMutualEdges).toBe(0);
     expect(byName.minOutDegree).toBe(0);
-    expect(byName.maxOutDegree).toBe(1);
+    expect(byName.Q1OutDegree).toBeCloseTo(0.75, 10);
     expect(byName.medianOutDegree).toBe(1);
+    expect(byName.Q3OutDegree).toBe(1);
+    expect(byName.maxOutDegree).toBe(1);
     expect(byName.IQROutDegree).toBeCloseTo(0.25, 10);
     expect(byName.minInDegree).toBe(0);
-    expect(byName.maxInDegree).toBe(3);
+    expect(byName.Q1InDegree).toBe(0);
     expect(byName.medianInDegree).toBe(0);
+    expect(byName.Q3InDegree).toBeCloseTo(0.75, 10);
+    expect(byName.maxInDegree).toBe(3);
     expect(byName.IQRInDegree).toBeCloseTo(0.75, 10);
     expect(byName.networkDensity).toBeCloseTo(0.25, 10);
     expect(byName.networkCentralization).toBeCloseTo(1, 10);
@@ -107,8 +115,8 @@ describe("getGroupLevelMetrics", () => {
 
     expect(result.rawValuesById[0]).toEqual([
       1, 0, 0,
-      0, 0, 0, 0,
-      0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0,
       0, 0, 0, 0,
     ]);
   });

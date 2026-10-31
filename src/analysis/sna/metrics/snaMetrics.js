@@ -8,12 +8,16 @@ import {
   computeNumberOfEdges,
   computeNumberOfMutualEdges,
   computeMinOutDegree,
-  computeMaxOutDegree,
+  computeQ1OutDegree,
   computeMedianOutDegree,
+  computeQ3OutDegree,
+  computeMaxOutDegree,
   computeIQROutDegree,
   computeMinInDegree,
-  computeMaxInDegree,
+  computeQ1InDegree,
   computeMedianInDegree,
+  computeQ3InDegree,
+  computeMaxInDegree,
   computeIQRInDegree,
   computeNetworkDensity,
   computeNetworkCentralization,
@@ -40,12 +44,16 @@ SNA GROUP LEVEL METRICS
 - "numberOfEdges":         Number of directed preference edges.
 - "numberOfMutualEdges":   Number of directed edges whose reverse edge exists.
 - "minOutDegree":          Minimum out-degree across members.
-- "maxOutDegree":          Maximum out-degree across members.
+- "Q1OutDegree":           First quartile (Q1) of out-degrees.
 - "medianOutDegree":       Median out-degree across members.
+- "Q3OutDegree":           Third quartile (Q3) of out-degrees.
+- "maxOutDegree":          Maximum out-degree across members.
 - "IQROutDegree":          Interquartile range of out-degrees.
 - "minInDegree":           Minimum in-degree across members.
-- "maxInDegree":           Maximum in-degree across members.
+- "Q1InDegree":            First quartile (Q1) of in-degrees.
 - "medianInDegree":        Median in-degree across members.
+- "Q3InDegree":            Third quartile (Q3) of in-degrees.
+- "maxInDegree":           Maximum in-degree across members.
 - "IQRInDegree":           Interquartile range of in-degrees.
 - "networkDensity":        Proportion of possible edges that exist.
 - "networkCentralization": Concentration of in-degree around the top node.
@@ -57,12 +65,16 @@ const GROUP_LEVEL_METRIC_KEYS = [
   "numberOfEdges",
   "numberOfMutualEdges",
   "minOutDegree",
-  "maxOutDegree",
+  "Q1OutDegree",
   "medianOutDegree",
+  "Q3OutDegree",
+  "maxOutDegree",
   "IQROutDegree",
   "minInDegree",
-  "maxInDegree",
+  "Q1InDegree",
   "medianInDegree",
+  "Q3InDegree",
+  "maxInDegree",
   "IQRInDegree",
   "networkDensity",
   "networkCentralization",
@@ -89,12 +101,16 @@ const computeGroupLevelMetrics = (graph) => {
       computeNumberOfEdges(graph),
       computeNumberOfMutualEdges(graph),
       computeMinOutDegree(graph),
-      computeMaxOutDegree(graph),
+      computeQ1OutDegree(graph),
       computeMedianOutDegree(graph),
+      computeQ3OutDegree(graph),
+      computeMaxOutDegree(graph),
       computeIQROutDegree(graph),
       computeMinInDegree(graph),
-      computeMaxInDegree(graph),
+      computeQ1InDegree(graph),
       computeMedianInDegree(graph),
+      computeQ3InDegree(graph),
+      computeMaxInDegree(graph),
       computeIQRInDegree(graph),
       computeNetworkDensity(graph),
       computeNetworkCentralization(graph),
