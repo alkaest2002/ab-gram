@@ -157,7 +157,7 @@ function formatValue(row) {
                         {{ row.label }}
                     </td>
                     <td class="py-[1.3mm] text-right">
-                        <MetricBoxPlot v-if="row.kind === 'boxplot'" :value="row.value" />
+                        <MetricBoxPlot v-if="row.kind === 'boxplot'" :value="row.value" :accent-color="accentColor" />
                         <template v-else>
                             <div class="font-display text-[12pt] font-bold text-ink whitespace-nowrap">
                                 {{ formatValue(row) }}

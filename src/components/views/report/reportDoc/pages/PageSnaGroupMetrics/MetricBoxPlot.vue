@@ -10,6 +10,8 @@
 const props = defineProps({
     // Summary statistics for one degree direction: `{ min, max, median, iqr }`.
     value: { type: Object, default: () => ({}) },
+    // Accent color for the median dot.
+    accentColor: { type: String, default: "" },
 });
 
 // --- Emits --------------
@@ -47,22 +49,23 @@ function medianStyle() {
     return { left: `${medianPercent()}%` };
 }
 
-function formatBoxCount(value) {
-    return String(Math.round(Number(value ?? 0)));
+function medianDotStyle() {
+    return {
+        left: `${medianPercent()}%`,
+        backgroundColor: props.accentColor,
+    };
 }
-
-
 </script>
 
 <template>
     <div class="boxplot">
         <div class="boxplot-track">
-            <div class="boxplot-line bg-ink"></div>
-            <div class="boxplot-median bg-ink" :style="medianStyle()"></div>
-            <span class="boxplot-median-label text-ink" :style="medianStyle()">{{ formatBoxCount(value.median) }}</span>
-            <span class="boxplot-min text-ink">{{ formatBoxCount(value.min) }}</span>
-            <span class="boxplot-iqr text-ink">IQR {{ formatBoxCount(value.iqr) }}</span>
-            <span class="boxplot-max text-ink">{{ formatBoxCount(value.max) }}</span>
+            <div class="boxplot-line bg-line h-0.5"></div>
+            <div class="boxplot-median" :style="medianDotStyle()"></div>
+            <span class="boxplot-median-label text-ink" :style="medianStyle()">{{ value.median }}</span>
+            <span class="boxplot-min text-ink">{{ value.min }}</span>
+            <span class="boxplot-iqr text-ink">IQR {{ Math.round(value.iqr) }}</span>
+            <span class="boxplot-max text-ink">{{ value.max }}</span>
         </div>
     </div>
 </template>
@@ -88,7 +91,6 @@ function formatBoxCount(value) {
     top: 50%;
     left: 0;
     right: 0;
-    height: 2px;
     transform: translateY(-50%);
     border-radius: 3px;
 }
