@@ -48,12 +48,6 @@ function medianStyle() {
 function formatBoxCount(value) {
     return String(Math.round(Number(value ?? 0)));
 }
-
-function formatBoxDecimal(value) {
-    const n = Number(value ?? 0);
-    if (Number.isInteger(n)) return String(n);
-    return String(Number(n.toFixed(2))).replace(".", ",");
-}
 </script>
 
 <template>
