@@ -209,7 +209,6 @@ onBeforeUnmount(() => {
                     :sna-metrics="snaMetrics"
                     :moreno-metrics="morenoMetrics"
                     :type-of-sna="typeOfSna"
-                    :accent-color="accentColor"
                 />
             </div>
 
