@@ -95,12 +95,13 @@ l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**. Non esiste
 un unico modo "giusto" di fissare le soglie, perché ogni metodo statistico ha
 pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
-non ne sceglie uno a priori: **ne calcola quattro e adotta quello che si
-trova più d'accordo con gli altri**. Il passo si articola in tre mosse:
+**li lascia votare**: ogni metodo classifica i membri e la classe finale è
+quella scelta dalla maggioranza. Il passo si articola in tre mosse:
 
 1. quattro **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.4);
-2. si sceglie la coppia per **consenso** tra i metodi (§ 4.2.5);
-3. la coppia scelta viene **applicata** a tutti i membri (§ 4.2.6).
+2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.5);
+3. la classe finale di ogni membro è decisa per **maggioranza** tra i metodi
+   (§ 4.2.6).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
 e una **soglia alta** $H$, con questo significato:
@@ -216,51 +217,10 @@ strettamente compresa tra $0$ e $1$ (il modello non è applicabile).
 > $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
 > un'approssimazione ragionevole.
 
-#### 4.2.5 Il consenso tra i metodi
+#### 4.2.5 Applicazione delle soglie di ciascun metodo
 
-**Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
-"votare". Si sceglie il metodo **più centrale**, cioè quello la cui
-classificazione assomiglia di più a quella di tutti gli altri.
-
-1. Ogni metodo etichetta ciascun membro visibile con $-1$ (basso), $0$ (medio)
-   o $+1$ (alto); se un valore soddisfa entrambe le condizioni, prevale "basso".
-2. L'**accordo** tra due metodi è il **numero** di membri visibili a cui
-   assegnano la **stessa etichetta** (un conteggio intero: così il confronto è
-   esatto, senza ambiguità di arrotondamento).
-3. Il **punteggio** di un metodo è la somma dei suoi accordi con gli **altri
-   tre**.
-4. Vince il metodo col punteggio più alto, e le sue soglie $(L, H)$ sono quelle
-   adottate.
-
-**In caso di parità** si applicano, nell'ordine, due criteri:
-
-1. prevale un metodo che propone una **divisione effettiva** (almeno un membro
-   etichettato basso o alto) su uno che lascia tutti a impatto medio: a parità
-   di accordo, la proposta che distingue qualcuno è più informativa;
-2. a parità anche su questo, prevale il metodo che compare prima in
-   quest'ordine di priorità:
-
-$$
-\text{Gini} \;>\; \text{percentili} \;>\; \text{Tukey} \;>\; \text{binomiale}
-$$
-
-L'ordine riflette la copertura dei casi: **Gini** è il primo perché è l'unico a
-riconoscere le divisioni di *forma* (distribuzioni bimodali, code lunghe, un
-gruppo di spicco separato dagli altri), mentre i **percentili** leggono la
-posizione relativa moderata ma tendono a trascinare in coda i membri in pari
-punteggio. Il binomiale è volutamente ultimo: i suoi limiti esatti segnalano
-solo i casi estremi e, a parità di punteggio, è preferibile una divisione
-basata sulla posizione relativa dentro il gruppo.
-
-Questo meccanismo rende l'esito robusto: se un metodo si comporta in modo
-anomalo in una data distribuzione, gli altri tre lo mettono in minoranza. Si
-osservi anche che un metodo che propone "nessuna divisione" etichetta tutti
-come medi e quindi concorda con gli altri soprattutto sui membri medi.
-
-#### 4.2.6 Applicazione delle soglie
-
-Le soglie scelte si applicano a **tutti** i membri con $n_i > 0$ (gli altri sono
-già stati classificati al Passo 1):
+Ogni metodo applica le **proprie** soglie a tutti i membri con $n_i > 0$ (gli
+altri sono già stati classificati al Passo 1):
 
 - **impatto basso**: $n_i \le L$;
 - **impatto alto**: $n_i \ge H$;
@@ -272,6 +232,26 @@ questo una classe può risultare più ampia di quanto suggerirebbe il percentile
 nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
 coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
 prevale sempre "basso".
+
+#### 4.2.6 La votazione tra i metodi
+
+**Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
+"votare": ogni metodo classifica ogni membro e vince la classe scelta dalla
+**maggioranza**.
+
+1. Ogni metodo etichetta ciascun membro visibile con $-1$ (basso), $0$ (medio)
+   o $+1$ (alto); se un valore soddisfa entrambe le condizioni, prevale "basso".
+2. Un metodo che propone **nessuna divisione** ($L = -\infty$, $H = +\infty$)
+   etichetta **tutti** i membri come medi: partecipa comunque al voto con il suo
+   voto "medio".
+3. Per ogni membro si contano i voti per basso, medio e alto. La classe finale è
+   quella con **più voti**.
+4. **In caso di parità**, una classe non media (basso o alto) **prevale sulla
+   media**; tra basso e alto prevale **basso**.
+
+In questo modo ogni metodo contribuisce sempre con un voto, anche quando non
+vede alcuna divisione: se tre metodi non vedono una coda e uno solo la vede, la
+maggioranza (3 contro 1) mantiene il membro a impatto medio.
 
 ### 4.3 Passo 3 — Classificazione del bilancio
 
@@ -333,7 +313,9 @@ non è un'informazione affidabile.
 | Parametro                                       | Valore                                   |
 | ----------------------------------------------- | ---------------------------------------- |
 | Metodi di soglia in competizione                | percentili, Gini, Tukey, binomiale       |
-| Parità nel consenso                             | prima la divisione effettiva, poi Gini > percentili > Tukey > binomiale |
+| Aggregazione tra i metodi                       | voto di maggioranza (4 voti, uno per metodo) |
+| Metodi che non dividono                         | votano "impatto medio"                   |
+| Parità nel voto                                 | non medio prevale su medio; basso prevale su alto |
 | Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
 | Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
 | Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
@@ -440,21 +422,21 @@ quattro metodi.
   $(L, H) = (0, +\infty)$, che però non etichetta nessuno (l'impatto minimo è
   $2$).
 
-Etichettando i sei membri (basso/medio/alto) si ottiene:
+Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 
-| Metodo           | Etichette                 | Punteggio |
-| ---------------- | ------------------------- | :-------: |
-| percentili       | $-1, -1, -1, 0, +1, +1$   |    $8$    |
-| Gini             | $-1, -1, -1, 0, +1, +1$   |    $8$    |
-| Tukey            | $0, 0, 0, 0, 0, 0$        |    $8$    |
-| binomiale        | $0, 0, 0, 0, 0, 0$        |    $8$    |
+| Metodo     | Etichette                 |
+| ---------- | ------------------------- |
+| percentili | $+1, +1, -1, 0, -1, -1$  |
+| Gini       | $+1, +1, -1, 0, -1, -1$  |
+| Tukey      | $0, 0, 0, 0, 0, 0$       |
+| binomiale  | $0, 0, 0, 0, 0, 0$       |
+| **Voto**   | **alto, alto, basso, medio, basso, basso** |
 
-(Ad esempio il punteggio dei percentili è $6 + 1 + 1 = 8$: sei accordi con
-Gini e uno ciascuno con Tukey e binomiale, sul membro a impatto medio.) Tutti
-e quattro i metodi sono a pari merito, quindi decidono i criteri di parità:
-Tukey e binomiale non etichettano nessuno, mentre percentili e Gini propongono
-le stesse etichette; tra i due prevale **Gini** per priorità. Le soglie
-adottate sono $(2, 5)$. Ne risulta:
+Percentili e Gini concordano sulle stesse etichette; Tukey e binomiale non
+vedono alcuna divisione e votano "medio" per tutti. Per i membri con impatto
+$5$ e $2$ il voto è $2$ a $2$ tra alto/basso e medio: in caso di parità una
+classe non media prevale sulla media, quindi $5$ diventa alto e $2$ basso. Il
+membro con impatto $3$ riceve quattro voti "medio". Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -553,17 +535,18 @@ quattro metodi.
   nessuna delle due code raggiunge la significatività. Risultato: **nessuna
   divisione**.
 
-| Metodo           | Etichette                 | Punteggio |
-| ---------------- | ------------------------- | :-------: |
-| percentili       | $-1, -1, -1, 0, +1, +1$   |    $8$    |
-| Gini             | $-1, -1, -1, 0, +1, +1$   |    $8$    |
-| Tukey            | $0, 0, 0, 0, 0, 0$        |    $8$    |
-| binomiale        | $0, 0, 0, 0, 0, 0$        |    $8$    |
+| Metodo     | Etichette                 |
+| ---------- | ------------------------- |
+| percentili | $-1, -1, -1, +1, +1, 0$  |
+| Gini       | $-1, -1, -1, +1, +1, 0$  |
+| Tukey      | $0, 0, 0, 0, 0, 0$       |
+| binomiale  | $0, 0, 0, 0, 0, 0$       |
+| **Voto**   | **basso, basso, basso, alto, alto, medio** |
 
-Anche qui i quattro metodi sono a pari merito; Tukey e binomiale non
-etichettano nessuno, e tra i due che propongono una divisione effettiva
-(percentili e Gini, con le stesse etichette) prevale per priorità **Gini** con
-soglie $(1, 5)$. Ne risulta:
+Anche qui percentili e Gini concordano, mentre Tukey e binomiale votano "medio"
+per tutti. Per gli impatti $1$ e $5$ il voto è $2$ a $2$ (basso/alto contro
+medio): prevale la classe non media, quindi $1$ diventa basso e $5$ alto. Il
+membro con impatto $2$ riceve quattro voti "medio". Ne risulta:
 
 - impatto basso ($\le 1$): membri $1$, $2$ e $3$;
 - impatto alto ($\ge 5$): membri $4$ e $5$;

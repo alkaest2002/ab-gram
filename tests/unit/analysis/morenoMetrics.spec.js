@@ -117,10 +117,10 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
-    // Sociometric status: the gini strategy (sample-corrected G = 0.4) wins
-    // the consensus with a median-strict split that only flags the top member,
-    // so a is controversial (8: high impact, rp=2 vs rr=1 is below the 2x
-    // ratio so the balance is neutral), b appreciated (3), c disliked (5).
+    // Sociometric status: the four strategies agree on a median-strict split
+    // that only flags the top member, so a is controversial (8: high impact,
+    // rp=2 vs rr=1 is below the 2x ratio so the balance is neutral),
+    // b appreciated (3), c disliked (5).
     expect(result.rawValuesById).toEqual([
       [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8, 70, 35],
       [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 3, 35, 0],
@@ -180,8 +180,9 @@ describe("getIndividualLevelMetrics", () => {
     ], members);
 
     // a gives a like but receives none (ignored); b receives a like and gives
-    // none. With only one member receiving opinions there is no impact spread,
-    // so b is appreciated (average impact, positive balance) rather than popular.
+    // none. With only one visible member there is no impact spread, so every
+    // strategy classifies it as average impact and b is appreciated (average
+    // impact, positive balance) rather than popular.
     expect(result.rawValuesById).toEqual([
       [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0],
       [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 3, 35, 0],
@@ -189,12 +190,10 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("classifies the Hogwarts demo roster sensibly (status regression)", () => {
-    // Regression for the consensus of impact-threshold strategies: the
-    // population Gini formula once under-measured this group's inequality
-    // (0.198 < 0.2), letting the two "no split" strategies outvote the
-    // percentile split and flattening everyone into the average-impact
-    // categories (Harry came out merely "appreciated"). With the
-    // sample-corrected Gini (0.218) the group splits at (5, 8).
+    // Regression for the impact-threshold majority vote. The sample-corrected
+    // Gini (0.218) recognises the group's inequality (the population formula
+    // read 0.198 < 0.2, flattening Harry into "appreciated"), and the vote
+    // across the four strategies splits the group at (5, 8).
     const members = getHogwartsMembers();
     const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
 
@@ -227,6 +226,72 @@ describe("getIndividualLevelMetrics", () => {
       "Weasley, Fred": S.MARGINAL,
       "Weasley, George": S.MARGINAL,
     });
+  });
+
+  it("resolves a tie between a non-average class and average in favour of the non-average class", () => {
+    // Received likes [5, 5, 2, 3, 2, 2]: percentile and gini agree on the
+    // (low <= 2, high >= 5) split, while Tukey and binomial flag nobody
+    // (average). For each 5 and each 2 the vote is therefore 2 vs 2; the
+    // non-average class must win, so 5 -> high and 2 -> low.
+    const members = [
+      { id: "1", likes: ["2", "3", "4", "5", "6"], dislikes: [] },
+      { id: "2", likes: ["1", "3", "4", "5", "6"], dislikes: [] },
+      { id: "3", likes: ["1", "2", "4"], dislikes: [] },
+      { id: "4", likes: ["1", "2"], dislikes: [] },
+      { id: "5", likes: ["1", "2"], dislikes: [] },
+      { id: "6", likes: ["1", "2"], dislikes: [] },
+    ];
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
+    expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
+      SOCIOMETRIC_STATUS.POPULAR,
+      SOCIOMETRIC_STATUS.POPULAR,
+      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.MARGINAL,
+    ]);
+  });
+
+  it("lets the no-split majority outvote a lone splitter", () => {
+    // Received likes [1, 1, 2, 2, 2, 3]: percentile is the only strategy that
+    // proposes a split, while gini, Tukey and binomial all classify everyone
+    // as average. The majority vote is therefore 3-1 in favour of average, so
+    // no member reaches the low/high tiers.
+    const members = [
+      { id: "m0", likes: ["m5"], dislikes: [] },
+      { id: "m1", likes: ["m5"], dislikes: [] },
+      { id: "m2", likes: ["m4", "m5"], dislikes: [] },
+      { id: "m3", likes: ["m2", "m4"], dislikes: [] },
+      { id: "m4", likes: ["m2", "m3"], dislikes: [] },
+      { id: "m5", likes: ["m0", "m1", "m3"], dislikes: [] },
+    ];
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
+    expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+    ]);
   });
 
   it("computes the order-weighted bonus from the documented example", () => {
