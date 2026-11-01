@@ -183,8 +183,9 @@ const binomialStrategy = ({ allImpacts, groupSize }) => {
   return { low, high };
 };
 
-// Every strategy participates with equal weight in the impact vote. The order
-// here is only for readability and does not affect the outcome.
+// A strategy that proposes no effective split abstains from the vote; the
+// remaining strategies vote with equal weight, so the order here is only for
+// readability and does not affect the outcome.
 // Gini recognises distributional shape (bimodal/long-tail); percentile reads
 // relative standing; Tukey flags outliers via the inner fences; binomial (GB)
 // flags only the extreme cases under the chance model.
@@ -198,8 +199,11 @@ const IMPACT_STRATEGIES = [
 // ============================================================================
 // STEP 3: IMPACT CLASSIFICATION
 // Each threshold strategy classifies every member low/average/high; the final
-// impact class is the one chosen by the majority of strategies.
+// impact class is the majority vote of the strategies that propose a split.
 // ============================================================================
+const labelValues = (values, { low, high }) =>
+  values.map((v) => (v <= low ? -1 : v >= high ? 1 : 0)); // low wins ties
+
 const classifyImpact = (impact, thresholds) => {
   const none = impact.less(0); // all-false boolean array (impact is non-negative)
   let isLowImpact = isFinite(thresholds.low)
@@ -224,12 +228,22 @@ const countVotes = (booleanArrays) => {
   return total;
 };
 
-// Majority vote across all threshold strategies. A strategy that returns
-// NO_SPLIT classifies everyone as average (it still participates in the vote).
+// Majority vote across the strategies that actually split. A strategy that
+// returns NO_SPLIT (or whose thresholds flag no visible member) abstains; if
+// every strategy abstains, everyone is average.
 // Tie-breaks: a non-average class beats average; low beats high.
 const classifyImpactByVote = (impact, context) => {
-  const perStrategy = IMPACT_STRATEGIES.map(({ run }) =>
-    classifyImpact(impact, run(context)),
+  if (context.sorted.length === 0) return classifyImpact(impact, NO_SPLIT);
+
+  const active = IMPACT_STRATEGIES.map(({ run }) => run(context)).filter(
+    (thresholds) =>
+      labelValues(context.sorted, thresholds).some((label) => label !== 0),
+  );
+
+  if (active.length === 0) return classifyImpact(impact, NO_SPLIT);
+
+  const perStrategy = active.map((thresholds) =>
+    classifyImpact(impact, thresholds),
   );
 
   const lowVotes = countVotes(perStrategy.map(({ isLowImpact }) => isLowImpact));
@@ -327,7 +341,7 @@ const assignStatus = (visibility, impactClass, balance) => {
  * - Isolated: impact = 0 and expressivity = 0
  * - Ignored:  impact = 0 and expressivity > 0
  *
- * IMPACT CLASSIFICATION (majority vote of four threshold strategies)
+ * IMPACT CLASSIFICATION (majority vote of the splitting strategies)
  * Low/high cutoffs are derived from members who received at least one opinion
  * (impact > 0), so isolated/ignored members don't drag the thresholds down.
  * Four strategies each propose { low, high } cutoffs:
@@ -340,9 +354,11 @@ const assignStatus = (visibility, impactClass, balance) => {
  * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.05,
  *   where p is the network's opinion density (computed over all members).
  * Each strategy classifies every member low/average/high; a strategy that
- * returns NO_SPLIT classifies everyone as average. The final class per member
- * is the one chosen by the majority of strategies. On a tie, a non-average
- * class (low or high) beats average, and low beats high.
+ * proposes no effective split (NO_SPLIT or thresholds that flag no visible
+ * member) abstains from the vote. If every strategy abstains, everyone is
+ * average. The final class per member is the majority vote of the
+ * non-abstaining strategies. On a tie, a non-average class (low or high)
+ * beats average, and low beats high.
  * Comparisons are inclusive (impact <= low, impact >= high) and low wins if
  * both ever apply, so ties at a threshold can enlarge a tail.
  *
@@ -369,14 +385,11 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
 
   const allImpacts = impact.flatten().toArray();
   const sorted = toSortedVisible(impact);
-  const impactClass =
-    sorted.length > 0
-      ? classifyImpactByVote(impact, {
-          sorted,
-          allImpacts,
-          groupSize: allImpacts.length,
-        })
-      : classifyImpact(impact, NO_SPLIT);
+  const impactClass = classifyImpactByVote(impact, {
+    sorted,
+    allImpacts,
+    groupSize: allImpacts.length,
+  });
 
   const balance = classifyBalance(rp, rr, impact);
   return assignStatus(visibility, impactClass, balance);
