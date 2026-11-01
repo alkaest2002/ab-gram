@@ -25,9 +25,10 @@ import {
   computeOrientation,
   computeAffiliation,
   computeInfluence,
-  computeSociometricStatus,
   computeReceivedPreferenceScore,
 } from "./individualMetrics.js";
+
+import { computeSociometricStatus } from "./individualMetricsSociometricStatus.js";
 
 //////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS

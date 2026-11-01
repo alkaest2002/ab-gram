@@ -8,7 +8,9 @@ import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
 } from "@/analysis/moreno/metrics/morenoMetrics.js";
+import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus.js";
 import { createAdjacencyMatrices } from "@/analysis/common/adjacencyMatrices.js";
+import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
 const GROUP_COLUMNS = [
   "cohesion",
@@ -115,15 +117,19 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
+    // Sociometric status: the gini strategy (sample-corrected G = 0.4) wins
+    // the consensus with a median-strict split that only flags the top member,
+    // so a is controversial (8: high impact, rp=2 vs rr=1 is below the 2x
+    // ratio so the balance is neutral), b appreciated (3), c disliked (5).
     expect(result.rawValuesById).toEqual([
       [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8, 70, 35],
-      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2, 35, 0],
-      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2, 0, 35],
+      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 3, 35, 0],
+      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 5, 0, 35],
     ]);
     // Ranks are column-wise, with the highest raw score ranked first (1).
     expect(result.rankedValuesById).toEqual([
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1],
-      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2],
+      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 3, 2, 2],
       [3, 1, 1, 1, 2, 1, 2, 2, 1, 2, 3, 3, 2, 3, 1],
     ]);
   });
@@ -180,6 +186,47 @@ describe("getIndividualLevelMetrics", () => {
       [0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0],
       [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 3, 35, 0],
     ]);
+  });
+
+  it("classifies the Hogwarts demo roster sensibly (status regression)", () => {
+    // Regression for the consensus of impact-threshold strategies: the
+    // population Gini formula once under-measured this group's inequality
+    // (0.198 < 0.2), letting the two "no split" strategies outvote the
+    // percentile split and flattening everyone into the average-impact
+    // categories (Harry came out merely "appreciated"). With the
+    // sample-corrected Gini (0.218) the group splits at (5, 8).
+    const members = getHogwartsMembers();
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const statusColumn = result.metrics.indexOf("ss");
+    const statusByName = Object.fromEntries(
+      members.map((member, i) => [
+        member.name,
+        result.rawValuesById[i][statusColumn],
+      ]),
+    );
+
+    const S = SOCIOMETRIC_STATUS;
+    expect(statusByName).toEqual({
+      "Potter, Harry": S.POPULAR,
+      "Granger, Hermione": S.POPULAR,
+      "Weasley, Ron": S.APPRECIATED,
+      "Longbottom, Neville": S.MARGINAL,
+      "Lovegood, Luna": S.MARGINAL,
+      "Malfoy, Draco": S.REJECTED,
+      "Crabbe, Vincent": S.DISLIKED,
+      "Goyle, Gregory": S.DISLIKED,
+      "Diggory, Cedric": S.MARGINAL,
+      "Weasley, Fred": S.MARGINAL,
+      "Weasley, George": S.MARGINAL,
+    });
   });
 
   it("computes the order-weighted bonus from the documented example", () => {

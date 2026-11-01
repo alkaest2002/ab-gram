@@ -18,7 +18,9 @@ L'algoritmo risponde a tre domande, nell'ordine:
 1. **Il membro è visibile?** Ha ricevuto almeno un'opinione? Se no, è isolato o
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
-   basso, medio o alto?
+   basso, medio o alto? Le soglie non sono fissate da un solo metodo: tre
+   metodi statistici le propongono e si adotta quello più in accordo con gli
+   altri.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
    neutro?
 
@@ -63,7 +65,7 @@ L'algoritmo riceve quattro valori per ogni membro:
 
 > **Attenzione alla notazione.** In questa pagina $n_i$ indica l'impatto del
 > singolo membro (quante opinioni ha ricevuto), **non** il numero di membri del
-> gruppo, indicato altrove con $n$. Con $N$ indichiamo invece il numero di
+> gruppo. Con $N$ indichiamo invece il numero di
 > membri **visibili**, cioè con $n_i > 0$.
 
 ## 4 L'algoritmo di assegnazione
@@ -89,65 +91,146 @@ l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 
 ### 4.2 Passo 2 — Classificazione dell'impatto
 
-Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**, usando i
-percentili. Due dettagli sono importanti.
+Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**. Non esiste
+un unico modo "giusto" di fissare le soglie, perché ogni metodo statistico ha
+pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
+non ne sceglie uno a priori: **ne calcola tre e adotta quello che si
+trova più d'accordo con gli altri**. Il passo si articola in tre mosse:
 
-**Solo i membri "visibili".** I percentili si calcolano **esclusivamente sui
+1. tre **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.3);
+2. si sceglie la coppia per **consenso** tra i metodi (§ 4.2.4);
+3. la coppia scelta viene **applicata** a tutti i membri (§ 4.2.5).
+
+**Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
+e una **soglia alta** $H$, con questo significato:
+
+- impatto **basso** se $n_i \le L$;
+- impatto **alto** se $n_i \ge H$;
+- impatto **medio** negli altri casi.
+
+Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
+**entrambi** i lati sono disattivati si parla di **nessuna divisione**: tutti i
+membri sono classificati a impatto medio.
+
+**Solo i membri "visibili".** Le soglie di tutti e tre i metodi
+(percentili, Gini, Tukey) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
-mai raggiunta.
-
-Ordinati in senso crescente gli impatti dei soli
-membri visibili, $x_0 \le x_1 \le \dots \le x_{N-1}$, il percentile $P$ è il
-valore che occupa la posizione $\lfloor N \cdot P / 100 \rfloor$ (l'indice parte
-da $0$):
+mai raggiunta. Ordinati in senso crescente gli impatti dei soli membri
+visibili, $x_0 \le x_1 \le \dots \le x_{N-1}$, il **percentile** $P$ è il valore
+che occupa la posizione $\lfloor N \cdot P / 100 \rfloor$ (l'indice parte da
+$0$):
 
 $$
 \text{percentile}(P) = x_{\left\lfloor \frac{N \cdot P}{100} \right\rfloor}
 $$
 
 Non c'è interpolazione: il risultato è sempre uno dei valori realmente
-osservati. Con $P = 20$ si ottiene la **soglia bassa**, con $P = 80$ la
-**soglia alta**:
+osservati. Con $P = 50$ si ottiene la **mediana**, $x_{\lfloor N/2 \rfloor}$
+(per $N$ pari è il valore centrale superiore).
 
-- **impatto basso**: $n_i \le \text{percentile}(20)$;
-- **impatto alto**: $n_i \ge \text{percentile}(80)$;
-- **impatto medio**: tutti gli altri.
+#### 4.2.1 Metodo dei percentili
 
-Le soglie sono **inclusive** ($\le$ e $\ge$): se più membri si trovano
-esattamente su una soglia, vengono tutti classificati dalla stessa parte, e per
-questo una classe può superare il $20\%$ teorico. Nei gruppi piccoli il
-$20$-esimo percentile coincide spesso con il minimo e l'$80$-esimo con il
-massimo: i percentili sono "grossolani" quando i membri sono pochi.
+**Intuizione:** segnalare solo le **code evidenti** della distribuzione.
 
-#### 4.2.1 Il caso limite: percentili che collassano
+- $L = \text{percentile}(20)$;
+- $H = \text{percentile}(80)$.
 
-Può capitare che soglia bassa e soglia alta **coincidano**. Succede quando
-almeno il $60\%$ dei membri visibili condivide lo stesso valore, che diventa
-allora la **mediana**. In quel caso non si può dividere il gruppo con i soliti
-due percentili, e l'algoritmo decide in base a quanto è diseguale la
-distribuzione, misurata con il **coefficiente di Gini** ($G$, da $0$ = perfetta
-uguaglianza a $1$ = massima disuguaglianza) e con l'**escursione** (differenza
-tra massimo e minimo). Tutto si calcola sui soli membri visibili.
+Se le due soglie **coincidono** (la distribuzione è troppo piatta per
+distinguere le code), il metodo propone **nessuna divisione**. I valori sono
+$20/80$.
+
+#### 4.2.2 Metodo di Gini
+
+**Intuizione:** dividere il gruppo **solo se la disuguaglianza è reale**. La
+disuguaglianza si misura con il **coefficiente di Gini** $G$ (da $0$ =
+perfetta uguaglianza a $1$ = massima disuguaglianza) e con l'**escursione**
+(differenza tra massimo e minimo), entrambi sui membri visibili. Si usa la
+versione **campionaria corretta** del coefficiente (moltiplicata per
+$N/(N-1)$): la formula di popolazione sottostima sistematicamente la
+disuguaglianza nei gruppi piccoli, tipici dei test sociometrici.
 
 **Prima condizione: la distribuzione è abbastanza diseguale?**
 
 - sì, se $G \ge 0{,}3$, oppure $G \ge 0{,}2$ con escursione $\ge 3$;
-- se la condizione **non** è soddisfatta, **tutti** i membri visibili sono
-  trattati come impatto medio e il passo termina.
+- se la condizione **non** è soddisfatta, il metodo propone **nessuna
+  divisione**.
 
 **Se lo è, si sceglie la strategia per individuare le code:**
 
-1. **Percentili esterni ($5$ e $95$)**, solo se i membri visibili sono almeno
-   $20$ (sotto questa soglia coinciderebbero con minimo e massimo). Ciascun lato
+1. **Percentili esterni ($10$ e $90$)**, solo se i membri visibili sono almeno
+   $20$ (nei gruppi più piccoli sarebbero troppo vicini a minimo e massimo). Ciascun lato
    viene usato solo se cade **strettamente** oltre la mediana: è la precauzione
    che impedisce alla massa di membri "in pari" di finire tutta in una coda.
-   Se uno solo dei due lati è utilizzabile, l'altro resta vuoto.
+   Se uno solo dei due lati è utilizzabile, l'altro resta disattivato.
 2. **Regola stretta sulla mediana**, se nessun lato esterno è utilizzabile:
-   impatto $<$ mediana = basso, impatto $>$ mediana = alto.
+   $L$ è il **più grande valore strettamente inferiore** alla mediana e $H$ il
+   **più piccolo valore strettamente superiore**. Se non esiste alcun valore
+   da una delle due parti, quel lato resta disattivato.
 
-Se un membro risultasse sia basso sia alto, prevale sempre "basso".
+#### 4.2.3 Metodo di Tukey
+
+**Intuizione:** il classico criterio dei **valori anomali** basato sui
+quartili, i "recinti interni" del box plot. Detti
+$Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
+impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile:
+
+- $L = Q_1 - 1{,}5 \cdot IQR$;
+- $H = Q_3 + 1{,}5 \cdot IQR$.
+
+Se $IQR = 0$ i recinti collasserebbero sulla mediana e il metodo propone
+**nessuna divisione**. È il più conservativo dei tre: segnala solo gli
+scostamenti davvero estremi e, nei gruppi omogenei, spesso non segnala nessuno.
+
+#### 4.2.4 Il consenso tra i metodi
+
+**Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
+"votare". Si sceglie il metodo **più centrale**, cioè quello la cui
+classificazione assomiglia di più a quella di tutti gli altri.
+
+1. Ogni metodo etichetta ciascun membro visibile con $-1$ (basso), $0$ (medio)
+   o $+1$ (alto); se un valore soddisfa entrambe le condizioni, prevale "basso".
+2. L'**accordo** tra due metodi è il **numero** di membri visibili a cui
+   assegnano la **stessa etichetta** (un conteggio intero: così il confronto è
+   esatto, senza ambiguità di arrotondamento).
+3. Il **punteggio** di un metodo è la somma dei suoi accordi con gli **altri
+   due**.
+4. Vince il metodo col punteggio più alto, e le sue soglie $(L, H)$ sono quelle
+   adottate.
+
+**In caso di parità** si applicano, nell'ordine, due criteri:
+
+1. prevale un metodo che propone una **divisione effettiva** (almeno un membro
+   etichettato basso o alto) su uno che lascia tutti a impatto medio: a parità
+   di accordo, la proposta che distingue qualcuno è più informativa;
+2. a parità anche su questo, prevale il metodo che compare prima in
+   quest'ordine di priorità:
+
+$$
+\text{percentili} \;>\; \text{Gini} \;>\; \text{Tukey}
+$$
+
+Questo meccanismo rende l'esito robusto: se un metodo si comporta in modo
+anomalo in una data distribuzione, gli altri due lo mettono in minoranza. Si
+osservi anche che un metodo che propone "nessuna divisione" etichetta tutti
+come medi e quindi concorda con gli altri soprattutto sui membri medi.
+
+#### 4.2.5 Applicazione delle soglie
+
+Le soglie scelte si applicano a **tutti** i membri con $n_i > 0$ (gli altri sono
+già stati classificati al Passo 1):
+
+- **impatto basso**: $n_i \le L$;
+- **impatto alto**: $n_i \ge H$;
+- **impatto medio**: tutti gli altri.
+
+Le soglie sono **inclusive** ($\le$ e $\ge$): se più membri si trovano
+esattamente su una soglia, vengono tutti classificati dalla stessa parte, e per
+questo una classe può risultare più ampia di quanto suggerirebbe il percentile
+nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
+coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
+prevale sempre "basso".
 
 ### 4.3 Passo 3 — Classificazione del bilancio
 
@@ -206,14 +289,18 @@ non è un'informazione affidabile.
 
 ## 5 Riepilogo dei parametri
 
-| Parametro                                  | Valore                          |
-| ------------------------------------------ | ------------------------------- |
-| Percentili per impatto basso / alto        | $20$ / $80$ (per rango)         |
-| Percentili esterni (caso collassato)       | $5$ / $95$, con $N \ge 20$      |
-| Soglia di Gini per dividere il gruppo      | $G \ge 0{,}3$                   |
-| Soglia di Gini attenuata                   | $G \ge 0{,}2$ e escursione $\ge 3$ |
-| Rapporto soglia del bilancio, pochi dati   | $2{,}0$ (per $n_i \le 3$)       |
-| Rapporto soglia del bilancio, molti dati   | $1{,}5$ (per $n_i \ge 15$)      |
+| Parametro                                       | Valore                                   |
+| ----------------------------------------------- | ---------------------------------------- |
+| Metodi di soglia in competizione                | percentili, Gini, Tukey                  |
+| Parità nel consenso                             | prima la divisione effettiva, poi percentili > Gini > Tukey |
+| Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
+| Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
+| Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
+| Gini: soglia attenuata                          | $G \ge 0{,}2$ e escursione $\ge 3$       |
+| Gini: percentili esterni                        | $10$ / $90$, con $N \ge 20$ visibili     |
+| Tukey: recinti interni                          | $Q_1 - 1{,}5 \cdot IQR$ / $Q_3 + 1{,}5 \cdot IQR$ |
+| Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
+| Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
 
 ## 6 Bonus e malus: distinguere dentro lo stesso status
 
@@ -291,11 +378,30 @@ $n = rp$ (non essendoci rifiuti, $rr = 0$):
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
-$N = 6$. La soglia bassa è
-$\text{percentile}(20) = x_{\lfloor 6 \cdot 20 / 100 \rfloor} = x_1 = 2$
-e la soglia alta è
-$\text{percentile}(80) = x_{\lfloor 6 \cdot 80 / 100 \rfloor} = x_4 = 5$.
-Le due soglie sono diverse, quindi non siamo nel caso limite. Ne risulta:
+$N = 6$. Calcoliamo le soglie proposte dai tre metodi.
+
+- **Percentili.** $L = x_{\lfloor 6 \cdot 20/100 \rfloor} = x_1 = 2$ e
+  $H = x_{\lfloor 6 \cdot 80/100 \rfloor} = x_4 = 5$. Sono diverse, quindi
+  $(L, H) = (2, 5)$.
+- **Gini.** $G \approx 0{,}26 \ge 0{,}2$ e l'escursione è $5 - 2 = 3 \ge 3$:
+  la condizione attenuata è soddisfatta. Con $N < 20$ si usa la regola sulla
+  mediana ($x_3 = 3$): il più grande valore inferiore è $2$ e il più piccolo
+  superiore è $5$, quindi $(L, H) = (2, 5)$.
+- **Tukey.** $Q_1 = x_1 = 2$, $Q_3 = x_4 = 5$, $IQR = 3$:
+  $(L, H) = (-2{,}5;\ 9{,}5)$. Nessun impatto cade oltre i recinti.
+
+Etichettando i sei membri (basso/medio/alto) si ottiene:
+
+| Metodo           | Etichette                 | Punteggio |
+| ---------------- | ------------------------- | :-------: |
+| percentili       | $-1, -1, -1, 0, +1, +1$   |    $7$    |
+| Gini             | $-1, -1, -1, 0, +1, +1$   |    $7$    |
+| Tukey            | $0, 0, 0, 0, 0, 0$        |    $2$    |
+
+(Ad esempio il punteggio dei percentili è $6 + 1 = 7$: sei accordi con Gini e
+uno con Tukey, sul membro a impatto medio.) Percentili e Gini sono a pari
+merito con le stesse etichette; tra i due prevale il **metodo dei percentili**
+per priorità. Le soglie adottate sono $(2, 5)$. Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -379,11 +485,24 @@ Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n = rr$
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
-$N = 6$. La soglia bassa è
-$\text{percentile}(20) = x_{\lfloor 6 \cdot 20 / 100 \rfloor} = x_1 = 1$
-e la soglia alta è
-$\text{percentile}(80) = x_{\lfloor 6 \cdot 80 / 100 \rfloor} = x_4 = 5$.
-Le due soglie sono diverse, quindi non siamo nel caso limite. Ne risulta:
+$N = 6$. Calcoliamo le soglie proposte dai tre metodi.
+
+- **Percentili.** $L = x_1 = 1$ e $H = x_4 = 5$, quindi $(L, H) = (1, 5)$.
+- **Gini.** $G \approx 0{,}44 \ge 0{,}3$: distribuzione abbastanza diseguale.
+  Con $N < 20$ si usa la regola sulla mediana ($x_3 = 2$): il più grande valore
+  inferiore è $1$ e il più piccolo superiore è $5$, quindi $(L, H) = (1, 5)$.
+- **Tukey.** $Q_1 = x_1 = 1$, $Q_3 = x_4 = 5$, $IQR = 4$:
+  $(L, H) = (-5;\ 11)$. Nessun impatto cade oltre i recinti.
+
+| Metodo           | Etichette                 | Punteggio |
+| ---------------- | ------------------------- | :-------: |
+| percentili       | $-1, -1, -1, 0, +1, +1$   |    $7$    |
+| Gini             | $-1, -1, -1, 0, +1, +1$   |    $7$    |
+| Tukey            | $0, 0, 0, 0, 0, 0$        |    $2$    |
+
+Anche qui percentili e Gini sono a pari merito con le stesse etichette, e
+prevale per priorità il **metodo dei percentili** con
+soglie $(1, 5)$. Ne risulta:
 
 - impatto basso ($\le 1$): membri $1$, $2$ e $3$;
 - impatto alto ($\ge 5$): membri $4$ e $5$;
