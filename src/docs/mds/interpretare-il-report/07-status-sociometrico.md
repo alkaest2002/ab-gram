@@ -18,7 +18,7 @@ L'algoritmo risponde a tre domande, nell'ordine:
 1. **Il membro è visibile?** Ha ricevuto almeno un'opinione? Se no, è isolato o
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
-   basso, medio o alto? Le soglie non sono fissate da un solo metodo: tre
+   basso, medio o alto? Le soglie non sono fissate da un solo metodo: quattro
    metodi statistici le propongono e si adotta quello più in accordo con gli
    altri.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
@@ -66,7 +66,8 @@ L'algoritmo riceve quattro valori per ogni membro:
 > **Attenzione alla notazione.** In questa pagina $n_i$ indica l'impatto del
 > singolo membro (quante opinioni ha ricevuto), **non** il numero di membri del
 > gruppo. Con $N$ indichiamo invece il numero di
-> membri **visibili**, cioè con $n_i > 0$.
+> membri **visibili**, cioè con $n_i > 0$. Infine $n$ (senza pedice) indica il
+> numero di membri del gruppo, usato dal metodo binomiale.
 
 ## 4 L'algoritmo di assegnazione
 
@@ -94,12 +95,12 @@ l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**. Non esiste
 un unico modo "giusto" di fissare le soglie, perché ogni metodo statistico ha
 pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
-non ne sceglie uno a priori: **ne calcola tre e adotta quello che si
+non ne sceglie uno a priori: **ne calcola quattro e adotta quello che si
 trova più d'accordo con gli altri**. Il passo si articola in tre mosse:
 
-1. tre **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.3);
-2. si sceglie la coppia per **consenso** tra i metodi (§ 4.2.4);
-3. la coppia scelta viene **applicata** a tutti i membri (§ 4.2.5).
+1. quattro **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.4);
+2. si sceglie la coppia per **consenso** tra i metodi (§ 4.2.5);
+3. la coppia scelta viene **applicata** a tutti i membri (§ 4.2.6).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
 e una **soglia alta** $H$, con questo significato:
@@ -112,7 +113,7 @@ Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
 **entrambi** i lati sono disattivati si parla di **nessuna divisione**: tutti i
 membri sono classificati a impatto medio.
 
-**Solo i membri "visibili".** Le soglie di tutti e tre i metodi
+**Solo i membri "visibili".** Le soglie dei metodi basati sulla distribuzione
 (percentili, Gini, Tukey) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
@@ -180,10 +181,42 @@ impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile:
 - $H = Q_3 + 1{,}5 \cdot IQR$.
 
 Se $IQR = 0$ i recinti collasserebbero sulla mediana e il metodo propone
-**nessuna divisione**. È il più conservativo dei tre: segnala solo gli
+**nessuna divisione**. È un metodo molto conservativo: segnala solo gli
 scostamenti davvero estremi e, nei gruppi omogenei, spesso non segnala nessuno.
 
-#### 4.2.4 Il consenso tra i metodi
+#### 4.2.4 Metodo binomiale (GB)
+
+**Intuizione:** *che cosa produrrebbe il puro caso?* Se ogni opinione fosse
+espressa a caso, il numero di opinioni ricevute da un membro seguirebbe una
+distribuzione binomiale. I membri che si discostano molto da questo andamento
+sono "insolitamente" poco o molto visibili.
+
+Sia $n$ il numero di membri del gruppo (**tutti**, anche non visibili). Ogni
+membro può ricevere opinioni da $n - 1$ altri membri, e la densità complessiva
+della rete è
+
+$$
+p = \frac{\sum_i n_i}{n\,(n-1)}
+$$
+
+Sotto l'ipotesi di caso, le opinioni ricevute da un membro seguono
+$X \sim \text{Binomiale}(n-1,\ p)$. Con livello $\alpha = 0{,}05$ **a due code**
+(quindi $0{,}025$ per coda) le soglie sono:
+
+- $L$ = il **massimo** $k$ tale che $P(X \le k) \le 0{,}025$;
+- $H$ = il **minimo** $k$ tale che $P(X \ge k) \le 0{,}025$.
+
+Se nessun $k$ soddisfa la condizione, quel lato non viene mai segnalato. Il
+metodo propone **nessuna divisione** anche quando $n < 2$ oppure $p$ non è
+strettamente compresa tra $0$ e $1$ (il modello non è applicabile).
+
+> **Un'approssimazione.** Poiché $n_i = rp_i + rr_i$, un membro può ricevere
+> sia una preferenza sia un rifiuto dallo stesso membro: l'impatto può quindi
+> superare $n - 1$, cosa che il modello binomiale non prevede. La protezione
+> $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
+> un'approssimazione ragionevole.
+
+#### 4.2.5 Il consenso tra i metodi
 
 **Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
 "votare". Si sceglie il metodo **più centrale**, cioè quello la cui
@@ -195,7 +228,7 @@ classificazione assomiglia di più a quella di tutti gli altri.
    assegnano la **stessa etichetta** (un conteggio intero: così il confronto è
    esatto, senza ambiguità di arrotondamento).
 3. Il **punteggio** di un metodo è la somma dei suoi accordi con gli **altri
-   due**.
+   tre**.
 4. Vince il metodo col punteggio più alto, e le sue soglie $(L, H)$ sono quelle
    adottate.
 
@@ -208,15 +241,19 @@ classificazione assomiglia di più a quella di tutti gli altri.
    quest'ordine di priorità:
 
 $$
-\text{percentili} \;>\; \text{Gini} \;>\; \text{Tukey}
+\text{percentili} \>\ \text{Gini} \>\ \text{Tukey} \>\ \text{binomiale}
 $$
 
+Il binomiale è volutamente ultimo: i suoi limiti esatti segnalano solo i casi
+estremi e, a parità di punteggio, è preferibile una divisione basata sulla
+posizione relativa dentro il gruppo.
+
 Questo meccanismo rende l'esito robusto: se un metodo si comporta in modo
-anomalo in una data distribuzione, gli altri due lo mettono in minoranza. Si
+anomalo in una data distribuzione, gli altri tre lo mettono in minoranza. Si
 osservi anche che un metodo che propone "nessuna divisione" etichetta tutti
 come medi e quindi concorda con gli altri soprattutto sui membri medi.
 
-#### 4.2.5 Applicazione delle soglie
+#### 4.2.6 Applicazione delle soglie
 
 Le soglie scelte si applicano a **tutti** i membri con $n_i > 0$ (gli altri sono
 già stati classificati al Passo 1):
@@ -291,14 +328,15 @@ non è un'informazione affidabile.
 
 | Parametro                                       | Valore                                   |
 | ----------------------------------------------- | ---------------------------------------- |
-| Metodi di soglia in competizione                | percentili, Gini, Tukey                  |
-| Parità nel consenso                             | prima la divisione effettiva, poi percentili > Gini > Tukey |
+| Metodi di soglia in competizione                | percentili, Gini, Tukey, binomiale       |
+| Parità nel consenso                             | prima la divisione effettiva, poi percentili > Gini > Tukey > binomiale |
 | Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
 | Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
 | Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
 | Gini: soglia attenuata                          | $G \ge 0{,}2$ e escursione $\ge 3$       |
 | Gini: percentili esterni                        | $10$ / $90$, con $N \ge 20$ visibili     |
 | Tukey: recinti interni                          | $Q_1 - 1{,}5 \cdot IQR$ / $Q_3 + 1{,}5 \cdot IQR$ |
+| Binomiale: livello di significatività           | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda) |
 | Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
 | Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
 
@@ -378,7 +416,8 @@ $n = rp$ (non essendoci rifiuti, $rr = 0$):
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
-$N = 6$. Calcoliamo le soglie proposte dai tre metodi.
+$N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
+quattro metodi.
 
 - **Percentili.** $L = x_{\lfloor 6 \cdot 20/100 \rfloor} = x_1 = 2$ e
   $H = x_{\lfloor 6 \cdot 80/100 \rfloor} = x_4 = 5$. Sono diverse, quindi
@@ -389,19 +428,29 @@ $N = 6$. Calcoliamo le soglie proposte dai tre metodi.
   superiore è $5$, quindi $(L, H) = (2, 5)$.
 - **Tukey.** $Q_1 = x_1 = 2$, $Q_3 = x_4 = 5$, $IQR = 3$:
   $(L, H) = (-2{,}5;\ 9{,}5)$. Nessun impatto cade oltre i recinti.
+- **Binomiale.** Le opinioni totali sono $19$, quindi
+  $p = 19 / (6 \cdot 5) \approx 0{,}63$ e $X \sim \text{Binomiale}(5;\ 0{,}63)$.
+  Si ha $P(X \le 0) \approx 0{,}007 \le 0{,}025$ ma
+  $P(X \le 1) \approx 0{,}064 > 0{,}025$, quindi $L = 0$. Dall'altra parte
+  $P(X \ge 5) \approx 0{,}10 > 0{,}025$: nessuna soglia alta. Risultato:
+  $(L, H) = (0, +\infty)$, che però non etichetta nessuno (l'impatto minimo è
+  $2$).
 
 Etichettando i sei membri (basso/medio/alto) si ottiene:
 
 | Metodo           | Etichette                 | Punteggio |
 | ---------------- | ------------------------- | :-------: |
-| percentili       | $-1, -1, -1, 0, +1, +1$   |    $7$    |
-| Gini             | $-1, -1, -1, 0, +1, +1$   |    $7$    |
-| Tukey            | $0, 0, 0, 0, 0, 0$        |    $2$    |
+| percentili       | $-1, -1, -1, 0, +1, +1$   |    $8$    |
+| Gini             | $-1, -1, -1, 0, +1, +1$   |    $8$    |
+| Tukey            | $0, 0, 0, 0, 0, 0$        |    $8$    |
+| binomiale        | $0, 0, 0, 0, 0, 0$        |    $8$    |
 
-(Ad esempio il punteggio dei percentili è $6 + 1 = 7$: sei accordi con Gini e
-uno con Tukey, sul membro a impatto medio.) Percentili e Gini sono a pari
-merito con le stesse etichette; tra i due prevale il **metodo dei percentili**
-per priorità. Le soglie adottate sono $(2, 5)$. Ne risulta:
+(Ad esempio il punteggio dei percentili è $6 + 1 + 1 = 8$: sei accordi con
+Gini e uno ciascuno con Tukey e binomiale, sul membro a impatto medio.) Tutti
+e quattro i metodi sono a pari merito, quindi decidono i criteri di parità:
+Tukey e binomiale non etichettano nessuno, dunque restano in gara percentili e
+Gini, che propongono le stesse etichette; tra i due prevale il **metodo dei
+percentili** per priorità. Le soglie adottate sono $(2, 5)$. Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -485,7 +534,8 @@ Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n = rr$
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
-$N = 6$. Calcoliamo le soglie proposte dai tre metodi.
+$N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
+quattro metodi.
 
 - **Percentili.** $L = x_1 = 1$ e $H = x_4 = 5$, quindi $(L, H) = (1, 5)$.
 - **Gini.** $G \approx 0{,}44 \ge 0{,}3$: distribuzione abbastanza diseguale.
@@ -493,14 +543,21 @@ $N = 6$. Calcoliamo le soglie proposte dai tre metodi.
   inferiore è $1$ e il più piccolo superiore è $5$, quindi $(L, H) = (1, 5)$.
 - **Tukey.** $Q_1 = x_1 = 1$, $Q_3 = x_4 = 5$, $IQR = 4$:
   $(L, H) = (-5;\ 11)$. Nessun impatto cade oltre i recinti.
+- **Binomiale.** Le opinioni totali sono $15$, quindi
+  $p = 15 / (6 \cdot 5) = 0{,}5$ e $X \sim \text{Binomiale}(5;\ 0{,}5)$.
+  $P(X \le 0) \approx 0{,}031 > 0{,}025$ e $P(X \ge 5) \approx 0{,}031 > 0{,}025$:
+  nessuna delle due code raggiunge la significatività. Risultato: **nessuna
+  divisione**.
 
 | Metodo           | Etichette                 | Punteggio |
 | ---------------- | ------------------------- | :-------: |
-| percentili       | $-1, -1, -1, 0, +1, +1$   |    $7$    |
-| Gini             | $-1, -1, -1, 0, +1, +1$   |    $7$    |
-| Tukey            | $0, 0, 0, 0, 0, 0$        |    $2$    |
+| percentili       | $-1, -1, -1, 0, +1, +1$   |    $8$    |
+| Gini             | $-1, -1, -1, 0, +1, +1$   |    $8$    |
+| Tukey            | $0, 0, 0, 0, 0, 0$        |    $8$    |
+| binomiale        | $0, 0, 0, 0, 0, 0$        |    $8$    |
 
-Anche qui percentili e Gini sono a pari merito con le stesse etichette, e
+Anche qui i quattro metodi sono a pari merito; Tukey e binomiale non
+etichettano nessuno, e tra i due che propongono una divisione effettiva
 prevale per priorità il **metodo dei percentili** con
 soglie $(1, 5)$. Ne risulta:
 

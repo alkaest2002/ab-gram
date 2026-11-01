@@ -22,6 +22,7 @@ const CONFIG = {
     minVisibleForOuter: 20,
   },
   tukey: { k: 1.5 }, // inner-fence multiplier: Q1 - k*IQR, Q3 + k*IQR
+  binomial: { alpha: 0.05 }, // two-sided: alpha / 2 in each tail
   balance: {
     lessLenientRatio: 2.0, // threshold at or below minOpinions
     moreLenientRatio: 1.5, // threshold at or above maxOpinions
@@ -80,7 +81,7 @@ const percentileOf = (sorted, percentile) =>
 
 // ============================================================================
 // STEP 2: IMPACT-THRESHOLD STRATEGIES
-// Each strategy: ({ sorted }) => { low, high }
+// Each strategy: ({ sorted, allImpacts, groupSize }) => { low, high }
 // ============================================================================
 
 // 2a. Plain percentiles (20/80). Collapsed percentiles => no split.
@@ -143,11 +144,55 @@ const tukeyStrategy = ({ sorted }) => {
   return { low: q1 - k * iqr, high: q3 + k * iqr };
 };
 
+// 2d. GB method: exact binomial test (replaces Salvosa's tables).
+// Under chance, opinions received by one member ~ Binomial(N-1, p), with
+// p = total opinions / (N * (N-1)). Limits are the counts whose tail
+// probability is <= alpha/2.
+const binomialCdf = (n, p) => {
+  const odds = p / (1 - p);
+  let pmf = Math.exp(n * Math.log1p(-p)); // P(X = 0)
+  let cumulative = 0;
+  const cdf = [];
+  for (let k = 0; k <= n; k++) {
+    cumulative += pmf;
+    cdf.push(Math.min(1, cumulative));
+    pmf *= ((n - k) / (k + 1)) * odds; // P(X = k+1) from P(X = k)
+  }
+  return cdf;
+};
+
+const binomialStrategy = ({ allImpacts, groupSize }) => {
+  const n = groupSize - 1; // possible givers for any one member
+  if (n < 1) return NO_SPLIT;
+  const total = allImpacts.reduce((s, v) => s + v, 0);
+  const p = total / (groupSize * n);
+  // The p < 1 guard also covers degenerate density: a giver nominating the
+  // same member in both likes and dislikes can push p past the model's range.
+  if (!(p > 0 && p < 1)) return NO_SPLIT;
+
+  const tail = CONFIG.binomial.alpha / 2;
+  const cdf = binomialCdf(n, p);
+
+  // Largest k with P(X <= k) <= tail.
+  let low = -Infinity;
+  for (let k = 0; k <= n && cdf[k] <= tail; k++) low = k;
+
+  // Smallest k with P(X >= k) = 1 - P(X <= k-1) <= tail.
+  let high = Infinity;
+  for (let k = n; k >= 1 && 1 - cdf[k - 1] <= tail; k--) high = k;
+
+  return { low, high };
+};
+
 // Order matters: it is the tie-break priority in the consensus step.
+// Binomial is deliberately last: its exact-test cutoffs flag only extreme
+// outliers, and on score ties the distribution-based splits (which reflect
+// relative standing within the group) should win over it.
 const IMPACT_STRATEGIES = [
   { name: "percentile", run: percentileStrategy },
   { name: "gini", run: giniStrategy },
   { name: "tukey", run: tukeyStrategy },
+  { name: "binomial (GB)", run: binomialStrategy },
 ];
 
 // ============================================================================
@@ -289,16 +334,18 @@ const assignStatus = (visibility, impactClass, balance) => {
  * - Isolated: impact = 0 and expressivity = 0
  * - Ignored:  impact = 0 and expressivity > 0
  *
- * IMPACT CLASSIFICATION (consensus of three threshold strategies)
+ * IMPACT CLASSIFICATION (consensus of four threshold strategies)
  * Low/high cutoffs are derived from members who received at least one opinion
  * (impact > 0), so isolated/ignored members don't drag the thresholds down.
- * Three strategies each propose { low, high } cutoffs:
+ * Four strategies each propose { low, high } cutoffs:
  * - Percentile: nearest-rank 20th/80th percentiles (no split if collapsed).
  * - Gini: splits only when inequality is meaningful (sample-corrected Gini
  *   >= 0.3, or >= 0.2 with peak-to-peak spread >= 3), via outer 10/90
  *   percentiles (>= 20 visible members, each side only if strictly beyond the
  *   median) or median-strict.
  * - Tukey: inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible members.
+ * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.05,
+ *   where p is the network's opinion density (computed over all members).
  * Each strategy labels the visible members low/average/high; the strategy
  * that agrees most with the others (integer hit count) wins. Ties prefer a
  * strategy that flags at least one member, then the order above.
@@ -326,10 +373,15 @@ const assignStatus = (visibility, impactClass, balance) => {
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   const visibility = classifyVisibility(impact, expressivity);
 
+  const allImpacts = impact.flatten().toArray();
   const sorted = toSortedVisible(impact);
   const thresholds =
     sorted.length > 0
-      ? selectConsensusThresholds({ sorted }).thresholds
+      ? selectConsensusThresholds({
+          sorted,
+          allImpacts,
+          groupSize: allImpacts.length,
+        }).thresholds
       : NO_SPLIT;
 
   const impactClass = classifyImpact(impact, thresholds);
