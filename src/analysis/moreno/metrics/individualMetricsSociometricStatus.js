@@ -8,19 +8,25 @@ import { computeGiniCoefficient } from "../../common/commonMetrics.js";
 // CONFIG
 // ============================================================================
 const CONFIG = {
+  // A tail is only "clear" with enough visible members to tell it from noise.
+  // Below this, the percentile and Gini strategies abstain.
+  minVisibleForTails: 5,
   // 20/80: percentile only flags the clear tails of the distribution.
   percentile: { low: 20, high: 80 },
   gini: {
     strong: 0.3,
     moderate: 0.2,
     minPtpForModerate: 3,
+    // Once Gini says "unequal", tails are cut at the quartiles in ordinary
+    // groups and at the outer deciles in large ones. Never at the median:
+    // that would flag nearly every member not tied with it.
+    innerLow: 25,
+    innerHigh: 75,
     outerLow: 10,
     outerHigh: 90,
-    // With nearest-rank, the outer percentiles differ from min/max only in
-    // sufficiently large groups.
     minVisibleForOuter: 20,
   },
-  tukey: { k: 1.5 }, // inner-fence multiplier: Q1 - k*IQR, Q3 + k*IQR
+  tukey: { k: 1.5 }, // fences: Q1 - k*IQR, Q3 + k*IQR (strict: beyond, not at)
   binomial: { alpha: 0.05 }, // two-sided: alpha / 2 in each tail
   balance: {
     lessLenientRatio: 2.0, // threshold at or below minOpinions
@@ -72,29 +78,79 @@ const toSortedVisible = (impact) =>
     .filter((v) => v > 0)
     .sort((a, b) => a - b); // numeric sort
 
-// Nearest-rank percentile on a sorted array, clamped to a valid index.
-const percentileOf = (sorted, percentile) =>
-  sorted[
-    Math.min(sorted.length - 1, Math.floor((sorted.length * percentile) / 100))
-  ];
+// Nearest-rank index (0-based): ceil(n*p/100) - 1, clamped to a valid index.
+const rankIndex = (n, percentile) =>
+  Math.min(n - 1, Math.max(0, Math.ceil((n * percentile) / 100) - 1));
+
+// Nearest-rank percentile on a sorted array. Upper percentiles are mirrored
+// from the lower ones (p > 50 uses the (100 - p) rank counted from the top),
+// so "bottom p%" and "top p%" always contain the same number of members.
+// Plain nearest-rank is asymmetric when n*p/100 is an integer.
+const percentileOf = (sorted, percentile) => {
+  const n = sorted.length;
+  return percentile <= 50
+    ? sorted[rankIndex(n, percentile)]
+    : sorted[n - 1 - rankIndex(n, 100 - percentile)];
+};
+
+// True median (mean of the two middle values for even n). percentileOf(50)
+// would return the lower/upper middle value instead.
+const medianOf = (sorted) => {
+  const n = sorted.length;
+  const mid = n >> 1;
+  return n % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+};
 
 // ============================================================================
 // STEP 2: IMPACT-THRESHOLD STRATEGIES
 // Each strategy: ({ sorted, allImpacts, groupSize }) => { low, high }
 // ============================================================================
 
-// 2a. Plain percentiles (20/80). Collapsed percentiles => no split.
-const percentileStrategy = ({ sorted }) => {
-  const low = percentileOf(sorted, CONFIG.percentile.low);
-  const high = percentileOf(sorted, CONFIG.percentile.high);
-  return low === high ? NO_SPLIT : { low, high };
+// Shared by the percentile and Gini strategies.
+// Cuts a { low, high } pair at the given percentiles, then keeps the tails
+// clear of the tied bulk: a side whose cutoff reaches the median is pulled in
+// to the nearest value strictly beyond the median (or dropped if none exists).
+// The result is always a subset of the nominal tail, so a tail never swallows
+// the typical value, however heavy the ties.
+const tailCutoffs = (sorted, lowPercentile, highPercentile) => {
+  const median = medianOf(sorted);
+
+  let low = percentileOf(sorted, lowPercentile);
+  if (!(low < median)) {
+    low = -Infinity;
+    for (const v of sorted) {
+      if (v < median) low = v; // ends as the largest value strictly below
+      else break;
+    }
+  }
+
+  let high = percentileOf(sorted, highPercentile);
+  if (!(high > median)) {
+    high = Infinity;
+    for (let i = sorted.length - 1; i >= 0; i -= 1) {
+      if (sorted[i] > median) high = sorted[i]; // smallest strictly above
+      else break;
+    }
+  }
+
+  return low === -Infinity && high === Infinity ? NO_SPLIT : { low, high };
 };
 
-// 2b. Inequality-driven: split only if the distribution is unequal enough.
+// 2a. Plain percentiles (20/80), tie-aware. Abstains for fewer than
+// minVisibleForTails visible members: with so few, "bottom 20%" is one or two
+// people and says nothing about clear tails. Because tails never include the
+// tied median bulk, this strategy now also abstains on flat distributions
+// instead of always voting.
+const percentileStrategy = ({ sorted }) => {
+  if (sorted.length < CONFIG.minVisibleForTails) return NO_SPLIT;
+  return tailCutoffs(sorted, CONFIG.percentile.low, CONFIG.percentile.high);
+};
+
+// 2b. Inequality-driven: Gini decides WHETHER to split (shape recognition:
+// bimodal / long-tail), the percentiles decide WHERE.
 const giniStrategy = ({ sorted }) => {
   const c = CONFIG.gini;
-  if (sorted.length < 2) return NO_SPLIT; // nothing to split
-  const median = percentileOf(sorted, 50);
+  if (sorted.length < Math.max(2, CONFIG.minVisibleForTails)) return NO_SPLIT;
   const ptp = sorted[sorted.length - 1] - sorted[0];
   // Bias-corrected sample Gini (* N/(N-1)): the population formula
   // underestimates inequality in the small groups typical of sociometry.
@@ -106,41 +162,40 @@ const giniStrategy = ({ sorted }) => {
     gini >= c.strong || (gini >= c.moderate && ptp >= c.minPtpForModerate);
   if (!unequal) return NO_SPLIT;
 
-  // Outer percentiles only for larger groups, and each side only if it lies
-  // strictly beyond the median (so tied bulk is never swept into a tail).
-  const largeEnough = sorted.length >= c.minVisibleForOuter;
-  const outerLow = percentileOf(sorted, c.outerLow);
-  const outerHigh = percentileOf(sorted, c.outerHigh);
-  const useOuterLow = largeEnough && outerLow < median;
-  const useOuterHigh = largeEnough && outerHigh > median;
-
-  if (useOuterLow || useOuterHigh) {
-    return {
-      low: useOuterLow ? outerLow : -Infinity,
-      high: useOuterHigh ? outerHigh : Infinity,
-    };
-  }
-
-  // Median-strict: strictly below / above the typical value.
-  const below = sorted.filter((v) => v < median);
-  const above = sorted.filter((v) => v > median);
-  return {
-    low: below.length ? below[below.length - 1] : -Infinity,
-    high: above.length ? above[0] : Infinity,
-  };
+  const large = sorted.length >= c.minVisibleForOuter;
+  return tailCutoffs(
+    sorted,
+    large ? c.outerLow : c.innerLow,
+    large ? c.outerHigh : c.innerHigh,
+  );
 };
 
 // 2c. Tukey's inner fences over visible members: Q1 - k*IQR, Q3 + k*IQR.
-// Flags only genuine outliers; fences beyond the observed range simply leave
-// that side unflagged. Note: comparisons downstream are inclusive (<= / >=),
-// slightly more permissive than Tukey's strict "beyond the fence".
+// Strict, as in Tukey's definition: only values BEYOND a fence are outliers,
+// never a value sitting exactly on it. Since downstream comparisons are
+// inclusive (<= low, >= high), the cutoffs are set to the nearest observed
+// value strictly beyond each fence. Fences outside the observed range leave
+// that side unflagged.
 const tukeyStrategy = ({ sorted }) => {
   const q1 = percentileOf(sorted, 25);
   const q3 = percentileOf(sorted, 75);
   const iqr = q3 - q1;
   if (iqr === 0) return NO_SPLIT; // fences would collapse onto the median
   const k = CONFIG.tukey.k;
-  return { low: q1 - k * iqr, high: q3 + k * iqr };
+  const lowFence = q1 - k * iqr;
+  const highFence = q3 + k * iqr;
+
+  let low = -Infinity;
+  for (const v of sorted) {
+    if (v < lowFence) low = v; // largest value strictly below the fence
+    else break;
+  }
+  let high = Infinity;
+  for (let i = sorted.length - 1; i >= 0; i -= 1) {
+    if (sorted[i] > highFence) high = sorted[i]; // smallest strictly above
+    else break;
+  }
+  return { low, high };
 };
 
 // 2d. GB method: exact binomial test (replaces Salvosa's tables).
@@ -148,14 +203,16 @@ const tukeyStrategy = ({ sorted }) => {
 // p = total opinions / (N * (N-1)). Limits are the counts whose tail
 // probability is <= alpha/2.
 const binomialCdf = (n, p) => {
-  const odds = p / (1 - p);
-  let pmf = Math.exp(n * Math.log1p(-p)); // P(X = 0)
+  // Recurrence kept in log space: (1-p)^n underflows to 0 for large n, which
+  // would zero the entire CDF if carried multiplicatively.
+  const logOdds = Math.log(p) - Math.log1p(-p);
+  let logPmf = n * Math.log1p(-p); // log P(X = 0)
   let cumulative = 0;
   const cdf = [];
   for (let k = 0; k <= n; k++) {
-    cumulative += pmf;
+    cumulative += Math.exp(logPmf);
     cdf.push(Math.min(1, cumulative));
-    pmf *= ((n - k) / (k + 1)) * odds; // P(X = k+1) from P(X = k)
+    logPmf += Math.log((n - k) / (k + 1)) + logOdds; // log P(X = k+1)
   }
   return cdf;
 };
@@ -186,9 +243,10 @@ const binomialStrategy = ({ allImpacts, groupSize }) => {
 // A strategy that proposes no effective split abstains from the vote; the
 // remaining strategies vote with equal weight, so the order here is only for
 // readability and does not affect the outcome.
-// Gini recognises distributional shape (bimodal/long-tail); percentile reads
-// relative standing; Tukey flags outliers via the inner fences; binomial (GB)
-// flags only the extreme cases under the chance model.
+// Gini recognises distributional shape (bimodal/long-tail) and then cuts at
+// quartiles/deciles; percentile reads relative standing; Tukey flags strict
+// outliers beyond the inner fences; binomial (GB) flags only the extreme cases
+// under the chance model.
 const IMPACT_STRATEGIES = [
   { name: "gini", run: giniStrategy },
   { name: "percentile", run: percentileStrategy },
@@ -206,7 +264,7 @@ const labelValues = (values, { low, high }) =>
 
 const classifyImpact = (impact, thresholds) => {
   const none = impact.less(0); // all-false boolean array (impact is non-negative)
-  let isLowImpact = isFinite(thresholds.low)
+  const isLowImpact = isFinite(thresholds.low)
     ? impact.less_equal(thresholds.low)
     : none;
   let isHighImpact = isFinite(thresholds.high)
@@ -331,11 +389,51 @@ const assignStatus = (visibility, impactClass, balance) => {
 };
 
 // ============================================================================
+// INPUT VALIDATION
+// All four inputs must be 1-D, same length (one entry per group member),
+// finite, non-negative integers-as-counts, with impact === rp + rr. Anything
+// else would otherwise be classified silently (e.g. NaN -> "ambivalent", or
+// several groups flattened into one set of thresholds).
+// ============================================================================
+const validateInputs = (inputs) => {
+  const entries = Object.entries(inputs);
+  for (const [name, arr] of entries) {
+    if (!arr || typeof arr.toArray !== "function") {
+      throw new TypeError(`${name} must be a numpy-ts NDArray`);
+    }
+    if (arr.ndim !== 1) {
+      throw new RangeError(
+        `${name} must be 1-D (one entry per member), got shape [${arr.shape}]`,
+      );
+    }
+  }
+  const size = entries[0][1].size;
+  for (const [name, arr] of entries) {
+    if (arr.size !== size) {
+      throw new RangeError(`${name} has length ${arr.size}, expected ${size}`);
+    }
+  }
+  const values = Object.fromEntries(
+    entries.map(([name, arr]) => [name, arr.toArray()]),
+  );
+  for (const [name, list] of Object.entries(values)) {
+    if (!list.every((v) => Number.isFinite(v) && v >= 0)) {
+      throw new RangeError(`${name} must contain only finite values >= 0`);
+    }
+  }
+  const { rp, rr, impact } = values;
+  if (!impact.every((v, i) => v === rp[i] + rr[i])) {
+    throw new RangeError("impact must equal rp + rr for every member");
+  }
+};
+
+// ============================================================================
 // ORCHESTRATOR
 // ============================================================================
 
 /**
- * Classify members into sociometric status (0-8).
+ * Classify members into sociometric status (codes 0-8; 99 is a safety
+ * default that is unreachable for valid input).
  *
  * VISIBILITY (takes precedence over everything else)
  * - Isolated: impact = 0 and expressivity = 0
@@ -344,23 +442,32 @@ const assignStatus = (visibility, impactClass, balance) => {
  * IMPACT CLASSIFICATION (majority vote of the splitting strategies)
  * Low/high cutoffs are derived from members who received at least one opinion
  * (impact > 0), so isolated/ignored members don't drag the thresholds down.
+ * Percentiles are nearest-rank, mirrored for the upper side so the bottom
+ * p% and top p% always hold the same number of members; the median is the
+ * true median (mean of the two middle values for even n).
+ * Tails never include the tied median bulk: a cutoff that reaches the median
+ * is pulled in to the nearest value strictly beyond it.
  * Four strategies each propose { low, high } cutoffs:
- * - Gini: splits only when inequality is meaningful (sample-corrected Gini
- *   >= 0.3, or >= 0.2 with peak-to-peak spread >= 3), via outer 10/90
- *   percentiles (>= 20 visible members, each side only if strictly beyond the
- *   median) or median-strict.
- * - Percentile: nearest-rank 20th/80th percentiles (no split if collapsed).
- * - Tukey: inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible members.
+ * - Gini: decides whether to split (sample-corrected Gini >= 0.3, or >= 0.2
+ *   with peak-to-peak spread >= 3; needs >= 5 visible members) and then cuts
+ *   at the quartiles (25/75), or the outer deciles (10/90) with >= 20 visible
+ *   members, tie-trimmed as above.
+ * - Percentile: nearest-rank 20th/80th percentiles, tie-trimmed; abstains
+ *   with fewer than 5 visible members.
+ * - Tukey: strict inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible
+ *   members; a value exactly on a fence is not an outlier.
  * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.05,
  *   where p is the network's opinion density (computed over all members).
  * Each strategy classifies every member low/average/high; a strategy that
  * proposes no effective split (NO_SPLIT or thresholds that flag no visible
  * member) abstains from the vote. If every strategy abstains, everyone is
- * average. The final class per member is the majority vote of the
- * non-abstaining strategies. On a tie, a non-average class (low or high)
- * beats average, and low beats high.
+ * average. The final class per member is the plurality of the
+ * non-abstaining strategies: average wins only if it has strictly more votes
+ * than both low and high; otherwise low wins unless high has strictly more
+ * votes than low.
  * Comparisons are inclusive (impact <= low, impact >= high) and low wins if
- * both ever apply, so ties at a threshold can enlarge a tail.
+ * both ever apply. Cutoffs are observed values, so members tied with a cutoff
+ * share its class (the tail can be larger than the nominal percentile).
  *
  * BALANCE CLASSIFICATION (dynamic ratio threshold)
  * - Positive: rp > threshold x rr
@@ -374,13 +481,19 @@ const assignStatus = (visibility, impactClass, balance) => {
  * Note: low impact deliberately overrides balance. A member in the bottom
  * impact tier is "Marginal" even if their few opinions are mostly negative.
  *
+ * All inputs must be 1-D arrays of the same length (one entry per member of a
+ * single group), finite and non-negative, with impact === rp + rr; otherwise
+ * a TypeError/RangeError is thrown. Classify each group separately.
+ *
  * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
  * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
  * @param {import("numpy-ts").NDArray} expressivity - Opinions given (gp + gr).
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
  * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
+ * @throws {TypeError|RangeError} On invalid or inconsistent input.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
+  validateInputs({ rp, rr, expressivity, impact });
   const visibility = classifyVisibility(impact, expressivity);
 
   const allImpacts = impact.flatten().toArray();

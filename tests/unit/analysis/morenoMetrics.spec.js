@@ -117,20 +117,20 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
-    // Sociometric status: percentile flags the two impact-1 members as low and
-    // the impact-3 member as high, while gini flags only the top member; Tukey
-    // and binomial abstain. The low/average tie on b and c resolves to low
-    // (non-average beats average), so a is controversial (8), b marginal (2)
-    // and c marginal (2).
+    // Sociometric status: with only three visible members (impacts [1, 1, 3]),
+    // every strategy abstains — percentile and Gini need at least five visible
+    // members, and Tukey/binomial flag nothing — so everyone is average-impact
+    // and balance decides. a is ambivalent (7, rp=2 vs rr=1 does not clear the
+    // 2:1 threshold), b appreciated (3) and c disliked (5).
     expect(result.rawValuesById).toEqual([
-      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8, 70, 35],
-      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 2, 35, 0],
-      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 2, 0, 35],
+      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 7, 70, 35],
+      [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 3, 35, 0],
+      [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 5, 0, 35],
     ]);
     // Ranks are column-wise, with the highest raw score ranked first (1).
     expect(result.rankedValuesById).toEqual([
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1],
-      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2],
+      [2, 2, 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 3, 2, 2],
       [3, 1, 1, 1, 2, 1, 2, 2, 1, 2, 3, 3, 2, 3, 1],
     ]);
   });
@@ -262,10 +262,10 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("lets the only splitting strategy decide when the others abstain", () => {
-    // Received likes [1, 1, 2, 2, 2, 3]: percentile is the only strategy that
-    // proposes a split, while gini, Tukey and binomial abstain. With a single
-    // active strategy its classification is adopted, so 1 -> low and 2/3 ->
-    // high.
+    // Received likes [1, 1, 2, 2, 2, 3]: percentile proposes (low <= 1,
+    // high >= 3), while gini, Tukey and binomial abstain. With a single active
+    // strategy its classification is adopted, so 1 -> low, 2 -> average and
+    // 3 -> high.
     const members = [
       { id: "m0", likes: ["m5"], dislikes: [] },
       { id: "m1", likes: ["m5"], dislikes: [] },
@@ -287,9 +287,9 @@ describe("getIndividualLevelMetrics", () => {
     expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
       SOCIOMETRIC_STATUS.MARGINAL,
       SOCIOMETRIC_STATUS.MARGINAL,
-      SOCIOMETRIC_STATUS.POPULAR,
-      SOCIOMETRIC_STATUS.POPULAR,
-      SOCIOMETRIC_STATUS.POPULAR,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.POPULAR,
     ]);
   });

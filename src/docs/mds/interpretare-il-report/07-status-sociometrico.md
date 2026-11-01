@@ -119,18 +119,30 @@ membri sono classificati a impatto medio.
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
-mai raggiunta. Ordinati in senso crescente gli impatti dei soli membri
-visibili, $x_0 \le x_1 \le \dots \le x_{N-1}$, il **percentile** $P$ è il valore
-che occupa la posizione $\lfloor N \cdot P / 100 \rfloor$ (l'indice parte da
-$0$):
+mai raggiunta.
+
+Ordinati in senso crescente gli impatti dei soli membri visibili,
+$x_0 \le x_1 \le \dots \le x_{N-1}$, per $P \le 50$ il **percentile** $P$ è il
+valore che occupa la posizione (indice a partire da $0$, sempre limitata
+all'intervallo $0 \ldots N-1$)
 
 $$
-\text{percentile}(P) = x_{\left\lfloor \frac{N \cdot P}{100} \right\rfloor}
+\text{rango}(P) = \left\lceil \frac{N \cdot P}{100} \right\rceil - 1,
+\qquad
+\text{percentile}(P) = x_{\text{rango}(P)}
 $$
+
+Per $P > 50$ il percentile è **speculare** a quello inferiore: si usa lo stesso
+rango calcolato su $100 - P$, contato dall'alto, cioè
+$\text{percentile}(P) = x_{N-1-\text{rango}(100-P)}$. In questo modo la "coda
+bassa $p\%$" e la "coda alta $p\%$" contengono **sempre lo stesso numero** di
+membri, cosa che il rango più vicino non garantirebbe quando $N \cdot P / 100$
+è un numero intero.
 
 Non c'è interpolazione: il risultato è sempre uno dei valori realmente
-osservati. Con $P = 50$ si ottiene la **mediana**, $x_{\lfloor N/2 \rfloor}$
-(per $N$ pari è il valore centrale superiore).
+osservati. La **mediana** è la mediana "vera": il valore centrale per $N$
+dispari, la media dei due valori centrali per $N$ pari (il percentile(50)
+restituirebbe invece uno solo dei due valori centrali).
 
 #### 4.2.1 Metodo dei percentili
 
@@ -139,9 +151,16 @@ osservati. Con $P = 50$ si ottiene la **mediana**, $x_{\lfloor N/2 \rfloor}$
 - $L = \text{percentile}(20)$;
 - $H = \text{percentile}(80)$.
 
-Se le due soglie **coincidono** (la distribuzione è troppo piatta per
-distinguere le code), il metodo propone **nessuna divisione**. I valori sono
-$20/80$.
+Il metodo **si astiene** (propone nessuna divisione) con meno di $5$ membri
+visibili: con così pochi, "il 20% più basso" è una o due persone e non dice
+nulla su code davvero evidenti.
+
+Le soglie vengono poi **"ripulite dalle parità"**: una coda la cui soglia
+raggiunge la mediana viene tirata dentro, fino al valore più vicino
+**strettamente** oltre la mediana (se esiste); se non esiste, quel lato non
+viene segnalato. In questo modo la massa di membri "in pari" con la mediana non
+finisce mai in una coda. Su una distribuzione perfettamente piatta il metodo si
+astiene, invece di votare sempre. I valori sono $20/80$.
 
 #### 4.2.2 Metodo di Gini
 
@@ -155,31 +174,45 @@ disuguaglianza nei gruppi piccoli, tipici dei test sociometrici.
 
 **Prima condizione: la distribuzione è abbastanza diseguale?**
 
-- sì, se $G \ge 0{,}3$, oppure $G \ge 0{,}2$ con escursione $\ge 3$;
+- il metodo **si astiene** con meno di $5$ membri visibili (troppo pochi per
+  riconoscere una forma);
+- altrimenti, sì se $G \ge 0{,}3$, oppure $G \ge 0{,}2$ con escursione $\ge 3$;
 - se la condizione **non** è soddisfatta, il metodo propone **nessuna
   divisione**.
 
-**Se lo è, si sceglie la strategia per individuare le code:**
+**Se lo è, Gini decide *se* dividere e i percentili decidono *dove*:**
 
-1. **Percentili esterni ($10$ e $90$)**, solo se i membri visibili sono almeno
-   $20$ (nei gruppi più piccoli sarebbero troppo vicini a minimo e massimo). Ciascun lato
-   viene usato solo se cade **strettamente** oltre la mediana: è la precauzione
-   che impedisce alla massa di membri "in pari" di finire tutta in una coda.
-   Se uno solo dei due lati è utilizzabile, l'altro resta disattivato.
-2. **Regola stretta sulla mediana**, se nessun lato esterno è utilizzabile:
-   $L$ è il **più grande valore strettamente inferiore** alla mediana e $H$ il
-   **più piccolo valore strettamente superiore**. Se non esiste alcun valore
-   da una delle due parti, quel lato resta disattivato.
+1. **Percentili interni ($25$ e $75$)**, cioè i quartili, nei gruppi con meno di
+   $20$ membri visibili: le code sono il quarto inferiore e il quarto
+   superiore.
+2. **Percentili esterni ($10$ e $90$)**, cioè i decili, con almeno $20$ membri
+   visibili: nei gruppi più grandi i quartili sarebbero troppo vicini al centro,
+   quindi si guardano le code più estreme.
+
+In entrambi i casi le soglie vengono **"ripulite dalle parità"** come per il
+metodo dei percentili: una coda la cui soglia raggiunge la mediana viene tirata
+dentro fino al valore più vicino **strettamente** oltre la mediana (se esiste),
+altrimenti quel lato resta disattivato. Non si taglia mai sulla mediana stessa:
+equivarrebbe a segnalare quasi ogni membro che non sia esattamente pari alla
+mediana.
 
 #### 4.2.3 Metodo di Tukey
 
 **Intuizione:** il classico criterio dei **valori anomali** basato sui
 quartili, i "recinti interni" del box plot. Detti
 $Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
-impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile:
+impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, i
+recinti sono
 
-- $L = Q_1 - 1{,}5 \cdot IQR$;
-- $H = Q_3 + 1{,}5 \cdot IQR$.
+- $F_L = Q_1 - 1{,}5 \cdot IQR$;
+- $F_H = Q_3 + 1{,}5 \cdot IQR$.
+
+Il criterio è **stretto**, come nella definizione di Tukey: è anomalo solo un
+valore **oltre** il recinto, mai uno che ci cade **esattamente** sopra. Poiché
+le soglie vengono poi applicate in modo inclusivo ($\le L$, $\ge H$), il metodo
+traduce i recinti nelle soglie $L$ e $H$ pari al **valore osservato più vicino
+strettamente oltre** ciascun recinto. Un recinto oltre l'intervallo osservato
+lascia quel lato non segnalato.
 
 Se $IQR = 0$ i recinti collasserebbero sulla mediana e il metodo propone
 **nessuna divisione**. È un metodo molto conservativo: segnala solo gli
@@ -316,12 +349,16 @@ non è un'informazione affidabile.
 | Aggregazione tra i metodi                       | voto di maggioranza tra i metodi che dividono |
 | Metodi che non dividono                         | si astengono (non votano)               |
 | Parità nel voto                                 | non medio prevale su medio; basso prevale su alto |
+| Membri visibili minimi per percentili e Gini    | $5$                                      |
 | Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
+| Pulizia delle soglie                            | mai sulla mediana; coda tirata al valore più vicino strettamente oltre |
 | Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
 | Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
 | Gini: soglia attenuata                          | $G \ge 0{,}2$ e escursione $\ge 3$       |
+| Gini: percentili interni                        | $25$ / $75$ (con meno di $20$ visibili)  |
 | Gini: percentili esterni                        | $10$ / $90$, con $N \ge 20$ visibili     |
 | Tukey: recinti interni                          | $Q_1 - 1{,}5 \cdot IQR$ / $Q_3 + 1{,}5 \cdot IQR$ |
+| Tukey: soglia applicata                         | valore osservato più vicino strettamente oltre il recinto |
 | Binomiale: livello di significatività           | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda) |
 | Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
 | Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
@@ -405,15 +442,16 @@ ignorato: tutti proseguono.
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
 quattro metodi.
 
-- **Percentili.** $L = x_{\lfloor 6 \cdot 20/100 \rfloor} = x_1 = 2$ e
-  $H = x_{\lfloor 6 \cdot 80/100 \rfloor} = x_4 = 5$. Sono diverse, quindi
-  $(L, H) = (2, 5)$.
+- **Percentili.** $L = \text{percentile}(20) = x_1 = 2$ e
+  $H = \text{percentile}(80) = x_4 = 5$. Entrambe le soglie cadono oltre la
+  mediana ($2{,}5$), quindi $(L, H) = (2, 5)$.
 - **Gini.** $G \approx 0{,}26 \ge 0{,}2$ e l'escursione è $5 - 2 = 3 \ge 3$:
-  la condizione attenuata è soddisfatta. Con $N < 20$ si usa la regola sulla
-  mediana ($x_3 = 3$): il più grande valore inferiore è $2$ e il più piccolo
-  superiore è $5$, quindi $(L, H) = (2, 5)$.
-- **Tukey.** $Q_1 = x_1 = 2$, $Q_3 = x_4 = 5$, $IQR = 3$:
-  $(L, H) = (-2{,}5;\ 9{,}5)$. Nessun impatto cade oltre i recinti.
+  la condizione attenuata è soddisfatta. Con $N < 20$ si usano i quartili:
+  $L = \text{percentile}(25) = x_1 = 2$ e $H = \text{percentile}(75) = x_4 = 5$,
+  entrambi oltre la mediana, quindi $(L, H) = (2, 5)$.
+- **Tukey.** $Q_1 = x_1 = 2$, $Q_3 = x_4 = 5$, $IQR = 3$: i recinti sono
+  $F_L = -2{,}5$ e $F_H = 9{,}5$. Nessun impatto cade strettamente oltre i
+  recinti, quindi il metodo si astiene.
 - **Binomiale.** Le opinioni totali sono $19$, quindi
   $p = 19 / (6 \cdot 5) \approx 0{,}63$ e $X \sim \text{Binomiale}(5;\ 0{,}63)$.
   Si ha $P(X \le 0) \approx 0{,}007 \le 0{,}025$ ma
@@ -521,12 +559,16 @@ ignorato: tutti proseguono.
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
 quattro metodi.
 
-- **Percentili.** $L = x_1 = 1$ e $H = x_4 = 5$, quindi $(L, H) = (1, 5)$.
+- **Percentili.** $L = \text{percentile}(20) = x_1 = 1$ e
+  $H = \text{percentile}(80) = x_4 = 5$, entrambi oltre la mediana ($1{,}5$),
+  quindi $(L, H) = (1, 5)$.
 - **Gini.** $G \approx 0{,}44 \ge 0{,}3$: distribuzione abbastanza diseguale.
-  Con $N < 20$ si usa la regola sulla mediana ($x_3 = 2$): il più grande valore
-  inferiore è $1$ e il più piccolo superiore è $5$, quindi $(L, H) = (1, 5)$.
-- **Tukey.** $Q_1 = x_1 = 1$, $Q_3 = x_4 = 5$, $IQR = 4$:
-  $(L, H) = (-5;\ 11)$. Nessun impatto cade oltre i recinti.
+  Con $N < 20$ si usano i quartili: $L = \text{percentile}(25) = x_1 = 1$ e
+  $H = \text{percentile}(75) = x_4 = 5$, entrambi oltre la mediana, quindi
+  $(L, H) = (1, 5)$.
+- **Tukey.** $Q_1 = x_1 = 1$, $Q_3 = x_4 = 5$, $IQR = 4$: i recinti sono
+  $F_L = -5$ e $F_H = 11$. Nessun impatto cade strettamente oltre i recinti,
+  quindi il metodo si astiene.
 - **Binomiale.** Le opinioni totali sono $15$, quindi
   $p = 15 / (6 \cdot 5) = 0{,}5$ e $X \sim \text{Binomiale}(5;\ 0{,}5)$.
   $P(X \le 0) \approx 0{,}031 > 0{,}025$ e $P(X \ge 5) \approx 0{,}031 > 0{,}025$:
