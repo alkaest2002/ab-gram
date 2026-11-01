@@ -221,9 +221,10 @@ const selectConsensusThresholds = (context, strategies = IMPACT_STRATEGIES) => {
     };
   });
 
-  candidates.forEach((candidate, i) => {
-    candidate.score = candidates.reduce(
-      (sum, other, j) =>
+    candidates.forEach((candidate, i) => {
+      // Add a score based on agreement with other candidates
+      candidate.score = candidates.reduce(
+        (sum, other, j) =>
         j === i ? sum : sum + agreementHits(candidate.labels, other.labels),
       0,
     );
