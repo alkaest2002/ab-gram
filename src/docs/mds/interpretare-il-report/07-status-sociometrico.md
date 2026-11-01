@@ -241,12 +241,16 @@ classificazione assomiglia di più a quella di tutti gli altri.
    quest'ordine di priorità:
 
 $$
-\text{percentili} \>\ \text{Gini} \>\ \text{Tukey} \>\ \text{binomiale}
+\text{Gini} \;>\; \text{percentili} \;>\; \text{Tukey} \;>\; \text{binomiale}
 $$
 
-Il binomiale è volutamente ultimo: i suoi limiti esatti segnalano solo i casi
-estremi e, a parità di punteggio, è preferibile una divisione basata sulla
-posizione relativa dentro il gruppo.
+L'ordine riflette la copertura dei casi: **Gini** è il primo perché è l'unico a
+riconoscere le divisioni di *forma* (distribuzioni bimodali, code lunghe, un
+gruppo di spicco separato dagli altri), mentre i **percentili** leggono la
+posizione relativa moderata ma tendono a trascinare in coda i membri in pari
+punteggio. Il binomiale è volutamente ultimo: i suoi limiti esatti segnalano
+solo i casi estremi e, a parità di punteggio, è preferibile una divisione
+basata sulla posizione relativa dentro il gruppo.
 
 Questo meccanismo rende l'esito robusto: se un metodo si comporta in modo
 anomalo in una data distribuzione, gli altri tre lo mettono in minoranza. Si
@@ -329,7 +333,7 @@ non è un'informazione affidabile.
 | Parametro                                       | Valore                                   |
 | ----------------------------------------------- | ---------------------------------------- |
 | Metodi di soglia in competizione                | percentili, Gini, Tukey, binomiale       |
-| Parità nel consenso                             | prima la divisione effettiva, poi percentili > Gini > Tukey > binomiale |
+| Parità nel consenso                             | prima la divisione effettiva, poi Gini > percentili > Tukey > binomiale |
 | Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
 | Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
 | Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
@@ -448,9 +452,9 @@ Etichettando i sei membri (basso/medio/alto) si ottiene:
 (Ad esempio il punteggio dei percentili è $6 + 1 + 1 = 8$: sei accordi con
 Gini e uno ciascuno con Tukey e binomiale, sul membro a impatto medio.) Tutti
 e quattro i metodi sono a pari merito, quindi decidono i criteri di parità:
-Tukey e binomiale non etichettano nessuno, dunque restano in gara percentili e
-Gini, che propongono le stesse etichette; tra i due prevale il **metodo dei
-percentili** per priorità. Le soglie adottate sono $(2, 5)$. Ne risulta:
+Tukey e binomiale non etichettano nessuno, mentre percentili e Gini propongono
+le stesse etichette; tra i due prevale **Gini** per priorità. Le soglie
+adottate sono $(2, 5)$. Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -558,7 +562,7 @@ quattro metodi.
 
 Anche qui i quattro metodi sono a pari merito; Tukey e binomiale non
 etichettano nessuno, e tra i due che propongono una divisione effettiva
-prevale per priorità il **metodo dei percentili** con
+(percentili e Gini, con le stesse etichette) prevale per priorità **Gini** con
 soglie $(1, 5)$. Ne risulta:
 
 - impatto basso ($\le 1$): membri $1$, $2$ e $3$;

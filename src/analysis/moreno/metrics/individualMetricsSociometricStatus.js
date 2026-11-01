@@ -8,8 +8,7 @@ import { computeGiniCoefficient } from "../../common/commonMetrics.js";
 // CONFIG
 // ============================================================================
 const CONFIG = {
-  // 20/80: as one vote among three strategies, the
-  // percentile strategy should only flag clear tails.
+  // 20/80: percentile only flags the clear tails of the distribution.
   percentile: { low: 20, high: 80 },
   gini: {
     strong: 0.3,
@@ -185,12 +184,14 @@ const binomialStrategy = ({ allImpacts, groupSize }) => {
 };
 
 // Order matters: it is the tie-break priority in the consensus step.
-// Binomial is deliberately last: its exact-test cutoffs flag only extreme
-// outliers, and on score ties the distribution-based splits (which reflect
-// relative standing within the group) should win over it.
+// Gini first (distributional shape: bimodal/long-tail), then percentile
+// before binomial so a richer distribution-based split beats the exact test's
+// minimal split on ties (e.g. the Hogwarts data), then Tukey as a robust
+// second opinion, and binomial last — its cutoffs flag only the extreme cases
+// and should never override a relative-standing split on a tie.
 const IMPACT_STRATEGIES = [
-  { name: "percentile", run: percentileStrategy },
   { name: "gini", run: giniStrategy },
+  { name: "percentile", run: percentileStrategy },
   { name: "tukey", run: tukeyStrategy },
   { name: "binomial (GB)", run: binomialStrategy },
 ];
@@ -338,17 +339,18 @@ const assignStatus = (visibility, impactClass, balance) => {
  * Low/high cutoffs are derived from members who received at least one opinion
  * (impact > 0), so isolated/ignored members don't drag the thresholds down.
  * Four strategies each propose { low, high } cutoffs:
- * - Percentile: nearest-rank 20th/80th percentiles (no split if collapsed).
  * - Gini: splits only when inequality is meaningful (sample-corrected Gini
  *   >= 0.3, or >= 0.2 with peak-to-peak spread >= 3), via outer 10/90
  *   percentiles (>= 20 visible members, each side only if strictly beyond the
  *   median) or median-strict.
- * - Tukey: inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible members.
  * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.05,
  *   where p is the network's opinion density (computed over all members).
+ * - Tukey: inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible members.
+ * - Percentile: nearest-rank 20th/80th percentiles (no split if collapsed).
  * Each strategy labels the visible members low/average/high; the strategy
  * that agrees most with the others (integer hit count) wins. Ties prefer a
- * strategy that flags at least one member, then the order above.
+ * strategy that flags at least one member, then the order above (gini >
+ * percentile > tukey > binomial).
  * Comparisons are inclusive (impact <= low, impact >= high) and low wins if
  * both ever apply, so ties at a threshold can enlarge a tail.
  *
