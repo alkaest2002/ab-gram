@@ -63,22 +63,30 @@ export const jenksStrategy = ({ sorted }) => {
     const distinct = new Set(sorted).size;
     const k = 3;
 
-    // Guards
+    // No split if there are not enough visible members
     if (n < CONFIG.minVisibleForTails) return NO_SPLIT;
+
+    // No split if there are not enough distinct values
     if (distinct < k) return NO_SPLIT;
 
     const mean = sorted.reduce((s, v) => s + v, 0) / n;
     const sdam = sorted.reduce((s, v) => s + (v - mean) ** 2, 0);
+
+    // No split if SDAM is zero (all values are the same)
     if (sdam === 0) return NO_SPLIT;
 
     const { starts, sdcm } = jenksBreaks(sorted, k);
+
+    // No split if the goodness of variance fit is below the threshold
     if (1 - sdcm / sdam < CONFIG.jenks.minGvf) return NO_SPLIT;
 
     const median = medianOf(sorted);
     let low = sorted[starts[0] - 1]; // max of the first class
     let high = sorted[starts[starts.length - 1]]; // min of the last class
+
     // Same guard as tailCutoffs: a tail must stay strictly beyond the median.
     if (!(low < median)) low = -Infinity;
     if (!(high > median)) high = Infinity;
+
     return low === -Infinity && high === Infinity ? NO_SPLIT : { low, high };
 };

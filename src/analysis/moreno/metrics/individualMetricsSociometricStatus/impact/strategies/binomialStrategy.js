@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  CONFIG,
-  NO_SPLIT,
+    CONFIG,
+    NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 
 // GB method: exact binomial test (replaces Salvosa's tables).
@@ -11,39 +11,39 @@ import {
 // p = total opinions / (N * (N-1)). Limits are the counts whose tail
 // probability is <= alpha/2.
 const binomialCdf = (n, p) => {
-  // Recurrence kept in log space: (1-p)^n underflows to 0 for large n, which
-  // would zero the entire CDF if carried multiplicatively.
-  const logOdds = Math.log(p) - Math.log1p(-p);
-  let logPmf = n * Math.log1p(-p); // log P(X = 0)
-  let cumulative = 0;
-  const cdf = [];
-  for (let k = 0; k <= n; k++) {
-    cumulative += Math.exp(logPmf);
-    cdf.push(Math.min(1, cumulative));
-    logPmf += Math.log((n - k) / (k + 1)) + logOdds; // log P(X = k+1)
-  }
-  return cdf;
+    // Recurrence kept in log space: (1-p)^n underflows to 0 for large n, which
+    // would zero the entire CDF if carried multiplicatively.
+    const logOdds = Math.log(p) - Math.log1p(-p);
+    let logPmf = n * Math.log1p(-p); // log P(X = 0)
+    let cumulative = 0;
+    const cdf = [];
+    for (let k = 0; k <= n; k++) {
+        cumulative += Math.exp(logPmf);
+        cdf.push(Math.min(1, cumulative));
+        logPmf += Math.log((n - k) / (k + 1)) + logOdds; // log P(X = k+1)
+    }
+    return cdf;
 };
 
 export const binomialStrategy = ({ allImpacts, groupSize }) => {
-  const n = groupSize - 1; // possible givers for any one member
-  if (n < 1) return NO_SPLIT;
-  const total = allImpacts.reduce((s, v) => s + v, 0);
-  const p = total / (groupSize * n);
-  // The p < 1 guard also covers degenerate density: a giver nominating the
-  // same member in both likes and dislikes can push p past the model's range.
-  if (!(p > 0 && p < 1)) return NO_SPLIT;
+    const n = groupSize - 1; // possible givers for any one member
+    if (n < 1) return NO_SPLIT;
+    const total = allImpacts.reduce((s, v) => s + v, 0);
+    const p = total / (groupSize * n);
+    // The p < 1 guard also covers degenerate density: a giver nominating the
+    // same member in both likes and dislikes can push p past the model's range.
+    if (!(p > 0 && p < 1)) return NO_SPLIT;
 
-  const tail = CONFIG.binomial.alpha / 2;
-  const cdf = binomialCdf(n, p);
+    const tail = CONFIG.binomial.alpha / 2;
+    const cdf = binomialCdf(n, p);
 
-  // Largest k with P(X <= k) <= tail.
-  let low = -Infinity;
-  for (let k = 0; k <= n && cdf[k] <= tail; k++) low = k;
+    // Largest k with P(X <= k) <= tail.
+    let low = -Infinity;
+    for (let k = 0; k <= n && cdf[k] <= tail; k++) low = k;
 
-  // Smallest k with P(X >= k) = 1 - P(X <= k-1) <= tail.
-  let high = Infinity;
-  for (let k = n; k >= 1 && 1 - cdf[k - 1] <= tail; k--) high = k;
+    // Smallest k with P(X >= k) = 1 - P(X <= k-1) <= tail.
+    let high = Infinity;
+    for (let k = n; k >= 1 && 1 - cdf[k - 1] <= tail; k--) high = k;
 
-  return { low, high };
+    return { low, high };
 };
