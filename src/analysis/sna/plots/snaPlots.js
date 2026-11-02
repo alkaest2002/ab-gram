@@ -252,6 +252,12 @@ const buildIsolatedNodesPlot = (isolatedNodes) => {
   const height =
     2 * PADDING + rows * (NODE_RADIUS * 2) + (rows - 1) * ISOLATED_GAP;
 
+  /**
+   * Render the isolated members' SVG markup in the plot's local coordinates.
+   *
+   * @returns {string} The SVG markup for every isolated member, joined into a
+   *   single string.
+   */
   const render = () =>
     isolatedNodes
       .map((node, index) => {

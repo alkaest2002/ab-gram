@@ -7,9 +7,13 @@ import {
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { medianOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
 
-// Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
-// Returns the start index of every class except the first, plus the total
-// within-class sum of squares (SDCM).
+/**
+ * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
+ *
+ * @param {number[]} sorted - Sorted (ascending) values.
+ * @param {number} k - Number of classes.
+ * @returns {{ starts: number[], sdcm: number }} Start index of every class except the first, and the total within-class sum of squares (SDCM).
+ */
 const jenksBreaks = (sorted, k) => {
     const n = sorted.length;
 
@@ -56,8 +60,13 @@ const jenksBreaks = (sorted, k) => {
     return { starts, sdcm: cost[k][n - 1] };
 };
 
-// Jenks natural breaks (k = 3): cutoffs fall in the widest gaps. Gated by the
-// goodness of variance fit, GVF = 1 - SDCM/SDAM, so structureless data abstains.
+/**
+ * Jenks natural breaks (k = 3): cutoffs fall in the widest gaps, gated by the
+ * goodness of variance fit (GVF = 1 - SDCM/SDAM) so structureless data abstains.
+ *
+ * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const jenksStrategy = ({ sorted }) => {
     const n = sorted.length;
     const distinct = new Set(sorted).size;

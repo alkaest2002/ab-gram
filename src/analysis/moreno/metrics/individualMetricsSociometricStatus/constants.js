@@ -35,9 +35,9 @@ export const CONFIG = {
 // An infinite bound means "that side is never flagged".
 export const NO_SPLIT = Object.freeze({ low: -Infinity, high: Infinity });
 
-/**
- * Status codes (9 categories).
- */
+// ============================================================================
+// SOCIOMETRIC STATUS CODES
+// ============================================================================
 export const SOCIOMETRIC_STATUS = Object.freeze({
     UNCLASSIFIED: 99, //  sociometric status not assignable
     ISOLATED: 0, //  no opinions received, none given

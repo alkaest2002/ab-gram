@@ -7,11 +7,13 @@ import {
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/tailCutoffs.js";
 
-// Plain percentiles, tie-aware. Abstains for fewer than
-// minVisibleForTails visible members: with so few, "bottom 20%" is one or two
-// people and says nothing about clear tails. Because tails never include the
-// tied median bulk, this strategy now also abstains on flat distributions
-// instead of always voting.
+/**
+ * Plain-percentile strategy: cuts at the configured low/high percentiles with
+ * tie-trimming. Abstains with fewer than minVisibleForTails visible members.
+ *
+ * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const percentileStrategy = ({ sorted }) => {
     // Do not split if there are not enough visible members
     if (sorted.length < CONFIG.minVisibleForTails) return NO_SPLIT;

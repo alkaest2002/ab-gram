@@ -9,8 +9,13 @@ import {
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/tailCutoffs.js";
 
-// Inequality-driven: Gini decides WHETHER to split (shape recognition:
-// bimodal / long-tail), the percentiles decide WHERE.
+/**
+ * Gini strategy: decides whether the distribution is unequal (sample-corrected
+ * Gini and range), then cuts at the configured percentiles when it is.
+ *
+ * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const giniStrategy = ({ sorted }) => {
     const c = CONFIG.gini;
 

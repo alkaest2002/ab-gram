@@ -9,6 +9,19 @@ import { CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricSt
 // Fewer opinions received -> less certain -> require a stronger ratio.
 // threshold(n) = LESS + (MORE - LESS) * clamp((n - minN) / (maxN - minN), 0, 1)
 // ============================================================================
+/**
+ * Classify each member's balance (positive / negative / neutral) using a
+ * dynamic ratio threshold that becomes stricter with fewer opinions received.
+ *
+ * @param {import("numpy-ts").NDArray} rp - Received positive nominations.
+ * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @returns {{
+ *   isPositiveBalance: import("numpy-ts").NDArray,
+ *   isNegativeBalance: import("numpy-ts").NDArray,
+ *   isNeutralBalance: import("numpy-ts").NDArray,
+ * }}
+ */
 export const classifyBalance = (rp, rr, impact) => {
   const b = CONFIG.balance;
   const ratioSpan = b.moreLenientRatio - b.lessLenientRatio;

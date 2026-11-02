@@ -6,10 +6,14 @@ import {
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 
-// GB method: exact binomial test (replaces Salvosa's tables).
-// Under chance, opinions received by one member ~ Binomial(N-1, p), with
-// p = total opinions / (N * (N-1)). Limits are the counts whose tail
-// probability is <= alpha/2.
+/**
+ * Cumulative distribution function of Binomial(n, p), computed in log space to
+ * avoid underflow for large n.
+ *
+ * @param {number} n - Number of trials.
+ * @param {number} p - Success probability.
+ * @returns {number[]} cdf[k] = P(X <= k) for k = 0..n.
+ */
 const binomialCdf = (n, p) => {
     // Recurrence kept in log space: (1-p)^n underflows to 0 for large n, which
     // would zero the entire CDF if carried multiplicatively.
@@ -25,6 +29,13 @@ const binomialCdf = (n, p) => {
     return cdf;
 };
 
+/**
+ * Binomial (GB) strategy: exact two-sided binomial test under the chance
+ * model. Limits are the counts whose tail probability is <= alpha/2.
+ *
+ * @param {{ allImpacts: number[], groupSize: number }} context - All impacts and group size.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const binomialStrategy = ({ allImpacts, groupSize }) => {
     const n = groupSize - 1; // possible givers for any one member
     if (n < 1) return NO_SPLIT;

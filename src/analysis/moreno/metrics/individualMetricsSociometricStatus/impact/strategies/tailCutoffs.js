@@ -7,11 +7,16 @@ import {
     medianOf,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
 
-// Cuts a { low, high } pair at the given percentiles, then keeps the tails
-// clear of the tied bulk: a side whose cutoff reaches the median is pulled in
-// to the nearest value strictly beyond the median (or dropped if none exists).
-// The result is always a subset of the nominal tail, so a tail never swallows
-// the typical value, however heavy the ties.
+/**
+ * Cut a { low, high } pair at the given percentiles, then keep the tails clear
+ * of the tied bulk: a side whose cutoff reaches the median is pulled in to the
+ * nearest value strictly beyond the median (or dropped if none exists).
+ *
+ * @param {number[]} sorted - Sorted (ascending) visible impacts.
+ * @param {number} lowPercentile - Percentile for the low cutoff.
+ * @param {number} highPercentile - Percentile for the high cutoff.
+ * @returns {{ low: number, high: number }} Observed cutoffs (either may be infinite).
+ */
 export const tailCutoffs = (sorted, lowPercentile, highPercentile) => {
     const median = medianOf(sorted);
 

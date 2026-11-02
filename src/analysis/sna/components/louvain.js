@@ -161,6 +161,12 @@ function validateNullGraph(original, randomized, index, n) {
     }
   }
 
+  /**
+   * Map a graph's edges to `[source, target]` node index pairs.
+   *
+   * @param {import("graphology").DirectedGraph} g - The graph.
+   * @returns {number[][]} Edges as `[source, target]` index pairs.
+   */
   const toEdges = (g) =>
     g.edges().map(e => [index.get(g.source(e)), index.get(g.target(e))]);
 

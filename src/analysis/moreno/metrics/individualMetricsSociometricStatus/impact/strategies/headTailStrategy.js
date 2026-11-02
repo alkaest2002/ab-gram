@@ -6,12 +6,13 @@ import {
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 
-// Head/tail breaks (Jiang). It repeatedly splits the heavy-tailed "head"
-// (values above the mean) off the bulk until the classical stop condition: the
-// head is no longer a small minority (>= maxHeadShare of the current values),
-// or there is nothing left to split. Each mean is a break; the breaks partition
-// the data into classes, the first class being the lowest values and the last
-// class the highest values.
+/**
+ * Head/tail breaks: recursively split the heavy-tailed "head" (values above
+ * the mean) until the classical stop condition.
+ *
+ * @param {number[]} sorted - Sorted (ascending) values.
+ * @returns {number[]} Break means, in increasing order.
+ */
 const headTailBreaks = (sorted) => {
     const breaks = [];
     let current = sorted;
@@ -27,6 +28,13 @@ const headTailBreaks = (sorted) => {
     return breaks;
 };
 
+/**
+ * Head/tail breaks strategy: use the first (lowest) class for the low cutoff
+ * and the last (highest) class for the high cutoff.
+ *
+ * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const headTailStrategy = ({ sorted }) => {
     // No split if there are not enough visible members
     if (sorted.length < CONFIG.minVisibleForTails) return NO_SPLIT;

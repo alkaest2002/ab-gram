@@ -143,10 +143,16 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
   const typeVI = and(dislikesOnly, likesBack); // A dislikes B, B likes A
   const typeVII = both; // A likes and dislikes B
 
-  // Translate matrix coordinates [i, j] into the matching member-id pair.
-  // Self-loops (i === j) are dropped here. This is equivalent to zeroing the
-  // diagonal first, because entry (i, j) of every mask depends only on
-  // (i, j) and (j, i), so off-diagonal entries are unaffected.
+  /**
+   * Translate matrix coordinates `[i, j]` into the matching member-id pair.
+   *
+   * Self-loops (`i === j`) are dropped here. This is equivalent to zeroing the
+   * diagonal first, because entry (i, j) of every mask depends only on
+   * (i, j) and (j, i), so off-diagonal entries are unaffected.
+   *
+   * @param {import("numpy-ts").NDArray} mask - Boolean matrix marking the edges to translate.
+   * @returns {string[][]} Array of `[fromId, toId]` member-id pairs.
+   */
   const toEdges = (mask) =>
     np
       .argwhere(mask)
@@ -154,7 +160,12 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
       .filter(([i, j]) => i !== j)
       .map(([i, j]) => [memberIds[i], memberIds[j]]);
 
-  // Sort edges to ensure consistent ordering across types
+  /**
+   * Sort edges by choosing-member id for consistent ordering across types.
+   *
+   * @param {string[][]} edges - Array of `[fromId, toId]` member-id pairs.
+   * @returns {string[][]} The edges sorted by the choosing member's id.
+   */
   const sortEdges = (edges) => edges.sort((e1, e2) => e1[0].localeCompare(e2[0]))
 
   const edgeTypes = {

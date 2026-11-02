@@ -12,6 +12,14 @@ export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsS
 // ============================================================================
 // STEP 1: VISIBILITY
 // ============================================================================
+/**
+ * Determine which members are isolated (no opinions received or given) or
+ * ignored (no opinions received but some given).
+ *
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @param {import("numpy-ts").NDArray} expressivity - Opinions given (gp + gr).
+ * @returns {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }}
+ */
 const classifyVisibility = (impact, expressivity) => {
     const hasNoOpinionsReceived = impact.equal(0);
     const hasNoOpinionsGiven = expressivity.equal(0);
@@ -26,6 +34,15 @@ const classifyVisibility = (impact, expressivity) => {
 // ============================================================================
 // STEP 5: STATUS ASSIGNMENT (decision tree, first match wins)
 // ============================================================================
+/**
+ * Map visibility, impact class and balance to the final sociometric status
+ * codes using the first-match-wins decision tree.
+ *
+ * @param {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }} visibility - Visibility flags.
+ * @param {{ isLowImpact: import("numpy-ts").NDArray, isHighImpact: import("numpy-ts").NDArray, isAverageImpact: import("numpy-ts").NDArray }} impactClass - Impact classification.
+ * @param {{ isPositiveBalance: import("numpy-ts").NDArray, isNegativeBalance: import("numpy-ts").NDArray, isNeutralBalance: import("numpy-ts").NDArray }} balanceClass - Balance classification.
+ * @returns {import("numpy-ts").NDArray} Status codes (0-8, or 99 as safety default).
+ */
 const assignStatus = (visibility, impactClass, balanceClass) => {
     const S = SOCIOMETRIC_STATUS;
     const { isolated, ignored } = visibility;

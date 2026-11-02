@@ -63,6 +63,14 @@ const pickCliquePivot = (p, x, adjacency) => {
 const findMaximalCliques = (adjacency) => {
   const cliques = [];
 
+  /**
+   * Recursively extend the current clique using the Bron–Kerbosch search.
+   *
+   * @param {string[]} r - Nodes in the current clique.
+   * @param {string[]} p - Candidate nodes to extend the clique.
+   * @param {string[]} x - Excluded nodes.
+   * @returns {void}
+   */
   const recurse = (r, p, x) => {
     if (p.length === 0 && x.length === 0) {
       cliques.push([...r]);

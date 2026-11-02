@@ -7,12 +7,14 @@ import {
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
 
-// Tukey's inner fences over visible members: Q1 - k*IQR, Q3 + k*IQR.
-// Strict, as in Tukey's definition: only values BEYOND a fence are outliers,
-// never a value sitting exactly on it. Since downstream comparisons are
-// inclusive (<= low, >= high), the cutoffs are set to the nearest observed
-// value strictly beyond each fence. Fences outside the observed range leave
-// that side unflagged.
+/**
+ * Tukey strategy: strict inner fences (Q1 - k*IQR, Q3 + k*IQR) over visible
+ * impacts. Values beyond a fence are outliers; cutoffs are the nearest observed
+ * values strictly beyond each fence.
+ *
+ * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
 export const tukeyStrategy = ({ sorted }) => {
     const q1 = percentileOf(sorted, 25);
     const q3 = percentileOf(sorted, 75);

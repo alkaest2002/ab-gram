@@ -10,9 +10,29 @@ import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/individualMetricsSo
 // impact class is the majority vote of the strategies that propose a split.
 // ============================================================================
 
+/**
+ * Map values to -1 (low), 0 (average) or +1 (high) for a { low, high } pair.
+ * Low wins when both thresholds would apply.
+ *
+ * @param {number[]} values - Sorted visible impacts.
+ * @param {{ low: number, high: number }} thresholds - Inclusive cutoffs.
+ * @returns {number[]} Labels in the same order as `values`.
+ */
 const labelValues = (values, { low, high }) =>
   values.map((v) => (v <= low ? -1 : v >= high ? 1 : 0)); // low wins ties
 
+/**
+ * Classify every member as low / high / average for one threshold pair.
+ * Infinite bounds mean "that side is never flagged".
+ *
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @param {{ low: number, high: number }} thresholds - Inclusive cutoffs.
+ * @returns {{
+ *   isLowImpact: import("numpy-ts").NDArray,
+ *   isHighImpact: import("numpy-ts").NDArray,
+ *   isAverageImpact: import("numpy-ts").NDArray,
+ * }}
+ */
 const classifyImpact = (impact, thresholds) => {
   const none = impact.less(0); // all-false boolean array (impact is non-negative)
   const isLowImpact = isFinite(thresholds.low)
@@ -28,7 +48,12 @@ const classifyImpact = (impact, thresholds) => {
   return { isLowImpact, isHighImpact, isAverageImpact };
 };
 
-// Sum a list of boolean masks into a single integer vote-count array.
+/**
+ * Sum a list of boolean masks into a single integer vote-count array.
+ *
+ * @param {import("numpy-ts").NDArray[]} booleanArrays - Boolean masks.
+ * @returns {import("numpy-ts").NDArray} Integer vote counts.
+ */
 const countVotes = (booleanArrays) => {
   let total = booleanArrays[0].astype("int32");
   for (let i = 1; i < booleanArrays.length; i += 1) {
@@ -37,10 +62,19 @@ const countVotes = (booleanArrays) => {
   return total;
 };
 
-// Majority vote across the strategies that actually split. A strategy that
-// returns NO_SPLIT (or whose thresholds flag no visible member) abstains; if
-// every strategy abstains, everyone is average.
-// Tie-breaks: a non-average class beats average; low beats high.
+/**
+ * Classify impact by majority vote across the strategies that propose a split.
+ * A strategy that abstains does not vote; if all abstain, everyone is average.
+ * Tie-breaks: a non-average class beats average, and low beats high.
+ *
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @param {{ sorted: number[], allImpacts: number[], groupSize: number }} context - Visible impacts, all impacts and group size.
+ * @returns {{
+ *   isLowImpact: import("numpy-ts").NDArray,
+ *   isHighImpact: import("numpy-ts").NDArray,
+ *   isAverageImpact: import("numpy-ts").NDArray,
+ * }}
+ */
 export const classifyImpactByVote = (impact, context) => {
   if (context.sorted.length === 0) return classifyImpact(impact, NO_SPLIT);
 
