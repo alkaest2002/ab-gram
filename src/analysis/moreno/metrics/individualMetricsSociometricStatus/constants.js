@@ -10,14 +10,14 @@ export const CONFIG = {
         // activate it: below that value the algorithm abstains. The small-group
         // strategy is the complement, so it activates only *below* its threshold.
         percentile: {
-            minVisibleForEnablingAlgorithm: 5,
+            minVisibleForEnablingAlgorithm: 10,
             low: 10,
             high: 90,
         },
         gini: {
-            minVisibleForEnablingAlgorithm: 5,
-            strong: 0.3,
-            moderate: 0.2,
+            minVisibleForEnablingAlgorithm: 8,
+            strong: 0.4,
+            moderate: 0.3,
             minPtpForModerate: 3,
             // Once Gini says "unequal", tails are cut these percentiles.
             percentile: {
@@ -26,17 +26,21 @@ export const CONFIG = {
             },
         },
         jenks: {
-            minVisibleForEnablingAlgorithm: 5,
+            minVisibleForEnablingAlgorithm: 10,
             minGvf: 0.75, // goodness of variance fit: 1 - SDCM/SDAM
         },
         headTail: {
-            minVisibleForEnablingAlgorithm: 5,
+            minVisibleForEnablingAlgorithm: 10,
             maxHeadShare: 0.4, // keep splitting while the head is < 40% of the data
         },
-        tukey: { k: 1.5 }, // fences: Q1 - k*IQR, Q3 + k*IQR (strict: beyond, not at)
-        binomial: { alpha: 0.01 }, // two-sided: alpha / 2 in each tail
+        tukey: {
+            minVisibleForEnablingAlgorithm: 8,
+            k: 1.5 // mild outlier detection
+        },
+        binomial: {
+            alpha: 0.01 // two-sided: alpha / 2 in each tail
+        },
         smallGroup: {
-            // Activated only *below* this count (from 2 members up to this value, exclusive).
             minVisibleForEnablingAlgorithm: 5,
             minGap: 2, // minimum jump in received opinions to count as a split
         },
