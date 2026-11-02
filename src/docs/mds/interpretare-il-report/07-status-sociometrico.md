@@ -110,6 +110,18 @@ Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
 **entrambi** i lati sono disattivati si parla di **nessuna divisione**: tutti i
 membri sono classificati a impatto medio.
 
+**Non tutti i metodi, però, propongono una divisione, né tutti propongono due
+soglie.** Un metodo può **astenersi** del tutto (nessuna divisione), proporre
+**entrambe** le soglie, oppure proporre **una sola**:
+
+- **due lati** — percentili, Gini, Jenks, Tukey e binomiale calcolano sia $L$
+  sia $H$ (anche se, per le loro regole interne, uno dei due lati può risultare
+  disattivato, cioè infinito);
+- **solo il lato alto** — *head/tail breaks* segnala esclusivamente $H$ e lascia
+  sempre $L = -\infty$ (§ 4.2.4);
+- **un solo lato, basso o alto** — il metodo dei piccoli gruppi isola di norma
+  solo la coda più piccola, lasciando l'altro lato disattivato (§ 4.2.7).
+
 Le soglie dei metodi basati sulla distribuzione
 (percentili, Gini, Jenks, head/tail, Tukey, piccoli gruppi) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
@@ -186,11 +198,17 @@ dove $SDAM$ è la varianza totale degli impatti. Il metodo **si astiene** quando
 - $GVF < 0{,}75$: la distribuzione è troppo "senza struttura" per giustificare
   una divisione.
 
-Se il partizionamento è accettato, $L$ è l'ultimo valore della prima classe e
-$H$ il primo valore della terza classe. Come per i percentili, una coda la cui
-soglia raggiunge la mediana viene tirata dentro fino al valore più vicino
-**strettamente** oltre la mediana (se esiste), altrimenti quel lato resta
-disattivato.
+Se il partizionamento è accettato, le tre classi sono contigue e definite da
+due indici di taglio: la prima classe va da $x_0$ a $x_{i-1}$, la seconda da
+$x_i$ a $x_{j-1}$, la terza da $x_j$ a $x_{N-1}$ (con $1 \le i < j \le N-1$).
+Le soglie sono allora
+
+- $L = x_{i-1}$, cioè l'ultimo valore della **prima** classe (la più bassa);
+- $H = x_{j}$, cioè il primo valore della **terza** classe (la più alta).
+
+Come per i percentili, poi una coda la cui soglia non resta **strettamente**
+oltre la mediana viene disattivata: se $L \not< \mathrm{mediana}$ si pone
+$L = -\infty$; se $H \not> \mathrm{mediana}$ si pone $H = +\infty$.
 
 #### 4.2.4 Metodo head/tail breaks
 
@@ -206,11 +224,12 @@ l'insieme dei valori **maggiori della media**. Si ripete sulla testa fino alla
 (tutti i valori sono uguali). Ogni media calcolata è un **punto di taglio**; i
 tagli ordinano i valori in classi consecutive, dalla più bassa alla più alta.
 
-- $L$ è l'ultimo valore della **prima** classe (la più bassa);
-- $H$ è il primo valore dell'**ultima** classe (la più alta).
+- $L = -\infty$: il lato basso non viene **mai** segnalato;
+- $H$ = il primo valore dell'**ultima** classe (la più alta), cioè la "testa"
+  finale.
 
-Il metodo **si astiene** con meno di $5$ membri visibili o quando non produce
-alcun taglio (valori tutti uguali).
+Il metodo **si astiene** del tutto con meno di $5$ membri visibili o quando non
+produce alcun taglio (valori tutti uguali).
 
 #### 4.2.5 Metodo di Tukey
 
@@ -220,18 +239,10 @@ $Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
 impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, i
 recinti sono
 
-- $F_L = Q_1 - 1{,}5 \cdot IQR$;
-- $F_H = Q_3 + 1{,}5 \cdot IQR$.
+- $L = Q_1 - 1{,}5 \cdot IQR$;
+- $H = Q_3 + 1{,}5 \cdot IQR$.
 
-Il criterio è **stretto**, come nella definizione di Tukey: è anomalo solo un
-valore **oltre** il recinto, mai uno che ci cade **esattamente** sopra. Poiché
-le soglie vengono poi applicate in modo inclusivo ($\le L$, $\ge H$), il metodo
-traduce i recinti nelle soglie $L$ e $H$ pari al **valore osservato più vicino
-strettamente oltre** ciascun recinto. Un recinto oltre l'intervallo osservato
-lascia quel lato non segnalato.
-
-Se $IQR = 0$ i recinti collasserebbero sulla mediana e il metodo propone
-**nessuna divisione**. È un metodo molto conservativo: segnala solo gli
+Se $IQR = 0$ non viene proposta alcuna soglia. Il moetodo di Tukey è conservativo: segnala solo gli
 scostamenti davvero estremi e, nei gruppi omogenei, spesso non segnala nessuno.
 
 #### 4.2.6 Metodo binomiale (GB)
