@@ -29,6 +29,7 @@ Verdi Luca
 
 #### 1.1.1 Limiti
 
+- Minimo **8 nominativi**.
 - Al massimo **35 nominativi**.
 - Ogni nominativo può contenere al massimo **150 caratteri**.
 
