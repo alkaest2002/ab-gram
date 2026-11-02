@@ -5,25 +5,42 @@
 // CONFIG
 // ============================================================================
 export const CONFIG = {
-    // A tail is only "clear" with enough visible members to tell it from noise.
-    // Below this, the percentile, Jenks, head/tail and Gini strategies abstain.
-    minVisibleForTails: 5,
-    percentile: { low: 10, high: 90 },
-    gini: {
-        strong: 0.3,
-        moderate: 0.2,
-        minPtpForModerate: 3,
-        // Once Gini says "unequal", tails are cut these percentiles.
+    impact: {
+        // Each algorithm has its own minimum number of visible members required to
+        // activate it: below that value the algorithm abstains. The small-group
+        // strategy is the complement, so it activates only *below* its threshold.
         percentile: {
-            low: 5,
-            high: 95,
+            minVisibleForEnablingAlgorithm: 5,
+            low: 10,
+            high: 90,
+        },
+        gini: {
+            minVisibleForEnablingAlgorithm: 5,
+            strong: 0.3,
+            moderate: 0.2,
+            minPtpForModerate: 3,
+            // Once Gini says "unequal", tails are cut these percentiles.
+            percentile: {
+                low: 5,
+                high: 95,
+            },
+        },
+        jenks: {
+            minVisibleForEnablingAlgorithm: 5,
+            minGvf: 0.75, // goodness of variance fit: 1 - SDCM/SDAM
+        },
+        headTail: {
+            minVisibleForEnablingAlgorithm: 5,
+            maxHeadShare: 0.4, // keep splitting while the head is < 40% of the data
+        },
+        tukey: { k: 1.5 }, // fences: Q1 - k*IQR, Q3 + k*IQR (strict: beyond, not at)
+        binomial: { alpha: 0.01 }, // two-sided: alpha / 2 in each tail
+        smallGroup: {
+            // Activated only *below* this count (from 2 members up to this value, exclusive).
+            minVisibleForEnablingAlgorithm: 5,
+            minGap: 2, // minimum jump in received opinions to count as a split
         },
     },
-    jenks: { minGvf: 0.75 }, // goodness of variance fit: 1 - SDCM/SDAM
-    headTail: { maxHeadShare: 0.4 }, // keep splitting while the head is < 40% of the data
-    tukey: { k: 1.5 }, // fences: Q1 - k*IQR, Q3 + k*IQR (strict: beyond, not at)
-    binomial: { alpha: 0.01 }, // two-sided: alpha / 2 in each tail
-    smallGroup: { minGap: 2 }, // minimum jump in received opinions to count as a split
     balance: {
         lessLenientRatio: 2.0, // threshold at or below minOpinions
         moreLenientRatio: 1.5, // threshold at or above maxOpinions

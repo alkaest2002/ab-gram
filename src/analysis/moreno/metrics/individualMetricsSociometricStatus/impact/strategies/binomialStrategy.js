@@ -45,7 +45,7 @@ export const binomialStrategy = ({ allImpacts, groupSize }) => {
     // same member in both likes and dislikes can push p past the model's range.
     if (!(p > 0 && p < 1)) return NO_SPLIT;
 
-    const tail = CONFIG.binomial.alpha / 2;
+    const tail = CONFIG.impact.binomial.alpha / 2;
     const cdf = binomialCdf(n, p);
 
     // Largest k with P(X <= k) <= tail.

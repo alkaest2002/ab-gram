@@ -7,10 +7,10 @@ import {
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 
 /**
- * Small-group strategy: for the sub-minVisibleForTails regime (2..4 visible
- * members), find the largest gap between consecutive sorted impacts and flag
- * only the smaller side of that gap as the outlier tail. The bulk stays
- * average-impact so its balance can still decide status.
+ * Small-group strategy: for the sub-minVisibleForEnablingAlgorithm regime
+ * (2..threshold-1 visible members), find the largest gap between consecutive
+ * sorted impacts and flag only the smaller side of that gap as the outlier
+ * tail. The bulk stays average-impact so its balance can still decide status.
  *
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -19,8 +19,8 @@ export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
     const values = visibleSortedImpacts;
     const n = values.length;
 
-    // Complement to the tail strategies: only for the sub-5 visible regime.
-    if (n < 2 || n >= CONFIG.minVisibleForTails) return NO_SPLIT;
+    // Complement to the tail strategies: only below its own visible threshold.
+    if (n < 2 || n >= CONFIG.impact.smallGroup.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // Find the largest gap between consecutive sorted values.
     let split = 0;
@@ -47,7 +47,7 @@ export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
     // A gap only counts if it's a real jump (>= 2 received opinions) and it
     // dominates the runner-up gap or the overall spread.
     const isDominant =
-        largestGap >= CONFIG.smallGroup.minGap &&
+        largestGap >= CONFIG.impact.smallGroup.minGap &&
         (largestGap >= 2 * secondGap || largestGap >= 0.5 * spread);
 
     if (!isDominant) return NO_SPLIT;

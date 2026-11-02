@@ -22,7 +22,7 @@ const headTailBreaks = (sorted) => {
         const head = current.filter((v) => v > mean);
         if (head.length === 0) break; // no split possible (all values equal)
         breaks.push(mean);
-        if (head.length / n >= CONFIG.headTail.maxHeadShare) break; // classical stop
+        if (head.length / n >= CONFIG.impact.headTail.maxHeadShare) break; // classical stop
         current = head;
     }
     return breaks;
@@ -38,7 +38,7 @@ const headTailBreaks = (sorted) => {
  */
 export const headTailStrategy = ({ visibleSortedImpacts }) => {
     // No split if there are not enough visible members
-    if (visibleSortedImpacts.length < CONFIG.minVisibleForTails) return NO_SPLIT;
+    if (visibleSortedImpacts.length < CONFIG.impact.headTail.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // Compute the breaks for the head/tail strategy
     const breaks = headTailBreaks(visibleSortedImpacts);

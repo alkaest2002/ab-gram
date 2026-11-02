@@ -17,10 +17,10 @@ import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociomet
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const giniStrategy = ({ visibleSortedImpacts }) => {
-    const c = CONFIG.gini;
+    const c = CONFIG.impact.gini;
 
     // No split if there are not enough visible members
-    if (visibleSortedImpacts.length < Math.max(2, CONFIG.minVisibleForTails)) return NO_SPLIT;
+    if (visibleSortedImpacts.length < Math.max(2, c.minVisibleForEnablingAlgorithm)) return NO_SPLIT;
 
     // Compute the range of the data
     const ptp = visibleSortedImpacts[visibleSortedImpacts.length - 1] - visibleSortedImpacts[0];

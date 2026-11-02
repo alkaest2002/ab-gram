@@ -20,7 +20,7 @@ export const tukeyStrategy = ({ visibleSortedImpacts }) => {
     const q3 = percentileOf(visibleSortedImpacts, 75);
     const iqr = q3 - q1;
     if (iqr === 0) return NO_SPLIT; // fences would collapse onto the median
-    const k = CONFIG.tukey.k;
+    const k = CONFIG.impact.tukey.k;
     const lowFence = q1 - k * iqr;
     const highFence = q3 + k * iqr;
 

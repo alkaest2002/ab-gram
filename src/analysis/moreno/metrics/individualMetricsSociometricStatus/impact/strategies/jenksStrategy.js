@@ -73,7 +73,7 @@ export const jenksStrategy = ({ visibleSortedImpacts }) => {
     const k = 3;
 
     // No split if there are not enough visible members
-    if (n < CONFIG.minVisibleForTails) return NO_SPLIT;
+    if (n < CONFIG.impact.jenks.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // No split if there are not enough distinct values
     if (distinct < k) return NO_SPLIT;
@@ -87,7 +87,7 @@ export const jenksStrategy = ({ visibleSortedImpacts }) => {
     const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, k);
 
     // No split if the goodness of variance fit is below the threshold
-    if (1 - sdcm / sdam < CONFIG.jenks.minGvf) return NO_SPLIT;
+    if (1 - sdcm / sdam < CONFIG.impact.jenks.minGvf) return NO_SPLIT;
 
     const median = medianOf(visibleSortedImpacts);
     let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class
