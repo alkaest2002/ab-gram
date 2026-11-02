@@ -56,9 +56,9 @@ const METRIC_ROWS = [
     ],
     [
         { label: "DG", key: "degreeCentrality", source: "sna" },
+        { label: "PK", key: "PageRank", source: "sna" },
         { label: "CL", key: "closenessCentrality", source: "sna" },
         { label: "BT", key: "betweennessCentrality", source: "sna" },
-        { label: "PK", key: "PageRank", source: "sna" },
         { label: "HA", key: "hitsAuthority", source: "sna" },
         { label: "HU", key: "hitsHub", source: "sna" },
     ],
