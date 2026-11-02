@@ -118,19 +118,31 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
+    // --------------------------------------------------------------------------------------
     // Classify visibility
+    // --------------------------------------------------------------------------------------
     const visibilityClassification = classifyVisibility(impact, expressivity);
 
+    // --------------------------------------------------------------------------------------
     // Classify impact
+    // --------------------------------------------------------------------------------------
+    // Note: impact is a numpy-ts array
+    // visibleSortedImpacts: sorted visible impacts (those of members not ignored/excluded)
+    // allImpacts: all impacts (all members impact)
+    // groupSize: number of members in the group
     const impactClassification = classifyImpactByVote(impact, {
         visibleSortedImpacts: toSortedVisible(impact),
         allImpacts: impact.flatten().toArray(),
         groupSize: impact.size,
     });
 
+    // --------------------------------------------------------------------------------------
     // Classify balance
+    // --------------------------------------------------------------------------------------
     const balanceClassification = classifyBalance(rp, rr, impact);
 
+    // --------------------------------------------------------------------------------------
     // Assign status
+    // --------------------------------------------------------------------------------------
     return assignStatus(visibilityClassification, impactClassification, balanceClassification);
 };
