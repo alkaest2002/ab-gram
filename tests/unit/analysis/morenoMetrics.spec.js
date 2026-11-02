@@ -8,7 +8,7 @@ import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
 } from "@/analysis/moreno/metrics/morenoMetrics.js";
-import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus.js";
+import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatus.js";
 import { createAdjacencyMatrices } from "@/analysis/common/adjacencyMatrices.js";
 import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
@@ -191,10 +191,8 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("classifies the Hogwarts demo roster sensibly (status regression)", () => {
-    // Regression for the impact-threshold majority vote. The sample-corrected
-    // Gini (0.218) recognises the group's inequality (the population formula
-    // read 0.198 < 0.2, flattening Harry into "appreciated"), and the vote of
-    // the splitting strategies splits the group at (5, 8).
+    // Regression for the impact-threshold majority vote across the current
+    // strategy set (Jenks, percentile, Tukey, binomial).
     const members = getHogwartsMembers();
     const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
 
@@ -218,19 +216,19 @@ describe("getIndividualLevelMetrics", () => {
       "Potter, Harry": S.POPULAR,
       "Granger, Hermione": S.POPULAR,
       "Weasley, Ron": S.APPRECIATED,
-      "Longbottom, Neville": S.MARGINAL,
+      "Longbottom, Neville": S.AMBIVALENT,
       "Lovegood, Luna": S.MARGINAL,
       "Malfoy, Draco": S.REJECTED,
       "Crabbe, Vincent": S.DISLIKED,
       "Goyle, Gregory": S.DISLIKED,
       "Diggory, Cedric": S.MARGINAL,
-      "Weasley, Fred": S.MARGINAL,
-      "Weasley, George": S.MARGINAL,
+      "Weasley, Fred": S.AMBIVALENT,
+      "Weasley, George": S.AMBIVALENT,
     });
   });
 
   it("classifies the likes-only example by the vote of the splitting strategies", () => {
-    // Received likes [5, 5, 2, 3, 2, 2]: percentile and gini propose the same
+    // Received likes [5, 5, 2, 3, 2, 2]: percentile and Jenks propose the same
     // (low <= 2, high >= 5) split, while Tukey and binomial abstain. The two
     // active strategies therefore decide: 5 -> high, 2 -> low, 3 -> average.
     const members = [
@@ -261,11 +259,10 @@ describe("getIndividualLevelMetrics", () => {
     ]);
   });
 
-  it("lets the only splitting strategy decide when the others abstain", () => {
-    // Received likes [1, 1, 2, 2, 2, 3]: percentile proposes (low <= 1,
-    // high >= 3), while gini, Tukey and binomial abstain. With a single active
-    // strategy its classification is adopted, so 1 -> low, 2 -> average and
-    // 3 -> high.
+  it("lets the agreeing splitting strategies decide when the others abstain", () => {
+    // Received likes [1, 1, 2, 2, 2, 3]: percentile and Jenks propose the same
+    // (low <= 1, high >= 3) split, while Tukey and binomial abstain. The two
+    // active strategies agree, so 1 -> low, 2 -> average and 3 -> high.
     const members = [
       { id: "m0", likes: ["m5"], dislikes: [] },
       { id: "m1", likes: ["m5"], dislikes: [] },
