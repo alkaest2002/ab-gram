@@ -16,6 +16,7 @@ import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageS
 import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents/PageSnaComponents.vue";
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes/PageEdgeTypes.vue";
 import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics/PageMemberMetrics.vue";
+import PageSummary from "@/components/views/report/reportDoc/pages/PageSummary/PageSummary.vue";
 import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary/PageGlossary.vue";
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
@@ -105,6 +106,11 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
             :edge-types="reportData.analysisData?.edgeTypes ?? {}"
             :likes-components="reportData.analysisData?.snaLikesComponents ?? {}"
             :dislikes-components="reportData.analysisData?.snaDislikesComponents ?? {}"
+        />
+        <PageSummary
+            :members-data="reportData.membersData"
+            :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
+            :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
         />
         <PageGlossary />
     </div>

@@ -7,7 +7,8 @@ Il report prodotto da AB-Gram è organizzato in pagine da leggere in sequenza,
 dalla copertina al glossario. La copertina e l'elenco dei membri inquadrano il
 gruppo; scelte e rifiuti, le reti, i tipi di relazione e le componenti della
 rete delle scelte ne analizzano i legami; le pagine individuali approfondiscono
-la posizione di ciascun membro e il glossario chiude il documento.
+la posizione di ciascun membro; la sintesi li riepiloga in un colpo d'occhio e
+il glossario chiude il documento.
 
 ## 1 Le sezioni del report
 
@@ -21,6 +22,7 @@ Le pagine si susseguono in quest'ordine:
 - Tipi di relazione
 - Strutture interne alla rete delle scelte
 - Pagine individuali dei membri
+- Sintesi
 - Glossario
 
 > La sezione 5 compare solo quando almeno un membro ha espresso un rifiuto. In
@@ -74,7 +76,15 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 - le strutture interne alla rete delle scelte;
 - lo status sociometrico.
 
-### 1.9 Glossario
+### 1.9 Sintesi
+
+Riepiloga tutti i membri in un unico elenco compatto: per ciascuno mostra
+l'identificativo, il nome, lo status sociometrico e sei indicatori di
+centralità (`DG`, `PK`, `CL`, `BT`, `HA`, `HU`) segnalati da un puntino. Il
+puntino è blu quando il membro rientra tra i primi tre per quel punteggio,
+altrimenti è grigio.
+
+### 1.10 Glossario
 
 Chiude il report con le sigle utilizzate nelle pagine e il loro significato
 esteso.
@@ -86,7 +96,8 @@ esteso.
 2. **Osserva i legami.** Prosegui con scelte e rifiuti, le reti e i tipi di
    relazione per capire come sono distribuiti i legami nel gruppo.
 3. **Scendi nel dettaglio.** Consulta le pagine individuali per approfondire
-   la posizione di ciascun membro.
+   la posizione di ciascun membro, poi la sintesi per confrontarli in un colpo
+   d'occhio.
 4. **Chiarisci i termini.** Ricorri al glossario ogni volta che incontri una
    sigla poco chiara.
 
