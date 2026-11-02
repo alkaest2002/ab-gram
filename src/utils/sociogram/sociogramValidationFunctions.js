@@ -31,10 +31,10 @@ export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
 export const MEMBER_ID_PATTERN = /^[A-Z2468#@%$&]$/;
 
 /** Maximum number of members (mirrors `maxMembersCount` in the store). */
-export const MAX_MEMBERS_COUNT = 35;
+export const MAX_MEMBERS_COUNT = MEMBERS_INDICES.length;
 
 /** Minimum number of members required for a complete sociogram. */
-export const MIN_MEMBERS_COUNT = 5;
+export const MIN_MEMBERS_COUNT = 8;
 
 export function isPlainObject(value) {
   return Boolean(value) && typeof value === "object";
