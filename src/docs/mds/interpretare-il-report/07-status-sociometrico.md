@@ -92,11 +92,7 @@ l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 
 ### 4.2 Passo 2 — Classificazione dell'impatto
 
-Qui si divide l'impatto ricevuto in **basso**, **medio** e **alto**. Non esiste
-un unico modo "giusto" di fissare le soglie, perché ogni metodo statistico ha
-pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
-**li lascia votare**: ogni metodo classifica i membri e la classe finale è
-quella scelta dalla maggioranza. Il passo si articola in tre mosse:
+In questo passo l'impatto ricevuto viene suddiviso in tre classi: **basso**, **medio** e **alto**. Poiché non esiste un unico modo "giusto" di fissare le soglie (ogni metodo statistico ha pregi e difetti a seconda della forma della distribuzione), l'algoritmo applica più strategie di classificazione in parallelo e le fa "votare": ciascun metodo assegna una classe a ogni membro, e la classe finale è quella scelta dalla maggioranza. Il passo si articola in tre mosse:
 
 1. sette **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.7);
 2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.8);
@@ -114,35 +110,12 @@ Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
 **entrambi** i lati sono disattivati si parla di **nessuna divisione**: tutti i
 membri sono classificati a impatto medio.
 
-**Solo i membri "visibili".** Le soglie dei metodi basati sulla distribuzione
+Le soglie dei metodi basati sulla distribuzione
 (percentili, Gini, Jenks, head/tail, Tukey, piccoli gruppi) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
 mai raggiunta.
-
-Ordinati in senso crescente gli impatti dei soli membri visibili,
-$x_0 \le x_1 \le \dots \le x_{N-1}$, per $P \le 50$ il **percentile** $P$ è il
-valore che occupa la posizione (indice a partire da $0$, sempre limitata
-all'intervallo $0 \ldots N-1$)
-
-$$
-\text{rango}(P) = \left\lceil \frac{N \cdot P}{100} \right\rceil - 1,
-\qquad
-\text{percentile}(P) = x_{\text{rango}(P)}
-$$
-
-Per $P > 50$ il percentile è **speculare** a quello inferiore: si usa lo stesso
-rango calcolato su $100 - P$, contato dall'alto, cioè
-$\text{percentile}(P) = x_{N-1-\text{rango}(100-P)}$. In questo modo la "coda
-bassa $p\%$" e la "coda alta $p\%$" contengono **sempre lo stesso numero** di
-membri, cosa che il rango più vicino non garantirebbe quando $N \cdot P / 100$
-è un numero intero.
-
-Non c'è interpolazione: il risultato è sempre uno dei valori realmente
-osservati. La **mediana** è la mediana "vera": il valore centrale per $N$
-dispari, la media dei due valori centrali per $N$ pari (il percentile(50)
-restituirebbe invece uno solo dei due valori centrali).
 
 #### 4.2.1 Metodo dei percentili
 
@@ -156,11 +129,11 @@ visibili: con così pochi, "il 10% più basso" è una o due persone e non dice
 nulla su code davvero evidenti.
 
 Le soglie vengono poi **"ripulite dalle parità"**: una coda la cui soglia
-raggiunge la mediana viene tirata dentro, fino al valore più vicino
+raggiunge la mediana viene "tirata dentro", fino al valore più vicino
 **strettamente** oltre la mediana (se esiste); se non esiste, quel lato non
-viene segnalato. In questo modo la massa di membri "in pari" con la mediana non
+viene segnalato. In questo modo i membri "in pari" con la mediana non
 finisce mai in una coda. Su una distribuzione perfettamente piatta il metodo si
-astiene, invece di votare sempre. I valori sono $10/95$.
+astiene, invece di votare sempre.
 
 #### 4.2.2 Metodo di Gini
 
@@ -186,7 +159,7 @@ L = \text{percentile}(5), \qquad H = \text{percentile}(95)
 $$
 
 Le soglie vengono poi **"ripulite dalle parità"** come per i percentili: una
-coda la cui soglia raggiunge la mediana viene tirata dentro fino al valore più
+coda la cui soglia raggiunge la mediana viene "tirata dentro" fino al valore più
 vicino **strettamente** oltre la mediana (se esiste), altrimenti quel lato resta
 disattivato.
 
