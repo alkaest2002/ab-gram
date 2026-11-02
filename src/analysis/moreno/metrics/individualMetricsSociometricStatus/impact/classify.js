@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
+import * as np from "numpy-ts";
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/registry.js";
 
@@ -54,13 +55,8 @@ const classifyImpact = (impact, thresholds) => {
  * @param {import("numpy-ts").NDArray[]} booleanArrays - Boolean masks.
  * @returns {import("numpy-ts").NDArray} Integer vote counts.
  */
-const countVotes = (booleanArrays) => {
-    let total = booleanArrays[0].astype("int32");
-    for (let i = 1; i < booleanArrays.length; i += 1) {
-        total = total.add(booleanArrays[i].astype("int32"));
-    }
-    return total;
-};
+const countVotes = (booleanArrays) =>
+    np.stack(booleanArrays.map((a) => a.astype("int32")), 0).sum(0);
 
 /**
  * Classify impact by majority vote across the strategies that propose a split.
