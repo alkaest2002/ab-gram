@@ -19,7 +19,7 @@ import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/individualMetricsSo
  * @returns {number[]} Labels in the same order as `values`.
  */
 const labelValues = (values, { low, high }) =>
-  values.map((v) => (v <= low ? -1 : v >= high ? 1 : 0)); // low wins ties
+    values.map((v) => (v <= low ? -1 : v >= high ? 1 : 0)); // low wins ties
 
 /**
  * Classify every member as low / high / average for one threshold pair.
@@ -34,18 +34,18 @@ const labelValues = (values, { low, high }) =>
  * }}
  */
 const classifyImpact = (impact, thresholds) => {
-  const none = impact.less(0); // all-false boolean array (impact is non-negative)
-  const isLowImpact = isFinite(thresholds.low)
-    ? impact.less_equal(thresholds.low)
-    : none;
-  let isHighImpact = isFinite(thresholds.high)
-    ? impact.greater_equal(thresholds.high)
-    : none;
+    const none = impact.less(0); // all-false boolean array (impact is non-negative)
+    const isLowImpact = isFinite(thresholds.low)
+        ? impact.less_equal(thresholds.low)
+        : none;
+    let isHighImpact = isFinite(thresholds.high)
+        ? impact.greater_equal(thresholds.high)
+        : none;
 
-  // Low wins deterministically if both ever apply.
-  isHighImpact = isHighImpact.logical_and(isLowImpact.logical_not());
-  const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
-  return { isLowImpact, isHighImpact, isAverageImpact };
+    // Low wins deterministically if both ever apply.
+    isHighImpact = isHighImpact.logical_and(isLowImpact.logical_not());
+    const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
+    return { isLowImpact, isHighImpact, isAverageImpact };
 };
 
 /**
@@ -55,11 +55,11 @@ const classifyImpact = (impact, thresholds) => {
  * @returns {import("numpy-ts").NDArray} Integer vote counts.
  */
 const countVotes = (booleanArrays) => {
-  let total = booleanArrays[0].astype("int32");
-  for (let i = 1; i < booleanArrays.length; i += 1) {
-    total = total.add(booleanArrays[i].astype("int32"));
-  }
-  return total;
+    let total = booleanArrays[0].astype("int32");
+    for (let i = 1; i < booleanArrays.length; i += 1) {
+        total = total.add(booleanArrays[i].astype("int32"));
+    }
+    return total;
 };
 
 /**
@@ -76,36 +76,52 @@ const countVotes = (booleanArrays) => {
  * }}
  */
 export const classifyImpactByVote = (impact, context) => {
-  if (context.sorted.length === 0) return classifyImpact(impact, NO_SPLIT);
 
-  const active = IMPACT_STRATEGIES.map(({ run }) => run(context)).filter(
-    (thresholds) =>
-      labelValues(context.sorted, thresholds).some((label) => label !== 0),
-  );
+    // If no visible impacts, use the default NO_SPLIT strategy to classify the impact.
+    if (context.sorted.length === 0) return classifyImpact(impact, NO_SPLIT);
 
-  if (active.length === 0) return classifyImpact(impact, NO_SPLIT);
+    // Filter active strategies based on ability to classify the impact.
+    // i.e., at least there is a label different from 0
+    // that is at least one impact is classified as low or high).
+    const active = IMPACT_STRATEGIES
+        .map(({ run }) => run(context))
+        .filter(
+            (thresholds) =>
+                labelValues(context.sorted, thresholds)
+                    .some((label) => label !== 0),
+    );
 
-  const perStrategy = active.map((thresholds) =>
-    classifyImpact(impact, thresholds),
-  );
+    // If no active strategies is able to classify the impact,
+    // use the default NO_SPLIT strategy.
+    if (active.length === 0) return classifyImpact(impact, NO_SPLIT);
 
-  const lowVotes = countVotes(perStrategy.map(({ isLowImpact }) => isLowImpact));
-  const highVotes = countVotes(perStrategy.map(({ isHighImpact }) => isHighImpact));
-  const averageVotes = countVotes(
-    perStrategy.map(({ isAverageImpact }) => isAverageImpact),
-  );
+    // Do the classification for each active strategy.
+    const perStrategy = active.map((thresholds) =>
+        classifyImpact(impact, thresholds),
+    );
 
-  // Average wins only with a strict majority; otherwise a non-average class
-  // beats average on ties, and low beats high on a low/high tie.
-  const isAverageImpact = averageVotes
-    .greater(lowVotes)
-    .logical_and(averageVotes.greater(highVotes));
-  const isLowImpact = isAverageImpact
-    .logical_not()
-    .logical_and(lowVotes.greater_equal(highVotes));
-  const isHighImpact = isAverageImpact
-    .logical_not()
-    .logical_and(highVotes.greater(lowVotes));
+    // Count the number of votes for each impact class.
+    const lowVotes = countVotes(
+        perStrategy.map(({ isLowImpact }) => isLowImpact),
+    );
+    const highVotes = countVotes(
+        perStrategy.map(({ isHighImpact }) => isHighImpact),
+    );
+    const averageVotes = countVotes(
+        perStrategy.map(({ isAverageImpact }) => isAverageImpact),
+    );
 
-  return { isLowImpact, isHighImpact, isAverageImpact };
+    // Average wins only with a strict majority; otherwise a non-average class
+    // beats average on ties, and low beats high on a low/high tie.
+    const isAverageImpact = averageVotes
+        .greater(lowVotes)
+        .logical_and(averageVotes.greater(highVotes));
+    const isLowImpact = isAverageImpact
+        .logical_not()
+        .logical_and(lowVotes.greater_equal(highVotes));
+    const isHighImpact = isAverageImpact
+        .logical_not()
+        .logical_and(highVotes.greater(lowVotes));
+
+    return { isLowImpact, isHighImpact, isAverageImpact };
 };
