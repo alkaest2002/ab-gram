@@ -1,10 +1,10 @@
 ---
-title: Perché Moreno e SNA insieme
+title: Un caso particolare 
 order: 9
 ---
 
 Le pagine precedenti presentano due famiglie di misure che descrivono la stessa
-persona da due punti di vista diversi: gli **indici di Moreno**, da cui deriva lo
+persona da due punti di vista diversi: gli **indici della sociometria classica**, da cui deriva lo
 status sociometrico e le **centralità SNA**.
 Sono complementari, non alternative: lette separatamente possono restituire
 un'immagine incompleta, e a volte fuorviante, della posizione di un membro nel
@@ -39,7 +39,7 @@ tutti si scelgono a vicenda. Il membro $9$ è l'unico anello di congiunzione:
 I membri $4$ e $5$ sono i due *gatekeeper*: i soli che, dentro il proprio
 sottogruppo, hanno un legame con il ponte.
 
-**Con gli occhi di Moreno.** Il membro $9$ riceve due sole scelte (da $4$ e da
+**Con gli occhi della sociometria.** Il membro $9$ riceve due sole scelte (da $4$ e da
 $5$). Tutti gli altri ne ricevono almeno tre, e i due gatekeeper quattro: $9$ è
 quindi **il membro meno scelto del gruppo**, in fondo alla scala dell'impatto e
 dello status sociometrico. È il tipico caso che, leggendo solo Moreno,
@@ -91,7 +91,7 @@ nodo **assolutamente centrale**: sono proprio i suoi legami a tenere unito il gr
   la vicinanza dice quanto sia "a portata di mano", l'intermediazione
   rivela una sua eventuale funzione di ponte.
 
-In breve: Moreno risponde a "quanto è scelto e visibile?", la SNA a "dove si
+In breve: la sociometria classica risponde a "quanto è scelto e visibile?", la SNA a "dove si
 trova nella struttura?". Solo incrociando le due risposte si evita di scambiare
 un ponte per un marginale, o un membro soltanto visibile per uno davvero
 centrale.
