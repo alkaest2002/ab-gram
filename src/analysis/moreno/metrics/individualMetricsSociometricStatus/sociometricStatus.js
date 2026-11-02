@@ -122,11 +122,10 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
     const visibilityClassification = classifyVisibility(impact, expressivity);
 
     // Classify impact
-    const allImpacts = impact.flatten().toArray();
     const impactClassification = classifyImpactByVote(impact, {
-        sorted: toSortedVisible(impact),
-        allImpacts,
-        groupSize: allImpacts.length,
+        visibleSortedImpacts: toSortedVisible(impact),
+        allImpacts: impact.flatten().toArray(),
+        groupSize: impact.size,
     });
 
     // Classify balance

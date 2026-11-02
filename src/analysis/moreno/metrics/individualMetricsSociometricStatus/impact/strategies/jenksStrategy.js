@@ -64,12 +64,12 @@ const jenksBreaks = (sorted, k) => {
  * Jenks natural breaks (k = 3): cutoffs fall in the widest gaps, gated by the
  * goodness of variance fit (GVF = 1 - SDCM/SDAM) so structureless data abstains.
  *
- * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const jenksStrategy = ({ sorted }) => {
-    const n = sorted.length;
-    const distinct = new Set(sorted).size;
+export const jenksStrategy = ({ visibleSortedImpacts }) => {
+    const n = visibleSortedImpacts.length;
+    const distinct = new Set(visibleSortedImpacts).size;
     const k = 3;
 
     // No split if there are not enough visible members
@@ -78,20 +78,20 @@ export const jenksStrategy = ({ sorted }) => {
     // No split if there are not enough distinct values
     if (distinct < k) return NO_SPLIT;
 
-    const mean = sorted.reduce((s, v) => s + v, 0) / n;
-    const sdam = sorted.reduce((s, v) => s + (v - mean) ** 2, 0);
+    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / n;
+    const sdam = visibleSortedImpacts.reduce((s, v) => s + (v - mean) ** 2, 0);
 
     // No split if SDAM is zero (all values are the same)
     if (sdam === 0) return NO_SPLIT;
 
-    const { starts, sdcm } = jenksBreaks(sorted, k);
+    const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, k);
 
     // No split if the goodness of variance fit is below the threshold
     if (1 - sdcm / sdam < CONFIG.jenks.minGvf) return NO_SPLIT;
 
-    const median = medianOf(sorted);
-    let low = sorted[starts[0] - 1]; // max of the first class
-    let high = sorted[starts[starts.length - 1]]; // min of the last class
+    const median = medianOf(visibleSortedImpacts);
+    let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class
+    let high = visibleSortedImpacts[starts[starts.length - 1]]; // min of the last class
 
     // Same guard as tailCutoffs: a tail must stay strictly beyond the median.
     if (!(low < median)) low = -Infinity;

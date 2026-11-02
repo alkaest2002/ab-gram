@@ -32,22 +32,22 @@ const headTailBreaks = (sorted) => {
  * Head/tail breaks strategy: use the first (lowest) class for the low cutoff
  * and the last (highest) class for the high cutoff.
  *
- * @param {{ sorted: number[] }} context - Sorted visible impacts.
+ * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const headTailStrategy = ({ sorted }) => {
+export const headTailStrategy = ({ visibleSortedImpacts }) => {
     // No split if there are not enough visible members
-    if (sorted.length < CONFIG.minVisibleForTails) return NO_SPLIT;
+    if (visibleSortedImpacts.length < CONFIG.minVisibleForTails) return NO_SPLIT;
 
     // Compute the breaks for the head/tail strategy
-    const breaks = headTailBreaks(sorted);
+    const breaks = headTailBreaks(visibleSortedImpacts);
 
     // No split if no breaks were found
     if (breaks.length === 0) return NO_SPLIT;
 
     // Low = upper bound of the first (lowest) class.
     let low = -Infinity;
-    for (const v of sorted) {
+    for (const v of visibleSortedImpacts) {
         if (v <= breaks[0]) low = v;
         else break;
     }
@@ -55,8 +55,8 @@ export const headTailStrategy = ({ sorted }) => {
     // High = lower bound of the last (highest) class.
     let high = Infinity;
     const lastBreak = breaks[breaks.length - 1];
-    for (let i = sorted.length - 1; i >= 0; i -= 1) {
-        if (sorted[i] > lastBreak) high = sorted[i];
+    for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
+        if (visibleSortedImpacts[i] > lastBreak) high = visibleSortedImpacts[i];
         else break;
     }
 
