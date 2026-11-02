@@ -41,6 +41,7 @@ export const binomialStrategy = ({ allImpacts, groupSize }) => {
     if (n < 1) return NO_SPLIT;
     const total = allImpacts.reduce((s, v) => s + v, 0);
     const p = total / (groupSize * n);
+
     // The p < 1 guard also covers degenerate density: a giver nominating the
     // same member in both likes and dislikes can push p past the model's range.
     if (!(p > 0 && p < 1)) return NO_SPLIT;

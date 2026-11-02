@@ -10,7 +10,7 @@ export const CONFIG = {
         // activate it: below that value the algorithm abstains. The small-group
         // strategy is the complement, so it activates only *below* its threshold.
         percentile: {
-            minVisibleForEnablingAlgorithm: 10,
+            minVisibleForEnablingAlgorithm: 8,
             low: 10,
             high: 90,
         },
@@ -26,11 +26,11 @@ export const CONFIG = {
             },
         },
         jenks: {
-            minVisibleForEnablingAlgorithm: 10,
+            minVisibleForEnablingAlgorithm: 8,
             minGvf: 0.75, // goodness of variance fit: 1 - SDCM/SDAM
         },
         headTail: {
-            minVisibleForEnablingAlgorithm: 10,
+            minVisibleForEnablingAlgorithm: 8,
             maxHeadShare: 0.4, // keep splitting while the head is < 40% of the data
         },
         tukey: {
