@@ -39,7 +39,7 @@ const GLOSSARY = [
     { label: "II", extended: "Indice di influenza" },
 
     // SNA individual centralities.
-    { label: "DG", extended: "Centralità di grado" },
+    { label: "DG", extended: "Centralità di grado (inDegree)" },
     { label: "CL", extended: "Centralità di vicinanza" },
     { label: "BT", extended: "Centralità di intermediazione" },
     { label: "PK", extended: "Centralità di PageRank" },

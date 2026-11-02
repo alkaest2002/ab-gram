@@ -55,7 +55,7 @@ const METRIC_ROWS = [
         { label: "II", key: "ii", source: "moreno" },
     ],
     [
-        { label: "DG", key: "degreeCentrality", source: "sna" },
+        { label: "DG", key: "inDegreeCentrality", source: "sna" },
         { label: "PK", key: "PageRank", source: "sna" },
         { label: "CL", key: "closenessCentrality", source: "sna" },
         { label: "BT", key: "betweennessCentrality", source: "sna" },

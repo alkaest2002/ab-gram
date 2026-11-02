@@ -66,7 +66,7 @@ const STATUS_TONES = {
 // They map the compact label to the real SNA metric key, matching the member
 // metrics page.
 const METRICS = [
-    { label: "DG", key: "degreeCentrality" },
+    { label: "DG", key: "inDegreeCentrality" },
     { label: "PK", key: "PageRank" },
     { label: "CL", key: "closenessCentrality" },
     { label: "BT", key: "betweennessCentrality" },
