@@ -10,7 +10,7 @@
   {
     "id": "B",
     "name": "Granger, Hermione",
-    "likes": ["A", "C"],
+    "likes": ["A", "C", "D"],
     "dislikes": ["F", "G", "H"],
     "noLikes": false,
     "noDislikes": false

@@ -192,7 +192,7 @@ describe("getIndividualLevelMetrics", () => {
 
   it("classifies the Hogwarts demo roster sensibly (status regression)", () => {
     // Regression for the impact-threshold majority vote across the current
-    // strategy set (Jenks, percentile, Tukey, binomial).
+    // strategy set (Jenks, head/tail, Gini, percentile, Tukey, binomial).
     const members = getHogwartsMembers();
     const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
 
@@ -214,9 +214,9 @@ describe("getIndividualLevelMetrics", () => {
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
       "Potter, Harry": S.POPULAR,
-      "Granger, Hermione": S.POPULAR,
+      "Granger, Hermione": S.APPRECIATED,
       "Weasley, Ron": S.APPRECIATED,
-      "Longbottom, Neville": S.AMBIVALENT,
+      "Longbottom, Neville": S.APPRECIATED,
       "Lovegood, Luna": S.MARGINAL,
       "Malfoy, Draco": S.REJECTED,
       "Crabbe, Vincent": S.DISLIKED,

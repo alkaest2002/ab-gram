@@ -18,7 +18,7 @@ L'algoritmo risponde a tre domande, nell'ordine:
 1. **Il membro è visibile?** Ha ricevuto almeno un'opinione? Se no, è isolato o
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
-   basso, medio o alto? Le soglie non sono fissate da un solo metodo: quattro
+   basso, medio o alto? Le soglie non sono fissate da un solo metodo: sei
    metodi statistici le propongono e si adotta quello più in accordo con gli
    altri.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
@@ -98,10 +98,10 @@ pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
 **li lascia votare**: ogni metodo classifica i membri e la classe finale è
 quella scelta dalla maggioranza. Il passo si articola in tre mosse:
 
-1. quattro **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.4);
-2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.5);
+1. sei **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.6);
+2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.7);
 3. la classe finale di ogni membro è decisa per **maggioranza** tra i metodi
-   che propongono una divisione (§ 4.2.6).
+   che propongono una divisione (§ 4.2.8).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
 e una **soglia alta** $H$, con questo significato:
@@ -115,7 +115,7 @@ Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
 membri sono classificati a impatto medio.
 
 **Solo i membri "visibili".** Le soglie dei metodi basati sulla distribuzione
-(percentili, Gini, Tukey) si calcolano **esclusivamente sui
+(percentili, Gini, Jenks, head/tail, Tukey) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
@@ -148,11 +148,11 @@ restituirebbe invece uno solo dei due valori centrali).
 
 **Intuizione:** segnalare solo le **code evidenti** della distribuzione.
 
-- $L = \text{percentile}(20)$;
-- $H = \text{percentile}(80)$.
+- $L = \text{percentile}(10)$;
+- $H = \text{percentile}(90)$.
 
 Il metodo **si astiene** (propone nessuna divisione) con meno di $5$ membri
-visibili: con così pochi, "il 20% più basso" è una o due persone e non dice
+visibili: con così pochi, "il 10% più basso" è una o due persone e non dice
 nulla su code davvero evidenti.
 
 Le soglie vengono poi **"ripulite dalle parità"**: una coda la cui soglia
@@ -160,43 +160,86 @@ raggiunge la mediana viene tirata dentro, fino al valore più vicino
 **strettamente** oltre la mediana (se esiste); se non esiste, quel lato non
 viene segnalato. In questo modo la massa di membri "in pari" con la mediana non
 finisce mai in una coda. Su una distribuzione perfettamente piatta il metodo si
-astiene, invece di votare sempre. I valori sono $20/80$.
+astiene, invece di votare sempre. I valori sono $10/95$.
 
 #### 4.2.2 Metodo di Gini
 
 **Intuizione:** dividere il gruppo **solo se la disuguaglianza è reale**. La
 disuguaglianza si misura con il **coefficiente di Gini** $G$ (da $0$ =
 perfetta uguaglianza a $1$ = massima disuguaglianza) e con l'**escursione**
-(differenza tra massimo e minimo), entrambi sui membri visibili. Si usa la
-versione **campionaria corretta** del coefficiente (moltiplicata per
-$N/(N-1)$): la formula di popolazione sottostima sistematicamente la
-disuguaglianza nei gruppi piccoli, tipici dei test sociometrici.
+(differenza tra massimo e minimo), entrambi sugli impatti dei membri visibili.
+Si usa la versione **campionaria corretta** del coefficiente (moltiplicata per
+$N/(N-1)$), che non sottostima la disuguaglianza nei gruppi piccoli tipici dei
+test sociometrici.
 
-**Prima condizione: la distribuzione è abbastanza diseguale?**
+Il metodo **si astiene** con meno di $5$ membri visibili. Altrimenti la
+distribuzione è considerata abbastanza diseguale se:
 
-- il metodo **si astiene** con meno di $5$ membri visibili (troppo pochi per
-  riconoscere una forma);
-- altrimenti, sì se $G \ge 0{,}3$, oppure $G \ge 0{,}2$ con escursione $\ge 3$;
-- se la condizione **non** è soddisfatta, il metodo propone **nessuna
-  divisione**.
+- $G \ge 0{,}3$, oppure
+- $G \ge 0{,}2$ con escursione $\ge 3$.
 
-**Se lo è, Gini decide *se* dividere e i percentili decidono *dove*:**
+Se la condizione **non** è soddisfatta, il metodo propone **nessuna divisione**.
+Se lo è, Gini decide *se* dividere e i **percentili estremi** decidono *dove*:
 
-1. **Percentili interni ($25$ e $75$)**, cioè i quartili, nei gruppi con meno di
-   $20$ membri visibili: le code sono il quarto inferiore e il quarto
-   superiore.
-2. **Percentili esterni ($10$ e $90$)**, cioè i decili, con almeno $20$ membri
-   visibili: nei gruppi più grandi i quartili sarebbero troppo vicini al centro,
-   quindi si guardano le code più estreme.
+$$
+L = \text{percentile}(5), \qquad H = \text{percentile}(95)
+$$
 
-In entrambi i casi le soglie vengono **"ripulite dalle parità"** come per il
-metodo dei percentili: una coda la cui soglia raggiunge la mediana viene tirata
-dentro fino al valore più vicino **strettamente** oltre la mediana (se esiste),
-altrimenti quel lato resta disattivato. Non si taglia mai sulla mediana stessa:
-equivarrebbe a segnalare quasi ogni membro che non sia esattamente pari alla
-mediana.
+Le soglie vengono poi **"ripulite dalle parità"** come per i percentili: una
+coda la cui soglia raggiunge la mediana viene tirata dentro fino al valore più
+vicino **strettamente** oltre la mediana (se esiste), altrimenti quel lato resta
+disattivato.
 
-#### 4.2.3 Metodo di Tukey
+#### 4.2.3 Metodo di Jenks
+
+**Intuizione:** individuare i **raggruppamenti naturali** della distribuzione:
+le classi vengono scelte in modo da rendere **minima** la varianza interna a
+ogni classe (e, di conseguenza, massima quella tra classi). È il criterio dei
+*natural breaks* di Jenks, qui adattato a **tre classi** (bassa, media, alta).
+
+Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$,
+si cercano i due tagli che separano tre classi consecutive minimizzando la
+somma delle varianze interne, detta $SDCM$. La bontà del partizionamento si
+misura con il **goodness of variance fit**
+
+$$
+GVF = 1 - \frac{SDCM}{SDAM}
+$$
+
+dove $SDAM$ è la varianza totale degli impatti. Il metodo **si astiene** quando:
+
+- ci sono meno di $5$ membri visibili;
+- ci sono meno di $3$ valori distinti (non si possono formare tre classi);
+- $GVF < 0{,}75$: la distribuzione è troppo "senza struttura" per giustificare
+  una divisione.
+
+Se il partizionamento è accettato, $L$ è l'ultimo valore della prima classe e
+$H$ il primo valore della terza classe. Come per i percentili, una coda la cui
+soglia raggiunge la mediana viene tirata dentro fino al valore più vicino
+**strettamente** oltre la mediana (se esiste), altrimenti quel lato resta
+disattivato.
+
+#### 4.2.4 Metodo head/tail breaks
+
+**Intuizione:** nelle distribuzioni **a coda pesante** pochi valori molto alti
+si staccano nettamente dalla massa dei valori piccoli. Il metodo *head/tail
+breaks* separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla
+"coda" (il resto).
+
+A ogni passo si calcola la media dei valori correnti e si considera "testa"
+l'insieme dei valori **maggiori della media**. Si ripete sulla testa fino alla
+**condizione classica di arresto**: la testa smette di essere una minoranza
+(raggiunge il $40\%$ dei valori correnti), oppure non resta nulla da dividere
+(tutti i valori sono uguali). Ogni media calcolata è un **punto di taglio**; i
+tagli ordinano i valori in classi consecutive, dalla più bassa alla più alta.
+
+- $L$ è l'ultimo valore della **prima** classe (la più bassa);
+- $H$ è il primo valore dell'**ultima** classe (la più alta).
+
+Il metodo **si astiene** con meno di $5$ membri visibili o quando non produce
+alcun taglio (valori tutti uguali).
+
+#### 4.2.5 Metodo di Tukey
 
 **Intuizione:** il classico criterio dei **valori anomali** basato sui
 quartili, i "recinti interni" del box plot. Detti
@@ -218,7 +261,7 @@ Se $IQR = 0$ i recinti collasserebbero sulla mediana e il metodo propone
 **nessuna divisione**. È un metodo molto conservativo: segnala solo gli
 scostamenti davvero estremi e, nei gruppi omogenei, spesso non segnala nessuno.
 
-#### 4.2.4 Metodo binomiale (GB)
+#### 4.2.6 Metodo binomiale (GB)
 
 **Intuizione:** *che cosa produrrebbe il puro caso?* Se ogni opinione fosse
 espressa a caso, il numero di opinioni ricevute da un membro seguirebbe una
@@ -234,11 +277,11 @@ p = \frac{\sum_i n_i}{n\,(n-1)}
 $$
 
 Sotto l'ipotesi di caso, le opinioni ricevute da un membro seguono
-$X \sim \text{Binomiale}(n-1,\ p)$. Con livello $\alpha = 0{,}05$ **a due code**
-(quindi $0{,}025$ per coda) le soglie sono:
+$X \sim \text{Binomiale}(n-1,\ p)$. Con livello $\alpha = 0{,}01$ **a due code**
+(quindi $0{,}005$ per coda) le soglie sono:
 
-- $L$ = il **massimo** $k$ tale che $P(X \le k) \le 0{,}025$;
-- $H$ = il **minimo** $k$ tale che $P(X \ge k) \le 0{,}025$.
+- $L$ = il **massimo** $k$ tale che $P(X \le k) \le 0{,}005$;
+- $H$ = il **minimo** $k$ tale che $P(X \ge k) \le 0{,}005$.
 
 Se nessun $k$ soddisfa la condizione, quel lato non viene mai segnalato. Il
 metodo propone **nessuna divisione** anche quando $n < 2$ oppure $p$ non è
@@ -250,7 +293,7 @@ strettamente compresa tra $0$ e $1$ (il modello non è applicabile).
 > $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
 > un'approssimazione ragionevole.
 
-#### 4.2.5 Applicazione delle soglie di ciascun metodo
+#### 4.2.7 Applicazione delle soglie di ciascun metodo
 
 Ogni metodo applica le **proprie** soglie a tutti i membri con $n_i > 0$ (gli
 altri sono già stati classificati al Passo 1):
@@ -266,7 +309,7 @@ nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
 coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
 prevale sempre "basso".
 
-#### 4.2.6 La votazione tra i metodi
+#### 4.2.8 La votazione tra i metodi
 
 **Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
 "votare": ogni metodo classifica ogni membro e vince la classe scelta dalla
@@ -345,21 +388,23 @@ non è un'informazione affidabile.
 
 | Parametro                                       | Valore                                   |
 | ----------------------------------------------- | ---------------------------------------- |
-| Metodi di soglia in competizione                | percentili, Gini, Tukey, binomiale       |
+| Metodi di soglia in competizione                | Jenks, head/tail, Gini, percentili, Tukey, binomiale |
 | Aggregazione tra i metodi                       | voto di maggioranza tra i metodi che dividono |
 | Metodi che non dividono                         | si astengono (non votano)               |
 | Parità nel voto                                 | non medio prevale su medio; basso prevale su alto |
-| Membri visibili minimi per percentili e Gini    | $5$                                      |
-| Percentili per impatto basso / alto             | $20$ / $80$ (per rango)                  |
+| Membri visibili minimi per percentili, Gini, Jenks e head/tail | $5$                              |
+| Percentili per impatto basso / alto             | $10$ / $95$ (per rango)                  |
 | Pulizia delle soglie                            | mai sulla mediana; coda tirata al valore più vicino strettamente oltre |
 | Gini: coefficiente usato                        | campionario corretto ($\times\, N/(N-1)$) |
 | Gini: soglia per dividere il gruppo             | $G \ge 0{,}3$                            |
 | Gini: soglia attenuata                          | $G \ge 0{,}2$ e escursione $\ge 3$       |
-| Gini: percentili interni                        | $25$ / $75$ (con meno di $20$ visibili)  |
-| Gini: percentili esterni                        | $10$ / $90$, con $N \ge 20$ visibili     |
+| Gini: percentili di taglio                      | $5$ / $95$                              |
+| Jenks: numero di classi                         | $3$ (bassa, media, alta)                 |
+| Jenks: goodness of variance fit minima          | $GVF \ge 0{,}75$                         |
+| Head/tail: quota massima della testa            | $0{,}4$ (testa sotto il $40\%$ dei valori) |
 | Tukey: recinti interni                          | $Q_1 - 1{,}5 \cdot IQR$ / $Q_3 + 1{,}5 \cdot IQR$ |
 | Tukey: soglia applicata                         | valore osservato più vicino strettamente oltre il recinto |
-| Binomiale: livello di significatività           | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda) |
+| Binomiale: livello di significatività           | $\alpha = 0{,}01$ a due code ($0{,}005$ per coda) |
 | Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
 | Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
 
@@ -440,39 +485,49 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
-quattro metodi.
+sei metodi.
 
-- **Percentili.** $L = \text{percentile}(20) = x_1 = 2$ e
-  $H = \text{percentile}(80) = x_4 = 5$. Entrambe le soglie cadono oltre la
-  mediana ($2{,}5$), quindi $(L, H) = (2, 5)$.
+- **Jenks.** Le tre classi $[2, 2, 2]$, $[3]$ e $[5, 5]$ hanno varianza interna
+  nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
+  risultano $L = 2$ (ultimo valore della prima classe) e $H = 5$ (primo valore
+  della terza classe).
+- **Head/tail.** La media è $19/6 \approx 3{,}17$; la testa è $[5, 5]$
+  ($2$ valori su $6$, meno del $40\%$), poi la testa non si divide oltre.
+  La prima classe (valori $\le 3{,}17$) ha ultimo valore $3$, l'ultima classe
+  (valori $> 3{,}17$) ha primo valore $5$: $(L, H) = (3, 5)$.
 - **Gini.** $G \approx 0{,}26 \ge 0{,}2$ e l'escursione è $5 - 2 = 3 \ge 3$:
-  la condizione attenuata è soddisfatta. Con $N < 20$ si usano i quartili:
-  $L = \text{percentile}(25) = x_1 = 2$ e $H = \text{percentile}(75) = x_4 = 5$,
-  entrambi oltre la mediana, quindi $(L, H) = (2, 5)$.
+  la condizione attenuata è soddisfatta. I percentili estremi danno
+  $L = \text{percentile}(5) = x_0 = 2$ e
+  $H = \text{percentile}(95) = x_5 = 5$, entrambi oltre la mediana, quindi
+  $(L, H) = (2, 5)$.
+- **Percentili.** $L = \text{percentile}(10) = x_0 = 2$ e
+  $H = \text{percentile}(95) = x_5 = 5$. Entrambe le soglie cadono oltre la
+  mediana ($2{,}5$), quindi $(L, H) = (2, 5)$.
 - **Tukey.** $Q_1 = x_1 = 2$, $Q_3 = x_4 = 5$, $IQR = 3$: i recinti sono
   $F_L = -2{,}5$ e $F_H = 9{,}5$. Nessun impatto cade strettamente oltre i
   recinti, quindi il metodo si astiene.
 - **Binomiale.** Le opinioni totali sono $19$, quindi
   $p = 19 / (6 \cdot 5) \approx 0{,}63$ e $X \sim \text{Binomiale}(5;\ 0{,}63)$.
-  Si ha $P(X \le 0) \approx 0{,}007 \le 0{,}025$ ma
-  $P(X \le 1) \approx 0{,}064 > 0{,}025$, quindi $L = 0$. Dall'altra parte
-  $P(X \ge 5) \approx 0{,}10 > 0{,}025$: nessuna soglia alta. Risultato:
-  $(L, H) = (0, +\infty)$, che però non etichetta nessuno (l'impatto minimo è
-  $2$).
+  Con $\alpha = 0{,}01$ si ha $P(X \le 0) \approx 0{,}007 > 0{,}005$ e
+  $P(X \ge 5) \approx 0{,}10 > 0{,}005$: nessuna delle due code raggiunge la
+  significatività. Risultato: **nessuna divisione**.
 
 Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 
 | Metodo     | Etichette                 |
 | ---------- | ------------------------- |
-| percentili | $+1, +1, -1, 0, -1, -1$  |
+| Jenks      | $+1, +1, -1, 0, -1, -1$  |
+| head/tail  | $+1, +1, -1, -1, -1, -1$ |
 | Gini       | $+1, +1, -1, 0, -1, -1$  |
+| percentili | $+1, +1, -1, 0, -1, -1$  |
 | Tukey      | *si astiene*              |
 | binomiale  | *si astiene*              |
 | **Voto**   | **alto, alto, basso, medio, basso, basso** |
 
-Tukey e binomiale non vedono alcuna divisione e si astengono; votano solo
-percentili e Gini, che concordano sulle stesse etichette. Quindi $5$ diventa
-alto, $2$ basso e $3$ medio. Ne risulta:
+Tukey e binomiale non vedono alcuna divisione e si astengono. Votano Jenks,
+head/tail, Gini e percentili: per $5$ concordano sull'alto e per $2$ sul basso;
+per $3$ Jenks, Gini e percentili votano "medio" e prevalgono sul "basso" di
+head/tail. Quindi $5$ diventa alto, $2$ basso e $3$ medio. Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -557,34 +612,45 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
-quattro metodi.
+sei metodi.
 
-- **Percentili.** $L = \text{percentile}(20) = x_1 = 1$ e
-  $H = \text{percentile}(80) = x_4 = 5$, entrambi oltre la mediana ($1{,}5$),
-  quindi $(L, H) = (1, 5)$.
+- **Jenks.** Le tre classi $[1, 1, 1]$, $[2]$ e $[5, 5]$ hanno varianza interna
+  nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
+  risultano $L = 1$ e $H = 5$.
+- **Head/tail.** La media è $15/6 = 2{,}5$; la testa è $[5, 5]$
+  ($2$ valori su $6$, meno del $40\%$), poi la testa non si divide oltre.
+  La prima classe (valori $\le 2{,}5$) ha ultimo valore $2$, l'ultima classe
+  (valori $> 2{,}5$) ha primo valore $5$: $(L, H) = (2, 5)$.
 - **Gini.** $G \approx 0{,}44 \ge 0{,}3$: distribuzione abbastanza diseguale.
-  Con $N < 20$ si usano i quartili: $L = \text{percentile}(25) = x_1 = 1$ e
-  $H = \text{percentile}(75) = x_4 = 5$, entrambi oltre la mediana, quindi
-  $(L, H) = (1, 5)$.
+  I percentili estremi danno $L = \text{percentile}(5) = x_0 = 1$ e
+  $H = \text{percentile}(95) = x_5 = 5$, entrambi oltre la mediana ($1{,}5$),
+  quindi $(L, H) = (1, 5)$.
+- **Percentili.** $L = \text{percentile}(10) = x_0 = 1$ e
+  $H = \text{percentile}(95) = x_5 = 5$, entrambi oltre la mediana ($1{,}5$),
+  quindi $(L, H) = (1, 5)$.
 - **Tukey.** $Q_1 = x_1 = 1$, $Q_3 = x_4 = 5$, $IQR = 4$: i recinti sono
   $F_L = -5$ e $F_H = 11$. Nessun impatto cade strettamente oltre i recinti,
   quindi il metodo si astiene.
 - **Binomiale.** Le opinioni totali sono $15$, quindi
   $p = 15 / (6 \cdot 5) = 0{,}5$ e $X \sim \text{Binomiale}(5;\ 0{,}5)$.
-  $P(X \le 0) \approx 0{,}031 > 0{,}025$ e $P(X \ge 5) \approx 0{,}031 > 0{,}025$:
+  $P(X \le 0) \approx 0{,}031 > 0{,}005$ e $P(X \ge 5) \approx 0{,}031 > 0{,}005$:
   nessuna delle due code raggiunge la significatività. Risultato: **nessuna
   divisione**.
 
 | Metodo     | Etichette                 |
 | ---------- | ------------------------- |
-| percentili | $-1, -1, -1, +1, +1, 0$  |
+| Jenks      | $-1, -1, -1, +1, +1, 0$  |
+| head/tail  | $-1, -1, -1, +1, +1, -1$ |
 | Gini       | $-1, -1, -1, +1, +1, 0$  |
+| percentili | $-1, -1, -1, +1, +1, 0$  |
 | Tukey      | *si astiene*              |
 | binomiale  | *si astiene*              |
 | **Voto**   | **basso, basso, basso, alto, alto, medio** |
 
-Anche qui Tukey e binomiale si astengono; votano solo percentili e Gini, che
-concordano. Quindi $1$ diventa basso, $5$ alto e $2$ medio. Ne risulta:
+Anche qui Tukey e binomiale si astengono. Votano Jenks, head/tail, Gini e
+percentili: per $1$ concordano sul basso e per $5$ sull'alto; per $2$ Jenks,
+Gini e percentili votano "medio" e prevalgono sul "basso" di head/tail. Quindi
+$1$ diventa basso, $5$ alto e $2$ medio. Ne risulta:
 
 - impatto basso ($\le 1$): membri $1$, $2$ e $3$;
 - impatto alto ($\ge 5$): membri $4$ e $5$;

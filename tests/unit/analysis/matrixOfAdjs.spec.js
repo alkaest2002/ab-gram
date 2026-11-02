@@ -59,7 +59,7 @@ describe("createAdjacencyMatrices", () => {
     // i chose member j for that preference.
     expect(adjLikes.tolist()).toEqual([
       [0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0],
-      [1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
       [1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0],

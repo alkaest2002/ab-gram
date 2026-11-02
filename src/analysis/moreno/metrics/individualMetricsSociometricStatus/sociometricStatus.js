@@ -13,48 +13,51 @@ export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsS
 // STEP 1: VISIBILITY
 // ============================================================================
 const classifyVisibility = (impact, expressivity) => {
-  const hasNoOpinionsReceived = impact.equal(0);
-  const hasNoOpinionsGiven = expressivity.equal(0);
-  return {
-    isolated: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven),
-    ignored: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven.logical_not()),
-  };
+    const hasNoOpinionsReceived = impact.equal(0);
+    const hasNoOpinionsGiven = expressivity.equal(0);
+    return {
+        isolated: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven),
+        ignored: hasNoOpinionsReceived.logical_and(
+            hasNoOpinionsGiven.logical_not(),
+        ),
+    };
 };
 
 // ============================================================================
 // STEP 5: STATUS ASSIGNMENT (decision tree, first match wins)
 // ============================================================================
-const assignStatus = (visibility, impactClass, balance) => {
-  const S = SOCIOMETRIC_STATUS;
-  const { isolated, ignored } = visibility;
-  const { isLowImpact, isHighImpact, isAverageImpact } = impactClass;
-  const { isPositiveBalance, isNegativeBalance, isNeutralBalance } = balance;
+const assignStatus = (visibility, impactClass, balanceClass) => {
+    const S = SOCIOMETRIC_STATUS;
+    const { isolated, ignored } = visibility;
+    const { isLowImpact, isHighImpact, isAverageImpact } = impactClass;
+    const { isPositiveBalance, isNegativeBalance, isNeutralBalance } =
+        balanceClass;
 
-  return np.select(
-    [
-      isolated,
-      ignored,
-      isLowImpact,
-      isHighImpact.logical_and(isPositiveBalance),
-      isHighImpact.logical_and(isNegativeBalance),
-      isHighImpact.logical_and(isNeutralBalance),
-      isAverageImpact.logical_and(isPositiveBalance),
-      isAverageImpact.logical_and(isNegativeBalance),
-      isAverageImpact.logical_and(isNeutralBalance),
-    ],
-    [
-      S.ISOLATED,
-      S.IGNORED,
-      S.MARGINAL,
-      S.POPULAR,
-      S.REJECTED,
-      S.CONTROVERSIAL,
-      S.APPRECIATED,
-      S.DISLIKED,
-      S.AMBIVALENT,
-    ],
-    S.UNCLASSIFIED, // safety default (unreachable for valid inputs)
-  );
+    return np.select(
+        [
+            isolated,
+            ignored,
+            isLowImpact,
+            isHighImpact.logical_and(isPositiveBalance),
+            isHighImpact.logical_and(isNegativeBalance),
+            isHighImpact.logical_and(isNeutralBalance),
+            isAverageImpact.logical_and(isPositiveBalance),
+            isAverageImpact.logical_and(isNegativeBalance),
+            isAverageImpact.logical_and(isNeutralBalance),
+        ],
+        [
+            S.ISOLATED,
+            S.IGNORED,
+            S.MARGINAL,
+            S.POPULAR,
+            S.REJECTED,
+            S.CONTROVERSIAL,
+            S.APPRECIATED,
+            S.DISLIKED,
+            S.AMBIVALENT,
+        ],
+        S.UNCLASSIFIED, // safety default (unreachable for valid inputs)
+    );
 };
 
 // ============================================================================
@@ -77,14 +80,18 @@ const assignStatus = (visibility, impactClass, balance) => {
  * true median (mean of the two middle values for even n).
  * Tails never include the tied median bulk: a cutoff that reaches the median
  * is pulled in to the nearest value strictly beyond it.
- * Four strategies each propose { low, high } cutoffs:
+ * Six strategies each propose { low, high } cutoffs:
  * - Jenks: natural breaks into up to three classes, gated by goodness of
  *   variance fit (GVF >= 0.75) so structureless data abstains.
- * - Percentile: nearest-rank 20th/80th percentiles, tie-trimmed; abstains
+ * - Head/tail: recursive heavy-tailed-head split; the first and last classes
+ *   become the low and high cutoffs.
+ * - Gini: inequality-driven; cuts at the 5th/95th percentiles when the
+ *   sample-corrected Gini and range indicate a real split.
+ * - Percentile: nearest-rank 10th/95th percentiles, tie-trimmed; abstains
  *   with fewer than 5 visible members.
  * - Tukey: strict inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible
  *   members; a value exactly on a fence is not an outlier.
- * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.05,
+ * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.01,
  *   where p is the network's opinion density (computed over all members).
  * Each strategy classifies every member low/average/high; a strategy that
  * proposes no effective split (NO_SPLIT or thresholds that flag no visible
@@ -116,16 +123,24 @@ const assignStatus = (visibility, impactClass, balance) => {
  * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
-  const visibility = classifyVisibility(impact, expressivity);
+    // Classify visibility
+    const visibilityClassification = classifyVisibility(impact, expressivity);
 
-  const allImpacts = impact.flatten().toArray();
-  const sorted = toSortedVisible(impact);
-  const impactClass = classifyImpactByVote(impact, {
-    sorted,
-    allImpacts,
-    groupSize: allImpacts.length,
-  });
+    // Classify impact
+    const allImpacts = impact.flatten().toArray();
+    const impactClassification = classifyImpactByVote(impact, {
+        sorted: toSortedVisible(impact),
+        allImpacts,
+        groupSize: allImpacts.length,
+    });
 
-  const balance = classifyBalance(rp, rr, impact);
-  return assignStatus(visibility, impactClass, balance);
+    // Classify balance
+    const balanceClassification = classifyBalance(rp, rr, impact);
+
+    // Assign status
+    return assignStatus(
+        visibilityClassification,
+        impactClassification,
+        balanceClassification,
+    );
 };

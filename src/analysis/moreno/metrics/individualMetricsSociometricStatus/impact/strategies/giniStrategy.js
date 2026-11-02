@@ -25,10 +25,5 @@ export const giniStrategy = ({ sorted }) => {
     gini >= c.strong || (gini >= c.moderate && ptp >= c.minPtpForModerate);
   if (!unequal) return NO_SPLIT;
 
-  const large = sorted.length >= c.minVisibleForOuter;
-  return tailCutoffs(
-    sorted,
-    large ? c.outerLow : c.innerLow,
-    large ? c.outerHigh : c.innerHigh,
-  );
+  return tailCutoffs(sorted, c.percentile.low, c.percentile.high);
 };
