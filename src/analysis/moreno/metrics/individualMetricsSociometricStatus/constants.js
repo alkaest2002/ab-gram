@@ -23,6 +23,7 @@ export const CONFIG = {
     headTail: { maxHeadShare: 0.4 }, // keep splitting while the head is < 40% of the data
     tukey: { k: 1.5 }, // fences: Q1 - k*IQR, Q3 + k*IQR (strict: beyond, not at)
     binomial: { alpha: 0.01 }, // two-sided: alpha / 2 in each tail
+    smallGroup: { minGap: 2 }, // minimum jump in received opinions to count as a split
     balance: {
         lessLenientRatio: 2.0, // threshold at or below minOpinions
         moreLenientRatio: 1.5, // threshold at or above maxOpinions

@@ -18,7 +18,7 @@ L'algoritmo risponde a tre domande, nell'ordine:
 1. **Il membro è visibile?** Ha ricevuto almeno un'opinione? Se no, è isolato o
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
-   basso, medio o alto? Le soglie non sono fissate da un solo metodo: sei
+   basso, medio o alto? Le soglie non sono fissate da un solo metodo: sette
    metodi statistici le propongono e si adotta quello più in accordo con gli
    altri.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
@@ -98,10 +98,10 @@ pregi e difetti a seconda della forma della distribuzione. L'algoritmo quindi
 **li lascia votare**: ogni metodo classifica i membri e la classe finale è
 quella scelta dalla maggioranza. Il passo si articola in tre mosse:
 
-1. sei **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.6);
-2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.7);
+1. sette **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.7);
+2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.8);
 3. la classe finale di ogni membro è decisa per **maggioranza** tra i metodi
-   che propongono una divisione (§ 4.2.8).
+   che propongono una divisione (§ 4.2.9).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
 e una **soglia alta** $H$, con questo significato:
@@ -115,7 +115,7 @@ Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
 membri sono classificati a impatto medio.
 
 **Solo i membri "visibili".** Le soglie dei metodi basati sulla distribuzione
-(percentili, Gini, Jenks, head/tail, Tukey) si calcolano **esclusivamente sui
+(percentili, Gini, Jenks, head/tail, Tukey, piccoli gruppi) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
@@ -293,7 +293,38 @@ strettamente compresa tra $0$ e $1$ (il modello non è applicabile).
 > $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
 > un'approssimazione ragionevole.
 
-#### 4.2.7 Applicazione delle soglie di ciascun metodo
+#### 4.2.7 Metodo dei piccoli gruppi
+
+**Intuizione:** con pochissimi membri visibili ($2 \le N < 5$) i percentili e il
+Gini sono inaffidabili e i metodi basati sulla distribuzione si astengono. Qui si
+cerca invece il **salto più grande** tra impatti consecutivi: se è un salto
+"vero" e domina gli altri, si segnala **solo la coda più piccola** che quel salto
+isola, lasciando il resto a impatto medio (così il bilancio può ancora decidere).
+
+Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, i salti tra
+valori consecutivi sono $g_i = x_i - x_{i-1}$ per $i = 1, \dots, N-1$. Siano
+$g_{\max}$ il salto più grande e $g_2$ il secondo per grandezza; sia inoltre
+$R = x_{N-1} - x_0$ l'escursione totale. Il metodo **si astiene** quando:
+
+- $N < 2$ oppure $N \ge 5$ (è il complemento dei metodi che richiedono almeno $5$);
+- $g_{\max} = 0$ (tutti gli impatti sono uguali);
+- $g_{\max} < 2$ (un salto di una sola opinione non è abbastanza);
+- il salto non domina gli altri: $g_{\max} < 2 \cdot g_2$ **e**
+  $g_{\max} < 0{,}5 \cdot R$.
+
+Se il salto è dominante, sia $k$ l'indice del valore **sopra** il salto massimo
+(il salto è tra $x_{k-1}$ e $x_k$). Si segnala solo la coda più piccola:
+
+- coda **bassa** più piccola $\Rightarrow$ $L = x_{k-1}$ e $H = +\infty$;
+- coda **alta** più piccola $\Rightarrow$ $L = -\infty$ e $H = x_k$;
+- code **uguali** (possibile solo con $N = 4$, due contro due) $\Rightarrow$
+  $L = x_{k-1}$ e $H = x_k$.
+
+Per esempio, con $[1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e i
+due $1$ restano medi; con $[1, 3, 3]$ viene segnalato solo l'$1$ come impatto
+basso.
+
+#### 4.2.8 Applicazione delle soglie di ciascun metodo
 
 Ogni metodo applica le **proprie** soglie a tutti i membri con $n_i > 0$ (gli
 altri sono già stati classificati al Passo 1):
@@ -309,7 +340,7 @@ nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
 coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
 prevale sempre "basso".
 
-#### 4.2.8 La votazione tra i metodi
+#### 4.2.9 La votazione tra i metodi
 
 **Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
 "votare": ogni metodo classifica ogni membro e vince la classe scelta dalla
@@ -388,7 +419,7 @@ non è un'informazione affidabile.
 
 | Parametro                                       | Valore                                   |
 | ----------------------------------------------- | ---------------------------------------- |
-| Metodi di soglia in competizione                | Jenks, head/tail, Gini, percentili, Tukey, binomiale |
+| Metodi di soglia in competizione                | Jenks, head/tail, Gini, percentili, Tukey, binomiale, piccoli gruppi |
 | Aggregazione tra i metodi                       | voto di maggioranza tra i metodi che dividono |
 | Metodi che non dividono                         | si astengono (non votano)               |
 | Parità nel voto                                 | non medio prevale su medio; basso prevale su alto |
@@ -405,6 +436,8 @@ non è un'informazione affidabile.
 | Tukey: recinti interni                          | $Q_1 - 1{,}5 \cdot IQR$ / $Q_3 + 1{,}5 \cdot IQR$ |
 | Tukey: soglia applicata                         | valore osservato più vicino strettamente oltre il recinto |
 | Binomiale: livello di significatività           | $\alpha = 0{,}01$ a due code ($0{,}005$ per coda) |
+| Piccoli gruppi: membri visibili                 | $2 \le N < 5$ (solo sotto i $5$)         |
+| Piccoli gruppi: salto minimo tra impatti        | $2$ (gap minimo)                          |
 | Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
 | Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
 
@@ -485,7 +518,7 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
-sei metodi.
+sette metodi.
 
 - **Jenks.** Le tre classi $[2, 2, 2]$, $[3]$ e $[5, 5]$ hanno varianza interna
   nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
@@ -511,6 +544,8 @@ sei metodi.
   Con $\alpha = 0{,}01$ si ha $P(X \le 0) \approx 0{,}007 > 0{,}005$ e
   $P(X \ge 5) \approx 0{,}10 > 0{,}005$: nessuna delle due code raggiunge la
   significatività. Risultato: **nessuna divisione**.
+- **Piccoli gruppi.** Il metodo si attiva solo con meno di $5$ membri visibili:
+  qui $N = 6$, quindi si astiene.
 
 Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 
@@ -522,9 +557,10 @@ Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 | percentili | $+1, +1, -1, 0, -1, -1$  |
 | Tukey      | *si astiene*              |
 | binomiale  | *si astiene*              |
+| piccoli gruppi | *si astiene*           |
 | **Voto**   | **alto, alto, basso, medio, basso, basso** |
 
-Tukey e binomiale non vedono alcuna divisione e si astengono. Votano Jenks,
+Tukey, binomiale e piccoli gruppi non vedono alcuna divisione e si astengono. Votano Jenks,
 head/tail, Gini e percentili: per $5$ concordano sull'alto e per $2$ sul basso;
 per $3$ Jenks, Gini e percentili votano "medio" e prevalgono sul "basso" di
 head/tail. Quindi $5$ diventa alto, $2$ basso e $3$ medio. Ne risulta:
@@ -612,7 +648,7 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dai
-sei metodi.
+sette metodi.
 
 - **Jenks.** Le tre classi $[1, 1, 1]$, $[2]$ e $[5, 5]$ hanno varianza interna
   nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
@@ -636,6 +672,7 @@ sei metodi.
   $P(X \le 0) \approx 0{,}031 > 0{,}005$ e $P(X \ge 5) \approx 0{,}031 > 0{,}005$:
   nessuna delle due code raggiunge la significatività. Risultato: **nessuna
   divisione**.
+- **Piccoli gruppi.** Anche qui $N = 6 \ge 5$: il metodo si astiene.
 
 | Metodo     | Etichette                 |
 | ---------- | ------------------------- |
@@ -645,9 +682,10 @@ sei metodi.
 | percentili | $-1, -1, -1, +1, +1, 0$  |
 | Tukey      | *si astiene*              |
 | binomiale  | *si astiene*              |
+| piccoli gruppi | *si astiene*           |
 | **Voto**   | **basso, basso, basso, alto, alto, medio** |
 
-Anche qui Tukey e binomiale si astengono. Votano Jenks, head/tail, Gini e
+Anche qui Tukey, binomiale e piccoli gruppi si astengono. Votano Jenks, head/tail, Gini e
 percentili: per $1$ concordano sul basso e per $5$ sull'alto; per $2$ Jenks,
 Gini e percentili votano "medio" e prevalgono sul "basso" di head/tail. Quindi
 $1$ diventa basso, $5$ alto e $2$ medio. Ne risulta:

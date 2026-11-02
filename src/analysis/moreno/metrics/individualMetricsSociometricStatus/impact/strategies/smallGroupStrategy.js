@@ -1,0 +1,67 @@
+// Copyright (c) 2026 Pierpaolo Calanna
+// SPDX-License-Identifier: MIT
+
+import {
+    CONFIG,
+    NO_SPLIT,
+} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+
+/**
+ * Small-group strategy: for the sub-minVisibleForTails regime (2..4 visible
+ * members), find the largest gap between consecutive sorted impacts and flag
+ * only the smaller side of that gap as the outlier tail. The bulk stays
+ * average-impact so its balance can still decide status.
+ *
+ * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
+ * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
+ */
+export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
+    const values = visibleSortedImpacts;
+    const n = values.length;
+
+    // Complement to the tail strategies: only for the sub-5 visible regime.
+    if (n < 2 || n >= CONFIG.minVisibleForTails) return NO_SPLIT;
+
+    // Find the largest gap between consecutive sorted values.
+    let split = 0;
+    let largestGap = 0;
+    for (let i = 1; i < n; i++) {
+        const gap = values[i] - values[i - 1];
+        if (gap > largestGap) {
+            largestGap = gap;
+            split = i - 1;
+        }
+    }
+
+    // All equal — nothing to separate.
+    if (largestGap === 0) return NO_SPLIT;
+
+    // Second-largest gap, for contrast.
+    let secondGap = 0;
+    for (let i = 1; i < n; i++) {
+        if (i - 1 !== split) secondGap = Math.max(secondGap, values[i] - values[i - 1]);
+    }
+
+    const spread = values[n - 1] - values[0];
+
+    // A gap only counts if it's a real jump (>= 2 received opinions) and it
+    // dominates the runner-up gap or the overall spread.
+    const isDominant =
+        largestGap >= CONFIG.smallGroup.minGap &&
+        (largestGap >= 2 * secondGap || largestGap >= 0.5 * spread);
+
+    if (!isDominant) return NO_SPLIT;
+
+    // Flag only the smaller side of the gap as the outlier tail; the bulk
+    // remains average. Equal sides (n = 4, 2v2) is a genuine two-way split.
+    const leftCount = split + 1;
+    const rightCount = n - leftCount;
+
+    if (leftCount < rightCount) {
+        return { low: values[split], high: Infinity };
+    }
+    if (rightCount < leftCount) {
+        return { low: -Infinity, high: values[split + 1] };
+    }
+    return { low: values[split], high: values[split + 1] };
+};
