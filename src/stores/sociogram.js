@@ -4,7 +4,7 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
-import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES, MIN_MEMBERS_COUNT, MAX_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions";
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 /**
@@ -28,58 +28,70 @@ import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
  */
 export const useSociogramStore = defineStore("sociogram", () => {
 
-  /** @type {number} Maximum length of a member's name. */
-  const maxMemberNameLength = 150;
+    /** @type {number} Minimum number of members. */
+    const minMembersCount = MIN_MEMBERS_COUNT;
 
-  /** @type {number} Maximum number of members (one per shared id). */
-  const maxMembersCount = MEMBERS_INDICES.length;
+    /** @type {number} Maximum number of members. */
+    const maxMembersCount = MAX_MEMBERS_COUNT;
 
-  /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
-  const members = ref([]);
+    /** @type {number} Maximum length of a member's name. */
+    const maxMemberNameLength = 150;
 
-  /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
-  const membersCount = computed(() => members.value.length);
+    /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
+    const members = ref([]);
 
-  /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
-  const membersStatus = computed(() => {
-    if (membersCount.value === 0) return "empty";
-    if (members.value.every(isMemberComplete)) return "completed";
-    return "partially-loaded";
-  });
+    /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
+    const membersCount = computed(() => members.value.length);
 
-  /** @type {import("vue").ComputedRef<boolean>} Whether all members have no dislikes. */
-  const allMembersHaveNoDislikes = computed(() => {
-    return members.value.every((member) => (member.dislikes ?? []).length === 0);
-  });
+    /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
+    const membersStatus = computed(() => {
+        if (membersCount.value === 0) return "empty";
+        if (members.value.every(isMemberComplete)) return "completed";
+        return "partially-loaded";
+    });
 
-  /**
-   * Replace the parsed members.
-   * @param {Member[]} membersData
-   */
-  function initMembers(membersData) {
-    members.value = membersData;
-  }
+    /** @type {import("vue").ComputedRef<boolean>} Whether all members have no dislikes. */
+    const allMembersHaveNoDislikes = computed(() => {
+        return members.value.every(
+            (member) => (member.dislikes ?? []).length === 0,
+        );
+    });
 
-  /**
-   * Append a member with the first id from the shared index sequence that is
-   * not yet in use. Does nothing once every index is in use.
-   */
-  function addMember() {
-    const usedIds = new Set(members.value.map((m) => m.id));
-    const id = MEMBERS_INDICES.find((candidate) => !usedIds.has(candidate));
-    if (id === undefined) return;
+    /**
+     * Replace the parsed members.
+     * @param {Member[]} membersData
+     */
+    function initMembers(membersData) {
+        members.value = membersData;
+    }
 
-    members.value = [
-      ...members.value,
-      { id, name: "", likes: [], dislikes: [], noLikes: false, noDislikes: false },
-    ];
-  }
+    /**
+     * Append a member with the first id from the shared index sequence that is
+     * not yet in use. Does nothing once every index is in use.
+     */
+    function addMember() {
+        const usedIds = new Set(members.value.map((m) => m.id));
+        const id = MEMBERS_INDICES.find((candidate) => !usedIds.has(candidate));
+        if (id === undefined) return;
 
-  function updateMember({ memberId, key, value }) {
-      const memberIndex = members.value.findIndex((m) => m.id === memberId);
-      if (memberIndex !== -1) {
-        members.value[memberIndex][key] = value;
-      }
+        members.value = [
+            ...members.value,
+            {
+                id,
+                name: "",
+                likes: [],
+                dislikes: [],
+                noLikes: false,
+                noDislikes: false,
+            },
+        ];
+    }
+
+    function updateMember({ memberId, key, value }) {
+        const memberIndex = members.value.findIndex((m) => m.id === memberId);
+        if (memberIndex !== -1) {
+            members.value[memberIndex][key] = value;
+        }
     }
 
     /**
@@ -87,41 +99,45 @@ export const useSociogramStore = defineStore("sociogram", () => {
      * @param {string} memberId
      */
     function removeMember(memberId) {
+        // Delete memberId by filtering out
+        members.value = members.value.filter((m) => m.id !== memberId);
 
-      // Delete memberId by filtering out
-      members.value = members.value.filter((m) => m.id !== memberId);
-
-      // Loop through each remaining member and remove the memberId
-      // from likes/dislikes
-      members.value.forEach((currentMember) => {
-        // Delete MemberId from each likes/dislikes array
-        if (currentMember.likes.includes(memberId)) {
-          currentMember.likes = currentMember.likes.filter((id) => id !== memberId);
-          currentMember.noLikes = currentMember.likes.length === 0;
-        }
-        // Delete MemberId from each dislikes array
-        if (currentMember.dislikes.includes(memberId)) {
-          currentMember.dislikes = currentMember.dislikes.filter((id) => id !== memberId);
-          currentMember.noDislikes = currentMember.dislikes.length === 0;
-        }
-      });
+        // Loop through each remaining member and remove the memberId
+        // from likes/dislikes
+        members.value.forEach((currentMember) => {
+            // Delete MemberId from each likes/dislikes array
+            if (currentMember.likes.includes(memberId)) {
+                currentMember.likes = currentMember.likes.filter(
+                    (id) => id !== memberId,
+                );
+                currentMember.noLikes = currentMember.likes.length === 0;
+            }
+            // Delete MemberId from each dislikes array
+            if (currentMember.dislikes.includes(memberId)) {
+                currentMember.dislikes = currentMember.dislikes.filter(
+                    (id) => id !== memberId,
+                );
+                currentMember.noDislikes = currentMember.dislikes.length === 0;
+            }
+        });
     }
-  /** Clear all loaded members. */
-  function resetMembers() {
-    members.value = [];
-  }
+    /** Clear all loaded members. */
+    function resetMembers() {
+        members.value = [];
+    }
 
-  return {
-    members,
-    membersCount,
-    membersStatus,
-    maxMemberNameLength,
-    maxMembersCount,
-    allMembersHaveNoDislikes,
-    initMembers,
-    addMember,
-    updateMember,
-    removeMember,
-    resetMembers,
-  };
+    return {
+        members,
+        membersCount,
+        membersStatus,
+        minMembersCount,
+        maxMembersCount,
+        maxMemberNameLength,
+        allMembersHaveNoDislikes,
+        initMembers,
+        addMember,
+        updateMember,
+        removeMember,
+        resetMembers,
+    };
 });
