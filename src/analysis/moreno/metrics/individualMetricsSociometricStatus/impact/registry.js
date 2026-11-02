@@ -13,7 +13,7 @@ import { smallGroupStrategy } from "@/analysis/moreno/metrics/individualMetricsS
 // remaining strategies vote with equal weight, so the order here is only for
 // readability and does not affect the outcome.
 // Jenks carves the widest natural gaps; head/tail isolates the heavy-tailed
-// extremes; Gini recognises distributional shape and cuts at deciles;
+// high extreme; Gini recognises distributional shape and cuts at deciles;
 // percentile reads relative standing; Tukey flags strict outliers beyond the
 // inner fences; binomial (GB) flags only the extreme cases under the chance
 // model. Small-group finds the dominant gap in tiny (sub-5) groups.

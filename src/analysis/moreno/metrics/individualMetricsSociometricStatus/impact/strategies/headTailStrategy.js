@@ -29,8 +29,9 @@ const headTailBreaks = (sorted) => {
 };
 
 /**
- * Head/tail breaks strategy: use the first (lowest) class for the low cutoff
- * and the last (highest) class for the high cutoff.
+ * Head/tail breaks strategy: head/tail breaks only carves the heavy-tailed
+ * high end, so this votes on the high cutoff and abstains on the low side
+ * (low = -Infinity).
  *
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -45,14 +46,7 @@ export const headTailStrategy = ({ visibleSortedImpacts }) => {
     // No split if no breaks were found
     if (breaks.length === 0) return NO_SPLIT;
 
-    // Low = upper bound of the first (lowest) class.
-    let low = -Infinity;
-    for (const v of visibleSortedImpacts) {
-        if (v <= breaks[0]) low = v;
-        else break;
-    }
-
-    // High = lower bound of the last (highest) class.
+    // High = lower bound of the last (highest) class, i.e. the final head.
     let high = Infinity;
     const lastBreak = breaks[breaks.length - 1];
     for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
@@ -60,5 +54,5 @@ export const headTailStrategy = ({ visibleSortedImpacts }) => {
         else break;
     }
 
-    return { low, high };
+    return { low: -Infinity, high };
 };
