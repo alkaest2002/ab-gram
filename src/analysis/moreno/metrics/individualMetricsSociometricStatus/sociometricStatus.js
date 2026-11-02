@@ -6,49 +6,27 @@ import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsS
 import { toSortedVisible } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
 import { classifyImpactByVote } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/classify.js";
 import { classifyBalance } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/balance/classify.js";
+import { classifyVisibility } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/visibility/classify.js";
 
 export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 
 // ============================================================================
-// STEP 1: VISIBILITY
-// ============================================================================
-/**
- * Determine which members are isolated (no opinions received or given) or
- * ignored (no opinions received but some given).
- *
- * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @param {import("numpy-ts").NDArray} expressivity - Opinions given (gp + gr).
- * @returns {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }}
- */
-const classifyVisibility = (impact, expressivity) => {
-    const hasNoOpinionsReceived = impact.equal(0);
-    const hasNoOpinionsGiven = expressivity.equal(0);
-    return {
-        isolated: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven),
-        ignored: hasNoOpinionsReceived.logical_and(
-            hasNoOpinionsGiven.logical_not(),
-        ),
-    };
-};
-
-// ============================================================================
-// STEP 5: STATUS ASSIGNMENT (decision tree, first match wins)
+// STATUS ASSIGNMENT (decision tree, first match wins)
 // ============================================================================
 /**
  * Map visibility, impact class and balance to the final sociometric status
  * codes using the first-match-wins decision tree.
  *
- * @param {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }} visibility - Visibility flags.
- * @param {{ isLowImpact: import("numpy-ts").NDArray, isHighImpact: import("numpy-ts").NDArray, isAverageImpact: import("numpy-ts").NDArray }} impactClass - Impact classification.
- * @param {{ isPositiveBalance: import("numpy-ts").NDArray, isNegativeBalance: import("numpy-ts").NDArray, isNeutralBalance: import("numpy-ts").NDArray }} balanceClass - Balance classification.
+ * @param {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }} visibilityClassification - Visibility classification.
+ * @param {{ isLowImpact: import("numpy-ts").NDArray, isHighImpact: import("numpy-ts").NDArray, isAverageImpact: import("numpy-ts").NDArray }} impactClassification - Impact classification.
+ * @param {{ isPositiveBalance: import("numpy-ts").NDArray, isNegativeBalance: import("numpy-ts").NDArray, isNeutralBalance: import("numpy-ts").NDArray }} balanceClassification - Balance classification.
  * @returns {import("numpy-ts").NDArray} Status codes (0-8, or 99 as safety default).
  */
-const assignStatus = (visibility, impactClass, balanceClass) => {
+const assignStatus = (visibilityClassification, impactClassification, balanceClassification) => {
     const S = SOCIOMETRIC_STATUS;
-    const { isolated, ignored } = visibility;
-    const { isLowImpact, isHighImpact, isAverageImpact } = impactClass;
-    const { isPositiveBalance, isNegativeBalance, isNeutralBalance } =
-        balanceClass;
+    const { isolated, ignored } = visibilityClassification;
+    const { isLowImpact, isHighImpact, isAverageImpact } = impactClassification;
+    const { isPositiveBalance, isNegativeBalance, isNeutralBalance } = balanceClassification;
 
     return np.select(
         [
@@ -155,9 +133,5 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
     const balanceClassification = classifyBalance(rp, rr, impact);
 
     // Assign status
-    return assignStatus(
-        visibilityClassification,
-        impactClassification,
-        balanceClassification,
-    );
+    return assignStatus(visibilityClassification, impactClassification, balanceClassification);
 };
