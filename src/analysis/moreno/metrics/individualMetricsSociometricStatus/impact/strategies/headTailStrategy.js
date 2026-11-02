@@ -36,9 +36,12 @@ const headTailBreaks = (sorted) => {
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const headTailStrategy = ({ visibleSortedImpacts }) => {
+export const headTailStrategy = ({ visibleSortedImpacts, groupSize }) => {
+    // Cache config
+    const cfg = CONFIG.impact.headTail;
+
     // No split if there are not enough visible members
-    if (visibleSortedImpacts.length < CONFIG.impact.headTail.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    if (groupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // Compute the breaks for the head/tail strategy
     const breaks = headTailBreaks(visibleSortedImpacts);

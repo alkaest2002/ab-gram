@@ -15,17 +15,20 @@ import {
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
+export const smallGroupStrategy = ({ visibleSortedImpacts, groupSize }) => {
+    // Cache config.
+    const cfg = CONFIG.impact.smallGroup;
+
+    // Rename for clarity.
     const values = visibleSortedImpacts;
-    const n = values.length;
 
     // Complement to the tail strategies: only below its own visible threshold.
-    if (n < 2 || n >= CONFIG.impact.smallGroup.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    if (groupSize < 2 || groupSize >= cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // Find the largest gap between consecutive sorted values.
     let split = 0;
     let largestGap = 0;
-    for (let i = 1; i < n; i++) {
+    for (let i = 1; i < groupSize; i++) {
         const gap = values[i] - values[i - 1];
         if (gap > largestGap) {
             largestGap = gap;
@@ -38,16 +41,17 @@ export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
 
     // Second-largest gap, for contrast.
     let secondGap = 0;
-    for (let i = 1; i < n; i++) {
+    for (let i = 1; i < groupSize; i++) {
         if (i - 1 !== split) secondGap = Math.max(secondGap, values[i] - values[i - 1]);
     }
 
-    const spread = values[n - 1] - values[0];
+    // The spread of values in the group.
+    const spread = values[groupSize - 1] - values[0];
 
     // A gap only counts if it's a real jump (>= 2 received opinions) and it
     // dominates the runner-up gap or the overall spread.
     const isDominant =
-        largestGap >= CONFIG.impact.smallGroup.minGap &&
+        largestGap >= cfg.minGap &&
         (largestGap >= 2 * secondGap || largestGap >= 0.5 * spread);
 
     if (!isDominant) return NO_SPLIT;
@@ -55,7 +59,7 @@ export const smallGroupStrategy = ({ visibleSortedImpacts }) => {
     // Flag only the smaller side of the gap as the outlier tail; the bulk
     // remains average. Equal sides (n = 4, 2v2) is a genuine two-way split.
     const leftCount = split + 1;
-    const rightCount = n - leftCount;
+    const rightCount = groupSize - leftCount;
 
     if (leftCount < rightCount) {
         return { low: values[split], high: Infinity };

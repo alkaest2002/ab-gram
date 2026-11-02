@@ -16,13 +16,18 @@ import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociome
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const tukeyStrategy = ({ visibleSortedImpacts }) => {
+    // Cache config.
+    const cfg = CONFIG.impact.tukey;
+
+    // IQR Guard: no split if IQR is zero (all values are the same).
     const q1 = percentileOf(visibleSortedImpacts, 25);
     const q3 = percentileOf(visibleSortedImpacts, 75);
     const iqr = q3 - q1;
     if (iqr === 0) return NO_SPLIT; // fences would collapse onto the median
-    const k = CONFIG.impact.tukey.k;
-    const lowFence = q1 - k * iqr;
-    const highFence = q3 + k * iqr;
+
+    // Compute the low and high fences.
+    const lowFence = q1 - cfg.k * iqr;
+    const highFence = q3 + cfg.k * iqr;
 
     let low = -Infinity;
     for (const v of visibleSortedImpacts) {
@@ -33,7 +38,7 @@ export const tukeyStrategy = ({ visibleSortedImpacts }) => {
     let high = Infinity;
     for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
         if (visibleSortedImpacts[i] > highFence)
-            high = visibleSortedImpacts[i]; // smallest strictly above
+            high = visibleSortedImpacts[i]; // smallest strictly above the fence
         else break;
     }
     return { low, high };

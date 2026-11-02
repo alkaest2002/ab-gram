@@ -67,31 +67,36 @@ const jenksBreaks = (sorted, k) => {
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const jenksStrategy = ({ visibleSortedImpacts }) => {
-    const n = visibleSortedImpacts.length;
-    const distinct = new Set(visibleSortedImpacts).size;
-    const k = 3;
+export const jenksStrategy = ({ visibleSortedImpacts, groupSize }) => {
+    // Cache config.
+    const cfg = CONFIG.impact.jenks;
 
-    // No split if there are not enough visible members
-    if (n < CONFIG.impact.jenks.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    // Count how many distinct values there are.
+    const distinctImpactValues = new Set(visibleSortedImpacts).size;
 
-    // No split if there are not enough distinct values
-    if (distinct < k) return NO_SPLIT;
+    // Set max numbers of clusters (k = 3).
+    const jenksClusters = 3;
 
-    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / n;
+    // No split if there are not enough visible members.
+    if (groupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+
+    // No split if there are not enough distinct values.
+    if (distinctImpactValues < jenksClusters) return NO_SPLIT;
+
+    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / groupSize;
     const sdam = visibleSortedImpacts.reduce((s, v) => s + (v - mean) ** 2, 0);
 
-    // No split if SDAM is zero (all values are the same)
+    // No split if SDAM is zero (all values are the same).
     if (sdam === 0) return NO_SPLIT;
 
-    const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, k);
+    const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, jenksClusters);
 
-    // No split if the goodness of variance fit is below the threshold
-    if (1 - sdcm / sdam < CONFIG.impact.jenks.minGvf) return NO_SPLIT;
+    // No split if the goodness of variance fit is below the threshold.
+    if (1 - sdcm / sdam < cfg.minGvf) return NO_SPLIT;
 
     const median = medianOf(visibleSortedImpacts);
-    let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class
-    let high = visibleSortedImpacts[starts[starts.length - 1]]; // min of the last class
+    let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class.
+    let high = visibleSortedImpacts[starts[starts.length - 1]]; // min of the last class.
 
     // Same guard as tailCutoffs: a tail must stay strictly beyond the median.
     if (!(low < median)) low = -Infinity;
