@@ -30,11 +30,14 @@ export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
 /** Member ids are single characters drawn from MEMBERS_INDICES */
 export const MEMBER_ID_PATTERN = /^[A-Z2468#@%$&]$/;
 
+/** Minimum number of members required for a complete sociogram. */
+export const MIN_MEMBERS_COUNT = 8;
+
 /** Maximum number of members (mirrors `maxMembersCount` in the store). */
 export const MAX_MEMBERS_COUNT = MEMBERS_INDICES.length;
 
-/** Minimum number of members required for a complete sociogram. */
-export const MIN_MEMBERS_COUNT = 8;
+/** Maximum length of a member's name. */
+export const MAX_NAME_LENGTH = 150;
 
 export function isPlainObject(value) {
   return Boolean(value) && typeof value === "object";
@@ -70,7 +73,7 @@ export function invalid(error) {
 export function SnapshotShouldBeAnObject(parsed) {
   return isPlainObject(parsed)
     ? null
-    : "Il file non contiene un dati sociometrici validi.";
+    : "Il progetto contiene dati sociometrici non validi.";
 }
 
 /**
@@ -80,7 +83,7 @@ export function SnapshotShouldBeAnObject(parsed) {
 export function SnapshotShouldHaveMembers(parsed) {
   return Array.isArray(parsed.members)
     ? null
-    : "L'archivio non contiene un elenco di nomi valido.";
+    : "Il progetto non contiene un elenco di nomi valido.";
 }
 
 /**
@@ -90,7 +93,7 @@ export function SnapshotShouldHaveMembers(parsed) {
 export function MembersShouldNotExceedMaxCount(parsed) {
   return parsed.members.length <= MAX_MEMBERS_COUNT
     ? null
-    : `L'archivio non può contenere più di ${MAX_MEMBERS_COUNT} nomi.`;
+    : `Il progetto non può contenere più di ${MAX_MEMBERS_COUNT} nomi.`;
 }
 
 /**
@@ -102,7 +105,7 @@ export function MembersShouldNotExceedMaxCount(parsed) {
 export function MembersShouldHaveAtLeastMinCount(parsed) {
   return parsed.members.length >= MIN_MEMBERS_COUNT
     ? null
-    : `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`;
+    : `Il progetto deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`;
 }
 
 /**
@@ -139,6 +142,16 @@ export function MemberShouldHaveAName(member) {
  * @param {object} member
  * @returns {string | null} Error message, or null when the check passes.
  */
+export function MemberNameShouldNotExceedMaxLength(member) {
+  return member.name.length <= MAX_NAME_LENGTH
+    ? null
+    : `I nomi dei membro del gruppo non devono superare ${MAX_NAME_LENGTH} caratteri.`;
+}
+
+/**
+ * @param {object} member
+ * @returns {string | null} Error message, or null when the check passes.
+ */
 export function LikesShouldNotExceedMemberCount(member) {
   const exceeds =
     Array.isArray(member.likes) && member.likes.length > MAX_MEMBERS_COUNT;
@@ -163,7 +176,7 @@ export function DislikesShouldNotExceedMemberCount(member) {
 export function MemberShouldHaveValidLikes(member) {
   return isIdList(member.likes)
     ? null
-    : "Le scelte di un membro del gruppo non sono valide.";
+    : "Le scelte di un membro del gruppo contengono identificativi non validi.";
 }
 
 /**
@@ -173,7 +186,7 @@ export function MemberShouldHaveValidLikes(member) {
 export function MemberShouldHaveValidDislikes(member) {
   return isIdList(member.dislikes)
     ? null
-    : "I rifiuti di un membro del gruppo non sono validi.";
+    : "I rifiuti di un membro del gruppo contengono identificativi non validi.";
 }
 
 /**
@@ -183,7 +196,7 @@ export function MemberShouldHaveValidDislikes(member) {
 export function MemberShouldHaveANoLikesFlag(member) {
   return typeof member.noLikes === "boolean"
     ? null
-    : "Il flag \"nessuna scelta\" di un membro del gruppo non è valido.";
+    : "La spunta \"nessuna scelta\" di un membro del gruppo non è valida.";
 }
 
 /**
@@ -193,7 +206,7 @@ export function MemberShouldHaveANoLikesFlag(member) {
 export function MemberShouldHaveANoDislikesFlag(member) {
   return typeof member.noDislikes === "boolean"
     ? null
-    : "Il flag \"nessun rifiuto\" di un membro del gruppo non è valido.";
+    : "La spunta \"nessun rifiuto\" di un membro del gruppo non è valida.";
 }
 
 /**
@@ -202,7 +215,7 @@ export function MemberShouldHaveANoDislikesFlag(member) {
  */
 export function MemberShouldNotLikeSelf(member) {
   return member.likes.includes(member.id)
-    ? "Un membro del gruppo non può scegliere sé stesso."
+    ? "I membri del gruppo non possono scegliere sé stessi."
     : null;
 }
 
@@ -212,7 +225,7 @@ export function MemberShouldNotLikeSelf(member) {
  */
 export function MemberShouldNotDislikeSelf(member) {
   return member.dislikes.includes(member.id)
-    ? "Un membro del gruppo non può rifiutare sé stesso."
+    ? "I membri del gruppo non possono rifiutare sé stessi."
     : null;
 }
 
@@ -226,7 +239,7 @@ export function MemberShouldNotDislikeSelf(member) {
 export function MemberShouldHaveLikesUnlessNoLikes(member) {
   return member.noLikes || member.likes.length > 0
     ? null
-    : "Un membro del gruppo deve avere almeno una preferenza.";
+    : "I membri del gruppo devono avere almeno una preferenza oppure deve avere la spunta 'non ha espresso scelte'.";
 }
 
 /**
@@ -239,7 +252,7 @@ export function MemberShouldHaveLikesUnlessNoLikes(member) {
 export function MemberShouldHaveDislikesUnlessNoDislikes(member) {
   return member.noDislikes || member.dislikes.length > 0
     ? null
-    : "Un membro deve avere almeno un rifiuto.";
+    : "I membri del gruppo devono avere almeno un rifiuto oppure deve avere la spunta 'non ha espresso rifiuti'.";
 }
 
 /**
@@ -263,7 +276,7 @@ export function LikesShouldReferenceExistingMembers(parsed) {
 
   for (const id of likedIds) {
     if (!memberIds.has(id)) {
-      return "Tra le scelte espresse, almeno uno fa riferimento a un soggetto inesistente.";
+      return "Tra le scelte espresse, almeno una fa riferimento a un soggetto inesistente.";
     }
   }
 
@@ -300,6 +313,7 @@ export const MEMBER_CHECKS = [
   MemberShouldBeAnObject,
   MemberShouldHaveAnId,
   MemberShouldHaveAName,
+  MemberNameShouldNotExceedMaxLength,
   MemberShouldHaveValidLikes,
   MemberShouldHaveValidDislikes,
   MemberShouldHaveANoLikesFlag,
