@@ -4,7 +4,8 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
-import { MEMBERS_INDICES, MIN_MEMBERS_COUNT, MAX_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES, MIN_MEMBERS_COUNT, MAX_MEMBERS_COUNT, MAX_NAME_LENGTH }
+    from "@/utils/sociogram/sociogramValidationFunctions";
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 /**
@@ -35,7 +36,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
     const maxMembersCount = MAX_MEMBERS_COUNT;
 
     /** @type {number} Maximum length of a member's name. */
-    const maxMemberNameLength = 150;
+    const maxMemberNameLength = MAX_NAME_LENGTH;
 
     /** @type {import("vue").Ref<Member[]>} Parsed sociogram members. */
     const members = ref([]);
