@@ -2,6 +2,10 @@
 title: Creare un nuovo progetto
 order: 2
 ---
+<script setup>
+    import { useSociogramStore } from "@/stores/sociogram";
+    const store = useSociogramStore()
+</script>
 
 Quando apri AB-Gram ti trovi davanti alla schermata iniziale, che propone due
 percorsi:
@@ -29,9 +33,9 @@ Verdi Luca
 
 #### 1.1.1 Limiti
 
-- Minimo **8 nominativi**.
-- Al massimo **35 nominativi**.
-- Ogni nominativo può contenere al massimo **150 caratteri**.
+- Minimo **{{ store.minMembersCount }} nominativi**.
+- Al massimo **{{ store.maxMembersCount }} nominativi**.
+- Ogni nominativo può contenere al massimo **{{ store.maxMemberNameLength }} caratteri**.
 
 ### 1.2 Ordinare i nominativi
 
