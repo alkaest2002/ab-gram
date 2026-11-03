@@ -207,7 +207,7 @@ describe("useSociogramValidateData (default)", () => {
 });
 
 describe("useSociogramValidateData(true) (complete)", () => {
-  const { validate } = useSociogramValidateData(true);
+  const { validate } = useSociogramValidateData(dataIsComplete = true);
 
   it("accepts a valid complete snapshot", () => {
     const snapshot = getHogwartsSnapshot();
