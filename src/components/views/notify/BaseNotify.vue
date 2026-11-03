@@ -5,9 +5,15 @@
 
 <script setup>
 // --- Imports ------------
+//   -- From vue
+import { onBeforeUnmount } from "vue";
+
 //   -- From components
 import BaseButton from "@/components/ui/BaseButton.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
+
+//   -- From stores
+import { useAppStore } from "@/stores/app";
 
 // --- Props --------------
 defineProps({
@@ -20,6 +26,7 @@ defineProps({
 // --- Routers ------------
 
 // --- Stores -------------
+const appStore = useAppStore();
 
 // --- State --------------
 
@@ -30,6 +37,9 @@ defineProps({
 // --- Watchers -----------
 
 // --- Lifecycle ----------
+onBeforeUnmount(() => {
+    appStore.resetNotifyData();
+});
 
 // --- Methods ------------
 </script>
@@ -48,7 +58,7 @@ defineProps({
                 <slot name="title"> Ops! Qualcosa è andato storto </slot>
             </h2>
             <p class="mx-auto max-w-[52ch] text-sm">
-                <slot name="text">
+                <slot name="text" :notifyData="appStore.notifyData">
                     Se pensi che si tratti di un bug, segnala il problema al gestore del sito.
                 </slot>
             </p>

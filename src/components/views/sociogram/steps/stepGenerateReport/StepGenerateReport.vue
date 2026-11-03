@@ -16,6 +16,7 @@ import { storeToRefs } from "pinia";
 
 //   -- From stores
 import { useSociogramStore } from "@/stores/sociogram";
+import { useAppStore } from "@/stores/app";
 
 //   -- From components
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
@@ -41,6 +42,7 @@ const router = useRouter();
 // --- Stores -------------
 const sociogramStore = useSociogramStore();
 const { members } = storeToRefs(sociogramStore);
+const appStore = useAppStore();
 
 // --- State --------------
 
@@ -74,19 +76,18 @@ const summary = computed(() =>
 
 // --- Methods ------------
 function goNext() {
-  const { isValid, errors } = validate({ members: toRaw(members.value) });
-  if (!isValid) {
-    console.log(errors)
-    router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
-    return;
-  };
-  router.replace({ name: "report" });
+    const { isValid, errors } = validate({ members: toRaw(members.value) });
+    if (!isValid) {
+        appStore.setNotifyData(errors);
+        router.push({ name: "sociogramValidatioError" });
+        return;
+    }
+    router.replace({ name: "report" });
 }
 </script>
 
 <template>
     <section class="card space-y-6">
-
         <StepHeader>
             <template #eyebrow>Passaggio 4 di 4</template>
             <template #title>Riepilogo</template>
@@ -105,7 +106,9 @@ function goNext() {
                     v-for="member in summary"
                     :key="member.id"
                     :member="member"
-                    @sociogram-edit-member="$emit('sociogram-edit-member', $event)"
+                    @sociogram-edit-member="
+                        $emit('sociogram-edit-member', $event)
+                    "
                 />
             </div>
         </section>

@@ -9,5 +9,16 @@ export const useAppStore = defineStore("app", () => {
   /** @type {import("vue").Ref<string>} */
   const appVersion = ref("1.0");
 
-  return { appVersion, };
+  /** @type {import("vue").Ref<unknown>} */
+  const notifyData = ref(null);
+
+  function setNotifyData(data) {
+    notifyData.value = data;
+  }
+
+  function resetNotifyData() {
+    notifyData.value = null;
+  }
+
+  return { appVersion, notifyData, setNotifyData, resetNotifyData };
 });
