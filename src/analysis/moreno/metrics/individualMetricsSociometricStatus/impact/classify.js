@@ -64,7 +64,7 @@ const countVotes = (booleanArrays) =>
  * Tie-breaks: a non-average class beats average, and low beats high.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @param {{ visibleSortedImpacts: number[], allImpacts: number[], groupSize: number }} context - Visible impacts, all impacts and group size.
+ * @param {{ visibleSortedImpacts: number[], allImpacts: number[], originalGroupSize: number, visibleGroupSize: number }} context - Visible impacts, all impacts and the original/visible group sizes.
  * @returns {{
  *   isLowImpact: import("numpy-ts").NDArray,
  *   isHighImpact: import("numpy-ts").NDArray,

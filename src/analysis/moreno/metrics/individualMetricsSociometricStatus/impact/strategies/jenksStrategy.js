@@ -64,10 +64,10 @@ const jenksBreaks = (sorted, k) => {
  * Jenks natural breaks (k = 3): cutoffs fall in the widest gaps, gated by the
  * goodness of variance fit (GVF = 1 - SDCM/SDAM) so structureless data abstains.
  *
- * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
+ * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const jenksStrategy = ({ visibleSortedImpacts, groupSize }) => {
+export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     // Cache config.
     const cfg = CONFIG.impact.jenks;
 
@@ -78,12 +78,12 @@ export const jenksStrategy = ({ visibleSortedImpacts, groupSize }) => {
     const jenksClusters = 3;
 
     // No split if there are not enough visible members.
-    if (groupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    if (visibleGroupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // No split if there are not enough distinct values.
     if (distinctImpactValues < jenksClusters) return NO_SPLIT;
 
-    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / groupSize;
+    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / visibleGroupSize;
     const sdam = visibleSortedImpacts.reduce((s, v) => s + (v - mean) ** 2, 0);
 
     // No split if SDAM is zero (all values are the same).

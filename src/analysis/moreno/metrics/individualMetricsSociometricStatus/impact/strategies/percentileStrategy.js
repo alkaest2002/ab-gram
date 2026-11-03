@@ -11,15 +11,15 @@ import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociomet
  * Plain-percentile strategy: cuts at the configured low/high percentiles with
  * tie-trimming. Abstains with fewer than its minimum visible members.
  *
- * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
+ * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const percentileStrategy = ({ visibleSortedImpacts, groupSize }) => {
+export const percentileStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     // Cache config.
     const cfg = CONFIG.impact.percentile;
 
     // Do not split if there are not enough visible members
-    if (groupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    if (visibleGroupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
 
     // Compute tail cutoffs.
     const { low, high } = tailCutoffs(visibleSortedImpacts, cfg.low, cfg.high);

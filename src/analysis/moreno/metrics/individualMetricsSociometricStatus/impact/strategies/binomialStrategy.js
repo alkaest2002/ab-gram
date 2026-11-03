@@ -33,14 +33,14 @@ const binomialCdf = (n, p) => {
  * Binomial (GB) strategy: exact two-sided binomial test under the chance
  * model. Limits are the counts whose tail probability is <= alpha/2.
  *
- * @param {{ allImpacts: number[], groupSize: number }} context - All impacts and group size.
+ * @param {{ allImpacts: number[], originalGroupSize: number }} context - All impacts and the original group size.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const binomialStrategy = ({ allImpacts, groupSize }) => {
-    const n = groupSize - 1; // possible givers for any one member
+export const binomialStrategy = ({ allImpacts, originalGroupSize }) => {
+    const n = originalGroupSize - 1; // possible givers for any one member
     if (n < 1) return NO_SPLIT;
     const total = allImpacts.reduce((s, v) => s + v, 0);
-    const p = total / (groupSize * n);
+    const p = total / (originalGroupSize * n);
 
     // The p < 1 guard also covers degenerate density: a giver nominating the
     // same member in both likes and dislikes can push p past the model's range.

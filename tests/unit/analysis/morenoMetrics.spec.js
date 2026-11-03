@@ -229,9 +229,11 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("classifies the likes-only example by the vote of the splitting strategies", () => {
-    // Received likes [5, 5, 2, 3, 2, 2]: percentile and Jenks propose the same
-    // (low <= 2, high >= 5) split, while Tukey and binomial abstain. The two
-    // active strategies therefore decide: 5 -> high, 2 -> low, 3 -> average.
+    // Received likes [5, 5, 2, 3, 2, 2]: percentile, Jenks, Gini and head/tail
+    // all see the 2/3/5 spread. Percentile, Jenks and Gini propose the same
+    // (low <= 2, high >= 5) split, while head/tail flags only the high tail (5).
+    // Tukey, binomial and small-group abstain, so 5 -> high, 2 -> low and
+    // 3 -> average.
     const members = [
       { id: "1", likes: ["2", "3", "4", "5", "6"], dislikes: [] },
       { id: "2", likes: ["1", "3", "4", "5", "6"], dislikes: [] },
@@ -262,8 +264,9 @@ describe("getIndividualLevelMetrics", () => {
 
   it("lets the agreeing splitting strategies decide when the others abstain", () => {
     // Received likes [1, 1, 2, 2, 2, 3]: percentile and Jenks propose the same
-    // (low <= 1, high >= 3) split, while Tukey and binomial abstain. The two
-    // active strategies agree, so 1 -> low, 2 -> average and 3 -> high.
+    // (low <= 1, high >= 3) split, while head/tail flags the >= 2 head as high.
+    // Gini, Tukey, binomial and small-group abstain, so 1 -> low, 2 -> average
+    // and 3 -> high.
     const members = [
       { id: "m0", likes: ["m5"], dislikes: [] },
       { id: "m1", likes: ["m5"], dislikes: [] },
