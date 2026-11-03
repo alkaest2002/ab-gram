@@ -5,14 +5,14 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed } from "vue";
 
-//   -- From components
+//   -- From components.
 import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
 import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useCopyLink } from "@/composables/useCopyLink";
 
 // --- Props --------------

@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components
+//   -- From components.
 import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 
 // --- Props --------------

@@ -5,10 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed } from "vue";
 
-//   -- From utils
+//   -- From utils.
 import {
     memberIndexIn,
     metricIndexOf,

@@ -5,14 +5,14 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, nextTick, ref, watch } from "vue";
 
-//   -- From utils
+//   -- From utils.
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
 
-//   -- From relative
+//   -- From relative.
 import LoadMembersListEditorStats from "./LoadMembersListEditorStats.vue";
 
 // --- Props --------------

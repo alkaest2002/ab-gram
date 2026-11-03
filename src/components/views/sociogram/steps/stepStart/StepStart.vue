@@ -5,16 +5,16 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From stores
+//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import StartLoadMembers from "@/components/views/sociogram/steps/stepStart/StartLoadMembers.vue";
 import StartImportProject from "@/components/views/sociogram/steps/stepStart/StartImportProject.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
 // --- Props --------------

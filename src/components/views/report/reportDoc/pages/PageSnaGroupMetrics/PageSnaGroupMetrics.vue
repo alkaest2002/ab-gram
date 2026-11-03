@@ -5,13 +5,13 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-//   -- From utils
+//   -- From utils.
 import { createSnaPlotWorker } from "@/utils/worker";
 
-//   -- From relative
+//   -- From relative.
 import BasePage from "../BasePage.vue";
 import SnaPlot from "./SnaPlot.vue";
 import SnaRegeneratePlotModal from "./SnaRegeneratePlotModal.vue";

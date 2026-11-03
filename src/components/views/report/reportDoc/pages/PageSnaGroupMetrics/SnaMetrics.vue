@@ -5,10 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed } from "vue";
 
-//   -- From relative
+//   -- From relative.
 import MetricBoxPlot from "./SnaMetricsBoxPlot.vue";
 import MetricProgressBar from "./SnaMetricsProgressBar.vue";
 

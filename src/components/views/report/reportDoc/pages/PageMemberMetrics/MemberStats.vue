@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components
+//   -- From components.
 import MemberStatsMetrics from "./MemberStatsMetrics.vue";
 import MemberStatsEdges from "./MemberStatsEdges.vue";
 import MemberStatsStructures from "./MemberStatsStructures.vue";

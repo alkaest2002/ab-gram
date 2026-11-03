@@ -5,19 +5,19 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, ref } from "vue";
 
-//   -- From stores
+//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 

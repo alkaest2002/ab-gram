@@ -5,10 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue-router
+//   -- From vue-router.
 import { RouterLink } from "vue-router";
 
-//   -- From docs
+//   -- From docs.
 import { navigation } from "@/docs/navigation";
 
 // --- Props --------------

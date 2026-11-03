@@ -5,11 +5,11 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components
+//   -- From components.
 import AppCardEdu from "@/components/ui/AppCardEdu.vue";
 import AppDiscordCard from "@/components/ui/AppDiscordCard.vue";
 
-//   -- From relative
+//   -- From relative.
 import packageJson from "../../../package.json";
 
 // --- Props --------------

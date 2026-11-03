@@ -5,16 +5,16 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, ref } from "vue";
 
-//   -- From pinia
+//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores
+//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
 import StepImportProject from "@/components/views/sociogram/steps/stepImportProject/StepImportProject.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";

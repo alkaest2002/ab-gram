@@ -5,10 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, inject, onMounted, ref } from "vue";
 
-//   -- From relative
+//   -- From relative.
 import { APP_VERSION_KEY, REPORT_PAGES_KEY } from "./reportPages.js";
 
 // --- Props --------------

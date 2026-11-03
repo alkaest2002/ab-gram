@@ -5,14 +5,14 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { onBeforeUnmount } from "vue";
 
-//   -- From components
+//   -- From components.
 import BaseButton from "@/components/ui/BaseButton.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue"
 
-//   -- From stores
+//   -- From stores.
 import { useAppStore } from "@/stores/app";
 
 // --- Props --------------

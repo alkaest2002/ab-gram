@@ -5,13 +5,13 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From stores
+//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-//   -- From utils
+//   -- From utils.
 import hogwartsDemo from "@/utils/sociogram/hogwarts.json";
 
 // --- Props --------------

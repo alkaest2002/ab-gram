@@ -5,20 +5,20 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { onBeforeUnmount, watch } from "vue";
 
-//   -- From vue-router
+//   -- From vue-router.
 import { RouterLink, useRoute } from "vue-router";
 
-//   -- From components
+//   -- From components.
 import AppLogo from "@/components/ui/AppLogo.vue";
 import MenuIcon from "@/components/ui/icons/MenuIcon.vue";
 import NavAppIcon from "@/components/ui/icons/NavAppIcon.vue";
 import NavDocsIcon from "@/components/ui/icons/NavDocsIcon.vue";
 import NavAboutIcon from "@/components/ui/icons/NavAboutIcon.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 

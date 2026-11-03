@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, useId } from "vue";
 
 // --- Props --------------

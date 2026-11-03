@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components
+//   -- From components.
 import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";

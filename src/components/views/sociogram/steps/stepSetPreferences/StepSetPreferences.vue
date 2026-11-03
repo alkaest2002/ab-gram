@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import {
     computed,
     ref,
@@ -16,13 +16,13 @@ import {
     useTemplateRef,
 } from "vue";
 
-//   -- From pinia
+//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores
+//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import SetPreferencesCarousel from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarousel.vue";
@@ -30,10 +30,10 @@ import SetPreferencesSelect from "@/components/views/sociogram/steps/stepSetPref
 import SetPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesProgress.vue";
 import SetPreferencesNoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesNoPreferences.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
-//   -- From utils
+//   -- From utils.
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
@@ -69,7 +69,7 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 
 // Likes/dislikes and their "not expressed" flags are mutually exclusive: picking
-// at least one member clears the flag, ticking the flag clears the list. These
+// at least one member clears the flag, ticking the flag clears the list. These.
 const currentLikes = writableMemberField("likes", [], (value) => {
     if (value.length > 0) currentNoLikes.value = false;
 });

@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components
+//   -- From components.
 import AppHeader from "@/components/ui/AppHeader.vue";
 import AppFooter from "@/components/ui/AppFooter.vue";
 

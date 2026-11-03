@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From relative
+//   -- From relative.
 import BasePage from "../BasePage.vue";
 
 // --- Props --------------

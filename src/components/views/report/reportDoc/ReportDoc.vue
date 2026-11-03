@@ -5,10 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, provide, ref } from "vue";
 
-//   -- From components
+//   -- From components.
 import PageCover from "@/components/views/report/reportDoc/pages/PageCover/PageCover.vue";
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences/PageListOfPreferences.vue";

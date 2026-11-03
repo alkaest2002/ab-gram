@@ -5,18 +5,18 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue
+//   -- From vue.
 import { computed, provide } from "vue";
 
-//   -- From pinia
+//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores
+//   -- From stores.
 import { useAppStore } from "@/stores/app";
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components
+//   -- From components.
 import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
 import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";

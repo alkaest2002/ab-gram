@@ -5,13 +5,13 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue-router
+//   -- From vue-router.
 import { useRouter } from "vue-router";
 
-//   -- From components
+//   -- From components.
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
 
-//   -- From composables
+//   -- From composables.
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------
