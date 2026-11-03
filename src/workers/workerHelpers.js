@@ -12,7 +12,7 @@
  *
  * Usage:
  * ```js
- * import { createReportWorker, preloadReportWorker } from "@/utils/worker/workerHelpers";
+ * import { createReportWorker, preloadReportWorker } from "@/workers/workerHelpers";
  *
  * // Warm the (large) report chunk in the background.
  * preloadReportWorker();

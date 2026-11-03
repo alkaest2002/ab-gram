@@ -9,7 +9,7 @@ import { createPinia } from "pinia";
 
 import App from "@/App.vue";
 import router from "@/router";
-import { preloadReportWorker, preloadSnaPlotWorker } from "@/utils/worker/workerHelpers";
+import { preloadReportWorker, preloadSnaPlotWorker } from "@/workers/workerHelpers";
 
 const app = createApp(App);
 
