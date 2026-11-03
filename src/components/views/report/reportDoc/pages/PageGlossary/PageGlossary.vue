@@ -50,9 +50,9 @@ const GLOSSARY = [
     // likes (scelte).
     { label: "L-DYD", extended: "Diadi (scelte)" },
     { label: "L-CLQ", extended: "Clique (scelte)" },
-    { label: "L-WCC", extended: "Comp.ti debolmente connesse (scelte)" },
-    { label: "L-SCC", extended: "Comp.ti fortemente connesse (scelte)" },
-    { label: "L-SCM", extended: "Comp.ti fortemente connesse e reciproche (scelte)" },
+    { label: "L-WCC", extended: "Componenti debolmente connesse (scelte)" },
+    { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },
+    { label: "L-SCM", extended: "Componenti fortemente connesse e reciproche (scelte)" },
     { label: "L-LVN", extended: "Comunità di Louvain (scelte)" },
 
     // Edge types.
@@ -69,10 +69,7 @@ const entries = [...GLOSSARY].sort((a, b) =>
     a.label.localeCompare(b.label, "it", { sensitivity: "base" }),
 );
 
-// Balanced two-column split: the first column takes the extra item on odd
-// counts, matching balanced column fill.
-const half = Math.ceil(entries.length / 2);
-const columns = [entries.slice(0, half), entries.slice(half)];
+
 
 // --- Composables --------
 
@@ -92,27 +89,20 @@ const columns = [entries.slice(0, half), entries.slice(half)];
         </template>
 
         <template #default>
-            <div class="flex h-full">
-                <dl
-                    v-for="(column, index) in columns"
-                    :key="index"
-                    class="min-w-0 flex-1"
-                    :class="index === 1 ? 'border-l border-line pl-[4mm]' : 'pr-[4mm]'"
+            <dl class="min-w-0">
+                <div
+                    v-for="entry in entries"
+                    :key="entry.label"
+                    class="flex items-center gap-[2mm] py-[1mm] border-b border-line"
                 >
-                    <div
-                        v-for="entry in column"
-                        :key="entry.label"
-                        class="flex items-baseline gap-[2mm] pb-[1.5mm]"
-                    >
-                        <dt class="w-[12mm] shrink-0 font-mono text-[8.5pt] font-semibold tracking-[0.06em] text-ink">
-                            {{ entry.label }}
-                        </dt>
-                        <dd class="min-w-0 text-[8.5pt] leading-[1.35] text-muted">
-                            {{ entry.extended }}
-                        </dd>
-                    </div>
-                </dl>
-            </div>
+                    <dt class="w-[12mm] shrink-0 font-mono text-[8.5pt] font-semibold tracking-[0.06em] text-ink">
+                        {{ entry.label }}
+                    </dt>
+                    <dd class="min-w-0 text-[8.5pt] leading-[1.35] text-muted">
+                        {{ entry.extended }}
+                    </dd>
+                </div>
+            </dl>
         </template>
     </BasePage>
 </template>
