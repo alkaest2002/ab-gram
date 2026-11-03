@@ -73,8 +73,8 @@ function onFileRead({ lines }) {
         const parsed = JSON.parse(json);
 
         const result = validate(parsed);
-        if (!result.valid) {
-            importError.value = result.error;
+        if (!result.isValid) {
+            importError.value = result.errors.join(" ");
             return;
         }
 

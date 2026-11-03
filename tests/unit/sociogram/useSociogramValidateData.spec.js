@@ -15,13 +15,17 @@ import { getHogwartsMembers, getHogwartsSnapshot } from "../../fixtures/hogwarts
  */
 
 function expectValid(result, parsed) {
-  expect(result).toEqual({ valid: true, error: null, data: parsed });
+  expect(result).toEqual({
+    isValid: true,
+    errors: [],
+    data: parsed,
+  });
 }
 
 function expectInvalid(result, error) {
-  expect(result.valid).toBe(false);
+  expect(result.isValid).toBe(false);
   expect(result.data).toBeNull();
-  expect(result.error).toBe(error);
+  expect(result.errors).toContain(error);
 }
 
 describe("useSociogramValidateData (default)", () => {
@@ -39,8 +43,27 @@ describe("useSociogramValidateData (default)", () => {
     expect(validate(snapshot).data).toBe(snapshot);
   });
 
+  it("collects every distinct error instead of stopping at the first", () => {
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0].id = "";
+    snapshot.members[1].name = undefined;
+
+    expect(validate(snapshot).errors).toEqual([
+      "Ogni membro del gruppo deve possedere un identificativo valido.",
+      "Ogni membro del gruppo deve avere un nome.",
+    ]);
+  });
+
+  it("deduplicates repeated messages", () => {
+    const snapshot = { members: ["A", "B"] };
+
+    expect(validate(snapshot).errors).toEqual([
+      "I dati di un membro del gruppo non sono validi.",
+    ]);
+  });
+
   it("rejects a snapshot that is not an object", () => {
-    const error = "Il file non contiene un dati sociometrici validi.";
+    const error = "Il progetto contiene dati sociometrici non validi.";
 
     for (const parsed of [null, undefined, 42, "archive", true]) {
       expectInvalid(validate(parsed), error);
@@ -48,7 +71,7 @@ describe("useSociogramValidateData (default)", () => {
   });
 
   it("rejects a snapshot whose members is not an array", () => {
-    const error = "L'archivio non contiene un elenco di nomi valido.";
+    const error = "Il progetto non contiene un elenco di nomi valido.";
 
     expectInvalid(validate({ members: "A,B,C" }), error);
     expectInvalid(validate({}), error);
@@ -65,7 +88,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      `L'archivio non può contenere più di ${MAX_MEMBERS_COUNT} nomi.`,
+      `Il progetto non può contenere più di ${MAX_MEMBERS_COUNT} nomi.`,
     );
   });
 
@@ -98,7 +121,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Le scelte di un membro del gruppo non sono valide.",
+      "Le scelte di un membro del gruppo contengono identificativi non validi.",
     );
   });
 
@@ -108,7 +131,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "I rifiuti di un membro del gruppo non sono validi.",
+      "I rifiuti di un membro del gruppo contengono identificativi non validi.",
     );
   });
 
@@ -118,7 +141,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      'Il flag "nessuna scelta" di un membro del gruppo non è valido.',
+      'La spunta "nessuna scelta" di un membro del gruppo non è valida.',
     );
   });
 
@@ -128,7 +151,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      'Il flag "nessun rifiuto" di un membro del gruppo non è valido.',
+      'La spunta "nessun rifiuto" di un membro del gruppo non è valida.',
     );
   });
 
@@ -158,7 +181,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Un membro del gruppo non può scegliere sé stesso.",
+      "I membri del gruppo non possono scegliere sé stessi.",
     );
   });
 
@@ -168,7 +191,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Un membro del gruppo non può rifiutare sé stesso.",
+      "I membri del gruppo non possono rifiutare sé stessi.",
     );
   });
 
@@ -191,7 +214,7 @@ describe("useSociogramValidateData (default)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Tra le scelte espresse, almeno uno fa riferimento a un soggetto inesistente.",
+      "Tra le scelte espresse, almeno una fa riferimento a un soggetto inesistente.",
     );
   });
 
@@ -207,7 +230,7 @@ describe("useSociogramValidateData (default)", () => {
 });
 
 describe("useSociogramValidateData(true) (complete)", () => {
-  const { validate } = useSociogramValidateData(dataIsComplete = true);
+  const { validate } = useSociogramValidateData(true);
 
   it("accepts a valid complete snapshot", () => {
     const snapshot = getHogwartsSnapshot();
@@ -221,7 +244,7 @@ describe("useSociogramValidateData(true) (complete)", () => {
 
     expectInvalid(
       validate(snapshot),
-      `L'archivio deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`,
+      `Il progetto deve contenere almeno ${MIN_MEMBERS_COUNT} nomi.`,
     );
   });
 
@@ -231,7 +254,7 @@ describe("useSociogramValidateData(true) (complete)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Un membro del gruppo deve avere almeno una preferenza.",
+      "I membri del gruppo devono avere almeno una preferenza oppure deve avere la spunta 'non ha espresso scelte'.",
     );
   });
 
@@ -252,7 +275,7 @@ describe("useSociogramValidateData(true) (complete)", () => {
 
     expectInvalid(
       validate(snapshot),
-      "Un membro deve avere almeno un rifiuto.",
+      "I membri del gruppo devono avere almeno un rifiuto oppure deve avere la spunta 'non ha espresso rifiuti'.",
     );
   });
 

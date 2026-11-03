@@ -74,9 +74,9 @@ const summary = computed(() =>
 
 // --- Methods ------------
 function goNext() {
-  const { valid, error } = validate({ members: toRaw(members.value) });
-  if (!valid) {
-    console.log(error)
+  const { isValid, errors } = validate({ members: toRaw(members.value) });
+  if (!isValid) {
+    console.log(errors)
     router.push({ name: "sociogramValidatioError", query: { to: "/docs" } });
     return;
   };

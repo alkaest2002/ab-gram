@@ -61,11 +61,6 @@ export function collectReferencedIds(members, field) {
   return ids;
 }
 
-/** Build the "rejected" result for a failing check. */
-export function invalid(error) {
-  return { valid: false, error, data: null };
-}
-
 /**
  * @param {unknown} parsed
  * @returns {string | null} Error message, or null when the check passes.
