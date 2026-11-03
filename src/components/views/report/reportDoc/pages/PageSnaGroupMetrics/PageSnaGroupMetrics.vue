@@ -9,7 +9,7 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 //   -- From utils.
-import { createSnaPlotWorker } from "@/utils/worker";
+import { createSnaPlotWorker } from "@/utils/worker/workerHelpers";
 
 //   -- From relative.
 import BasePage from "../BasePage.vue";

@@ -4,7 +4,7 @@
 import { describe, it, expect } from "vitest";
 
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData.js";
-import { MAX_MEMBERS_COUNT, MIN_MEMBERS_COUNT } from "@/utils/sociogram/sociogramValidationFunctions.js";
+import { MAX_MEMBERS_COUNT, MIN_MEMBERS_COUNT } from "@/utils/sociogram/validationHelpers.js";
 import { getHogwartsMembers, getHogwartsSnapshot } from "../../fixtures/hogwarts.js";
 
 /**

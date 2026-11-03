@@ -10,7 +10,7 @@ import { computed, nextTick, ref, watch } from "vue";
 
 //   -- From utils.
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
-import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES } from "@/utils/sociogram/validationHelpers";
 
 //   -- From relative.
 import LoadMembersListEditorStats from "./LoadMembersListEditorStats.vue";

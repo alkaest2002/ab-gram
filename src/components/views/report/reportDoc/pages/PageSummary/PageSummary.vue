@@ -14,7 +14,7 @@ import {
     metricIndexOf,
     readRaw,
     readRank,
-} from "@/utils/memberStatsHelpers";
+} from "@/utils/report/memberStatsHelpers";
 
 //   -- From relative.
 import BasePage from "../BasePage.vue";

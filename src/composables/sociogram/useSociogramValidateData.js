@@ -7,7 +7,7 @@ import {
   CROSS_MEMBER_CHECKS,
   COMPLETE_SNAPSHOT_CHECKS,
   COMPLETE_MEMBER_CHECKS,
-} from "@/utils/sociogram/sociogramValidationFunctions";
+} from "@/utils/sociogram/validationHelpers";
 
 /**
  * Validate a decoded, parsed sociogram archive snapshot for import.

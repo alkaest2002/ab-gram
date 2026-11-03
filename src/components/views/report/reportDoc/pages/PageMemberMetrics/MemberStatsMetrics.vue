@@ -13,7 +13,7 @@ import {
     readRank,
     readMaxRank,
     formatValue,
-} from "@/utils/memberStatsHelpers";
+} from "@/utils/report/memberStatsHelpers";
 
 // --- Props --------------
 const props = defineProps({

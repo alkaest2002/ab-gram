@@ -14,7 +14,7 @@ import {
     metricIndexOf,
     readRaw,
     formatValue,
-} from "@/utils/memberStatsHelpers";
+} from "@/utils/report/memberStatsHelpers";
 
 //   -- From constants.
 import { STATUS_UI_CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants";
@@ -49,9 +49,9 @@ const sociometricStatus = computed(() => {
     const config = STATUS_UI_CONFIG[code];
     if (!config) return null;
 
-    return { 
-        code, 
-        ...config, 
+    return {
+        code,
+        ...config,
         tone: { bar: config.bar, text: config.text }
     };
 });

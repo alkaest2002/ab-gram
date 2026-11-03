@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 
 import { MEMBERS_INDICES, MIN_MEMBERS_COUNT, MAX_MEMBERS_COUNT, MAX_NAME_LENGTH }
-    from "@/utils/sociogram/sociogramValidationFunctions";
+    from "@/utils/sociogram/validationHelpers";
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 /**

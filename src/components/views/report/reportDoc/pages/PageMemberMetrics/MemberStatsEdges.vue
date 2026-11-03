@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From utils.
-import { formatShare } from "@/utils/memberStatsHelpers";
+import { formatShare } from "@/utils/report/memberStatsHelpers";
 
 // --- Props --------------
 const props = defineProps({

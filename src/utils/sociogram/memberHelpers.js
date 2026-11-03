@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { MEMBERS_INDICES } from "@/utils/sociogram/sociogramValidationFunctions";
+import { MEMBERS_INDICES } from "@/utils/sociogram/validationHelpers";
 
 /**
  * Pure helpers for sociogram members, shared across the load-members step, the
