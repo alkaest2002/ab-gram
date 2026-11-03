@@ -125,16 +125,17 @@ function buildCard(member) {
                         v-for="card in cards"
                         :key="card.id"
                         class="summary-row"
+                        :class="{'py-[1.5mm]': cards.length < 25}"
                     >
                         <div class="member-identity">
                             <span class="id-badge">{{ card.id }}</span>
-                            <span class="min-w-0 truncate text-[8.5pt] text-ink">{{
+                            <span class="min-w-0 truncate text-[9pt] text-ink">{{
                                 card.name
                             }}</span>
                         </div>
 
                         <span
-                            class="member-status text-[7.5pt]"
+                            class="member-status text-[9pt]"
                             :class="card.statusClass"
                         >
                             {{ card.statusLabel }}
@@ -221,7 +222,7 @@ function buildCard(member) {
 
 .metric-label {
     font-family: var(--font-mono);
-    font-size: 7pt;
+    font-size: 8pt;
     font-weight: 600;
     line-height: 1;
     color: var(--color-ink);

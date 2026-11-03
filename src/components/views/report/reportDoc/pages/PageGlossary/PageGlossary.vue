@@ -95,10 +95,10 @@ const entries = [...GLOSSARY].sort((a, b) =>
                     :key="entry.label"
                     class="flex items-center gap-[2mm] py-[1mm] border-b border-line"
                 >
-                    <dt class="w-[12mm] shrink-0 font-mono text-[8.5pt] font-semibold tracking-[0.06em] text-ink">
+                    <dt class="w-[12mm] shrink-0 font-mono text-[9pt] font-semibold tracking-[0.06em] text-ink">
                         {{ entry.label }}
                     </dt>
-                    <dd class="min-w-0 text-[8.5pt] leading-[1.35] text-muted">
+                    <dd class="min-w-0 text-[9pt] leading-[1.35] text-muted">
                         {{ entry.extended }}
                     </dd>
                 </div>
