@@ -14,6 +14,7 @@
   --color-line: #e3e3e6;
   --color-accent: #2563eb;
   --color-reject: #dc2626;
+  --color-warn: #a46700;
 
   --animate-fade-in: fade-in 0.2s ease-out both;
 }

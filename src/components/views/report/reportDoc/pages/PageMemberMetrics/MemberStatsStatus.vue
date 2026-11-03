@@ -16,6 +16,9 @@ import {
     formatValue,
 } from "@/utils/memberStatsHelpers";
 
+//   -- From constants.
+import { STATUS_UI_CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants";
+
 // --- Props --------------
 const props = defineProps({
     // The id of the member these stats belong to, used to look up their row in
@@ -32,79 +35,6 @@ const props = defineProps({
 // --- Stores -------------
 
 // --- State --------------
-// Moreno's sociometric status codes (0-8) with an Italian label, a short reading
-// and an emphasis tone from the report's accent/reject/ink/muted palette.
-const STATUS_CONFIG = {
-    99: {
-        label: "Non classificato",
-        description: "",
-        tone: "muted",
-    },
-    0: {
-        label: "Isolato",
-        description: "nessuna scelta ricevuta né espressa.",
-        tone: "muted",
-    },
-    1: {
-        label: "Ignorato",
-        description: "ha espresso scelte ma non ne ha ricevute.",
-        tone: "muted",
-    },
-    2: {
-        label: "Marginale",
-        description: "riceve poche attenzioni.",
-        tone: "muted",
-    },
-    3: {
-        label: "Apprezzato",
-        description: "impatto medio con bilancio positivo.",
-        tone: "accent",
-    },
-    4: {
-        label: "Popolare",
-        description: "impatto alto con bilancio positivo.",
-        tone: "accent",
-    },
-    5: {
-        label: "Malvisto",
-        description: "impatto medio con bilancio negativo.",
-        tone: "reject",
-    },
-    6: {
-        label: "Rifiutato",
-        description: "impatto alto con bilancio negativo.",
-        tone: "reject",
-    },
-    7: {
-        label: "Ambivalente",
-        description: "impatto medio con bilancio neutro.",
-        tone: "ink",
-    },
-    8: {
-        label: "Controverso",
-        description: "impatto alto con bilancio neutro.",
-        tone: "ink",
-    },
-};
-
-const STATUS_TONES = {
-    accent: {
-        bar: "bg-accent",
-        text: "text-accent",
-    },
-    reject: {
-        bar: "bg-reject",
-        text: "text-reject",
-    },
-    ink: {
-        bar: "bg-ink",
-        text: "text-ink",
-    },
-    muted: {
-        bar: "bg-muted",
-        text: "text-muted",
-    },
-};
 
 // --- Composables --------
 
@@ -116,10 +46,14 @@ const sociometricStatus = computed(() => {
     if (memberIndex < 0 || metricIndex < 0) return null;
 
     const code = Number(readRaw(metrics, memberIndex, metricIndex));
-    const config = STATUS_CONFIG[code];
+    const config = STATUS_UI_CONFIG[code];
     if (!config) return null;
 
-    return { code, ...config, tone: STATUS_TONES[config.tone] };
+    return { 
+        code, 
+        ...config, 
+        tone: { bar: config.bar, text: config.text }
+    };
 });
 
 const receivedLikesScore = computed(() => {

@@ -19,6 +19,9 @@ import {
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 
+//   -- From constants.
+import { STATUS_UI_CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants";
+
 // --- Props --------------
 const props = defineProps({
     membersData: { type: Object, required: true },
@@ -37,30 +40,6 @@ const props = defineProps({
 // --- Stores -------------
 
 // --- State --------------
-// Moreno's sociometric status codes (0-8 plus the unclassified fallback) with
-// an Italian label and an emphasis tone drawn from the report palette.
-const STATUS_CONFIG = {
-    99: { label: "Non classificato", tone: "muted" },
-    0: { label: "Isolato", tone: "muted" },
-    1: { label: "Ignorato", tone: "muted" },
-    2: { label: "Marginale", tone: "muted" },
-    3: { label: "Apprezzato", tone: "accent" },
-    4: { label: "Popolare", tone: "accent" },
-    5: { label: "Malvisto", tone: "reject" },
-    6: { label: "Rifiutato", tone: "reject" },
-    7: { label: "Ambivalente", tone: "ink" },
-    8: { label: "Controverso", tone: "ink" },
-};
-
-// Tone → text color utility classes. "accent" is the report's blue, "reject"
-// its red; "ink" is near-black, so the status reads in one of the three colours
-// described by the summary legend (blue / ink / red).
-const STATUS_TONES = {
-    accent: "text-accent",
-    reject: "text-reject",
-    ink: "text-ink",
-    muted: "text-muted",
-};
 
 // The six centrality indicators, in the fixed reading order used by the row.
 // They map the compact label to the real SNA metric key, matching the member
@@ -93,7 +72,7 @@ function buildCard(member) {
         morenoIndex < 0 || statusIndex < 0
             ? 99
             : Number(readRaw(props.morenoMetrics, morenoIndex, statusIndex));
-    const status = STATUS_CONFIG[statusCode] ?? STATUS_CONFIG[99];
+    const status = STATUS_UI_CONFIG[statusCode] ?? STATUS_UI_CONFIG[99];
 
     const snaIndex = memberIndexIn(member.id, props.snaMetrics);
     const metrics = METRICS.map(({ label, key }) => {
@@ -106,7 +85,7 @@ function buildCard(member) {
         id: member.id,
         name: member.name,
         statusLabel: status.label,
-        statusClass: STATUS_TONES[status.tone],
+        statusClass: status.text,
         metrics,
     };
 }
