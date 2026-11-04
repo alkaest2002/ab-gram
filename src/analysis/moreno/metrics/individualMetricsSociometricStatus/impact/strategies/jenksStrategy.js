@@ -5,7 +5,7 @@ import {
     CONFIG,
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { medianOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
+import { medianOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 /**
  * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).

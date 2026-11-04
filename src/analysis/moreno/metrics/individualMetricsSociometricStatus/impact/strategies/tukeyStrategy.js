@@ -5,7 +5,7 @@ import {
     CONFIG,
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
+import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 /**
  * Tukey strategy: strict inner fences (Q1 - k*IQR, Q3 + k*IQR) over visible

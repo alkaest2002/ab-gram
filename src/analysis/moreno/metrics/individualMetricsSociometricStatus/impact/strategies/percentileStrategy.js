@@ -5,7 +5,7 @@ import {
     CONFIG,
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
+import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 /**
  * Plain-percentile strategy: cuts at the configured low/high percentiles with

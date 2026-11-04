@@ -7,7 +7,7 @@ import {
     CONFIG,
     NO_SPLIT,
 } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/helpers.js";
+import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 /**
  * Gini strategy: decides whether the distribution is unequal (sample-corrected
