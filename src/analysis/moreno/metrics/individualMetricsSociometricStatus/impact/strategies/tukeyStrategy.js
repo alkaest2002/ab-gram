@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+import { percentileOf, finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
-// Strategy parameters.
-const K = 1.5; // mild outlier detection
+// Strategy parameters
+const MIN_MEMBERS = 3;
+const K = 1;
 
 /**
  * Tukey strategy: strict inner fences (Q1 - k*IQR, Q3 + k*IQR) over visible
@@ -15,28 +16,38 @@ const K = 1.5; // mild outlier detection
  * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const tukeyStrategy = ({ visibleSortedImpacts }) => {
-    // IQR Guard: no split if IQR is zero (all values are the same).
-    const q1 = percentileOf(visibleSortedImpacts, 25);
-    const q3 = percentileOf(visibleSortedImpacts, 75);
-    const iqr = q3 - q1;
-    if (iqr === 0) return NO_SPLIT; // fences would collapse onto the median
+export const tukeyStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
+    const values = visibleSortedImpacts;
 
-    // Compute the low and high fences.
+    // ========================================================================
+    // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+    // ========================================================================
+    const q1 = percentileOf(values, 25);
+    const q3 = percentileOf(values, 75);
+    const iqr = q3 - q1;
+    if (visibleGroupSize < MIN_MEMBERS || iqr === 0) return NO_SPLIT;
+
+
+    // ========================================================================
+    // CLASSIFY — split the sorted values at the fences.
+    // ========================================================================
     const lowFence = q1 - K * iqr;
     const highFence = q3 + K * iqr;
 
-    let low = -Infinity;
-    for (const v of visibleSortedImpacts) {
-        if (v < lowFence)
-            low = v; // largest value strictly below the fence
+    let lowEnd = -1;
+    for (let i = 0; i < values.length; i += 1) {
+        if (values[i] < lowFence) lowEnd = i;
         else break;
     }
-    let high = Infinity;
-    for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
-        if (visibleSortedImpacts[i] > highFence)
-            high = visibleSortedImpacts[i]; // smallest strictly above the fence
+
+    let highStart = values.length;
+    for (let i = values.length - 1; i >= 0; i -= 1) {
+        if (values[i] > highFence) highStart = i;
         else break;
     }
-    return { low, high };
+
+    // ========================================================================
+    // SEPARATION CHECK — switch off a tail that is not separated by one vote.
+    // ========================================================================
+    return finalizeSplit(values, lowEnd, highStart);
 };

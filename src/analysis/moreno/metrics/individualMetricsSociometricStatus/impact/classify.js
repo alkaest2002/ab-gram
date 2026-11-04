@@ -73,8 +73,10 @@ const countVotes = (booleanArrays) =>
  */
 export const classifyImpactByVote = (impact, context) => {
 
-    // If no visible impacts, use the default NO_SPLIT strategy to classify the impact.
-    if (context.visibleSortedImpacts.length === 0) return classifyImpact(impact, NO_SPLIT);
+    // With few visible impacts there is no meaningful spread, so
+    // skip the vote and classify everyone as average.
+    if (context.visibleSortedImpacts.length < 4)
+        return classifyImpact(impact, NO_SPLIT);
 
     // Filter active strategies based on ability to classify the impact.
     // i.e., at least there is a label different from 0

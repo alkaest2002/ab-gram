@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { medianOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
-const MIN_VISIBLE_MEMBERS = 5;
-const MIN_GVF = 0.75; // goodness of variance fit: 1 - SDCM/SDAM
+const MIN_MEMBERS = 5;
+const MIN_GVF = 0.75;
 
 /**
  * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
@@ -69,36 +69,23 @@ const jenksBreaks = (sorted, k) => {
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Count how many distinct values there are.
+    // ========================================================================
+    // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+    // ========================================================================
+    if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
+
     const distinctImpactValues = new Set(visibleSortedImpacts).size;
-
-    // Set max numbers of clusters (k = 3).
-    const jenksClusters = 3;
-
-    // No split if there are not enough visible members.
-    if (visibleGroupSize < MIN_VISIBLE_MEMBERS) return NO_SPLIT;
-
-    // No split if there are not enough distinct values.
-    if (distinctImpactValues < jenksClusters) return NO_SPLIT;
+    if (distinctImpactValues < 3) return NO_SPLIT;
 
     const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / visibleGroupSize;
     const sdam = visibleSortedImpacts.reduce((s, v) => s + (v - mean) ** 2, 0);
-
-    // No split if SDAM is zero (all values are the same).
     if (sdam === 0) return NO_SPLIT;
 
-    const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, jenksClusters);
-
-    // No split if the goodness of variance fit is below the threshold.
+    const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, 3);
     if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
-    const median = medianOf(visibleSortedImpacts);
-    let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class.
-    let high = visibleSortedImpacts[starts[starts.length - 1]]; // min of the last class.
-
-    // Same guard as tailCutoffs: a tail must stay strictly beyond the median.
-    if (!(low < median)) low = -Infinity;
-    if (!(high > median)) high = Infinity;
-
-    return low === -Infinity && high === Infinity ? NO_SPLIT : { low, high };
+    // ========================================================================
+    // CLASSIFY + SEPARATION CHECK — class 1 is low, class 3 is high.
+    // ========================================================================
+    return finalizeSplit(visibleSortedImpacts, starts[0] - 1, starts[1]);
 };

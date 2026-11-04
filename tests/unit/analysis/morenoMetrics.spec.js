@@ -10,7 +10,7 @@ import {
 } from "@/analysis/moreno/metrics/morenoMetrics.js";
 import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatus.js";
 import { createAdjacencyMatrices } from "@/analysis/common/adjacencyMatrices.js";
-import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
+import { getSmallGroupMembers, getMediumGroupMembers } from "../../fixtures/sociometric.js";
 
 const GROUP_COLUMNS = [
   "cohesion",
@@ -191,10 +191,8 @@ describe("getIndividualLevelMetrics", () => {
     ]);
   });
 
-  it("classifies the Hogwarts demo roster sensibly (status regression)", () => {
-    // Regression for the impact-threshold majority vote across the current
-    // strategy set (Jenks, head/tail, Gini, percentile, Tukey, binomial).
-    const members = getHogwartsMembers();
+  it("classifies a small group (8 members) sensibly (status regression)", () => {
+    const members = getSmallGroupMembers();
     const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
 
     const result = getIndividualLevelMetrics(
@@ -214,17 +212,50 @@ describe("getIndividualLevelMetrics", () => {
 
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
-      "Potter, Harry": S.POPULAR,
-      "Granger, Hermione": S.APPRECIATED,
-      "Weasley, Ron": S.APPRECIATED,
-      "Longbottom, Neville": S.APPRECIATED,
-      "Lovegood, Luna": S.MARGINAL,
-      "Malfoy, Draco": S.REJECTED,
-      "Crabbe, Vincent": S.DISLIKED,
-      "Goyle, Gregory": S.DISLIKED,
-      "Diggory, Cedric": S.MARGINAL,
-      "Weasley, Fred": S.AMBIVALENT,
-      "Weasley, George": S.AMBIVALENT,
+      "Alice": S.POPULAR,
+      "Bob": S.APPRECIATED,
+      "Carol": S.APPRECIATED,
+      "Dave": S.IGNORED,
+      "Eve": S.AMBIVALENT,
+      "Frank": S.IGNORED,
+      "Grace": S.IGNORED,
+      "Heidi": S.ISOLATED,
+    });
+  });
+
+  it("classifies a medium group (12 members) sensibly (status regression)", () => {
+    const members = getMediumGroupMembers();
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(members);
+
+    const result = getIndividualLevelMetrics(
+      adjLikes,
+      adjDislikes,
+      members.map((member) => member.id),
+      members,
+    );
+
+    const statusColumn = result.metrics.indexOf("ss");
+    const statusByName = Object.fromEntries(
+      members.map((member, i) => [
+        member.name,
+        result.rawValuesById[i][statusColumn],
+      ]),
+    );
+
+    const S = SOCIOMETRIC_STATUS;
+    expect(statusByName).toEqual({
+      "Anna": S.POPULAR,
+      "Bruno": S.POPULAR,
+      "Carla": S.APPRECIATED,
+      "Dino": S.APPRECIATED,
+      "Elsa": S.CONTROVERSIAL,
+      "Franco": S.DISLIKED,
+      "Gina": S.APPRECIATED,
+      "Hugo": S.MARGINAL,
+      "Irene": S.IGNORED,
+      "Juri": S.IGNORED,
+      "Kara": S.ISOLATED,
+      "Luca": S.IGNORED,
     });
   });
 
@@ -263,10 +294,9 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("lets the agreeing splitting strategies decide when the others abstain", () => {
-    // Received likes [1, 1, 2, 2, 2, 3]: percentile and Jenks propose the same
-    // (low <= 1, high >= 3) split, while head/tail flags the >= 2 head as high.
-    // Gini, Tukey, binomial and small-group abstain, so 1 -> low, 2 -> average
-    // and 3 -> high.
+    // Received likes [1, 1, 2, 2, 2, 3]: the current strategy set splits only
+    // the top (impact 3) as high, leaving impacts 1 and 2 average. So m0..m4
+    // are appreciated and m5 is popular.
     const members = [
       { id: "m0", likes: ["m5"], dislikes: [] },
       { id: "m1", likes: ["m5"], dislikes: [] },
@@ -286,8 +316,8 @@ describe("getIndividualLevelMetrics", () => {
 
     const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
     expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
-      SOCIOMETRIC_STATUS.MARGINAL,
-      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.APPRECIATED,

@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
-const MIN_VISIBLE_MEMBERS = 5;
-const MAX_HEAD_SHARE = 0.4; // keep splitting while the head is < 40% of the data
+const MIN_MEMBERS = 5;
+const MAX_HEAD_SHARE = 0.4;
 
 /**
  * Head/tail breaks: recursively split the heavy-tailed "head" (values above
@@ -38,22 +39,26 @@ const headTailBreaks = (sorted) => {
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const headTailStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // No split if there are not enough visible members.
-    if (visibleGroupSize < MIN_VISIBLE_MEMBERS) return NO_SPLIT;
+    // ========================================================================
+    // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+    // ========================================================================
+    if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
 
-    // Compute the breaks for the head/tail strategy
     const breaks = headTailBreaks(visibleSortedImpacts);
-
-    // No split if no breaks were found
     if (breaks.length === 0) return NO_SPLIT;
 
-    // High = lower bound of the last (highest) class, i.e. the final head.
-    let high = Infinity;
+    // ========================================================================
+    // CLASSIFY — high = lower bound of the last (highest) class (final head).
+    // ========================================================================
     const lastBreak = breaks[breaks.length - 1];
+    let highStart = visibleSortedImpacts.length;
     for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
-        if (visibleSortedImpacts[i] > lastBreak) high = visibleSortedImpacts[i];
+        if (visibleSortedImpacts[i] > lastBreak) highStart = i;
         else break;
     }
 
-    return { low: -Infinity, high };
+    // ========================================================================
+    // SEPARATION CHECK — no low tail; switch off high if it is not separated.
+    // ========================================================================
+    return finalizeSplit(visibleSortedImpacts, -1, highStart);
 };

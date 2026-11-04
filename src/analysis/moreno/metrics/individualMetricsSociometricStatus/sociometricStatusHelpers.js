@@ -1,8 +1,6 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-
 /**
  * Visible impacts, sorted ascending: the non-zero impact values flattened
  * from the NDArray into a plain number array.
@@ -58,37 +56,44 @@ export const medianOf = (sorted) => {
 };
 
 /**
- * Cut a { low, high } pair at the given percentiles, then keep the tails clear
- * of the tied bulk: a side whose cutoff reaches the median is pulled in to the
- * nearest value strictly beyond the median (or dropped if none exists).
+ * Finalize an index-based low / average / high split. The low class is
+ * sorted[0..lowEnd], average is sorted[lowEnd+1..highStart-1] and high is
+ * sorted[highStart..]. A tail whose boundary values are equal (i.e. not
+ * separated by at least one vote) is switched off (infinite bound).
+ *
+ * @param {number[]} sorted - Sorted (ascending) visible impacts.
+ * @param {number} lowEnd - Index of the last low value, or -1 for no low tail.
+ * @param {number} highStart - Index of the first high value, or sorted.length for no high tail.
+ * @returns {{ low: number, high: number }} Finalized cutoffs, either bound may be infinite.
+ */
+export const finalizeSplit = (sorted, lowEnd, highStart) => {
+  let low = -Infinity;
+  if (lowEnd >= 0) {
+    low = sorted[lowEnd];
+    if (lowEnd + 1 < sorted.length && sorted[lowEnd + 1] === low) low = -Infinity;
+  }
+
+  let high = Infinity;
+  if (highStart < sorted.length) {
+    high = sorted[highStart];
+    if (highStart - 1 >= 0 && sorted[highStart - 1] === high) high = Infinity;
+  }
+
+  return { low, high };
+};
+
+/**
+ * Cut a { low, high } pair at the given percentiles, then apply the separation
+ * check so a tail whose boundary values are equal is switched off.
  *
  * @param {number[]} sorted - Sorted (ascending) visible impacts.
  * @param {number} lowPercentile - Percentile for the low cutoff.
  * @param {number} highPercentile - Percentile for the high cutoff.
- * @returns {{ low: number, high: number }} Observed cutoffs (either may be infinite).
+ * @returns {{ low: number, high: number }} Finalized cutoffs (either may be infinite).
  */
 export const tailCutoffs = (sorted, lowPercentile, highPercentile) => {
-  const median = medianOf(sorted);
-
-  let low = percentileOf(sorted, lowPercentile);
-  if (!(low < median)) {
-    low = -Infinity;
-    for (const v of sorted) {
-      if (v < median)
-        low = v; // ends as the largest value strictly below
-      else break;
-    }
-  }
-
-  let high = percentileOf(sorted, highPercentile);
-  if (!(high > median)) {
-    high = Infinity;
-    for (let i = sorted.length - 1; i >= 0; i -= 1) {
-      if (sorted[i] > median)
-        high = sorted[i]; // smallest strictly above
-      else break;
-    }
-  }
-
-  return low === -Infinity && high === Infinity ? NO_SPLIT : { low, high };
+  const n = sorted.length;
+  const lowEnd = rankIndex(n, lowPercentile);
+  const highStart = n - 1 - rankIndex(n, 100 - highPercentile);
+  return finalizeSplit(sorted, lowEnd, highStart);
 };

@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
-const MIN_VISIBLE_MEMBERS = 5; // complement: votes only below this threshold
-const MIN_GAP = 2; // minimum jump in received opinions to count as a split
-
+const MAX_MEMBERS = 4;
+const MIN_GAP = 2;
 /**
- * Small-group strategy: for groups of 2..MIN_VISIBLE_MEMBERS-1 visible
+ * Small-group strategy: for groups of 2..MIN_MEMBERS-1 visible
  * members, find the largest gap between consecutive sorted impacts and flag
  * only the smaller side of that gap as the outlier tail. The bulk stays
  * average-impact so its balance can still decide status.
@@ -17,11 +17,13 @@ const MIN_GAP = 2; // minimum jump in received opinions to count as a split
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Rename for clarity.
+    // Shorten variable name.
     const values = visibleSortedImpacts;
 
-    // Complement to the tail strategies: only below the visible threshold.
-    if (visibleGroupSize < 2 || visibleGroupSize >= MIN_VISIBLE_MEMBERS) return NO_SPLIT;
+    // ========================================================================
+    // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+    // ========================================================================
+    if (visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
     // Find the largest gap between consecutive sorted values.
     let split = 0;
@@ -54,16 +56,18 @@ export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
 
     if (!isDominant) return NO_SPLIT;
 
-    // Flag only the smaller side of the gap as the outlier tail; the bulk
-    // remains average. Equal sides (n = 4, 2v2) is a genuine two-way split.
+    // ========================================================================
+    // CLASSIFY + SEPARATION CHECK — flag only the smaller side of the gap; the
+    // bulk stays average. Equal sides (n = 4, 2v2) is a genuine two-way split.
+    // ========================================================================
     const leftCount = split + 1;
     const rightCount = visibleGroupSize - leftCount;
 
     if (leftCount < rightCount) {
-        return { low: values[split], high: Infinity };
+        return finalizeSplit(values, split, values.length);
     }
     if (rightCount < leftCount) {
-        return { low: -Infinity, high: values[split + 1] };
+        return finalizeSplit(values, -1, split + 1);
     }
-    return { low: values[split], high: values[split + 1] };
+    return finalizeSplit(values, split, split + 1);
 };
