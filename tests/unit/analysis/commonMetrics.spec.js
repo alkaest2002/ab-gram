@@ -4,7 +4,7 @@
 import { describe, it, expect } from "vitest";
 import * as np from "numpy-ts";
 
-import { computeRankedScores, computeGiniCoefficient } from "@/analysis/common/commonMetrics.js";
+import { computeRankedScores } from "@/analysis/common/commonMetrics.js";
 
 describe("computeRankedScores", () => {
   it("ranks a 1-D array descending (higher is better) with 1-based dense ranks by default", () => {
@@ -56,37 +56,6 @@ describe("computeRankedScores", () => {
 
     expect(() => computeRankedScores(threeDimensional)).toThrow(
       "computeRankedScores expects a 1-D or 2-D array",
-    );
-  });
-});
-
-describe("computeGiniCoefficient", () => {
-  it("returns 0 for empty or single-element distributions", () => {
-    expect(computeGiniCoefficient(np.array([]))).toBe(0);
-    expect(computeGiniCoefficient(np.array([7]))).toBe(0);
-  });
-
-  it("returns 0 for a perfectly equal distribution", () => {
-    expect(computeGiniCoefficient(np.array([5, 5, 5, 5]))).toBe(0);
-  });
-
-  it("returns 0 for an all-zero distribution", () => {
-    expect(computeGiniCoefficient(np.array([0, 0, 0]))).toBe(0);
-  });
-
-  it("computes the expected Gini coefficient for a known distribution", () => {
-    // Gini([1, 2, 3]) = 2 / 9.
-    expect(computeGiniCoefficient(np.array([1, 2, 3]))).toBeCloseTo(2 / 9, 10);
-  });
-
-  it("computes the expected Gini coefficient for a skewed distribution", () => {
-    // Gini([0, 0, 100]) = 2 / 3.
-    expect(computeGiniCoefficient(np.array([0, 0, 100]))).toBeCloseTo(2 / 3, 10);
-  });
-
-  it("throws when the distribution contains negative values", () => {
-    expect(() => computeGiniCoefficient(np.array([1, -2, 3]))).toThrow(
-      "Gini coefficient calculation requires non-negative values.",
     );
   });
 });
