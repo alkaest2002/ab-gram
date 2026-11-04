@@ -35,8 +35,8 @@ const jenksBreaks = (sorted, k) => {
 
   // cost[c][j]: min SSE of splitting sorted[0..j] into c classes.
   // back[c][j]: start index of the last class in that optimum.
-  const cost = Array.from({ length: k + 1 }, () => new Array(n).fill(Infinity));
-  const back = Array.from({ length: k + 1 }, () => new Array(n).fill(0));
+  const cost = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => Infinity));
+  const back = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => 0));
   for (let j = 0; j < n; j++) cost[1][j] = sse(0, j);
 
   for (let c = 2; c <= k; c++) {

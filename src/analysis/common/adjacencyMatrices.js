@@ -21,12 +21,12 @@ import * as np from "numpy-ts";
  */
 export const createAdjacencyMatrix = (members, preference) => {
   if (preference !== "likes" && preference !== "dislikes") {
-    throw new Error(`Unknown preference "${preference}". Expected "likes" or "dislikes".`);
+    throw new Error(`Unknown preference "${String(preference)}". Expected "likes" or "dislikes".`);
   }
 
   const indexById = new Map(members.map((member, index) => [member.id, index]));
   const size = members.length;
-  const matrix = Array.from({ length: size }, () => new Array(size).fill(0));
+  const matrix = Array.from({ length: size }, () => Array.from({ length: size }, () => 0));
 
   members.forEach((member, i) => {
     for (const chosenId of member[preference]) {
