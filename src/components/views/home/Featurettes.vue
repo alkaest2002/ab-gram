@@ -20,21 +20,21 @@ import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 
 // --- State --------------
 const features = [
-    {
-        id: "free",
-        title: "App gratuita",
-        text: "Nessun costo nascosto. Se vuoi, puoi lasciare una donazione libera per aiutarci a coprire le spese di hosting.",
-    },
-    {
-        id: "easy",
-        title: "App semplice",
-        text: "Niente da installare né da configurare. Tutto funziona direttamente nel browser, in pochi passaggi, con pochi click.",
-    },
-    {
-        id: "privacy",
-        title: "App attenta alla privacy",
-        text: "I tuoi dati restano sul tuo dispositivo: non raggiungono server esterni e non vengono inviati a nessuno.",
-    },
+  {
+    id: "free",
+    title: "App gratuita",
+    text: "Nessun costo nascosto. Se vuoi, puoi lasciare una donazione libera per aiutarci a coprire le spese di hosting.",
+  },
+  {
+    id: "easy",
+    title: "App semplice",
+    text: "Niente da installare né da configurare. Tutto funziona direttamente nel browser, in pochi passaggi, con pochi click.",
+  },
+  {
+    id: "privacy",
+    title: "App attenta alla privacy",
+    text: "I tuoi dati restano sul tuo dispositivo: non raggiungono server esterni e non vengono inviati a nessuno.",
+  },
 ];
 
 // --- Composables --------
@@ -49,42 +49,30 @@ const features = [
 </script>
 
 <template>
-    <div class="space-y-8 text-center">
-        <header class="mx-auto space-y-3">
-            <p class="eyebrow">Perché AB-Gram</p>
-            <h2 class="text-2xl">Il breve manifesto</h2>
-        </header>
+  <div class="space-y-8 text-center">
+    <header class="mx-auto space-y-3">
+      <p class="eyebrow">Perché AB-Gram</p>
+      <h2 class="text-2xl">Il breve manifesto</h2>
+    </header>
 
-        <ul class="mx-auto w-full">
-            <li
-                v-for="feature in features"
-                :key="feature.id"
-                class="flex flex-col items-center gap-2.5 border-t border-line py-7 last:border-b"
-            >
-                <span class="text-black" aria-hidden="true">
-                    <PiggyIcon
-                        v-if="feature.id === 'free'"
-                        size="size-18"
-                        :stroke-width="1"
-                    />
-                    <SmileyIcon
-                        v-else-if="feature.id === 'easy'"
-                        size="size-18"
-                        :stroke-width="1"
-                    />
-                    <ShieldIcon
-                        v-else-if="feature.id === 'privacy'"
-                        size="size-18"
-                        :stroke-width="1"
-                    />
-                </span>
+    <ul class="mx-auto w-full">
+      <li
+        v-for="feature in features"
+        :key="feature.id"
+        class="flex flex-col items-center gap-2.5 border-t border-line py-7 last:border-b"
+      >
+        <span class="text-black" aria-hidden="true">
+          <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
+          <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" :stroke-width="1" />
+          <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" :stroke-width="1" />
+        </span>
 
-                <h3 class="tracking-[-0.01em] text-xl text-black">
-                    {{ feature.title }}
-                </h3>
+        <h3 class="tracking-[-0.01em] text-xl text-black">
+          {{ feature.title }}
+        </h3>
 
-                <p class="max-w-[52ch]">{{ feature.text }}</p>
-            </li>
-        </ul>
-    </div>
+        <p class="max-w-[52ch]">{{ feature.text }}</p>
+      </li>
+    </ul>
+  </div>
 </template>

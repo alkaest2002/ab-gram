@@ -19,15 +19,15 @@ import SnaMetrics from "./SnaMetrics.vue";
 
 // --- Props --------------
 const props = defineProps({
-    typeOfSna: {
-        type: String,
-        required: true,
-        validator: (value) => ["likes", "dislikes"].includes(value),
-    },
-    members: { type: Array, default: () => [] },
-    snaPlot: { type: Object, default: null },
-    snaMetrics: { type: Object, default: () => ({}) },
-    morenoMetrics: { type: Object, default: () => ({}) },
+  typeOfSna: {
+    type: String,
+    required: true,
+    validator: (value) => ["likes", "dislikes"].includes(value),
+  },
+  members: { type: Array, default: () => [] },
+  snaPlot: { type: Object, default: null },
+  snaMetrics: { type: Object, default: () => ({}) },
+  morenoMetrics: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -43,14 +43,14 @@ const emit = defineEmits(["regenerate-sna-plot"]);
 // below only kicks in when the plot carries no accent of its own. Metric labels
 // and legend text live in their respective child components.
 const SNA_CONFIG = {
-    likes: {
-        accentColor: "#2563eb",
-        pageTitle: "Rete delle scelte",
-    },
-    dislikes: {
-        accentColor: "#dc2626",
-        pageTitle: "Rete dei rifiuti",
-    },
+  likes: {
+    accentColor: "#2563eb",
+    pageTitle: "Rete delle scelte",
+  },
+  dislikes: {
+    accentColor: "#dc2626",
+    pageTitle: "Rete dei rifiuti",
+  },
 };
 
 const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
@@ -81,160 +81,158 @@ let worker = null;
 
 // --- Watchers -----------
 // Lock page scroll while the regeneration modal is open.
-watch(isModalOpen, (open) =>
-    document.body.classList.toggle("overflow-hidden", open),
-);
+watch(isModalOpen, (open) => document.body.classList.toggle("overflow-hidden", open));
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
 function openModal() {
-    error.value = "";
-    isModalOpen.value = true;
+  error.value = "";
+  isModalOpen.value = true;
 }
 
 function closeModal() {
-    // Ignore close attempts while a regeneration is running: the user must
-    // either let it finish or stop it explicitly.
-    if (isRegenerating.value) return;
-    isModalOpen.value = false;
-    error.value = "";
+  // Ignore close attempts while a regeneration is running: the user must
+  // either let it finish or stop it explicitly.
+  if (isRegenerating.value) return;
+  isModalOpen.value = false;
+  error.value = "";
 }
 
 function stopWorker() {
-    if (worker) {
-        worker.terminate();
-        worker = null;
-    }
-    isRegenerating.value = false;
+  if (worker) {
+    worker.terminate();
+    worker = null;
+  }
+  isRegenerating.value = false;
 }
 
 function confirmRegenerate() {
-    if (isRegenerating.value) return;
+  if (isRegenerating.value) return;
 
-    const settings = {
-        scalingRatio: Number(scalingRatio.value),
-        gravity: Number(gravity.value),
-    };
+  const settings = {
+    scalingRatio: Number(scalingRatio.value),
+    gravity: Number(gravity.value),
+  };
 
-    if (!Number.isFinite(settings.scalingRatio) || !Number.isFinite(settings.gravity)) {
-        error.value = "Inserisci valori numerici validi.";
-        return;
+  if (!Number.isFinite(settings.scalingRatio) || !Number.isFinite(settings.gravity)) {
+    error.value = "Inserisci valori numerici validi.";
+    return;
+  }
+
+  error.value = "";
+
+  try {
+    worker = createSnaPlotWorker();
+  } catch (err) {
+    console.error("Failed to create SNA plot worker:", err);
+    error.value = "Impossibile avviare il worker.";
+    return;
+  }
+
+  isRegenerating.value = true;
+
+  worker.onmessage = (event) => {
+    const { data } = event;
+    stopWorker();
+
+    if (data?.error) {
+      error.value = data.error;
+      return;
     }
 
-    error.value = "";
+    const regeneratedSvg = data?.svg ?? svg.value;
+    svg.value = regeneratedSvg;
 
-    try {
-        worker = createSnaPlotWorker();
-    } catch (err) {
-        console.error("Failed to create SNA plot worker:", err);
-        error.value = "Impossibile avviare il worker.";
-        return;
-    }
-
-    isRegenerating.value = true;
-
-    worker.onmessage = (event) => {
-        const { data } = event;
-        stopWorker();
-
-        if (data?.error) {
-            error.value = data.error;
-            return;
-        }
-
-        const regeneratedSvg = data?.svg ?? svg.value;
-        svg.value = regeneratedSvg;
-
-        // Bubbled up to `ReportGenerated`, which persists the regenerated plot
-        // in the report store so it survives re-renders and print/export.
-        emit("regenerate-sna-plot", {
-            typeOfPreference: props.typeOfSna,
-            accentColor,
-            svg: regeneratedSvg,
-        });
-        isModalOpen.value = false;
-    };
-
-    worker.onerror = () => {
-        stopWorker();
-        error.value = "Impossibile rigenerare il grafico.";
-    };
-
-    // Hand the worker a plain, non-reactive snapshot of the members so it can
-    // be structured-cloned without dragging Vue proxies across the boundary.
-    worker.postMessage({
-        members: JSON.parse(JSON.stringify(props.members)),
-        accentColor,
-        config: {
-            typeOfPreference: props.typeOfSna,
-            settings,
-        },
+    // Bubbled up to `ReportGenerated`, which persists the regenerated plot
+    // in the report store so it survives re-renders and print/export.
+    emit("regenerate-sna-plot", {
+      typeOfPreference: props.typeOfSna,
+      accentColor,
+      svg: regeneratedSvg,
     });
+    isModalOpen.value = false;
+  };
+
+  worker.onerror = () => {
+    stopWorker();
+    error.value = "Impossibile rigenerare il grafico.";
+  };
+
+  // Hand the worker a plain, non-reactive snapshot of the members so it can
+  // be structured-cloned without dragging Vue proxies across the boundary.
+  worker.postMessage({
+    members: JSON.parse(JSON.stringify(props.members)),
+    accentColor,
+    config: {
+      typeOfPreference: props.typeOfSna,
+      settings,
+    },
+  });
 }
 
 function handleKeydown(event) {
-    if (event.key === "Escape") closeModal();
+  if (event.key === "Escape") closeModal();
 }
 
 onMounted(() => window.addEventListener("keydown", handleKeydown));
 onBeforeUnmount(() => {
-    window.removeEventListener("keydown", handleKeydown);
-    document.body.classList.remove("overflow-hidden");
-    stopWorker();
+  window.removeEventListener("keydown", handleKeydown);
+  document.body.classList.remove("overflow-hidden");
+  stopWorker();
 });
 </script>
 
 <template>
-    <BasePage>
-        <template #pageTitle>
-            <h2 class="text-[16pt]">{{ config.pageTitle }}</h2>
-        </template>
+  <BasePage>
+    <template #pageTitle>
+      <h2 class="text-[16pt]">{{ config.pageTitle }}</h2>
+    </template>
 
-        <template #default>
-            <!--
+    <template #default>
+      <!--
               The content cell is split 2/3 – 1/3 with flexbox (no layout table):
               the plot band on top, the compact stats band below. Only the metric
               list at the bottom is a real table (genuinely tabular label/value
               rows).
             -->
-            <div v-if="snaPlot" class="sna-layout">
-                <SnaPlot
-                    :svg="svg"
-                    :accent-color="accentColor"
-                    :type-of-sna="typeOfSna"
-                    @open-modal="openModal"
-                />
-                <SnaMetrics
-                    :sna-metrics="snaMetrics"
-                    :moreno-metrics="morenoMetrics"
-                    :type-of-sna="typeOfSna"
-                    :accent-color="accentColor"
-                />
-            </div>
+      <div v-if="snaPlot" class="sna-layout">
+        <SnaPlot
+          :svg="svg"
+          :accent-color="accentColor"
+          :type-of-sna="typeOfSna"
+          @open-modal="openModal"
+        />
+        <SnaMetrics
+          :sna-metrics="snaMetrics"
+          :moreno-metrics="morenoMetrics"
+          :type-of-sna="typeOfSna"
+          :accent-color="accentColor"
+        />
+      </div>
 
-            <!-- Regeneration modal: teleported to <body> by the component so it
+      <!-- Regeneration modal: teleported to <body> by the component so it
                  escapes the fixed-height, overflow-hidden report page. -->
-            <SnaRegeneratePlotModal
-                :open="isModalOpen"
-                :regenerating="isRegenerating"
-                :error="error"
-                v-model:scaling-ratio="scalingRatio"
-                v-model:gravity="gravity"
-                @close="closeModal"
-                @stop="stopWorker"
-                @confirm="confirmRegenerate"
-            />
-        </template>
-    </BasePage>
+      <SnaRegeneratePlotModal
+        :open="isModalOpen"
+        :regenerating="isRegenerating"
+        :error="error"
+        v-model:scaling-ratio="scalingRatio"
+        v-model:gravity="gravity"
+        @close="closeModal"
+        @stop="stopWorker"
+        @confirm="confirmRegenerate"
+      />
+    </template>
+  </BasePage>
 </template>
 
 <style scoped>
 /* The content cell is split 2/3 – 1/3 with flexbox. Flex and percentage heights
    work here because the content cell has a definite height (see BasePage). */
 .sna-layout {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

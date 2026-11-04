@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vite-plus/test";
 
 // The full pipeline renders SVG at the end. Stub the plotting step (which needs
 // a browser DOM) so the rest of the analysis can be exercised end-to-end.
@@ -47,10 +47,30 @@ describe("getSociogramAnalysis", () => {
     expect(result.snaLikesGroupLevelMetrics.rawValuesById[0][0]).toBe(11);
     expect(result.snaDislikesGroupLevelMetrics.ids).toEqual(["dislikes"]);
     expect(result.snaLikesIndividualLevelMetric.ids).toEqual([
-      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
     ]);
     expect(result.snaDislikesIndividualLevelMetric.ids).toEqual([
-      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "K",
     ]);
     expect(result.morenoEgoGraphs).toHaveLength(11);
     expect(result.snaLikesPlots).toHaveLength(1);
@@ -62,10 +82,7 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("classifies the mutual like between the two members", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
     const { edgeTypes } = getSociogramAnalysis(members);
 
@@ -78,10 +95,7 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("computes Moreno group metrics for a mutual-like group", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
     const { morenoGroupLevelMetrics } = getSociogramAnalysis(members);
 
@@ -111,27 +125,18 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("computes SNA group metrics for the likes graph", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
     const { snaLikesGroupLevelMetrics } = getSociogramAnalysis(members);
 
     expect(snaLikesGroupLevelMetrics.ids).toEqual(["likes"]);
     expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([
-      2, 2, 2,
-      1, 1, 1, 1, 1, 0,
-      1, 1, 1, 1, 1, 0,
-      1, 0, 1, 0,
+      2, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
     ]);
   });
 
   it("skips the dislikes SNA step when nobody dislikes anyone", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
     const {
       snaDislikesGroupLevelMetrics,
@@ -147,10 +152,7 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("computes dislikes SNA metrics, components and plots when dislikes exist", () => {
-    const members = [
-      makeMember("a", [], ["b"]),
-      makeMember("b", [], ["a"]),
-    ];
+    const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
 
     const {
       snaLikesGroupLevelMetrics,
@@ -162,18 +164,12 @@ describe("getSociogramAnalysis", () => {
 
     // The likes graph is empty, so only the node count is populated.
     expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([
-      2, 0, 0,
-      0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0,
+      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ]);
 
     expect(snaDislikesGroupLevelMetrics.ids).toEqual(["dislikes"]);
     expect(snaDislikesGroupLevelMetrics.rawValuesById[0]).toEqual([
-      2, 2, 2,
-      1, 1, 1, 1, 1, 0,
-      1, 1, 1, 1, 1, 0,
-      1, 0, 1, 0,
+      2, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
     ]);
 
     expect(snaDislikesComponents.dyads).toEqual([["a", "b"]]);
@@ -190,10 +186,7 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("produces a likes plot with the blue accent color", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a"]),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
     const { snaLikesPlots } = getSociogramAnalysis(members);
 
@@ -203,10 +196,7 @@ describe("getSociogramAnalysis", () => {
   });
 
   it("always produces a likes plot, even when the likes graph is empty", () => {
-    const members = [
-      makeMember("a", [], ["b"]),
-      makeMember("b", [], ["a"]),
-    ];
+    const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
 
     const { snaLikesPlots } = getSociogramAnalysis(members);
 

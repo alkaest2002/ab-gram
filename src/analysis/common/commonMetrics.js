@@ -22,51 +22,49 @@ import * as np from "numpy-ts";
  * @throws {Error} When `scores` has more than 2 dimensions.
  */
 export const computeRankedScores = (scores, higherRawScoreIsBetter = true) => {
-    // Throw if array with more than 2 dimensions.
-    if (scores.ndim > 2) {
-        throw new Error(
-            `computeRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
-        );
-    }
+  // Throw if array with more than 2 dimensions.
+  if (scores.ndim > 2) {
+    throw new Error(
+      `computeRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
+    );
+  }
 
-    // Flag for 1 dimensional array.
-    const is1D = scores.ndim === 1;
+  // Flag for 1 dimensional array.
+  const is1D = scores.ndim === 1;
 
-    // Normalize 1-D input to a single-column 2-D matrix.
-    const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
+  // Normalize 1-D input to a single-column 2-D matrix.
+  const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
 
-    // Get matrix shape
-    const [rows, cols] = matrix.shape;
+  // Get matrix shape
+  const [rows, cols] = matrix.shape;
 
-    // If no rows return empty results.
-    if (rows === 0) {
-        return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
-    }
+  // If no rows return empty results.
+  if (rows === 0) {
+    return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
+  }
 
-    // Initialize results
-    const rankedColumns = [];
+  // Initialize results
+  const rankedColumns = [];
 
-    // Iterate over columns
-    for (let col = 0; col < cols; col += 1) {
-        // Copy the column so `unique_inverse` reads a contiguous 1-D array.
-        const column = matrix.slice(":", col).copy();
+  // Iterate over columns
+  for (let col = 0; col < cols; col += 1) {
+    // Copy the column so `unique_inverse` reads a contiguous 1-D array.
+    const column = matrix.slice(":", col).copy();
 
-        // `unique_inverse` returns the column's unique values sorted ascending and,
-        // for each element, its 0-based index into that sorted list.
-        const { values, inverse_indices } = np.unique_inverse(column);
+    // `unique_inverse` returns the column's unique values sorted ascending and,
+    // for each element, its 0-based index into that sorted list.
+    const { values, inverse_indices } = np.unique_inverse(column);
 
-        // Convert inverse indices to a NumPy array for easier manipulation.
-        const npValues = np.array(inverse_indices, "int32");
+    // Convert inverse indices to a NumPy array for easier manipulation.
+    const npValues = np.array(inverse_indices, "int32");
 
-        // With higher-is-better, the largest value maps to rank 1; otherwise the
-        // smallest value does. Either way, ties share a rank.
-        rankedColumns.push(
-            higherRawScoreIsBetter
-                ? npValues.negative().add(values.size)
-                : npValues.add(1),
-        );
-    }
+    // With higher-is-better, the largest value maps to rank 1; otherwise the
+    // smallest value does. Either way, ties share a rank.
+    rankedColumns.push(
+      higherRawScoreIsBetter ? npValues.negative().add(values.size) : npValues.add(1),
+    );
+  }
 
-    // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
-    return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
+  // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
+  return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
 };

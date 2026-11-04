@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import * as np from "numpy-ts";
 
 import {
@@ -22,11 +22,7 @@ describe("createAdjacencyMatrix", () => {
   });
 
   it("builds a matrix where rows choose columns", () => {
-    const members = [
-      makeMember("a", ["b"]),
-      makeMember("b", ["a", "c"]),
-      makeMember("c", []),
-    ];
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a", "c"]), makeMember("c", [])];
 
     const matrix = createAdjacencyMatrix(members, "likes");
 
@@ -51,9 +47,7 @@ describe("createAdjacencyMatrix", () => {
 
 describe("createAdjacencyMatrices", () => {
   it("builds both preference matrices from the Hogwarts roster", () => {
-    const { adjLikes, adjDislikes } = createAdjacencyMatrices(
-      getHogwartsMembers(),
-    );
+    const { adjLikes, adjDislikes } = createAdjacencyMatrices(getHogwartsMembers());
 
     // Rows and columns follow member order A..K; entry (i, j) is 1 when member
     // i chose member j for that preference.

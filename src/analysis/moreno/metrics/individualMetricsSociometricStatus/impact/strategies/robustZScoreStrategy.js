@@ -20,35 +20,35 @@ const MAD_SCALE = 1.4826; // MAD -> normal-distribution standard-deviation scale
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const robustZScoreStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // ========================================================================
-    // VVOTE ELIGIBILITY — abstain vote under this/these condition(s).
-    // ========================================================================
-    if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
+  // ========================================================================
+  // VVOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // ========================================================================
+  if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
 
-    // Convert to NumPy array for efficient gap calculations.
-    const npValues = np.array(visibleSortedImpacts, "int32");
+  // Convert to NumPy array for efficient gap calculations.
+  const npValues = np.array(visibleSortedImpacts, "int32");
 
-    const median = npValues.median();
-    const deviations = npValues.subtract(median).absolute();
-    const mad = Math.max(deviations.median(), MAD_FLOOR);
+  const median = npValues.median();
+  const deviations = npValues.subtract(median).absolute();
+  const mad = Math.max(deviations.median(), MAD_FLOOR);
 
-    const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
-    const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
+  const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
+  const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
-    let lowEnd = -1;
-    for (let i = 0; i < visibleSortedImpacts.length; i += 1) {
-        if (visibleSortedImpacts[i] < lowFence) lowEnd = i;
-        else break;
-    }
+  let lowEnd = -1;
+  for (let i = 0; i < visibleSortedImpacts.length; i += 1) {
+    if (visibleSortedImpacts[i] < lowFence) lowEnd = i;
+    else break;
+  }
 
-    let highStart = visibleSortedImpacts.length;
-    for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
-        if (visibleSortedImpacts[i] > highFence) highStart = i;
-        else break;
-    }
+  let highStart = visibleSortedImpacts.length;
+  for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
+    if (visibleSortedImpacts[i] > highFence) highStart = i;
+    else break;
+  }
 
-    // ========================================================================
-    // SEPARATION CHECK — switch off a tail that is not separated by one vote.
-    // ========================================================================
-    return finalizeSplit(visibleSortedImpacts, lowEnd, highStart);
+  // ========================================================================
+  // SEPARATION CHECK — switch off a tail that is not separated by one vote.
+  // ========================================================================
+  return finalizeSplit(visibleSortedImpacts, lowEnd, highStart);
 };

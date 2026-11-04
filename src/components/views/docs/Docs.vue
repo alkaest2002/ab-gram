@@ -54,30 +54,23 @@ onBeforeUnmount(clear);
 </script>
 
 <template>
-    <!-- Two columns: sidebar on the left, page content on the right. -->
-    <div
-        class="flex w-full flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14"
-    >
-        <aside
-            class="hidden w-full shrink-0 lg:block lg:w-64"
-        >
-            <DocsSidebar />
-        </aside>
+  <!-- Two columns: sidebar on the left, page content on the right. -->
+  <div class="flex w-full flex-col gap-10 px-6 py-10 lg:flex-row lg:gap-14">
+    <aside class="hidden w-full shrink-0 lg:block lg:w-64">
+      <DocsSidebar />
+    </aside>
 
-        <div class="min-w-0 flex-1">
-            <article
-                ref="articleRef"
-                class="prose prose-neutral max-w-none prose-headings:scroll-mt-20"
-            >
-                <h1>{{ route.meta.title }}</h1>
-                <RouterView v-slot="{ Component }">
-                    <AppContentTransition>
-                        <component :is="Component" />
-                    </AppContentTransition>
-                </RouterView>
-            </article>
+    <div class="min-w-0 flex-1">
+      <article ref="articleRef" class="prose prose-neutral max-w-none prose-headings:scroll-mt-20">
+        <h1>{{ route.meta.title }}</h1>
+        <RouterView v-slot="{ Component }">
+          <AppContentTransition>
+            <component :is="Component" />
+          </AppContentTransition>
+        </RouterView>
+      </article>
 
-            <DocsPager :prev="prev" :next="next" />
-        </div>
+      <DocsPager :prev="prev" :next="next" />
     </div>
+  </div>
 </template>

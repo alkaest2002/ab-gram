@@ -41,16 +41,12 @@ const router = createRouter({
     }
     // Wait for the 200ms route fade-in (AppContentTransition) so the jump to
     // top lands on the incoming page instead of flashing the outgoing one.
-    return new Promise((resolve) =>
-      setTimeout(() => resolve({ top: 0, behavior: "smooth" }), 200),
-    );
+    return new Promise((resolve) => setTimeout(() => resolve({ top: 0, behavior: "smooth" }), 200));
   },
 });
 
 router.afterEach((to) => {
-  document.title = to.meta.title
-    ? `${SITE_NAME} · ${to.meta.title}  `
-    : SITE_NAME;
+  document.title = to.meta.title ? `${SITE_NAME} · ${to.meta.title}  ` : SITE_NAME;
 });
 
 export default router;

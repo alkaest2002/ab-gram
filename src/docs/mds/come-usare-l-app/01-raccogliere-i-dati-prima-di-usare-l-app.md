@@ -31,24 +31,24 @@ Ecco, in sintesi, l'ordine in cui procedere. Ogni passaggio è approfondito nell
 sezioni successive.
 
 - **Stabilisci il criterio sociometrico.** Scegli la domanda da porre al gruppo,
-   riferita a una situazione concreta e significativa, e decidi se il criterio è
-   affettivo-relazionale o strumentale (sezione 2).
-- **Decidi cosa raccogliere.** Per ogni membro dovrai annotare le *scelte* e i
-   *rifiuti* espressi in relazione al criterio, valutando in anticipo come aiutare
-   il gruppo a rispondere con misura (sezione 3).
+  riferita a una situazione concreta e significativa, e decidi se il criterio è
+  affettivo-relazionale o strumentale (sezione 2).
+- **Decidi cosa raccogliere.** Per ogni membro dovrai annotare le _scelte_ e i
+  _rifiuti_ espressi in relazione al criterio, valutando in anticipo come aiutare
+  il gruppo a rispondere con misura (sezione 3).
 - **Scegli il supporto e prepara la scheda.** Decidi se lavorare su carta o in
-   formato elettronico e prepara le schede o il modulo, riportando in cima il
-   criterio (sezione 4).
+  formato elettronico e prepara le schede o il modulo, riportando in cima il
+  criterio (sezione 4).
 - **Comunica il criterio e raccogli le risposte.** Spiega al gruppo a cosa serve
-   la rilevazione, rassicura sulla riservatezza e raccogli scelte e rifiuti di
-   ciascun membro (sezioni 3 e 4).
+  la rilevazione, rassicura sulla riservatezza e raccogli scelte e rifiuti di
+  ciascun membro (sezioni 3 e 4).
 - **Verifica e ordina i dati.** Controlla che per ogni membro siano registrate
-   le sue scelte e i suoi rifiuti, annota chi non ne ha espressi.
+  le sue scelte e i suoi rifiuti, annota chi non ne ha espressi.
 
 ## 2 Stabilire il criterio sociometrico
 
 Il primo passaggio è decidere **quale domanda porre al gruppo**. Questa domanda
-si chiama *criterio sociometrico*: è la situazione concreta, l'attività o il
+si chiama _criterio sociometrico_: è la situazione concreta, l'attività o il
 contesto specifico su cui si fonda la richiesta di scelta o di rifiuto in un
 questionario sociometrico.
 
@@ -62,17 +62,17 @@ con cui formulare la domanda diventano molto più semplici da individuare.
 Nella pratica, i criteri si possono ricondurre a due grandi famiglie.
 
 - **Criteri affettivo-relazionali.** Riguardano il tempo trascorso insieme e la
-convivenza: con chi si desidera, o non si desidera, condividere un viaggio, un
-alloggio, una pausa, un momento di svago. Le relazioni che emergono sono quelle
-dettate dall'intesa personale e dalla sintonia, non dalla competenza di chi viene
-nominato.
+  convivenza: con chi si desidera, o non si desidera, condividere un viaggio, un
+  alloggio, una pausa, un momento di svago. Le relazioni che emergono sono quelle
+  dettate dall'intesa personale e dalla sintonia, non dalla competenza di chi viene
+  nominato.
 
 - **Criteri strumentali.** Riguardano ciò che il gruppo deve fare, non solo lo
-stare insieme. Rientrano in questa famiglia sia le situazioni in cui si cerca una
-guida (esempi: *chi vorresti, o non vorresti, come portavoce, referente o
-coordinatore*), sia quelle in cui si lavora a uno scopo comune (esempi: *con chi
-vorresti, o non vorresti, portare avanti un progetto, preparare un esame insieme
-o svolgere un incarico*).
+  stare insieme. Rientrano in questa famiglia sia le situazioni in cui si cerca una
+  guida (esempi: _chi vorresti, o non vorresti, come portavoce, referente o
+  coordinatore_), sia quelle in cui si lavora a uno scopo comune (esempi: _con chi
+  vorresti, o non vorresti, portare avanti un progetto, preparare un esame insieme
+  o svolgere un incarico_).
 
 In entrambi i casi la logica della scelta cambia rispetto al caso affettivo:
 chi risponde è chiamato a valutare le competenze e l'affidabilità degli altri.
@@ -86,9 +86,9 @@ Un buon criterio non è astratto. Deve fare riferimento a una situazione **reale
 significativa per il gruppo**, in modo che ciascuno sappia con precisione a cosa
 sta rispondendo. Alcuni esempi:
 
-- *«Con chi faresti una gita?»* (criterio affettivo-relazionale)
-- *«Con chi vorresti collaborare per questo progetto?»* (criterio strumentale)
-- *«Chi vorresti come responsabile di questa attività?»* (criterio strumentale)
+- _«Con chi faresti una gita?»_ (criterio affettivo-relazionale)
+- _«Con chi vorresti collaborare per questo progetto?»_ (criterio strumentale)
+- _«Chi vorresti come responsabile di questa attività?»_ (criterio strumentale)
 
 Domande generiche come «chi ti piace di più?» producono risposte vaghe e difficili
 da interpretare, perché ognuno le intende a modo suo. Un criterio concreto, invece,
@@ -149,7 +149,7 @@ scartare nessuna.
 Questo non significa che il numero sia irrilevante. I risultati sono più chiari
 quando le preferenze sono focalizzate, cioè quando ciascuno indica le persone con
 cui l'affinità o la distanza sono davvero più forti. Per questo conviene lavorare
-*prima* della raccolta, aiutando il gruppo a rispondere con misura.
+_prima_ della raccolta, aiutando il gruppo a rispondere con misura.
 
 #### 3.2.1 Come ridurre le risposte generalizzate
 
@@ -167,7 +167,7 @@ devi) impedirlo, ma puoi ridurne la frequenza con qualche strategia persuasiva:
 - **chiarisci che lasciare vuoto è lecito**: non esiste l'obbligo di scegliere o
   di rifiutare qualcuno;
 - **per i rifiuti, distingui la distanza dalla antipatia**: si indica solo chi si
-  preferirebbe non avere accanto *per quella specifica situazione*;
+  preferirebbe non avere accanto _per quella specifica situazione_;
 - **rassicura sulla sincerità e sulla riservatezza**: non ci sono risposte giuste
   o sbagliate, e le risposte non saranno mostrate al gruppo.
 
@@ -178,10 +178,10 @@ a discriminare tra i compagni o, nel caso dei rifiuti, un'ostilità diffusa o un
 clima di gruppo teso. Non va interpretato in modo meccanico, ma merita di essere
 osservato e, se opportuno, approfondito con la persona.
 
-#### 3.2.2 Inserire solo le prime *n* scelte e/o i primi *n* rifiuti
+#### 3.2.2 Inserire solo le prime _n_ scelte e/o i primi _n_ rifiuti
 
 In casi particolari AB-Gram permette di inserire, per ciascun membro, soltanto le
-**prime *n* scelte** e/o i **primi *n* rifiuti**. Il valore di *n* lo stabilisci tu
+**prime _n_ scelte** e/o i **primi _n_ rifiuti**. Il valore di _n_ lo stabilisci tu
 caso per caso, e può essere diverso per le scelte e per i rifiuti.
 
 **Il consiglio di partenza è eseguire sempre l'analisi con tutte le informazioni
@@ -204,7 +204,7 @@ alcuni costi:
   visto, hanno un significato in sé;
 - si **assume che l'ordine dei nomi rifletta l'intensità** della preferenza, cosa
   che vale solo se la raccolta è stata impostata in questo modo;
-- si introduce una **scelta arbitraria** (il valore di *n*) che può modificare i
+- si introduce una **scelta arbitraria** (il valore di _n_) che può modificare i
   risultati.
 
 Può essere ragionevole solo quando i dati sono già stati raccolti, l'analisi con
@@ -214,7 +214,7 @@ interpretazione e non è possibile ripetere la rilevazione. In questo caso:
 
 - **individua le persone da troncare** e stabilisci il numero massimo di scelte e rifiuti;
 - ricorda di **preservare il più possibile le informazioni**;
-- **scegli *n* dopo aver guardato la distribuzione delle risposte**, non in modo aprioristico;
+- **scegli _n_ dopo aver guardato la distribuzione delle risposte**, non in modo aprioristico;
 - **conserva i dati completi** e **dichiara il troncamento** quando presenti o
   discuti i risultati.
 

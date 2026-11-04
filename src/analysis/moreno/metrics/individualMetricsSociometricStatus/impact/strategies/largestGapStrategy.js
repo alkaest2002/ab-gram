@@ -17,22 +17,22 @@ const MAX_MEMBERS = 4;
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const largestGapStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // ========================================================================
-    // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
-    // ========================================================================
-    if (visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
+  // ========================================================================
+  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // ========================================================================
+  if (visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
-    // Convert to NumPy array for efficient gap calculations.
-    const npValues = np.array(visibleSortedImpacts, "int32");
+  // Convert to NumPy array for efficient gap calculations.
+  const npValues = np.array(visibleSortedImpacts, "int32");
 
-    const gaps = npValues.diff();
-    const gapOrder = np.argsort(gaps).toArray(); // ascending by gap size
+  const gaps = npValues.diff();
+  const gapOrder = np.argsort(gaps).toArray(); // ascending by gap size
 
-    const n = npValues.size;
-    const [c1, c2] = [gapOrder[n - 2], gapOrder[n - 3]].sort((a, b) => a - b);
+  const n = npValues.size;
+  const [c1, c2] = [gapOrder[n - 2], gapOrder[n - 3]].sort((a, b) => a - b);
 
-    // ========================================================================
-    // SEPARATION CHECK — c1 is the low/average boundary, c2 the average/high.
-    // ========================================================================
-    return finalizeSplit(visibleSortedImpacts, c1, c2 + 1);
+  // ========================================================================
+  // SEPARATION CHECK — c1 is the low/average boundary, c2 the average/high.
+  // ========================================================================
+  return finalizeSplit(visibleSortedImpacts, c1, c2 + 1);
 };

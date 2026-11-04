@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import { getSnaStructures } from "@/analysis/sna/components/snaStructures.js";
@@ -134,11 +134,7 @@ describe("getSnaStructures", () => {
   });
 
   it("returns singleton communities and q = 0 for an edgeless graph", () => {
-    const members = [
-      makeMember("a"),
-      makeMember("b"),
-      makeMember("c"),
-    ];
+    const members = [makeMember("a"), makeMember("b"), makeMember("c")];
     const graph = createLikesGraph(members, "likes");
 
     const { louvainCommunities } = getSnaStructures(graph);

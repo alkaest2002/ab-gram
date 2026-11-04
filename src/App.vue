@@ -28,9 +28,9 @@ const route = useRoute();
 
 // --- State --------------
 const layouts = {
-    DefaultLayout,
-    EmptyLayout,
-    ReportLayout,
+  DefaultLayout,
+  EmptyLayout,
+  ReportLayout,
 };
 
 // --- Composables --------
@@ -46,11 +46,11 @@ const layout = computed(() => layouts[route.meta.layout] ?? DefaultLayout);
 </script>
 
 <template>
-    <component :is="layout">
-        <RouterView v-slot="{ Component }">
-            <AppContentTransition appear>
-                <component :is="Component" />
-            </AppContentTransition>
-        </RouterView>
-    </component>
+  <component :is="layout">
+    <RouterView v-slot="{ Component }">
+      <AppContentTransition appear>
+        <component :is="Component" />
+      </AppContentTransition>
+    </RouterView>
+  </component>
 </template>

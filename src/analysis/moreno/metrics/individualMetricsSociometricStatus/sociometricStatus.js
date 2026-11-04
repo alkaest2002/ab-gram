@@ -23,36 +23,36 @@ export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsS
  * @returns {import("numpy-ts").NDArray} Status codes (0-8, or 99 as safety default).
  */
 const assignStatus = (visibilityClassification, impactClassification, balanceClassification) => {
-    const S = SOCIOMETRIC_STATUS;
-    const { isolated, ignored } = visibilityClassification;
-    const { isLowImpact, isHighImpact, isAverageImpact } = impactClassification;
-    const { isPositiveBalance, isNegativeBalance, isNeutralBalance } = balanceClassification;
+  const S = SOCIOMETRIC_STATUS;
+  const { isolated, ignored } = visibilityClassification;
+  const { isLowImpact, isHighImpact, isAverageImpact } = impactClassification;
+  const { isPositiveBalance, isNegativeBalance, isNeutralBalance } = balanceClassification;
 
-    return np.select(
-        [
-            isolated,
-            ignored,
-            isLowImpact,
-            isHighImpact.logical_and(isPositiveBalance),
-            isHighImpact.logical_and(isNegativeBalance),
-            isHighImpact.logical_and(isNeutralBalance),
-            isAverageImpact.logical_and(isPositiveBalance),
-            isAverageImpact.logical_and(isNegativeBalance),
-            isAverageImpact.logical_and(isNeutralBalance),
-        ],
-        [
-            S.ISOLATED,
-            S.IGNORED,
-            S.MARGINAL,
-            S.POPULAR,
-            S.REJECTED,
-            S.CONTROVERSIAL,
-            S.APPRECIATED,
-            S.DISLIKED,
-            S.AMBIVALENT,
-        ],
-        S.UNCLASSIFIED, // safety default (unreachable for valid inputs)
-    );
+  return np.select(
+    [
+      isolated,
+      ignored,
+      isLowImpact,
+      isHighImpact.logical_and(isPositiveBalance),
+      isHighImpact.logical_and(isNegativeBalance),
+      isHighImpact.logical_and(isNeutralBalance),
+      isAverageImpact.logical_and(isPositiveBalance),
+      isAverageImpact.logical_and(isNegativeBalance),
+      isAverageImpact.logical_and(isNeutralBalance),
+    ],
+    [
+      S.ISOLATED,
+      S.IGNORED,
+      S.MARGINAL,
+      S.POPULAR,
+      S.REJECTED,
+      S.CONTROVERSIAL,
+      S.APPRECIATED,
+      S.DISLIKED,
+      S.AMBIVALENT,
+    ],
+    S.UNCLASSIFIED, // safety default (unreachable for valid inputs)
+  );
 };
 
 // ============================================================================
@@ -118,34 +118,34 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
-    // --------------------------------------------------------------------------------------
-    // Classify visibility
-    // --------------------------------------------------------------------------------------
-    const visibilityClassification = classifyVisibility(impact, expressivity);
+  // --------------------------------------------------------------------------------------
+  // Classify visibility
+  // --------------------------------------------------------------------------------------
+  const visibilityClassification = classifyVisibility(impact, expressivity);
 
-    // --------------------------------------------------------------------------------------
-    // Classify impact
-    // --------------------------------------------------------------------------------------
-    // Note: impact is a numpy-ts array
-    // visibleSortedImpacts: sorted visible impacts (those of members not ignored/excluded)
-    // allImpacts: all impacts (all members impact)
-    // originalGroupSize: number of members in the group
-    // visibleGroupSize: number of members who received at least one opinion
-    const visibleSortedImpacts = toSortedVisible(impact);
-    const impactClassification = classifyImpactByVote(impact, {
-        visibleSortedImpacts,
-        allImpacts: impact.flatten().toArray(),
-        originalGroupSize: impact.size,
-        visibleGroupSize: visibleSortedImpacts.length,
-    });
+  // --------------------------------------------------------------------------------------
+  // Classify impact
+  // --------------------------------------------------------------------------------------
+  // Note: impact is a numpy-ts array
+  // visibleSortedImpacts: sorted visible impacts (those of members not ignored/excluded)
+  // allImpacts: all impacts (all members impact)
+  // originalGroupSize: number of members in the group
+  // visibleGroupSize: number of members who received at least one opinion
+  const visibleSortedImpacts = toSortedVisible(impact);
+  const impactClassification = classifyImpactByVote(impact, {
+    visibleSortedImpacts,
+    allImpacts: impact.flatten().toArray(),
+    originalGroupSize: impact.size,
+    visibleGroupSize: visibleSortedImpacts.length,
+  });
 
-    // --------------------------------------------------------------------------------------
-    // Classify balance
-    // --------------------------------------------------------------------------------------
-    const balanceClassification = classifyBalance(rp, rr, impact);
+  // --------------------------------------------------------------------------------------
+  // Classify balance
+  // --------------------------------------------------------------------------------------
+  const balanceClassification = classifyBalance(rp, rr, impact);
 
-    // --------------------------------------------------------------------------------------
-    // Assign status
-    // --------------------------------------------------------------------------------------
-    return assignStatus(visibilityClassification, impactClassification, balanceClassification);
+  // --------------------------------------------------------------------------------------
+  // Assign status
+  // --------------------------------------------------------------------------------------
+  return assignStatus(visibilityClassification, impactClassification, balanceClassification);
 };

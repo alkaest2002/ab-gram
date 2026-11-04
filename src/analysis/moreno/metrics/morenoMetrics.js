@@ -80,7 +80,6 @@ const computeMorenoGroupLevelMetrics = (adjLikes, adjDislikes) => {
   ]);
 };
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // INDIVIDUAL LEVEL METRICS
 //////////////////////////////////////////////////////////////////////////////////
@@ -261,12 +260,7 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
  *   `rankedValuesByMetric` hold the same data transposed (rows indexed by
  *   `metrics`, columns by `ids`).
  */
-export const getIndividualLevelMetrics = (
-  adjLikes,
-  adjDislikes,
-  memberIndices,
-  members,
-) => {
+export const getIndividualLevelMetrics = (adjLikes, adjDislikes, memberIndices, members) => {
   const rawValues = computeIndividualLevelMetrics(adjLikes, adjDislikes, members);
   const rankedValues = computeRankedScores(rawValues);
 

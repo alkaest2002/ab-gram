@@ -2,6 +2,7 @@
 title: Creare un nuovo progetto
 order: 2
 ---
+
 <script setup>
     import { useSociogramStore } from "@/stores/sociogram";
     const store = useSociogramStore()
@@ -66,6 +67,6 @@ AB-Gram **non salva nulla nella cache del browser**: i dati restano nella memori
 dell'applicazione finché la pagina è aperta. Per questo motivo:
 
 - Non aggiornare la pagina mentre stai lavorando.
-- Non usare i tasti *indietro* e *avanti* del browser.
+- Non usare i tasti _indietro_ e _avanti_ del browser.
 
 Puoi comunque mettere in pausa e riprendere un lavoro in qualsiasi momento.

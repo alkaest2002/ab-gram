@@ -12,10 +12,10 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Props --------------
 defineProps({
-    buttonVariant: {
-        type: String,
-        default: "outline",
-    },
+  buttonVariant: {
+    type: String,
+    default: "outline",
+  },
 });
 
 // --- Emits --------------
@@ -36,27 +36,25 @@ defineProps({
 
 // --- Methods ------------
 const openEmail = () => {
-    window.location.href = "mailto:info@ab-gram.com";
+  window.location.href = "mailto:info@ab-gram.com";
 };
 </script>
 
 <template>
-    <BaseCard>
-        <template #eyebrow>Contatti</template>
-        <template #title>Hai una domanda?</template>
+  <BaseCard>
+    <template #eyebrow>Contatti</template>
+    <template #title>Hai una domanda?</template>
 
-        Scrivici se hai bisogno di informazioni supplementari. Cercheremo di risponderti il prima possibile.
+    Scrivici se hai bisogno di informazioni supplementari. Cercheremo di risponderti il prima
+    possibile.
 
-        <template #actions>
-            <BaseButton
-                :buttonVariant="buttonVariant"
-                @click="openEmail"
-            >
-                <template #icon>
-                    <EmailIcon size="size-4" />
-                </template>
-                info@ab-gram.com
-            </BaseButton>
+    <template #actions>
+      <BaseButton :buttonVariant="buttonVariant" @click="openEmail">
+        <template #icon>
+          <EmailIcon size="size-4" />
         </template>
-    </BaseCard>
+        info@ab-gram.com
+      </BaseButton>
+    </template>
+  </BaseCard>
 </template>

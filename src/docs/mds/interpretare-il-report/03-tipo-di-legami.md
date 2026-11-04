@@ -27,9 +27,9 @@ quella relazione esiste e $0$ se non esiste. Ne servono due: una per le scelte
 
 Per leggere la tabella basta ricordare due regole:
 
-- **ogni riga** mostra ciò che quel membro *esprime* verso gli altri (relazioni
+- **ogni riga** mostra ciò che quel membro _esprime_ verso gli altri (relazioni
   in uscita);
-- **ogni colonna** mostra ciò che quel membro *riceve* dagli altri (relazioni in
+- **ogni colonna** mostra ciò che quel membro _riceve_ dagli altri (relazioni in
   entrata).
 
 La **diagonale** (dall'alto a sinistra al basso a destra) contiene sempre $0$,
@@ -66,11 +66,11 @@ scende fino alla colonna di chi lo riceve:
 Nelle definizioni che seguono compaiono tre simboli della logica, che si
 leggono come parole di uso comune:
 
-| Simbolo | Si legge | Esempio |
-| ------- | -------- | ------- |
-| $\land$ | "e" (devono valere entrambe le condizioni) | $a_{ij} \land a_{ji}$: $i$ sceglie $j$ **e** $j$ sceglie $i$ |
-| $\neg$  | "non" (la condizione è falsa) | $\neg b_{ij}$: $i$ **non** rifiuta $j$ |
-| $\lor$  | "oppure" (basta che valga almeno una delle due) | usato solo nei sentimenti contrapposti |
+| Simbolo | Si legge                                        | Esempio                                                      |
+| ------- | ----------------------------------------------- | ------------------------------------------------------------ |
+| $\land$ | "e" (devono valere entrambe le condizioni)      | $a_{ij} \land a_{ji}$: $i$ sceglie $j$ **e** $j$ sceglie $i$ |
+| $\neg$  | "non" (la condizione è falsa)                   | $\neg b_{ij}$: $i$ **non** rifiuta $j$                       |
+| $\lor$  | "oppure" (basta che valga almeno una delle due) | usato solo nei sentimenti contrapposti                       |
 
 In ogni formula consideriamo quattro sentimenti possibili, due per ciascuna
 direzione: $i$ sceglie $j$ ($a_{ij}$), $i$ rifiuta $j$ ($b_{ij}$), $j$ sceglie
@@ -164,11 +164,11 @@ $$
 
 ## 5 In sintesi
 
-| Tipo di legame | Cosa succede | Problematico? |
-| -------------- | ------------ | :-----------: |
-| Preferenza a senso unico | Uno sceglie, l'altro non esprime nulla | No |
-| Preferenza reciproca | Si scelgono a vicenda | No |
-| Rifiuto a senso unico | Uno rifiuta, l'altro non esprime nulla | Sì |
-| Rifiuto reciproco | Si rifiutano a vicenda | Sì |
-| Sentimenti contrapposti | Uno sceglie, l'altro rifiuta | Sì |
-| Legami ambivalenti | Uno sceglie e rifiuta lo stesso membro | Sì |
+| Tipo di legame           | Cosa succede                           | Problematico? |
+| ------------------------ | -------------------------------------- | :-----------: |
+| Preferenza a senso unico | Uno sceglie, l'altro non esprime nulla |      No       |
+| Preferenza reciproca     | Si scelgono a vicenda                  |      No       |
+| Rifiuto a senso unico    | Uno rifiuta, l'altro non esprime nulla |      Sì       |
+| Rifiuto reciproco        | Si rifiutano a vicenda                 |      Sì       |
+| Sentimenti contrapposti  | Uno sceglie, l'altro rifiuta           |      Sì       |
+| Legami ambivalenti       | Uno sceglie e rifiuta lo stesso membro |      Sì       |

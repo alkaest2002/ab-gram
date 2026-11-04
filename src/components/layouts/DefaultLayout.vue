@@ -31,18 +31,17 @@ import AppFooter from "@/components/ui/AppFooter.vue";
 </script>
 
 <template>
-    <!-- min-h-dvh + flex-1 on main: every page covers the viewport and overflows when needed. -->
-    <div class="flex min-h-dvh flex-col">
+  <!-- min-h-dvh + flex-1 on main: every page covers the viewport and overflows when needed. -->
+  <div class="flex min-h-dvh flex-col">
+    <!-- Header -->
+    <AppHeader />
 
-        <!-- Header -->
-        <AppHeader />
+    <!-- Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
 
-        <!-- Content -->
-        <main class="flex-1">
-            <slot />
-        </main>
-
-        <!-- Footer -->
-        <AppFooter />
-    </div>
+    <!-- Footer -->
+    <AppFooter />
+  </div>
 </template>

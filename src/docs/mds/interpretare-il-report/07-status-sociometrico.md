@@ -33,15 +33,15 @@ Ogni codice corrisponde a una categoria ben precisa:
 
 | Codice | Categoria   | Impatto ricevuto | Bilancio  |
 | :----: | ----------- | :--------------: | :-------: |
-|   0    | isolato     |      nessuno     |     —     |
-|   1    | ignorato    |      nessuno     |     —     |
-|   2    | marginale   |       basso      | qualunque |
-|   3    | apprezzato  |       medio      |  positivo |
-|   4    | popolare    |       alto       |  positivo |
-|   5    | malvisto    |       medio      |  negativo |
-|   6    | rifiutato   |       alto       |  negativo |
-|   7    | ambivalente |       medio      |   neutro  |
-|   8    | controverso |       alto       |   neutro  |
+|   0    | isolato     |     nessuno      |     —     |
+|   1    | ignorato    |     nessuno      |     —     |
+|   2    | marginale   |      basso       | qualunque |
+|   3    | apprezzato  |      medio       | positivo  |
+|   4    | popolare    |       alto       | positivo  |
+|   5    | malvisto    |      medio       | negativo  |
+|   6    | rifiutato   |       alto       | negativo  |
+|   7    | ambivalente |      medio       |  neutro   |
+|   8    | controverso |       alto       |  neutro   |
 
 > **Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
 > soltanto una convenzione per identificare le categorie: non indicano un ordine,
@@ -125,7 +125,7 @@ soglie.** Un metodo può **astenersi** del tutto (nessuna divisione), proporre
   z-score calcolano sia $L$
   sia $H$ (anche se, per le loro regole interne, uno dei due lati può risultare
   disattivato, cioè infinito);
-- **solo il lato alto** — *head/tail breaks* segnala esclusivamente $H$ e lascia
+- **solo il lato alto** — _head/tail breaks_ segnala esclusivamente $H$ e lascia
   sempre $L = -\infty$ (§ 4.2.5);
 - **un solo lato, basso o alto** — il metodo dei piccoli gruppi isola di norma
   solo la coda più piccola, lasciando l'altro lato disattivato (§ 4.2.8).
@@ -206,7 +206,7 @@ Il metodo **si astiene** con meno di $5$ membri visibili. Vale poi il
 **Intuizione:** individuare i **raggruppamenti naturali** della distribuzione:
 le classi vengono scelte in modo da rendere **minima** la varianza interna a
 ogni classe (e, di conseguenza, massima quella tra classi). È il criterio dei
-*natural breaks* di Jenks, qui adattato a **tre classi** (bassa, media, alta).
+_natural breaks_ di Jenks, qui adattato a **tre classi** (bassa, media, alta).
 
 Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$,
 si cercano i due tagli che separano tre classi consecutive minimizzando la
@@ -241,8 +241,8 @@ $H = +\infty$.
 #### 4.2.5 Metodo head/tail breaks
 
 **Intuizione:** nelle distribuzioni **a coda pesante** pochi valori molto alti
-si staccano nettamente dalla massa dei valori piccoli. Il metodo *head/tail
-breaks* separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla
+si staccano nettamente dalla massa dei valori piccoli. Il metodo _head/tail
+breaks_ separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla
 "coda" (il resto).
 
 A ogni passo si calcola la media dei valori correnti e si considera "testa"
@@ -276,7 +276,7 @@ e, nei gruppi omogenei, spesso non segnala nessuno.
 
 #### 4.2.7 Metodo binomiale (GB)
 
-**Intuizione:** *che cosa produrrebbe il puro caso?* Se ogni opinione fosse
+**Intuizione:** _che cosa produrrebbe il puro caso?_ Se ogni opinione fosse
 espressa a caso, il numero di opinioni ricevute da un membro seguirebbe una
 distribuzione binomiale. I membri che si discostano molto da questo andamento
 sono "insolitamente" poco o molto visibili.
@@ -362,7 +362,7 @@ prevale sempre "basso".
 1. Ogni metodo etichetta ciascun membro visibile con $-1$ (basso), $0$ (medio)
    o $+1$ (alto); se un valore soddisfa entrambe le condizioni, prevale "basso".
 2. Un metodo che propone **nessuna divisione** ($L = -\infty$, $H = +\infty$)
-   **si astiene**: non partecipa al voto. Se *tutti* i metodi si astengono,
+   **si astiene**: non partecipa al voto. Se _tutti_ i metodi si astengono,
    non c'è alcuna divisione e tutti restano a impatto medio.
 3. Per ogni membro si contano i voti dei **metodi non astenuti** per basso,
    medio e alto. La classe finale è quella con **più voti**.
@@ -391,7 +391,7 @@ affidabile di ciascuno.
 > **Un avvertimento importante.** Le ipotesi del teorema (indipendenza e
 > $p > 1/2$ per ogni giurato) qui valgono solo **in parte**: i metodi lavorano
 > sugli stessi dati e sono quindi **correlati** tra loro — se i dati sono
-> ambigui, possono sbagliare *tutti insieme*. Per questo il voto di maggioranza
+> ambigui, possono sbagliare _tutti insieme_. Per questo il voto di maggioranza
 > va letto come un'**euristica robusta** (un modo per non dipendere da un unico
 > metodo), non come una garanzia matematica di correttezza.
 
@@ -433,17 +433,17 @@ L'ultimo passo combina i risultati dei tre precedenti con una regola a
 per ogni membro, si applica la categoria legata alla **prima** condizione vera.
 L'ordine conta, perché garantisce le priorità giuste.
 
-| Priorità | Condizione                                | Categoria   | Codice |
-| :------: | ----------------------------------------- | ----------- | :----: |
-|    1     | nessuna opinione ricevuta né data         | isolato     |   0    |
-|    2     | nessuna opinione ricevuta, ma ne ha date  | ignorato    |   1    |
-|    3     | impatto basso                             | marginale   |   2    |
-|    4     | impatto alto e bilancio positivo          | popolare    |   4    |
-|    5     | impatto alto e bilancio negativo          | rifiutato   |   6    |
-|    6     | impatto alto e bilancio neutro            | controverso |   8    |
-|    7     | impatto medio e bilancio positivo         | apprezzato  |   3    |
-|    8     | impatto medio e bilancio negativo         | malvisto    |   5    |
-|    9     | impatto medio e bilancio neutro           | ambivalente |   7    |
+| Priorità | Condizione                               | Categoria   | Codice |
+| :------: | ---------------------------------------- | ----------- | :----: |
+|    1     | nessuna opinione ricevuta né data        | isolato     |   0    |
+|    2     | nessuna opinione ricevuta, ma ne ha date | ignorato    |   1    |
+|    3     | impatto basso                            | marginale   |   2    |
+|    4     | impatto alto e bilancio positivo         | popolare    |   4    |
+|    5     | impatto alto e bilancio negativo         | rifiutato   |   6    |
+|    6     | impatto alto e bilancio neutro           | controverso |   8    |
+|    7     | impatto medio e bilancio positivo        | apprezzato  |   3    |
+|    8     | impatto medio e bilancio negativo        | malvisto    |   5    |
+|    9     | impatto medio e bilancio neutro          | ambivalente |   7    |
 
 Nota una conseguenza della priorità 3: **l'impatto basso vince sul bilancio**.
 Un membro nella fascia bassa è "marginale" anche se le sue poche opinioni sono
@@ -452,29 +452,29 @@ non è un'informazione affidabile.
 
 ## 5 Riepilogo dei parametri
 
-| Parametro                                       | Valore                                   |
-| ----------------------------------------------- | ---------------------------------------- |
-| Metodi di soglia in competizione                | Jenks, largest gap, head/tail, percentili, Tukey, robust z-score, binomiale, piccoli gruppi |
-| Aggregazione tra i metodi                       | voto di maggioranza tra i metodi che dividono |
-| Metodi che non dividono                         | si astengono (non votano)               |
-| Parità nel voto                                 | non medio prevale su medio; basso prevale su alto |
-| Votazione con meno di $3$ membri visibili       | saltata: tutti restano a impatto medio  |
-| Membri visibili minimi per percentili, Jenks, head/tail e robust z-score | $5$                              |
-| Membri del gruppo minimi per binomiale          | $5$                                      |
-| Membri visibili minimi per Tukey                | $3$                                      |
-| Membri visibili per largest gap                 | al massimo $4$ (gruppi piccoli)          |
-| Membri visibili per piccoli gruppi              | $3 \le N < 5$                            |
-| Percentili per impatto basso / alto             | $10$ / $90$                              |
-| Controllo di separazione                        | coda disattivata se la soglia coincide col valore adiacente |
-| Jenks: numero di classi                         | $3$ (bassa, media, alta)                 |
-| Jenks: goodness of variance fit minima          | $GVF \ge 0{,}75$                         |
-| Head/tail: quota massima della testa            | $0{,}4$ (testa sotto il $40\%$ dei valori) |
-| Tukey: recinti interni                          | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$ |
-| Robust z-score: soglia                          | $3{,}5$ (scala MAD $1{,}4826$, minimo MAD $0{,}5$) |
-| Binomiale: livello di significatività           | $\alpha = 0{,}01$ a due code ($0{,}005$ per coda) |
-| Piccoli gruppi: salto minimo tra impatti        | $2$ (gap minimo)                          |
-| Rapporto soglia del bilancio, pochi dati        | $2{,}0$ (per $n_i \le 3$)                |
-| Rapporto soglia del bilancio, molti dati        | $1{,}5$ (per $n_i \ge 15$)               |
+| Parametro                                                                | Valore                                                                                      |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| Metodi di soglia in competizione                                         | Jenks, largest gap, head/tail, percentili, Tukey, robust z-score, binomiale, piccoli gruppi |
+| Aggregazione tra i metodi                                                | voto di maggioranza tra i metodi che dividono                                               |
+| Metodi che non dividono                                                  | si astengono (non votano)                                                                   |
+| Parità nel voto                                                          | non medio prevale su medio; basso prevale su alto                                           |
+| Votazione con meno di $3$ membri visibili                                | saltata: tutti restano a impatto medio                                                      |
+| Membri visibili minimi per percentili, Jenks, head/tail e robust z-score | $5$                                                                                         |
+| Membri del gruppo minimi per binomiale                                   | $5$                                                                                         |
+| Membri visibili minimi per Tukey                                         | $3$                                                                                         |
+| Membri visibili per largest gap                                          | al massimo $4$ (gruppi piccoli)                                                             |
+| Membri visibili per piccoli gruppi                                       | $3 \le N < 5$                                                                               |
+| Percentili per impatto basso / alto                                      | $10$ / $90$                                                                                 |
+| Controllo di separazione                                                 | coda disattivata se la soglia coincide col valore adiacente                                 |
+| Jenks: numero di classi                                                  | $3$ (bassa, media, alta)                                                                    |
+| Jenks: goodness of variance fit minima                                   | $GVF \ge 0{,}75$                                                                            |
+| Head/tail: quota massima della testa                                     | $0{,}4$ (testa sotto il $40\%$ dei valori)                                                  |
+| Tukey: recinti interni                                                   | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                   |
+| Robust z-score: soglia                                                   | $3{,}5$ (scala MAD $1{,}4826$, minimo MAD $0{,}5$)                                          |
+| Binomiale: livello di significatività                                    | $\alpha = 0{,}01$ a due code ($0{,}005$ per coda)                                           |
+| Piccoli gruppi: salto minimo tra impatti                                 | $2$ (gap minimo)                                                                            |
+| Rapporto soglia del bilancio, pochi dati                                 | $2{,}0$ (per $n_i \le 3$)                                                                   |
+| Rapporto soglia del bilancio, molti dati                                 | $1{,}5$ (per $n_i \ge 15$)                                                                  |
 
 ## 6 Bonus e malus: distinguere dentro lo stesso status
 
@@ -584,17 +584,17 @@ otto metodi.
 
 Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 
-| Metodo     | Etichette                 |
-| ---------- | ------------------------- |
-| Jenks      | $+1, +1, -1, 0, -1, -1$  |
-| largest gap| *si astiene*              |
-| head/tail  | $+1, +1, 0, 0, 0, 0$     |
-| percentili | *si astiene*              |
-| Tukey      | *si astiene*              |
-| robust z-score | *si astiene*           |
-| binomiale  | *si astiene*              |
-| piccoli gruppi | *si astiene*           |
-| **Voto**   | **alto, alto, basso, medio, basso, basso** |
+| Metodo         | Etichette                                  |
+| -------------- | ------------------------------------------ |
+| Jenks          | $+1, +1, -1, 0, -1, -1$                    |
+| largest gap    | _si astiene_                               |
+| head/tail      | $+1, +1, 0, 0, 0, 0$                       |
+| percentili     | _si astiene_                               |
+| Tukey          | _si astiene_                               |
+| robust z-score | _si astiene_                               |
+| binomiale      | _si astiene_                               |
+| piccoli gruppi | _si astiene_                               |
+| **Voto**       | **alto, alto, basso, medio, basso, basso** |
 
 Votano soltanto Jenks e head/tail: entrambi concordano sull'alto per $5$; per
 $2$ il voto "basso" di Jenks prevale sul "medio" di head/tail (una classe non
@@ -610,14 +610,14 @@ sempre positivo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso                    | Status     | Codice |
-| :----: | --------------------------- | ---------- | :----: |
-|   1    | alto + positivo             | popolare   |   4    |
-|   2    | alto + positivo             | popolare   |   4    |
-|   3    | basso                       | marginale  |   2    |
-|   4    | medio + positivo            | apprezzato |   3    |
-|   5    | basso                       | marginale  |   2    |
-|   6    | basso                       | marginale  |   2    |
+| Membro | Percorso         | Status     | Codice |
+| :----: | ---------------- | ---------- | :----: |
+|   1    | alto + positivo  | popolare   |   4    |
+|   2    | alto + positivo  | popolare   |   4    |
+|   3    | basso            | marginale  |   2    |
+|   4    | medio + positivo | apprezzato |   3    |
+|   5    | basso            | marginale  |   2    |
+|   6    | basso            | marginale  |   2    |
 
 I membri $1$ e $2$ finiscono entrambi nella categoria **popolare**: ricevono lo
 stesso numero di scelte ($5$) e hanno lo stesso status. Per distinguerli serve
@@ -641,10 +641,10 @@ ottiene:
 | :----: | ---------- | :-----: | :-----: |
 |   1    | popolare   |   175   |    0    |
 |   2    | popolare   |   171   |    0    |
-|   3    | marginale  |    68   |    0    |
-|   4    | apprezzato |    99   |    0    |
-|   5    | marginale  |    64   |    0    |
-|   6    | marginale  |    62   |    0    |
+|   3    | marginale  |   68    |    0    |
+|   4    | apprezzato |   99    |    0    |
+|   5    | marginale  |   64    |    0    |
+|   6    | marginale  |   62    |    0    |
 
 Il membro $1$ ha un bonus più alto del membro $2$ ($175$ contro $171$) pur
 avendo lo stesso numero di scelte ricevute: è stato indicato **prima** nelle
@@ -711,17 +711,17 @@ otto metodi.
   divisione**.
 - **Piccoli gruppi.** Anche qui $N = 6 \ge 5$: il metodo si astiene.
 
-| Metodo     | Etichette                 |
-| ---------- | ------------------------- |
-| Jenks      | $-1, -1, -1, +1, +1, 0$  |
-| largest gap| *si astiene*              |
-| head/tail  | $0, 0, 0, +1, +1, 0$     |
-| percentili | *si astiene*              |
-| Tukey      | *si astiene*              |
-| robust z-score | $0, 0, 0, +1, +1, 0$  |
-| binomiale  | *si astiene*              |
-| piccoli gruppi | *si astiene*           |
-| **Voto**   | **medio, medio, medio, alto, alto, medio** |
+| Metodo         | Etichette                                  |
+| -------------- | ------------------------------------------ |
+| Jenks          | $-1, -1, -1, +1, +1, 0$                    |
+| largest gap    | _si astiene_                               |
+| head/tail      | $0, 0, 0, +1, +1, 0$                       |
+| percentili     | _si astiene_                               |
+| Tukey          | _si astiene_                               |
+| robust z-score | $0, 0, 0, +1, +1, 0$                       |
+| binomiale      | _si astiene_                               |
+| piccoli gruppi | _si astiene_                               |
+| **Voto**       | **medio, medio, medio, alto, alto, medio** |
 
 Votano Jenks, head/tail e robust z-score. Per $5$ concordano tutti sull'alto;
 per $1$ il solo voto "basso" di Jenks è superato dai due voti "medio" di
@@ -736,14 +736,14 @@ sempre negativo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso                    | Status    | Codice |
-| :----: | --------------------------- | --------- | :----: |
-|   1    | medio + negativo            | malvisto  |   5    |
-|   2    | medio + negativo            | malvisto  |   5    |
-|   3    | medio + negativo            | malvisto  |   5    |
-|   4    | alto + negativo             | rifiutato |   6    |
-|   5    | alto + negativo             | rifiutato |   6    |
-|   6    | medio + negativo            | malvisto  |   5    |
+| Membro | Percorso         | Status    | Codice |
+| :----: | ---------------- | --------- | :----: |
+|   1    | medio + negativo | malvisto  |   5    |
+|   2    | medio + negativo | malvisto  |   5    |
+|   3    | medio + negativo | malvisto  |   5    |
+|   4    | alto + negativo  | rifiutato |   6    |
+|   5    | alto + negativo  | rifiutato |   6    |
+|   6    | medio + negativo | malvisto  |   5    |
 
 I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**: ricevono lo
 stesso numero di rifiuti ($5$) e hanno lo stesso status. Anche qui, per
@@ -761,14 +761,14 @@ Calcoliamo il malus dei due membri **rifiutati**:
 Non essendoci scelte, il bonus è $0$ per tutti. Ripetendo per gli altri si
 ottiene:
 
-| Membro | Status     | $bns_i$ | $mls_i$ |
-| :----: | ---------- | :-----: | :-----: |
-|   1    | malvisto   |    0    |   34    |
-|   2    | malvisto   |    0    |   33    |
-|   3    | malvisto   |    0    |   33    |
-|   4    | rifiutato  |    0    |   175   |
-|   5    | rifiutato  |    0    |   171   |
-|   6    | malvisto   |    0    |   67    |
+| Membro | Status    | $bns_i$ | $mls_i$ |
+| :----: | --------- | :-----: | :-----: |
+|   1    | malvisto  |    0    |   34    |
+|   2    | malvisto  |    0    |   33    |
+|   3    | malvisto  |    0    |   33    |
+|   4    | rifiutato |    0    |   175   |
+|   5    | rifiutato |    0    |   171   |
+|   6    | malvisto  |    0    |   67    |
 
 Il membro $4$ ha un malus più alto del membro $5$ ($175$ contro $171$): è stato
 rifiutato **prima** nelle sequenze di rifiuto altrui. A parità di status

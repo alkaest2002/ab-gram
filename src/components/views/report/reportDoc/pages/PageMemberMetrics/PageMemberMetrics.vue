@@ -12,22 +12,22 @@ import MemberStats from "./MemberStats.vue";
 
 // --- Props --------------
 const props = defineProps({
-    // The member this page reports on (`{ id, name, ... }`).
-    member: { type: Object, default: null },
-    // The Moreno ego plot for this member (`{ memberId, svg }`).
-    egoPlot: { type: Object, default: null },
-    // Individual-level Moreno metrics (likes + dislikes combined).
-    morenoMetrics: { type: Object, default: () => ({}) },
-    // Individual-level SNA metrics for the choice ("likes") network.
-    snaMetrics: { type: Object, default: () => ({}) },
-    // `getEdgeTypes` result, exposing `memberInEdges`.
-    edgeTypes: { type: Object, default: () => ({}) },
-    // `getSnaStructures` result for the choice ("likes") network, exposing the
-    // component lists per category.
-    likesComponents: { type: Object, default: () => ({}) },
-    // `getSnaStructures` result for the rejection ("dislikes") network, exposing
-    // the component lists per category.
-    dislikesComponents: { type: Object, default: () => ({}) },
+  // The member this page reports on (`{ id, name, ... }`).
+  member: { type: Object, default: null },
+  // The Moreno ego plot for this member (`{ memberId, svg }`).
+  egoPlot: { type: Object, default: null },
+  // Individual-level Moreno metrics (likes + dislikes combined).
+  morenoMetrics: { type: Object, default: () => ({}) },
+  // Individual-level SNA metrics for the choice ("likes") network.
+  snaMetrics: { type: Object, default: () => ({}) },
+  // `getEdgeTypes` result, exposing `memberInEdges`.
+  edgeTypes: { type: Object, default: () => ({}) },
+  // `getSnaStructures` result for the choice ("likes") network, exposing the
+  // component lists per category.
+  likesComponents: { type: Object, default: () => ({}) },
+  // `getSnaStructures` result for the rejection ("dislikes") network, exposing
+  // the component lists per category.
+  dislikesComponents: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -50,42 +50,40 @@ const props = defineProps({
 </script>
 
 <template>
-    <BasePage>
-        <template #pageTitle>
-            <h2 class="text-[16pt] truncate">
-                <span class="text-muted">Membro {{ props.member.id }} |</span>
-                {{ props.member.name }}
-            </h2>
-        </template>
+  <BasePage>
+    <template #pageTitle>
+      <h2 class="text-[16pt] truncate">
+        <span class="text-muted">Membro {{ props.member.id }} |</span>
+        {{ props.member.name }}
+      </h2>
+    </template>
 
-        <template #default>
-            <div v-if="egoPlot?.svg" class="member-layout">
-                <!-- TOP: the ego graph. -->
-                <MemberEgoPlot :svg="egoPlot.svg" />
+    <template #default>
+      <div v-if="egoPlot?.svg" class="member-layout">
+        <!-- TOP: the ego graph. -->
+        <MemberEgoPlot :svg="egoPlot.svg" />
 
-                <!-- BOTTOM: the member's metrics, shares and status. -->
-                <MemberStats
-                    :member-id="props.member.id"
-                    :moreno-metrics="morenoMetrics"
-                    :sna-metrics="snaMetrics"
-                    :edge-types="edgeTypes"
-                    :likes-components="likesComponents"
-                    :dislikes-components="dislikesComponents"
-                />
-            </div>
+        <!-- BOTTOM: the member's metrics, shares and status. -->
+        <MemberStats
+          :member-id="props.member.id"
+          :moreno-metrics="morenoMetrics"
+          :sna-metrics="snaMetrics"
+          :edge-types="edgeTypes"
+          :likes-components="likesComponents"
+          :dislikes-components="dislikesComponents"
+        />
+      </div>
 
-            <p v-else class="font-mono text-[9pt] text-muted italic">
-                nessun grafico ego disponibile
-            </p>
-        </template>
-    </BasePage>
+      <p v-else class="font-mono text-[9pt] text-muted italic">nessun grafico ego disponibile</p>
+    </template>
+  </BasePage>
 </template>
 
 <style scoped>
 .member-layout {
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 </style>

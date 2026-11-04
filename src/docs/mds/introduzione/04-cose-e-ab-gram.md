@@ -66,7 +66,7 @@ Un insegnante può analizzare la classe e scoprire in **pochi minuti** se esiste
 alunno isolato o un sottogruppo chiuso.
 
 Supponiamo che a inizio anno chieda a ciascun alunno con chi vorrebbe fare un
-lavoro di gruppo e con chi preferirebbe non farlo. Dopo aver inserito le risposte, 
+lavoro di gruppo e con chi preferirebbe non farlo. Dopo aver inserito le risposte,
 AB-Gram può mostrare, ad esempio, che un alunno non è stato scelto
 da nessuno, oppure che cinque compagni si scelgono solo tra loro e non hanno
 contatti con il resto della classe.
@@ -76,6 +76,6 @@ elenco di risposte passerebbero facilmente inosservate. Conoscerle permette di
 intervenire con cognizione, ad esempio modificando la composizione dei gruppi di
 lavoro o favorendo l'inserimento dell'alunno rimasto isolato.
 
-*Attenzione*: i risultati descrivono il gruppo in un preciso momento e rispetto a una precisa
+_Attenzione_: i risultati descrivono il gruppo in un preciso momento e rispetto a una precisa
 domanda: sono un punto di partenza per capire e per intervenire, non un giudizio
 sulle persone.

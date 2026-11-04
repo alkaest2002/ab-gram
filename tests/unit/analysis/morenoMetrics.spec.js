@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import * as np from "numpy-ts";
 
 import {
@@ -109,11 +109,7 @@ describe("getIndividualLevelMetrics", () => {
       { id: "c", likes: ["a"], dislikes: ["a"] },
     ];
 
-    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
-      "a",
-      "b",
-      "c",
-    ], members);
+    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, ["a", "b", "c"], members);
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
@@ -150,10 +146,7 @@ describe("getIndividualLevelMetrics", () => {
       { id: "b", likes: [], dislikes: [] },
     ];
 
-    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
-      "a",
-      "b",
-    ], members);
+    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, ["a", "b"], members);
 
     const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
     expect(result.rawValuesById[0][statusColumn]).toBe(0);
@@ -175,10 +168,7 @@ describe("getIndividualLevelMetrics", () => {
       { id: "b", likes: [], dislikes: [] },
     ];
 
-    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, [
-      "a",
-      "b",
-    ], members);
+    const result = getIndividualLevelMetrics(adjLikes, adjDislikes, ["a", "b"], members);
 
     // a gives a like but receives none (ignored); b receives a like and gives
     // none. With only one visible member there is no impact spread, so all four
@@ -203,22 +193,19 @@ describe("getIndividualLevelMetrics", () => {
 
     const statusColumn = result.metrics.indexOf("ss");
     const statusByName = Object.fromEntries(
-      members.map((member, i) => [
-        member.name,
-        result.rawValuesById[i][statusColumn],
-      ]),
+      members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
-      "Alice": S.POPULAR,
-      "Bob": S.APPRECIATED,
-      "Carol": S.APPRECIATED,
-      "Dave": S.IGNORED,
-      "Eve": S.AMBIVALENT,
-      "Frank": S.IGNORED,
-      "Grace": S.IGNORED,
-      "Heidi": S.ISOLATED,
+      Alice: S.POPULAR,
+      Bob: S.APPRECIATED,
+      Carol: S.APPRECIATED,
+      Dave: S.IGNORED,
+      Eve: S.AMBIVALENT,
+      Frank: S.IGNORED,
+      Grace: S.IGNORED,
+      Heidi: S.ISOLATED,
     });
   });
 
@@ -235,26 +222,23 @@ describe("getIndividualLevelMetrics", () => {
 
     const statusColumn = result.metrics.indexOf("ss");
     const statusByName = Object.fromEntries(
-      members.map((member, i) => [
-        member.name,
-        result.rawValuesById[i][statusColumn],
-      ]),
+      members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
-      "Anna": S.POPULAR,
-      "Bruno": S.POPULAR,
-      "Carla": S.APPRECIATED,
-      "Dino": S.APPRECIATED,
-      "Elsa": S.CONTROVERSIAL,
-      "Franco": S.DISLIKED,
-      "Gina": S.APPRECIATED,
-      "Hugo": S.MARGINAL,
-      "Irene": S.IGNORED,
-      "Juri": S.IGNORED,
-      "Kara": S.ISOLATED,
-      "Luca": S.IGNORED,
+      Anna: S.POPULAR,
+      Bruno: S.POPULAR,
+      Carla: S.APPRECIATED,
+      Dino: S.APPRECIATED,
+      Elsa: S.CONTROVERSIAL,
+      Franco: S.DISLIKED,
+      Gina: S.APPRECIATED,
+      Hugo: S.MARGINAL,
+      Irene: S.IGNORED,
+      Juri: S.IGNORED,
+      Kara: S.ISOLATED,
+      Luca: S.IGNORED,
     });
   });
 

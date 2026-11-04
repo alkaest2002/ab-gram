@@ -41,11 +41,9 @@ const props = defineProps({
 // Issue counts read red when they need attention, muted once they're resolved.
 // Members is the baseline and always reads ink.
 const duplicatedTone = computed(() =>
-  props.duplicatedNamesCount > 0 ? "text-reject" : "text-muted"
+  props.duplicatedNamesCount > 0 ? "text-reject" : "text-muted",
 );
-const emptyTone = computed(() =>
-  props.emptyNamesCount > 0 ? "text-reject" : "text-muted"
-);
+const emptyTone = computed(() => (props.emptyNamesCount > 0 ? "text-reject" : "text-muted"));
 
 // --- Watchers -----------
 
@@ -79,9 +77,7 @@ const emptyTone = computed(() =>
     <div class="flex flex-col px-5 py-4">
       <dt class="eyebrow order-2 mt-2">Nomi duplicati</dt>
       <dd class="order-1 flex items-center gap-2.5" :class="duplicatedTone">
-        <span
-          class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
-        >
+        <span class="grid size-9 shrink-0 place-items-center rounded-lg border border-line">
           <svg
             class="size-5"
             viewBox="0 0 24 24"
@@ -104,9 +100,7 @@ const emptyTone = computed(() =>
     <div class="flex flex-col px-5 py-4">
       <dt class="eyebrow order-2 mt-2">Nomi vuoti</dt>
       <dd class="order-1 flex items-center gap-2.5" :class="emptyTone">
-        <span
-          class="grid size-9 shrink-0 place-items-center rounded-lg border border-line"
-        >
+        <span class="grid size-9 shrink-0 place-items-center rounded-lg border border-line">
           <svg
             class="size-5"
             viewBox="0 0 24 24"

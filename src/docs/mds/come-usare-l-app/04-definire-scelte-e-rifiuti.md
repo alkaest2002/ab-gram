@@ -19,7 +19,7 @@ nome. Per spostarti usa le frecce:
 - **‹** passa al membro precedente;
 - **›** passa al membro successivo.
 
-La freccia *successiva* si attiva solo quando il membro corrente è completo:
+La freccia _successiva_ si attiva solo quando il membro corrente è completo:
 devi aver indicato sia le scelte sia i rifiuti, oppure aver dichiarato che il
 membro non ne ha espressi.
 
@@ -43,7 +43,7 @@ gruppi piccoli.
 
 Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 
-1. **Cerca** il nome digitandone alcune lettere nel campo *Cerca un nome…*
+1. **Cerca** il nome digitandone alcune lettere nel campo _Cerca un nome…_
    (la ricerca perdona piccoli errori di battitura).
 2. **Seleziona o deseleziona** il primo risultato premendo **Invio**
    (vedi [Selezionare con il tasto Invio](#55-selezionare-con-il-tasto-invio)).
@@ -97,7 +97,7 @@ disattivato finché non hai completato tutti i membri.
 
 ## 5 Trovare un nome con la ricerca fuzzy
 
-Nelle liste delle **scelte** e dei **rifiuti** c'è un campo *Cerca un nome…*.
+Nelle liste delle **scelte** e dei **rifiuti** c'è un campo _Cerca un nome…_.
 La ricerca non richiede di scrivere il nome completo né di rispettarne la
 grafia: è una **ricerca fuzzy**, pensata per trovare un nome anche quando digiti
 poche lettere o le scrivi in un ordine diverso.
@@ -107,27 +107,27 @@ poche lettere o le scrivi in un ordine diverso.
 Perché un nome compaia tra i risultati, deve contenere **tutte le lettere** che
 digiti, ognuna per il numero di volte in cui la scrivi:
 
-- scrivendo `rss`, il nome deve contenere una `r` e due `s`: *Rossi* va bene;
-- scrivendo `rrr`, il nome dovrebbe contenere tre `r`: *Rossi* **non** compare.
+- scrivendo `rss`, il nome deve contenere una `r` e due `s`: _Rossi_ va bene;
+- scrivendo `rrr`, il nome dovrebbe contenere tre `r`: _Rossi_ **non** compare.
 
 Ne derivano due conseguenze utili:
 
-- **Puoi omettere lettere** (di solito le vocali): `rss` trova *Rossi*.
-- **Puoi cambiare l'ordine** delle lettere: `rso` trova comunque *Rossi*.
+- **Puoi omettere lettere** (di solito le vocali): `rss` trova _Rossi_.
+- **Puoi cambiare l'ordine** delle lettere: `rso` trova comunque _Rossi_.
 
 Non puoi invece digitare una lettera che nel nome non c'è: `rossa` non trova
-*Rossi*, perché la `a` non esiste.
+_Rossi_, perché la `a` non esiste.
 
 ### 5.2 Come sono ordinati i risultati
 
 I nomi sono elencati dal più pertinente al meno pertinente:
 
 1. **Parte esatta del nome**: il testo digitato è una porzione contigua del
-   nome. Esempio: `rossi` mette *Rossi* in cima.
+   nome. Esempio: `rossi` mette _Rossi_ in cima.
 2. **Lettere in ordine**: le lettere compaiono nell'ordine giusto, con altre
-   lettere in mezzo. Esempio: `rss` trova *Rossi*.
+   lettere in mezzo. Esempio: `rss` trova _Rossi_.
 3. **Lettere in qualsiasi ordine**: ci sono tutte, ma non nell'ordine digitato.
-   Esempio: `rso` trova *Rossi*.
+   Esempio: `rso` trova _Rossi_.
 
 A parità di pertinenza contano, in misura minore, la lunghezza del nome e
 l'ordine alfabetico. In pratica, il nome che cerchi finisce in alto, anche in un
@@ -137,8 +137,8 @@ gruppo numeroso.
 
 La ricerca ignora:
 
-- **maiuscole e minuscole** (`rossi` trova *Rossi*);
-- **accenti** (una `e` digitata trova anche *è* ed *é*);
+- **maiuscole e minuscole** (`rossi` trova _Rossi_);
+- **accenti** (una `e` digitata trova anche _è_ ed _é_);
 - **punteggiatura**: apostrofi e trattini valgono come spazi.
 
 ### 5.4 Consigli per restringere i risultati
@@ -146,25 +146,25 @@ La ricerca ignora:
 #### 5.4.1 Punta sulle consonanti
 
 Le vocali sono comuni e distinguono poco; le consonanti sono più informative.
-`rss` basta per *Rossi*, `vrd` per *Verdi*.
+`rss` basta per _Rossi_, `vrd` per _Verdi_.
 
 #### 5.4.2 Usa le iniziali dei nomi composti
 
-Per *Francesco Battaglia* bastano le iniziali: `fb`. Se più persone condividono
+Per _Francesco Battaglia_ bastano le iniziali: `fb`. Se più persone condividono
 le iniziali, aggiungi una lettera della seconda parola, ad esempio `fbt`.
 
 #### 5.4.3 Aggiungi lettere per separare i nomi simili
 
-Se due nomi hanno lettere in comune (*Elena Bandiera* e *Francesco Battaglia*),
+Se due nomi hanno lettere in comune (_Elena Bandiera_ e _Francesco Battaglia_),
 `ban` li fa comparire entrambi: aggiungi una lettera che distingue, come la `d`
 (`band`) o la `t` (`batt`). In generale, se la lista è ancora troppo lunga,
 **scrivi una lettera in più**.
 
 #### 5.4.4 Attenzione agli errori di battitura
 
-Uno scambio di lettere non rovina la ricerca: `vedri` trova ancora *Verdi*,
+Uno scambio di lettere non rovina la ricerca: `vedri` trova ancora _Verdi_,
 perché le lettere ci sono tutte. Una lettera sbagliata invece sì: `verti` non
-trova *Verdi*, perché la `t` non fa parte del nome. Se la ricerca non dà
+trova _Verdi_, perché la `t` non fa parte del nome. Se la ricerca non dà
 risultati, controlla di non aver digitato una lettera estranea al nome.
 
 #### 5.4.5 Rivedere tutti i nomi
@@ -180,7 +180,7 @@ alla volta, così **l'ordine** in cui compaiono le scelte (o i rifiuti)
 rispecchia quello in cui li hai indicati.
 
 Questo ordine non è casuale: viene usato per calcolare diverse metriche del
-report. Ad esempio, il **bonus** e il **malus** tengono conto di *quanto presto*
+report. Ad esempio, il **bonus** e il **malus** tengono conto di _quanto presto_
 un membro è stato scelto o rifiutato. Selezionando un membro alla volta sei
 certo che il primo indicato sia davvero la prima scelta, il secondo la seconda,
 e così via.
@@ -191,10 +191,10 @@ certo di selezionare la persona giusta.
 
 ### 5.6 Esempi rapidi
 
-| Digiti | Trovi |
-|--------|-------|
-| `rss` | *Rossi* |
-| `vrd` | *Verdi* |
-| `fb` | *Francesco Battaglia* (iniziali) |
-| `gsp` | *Giuseppe* |
-| `ebd` | *Elena Bandiera* (iniziali e consonante) |
+| Digiti | Trovi                                    |
+| ------ | ---------------------------------------- |
+| `rss`  | _Rossi_                                  |
+| `vrd`  | _Verdi_                                  |
+| `fb`   | _Francesco Battaglia_ (iniziali)         |
+| `gsp`  | _Giuseppe_                               |
+| `ebd`  | _Elena Bandiera_ (iniziali e consonante) |

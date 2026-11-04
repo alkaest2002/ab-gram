@@ -13,10 +13,10 @@ import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
 // --- Props --------------
 defineProps({
-    buttonVariant: {
-        type: String,
-        default: "outline",
-    },
+  buttonVariant: {
+    type: String,
+    default: "outline",
+  },
 });
 
 // --- Emits --------------
@@ -37,26 +37,24 @@ const brochureUrl = `${import.meta.env.BASE_URL}ab-gram%20depliant.pdf`;
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const openBrochure = () =>
-    window.open(brochureUrl, "_blank", "noopener,noreferrer");
+const openBrochure = () => window.open(brochureUrl, "_blank", "noopener,noreferrer");
 </script>
 
 <template>
-    <BaseCard>
-        <template #eyebrow>Segnala il progetto</template>
-        <template #title>Insegni in una scuola pubblica?</template>
+  <BaseCard>
+    <template #eyebrow>Segnala il progetto</template>
+    <template #title>Insegni in una scuola pubblica?</template>
 
-        Se questo progetto ti è stato utile, segnalalo al
-        Ministero dell'Istruzione e del Merito.
+    Se questo progetto ti è stato utile, segnalalo al Ministero dell'Istruzione e del Merito.
 
-        <template #actions>
-            <AppCopyLinkButton :buttonVariant="buttonVariant" />
-            <BaseButton :buttonVariant="buttonVariant" @click="openBrochure">
-                <template #icon>
-                    <FileIcon size="size-4" />
-                </template>
-                Apri il dépliant
-            </BaseButton>
+    <template #actions>
+      <AppCopyLinkButton :buttonVariant="buttonVariant" />
+      <BaseButton :buttonVariant="buttonVariant" @click="openBrochure">
+        <template #icon>
+          <FileIcon size="size-4" />
         </template>
-    </BaseCard>
+        Apri il dépliant
+      </BaseButton>
+    </template>
+  </BaseCard>
 </template>

@@ -30,11 +30,9 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/">
-        <template #title> Pagina non trovata </template>
-        <template #text>
-            L'indirizzo richiesto non esiste o è stato spostato.
-        </template>
-        <template #buttonLabel> Torna alla home </template>
-    </BaseNotify>
+  <BaseNotify to="/">
+    <template #title> Pagina non trovata </template>
+    <template #text> L'indirizzo richiesto non esiste o è stato spostato. </template>
+    <template #buttonLabel> Torna alla home </template>
+  </BaseNotify>
 </template>

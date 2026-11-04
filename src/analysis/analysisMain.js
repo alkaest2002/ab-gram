@@ -3,10 +3,16 @@
 
 import { createAdjacencyMatrices, getMemberIndices } from "./common/adjacencyMatrices.js";
 import { getEdgeTypes } from "./edges/edgeTypes.js";
-import { getGroupLevelMetrics as morGroupLevel, getIndividualLevelMetrics as morIndividualLevel } from "./moreno/metrics/morenoMetrics.js";
-import { getGroupLevelMetrics as snaGroupLevel, getIndividualLevelMetrics as snaIndividualLevel } from "./sna/metrics/snaMetrics.js";
+import {
+  getGroupLevelMetrics as morGroupLevel,
+  getIndividualLevelMetrics as morIndividualLevel,
+} from "./moreno/metrics/morenoMetrics.js";
+import {
+  getGroupLevelMetrics as snaGroupLevel,
+  getIndividualLevelMetrics as snaIndividualLevel,
+} from "./sna/metrics/snaMetrics.js";
 import { getSnaStructures } from "./sna/components/snaStructures.js";
-import { getSnaPlot } from "./sna/plots/snaPlots.js"
+import { getSnaPlot } from "./sna/plots/snaPlots.js";
 import { createLikesGraph } from "./sna/snaBase.js";
 import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
 
@@ -60,7 +66,12 @@ export const getSociogramAnalysis = (members) => {
   const morenoGroupLevelMetrics = morGroupLevel(adjLikes, adjDislikes);
 
   // Individual-level Moreno metrics, one row per member (aligned with `memberIndices`).
-  const morenoIndividualLevelMetrics = morIndividualLevel(adjLikes, adjDislikes, memberIndices, members);
+  const morenoIndividualLevelMetrics = morIndividualLevel(
+    adjLikes,
+    adjDislikes,
+    memberIndices,
+    members,
+  );
 
   // Build one ego plot per member. The likes directed-paths map is computed
   // once inside `getMorenoEgoPlots` and reused across members (caching).

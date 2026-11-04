@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { ref } from "vue";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vite-plus/test";
 
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers.js";
 import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramSelectPreferences.js";
@@ -28,13 +28,12 @@ function setup(members = DEFAULT_MEMBERS, selected = []) {
     if (event === "update:modelValue") selectedRef.value = value;
   });
 
-  const { selectedIds, toggle, toggleFiltered } =
-    useSociogramPreferencesSelection({
-      query,
-      filteredMembers,
-      modelValue: selectedRef,
-      emit,
-    });
+  const { selectedIds, toggle, toggleFiltered } = useSociogramPreferencesSelection({
+    query,
+    filteredMembers,
+    modelValue: selectedRef,
+    emit,
+  });
 
   return { membersRef, query, selectedRef, emit, selectedIds, toggle, toggleFiltered };
 }

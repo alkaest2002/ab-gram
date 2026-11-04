@@ -130,8 +130,7 @@ export const computeConflictTypeII = (adjDislikes) => {
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @returns {number} The positive reciprocity index.
  */
-export const computePositiveReciprocity = (adjLikes) =>
-  countMutualPairs(adjLikes) / adjLikes.sum();
+export const computePositiveReciprocity = (adjLikes) => countMutualPairs(adjLikes) / adjLikes.sum();
 
 /**
  * Negative reciprocity index: mutual dislike pairs divided by total dislikes.

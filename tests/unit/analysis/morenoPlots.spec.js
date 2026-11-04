@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vite-plus/test";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import {
@@ -18,8 +18,7 @@ const makeMember = (id, name, likes = [], dislikes = []) => ({
   dislikes,
 });
 
-const countOccurrences = (text, needle) =>
-  text.split(needle).length - 1;
+const countOccurrences = (text, needle) => text.split(needle).length - 1;
 
 describe("morenoPlots", () => {
   const members = [
@@ -117,12 +116,7 @@ describe("morenoPlots", () => {
     const nodePaths = getNodePaths(likesGraph, dislikesGraph);
 
     it("places nodes on rings by reachability and colors them by priority", () => {
-      const { memberId, svg } = buildMorenoEgoPlot(
-        "a",
-        likesGraph,
-        dislikesGraph,
-        nodePaths,
-      );
+      const { memberId, svg } = buildMorenoEgoPlot("a", likesGraph, dislikesGraph, nodePaths);
 
       expect(memberId).toBe("a");
       expect(svg.startsWith("<svg")).toBe(true);
@@ -147,24 +141,16 @@ describe("morenoPlots", () => {
     });
 
     it("stacks the region names along the 12 o'clock line", () => {
-      const { svg } = buildMorenoEgoPlot(
-        "a",
-        likesGraph,
-        dislikesGraph,
-        nodePaths,
-      );
+      const { svg } = buildMorenoEgoPlot("a", likesGraph, dislikesGraph, nodePaths);
 
       // Innermost ring first, outermost ring last. The center (ego) is not
       // named, so there are exactly five region labels.
       const order = ["0MU", "0HP", "1HP", "2HP+", "DTR"];
       const textOf = (name) => {
-        const match = svg.match(
-          new RegExp(`<text([^>]*)>${name.replace("+", "\\+")}</text>`),
-        );
+        const match = svg.match(new RegExp(`<text([^>]*)>${name.replace("+", "\\+")}</text>`));
         return match ? match[1] : null;
       };
-      const coordinate = (attrs, axis) =>
-        Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
+      const coordinate = (attrs, axis) => Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
 
       const labels = order.map(textOf);
       labels.forEach((attrs) => expect(attrs).not.toBeNull());
@@ -188,21 +174,13 @@ describe("morenoPlots", () => {
       // a node: every node's angle from the center stays outside the gap.
       const northGap = Math.PI / 3;
       const nodeCenters = [
-        ...svg.matchAll(
-          /<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
-        ),
+        ...svg.matchAll(/<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g),
       ];
       expect(nodeCenters.length).toBeGreaterThan(0);
       nodeCenters.forEach((match) => {
-        const angle = Math.atan2(
-          Number(match[2]) - centerY,
-          Number(match[1]) - centerX,
-        );
+        const angle = Math.atan2(Number(match[2]) - centerY, Number(match[1]) - centerX);
         const fromNorth = Math.abs(
-          Math.atan2(
-            Math.sin(angle + Math.PI / 2),
-            Math.cos(angle + Math.PI / 2),
-          ),
+          Math.atan2(Math.sin(angle + Math.PI / 2), Math.cos(angle + Math.PI / 2)),
         );
         expect(fromNorth).toBeGreaterThanOrEqual(northGap / 2 - 1e-9);
       });
@@ -226,18 +204,10 @@ describe("morenoPlots", () => {
       // rings consume the rest. A phase of 0.5 within one slot keeps the ring
       // in the safe arc; the same 0.5 over the full arc would push a node into
       // the north gap.
-      const random = vi
-        .spyOn(Math, "random")
-        .mockReturnValueOnce(0.5)
-        .mockReturnValue(0);
+      const random = vi.spyOn(Math, "random").mockReturnValueOnce(0.5).mockReturnValue(0);
 
       try {
-        const { svg } = buildMorenoEgoPlot(
-          "a",
-          likes,
-          dislikes,
-          getNodePaths(likes, dislikes),
-        );
+        const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
         const canvas = svg.match(/viewBox='0 0 ([0-9.]+) ([0-9.]+)'/);
         const centerX = Number(canvas[1]) / 2;
@@ -245,22 +215,14 @@ describe("morenoPlots", () => {
 
         const northGap = Math.PI / 3;
         const nodeCenters = [
-          ...svg.matchAll(
-            /<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g,
-          ),
+          ...svg.matchAll(/<circle[^>]*stroke-width='2'[^>]*cx='([^']+)'[^>]*cy='([^']+)'/g),
         ];
         expect(nodeCenters.length).toBe(members.length);
 
         nodeCenters.forEach((match) => {
-          const angle = Math.atan2(
-            Number(match[2]) - centerY,
-            Number(match[1]) - centerX,
-          );
+          const angle = Math.atan2(Number(match[2]) - centerY, Number(match[1]) - centerX);
           const fromNorth = Math.abs(
-            Math.atan2(
-              Math.sin(angle + Math.PI / 2),
-              Math.cos(angle + Math.PI / 2),
-            ),
+            Math.atan2(Math.sin(angle + Math.PI / 2), Math.cos(angle + Math.PI / 2)),
           );
           expect(fromNorth).toBeGreaterThanOrEqual(northGap / 2 - 1e-9);
         });
@@ -278,12 +240,7 @@ describe("morenoPlots", () => {
       const likes = createLikesGraph(outgoingMembers, "likes");
       const dislikes = createLikesGraph(outgoingMembers, "dislikes");
 
-      const { svg } = buildMorenoEgoPlot(
-        "a",
-        likes,
-        dislikes,
-        getNodePaths(likes, dislikes),
-      );
+      const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
       // a likes b (blue stroke + blue outward marker) and c dislikes a (red
       // stroke + red inward marker): two direction markers in total.
@@ -303,21 +260,13 @@ describe("morenoPlots", () => {
       const likes = createLikesGraph(dislikeMembers, "likes");
       const dislikes = createLikesGraph(dislikeMembers, "dislikes");
 
-      const { svg } = buildMorenoEgoPlot(
-        "a",
-        likes,
-        dislikes,
-        getNodePaths(likes, dislikes),
-      );
+      const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
       const circle = (label) => {
-        const match = svg.match(
-          new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`),
-        );
+        const match = svg.match(new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`));
         return match ? match[1] : null;
       };
-      const coordinate = (attrs, axis) =>
-        Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
+      const coordinate = (attrs, axis) => Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
 
       const ego = circle("a");
       const bNode = circle("b");
@@ -354,13 +303,10 @@ describe("morenoPlots", () => {
 
       // Extract a node's circle attributes by its label.
       const circle = (label) => {
-        const match = svg.match(
-          new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`),
-        );
+        const match = svg.match(new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`));
         return match ? match[1] : null;
       };
-      const coordinate = (attrs, axis) =>
-        Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
+      const coordinate = (attrs, axis) => Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
 
       const ego = circle("a");
       const bNode = circle("b");
@@ -372,10 +318,7 @@ describe("morenoPlots", () => {
       const centerX = coordinate(ego, "cx");
       const centerY = coordinate(ego, "cy");
       const radiusOf = (attrs) =>
-        Math.hypot(
-          coordinate(attrs, "cx") - centerX,
-          coordinate(attrs, "cy") - centerY,
-        );
+        Math.hypot(coordinate(attrs, "cx") - centerX, coordinate(attrs, "cy") - centerY);
 
       // Ring 1 (mutuality) is empty, so b stays on ring 2 (oneHop, radius 150)
       // and c stays on ring 3 (twoHops, radius 220) instead of shifting inward.
@@ -384,17 +327,12 @@ describe("morenoPlots", () => {
     });
 
     it("keeps padding between the outermost boundary and the canvas edge", () => {
-      const { svg } = buildMorenoEgoPlot(
-        "a",
-        likesGraph,
-        dislikesGraph,
-        nodePaths,
-      );
+      const { svg } = buildMorenoEgoPlot("a", likesGraph, dislikesGraph, nodePaths);
 
       // The dashed boundary circles are the only elements with fill='none'.
-      const boundaryRadii = [
-        ...svg.matchAll(/<circle[^>]*r='([0-9.]+)'[^>]*fill='none'/g),
-      ].map((match) => Number(match[1]));
+      const boundaryRadii = [...svg.matchAll(/<circle[^>]*r='([0-9.]+)'[^>]*fill='none'/g)].map(
+        (match) => Number(match[1]),
+      );
       expect(boundaryRadii.length).toBe(6);
 
       const canvas = svg.match(/viewBox='0 0 ([0-9.]+) ([0-9.]+)'/);
@@ -425,21 +363,13 @@ describe("morenoPlots", () => {
         .mockReturnValue(0);
 
       try {
-        const { svg } = buildMorenoEgoPlot(
-          "a",
-          likes,
-          dislikes,
-          getNodePaths(likes, dislikes),
-        );
+        const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
         const circle = (label) => {
-          const match = svg.match(
-            new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`),
-          );
+          const match = svg.match(new RegExp(`<circle([^>]*)></circle><text[^>]*>${label}</text>`));
           return match ? match[1] : null;
         };
-        const coordinate = (attrs, axis) =>
-          Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
+        const coordinate = (attrs, axis) => Number(attrs.match(new RegExp(`${axis}='([^']+)'`))[1]);
 
         const ego = circle("a");
         const bNode = circle("b");
@@ -462,10 +392,7 @@ describe("morenoPlots", () => {
 
   describe("getMorenoEgoPlots", () => {
     it("builds one cached plot per member", () => {
-      const members = [
-        makeMember("a", "Alice", ["b"], []),
-        makeMember("b", "Bob", [], ["a"]),
-      ];
+      const members = [makeMember("a", "Alice", ["b"], []), makeMember("b", "Bob", [], ["a"])];
       const likes = createLikesGraph(members, "likes");
       const dislikes = createLikesGraph(members, "dislikes");
 

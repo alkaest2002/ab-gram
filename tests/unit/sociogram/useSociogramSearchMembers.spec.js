@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { ref } from "vue";
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers.js";
 

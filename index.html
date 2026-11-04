@@ -1,97 +1,119 @@
 <!doctype html>
 <html lang="it">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="AB-Gram · App di analisi delle dinamiche gruppo."
-        />
-        <title>AB-Gram</title>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="AB-Gram · App di analisi delle dinamiche gruppo." />
+    <title>AB-Gram</title>
 
-        <link rel="preload" href="/src/assets/styles/fonts/IBMPlexSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href="/src/assets/styles/fonts/IBMPlexSans-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href="/src/assets/styles/fonts/IBMPlexMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href="/src/assets/styles/fonts/IBMPlexSans-Medium.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href="/src/assets/styles/fonts/IBMPlexMono-Medium.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/src/assets/styles/fonts/IBMPlexSans-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/assets/styles/fonts/IBMPlexSans-SemiBold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/assets/styles/fonts/IBMPlexMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/assets/styles/fonts/IBMPlexSans-Medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/src/assets/styles/fonts/IBMPlexMono-Medium.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
+    <style>
+      /* First-paint loader: shown instantly, then replaced when Vue mounts. */
+      .boot-loader {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        background: #ffffff;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
+      }
 
-        <style>
-            /* First-paint loader: shown instantly, then replaced when Vue mounts. */
-            .boot-loader {
-                position: fixed;
-                inset: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 1rem;
-                background: #ffffff;
-                font-family: "IBM Plex Sans", system-ui, sans-serif;
-            }
+      .boot-loader__wheel {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: conic-gradient(from 0deg, transparent, #2563eb);
+        -webkit-mask: radial-gradient(
+          closest-side,
+          transparent calc(100% - 2px),
+          #000 calc(100% - 2px)
+        );
+        mask: radial-gradient(closest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+        animation: boot-spin 1s linear infinite;
+      }
 
-            .boot-loader__wheel {
-                width: 2.5rem;
-                height: 2.5rem;
-                border-radius: 50%;
-                background: conic-gradient(from 0deg, transparent, #2563eb);
-                -webkit-mask: radial-gradient(
-                    closest-side,
-                    transparent calc(100% - 2px),
-                    #000 calc(100% - 2px)
-                );
-                mask: radial-gradient(
-                    closest-side,
-                    transparent calc(100% - 2px),
-                    #000 calc(100% - 2px)
-                );
-                animation: boot-spin 1s linear infinite;
-            }
+      .boot-loader__text {
+        margin: 0;
+        color: #5b5a63;
+        font-size: 0.9rem;
+      }
 
-            .boot-loader__text {
-                margin: 0;
-                color: #5b5a63;
-                font-size: 0.9rem;
-            }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
 
-            @keyframes boot-spin {
-                to {
-                    transform: rotate(360deg);
-                }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                .boot-loader__wheel {
-                    animation-duration: 2s;
-                }
-            }
-        </style>
-    </head>
-    <body>
-        <div id="app">
-            <div class="boot-loader" role="status">
-                <div class="boot-loader__wheel" aria-hidden="true"></div>
-                <p class="boot-loader__text">Caricamento in corso…</p>
-            </div>
-        </div>
-        <script type="module" src="/src/main.js"></script>
-        <script>
-        MathJax = {
-          loader: {load: ['ui/lazy']},
-          tex: {
-            // Enable `$...$` inline math: the Markdown pipeline strips the
-            // backslashes from the default LaTeX delimiters.
-            inlineMath: {'[+]': [['$', '$']]}
-          },
-          // The docs are rendered client-side by Vue, so skip MathJax's
-          // automatic full-page typeset on load; each article is typeset on
-          // demand by useMathjax() as it mounts/navigates.
-          startup: {typeset: false}
-        };
-        </script>
-        <!-- MathJax is injected lazily by useMathjax() only when a docs page
+      @media (prefers-reduced-motion: reduce) {
+        .boot-loader__wheel {
+          animation-duration: 2s;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot-loader" role="status">
+        <div class="boot-loader__wheel" aria-hidden="true"></div>
+        <p class="boot-loader__text">Caricamento in corso…</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      MathJax = {
+        loader: { load: ["ui/lazy"] },
+        tex: {
+          // Enable `$...$` inline math: the Markdown pipeline strips the
+          // backslashes from the default LaTeX delimiters.
+          inlineMath: { "[+]": [["$", "$"]] },
+        },
+        // The docs are rendered client-side by Vue, so skip MathJax's
+        // automatic full-page typeset on load; each article is typeset on
+        // demand by useMathjax() as it mounts/navigates.
+        startup: { typeset: false },
+      };
+    </script>
+    <!-- MathJax is injected lazily by useMathjax() only when a docs page
              first needs it, so other routes don't pay for it. -->
-    </body>
+  </body>
 </html>

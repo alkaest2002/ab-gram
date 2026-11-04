@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
 import {
@@ -47,11 +47,7 @@ const INDIVIDUAL_COLUMNS = [
 describe("getGroupLevelMetrics", () => {
   it("computes every metric for a complete mutual triangle", () => {
     const graph = createLikesGraph(
-      [
-        makeMember("a", ["b", "c"]),
-        makeMember("b", ["a", "c"]),
-        makeMember("c", ["a", "b"]),
-      ],
+      [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
 
@@ -60,10 +56,7 @@ describe("getGroupLevelMetrics", () => {
     expect(result.ids).toEqual(["likes"]);
     expect(result.metrics).toEqual(GROUP_COLUMNS);
     expect(result.rawValuesById[0]).toEqual([
-      3, 6, 6,
-      2, 2, 2, 2, 2, 0,
-      2, 2, 2, 2, 2, 0,
-      1, 0, 1, 1,
+      3, 6, 6, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 0, 1, 0, 1, 1,
     ]);
     // A single group row means every metric column ranks itself as 1.
     expect(result.rankedValuesById).toEqual([GROUP_COLUMNS.map(() => 1)]);
@@ -71,21 +64,14 @@ describe("getGroupLevelMetrics", () => {
 
   it("computes density and centralization for a star graph", () => {
     const graph = createLikesGraph(
-      [
-        makeMember("a", []),
-        makeMember("b", ["a"]),
-        makeMember("c", ["a"]),
-        makeMember("d", ["a"]),
-      ],
+      [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
 
     const result = getGroupLevelMetrics(graph);
 
     const values = result.rawValuesById[0];
-    const byName = Object.fromEntries(
-      GROUP_COLUMNS.map((key, i) => [key, values[i]]),
-    );
+    const byName = Object.fromEntries(GROUP_COLUMNS.map((key, i) => [key, values[i]]));
 
     expect(byName.numberOfNodes).toBe(4);
     expect(byName.numberOfEdges).toBe(3);
@@ -114,10 +100,7 @@ describe("getGroupLevelMetrics", () => {
     const result = getGroupLevelMetrics(graph);
 
     expect(result.rawValuesById[0]).toEqual([
-      1, 0, 0,
-      0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0,
+      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ]);
   });
 });
@@ -125,12 +108,7 @@ describe("getGroupLevelMetrics", () => {
 describe("getIndividualLevelMetrics", () => {
   it("returns degree centralities for a star graph", () => {
     const graph = createLikesGraph(
-      [
-        makeMember("a", []),
-        makeMember("b", ["a"]),
-        makeMember("c", ["a"]),
-        makeMember("d", ["a"]),
-      ],
+      [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
 
@@ -172,21 +150,14 @@ describe("getIndividualLevelMetrics", () => {
 
   it("produces PageRank scores that sum to one", () => {
     const graph = createLikesGraph(
-      [
-        makeMember("a", ["b", "c"]),
-        makeMember("b", ["a", "c"]),
-        makeMember("c", ["a", "b"]),
-      ],
+      [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
 
     const result = getIndividualLevelMetrics(graph);
     const pageRankColumn = INDIVIDUAL_COLUMNS.indexOf("PageRank");
 
-    const total = result.rawValuesById.reduce(
-      (sum, row) => sum + row[pageRankColumn],
-      0,
-    );
+    const total = result.rawValuesById.reduce((sum, row) => sum + row[pageRankColumn], 0);
 
     expect(total).toBeCloseTo(1, 6);
   });

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import * as np from "numpy-ts";
 
 import { computeRankedScores } from "@/analysis/common/commonMetrics.js";
@@ -52,7 +52,12 @@ describe("computeRankedScores", () => {
   });
 
   it("throws for inputs with more than two dimensions", () => {
-    const threeDimensional = np.array([[[1, 2], [3, 4]]]);
+    const threeDimensional = np.array([
+      [
+        [1, 2],
+        [3, 4],
+      ],
+    ]);
 
     expect(() => computeRankedScores(threeDimensional)).toThrow(
       "computeRankedScores expects a 1-D or 2-D array",

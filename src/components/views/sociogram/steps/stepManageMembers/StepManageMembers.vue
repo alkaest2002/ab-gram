@@ -30,10 +30,7 @@ import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits([
-    "sociogram-change-component",
-    "sociogram-restart-app",
-]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- Routers ------------
 
@@ -51,10 +48,10 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 // them are blank, and no two members share the same name.
 const nameIssues = computed(() => getMembersNameIssues(members.value));
 const canGoNext = computed(
-    () =>
-        membersCount.value > 0 &&
-        nameIssues.value.emptyNamesCount === 0 &&
-        nameIssues.value.duplicateNamesCount === 0,
+  () =>
+    membersCount.value > 0 &&
+    nameIssues.value.emptyNamesCount === 0 &&
+    nameIssues.value.duplicateNamesCount === 0,
 );
 
 // --- Watchers -----------
@@ -65,31 +62,31 @@ const canGoNext = computed(
 </script>
 
 <template>
-    <section class="card space-y-6">
-        <StepHeader>
-            <template #eyebrow>Passaggio 2 di 4</template>
-            <template #title>Gestisci i membri del gruppo</template>
-            Controlla i nominativi caricati: puoi modificarli, rimuoverli o
-            aggiungerne di nuovi prima di proseguire.
-        </StepHeader>
+  <section class="card space-y-6">
+    <StepHeader>
+      <template #eyebrow>Passaggio 2 di 4</template>
+      <template #title>Gestisci i membri del gruppo</template>
+      Controlla i nominativi caricati: puoi modificarli, rimuoverli o aggiungerne di nuovi prima di
+      proseguire.
+    </StepHeader>
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+    <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <LoadMembersListEditor
-            :members="members"
-            @sociogram-update-member="sociogramStore.updateMember"
-            @sociogram-add-member="sociogramStore.addMember"
-            @sociogram-remove-member="sociogramStore.removeMember"
-        />
-    </section>
-
-    <SociogramNavigation
-        :enable-previous="true"
-        :enable-next="canGoNext"
-        :enable-archive="canGoNext"
-        :enable-restart="canGoNext"
-        @sociogram-navigation-previous="goToStep('start')"
-        @sociogram-navigation-next="goToStep('setPreferences')"
-        @sociogram-navigation-restart="restart"
+    <LoadMembersListEditor
+      :members="members"
+      @sociogram-update-member="sociogramStore.updateMember"
+      @sociogram-add-member="sociogramStore.addMember"
+      @sociogram-remove-member="sociogramStore.removeMember"
     />
+  </section>
+
+  <SociogramNavigation
+    :enable-previous="true"
+    :enable-next="canGoNext"
+    :enable-archive="canGoNext"
+    :enable-restart="canGoNext"
+    @sociogram-navigation-previous="goToStep('start')"
+    @sociogram-navigation-next="goToStep('setPreferences')"
+    @sociogram-navigation-restart="restart"
+  />
 </template>

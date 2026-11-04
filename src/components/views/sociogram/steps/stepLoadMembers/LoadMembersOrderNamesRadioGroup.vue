@@ -10,15 +10,15 @@ import { computed, useId } from "vue";
 
 // --- Props --------------
 const props = defineProps({
-    /**
-     * The selected ordering mode. Bound with `v-model`: read here, written
-     * back through `update:modelValue`.
-     */
-    modelValue: {
-        type: String,
-        default: "as-is",
-        validator: (value) => ["as-is", "alphabetical", "shuffle"].includes(value),
-    },
+  /**
+   * The selected ordering mode. Bound with `v-model`: read here, written
+   * back through `update:modelValue`.
+   */
+  modelValue: {
+    type: String,
+    default: "as-is",
+    validator: (value) => ["as-is", "alphabetical", "shuffle"].includes(value),
+  },
 });
 
 // --- Emits --------------
@@ -34,9 +34,9 @@ const emit = defineEmits(["update:modelValue"]);
 const groupName = useId();
 
 const options = [
-    { value: "as-is", label: "Mantieni l'ordine del file" },
-    { value: "alphabetical", label: "Ordina alfabeticamente" },
-    { value: "shuffle", label: "Mescola in modo casuale" },
+  { value: "as-is", label: "Mantieni l'ordine del file" },
+  { value: "alphabetical", label: "Ordina alfabeticamente" },
+  { value: "shuffle", label: "Mescola in modo casuale" },
 ];
 
 // --- Composables --------
@@ -45,8 +45,8 @@ const options = [
 // v-model: read the selected mode from `modelValue` and write it back by
 // emitting `update:modelValue`, so the parent stays the single source of truth.
 const selected = computed({
-    get: () => props.modelValue,
-    set: (value) => emit("update:modelValue", value),
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
 });
 
 // --- Watchers -----------
@@ -57,23 +57,19 @@ const selected = computed({
 </script>
 
 <template>
-    <fieldset class="space-y-2">
-        <legend class="eyebrow">Ordinamento dei nominativi</legend>
-        <div class="space-y-2">
-            <label
-                v-for="option in options"
-                :key="option.value"
-                class="flex items-start gap-3"
-            >
-                <input
-                    type="radio"
-                    :name="groupName"
-                    :value="option.value"
-                    class="mt-0.5 size-4 shrink-0 accent-accent"
-                    v-model="selected"
-                />
-                <span class="text-sm text-muted">{{ option.label }}</span>
-            </label>
-        </div>
-    </fieldset>
+  <fieldset class="space-y-2">
+    <legend class="eyebrow">Ordinamento dei nominativi</legend>
+    <div class="space-y-2">
+      <label v-for="option in options" :key="option.value" class="flex items-start gap-3">
+        <input
+          type="radio"
+          :name="groupName"
+          :value="option.value"
+          class="mt-0.5 size-4 shrink-0 accent-accent"
+          v-model="selected"
+        />
+        <span class="text-sm text-muted">{{ option.label }}</span>
+      </label>
+    </div>
+  </fieldset>
 </template>

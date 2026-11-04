@@ -52,9 +52,9 @@ export const createAdjacencyMatrices = (members) => {
   const adjDislikes = createAdjacencyMatrix(members, "dislikes");
   return {
     adjLikes,
-    adjDislikes
-  }
-}
+    adjDislikes,
+  };
+};
 
 /**
  * Member ids in the order they occupy the rows/columns of an adjacency matrix.

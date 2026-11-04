@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from "node:url";
 import { copyFileSync } from "node:fs";
 import path from "node:path";
 
-import { defineConfig } from "vite";
+import { defineConfig, lazyPlugins } from "vite-plus";
 import vue from "@vitejs/plugin-vue";
 import vueDevTools from "vite-plugin-vue-devtools";
 import tailwindcss from "@tailwindcss/vite";
@@ -110,17 +110,20 @@ function spa404() {
       outDir = config.build.outDir;
     },
     closeBundle() {
-      copyFileSync(
-        path.resolve(outDir, "index.html"),
-        path.resolve(outDir, "404.html"),
-      );
+      copyFileSync(path.resolve(outDir, "index.html"), path.resolve(outDir, "404.html"));
     },
   };
 }
 
 export default defineConfig(({ command }) => ({
+  fmt: {},
+  lint: {
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+    rules: { "vite-plus/prefer-vite-plus-imports": "error" },
+    options: { typeAware: true, typeCheck: true },
+  },
   base: command === "serve" ? "/" : "/",
-  plugins: [
+  plugins: lazyPlugins(() => [
     vue({
       include: [/\.vue$/, /\.md$/],
     }),
@@ -133,7 +136,7 @@ export default defineConfig(({ command }) => ({
       },
     }),
     spa404(),
-  ],
+  ]),
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

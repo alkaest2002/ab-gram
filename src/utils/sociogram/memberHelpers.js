@@ -126,8 +126,7 @@ export function isMemberComplete(member) {
   if (!member) return false;
 
   const hasLikes = (member.likes?.length ?? 0) > 0 || Boolean(member.noLikes);
-  const hasDislikes =
-    (member.dislikes?.length ?? 0) > 0 || Boolean(member.noDislikes);
+  const hasDislikes = (member.dislikes?.length ?? 0) > 0 || Boolean(member.noDislikes);
 
   return hasLikes && hasDislikes;
 }

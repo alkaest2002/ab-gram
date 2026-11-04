@@ -115,10 +115,7 @@ export const getNodePaths = (likesGraph, dislikesGraph) => {
 
       // A node the source dislikes is treated as difficult to reach regardless
       // of any likes path, so it lands on the outer ring and can be stroked red.
-      if (
-        dislikesGraph.hasDirectedEdge(source, target) ||
-        distance === undefined
-      ) {
+      if (dislikesGraph.hasDirectedEdge(source, target) || distance === undefined) {
         categories.difficultToReach.push(targetId);
       } else if (distance === 1) {
         // A directly likes the target; mutual only when the feeling is
@@ -183,8 +180,7 @@ const CANVAS_PADDING = 60;
 
 // The dashed boundary closing the outermost ring sits half a ring-gap beyond
 // that ring; padding beyond it sizes the square canvas.
-const OUTERMOST_BOUNDARY_RADIUS =
-  RING_1_RADIUS + (RING_COUNT - 1) * RING_GAP + RING_GAP / 2;
+const OUTERMOST_BOUNDARY_RADIUS = RING_1_RADIUS + (RING_COUNT - 1) * RING_GAP + RING_GAP / 2;
 
 // Center of the concentric layout, where the ego (target) node sits.
 const CENTER_X = OUTERMOST_BOUNDARY_RADIUS + CANVAS_PADDING;
@@ -446,12 +442,7 @@ const regionLabelsMarkup = () =>
  * @returns {{memberId: string, svg: string}} The ego's id and its serialized
  *   SVG markup.
  */
-export const buildMorenoEgoPlot = (
-  memberId,
-  likesGraph,
-  dislikesGraph,
-  nodePaths,
-) => {
+export const buildMorenoEgoPlot = (memberId, likesGraph, dislikesGraph, nodePaths) => {
   const paths = getNodePathsFor(nodePaths, memberId);
 
   // The five buckets, in ring order. `getNodePathsFor` returns `undefined`
@@ -477,7 +468,16 @@ export const buildMorenoEgoPlot = (
   // The ego itself, always at the center, drawn light gray. It has no self-edge,
   // so it carries no direction marker.
   parts.push(
-    nodeMarkup(CENTER_X, CENTER_Y, memberId, EGO_STROKE_COLOR, EGO_FILL_COLOR, EGO_LABEL_COLOR, null, null),
+    nodeMarkup(
+      CENTER_X,
+      CENTER_Y,
+      memberId,
+      EGO_STROKE_COLOR,
+      EGO_FILL_COLOR,
+      EGO_LABEL_COLOR,
+      null,
+      null,
+    ),
   );
 
   rings.forEach((ringNodes, ringIndex) => {
@@ -492,16 +492,11 @@ export const buildMorenoEgoPlot = (
     // mocked sequence in the tests deterministic). The phase only varies within
     // a single slot so the whole ring stays inside the safe arc; a wider phase
     // would let the last node wrap around into the reserved north corridor.
-    const slot =
-      ringNodes.length > 0 ? available / ringNodes.length : available;
+    const slot = ringNodes.length > 0 ? available / ringNodes.length : available;
     const offset = Math.random() * slot;
 
     ringNodes.forEach((node, index) => {
-      const angle =
-        -Math.PI / 2 +
-        NORTH_GAP / 2 +
-        offset +
-        (index / ringNodes.length) * available;
+      const angle = -Math.PI / 2 + NORTH_GAP / 2 + offset + (index / ringNodes.length) * available;
       const x = CENTER_X + radius * Math.cos(angle);
       const y = CENTER_Y + radius * Math.sin(angle);
 
@@ -514,11 +509,12 @@ export const buildMorenoEgoPlot = (
 
       // Dislike (in either direction) wins over like, which wins over the
       // remaining neutral nodes. Each kind pairs a stroke, fill, and label color.
-      const [strokeColor, fillColor, labelColor] = dislikesEgo || egoDislikes
-        ? [DISLIKE_STROKE_COLOR, DISLIKE_FILL_COLOR, DISLIKE_STROKE_COLOR]
-        : likesEgo || egoLikes
-          ? [REACHABLE_STROKE_COLOR, REACHABLE_FILL_COLOR, REACHABLE_STROKE_COLOR]
-          : [NEUTRAL_STROKE_COLOR, NEUTRAL_FILL_COLOR, NEUTRAL_LABEL_COLOR];
+      const [strokeColor, fillColor, labelColor] =
+        dislikesEgo || egoDislikes
+          ? [DISLIKE_STROKE_COLOR, DISLIKE_FILL_COLOR, DISLIKE_STROKE_COLOR]
+          : likesEgo || egoLikes
+            ? [REACHABLE_STROKE_COLOR, REACHABLE_FILL_COLOR, REACHABLE_STROKE_COLOR]
+            : [NEUTRAL_STROKE_COLOR, NEUTRAL_FILL_COLOR, NEUTRAL_LABEL_COLOR];
 
       // Inward marker: the node likes (blue) or dislikes (red) the ego.
       const inwardColor = dislikesEgo

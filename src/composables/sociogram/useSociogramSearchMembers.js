@@ -11,13 +11,13 @@ import { computed, ref } from "vue";
  * @returns {string}
  */
 function normalizeForSearch(value) {
-    return String(value ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9 ]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 /**
@@ -29,23 +29,22 @@ function normalizeForSearch(value) {
  * @returns {{ gaps: number, startsAtWordBoundary: boolean } | null}
  */
 function subsequenceInfo(needle, haystack) {
-    let cursor = -1;
-    let firstIndex = -1;
-    let gaps = 0;
+  let cursor = -1;
+  let firstIndex = -1;
+  let gaps = 0;
 
-    for (let i = 0; i < needle.length; i++) {
-        const next = haystack.indexOf(needle[i], cursor + 1);
-        if (next === -1) return null;
-        if (i === 0) firstIndex = next;
-        else gaps += next - cursor - 1;
-        cursor = next;
-    }
+  for (let i = 0; i < needle.length; i++) {
+    const next = haystack.indexOf(needle[i], cursor + 1);
+    if (next === -1) return null;
+    if (i === 0) firstIndex = next;
+    else gaps += next - cursor - 1;
+    cursor = next;
+  }
 
-    return {
-        gaps,
-        startsAtWordBoundary:
-            firstIndex === 0 || haystack[firstIndex - 1] === " ",
-    };
+  return {
+    gaps,
+    startsAtWordBoundary: firstIndex === 0 || haystack[firstIndex - 1] === " ",
+  };
 }
 
 /**
@@ -54,11 +53,11 @@ function subsequenceInfo(needle, haystack) {
  * @returns {Map<string, number>}
  */
 function charCounts(value) {
-    const counts = new Map();
-    for (const char of value) {
-        counts.set(char, (counts.get(char) ?? 0) + 1);
-    }
-    return counts;
+  const counts = new Map();
+  for (const char of value) {
+    counts.set(char, (counts.get(char) ?? 0) + 1);
+  }
+  return counts;
 }
 
 /**
@@ -70,11 +69,11 @@ function charCounts(value) {
  * @returns {boolean}
  */
 function hasAllCharacters(needle, haystackCharCounts) {
-    const needleCharCounts = charCounts(needle);
-    for (const [char, count] of needleCharCounts) {
-        if ((haystackCharCounts.get(char) ?? 0) < count) return false;
-    }
-    return true;
+  const needleCharCounts = charCounts(needle);
+  for (const [char, count] of needleCharCounts) {
+    if ((haystackCharCounts.get(char) ?? 0) < count) return false;
+  }
+  return true;
 }
 
 /**
@@ -88,37 +87,39 @@ function hasAllCharacters(needle, haystackCharCounts) {
  * @returns {number}
  */
 function editDistance(a, b, threshold = Infinity) {
-    // Swap so we iterate over the shorter string
-    let short = a;
-    let long = b;
-    if (short.length > long.length) {
-        [short, long] = [long, short];
+  // Swap so we iterate over the shorter string
+  let short = a;
+  let long = b;
+  if (short.length > long.length) {
+    [short, long] = [long, short];
+  }
+
+  let prev = Array(short.length + 1)
+    .fill(0)
+    .map((_, i) => i);
+  let curr = Array(short.length + 1).fill(0);
+
+  for (let j = 1; j <= long.length; j++) {
+    curr[0] = j;
+    let rowMin = j; // Track minimum in current row for early termination
+
+    for (let i = 1; i <= short.length; i++) {
+      const cost = short[i - 1] === long[j - 1] ? 0 : 1;
+      curr[i] = Math.min(
+        curr[i - 1] + 1, // insertion
+        prev[i] + 1, // deletion
+        prev[i - 1] + cost, // substitution
+      );
+      rowMin = Math.min(rowMin, curr[i]);
     }
 
-    let prev = Array(short.length + 1).fill(0).map((_, i) => i);
-    let curr = Array(short.length + 1).fill(0);
+    // Early termination: if minimum in row exceeds threshold, no way to recover
+    if (rowMin > threshold) return threshold + 1;
 
-    for (let j = 1; j <= long.length; j++) {
-        curr[0] = j;
-        let rowMin = j; // Track minimum in current row for early termination
+    [prev, curr] = [curr, prev];
+  }
 
-        for (let i = 1; i <= short.length; i++) {
-            const cost = short[i - 1] === long[j - 1] ? 0 : 1;
-            curr[i] = Math.min(
-                curr[i - 1] + 1,      // insertion
-                prev[i] + 1,          // deletion
-                prev[i - 1] + cost    // substitution
-            );
-            rowMin = Math.min(rowMin, curr[i]);
-        }
-
-        // Early termination: if minimum in row exceeds threshold, no way to recover
-        if (rowMin > threshold) return threshold + 1;
-
-        [prev, curr] = [curr, prev];
-    }
-
-    return prev[short.length];
+  return prev[short.length];
 }
 
 /**
@@ -136,56 +137,55 @@ function editDistance(a, b, threshold = Infinity) {
  * @returns {number | null}
  */
 function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
-    if (!normalizedTerm || !normalizedName) return null;
+  if (!normalizedTerm || !normalizedName) return null;
 
-    // Exact substring match (best possible)
-    const index = normalizedName.indexOf(normalizedTerm);
-    if (index !== -1) {
-        const startsAtWordBoundary =
-            index === 0 || normalizedName[index - 1] === " ";
-        return startsAtWordBoundary ? 0 : 0.5;
+  // Exact substring match (best possible)
+  const index = normalizedName.indexOf(normalizedTerm);
+  if (index !== -1) {
+    const startsAtWordBoundary = index === 0 || normalizedName[index - 1] === " ";
+    return startsAtWordBoundary ? 0 : 0.5;
+  }
+
+  // Ordered subsequence match (e.g., "cln" → "calanna")
+  const info = subsequenceInfo(normalizedTerm, normalizedName);
+  if (info) {
+    const boundaryBonus = info.startsAtWordBoundary ? 0 : 0.3;
+    const gapPenalty = Math.min(info.gaps * 0.05, 1.5);
+    return 2 + boundaryBonus + gapPenalty;
+  }
+
+  // All characters present (unordered, repetitions included) - OPTIMIZED: use pre-computed counts
+  if (hasAllCharacters(normalizedTerm, nameCharCounts)) {
+    return 4;
+  }
+
+  // Typo tolerance: edit distance on individual words
+  // OPTIMIZED: Early termination with threshold-aware editDistance
+  const termWords = normalizedTerm.split(" ").filter(Boolean);
+  const nameWords = normalizedName.split(" ");
+
+  let bestDistance = Infinity;
+
+  for (const termWord of termWords) {
+    for (const nameWord of nameWords) {
+      // Calculate threshold: 40% of the longer word's length
+      const threshold = Math.max(termWord.length, nameWord.length) * 0.4;
+
+      // Skip if bestDistance already exceeds this word pair's threshold
+      if (bestDistance <= threshold) continue;
+
+      const distance = editDistance(termWord, nameWord, threshold);
+      if (distance <= threshold) {
+        bestDistance = Math.min(bestDistance, distance);
+      }
     }
+  }
 
-    // Ordered subsequence match (e.g., "cln" → "calanna")
-    const info = subsequenceInfo(normalizedTerm, normalizedName);
-    if (info) {
-        const boundaryBonus = info.startsAtWordBoundary ? 0 : 0.3;
-        const gapPenalty = Math.min(info.gaps * 0.05, 1.5);
-        return 2 + boundaryBonus + gapPenalty;
-    }
+  if (bestDistance < Infinity) {
+    return 5 + bestDistance * 0.1;
+  }
 
-    // All characters present (unordered, repetitions included) - OPTIMIZED: use pre-computed counts
-    if (hasAllCharacters(normalizedTerm, nameCharCounts)) {
-        return 4;
-    }
-
-    // Typo tolerance: edit distance on individual words
-    // OPTIMIZED: Early termination with threshold-aware editDistance
-    const termWords = normalizedTerm.split(" ").filter(Boolean);
-    const nameWords = normalizedName.split(" ");
-
-    let bestDistance = Infinity;
-
-    for (const termWord of termWords) {
-        for (const nameWord of nameWords) {
-            // Calculate threshold: 40% of the longer word's length
-            const threshold = Math.max(termWord.length, nameWord.length) * 0.4;
-
-            // Skip if bestDistance already exceeds this word pair's threshold
-            if (bestDistance <= threshold) continue;
-
-            const distance = editDistance(termWord, nameWord, threshold);
-            if (distance <= threshold) {
-                bestDistance = Math.min(bestDistance, distance);
-            }
-        }
-    }
-
-    if (bestDistance < Infinity) {
-        return 5 + bestDistance * 0.1;
-    }
-
-    return null;
+  return null;
 }
 
 /**
@@ -204,67 +204,67 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
  * }}
  */
 export function useSociogramSearchMembers(members) {
-    const query = ref("");
+  const query = ref("");
 
-    // Pre-compute normalized names and character counts
-    const normalizedCache = computed(() => {
-        return members.value.map((member) => {
-            const normalized = normalizeForSearch(member.name);
-            return {
-                member,
-                normalized,
-                charCounts: charCounts(normalized), // Pre-compute character counts
-                alphabetical: member.name.toLowerCase(), // Pre-compute alphabetical
-            };
+  // Pre-compute normalized names and character counts
+  const normalizedCache = computed(() => {
+    return members.value.map((member) => {
+      const normalized = normalizeForSearch(member.name);
+      return {
+        member,
+        normalized,
+        charCounts: charCounts(normalized), // Pre-compute character counts
+        alphabetical: member.name.toLowerCase(), // Pre-compute alphabetical
+      };
+    });
+  });
+
+  const filteredMembers = computed(() => {
+    const term = query.value.trim();
+    if (!term) return members.value;
+
+    const normalizedTerm = normalizeForSearch(term);
+
+    // Single-pass scoring, filtering, and sorting
+    const scored = normalizedCache.value
+      .reduce((results, entry) => {
+        // Initial check: exclude names that do not contain every query
+        // character before running the scoring mechanism.
+        if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
+          return results;
+        }
+
+        // Score the name against the normalized term
+        const primaryScore = scoreNormalizedName(
+          entry.normalized,
+          normalizedTerm,
+          entry.charCounts,
+        );
+
+        // Early termination: skip entries that don't match at all
+        if (primaryScore === null) return results;
+
+        const isExactMatch = primaryScore <= 1;
+        const nameLengthPenalty = entry.normalized.length * 0.001;
+
+        // Composite score: primary + exact match bonus + name length + alphabetical
+        const compositeScore =
+          primaryScore +
+          (isExactMatch ? -1000 : 0) + // Strong bonus for exact matches
+          nameLengthPenalty + // Slight bonus for shorter names
+          entry.alphabetical.charCodeAt(0) / 10000; // Minimal alphabetical factor
+
+        results.push({
+          member: entry.member,
+          compositeScore,
         });
-    });
 
-    const filteredMembers = computed(() => {
-        const term = query.value.trim();
-        if (!term) return members.value;
+        return results;
+      }, [])
+      .sort((a, b) => a.compositeScore - b.compositeScore);
 
-        const normalizedTerm = normalizeForSearch(term);
+    return scored.map((entry) => entry.member);
+  });
 
-        // Single-pass scoring, filtering, and sorting
-        const scored = normalizedCache.value
-            .reduce((results, entry) => {
-                // Initial check: exclude names that do not contain every query
-                // character before running the scoring mechanism.
-                if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
-                    return results;
-                }
-
-                // Score the name against the normalized term
-                const primaryScore = scoreNormalizedName(
-                    entry.normalized,
-                    normalizedTerm,
-                    entry.charCounts
-                );
-
-                // Early termination: skip entries that don't match at all
-                if (primaryScore === null) return results;
-
-                const isExactMatch = primaryScore <= 1;
-                const nameLengthPenalty = entry.normalized.length * 0.001;
-
-                // Composite score: primary + exact match bonus + name length + alphabetical
-                const compositeScore =
-                    primaryScore +
-                    (isExactMatch ? -1000 : 0) +  // Strong bonus for exact matches
-                    nameLengthPenalty +            // Slight bonus for shorter names
-                    (entry.alphabetical.charCodeAt(0) / 10000); // Minimal alphabetical factor
-
-                results.push({
-                    member: entry.member,
-                    compositeScore,
-                });
-
-                return results;
-            }, [])
-            .sort((a, b) => a.compositeScore - b.compositeScore);
-
-        return scored.map((entry) => entry.member);
-    });
-
-    return { query, filteredMembers };
+  return { query, filteredMembers };
 }

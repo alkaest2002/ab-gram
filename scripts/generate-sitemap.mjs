@@ -25,14 +25,39 @@ const OUT = fileURLToPath(new URL("../public/sitemap.xml", import.meta.url));
 // Non-doc routes, in sitemap order. `source` is the file whose mtime becomes
 // `<lastmod>`; it is resolved relative to this script.
 const staticRoutes = [
-  { path: "/", changefreq: "weekly", priority: "1.0", source: "../src/components/views/home/Home.vue" },
-  { path: "/sociogram", changefreq: "weekly", priority: "0.9", source: "../src/components/views/sociogram/Sociogram.vue" },
-  { path: "/docs", changefreq: "weekly", priority: "0.8", source: "../src/components/views/docs/Docs.vue" },
+  {
+    path: "/",
+    changefreq: "weekly",
+    priority: "1.0",
+    source: "../src/components/views/home/Home.vue",
+  },
+  {
+    path: "/sociogram",
+    changefreq: "weekly",
+    priority: "0.9",
+    source: "../src/components/views/sociogram/Sociogram.vue",
+  },
+  {
+    path: "/docs",
+    changefreq: "weekly",
+    priority: "0.8",
+    source: "../src/components/views/docs/Docs.vue",
+  },
 ];
 
 const footerRoutes = [
-  { path: "/about", changefreq: "monthly", priority: "0.5", source: "../src/components/views/About.vue" },
-  { path: "/privacy", changefreq: "yearly", priority: "0.3", source: "../src/components/views/privacy/Privacy.vue" },
+  {
+    path: "/about",
+    changefreq: "monthly",
+    priority: "0.5",
+    source: "../src/components/views/About.vue",
+  },
+  {
+    path: "/privacy",
+    changefreq: "yearly",
+    priority: "0.3",
+    source: "../src/components/views/privacy/Privacy.vue",
+  },
 ];
 
 // Same authoritative section order as `src/docs/navigation.js`.
@@ -102,11 +127,7 @@ function docEntries() {
   );
 }
 
-const entries = [
-  ...staticEntries(staticRoutes),
-  ...docEntries(),
-  ...staticEntries(footerRoutes),
-];
+const entries = [...staticEntries(staticRoutes), ...docEntries(), ...staticEntries(footerRoutes)];
 
 const urls = entries
   .map(

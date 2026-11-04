@@ -7,13 +7,13 @@
 // --- Imports ------------
 //   -- From vue.
 import {
-    computed,
-    ref,
-    watch,
-    onActivated,
-    onDeactivated,
-    onBeforeUnmount,
-    useTemplateRef,
+  computed,
+  ref,
+  watch,
+  onActivated,
+  onDeactivated,
+  onBeforeUnmount,
+  useTemplateRef,
 } from "vue";
 
 //   -- From pinia.
@@ -38,14 +38,11 @@ import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 const props = defineProps({
-    targetMemberId: { type: String, default: null },
+  targetMemberId: { type: String, default: null },
 });
 
 // --- Emits --------------
-const emit = defineEmits([
-    "sociogram-change-component",
-    "sociogram-restart-app",
-]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- Routers ------------
 
@@ -71,42 +68,38 @@ const currentMember = computed(() => members.value[currentIndex.value] ?? null);
 // Likes/dislikes and their "not expressed" flags are mutually exclusive: picking
 // at least one member clears the flag, ticking the flag clears the list. These.
 const currentLikes = writableMemberField("likes", [], (value) => {
-    if (value.length > 0) currentNoLikes.value = false;
+  if (value.length > 0) currentNoLikes.value = false;
 });
 const currentDislikes = writableMemberField("dislikes", [], (value) => {
-    if (value.length > 0) currentNoDislikes.value = false;
+  if (value.length > 0) currentNoDislikes.value = false;
 });
 const currentNoLikes = writableMemberField("noLikes", false, (value) => {
-    if (value) currentLikes.value = [];
+  if (value) currentLikes.value = [];
 });
 const currentNoDislikes = writableMemberField("noDislikes", false, (value) => {
-    if (value) currentDislikes.value = [];
+  if (value) currentDislikes.value = [];
 });
 
 const isComplete = computed(() => isMemberComplete(currentMember.value));
 
 const canGoNext = computed(() => membersStatus.value === "completed");
 
-const carouselCanGoPreviousMember = computed(
-    () => isComplete.value && currentIndex.value > 0,
-);
+const carouselCanGoPreviousMember = computed(() => isComplete.value && currentIndex.value > 0);
 
 const carouselCanGoNextMember = computed(
-    () => isComplete.value && currentIndex.value < members.value.length - 1,
+  () => isComplete.value && currentIndex.value < members.value.length - 1,
 );
 
 // --- Watchers -----------
 // When arriving from the report summary, `targetMemberId` identifies the member
 // to edit. Point the carousel at it; ids that match no member are ignored.
 watch(
-    () => props.targetMemberId,
-    (memberId) => {
-        const index = members.value.findIndex(
-            (member) => member.id === memberId,
-        );
-        if (index !== -1) currentIndex.value = index;
-    },
-    { immediate: true },
+  () => props.targetMemberId,
+  (memberId) => {
+    const index = members.value.findIndex((member) => member.id === memberId);
+    if (index !== -1) currentIndex.value = index;
+  },
+  { immediate: true },
 );
 
 // --- Lifecycle ----------
@@ -115,205 +108,177 @@ watch(
 // deactivation/unmount to avoid leaking the listener onto other steps.
 onActivated(() => window.addEventListener("keydown", handleWindowKeydown));
 onDeactivated(() => window.removeEventListener("keydown", handleWindowKeydown));
-onBeforeUnmount(() =>
-    window.removeEventListener("keydown", handleWindowKeydown),
-);
+onBeforeUnmount(() => window.removeEventListener("keydown", handleWindowKeydown));
 
 // --- Methods ------------
 // Two-way binding to a field on the current member, falling back to an empty
 // value while there is no member to edit. `onSet`, if given, runs after the
 // store has been updated.
 function writableMemberField(field, fallback, onSet) {
-    return computed({
-        get: () => currentMember.value?.[field] ?? fallback,
-        set: (value) => {
-            if (!currentMember.value) return;
-            updateMember({
-                memberId: currentMember.value.id,
-                key: field,
-                value,
-            });
-            onSet?.(value);
-        },
-    });
+  return computed({
+    get: () => currentMember.value?.[field] ?? fallback,
+    set: (value) => {
+      if (!currentMember.value) return;
+      updateMember({
+        memberId: currentMember.value.id,
+        key: field,
+        value,
+      });
+      onSet?.(value);
+    },
+  });
 }
 
 function carouselGoPreviousMember() {
-    if (carouselCanGoPreviousMember.value) {
-        currentIndex.value--;
-        likesRef.value?.$el?.querySelector("input")?.focus();
-    }
+  if (carouselCanGoPreviousMember.value) {
+    currentIndex.value--;
+    likesRef.value?.$el?.querySelector("input")?.focus();
+  }
 }
 
 function carouselGoNextMember() {
-    if (carouselCanGoNextMember.value) {
-        currentIndex.value++;
-        likesRef.value?.$el?.querySelector("input")?.focus();
-    }
+  if (carouselCanGoNextMember.value) {
+    currentIndex.value++;
+    likesRef.value?.$el?.querySelector("input")?.focus();
+  }
 }
 
 function likesInput() {
-    return likesRef.value?.$el?.querySelector("input");
+  return likesRef.value?.$el?.querySelector("input");
 }
 
 function dislikesInput() {
-    return dislikesRef.value?.$el?.querySelector("input");
+  return dislikesRef.value?.$el?.querySelector("input");
 }
 
 // Global keyboard shortcuts: Tab cycles focus between the two preference
 // search fields, and the left/right arrows move the carousel between members.
 // Every other key (including Enter/Escape in the search fields) is ignored.
 function handleWindowKeydown(event) {
-    if (event.key === "Tab") {
-        event.preventDefault();
-        if (document.activeElement === likesInput()) {
-            dislikesInput()?.focus();
-        } else {
-            likesInput()?.focus();
-        }
-        return;
+  if (event.key === "Tab") {
+    event.preventDefault();
+    if (document.activeElement === likesInput()) {
+      dislikesInput()?.focus();
+    } else {
+      likesInput()?.focus();
     }
+    return;
+  }
 
-    if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        carouselGoPreviousMember();
-        return;
-    }
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    carouselGoPreviousMember();
+    return;
+  }
 
-    if (event.key === "ArrowRight") {
-        event.preventDefault();
-        carouselGoNextMember();
-    }
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    carouselGoNextMember();
+  }
 }
 </script>
 
 <template>
-    <section class="card space-y-6">
-        <StepHeader>
-            <template #eyebrow>Passaggio 3 di 4</template>
-            <template #title
-                >Indica le scelte e i rifiuti di ogni membro del
-                gruppo</template
-            >
-            Seleziona una persona con i comandi del carosello, indica le sue
-            scelte e i suoi rifiuti.
-        </StepHeader>
+  <section class="card space-y-6">
+    <StepHeader>
+      <template #eyebrow>Passaggio 3 di 4</template>
+      <template #title>Indica le scelte e i rifiuti di ogni membro del gruppo</template>
+      Seleziona una persona con i comandi del carosello, indica le sue scelte e i suoi rifiuti.
+    </StepHeader>
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+    <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <div class="space-y-3">
+    <div class="space-y-3">
+      <p v-if="membersCount === 0" class="text-sm text-muted">Nessun membro caricato.</p>
 
-            <p v-if="membersCount === 0" class="text-sm text-muted">
-                Nessun membro caricato.
-            </p>
-
-            <template v-else>
-                <!-- Carousel: select the subject, one member at a time. -->
-                <div class="mt-6">
-                    <p class="eyebrow">CAROSELLO</p>
-                </div>
-
-                <SetPreferencesCarousel
-                    :current-index="currentIndex"
-                    :current-member="currentMember"
-                    :members-count="members.length"
-                    :can-go-previous="carouselCanGoPreviousMember"
-                    :can-go-next="carouselCanGoNextMember"
-                    @carousel-previous="carouselGoPreviousMember"
-                    @carousel-next="carouselGoNextMember"
-                    class="mb-9"
-                />
-
-                <!-- The subject's likes and dislikes. -->
-                <div class="grid gap-6 md:grid-cols-2">
-                    <!-- Likes -->
-                    <SetPreferencesSelect
-                        ref="likes"
-                        v-model="currentLikes"
-                        preference="likes"
-                        label="Scelte"
-                        :members="members"
-                        :opposing-ids="currentDislikes"
-                        :self-id="currentMember?.id"
-                    />
-
-                    <!-- Dislikes-->
-                    <SetPreferencesSelect
-                        ref="dislikes"
-                        v-model="currentDislikes"
-                        preference="dislikes"
-                        label="Rifiuti"
-                        :members="members"
-                        :opposing-ids="currentLikes"
-                        :self-id="currentMember?.id"
-                    />
-                </div>
-
-                <!-- Declared "not answered" states: unlock the carousel when the
-                     member has no likes/dislikes to record. -->
-                <div
-                    class="grid gap-6 md:grid-cols-2"
-                    v-show="membersCount > 1"
-                >
-                    <SetPreferencesNoPreferences
-                        v-model="currentNoLikes"
-                        tone="likes"
-                    >
-                        <template #description>
-                            Se
-                            <strong>{{ currentMember?.name }}</strong>
-                            non ha espresso scelte, spunta questa casella di
-                            controllo.
-                        </template>
-                        <template #checkboxLabel>
-                            Non ha espresso preferenze.
-                        </template>
-                    </SetPreferencesNoPreferences>
-                    <SetPreferencesNoPreferences
-                        v-model="currentNoDislikes"
-                        tone="dislikes"
-                    >
-                        <template #description>
-                            Se
-                            <strong>{{ currentMember?.name }}</strong>
-                            non ha espresso rifiuti, spunta questa casella di
-                            controllo.
-                        </template>
-                        <template #checkboxLabel>
-                            Non ha espresso rifiuti.
-                        </template>
-                    </SetPreferencesNoPreferences>
-                </div>
-
-                <SetPreferencesCarousel
-                    v-show="membersCount > 8"
-                    :current-index="currentIndex"
-                    :current-member="currentMember"
-                    :members-count="members.length"
-                    :can-go-previous="carouselCanGoPreviousMember"
-                    :can-go-next="carouselCanGoNextMember"
-                    @carousel-previous="carouselGoPreviousMember"
-                    @carousel-next="carouselGoNextMember"
-                    class="mt-9"
-                />
-
-                <!-- Progress: percentage of members whose data has been collected. -->
-                <SetPreferencesProgress
-                    :members="members"
-                    :current-index="currentIndex"
-                    class="mt-6"
-                />
-            </template>
+      <template v-else>
+        <!-- Carousel: select the subject, one member at a time. -->
+        <div class="mt-6">
+          <p class="eyebrow">CAROSELLO</p>
         </div>
-    </section>
 
-    <SociogramNavigation
-        :enable-previous="true"
-        :enable-next="canGoNext"
-        :enable-restart="true"
-        :enable-archive="true"
-        @sociogram-navigation-previous="goToStep('manageMembers')"
-        @sociogram-navigation-next="goToStep('generateReport')"
-        @sociogram-navigation-restart="restart"
-    />
+        <SetPreferencesCarousel
+          :current-index="currentIndex"
+          :current-member="currentMember"
+          :members-count="members.length"
+          :can-go-previous="carouselCanGoPreviousMember"
+          :can-go-next="carouselCanGoNextMember"
+          @carousel-previous="carouselGoPreviousMember"
+          @carousel-next="carouselGoNextMember"
+          class="mb-9"
+        />
+
+        <!-- The subject's likes and dislikes. -->
+        <div class="grid gap-6 md:grid-cols-2">
+          <!-- Likes -->
+          <SetPreferencesSelect
+            ref="likes"
+            v-model="currentLikes"
+            preference="likes"
+            label="Scelte"
+            :members="members"
+            :opposing-ids="currentDislikes"
+            :self-id="currentMember?.id"
+          />
+
+          <!-- Dislikes-->
+          <SetPreferencesSelect
+            ref="dislikes"
+            v-model="currentDislikes"
+            preference="dislikes"
+            label="Rifiuti"
+            :members="members"
+            :opposing-ids="currentLikes"
+            :self-id="currentMember?.id"
+          />
+        </div>
+
+        <!-- Declared "not answered" states: unlock the carousel when the
+                     member has no likes/dislikes to record. -->
+        <div class="grid gap-6 md:grid-cols-2" v-show="membersCount > 1">
+          <SetPreferencesNoPreferences v-model="currentNoLikes" tone="likes">
+            <template #description>
+              Se
+              <strong>{{ currentMember?.name }}</strong>
+              non ha espresso scelte, spunta questa casella di controllo.
+            </template>
+            <template #checkboxLabel> Non ha espresso preferenze. </template>
+          </SetPreferencesNoPreferences>
+          <SetPreferencesNoPreferences v-model="currentNoDislikes" tone="dislikes">
+            <template #description>
+              Se
+              <strong>{{ currentMember?.name }}</strong>
+              non ha espresso rifiuti, spunta questa casella di controllo.
+            </template>
+            <template #checkboxLabel> Non ha espresso rifiuti. </template>
+          </SetPreferencesNoPreferences>
+        </div>
+
+        <SetPreferencesCarousel
+          v-show="membersCount > 8"
+          :current-index="currentIndex"
+          :current-member="currentMember"
+          :members-count="members.length"
+          :can-go-previous="carouselCanGoPreviousMember"
+          :can-go-next="carouselCanGoNextMember"
+          @carousel-previous="carouselGoPreviousMember"
+          @carousel-next="carouselGoNextMember"
+          class="mt-9"
+        />
+
+        <!-- Progress: percentage of members whose data has been collected. -->
+        <SetPreferencesProgress :members="members" :current-index="currentIndex" class="mt-6" />
+      </template>
+    </div>
+  </section>
+
+  <SociogramNavigation
+    :enable-previous="true"
+    :enable-next="canGoNext"
+    :enable-restart="true"
+    :enable-archive="true"
+    @sociogram-navigation-previous="goToStep('manageMembers')"
+    @sociogram-navigation-next="goToStep('generateReport')"
+    @sociogram-navigation-restart="restart"
+  />
 </template>

@@ -12,10 +12,10 @@ import BaseButton from "@/components/ui/BaseButton.vue";
 
 // --- Props --------------
 defineProps({
-    buttonVariant: {
-        type: String,
-        default: "outline",
-    },
+  buttonVariant: {
+    type: String,
+    default: "outline",
+  },
 });
 
 // --- Emits --------------
@@ -36,27 +36,24 @@ const discordUrl = "https://discord.com/channels/1562511213198577874/15625112139
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const openDiscord = () =>
-    window.open(discordUrl, "_blank", "noopener,noreferrer");
+const openDiscord = () => window.open(discordUrl, "_blank", "noopener,noreferrer");
 </script>
 
 <template>
-    <BaseCard>
-        <template #eyebrow>Comunità</template>
-        <template #title>Entra nel server Discord</template>
+  <BaseCard>
+    <template #eyebrow>Comunità</template>
+    <template #title>Entra nel server Discord</template>
 
-        Unisciti alla community su Discord per fare domande, condividere feedback e restare aggiornato sul progetto.
+    Unisciti alla community su Discord per fare domande, condividere feedback e restare aggiornato
+    sul progetto.
 
-        <template #actions>
-            <BaseButton
-                :buttonVariant="buttonVariant"
-                @click="openDiscord"
-            >
-                <template #icon>
-                    <DiscordIcon size="size-4" />
-                </template>
-                Apri il server Discord
-            </BaseButton>
+    <template #actions>
+      <BaseButton :buttonVariant="buttonVariant" @click="openDiscord">
+        <template #icon>
+          <DiscordIcon size="size-4" />
         </template>
-    </BaseCard>
+        Apri il server Discord
+      </BaseButton>
+    </template>
+  </BaseCard>
 </template>

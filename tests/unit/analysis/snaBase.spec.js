@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 import { DirectedGraph } from "graphology";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";

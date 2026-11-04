@@ -27,9 +27,9 @@ normale.
 ## 3 Cosa contengono
 
 I dati di esempio riprendono alcuni personaggi della saga di Harry Potter. Si
-tratta di **dati fittizi**, ma non casuali. Le scelte e i rifiuti seguono un criterio 
-di semplice buonsenso, ispirato a ciò che emerge a grandi linee dai libri e 
-dai film (chi va d'accordo con chi, chi proprio no), senza alcuna pretesa 
+tratta di **dati fittizi**, ma non casuali. Le scelte e i rifiuti seguono un criterio
+di semplice buonsenso, ispirato a ciò che emerge a grandi linee dai libri e
+dai film (chi va d'accordo con chi, chi proprio no), senza alcuna pretesa
 di fedeltà o di analisi.
 
 ## 4 Un'avvertenza per i fan di Harry Potter

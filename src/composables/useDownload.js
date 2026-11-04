@@ -7,10 +7,10 @@
  */
 export const getTimeStamp = () => {
   return new Date()
-  .toISOString()
-  .replace(/[:.]/g, "-") // Replace colons with hyphens (invalid in filenames)
-  .slice(0, -5); // Remove milliseconds and Z
-}
+    .toISOString()
+    .replace(/[:.]/g, "-") // Replace colons with hyphens (invalid in filenames)
+    .slice(0, -5); // Remove milliseconds and Z
+};
 
 /**
  * Map a MIME type to the file extension used for downloads.
@@ -45,7 +45,13 @@ export function useDownload() {
    * @param {boolean} [addTimeStamp=true] - Whether to append a timestamp to the filename.
    * @param {boolean} [encode=false] - Whether to base64-encode the content before download.
    */
-  function download(content, filename, mimeType = "text/plain", addTimeStamp = true, encode = false) {
+  function download(
+    content,
+    filename,
+    mimeType = "text/plain",
+    addTimeStamp = true,
+    encode = false,
+  ) {
     // Build the filename with extension
     let filenameWithExtension = addTimeStamp ? `${filename}-${getTimeStamp()}` : filename;
     filenameWithExtension += computeFileExtension(mimeType);
@@ -70,7 +76,13 @@ export function useDownload() {
    * @param {boolean} [addTimeStamp=true] - Whether to append a timestamp to the filename.
    * @param {boolean} [encode=false] - Whether to base64-encode the content before download.
    */
-  function downloadJson(data, filename, mimeType = "application/json", addTimeStamp = true, encode = false) {
+  function downloadJson(
+    data,
+    filename,
+    mimeType = "application/json",
+    addTimeStamp = true,
+    encode = false,
+  ) {
     download(JSON.stringify(data, null, 2), filename, mimeType, addTimeStamp, encode);
   }
 

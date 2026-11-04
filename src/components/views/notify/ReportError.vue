@@ -30,8 +30,8 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/sociogram" replace>
-        <template #title> Impossibile generare il report </template>
-        <template #buttonLabel> Torna al sociogramma </template>
-    </BaseNotify>
+  <BaseNotify to="/sociogram" replace>
+    <template #title> Impossibile generare il report </template>
+    <template #buttonLabel> Torna al sociogramma </template>
+  </BaseNotify>
 </template>

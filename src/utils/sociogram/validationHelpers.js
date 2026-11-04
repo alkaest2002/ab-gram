@@ -66,9 +66,7 @@ export function collectReferencedIds(members, field) {
  * @returns {string | null} Error message, or null when the check passes.
  */
 export function SnapshotShouldBeAnObject(parsed) {
-  return isPlainObject(parsed)
-    ? null
-    : "Il progetto contiene dati sociometrici non validi.";
+  return isPlainObject(parsed) ? null : "Il progetto contiene dati sociometrici non validi.";
 }
 
 /**
@@ -108,9 +106,7 @@ export function MembersShouldHaveAtLeastMinCount(parsed) {
  * @returns {string | null} Error message, or null when the check passes.
  */
 export function MemberShouldBeAnObject(member) {
-  return isPlainObject(member)
-    ? null
-    : "I dati di un membro del gruppo non sono validi.";
+  return isPlainObject(member) ? null : "I dati di un membro del gruppo non sono validi.";
 }
 
 /**
@@ -128,9 +124,7 @@ export function MemberShouldHaveAnId(member) {
  * @returns {string | null} Error message, or null when the check passes.
  */
 export function MemberShouldHaveAName(member) {
-  return typeof member.name === "string"
-    ? null
-    : "Ogni membro del gruppo deve avere un nome.";
+  return typeof member.name === "string" ? null : "Ogni membro del gruppo deve avere un nome.";
 }
 
 /**
@@ -148,8 +142,7 @@ export function MemberNameShouldNotExceedMaxLength(member) {
  * @returns {string | null} Error message, or null when the check passes.
  */
 export function LikesShouldNotExceedMemberCount(member) {
-  const exceeds =
-    Array.isArray(member.likes) && member.likes.length > MAX_MEMBERS_COUNT;
+  const exceeds = Array.isArray(member.likes) && member.likes.length > MAX_MEMBERS_COUNT;
   return exceeds ? "Un membro del gruppo ha espresso troppe scelte." : null;
 }
 
@@ -158,9 +151,7 @@ export function LikesShouldNotExceedMemberCount(member) {
  * @returns {string | null} Error message, or null when the check passes.
  */
 export function DislikesShouldNotExceedMemberCount(member) {
-  const exceeds =
-    Array.isArray(member.dislikes) &&
-    member.dislikes.length > MAX_MEMBERS_COUNT;
+  const exceeds = Array.isArray(member.dislikes) && member.dislikes.length > MAX_MEMBERS_COUNT;
   return exceeds ? "Un membro del gruppo ha espresso troppi rifiuti." : null;
 }
 
@@ -191,7 +182,7 @@ export function MemberShouldHaveValidDislikes(member) {
 export function MemberShouldHaveANoLikesFlag(member) {
   return typeof member.noLikes === "boolean"
     ? null
-    : "La spunta \"nessuna scelta\" di un membro del gruppo non è valida.";
+    : 'La spunta "nessuna scelta" di un membro del gruppo non è valida.';
 }
 
 /**
@@ -201,7 +192,7 @@ export function MemberShouldHaveANoLikesFlag(member) {
 export function MemberShouldHaveANoDislikesFlag(member) {
   return typeof member.noDislikes === "boolean"
     ? null
-    : "La spunta \"nessun rifiuto\" di un membro del gruppo non è valida.";
+    : 'La spunta "nessun rifiuto" di un membro del gruppo non è valida.';
 }
 
 /**
@@ -329,9 +320,7 @@ export const CROSS_MEMBER_CHECKS = [
 
 // Complete-data checks. Applied on top of the default checks only when the
 // importer declares the snapshot is a finished sociogram (`dataIsComplete`).
-export const COMPLETE_SNAPSHOT_CHECKS = [
-  MembersShouldHaveAtLeastMinCount,
-];
+export const COMPLETE_SNAPSHOT_CHECKS = [MembersShouldHaveAtLeastMinCount];
 
 export const COMPLETE_MEMBER_CHECKS = [
   MemberShouldHaveLikesUnlessNoLikes,

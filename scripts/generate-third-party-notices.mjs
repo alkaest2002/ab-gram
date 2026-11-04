@@ -703,7 +703,9 @@ function renderSection(license, packages) {
     lines.push(text);
     lines.push("```");
   } else {
-    lines.push(`> Full license text not bundled by this generator. See the package's own LICENSE file.`);
+    lines.push(
+      `> Full license text not bundled by this generator. See the package's own LICENSE file.`,
+    );
   }
 
   return lines.join("\n");

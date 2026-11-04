@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import forceAtlas2 from 'graphology-layout-forceatlas2';
+import forceAtlas2 from "graphology-layout-forceatlas2";
 
 //////////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION
@@ -39,7 +39,6 @@ const ISOLATED_NODE_COLOR = "#000000";
 // embedded in the same document.
 let markerCounter = 0;
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // FORCEATLAS2 LAYOUT
 //////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +50,7 @@ const ITERATIONS = 500;
 // more spread-out layout with clearer clusters; lower values give a denser, more
 // compact graph. Usually the first setting to tweak (raise it for larger graphs,
 // e.g. 2 to 10 or more).
-const SCALING_RATIO = .6;
+const SCALING_RATIO = 0.6;
 
 // Pulls every node toward the center of the layout. Without it, disconnected
 // components drift off to infinity. Higher values keep the graph compact and
@@ -63,7 +62,6 @@ const GRAVITY = 1.1;
 // components close together, but makes the layout more compact (so pair it with
 // a higher scalingRatio).
 const STRONG_GRAVITY_MODE = false;
-
 
 //////////////////////////////////////////////////////////////////////////////////
 // COORDINATE NORMALIZATION
@@ -136,7 +134,6 @@ const buildCoordinateMapper = (graph, nodes) => {
   });
 };
 
-
 //////////////////////////////////////////////////////////////////////////////////
 // SVG STRING HELPERS
 //////////////////////////////////////////////////////////////////////////////////
@@ -163,7 +160,6 @@ const escapeXml = (value) =>
  * @returns {string} The rounded coordinate.
  */
 const formatCoordinate = (value) => String(Math.round(value * 100) / 100);
-
 
 //////////////////////////////////////////////////////////////////////////////////
 // DRAWING
@@ -241,16 +237,12 @@ const buildIsolatedNodesPlot = (isolatedNodes) => {
   // Most circles (plus their gaps) that fit across the available width.
   const nodesPerRow = Math.max(
     1,
-    Math.floor(
-      (CANVAS_WIDTH - 2 * PADDING + ISOLATED_GAP) /
-        (NODE_RADIUS * 2 + ISOLATED_GAP),
-    ),
+    Math.floor((CANVAS_WIDTH - 2 * PADDING + ISOLATED_GAP) / (NODE_RADIUS * 2 + ISOLATED_GAP)),
   );
   const rows = Math.ceil(isolatedNodes.length / nodesPerRow);
 
   // Top/bottom padding plus one node band per row and a gap between rows.
-  const height =
-    2 * PADDING + rows * (NODE_RADIUS * 2) + (rows - 1) * ISOLATED_GAP;
+  const height = 2 * PADDING + rows * (NODE_RADIUS * 2) + (rows - 1) * ISOLATED_GAP;
 
   /**
    * Render the isolated members' SVG markup in the plot's local coordinates.
@@ -346,9 +338,7 @@ const buildPlot = (graph, accentColor, config = {}) => {
 
     // Mutual edges are thicker and plain; non-mutual edges are thinner and
     // carry a light arrowhead pointing at their target.
-    const width = attributes.isMutual
-      ? MUTUAL_EDGE_WIDTH
-      : NON_MUTUAL_EDGE_WIDTH;
+    const width = attributes.isMutual ? MUTUAL_EDGE_WIDTH : NON_MUTUAL_EDGE_WIDTH;
     const markerEnd = attributes.isMutual ? "" : ` marker-end='url(#${markerId})'`;
 
     parts.push(
@@ -378,7 +368,6 @@ const buildPlot = (graph, accentColor, config = {}) => {
     svg: parts.join(""),
   };
 };
-
 
 //////////////////////////////////////////////////////////////////////////////////
 // EXPORTS

@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 import {
   useSociogramTextReader,
@@ -35,9 +35,7 @@ function makeChunkedFile(chunks, { type = "text/plain" } = {}) {
   const stream = new ReadableStream({
     start(controller) {
       for (const chunk of chunks) {
-        controller.enqueue(
-          typeof chunk === "string" ? encoder.encode(chunk) : chunk,
-        );
+        controller.enqueue(typeof chunk === "string" ? encoder.encode(chunk) : chunk);
       }
       controller.close();
     },

@@ -100,13 +100,11 @@ const prefetchWorker = async (url, label) => {
  *
  * @returns {Promise<void>} A promise that resolves once the prefetch settles.
  */
-export const preloadReportWorker = () =>
-  prefetchWorker(reportWorkerUrl, "Report");
+export const preloadReportWorker = () => prefetchWorker(reportWorkerUrl, "Report");
 
 /**
  * Preload the SNA plot worker chunk in the background.
  *
  * @returns {Promise<void>} A promise that resolves once the prefetch settles.
  */
-export const preloadSnaPlotWorker = () =>
-  prefetchWorker(snaPlotWorkerUrl, "SNA plot");
+export const preloadSnaPlotWorker = () => prefetchWorker(snaPlotWorkerUrl, "SNA plot");

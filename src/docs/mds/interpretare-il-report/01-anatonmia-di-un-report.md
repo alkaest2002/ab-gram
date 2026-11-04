@@ -18,7 +18,7 @@ Le pagine si susseguono in quest'ordine:
 - Elenco dei membri
 - Scelte e rifiuti
 - Rete delle scelte
-- Rete dei rifiuti *(solo se presenti rifiuti)*
+- Rete dei rifiuti _(solo se presenti rifiuti)_
 - Tipi di relazione
 - Strutture interne alla rete delle scelte
 - Pagine individuali dei membri

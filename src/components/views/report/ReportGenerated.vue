@@ -39,12 +39,12 @@ provide(APP_VERSION_KEY, appVersion);
 
 // --- Computed -----------
 const reportData = computed(() => ({
-    appVersion: appVersion.value,
-    membersData: {
-        allMembersHaveNoDislikes: sociogramStore.allMembersHaveNoDislikes,
-        ...sociogramStore.$state,
-    },
-    analysisData: reportStore.$state,
+  appVersion: appVersion.value,
+  membersData: {
+    allMembersHaveNoDislikes: sociogramStore.allMembersHaveNoDislikes,
+    ...sociogramStore.$state,
+  },
+  analysisData: reportStore.$state,
 }));
 
 // --- Watchers -----------
@@ -53,13 +53,13 @@ const reportData = computed(() => ({
 
 // --- Methods ------------
 function handleRegenerateSnaPlot(plot) {
-    reportStore.setSnaPlot(plot);
+  reportStore.setSnaPlot(plot);
 }
 </script>
 
 <template>
-    <div>
-        <ReportDoc :report-data="reportData" @regenerate-sna-plot="handleRegenerateSnaPlot" />
-        <ReportCommandBar :report-data="reportData" />
-    </div>
+  <div>
+    <ReportDoc :report-data="reportData" @regenerate-sna-plot="handleRegenerateSnaPlot" />
+    <ReportCommandBar :report-data="reportData" />
+  </div>
 </template>

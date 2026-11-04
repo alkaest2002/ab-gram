@@ -13,13 +13,9 @@ import { flatOrdered } from "@/docs/navigation";
 export function usePrevNext() {
   const route = useRoute();
 
-  const index = computed(() =>
-    flatOrdered.findIndex((item) => item.path === route.path),
-  );
+  const index = computed(() => flatOrdered.findIndex((item) => item.path === route.path));
 
-  const prev = computed(() =>
-    index.value > 0 ? flatOrdered[index.value - 1] : null,
-  );
+  const prev = computed(() => (index.value > 0 ? flatOrdered[index.value - 1] : null));
 
   const next = computed(() =>
     index.value !== -1 && index.value < flatOrdered.length - 1

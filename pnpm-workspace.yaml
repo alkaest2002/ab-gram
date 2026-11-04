@@ -1,32 +1,52 @@
 minimumReleaseAgeExclude:
   - vite@8.3.3 || 8.3.5
-  - '@vue/compiler-core@3.5.44'
-  - '@vue/compiler-dom@3.5.44'
-  - '@vue/compiler-sfc@3.5.44'
-  - '@vue/compiler-ssr@3.5.44'
-  - '@vue/reactivity@3.5.44'
-  - '@vue/runtime-core@3.5.44'
-  - '@vue/runtime-dom@3.5.44'
-  - '@vue/server-renderer@3.5.44'
-  - '@vue/shared@3.5.44'
+  - "@vue/compiler-core@3.5.44"
+  - "@vue/compiler-dom@3.5.44"
+  - "@vue/compiler-sfc@3.5.44"
+  - "@vue/compiler-ssr@3.5.44"
+  - "@vue/reactivity@3.5.44"
+  - "@vue/runtime-core@3.5.44"
+  - "@vue/runtime-dom@3.5.44"
+  - "@vue/server-renderer@3.5.44"
+  - "@vue/shared@3.5.44"
   - vue@3.5.44
   - pinia@4.1.0
-  - '@vitest/mocker@5.0.5'
-  - '@vitest/spy@5.0.5'
+  - "@vitest/mocker@5.0.5"
+  - "@vitest/spy@5.0.5"
   - vitest@5.0.5
-  - '@tailwindcss/node@4.3.4'
-  - '@tailwindcss/oxide-android-arm64@4.3.4'
-  - '@tailwindcss/oxide-darwin-arm64@4.3.4'
-  - '@tailwindcss/oxide-darwin-x64@4.3.4'
-  - '@tailwindcss/oxide-freebsd-x64@4.3.4'
-  - '@tailwindcss/oxide-linux-arm-gnueabihf@4.3.4'
-  - '@tailwindcss/oxide-linux-arm64-gnu@4.3.4'
-  - '@tailwindcss/oxide-linux-arm64-musl@4.3.4'
-  - '@tailwindcss/oxide-linux-x64-gnu@4.3.4'
-  - '@tailwindcss/oxide-linux-x64-musl@4.3.4'
-  - '@tailwindcss/oxide-wasm32-wasi@4.3.4'
-  - '@tailwindcss/oxide-win32-arm64-msvc@4.3.4'
-  - '@tailwindcss/oxide-win32-x64-msvc@4.3.4'
-  - '@tailwindcss/oxide@4.3.4'
-  - '@tailwindcss/vite@4.3.4'
+  - "@tailwindcss/node@4.3.4"
+  - "@tailwindcss/oxide-android-arm64@4.3.4"
+  - "@tailwindcss/oxide-darwin-arm64@4.3.4"
+  - "@tailwindcss/oxide-darwin-x64@4.3.4"
+  - "@tailwindcss/oxide-freebsd-x64@4.3.4"
+  - "@tailwindcss/oxide-linux-arm-gnueabihf@4.3.4"
+  - "@tailwindcss/oxide-linux-arm64-gnu@4.3.4"
+  - "@tailwindcss/oxide-linux-arm64-musl@4.3.4"
+  - "@tailwindcss/oxide-linux-x64-gnu@4.3.4"
+  - "@tailwindcss/oxide-linux-x64-musl@4.3.4"
+  - "@tailwindcss/oxide-wasm32-wasi@4.3.4"
+  - "@tailwindcss/oxide-win32-arm64-msvc@4.3.4"
+  - "@tailwindcss/oxide-win32-x64-msvc@4.3.4"
+  - "@tailwindcss/oxide@4.3.4"
+  - "@tailwindcss/vite@4.3.4"
   - tailwindcss@4.3.4
+  - "@voidzero-dev/vite-plus-core@1.5.0"
+  - "@voidzero-dev/vite-plus-darwin-arm64@1.5.0"
+  - "@voidzero-dev/vite-plus-darwin-x64@1.5.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-gnu@1.5.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-musl@1.5.0"
+  - "@voidzero-dev/vite-plus-linux-x64-gnu@1.5.0"
+  - "@voidzero-dev/vite-plus-linux-x64-musl@1.5.0"
+  - "@voidzero-dev/vite-plus-win32-arm64-msvc@1.5.0"
+  - "@voidzero-dev/vite-plus-win32-x64-msvc@1.5.0"
+  - vite-plus@1.5.0
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
+  vite-plus: 1.5.0
+overrides:
+  vite@*: "catalog:"
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"

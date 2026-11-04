@@ -39,11 +39,11 @@ Nella matrice qui sotto le righe indicano **chi esprime** una scelta o un rifiut
 colonne **chi la riceve**. Il segno `+` indica una scelta, il segno `−` un
 rifiuto.
 
-|            | Anna | Bea  |  Carlo |
-| ---------- | :--: | :--: |  :--:  |
-| **Anna**   |      |  +   |       |
-| **Bea**    |      |      |   -  |
-| **Carlo**  |  +   |      |      |
+|           | Anna | Bea | Carlo |
+| --------- | :--: | :-: | :---: |
+| **Anna**  |      |  +  |       |
+| **Bea**   |      |     |   -   |
+| **Carlo** |  +   |     |       |
 
 Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna.
 
@@ -90,7 +90,7 @@ Molti di questi indici mettono in relazione scelte e rifiuti, per esempio
 confrontando le preferenze ricevute da un membro con i rifiuti che riceve. È una
 differenza rispetto alle misure della Social Network Analysis, che AB-Gram
 calcola separatamente sulla rete delle scelte e su quella dei rifiuti (vedi
-*Cos'è la Social Network Analysis*).
+_Cos'è la Social Network Analysis_).
 
 ## 4 In sintesi
 
@@ -99,6 +99,6 @@ semplice osservazione esterna: chi è isolato, chi è popolare, chi fa da ponte 
 sottogruppi, quali alleanze si formano. Per questo è usata in ambiti come la
 scuola, il lavoro e lo sport, ovunque serva comprendere le dinamiche di un gruppo.
 
-*Attenzione*: I risultati di un'analisi sociometrica descrivono il gruppo in un preciso momento e rispetto a un preciso
+_Attenzione_: I risultati di un'analisi sociometrica descrivono il gruppo in un preciso momento e rispetto a un preciso
 criterio: vanno letti come un punto di partenza per capire e per intervenire, non
 come un giudizio definitivo sulle persone.

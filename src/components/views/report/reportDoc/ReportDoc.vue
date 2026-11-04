@@ -22,7 +22,7 @@ import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/repo
 
 // --- Props --------------
 const props = defineProps({
-    reportData: { type: Object, required: true },
+  reportData: { type: Object, required: true },
 });
 
 // --- Emits --------------
@@ -38,11 +38,11 @@ const emit = defineEmits(["regenerate-sna-plot"]);
 const totalPages = ref(0);
 
 provide(REPORT_PAGES_KEY, {
-    register() {
-        totalPages.value += 1;
-        return totalPages.value;
-    },
-    totalPages,
+  register() {
+    totalPages.value += 1;
+    return totalPages.value;
+  },
+  totalPages,
 });
 
 // --- Composables --------
@@ -51,8 +51,8 @@ provide(REPORT_PAGES_KEY, {
 // Moreno ego plots are keyed by member id; expose a lookup so each member page
 // can pull its own plot without scanning the array in the template.
 const egoPlotByMemberId = computed(() => {
-    const plots = props.reportData?.analysisData?.morenoEgoGraphs ?? [];
-    return Object.fromEntries(plots.map((plot) => [plot.memberId, plot]));
+  const plots = props.reportData?.analysisData?.morenoEgoGraphs ?? [];
+  return Object.fromEntries(plots.map((plot) => [plot.memberId, plot]));
 });
 
 const members = computed(() => props.reportData?.membersData?.members ?? []);
@@ -65,53 +65,53 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
 </script>
 
 <template>
-    <div class="space-y-8 print:space-y-0">
-        <!--
+  <div class="space-y-8 print:space-y-0">
+    <!--
           The document is composed declaratively: each child below is one page.
           Add pages here — repeating a component renders the page again, and
           numbering stays correct via the registry provided above.
         -->
-        <PageCover />
-        <PageListOfMembers :members-data="reportData.membersData" />
-        <PageListOfPreferences :members-data="reportData.membersData" />
-        <PageSnaGroupMetrics
-            type-of-sna="likes"
-            :members="members"
-            :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
-            :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
-            :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
-            @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
-        />
-        <PageSnaGroupMetrics
-            v-if="!reportData.membersData.allMembersHaveNoDislikes"
-            type-of-sna="dislikes"
-            :members="members"
-            :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
-            :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
-            :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
-            @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
-        />
-        <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
-        <PageSnaComponents
-            type-of-sna="likes"
-            :components="reportData.analysisData?.snaLikesComponents ?? {}"
-        />
-        <PageMemberMetrics
-            v-for="member in members"
-            :key="member.id"
-            :member="member"
-            :ego-plot="egoPlotByMemberId[member.id] ?? null"
-            :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
-            :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
-            :edge-types="reportData.analysisData?.edgeTypes ?? {}"
-            :likes-components="reportData.analysisData?.snaLikesComponents ?? {}"
-            :dislikes-components="reportData.analysisData?.snaDislikesComponents ?? {}"
-        />
-        <PageSummary
-            :members-data="reportData.membersData"
-            :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
-            :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
-        />
-        <PageGlossary />
-    </div>
+    <PageCover />
+    <PageListOfMembers :members-data="reportData.membersData" />
+    <PageListOfPreferences :members-data="reportData.membersData" />
+    <PageSnaGroupMetrics
+      type-of-sna="likes"
+      :members="members"
+      :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
+      :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
+      :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+      @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
+    />
+    <PageSnaGroupMetrics
+      v-if="!reportData.membersData.allMembersHaveNoDislikes"
+      type-of-sna="dislikes"
+      :members="members"
+      :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
+      :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
+      :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+      @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
+    />
+    <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
+    <PageSnaComponents
+      type-of-sna="likes"
+      :components="reportData.analysisData?.snaLikesComponents ?? {}"
+    />
+    <PageMemberMetrics
+      v-for="member in members"
+      :key="member.id"
+      :member="member"
+      :ego-plot="egoPlotByMemberId[member.id] ?? null"
+      :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
+      :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
+      :edge-types="reportData.analysisData?.edgeTypes ?? {}"
+      :likes-components="reportData.analysisData?.snaLikesComponents ?? {}"
+      :dislikes-components="reportData.analysisData?.snaDislikesComponents ?? {}"
+    />
+    <PageSummary
+      :members-data="reportData.membersData"
+      :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
+      :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
+    />
+    <PageGlossary />
+  </div>
 </template>

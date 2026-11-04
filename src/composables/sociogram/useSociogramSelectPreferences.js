@@ -18,39 +18,34 @@ import { computed } from "vue";
  * @param {Function} options.emit - The component's emit function.
  * @returns {{ selectedIds: import('vue').ComputedRef<string[]>, toggle: Function, toggleFiltered: Function }}
  */
-export function useSociogramPreferencesSelection({
-    query,
-    filteredMembers,
-    modelValue,
-    emit,
-}) {
-    const selectedIds = computed({
-        get: () => modelValue.value ?? [],
-        set: (value) => emit("update:modelValue", value),
-    });
+export function useSociogramPreferencesSelection({ query, filteredMembers, modelValue, emit }) {
+  const selectedIds = computed({
+    get: () => modelValue.value ?? [],
+    set: (value) => emit("update:modelValue", value),
+  });
 
-    function toggle(member) {
-        const current = selectedIds.value;
-        selectedIds.value = current.includes(member.id)
-            ? current.filter((id) => id !== member.id)
-            : [...current, member.id];
-    }
+  function toggle(member) {
+    const current = selectedIds.value;
+    selectedIds.value = current.includes(member.id)
+      ? current.filter((id) => id !== member.id)
+      : [...current, member.id];
+  }
 
-    function toggleFiltered() {
-        // Only act on an explicit, non-empty query; an empty (or whitespace)
-        // query means "show everyone", so Enter would otherwise toggle the first
-        // member of the roster without a deliberate search.
-        if (query.value.trim() === "") return;
+  function toggleFiltered() {
+    // Only act on an explicit, non-empty query; an empty (or whitespace)
+    // query means "show everyone", so Enter would otherwise toggle the first
+    // member of the roster without a deliberate search.
+    if (query.value.trim() === "") return;
 
-        // Toggle only the top result. Adding one member at a time keeps the
-        // preference list in the order the user builds it, which several
-        // metrics (e.g. bonus/malus) rely on.
-        const first = filteredMembers.value[0];
-        if (!first) return;
+    // Toggle only the top result. Adding one member at a time keeps the
+    // preference list in the order the user builds it, which several
+    // metrics (e.g. bonus/malus) rely on.
+    const first = filteredMembers.value[0];
+    if (!first) return;
 
-        toggle(first);
-        query.value = "";
-    }
+    toggle(first);
+    query.value = "";
+  }
 
-    return { selectedIds, toggle, toggleFiltered };
+  return { selectedIds, toggle, toggleFiltered };
 }

@@ -25,27 +25,19 @@ import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
 //   -- From utils.
-import {
-    buildMembers,
-    normalizeNames,
-    orderNames,
-} from "@/utils/sociogram/memberHelpers";
+import { buildMembers, normalizeNames, orderNames } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits([
-    "sociogram-change-component",
-    "sociogram-restart-app",
-]);
+const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
 
 // --- Routers ------------
 
 // --- Stores -------------
 // Get the sociogram store and its state.
 const sociogramStore = useSociogramStore();
-const { maxMemberNameLength, maxMembersCount, membersCount } =
-    storeToRefs(sociogramStore);
+const { maxMemberNameLength, maxMembersCount, membersCount } = storeToRefs(sociogramStore);
 
 // --- State --------------
 const loadFileName = ref("");
@@ -65,9 +57,9 @@ const { goToStep, restart } = useSociogramNavigation(emit);
 const hasLoaded = computed(() => membersCount.value > 0);
 
 const loadedSummary = computed(() => {
-    if (loadedCount.value === null) return "";
-    const label = loadedCount.value === 1 ? "nome caricato" : "nomi caricati";
-    return `${loadedCount.value} ${label}`;
+  if (loadedCount.value === null) return "";
+  const label = loadedCount.value === 1 ? "nome caricato" : "nomi caricati";
+  return `${loadedCount.value} ${label}`;
 });
 
 // --- Watchers -----------
@@ -76,62 +68,64 @@ const loadedSummary = computed(() => {
 
 // --- Methods ------------
 function onFileSelected({ filename }) {
-    loadFileName.value = filename;
-    loadError.value = null;
-    loadedCount.value = null;
+  loadFileName.value = filename;
+  loadError.value = null;
+  loadedCount.value = null;
 }
 
 function onFileRead({ lines }) {
-    const normalizedNames = normalizeNames(lines);
-    const orderedNames = orderNames(normalizedNames, orderMode.value);
-    const loadedMembers = buildMembers(orderedNames);
-    sociogramStore.initMembers(loadedMembers);
-    loadedCount.value = loadedMembers.length;
+  const normalizedNames = normalizeNames(lines);
+  const orderedNames = orderNames(normalizedNames, orderMode.value);
+  const loadedMembers = buildMembers(orderedNames);
+  sociogramStore.initMembers(loadedMembers);
+  loadedCount.value = loadedMembers.length;
 }
 
 function onFileReadError({ message }) {
-    loadError.value = message;
+  loadError.value = message;
 }
 </script>
 
 <template>
-    <section class="card space-y-6">
-        <StepHeader>
-            <template #eyebrow>Passaggio 1 di 4</template>
-            <template #title>Carica l'elenco dei nominativi</template>
-            Il file di testo deve contenere un elenco di nominativi, per un minimo di {{ sociogramStore.minMembersCount }} e un massimo di {{ sociogramStore.maxMembersCount }}. Ogni nominativo è limitato a {{ sociogramStore.maxMemberNameLength }} caratteri.
-        </StepHeader>
+  <section class="card space-y-6">
+    <StepHeader>
+      <template #eyebrow>Passaggio 1 di 4</template>
+      <template #title>Carica l'elenco dei nominativi</template>
+      Il file di testo deve contenere un elenco di nominativi, per un minimo di
+      {{ sociogramStore.minMembersCount }} e un massimo di {{ sociogramStore.maxMembersCount }}.
+      Ogni nominativo è limitato a {{ sociogramStore.maxMemberNameLength }} caratteri.
+    </StepHeader>
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+    <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <LoadMembersOrderNamesRadioGroup v-model="orderMode" />
+    <LoadMembersOrderNamesRadioGroup v-model="orderMode" />
 
-        <div class="h-px w-full bg-line" aria-hidden="true"></div>
+    <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-        <BaseTextFileReader
-            :max-line-length="maxMemberNameLength"
-            :max-lines="maxMembersCount"
-            @file-selected="onFileSelected"
-            @file-read="onFileRead"
-            @file-read-error="onFileReadError"
-        >
-            <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
-            Elenco dei nominativi (es., Rossi Mario), uno per riga.
-        </BaseTextFileReader>
+    <BaseTextFileReader
+      :max-line-length="maxMemberNameLength"
+      :max-lines="maxMembersCount"
+      @file-selected="onFileSelected"
+      @file-read="onFileRead"
+      @file-read-error="onFileReadError"
+    >
+      <template #label>{{ membersCount > 0 ? "Carica un altro file" : "Carica il file" }}</template>
+      Elenco dei nominativi (es., Rossi Mario), uno per riga.
+    </BaseTextFileReader>
 
-        <FileReadResult :count="loadedCount" :error="loadError">
-            <p class="text-sm font-medium text-ink">{{ loadFileName }}</p>
-            <p class="text-sm text-muted">{{ loadedSummary }}.</p>
-        </FileReadResult>
-    </section>
+    <FileReadResult :count="loadedCount" :error="loadError">
+      <p class="text-sm font-medium text-ink">{{ loadFileName }}</p>
+      <p class="text-sm text-muted">{{ loadedSummary }}.</p>
+    </FileReadResult>
+  </section>
 
-    <SociogramNavigation
-        :enable-previous="true"
-        :enable-next="hasLoaded"
-        :enable-archive="hasLoaded"
-        :enable-restart="hasLoaded"
-        @sociogram-navigation-previous="goToStep('start')"
-        @sociogram-navigation-next="goToStep('manageMembers')"
-        @sociogram-navigation-restart="restart"
-    />
+  <SociogramNavigation
+    :enable-previous="true"
+    :enable-next="hasLoaded"
+    :enable-archive="hasLoaded"
+    :enable-restart="hasLoaded"
+    @sociogram-navigation-previous="goToStep('start')"
+    @sociogram-navigation-next="goToStep('manageMembers')"
+    @sociogram-navigation-restart="restart"
+  />
 </template>

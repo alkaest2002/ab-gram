@@ -20,7 +20,7 @@ membro di cui stiamo calcolando la metrica.
 
 Gli indici di Moreno (dal nome dello psicologo Jacob Moreno, ideatore del
 sociogramma) si ricavano da semplici somme sulle righe e sulle colonne delle
-tabelle che registrano le relazioni, dette *matrici di adiacenza*:
+tabelle che registrano le relazioni, dette _matrici di adiacenza_:
 
 - $a_{ij} = 1$ se il membro $i$ **sceglie** il membro $j$, altrimenti $0$;
 - $b_{ij} = 1$ se il membro $i$ **rifiuta** il membro $j$, altrimenti $0$.
@@ -141,17 +141,17 @@ l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra preferenze e
 rifiuti (se prevalgono gli uni o le altre). Le categorie, con il relativo
 codice, sono:
 
-| Codice | Categoria |
-| :----: | --------- |
-| 0 | isolato |
-| 1 | ignorato |
-| 2 | marginale |
-| 3 | apprezzato |
-| 4 | popolare |
-| 5 | malvisto |
-| 6 | rifiutato |
-| 7 | ambivalente |
-| 8 | controverso |
+| Codice | Categoria   |
+| :----: | ----------- |
+|   0    | isolato     |
+|   1    | ignorato    |
+|   2    | marginale   |
+|   3    | apprezzato  |
+|   4    | popolare    |
+|   5    | malvisto    |
+|   6    | rifiutato   |
+|   7    | ambivalente |
+|   8    | controverso |
 
 In generale, le categorie vanno da chi non riceve alcuna opinione (isolato) a
 chi ne riceve molte e discordanti (controverso), passando per situazioni in cui
@@ -186,25 +186,25 @@ B =
 \end{pmatrix}
 $$
 
-Prendiamo il membro $1$. Le sue **scelte ricevute** si leggono sulla *colonna 1*
+Prendiamo il membro $1$. Le sue **scelte ricevute** si leggono sulla _colonna 1_
 di $A$: lo scelgono il membro $2$ e il membro $4$, quindi $rp_1 = 2$. Le sue
-**scelte date** si leggono sulla *riga 1*: sceglie il $2$ e il $3$, quindi
+**scelte date** si leggono sulla _riga 1_: sceglie il $2$ e il $3$, quindi
 $gp_1 = 2$. Ripetendo il conteggio per tutti si ottiene:
 
-| Metrica | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
-| ------- | :------: | :------: | :------: | :------: |
-| Scelte ricevute positive ($rp$) | 2 | 2 | 1 | 2 |
-| Scelte ricevute negative ($rr$) | 1 | 1 | 1 | 1 |
-| Scelte date positive ($gp$) | 2 | 2 | 2 | 1 |
-| Scelte date negative ($gr$) | 1 | 1 | 1 | 1 |
-| Reciprocità positiva ($mp$) | 1 | 1 | 0 | 0 |
-| Reciprocità negativa ($mr$) | 0 | 0 | 0 | 0 |
-| Impatto ($im$) | 3 | 3 | 2 | 3 |
-| Bilancio ($bl$) | 1 | 1 | 0 | 1 |
-| Espressività ($ei$) | 3 | 3 | 3 | 2 |
-| Orientamento ($or$) | 1 | 1 | 1 | 0 |
-| Affiliazione ($ai$) | 2 | 2 | 1 | 1 |
-| Influenza ($ii$) | 3 | 3 | 1 | 2 |
+| Metrica                         | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
+| ------------------------------- | :------: | :------: | :------: | :------: |
+| Scelte ricevute positive ($rp$) |    2     |    2     |    1     |    2     |
+| Scelte ricevute negative ($rr$) |    1     |    1     |    1     |    1     |
+| Scelte date positive ($gp$)     |    2     |    2     |    2     |    1     |
+| Scelte date negative ($gr$)     |    1     |    1     |    1     |    1     |
+| Reciprocità positiva ($mp$)     |    1     |    1     |    0     |    0     |
+| Reciprocità negativa ($mr$)     |    0     |    0     |    0     |    0     |
+| Impatto ($im$)                  |    3     |    3     |    2     |    3     |
+| Bilancio ($bl$)                 |    1     |    1     |    0     |    1     |
+| Espressività ($ei$)             |    3     |    3     |    3     |    2     |
+| Orientamento ($or$)             |    1     |    1     |    1     |    0     |
+| Affiliazione ($ai$)             |    2     |    2     |    1     |    1     |
+| Influenza ($ii$)                |    3     |    3     |    1     |    2     |
 
 I membri $1$ e $2$ risultano i più coinvolti: sono gli unici ad avere una scelta
 reciproca (si scelgono tra loro) e hanno i valori più alti di affiliazione e
@@ -213,8 +213,8 @@ influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
 ## 2 Centralità SNA
 
 Le centralità misurano **quanto un nodo è importante nella rete del gruppo**.
-In questo contesto la rete è un **grafico diretto**: ogni membro è un *nodo* (un
-punto) e ogni scelta è una *freccia* che va da chi sceglie a chi è scelto.
+In questo contesto la rete è un **grafico diretto**: ogni membro è un _nodo_ (un
+punto) e ogni scelta è una _freccia_ che va da chi sceglie a chi è scelto.
 Esistono molti modi di definire l'"importanza", e ogni centralità ne misura uno
 diverso: chi ha più legami, chi è più vicino a tutti, chi fa da ponte, chi è
 scelto da persone a loro volta importanti.
@@ -296,9 +296,9 @@ $$
 **HITS** distingue **due ruoli complementari** che un membro può avere
 contemporaneamente:
 
-- l'**autorità** ($a$): chi riceve legami da buoni *hub*, cioè è scelto da chi
+- l'**autorità** ($a$): chi riceve legami da buoni _hub_, cioè è scelto da chi
   sa scegliere bene;
-- l'**hub** ($h$): chi indica buone *autorità*, cioè sceglie le persone giuste.
+- l'**hub** ($h$): chi indica buone _autorità_, cioè sceglie le persone giuste.
 
 Le due definizioni si richiamano a vicenda ($\text{Out}(i)$ è l'insieme dei
 membri scelti da $i$) e, come per il PageRank, i valori si calcolano per
@@ -316,12 +316,12 @@ $3 \to 2$, $3 \to 4$, $4 \to 1$). Per il **grado**, i legami entranti di ciascun
 membro sono le scelte ricevute ($rp$) e quelli uscenti sono le scelte date
 ($gp$); con $n - 1 = 3$ si ottiene:
 
-| Metrica | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
-| ------- | :------: | :------: | :------: | :------: |
-| Grado entrante ($C_D^{\text{in}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ | $1/3 \approx 0{,}33$ | $2/3 \approx 0{,}67$ |
-| Grado uscente ($C_D^{\text{out}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ | $1/3 \approx 0{,}33$ |
-| Vicinanza ($C_C$) | $3/4 = 0{,}75$ | $3/4 = 0{,}75$ | $3/4 = 0{,}75$ | $3/5 = 0{,}60$ |
-| Intermediazione ($C_B$) | $3/6 = 0{,}50$ | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
+| Metrica                            |       Membro 1       |       Membro 2       |         Membro 3         |         Membro 4         |
+| ---------------------------------- | :------------------: | :------------------: | :----------------------: | :----------------------: |
+| Grado entrante ($C_D^{\text{in}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $1/3 \approx 0{,}33$   |   $2/3 \approx 0{,}67$   |
+| Grado uscente ($C_D^{\text{out}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $2/3 \approx 0{,}67$   |   $1/3 \approx 0{,}33$   |
+| Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/4 = 0{,}75$      |      $3/5 = 0{,}60$      |
+| Intermediazione ($C_B$)            |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
 
 Qualche esempio di come si arriva ai numeri:
 
@@ -340,16 +340,16 @@ Per **PageRank** e **HITS** il calcolo è iterativo, quindi qui riportiamo i
 valori a cui si arriva dopo la convergenza, normalizzati in modo che la somma
 dei quattro membri sia $1$:
 
-| Metrica | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
-| ------- | :------: | :------: | :------: | :------: |
-| PageRank ($PR$) | 0,337 | 0,258 | 0,181 | 0,224 |
-| Autorità HITS ($a$) | 0,227 | 0,305 | 0,121 | 0,347 |
-| Hub HITS ($h$) | 0,227 | 0,305 | 0,347 | 0,121 |
+| Metrica             | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
+| ------------------- | :------: | :------: | :------: | :------: |
+| PageRank ($PR$)     |  0,337   |  0,258   |  0,181   |  0,224   |
+| Autorità HITS ($a$) |  0,227   |  0,305   |  0,121   |  0,347   |
+| Hub HITS ($h$)      |  0,227   |  0,305   |  0,347   |  0,121   |
 
 Come si leggono questi numeri:
 
 - **PageRank.** Il membro $1$ è il più importante: lo scelgono il $2$ e il $4$, e
-  il $4$ ha *come unica scelta* proprio il $1$, quindi gli cede tutta la propria
+  il $4$ ha _come unica scelta_ proprio il $1$, quindi gli cede tutta la propria
   importanza. Come verifica, per il membro $1$ si ha
   $PR(1) = \frac{0{,}15}{4} + 0{,}85\left(\frac{PR(2)}{2} + \frac{PR(4)}{1}\right)
   \approx 0{,}0375 + 0{,}85\,(0{,}129 + 0{,}224) \approx 0{,}337$,
@@ -365,11 +365,11 @@ Come si leggono questi numeri:
 
 ## 3 In sintesi
 
-| Centralità | Domanda a cui risponde | Valore alto significa |
-| ---------- | ---------------------- | --------------------- |
-| Grado | Quanti legami ha? | È molto collegato (o molto scelto, se si guarda il grado entrante) |
-| Vicinanza | Quanto è vicino a tutti gli altri? | Può raggiungere gli altri con pochi passaggi |
-| Intermediazione | Quanto fa da ponte tra gli altri? | Molti percorsi più brevi passano da lui |
-| PageRank | Chi lo sceglie è a sua volta importante? | È scelto da persone importanti |
-| HITS (autorità) | È scelto da chi sceglie bene? | È un riferimento riconosciuto |
-| HITS (hub) | Sceglie le persone giuste? | Indica buoni riferimenti agli altri |
+| Centralità      | Domanda a cui risponde                   | Valore alto significa                                              |
+| --------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| Grado           | Quanti legami ha?                        | È molto collegato (o molto scelto, se si guarda il grado entrante) |
+| Vicinanza       | Quanto è vicino a tutti gli altri?       | Può raggiungere gli altri con pochi passaggi                       |
+| Intermediazione | Quanto fa da ponte tra gli altri?        | Molti percorsi più brevi passano da lui                            |
+| PageRank        | Chi lo sceglie è a sua volta importante? | È scelto da persone importanti                                     |
+| HITS (autorità) | È scelto da chi sceglie bene?            | È un riferimento riconosciuto                                      |
+| HITS (hub)      | Sceglie le persone giuste?               | Indica buoni riferimenti agli altri                                |

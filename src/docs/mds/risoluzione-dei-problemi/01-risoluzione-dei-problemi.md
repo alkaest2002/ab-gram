@@ -34,8 +34,8 @@ Ogni passaggio si sblocca solo quando i suoi dati sono completi, quindi
 - **Gestione dei membri:** non devono esserci **nomi vuoti** né **nomi
   duplicati** (vedi la sezione seguente).
 - **Scelte e rifiuti:** ogni membro deve essere **completo**, cioè avere le
-  scelte e i rifiuti indicati oppure la casella *«Non ha espresso preferenze»* /
-  *«Non ha espresso rifiuti»* spuntata. La barra di avanzamento mostra quanti
+  scelte e i rifiuti indicati oppure la casella _«Non ha espresso preferenze»_ /
+  _«Non ha espresso rifiuti»_ spuntata. La barra di avanzamento mostra quanti
   membri mancano.
 - **Riepilogo:** il gruppo deve contenere **almeno 5 membri** e tutti i membri
   devono essere completi.
@@ -66,7 +66,7 @@ membro, il nome viene contrassegnato con un avviso.
 ### 4.1 Soluzione
 
 Non è un errore bloccante: l'applicazione ti lascia registrare la contraddizione
-(è il legame *ambivalente*, descritto in *Tipo di legami*). Se invece si tratta
+(è il legame _ambivalente_, descritto in _Tipo di legami_). Se invece si tratta
 di una svista, deseleziona la persona dall'elenco in cui non dovrebbe comparire.
 
 ## 5 Il report non si genera
@@ -100,15 +100,15 @@ non indica un errore.
 
 AB-Gram **non salva i dati nella cache del browser**: restano nella memoria
 dell'applicazione solo finché la pagina è aperta. Aggiornare la pagina o usare i
-tasti *indietro* / *avanti* del browser azzera il lavoro in corso.
+tasti _indietro_ / _avanti_ del browser azzera il lavoro in corso.
 
 ### 7.1 Soluzione
 
-- Mentre lavori, **non aggiornare la pagina** e non usare i tasti *indietro* e
-  *avanti* del browser.
+- Mentre lavori, **non aggiornare la pagina** e non usare i tasti _indietro_ e
+  _avanti_ del browser.
 - Usa **Scarica progetto** per salvare un archivio a ogni punto fermo; potrai
-  riprenderlo in seguito con **Importa progetto**. Vedi *Archiviare e riprendere
-  un progetto*.
+  riprenderlo in seguito con **Importa progetto**. Vedi _Archiviare e riprendere
+  un progetto_.
 
 ## 8 L'importazione dell'archivio fallisce
 
@@ -117,8 +117,8 @@ coerenti**. Se il controllo non passa, mostra un errore di validazione.
 
 ### 8.1 Soluzione
 
-- Seleziona il **file di testo prodotto dall'applicazione** con *Scarica
-  progetto*, non un file creato o modificato a mano.
+- Seleziona il **file di testo prodotto dall'applicazione** con _Scarica
+  progetto_, non un file creato o modificato a mano.
 - **Non modificare** il contenuto dell'archivio: anche piccole modifiche possono
   renderlo incoerente.
 - Verifica che l'archivio rispetti i vincoli (ad esempio non più di 35 nomi).
@@ -157,4 +157,4 @@ per risparmiare spazio.
 
 Consulta il **Glossario**, l'ultima pagina del report, che elenca ogni sigla con
 il suo significato esteso. Le definizioni complete delle metriche si trovano
-nelle pagine *Metriche individuali* e *Metriche di gruppo* di questa guida.
+nelle pagine _Metriche individuali_ e _Metriche di gruppo_ di questa guida.

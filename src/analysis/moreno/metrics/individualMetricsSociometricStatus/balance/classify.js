@@ -31,10 +31,7 @@ export const classifyBalance = (rp, rr, impact) => {
   const ratioSpan = MORE_LENIENT_RATIO - LESS_LENIENT_RATIO;
   const opinionSpan = MAX_OPINIONS - MIN_OPINIONS;
 
-  const clampedOffset = np.minimum(
-    np.maximum(impact.subtract(MIN_OPINIONS), 0),
-    opinionSpan,
-  );
+  const clampedOffset = np.minimum(np.maximum(impact.subtract(MIN_OPINIONS), 0), opinionSpan);
   const dynamicThreshold = clampedOffset
     .divide(opinionSpan)
     .multiply(ratioSpan)
@@ -42,8 +39,6 @@ export const classifyBalance = (rp, rr, impact) => {
 
   const isPositiveBalance = rp.greater(rr.multiply(dynamicThreshold));
   const isNegativeBalance = rr.greater(rp.multiply(dynamicThreshold));
-  const isNeutralBalance = isPositiveBalance
-    .logical_or(isNegativeBalance)
-    .logical_not();
+  const isNeutralBalance = isPositiveBalance.logical_or(isNegativeBalance).logical_not();
   return { isPositiveBalance, isNegativeBalance, isNeutralBalance };
 };

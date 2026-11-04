@@ -1,9 +1,9 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import Graph from 'graphology';
-import louvain from 'graphology-communities-louvain';
-import * as np from 'numpy-ts';
+import Graph from "graphology";
+import louvain from "graphology-communities-louvain";
+import * as np from "numpy-ts";
 
 /**
  * Directed community significance test.
@@ -62,7 +62,7 @@ function mulberry32(seed) {
 
   return function () {
     a |= 0;
-    a = (a + 0x6D2B79F5) | 0;
+    a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
     t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -88,8 +88,8 @@ function bestLouvain(graph, runs = 5, rng = Math.random) {
       best = {
         modularity: result.modularity,
         assignments: {
-          ...result.communities
-        }
+          ...result.communities,
+        },
       };
     }
   }
@@ -106,7 +106,7 @@ function bestLouvain(graph, runs = 5, rng = Math.random) {
   // Note: restrict communities to communities gt than 2
   return {
     q: best.modularity,
-    communities: Array.from(groups.values()).filter(c => c.length > 2)
+    communities: Array.from(groups.values()).filter((c) => c.length > 2),
   };
 }
 
@@ -122,7 +122,7 @@ export function getLouvainCommunities(graph, { runs = 5, seed } = {}) {
   if (graph.size === 0) {
     return {
       communities: graph.nodes().map((node) => [node]),
-      q: 0
+      q: 0,
     };
   }
 
@@ -143,9 +143,8 @@ export function getLouvainCommunities(graph, { runs = 5, seed } = {}) {
  * @returns {void}
  */
 function validateNullGraph(original, randomized, index, n) {
-  if (original.order !== randomized.order ||
-      original.size !== randomized.size) {
-    throw new Error('Null graph changed the node or edge count.');
+  if (original.order !== randomized.order || original.size !== randomized.size) {
+    throw new Error("Null graph changed the node or edge count.");
   }
 
   for (const node of original.nodes()) {
@@ -167,8 +166,7 @@ function validateNullGraph(original, randomized, index, n) {
    * @param {import("graphology").DirectedGraph} g - The graph.
    * @returns {number[][]} Edges as `[source, target]` index pairs.
    */
-  const toEdges = (g) =>
-    g.edges().map(e => [index.get(g.source(e)), index.get(g.target(e))]);
+  const toEdges = (g) => g.edges().map((e) => [index.get(g.source(e)), index.get(g.target(e))]);
 
   const oe = toEdges(original);
   const re = toEdges(randomized);
@@ -176,7 +174,7 @@ function validateNullGraph(original, randomized, index, n) {
   const rs = new Set(re.map(([a, b]) => key(a, b, n)));
 
   if (countMutualPairs(os, oe, n) !== countMutualPairs(rs, re, n)) {
-    throw new Error('Null graph changed the number of mutual pairs.');
+    throw new Error("Null graph changed the number of mutual pairs.");
   }
 }
 
@@ -195,7 +193,7 @@ function validateNullGraph(original, randomized, index, n) {
  *   number of accepted swaps.
  */
 function nullEdges(edgesIn, n, target, cap, rng) {
-  const edges = edgesIn.map(e => e.slice());
+  const edges = edgesIn.map((e) => e.slice());
   const set = new Set(edges.map(([a, b]) => key(a, b, n)));
   let accepted = 0;
 
@@ -262,31 +260,34 @@ export function gate(
   {
     nulls = 500,
     runs = 5,
-    swaps = 10,      // target accepted swaps per edge in each null graph
+    swaps = 10, // target accepted swaps per edge in each null graph
     alpha = 0.05,
     seed,
-    validate = false // check every null graph (slow; for testing)
-  } = {}
+    validate = false, // check every null graph (slow; for testing)
+  } = {},
 ) {
-  if (graph.type !== 'directed') {
-    throw new Error('Expected a directed graph.');
+  if (graph.type !== "directed") {
+    throw new Error("Expected a directed graph.");
   }
 
   if (graph.multi) {
-    throw new Error('Multigraphs are not supported.');
+    throw new Error("Multigraphs are not supported.");
   }
 
-  if (graph.someNode(node => graph.hasEdge(node, node))) {
-    throw new Error('Self-loops are not supported.');
+  if (graph.someNode((node) => graph.hasEdge(node, node))) {
+    throw new Error("Self-loops are not supported.");
   }
 
   if (
-    !Number.isInteger(nulls) || nulls < 1 ||
-    !Number.isInteger(runs) || runs < 1 ||
-    !Number.isInteger(swaps) || swaps < 1 ||
+    !Number.isInteger(nulls) ||
+    nulls < 1 ||
+    !Number.isInteger(runs) ||
+    runs < 1 ||
+    !Number.isInteger(swaps) ||
+    swaps < 1 ||
     !(alpha > 0 && alpha < 1)
   ) {
-    throw new Error('Invalid nulls, runs, swaps, or alpha.');
+    throw new Error("Invalid nulls, runs, swaps, or alpha.");
   }
 
   const rng = seed === undefined ? Math.random : mulberry32(seed);
@@ -296,10 +297,7 @@ export function gate(
   const n = nodes.length;
   const index = new Map(nodes.map((node, i) => [node, i]));
 
-  const edges = graph.edges().map(e => [
-    index.get(graph.source(e)),
-    index.get(graph.target(e))
-  ]);
+  const edges = graph.edges().map((e) => [index.get(graph.source(e)), index.get(graph.target(e))]);
 
   const originalSet = new Set(edges.map(([a, b]) => key(a, b, n)));
   const mutualPairs = countMutualPairs(originalSet, edges, n);
@@ -322,7 +320,7 @@ export function gate(
     totalAccepted += accepted;
     if (accepted < minAccepted) minAccepted = accepted;
 
-    const randomized = new Graph({ type: 'directed' });
+    const randomized = new Graph({ type: "directed" });
     for (const node of nodes) randomized.addNode(node);
     for (const [a, b] of ne) randomized.addEdge(nodes[a], nodes[b]);
 
@@ -332,12 +330,10 @@ export function gate(
   }
 
   // 3. (1 - alpha) quantile of the null modularities.
-  const threshold = Number(
-    np.percentile(np.array(nullQs), 100 * (1 - alpha))
-  );
+  const threshold = Number(np.percentile(np.array(nullQs), 100 * (1 - alpha)));
 
   // 4. One-sided empirical p-value.
-  const exceed = nullQs.filter(value => value >= observed.q).length;
+  const exceed = nullQs.filter((value) => value >= observed.q).length;
   const p = (exceed + 1) / (nulls + 1);
 
   // 5. A null graph that could not reach half the swap target is not a fair
@@ -369,6 +365,6 @@ export function gate(
     swaps,
     alpha,
     seed,
-    validate
+    validate,
   };
 }

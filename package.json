@@ -5,11 +5,11 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run",
+    "dev": "vp dev",
+    "build": "vp build",
+    "preview": "vp preview",
+    "test": "vp test",
+    "test:run": "vp test run",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "generate:notices": "node scripts/generate-third-party-notices.mjs"
   },
@@ -33,9 +33,9 @@
     "@tailwindcss/vite": "^4.3.4",
     "@vitejs/plugin-vue": "^6.0.10",
     "tailwindcss": "^4.3.4",
-    "vite": "^8.3.5",
+    "vite": "catalog:",
     "vite-plugin-vue-devtools": "^8.2.1",
-    "vitest": "^5.1.0"
+    "vite-plus": "catalog:"
   },
   "engines": {
     "node": "^22.18.0 || >=24.12.0"

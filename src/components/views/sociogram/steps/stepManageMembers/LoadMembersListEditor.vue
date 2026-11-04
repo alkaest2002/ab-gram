@@ -62,9 +62,7 @@ const nextMemberId = computed(() => {
 const hasAvailableIndices = computed(() => nextMemberId.value !== null);
 
 /** Adding requires a free index and no blank name to review first. */
-const canAddMember = computed(
-  () => hasAvailableIndices.value && emptyNamesCount.value === 0,
-);
+const canAddMember = computed(() => hasAvailableIndices.value && emptyNamesCount.value === 0);
 
 // --- Watchers -----------
 // Focus the newly added member's input when it renders.
@@ -77,7 +75,7 @@ watch(
       const input = document.querySelector(`[data-member-id="${addedMember.id}"]`);
       input?.focus();
     }
-  }
+  },
 );
 
 // --- Lifecycle ----------
@@ -155,9 +153,7 @@ function addMember() {
       :empty-names-count="emptyNamesCount"
     />
 
-    <p v-if="members.length === 0" class="text-sm text-muted">
-      Nessun membro caricato.
-    </p>
+    <p v-if="members.length === 0" class="text-sm text-muted">Nessun membro caricato.</p>
 
     <div v-else class="rounded-lg border border-line">
       <ol class="list-none divide-y divide-line">
@@ -166,10 +162,7 @@ function addMember() {
           :key="member.id"
           class="flex items-center gap-3 px-3 transition-colors"
         >
-          <span
-            class="w-6 shrink-0 text-right font-mono text-xs text-muted"
-            aria-hidden="true"
-          >
+          <span class="w-6 shrink-0 text-right font-mono text-xs text-muted" aria-hidden="true">
             {{ member.id }}
           </span>
 

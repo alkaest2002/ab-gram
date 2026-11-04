@@ -12,9 +12,7 @@ export const MAX_LINE_LENGTH_LIMIT = 1_000; // 1K chars per line
 export const MAX_FILE_SIZE_LIMIT = 10 * 1024 * 1024; // 10 MiB
 
 /** Allowed MIME types for text files. Add more as needed. */
-export const ALLOWED_MIME_TYPES = [
-  "text/plain",
-];
+export const ALLOWED_MIME_TYPES = ["text/plain"];
 
 /**
  * Streaming text reader. Reads `textFileToRead` in chunks — so a huge file is
@@ -43,10 +41,7 @@ export const ALLOWED_MIME_TYPES = [
  *   decodingWarnings: import('vue').Ref<string[]>
  * }}
  */
-export function useSociogramTextReader(
-  textFileToRead,
-  options = {},
-) {
+export function useSociogramTextReader(textFileToRead, options = {}) {
   // Extract and validate options with defaults
   const {
     maxFileSize = DEFAULT_MAX_FILE_SIZE,
@@ -170,11 +165,7 @@ export function useSociogramTextReader(
       return;
     }
 
-    boundError = validateUpperBound(
-      maxLineLength,
-      MAX_LINE_LENGTH_LIMIT,
-      "maxLineLength",
-    );
+    boundError = validateUpperBound(maxLineLength, MAX_LINE_LENGTH_LIMIT, "maxLineLength");
     if (boundError) {
       readError.value = boundError;
       isReadingFile.value = false;
@@ -211,10 +202,7 @@ export function useSociogramTextReader(
       activeReader = reader;
 
       // Read until the line limit is met or `maxFileSize` bytes have been read.
-      while (
-        (!hasLineLimit || lines.value.length < maxLines) &&
-        bytesRead < maxFileSize
-      ) {
+      while ((!hasLineLimit || lines.value.length < maxLines) && bytesRead < maxFileSize) {
         const { done, value } = await reader.read();
         if (done) break;
 
@@ -229,18 +217,13 @@ export function useSociogramTextReader(
 
           for (const line of chunkLines) {
             // Use character-aware truncation to avoid breaking multi-byte sequences.
-            lines.value.push(
-              hasLineLengthLimit ? truncateLine(line, maxLineLength) : line,
-            );
+            lines.value.push(hasLineLengthLimit ? truncateLine(line, maxLineLength) : line);
             if (hasLineLimit && lines.value.length >= maxLines) break;
           }
 
           // Guard against unbounded growth of remainder with a very long single line.
           // Still character-aware to avoid corruption.
-          if (
-            hasLineLengthLimit &&
-            Array.from(remainder).length > maxLineLength
-          ) {
+          if (hasLineLengthLimit && Array.from(remainder).length > maxLineLength) {
             remainder = truncateLine(remainder, maxLineLength);
           }
         } catch (decodeErr) {
@@ -265,11 +248,7 @@ export function useSociogramTextReader(
 
       // Only add remainder if it's not empty and we haven't hit the line limit.
       if (remainder && (!hasLineLimit || lines.value.length < maxLines)) {
-        lines.value.push(
-          hasLineLengthLimit
-            ? truncateLine(remainder, maxLineLength)
-            : remainder,
-        );
+        lines.value.push(hasLineLengthLimit ? truncateLine(remainder, maxLineLength) : remainder);
       }
     } catch (err) {
       // Catch any unexpected errors during the read process

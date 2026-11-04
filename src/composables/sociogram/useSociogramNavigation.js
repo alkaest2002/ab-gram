@@ -20,7 +20,6 @@ export const SOCIOGRAM_STEPS = [
  * @param {Function} emit The Vue emit function.
  */
 export function useSociogramNavigation(emit) {
-
   function goToStep(componentName) {
     if (SOCIOGRAM_STEPS.includes(componentName)) {
       emit("sociogram-change-component", componentName);

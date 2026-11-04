@@ -44,73 +44,73 @@ let worker = null;
 
 // --- Lifecycle ----------
 onBeforeMount(() => {
-    reportStore.setStatus("generating");
-    startGeneration();
+  reportStore.setStatus("generating");
+  startGeneration();
 });
 
 onBeforeUnmount(() => {
-    stopWorker();
+  stopWorker();
 });
 
 // --- Methods ------------
 function startGeneration() {
-    worker = createReportWorker();
-    worker.onmessage = (event) => {
-        const { data } = event;
-        stopWorker();
+  worker = createReportWorker();
+  worker.onmessage = (event) => {
+    const { data } = event;
+    stopWorker();
 
-        if (data?.error) {
-            failGeneration();
-            return;
-        }
+    if (data?.error) {
+      failGeneration();
+      return;
+    }
 
-        reportStore.setAnalysis(data);
-        reportStore.setStatus("generated");
-        router.replace({ name: "reportGenerated" });
-    };
+    reportStore.setAnalysis(data);
+    reportStore.setStatus("generated");
+    router.replace({ name: "reportGenerated" });
+  };
 
-    worker.onerror = (event) => {
-        console.error("Report worker failed:", {
-            message: event.message,
-            filename: event.filename,
-            lineno: event.lineno,
-            colno: event.colno,
-            error: event.error,
-        });
-        stopWorker();
-        failGeneration(event);
-    };
+  worker.onerror = (event) => {
+    console.error("Report worker failed:", {
+      message: event.message,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      error: event.error,
+    });
+    stopWorker();
+    failGeneration(event);
+  };
 
-    worker.onmessageerror = (event) => {
-        console.error("Report worker message error:", event);
-        stopWorker();
-        failGeneration(event);
-    };
+  worker.onmessageerror = (event) => {
+    console.error("Report worker message error:", event);
+    stopWorker();
+    failGeneration(event);
+  };
 
-    // Hand the worker a plain, non-reactive snapshot of the sociogram members.
-    const members = JSON.parse(JSON.stringify(sociogramStore.members));
-    worker.postMessage({ members });
+  // Hand the worker a plain, non-reactive snapshot of the sociogram members.
+  const members = JSON.parse(JSON.stringify(sociogramStore.members));
+  worker.postMessage({ members });
 }
 
 function failGeneration(error) {
-    reportStore.setStatus("error");
-    router.replace({ name: "reportError", query: { to: "/sociogram" } });
+  reportStore.setStatus("error");
+  router.replace({ name: "reportError", query: { to: "/sociogram" } });
 }
 
 function stopGeneration() {
-    stopWorker();
-    reportStore.setStatus("idle");
-    router.replace({ name: "reportStopped", query: { to: "/sociogram" } });
+  stopWorker();
+  reportStore.setStatus("idle");
+  router.replace({ name: "reportStopped", query: { to: "/sociogram" } });
 }
 
 function stopWorker() {
-    if (worker) {
-        worker.terminate();
-        worker = null;
-    }
+  if (worker) {
+    worker.terminate();
+    worker = null;
+  }
 }
 </script>
 
 <template>
-    <ReportLoading @stop-generating-report="stopGeneration" />
+  <ReportLoading @stop-generating-report="stopGeneration" />
 </template>

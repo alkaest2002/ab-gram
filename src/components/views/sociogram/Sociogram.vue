@@ -35,20 +35,20 @@ const { membersStatus } = storeToRefs(sociogramStore);
 
 // --- State --------------
 const stateComponents = {
-    start: StepStart,
-    importProject: StepImportProject,
-    loadMembers: StepLoadMembers,
-    manageMembers: ManageMembers,
-    setPreferences: StepSetPreferences,
-    generateReport: StepGenerateReport,
+  start: StepStart,
+  importProject: StepImportProject,
+  loadMembers: StepLoadMembers,
+  manageMembers: ManageMembers,
+  setPreferences: StepSetPreferences,
+  generateReport: StepGenerateReport,
 };
 
 const currentComponentName = ref(
-    membersStatus.value === "empty"
-        ? "start"
-        : membersStatus.value === "partially-loaded"
-          ? "manageMembers"
-          : "generateReport",
+  membersStatus.value === "empty"
+    ? "start"
+    : membersStatus.value === "partially-loaded"
+      ? "manageMembers"
+      : "generateReport",
 );
 
 // UI state: the member to point the preferences carousel at when it opens.
@@ -61,26 +61,26 @@ const memberIdToEdit = ref(null);
 // --- Computed -----------
 // Pass the target id only to the preferences step; the other steps ignore it.
 const stepProps = computed(() => {
-    if (currentComponentName.value === "setPreferences") {
-        return { targetMemberId: memberIdToEdit.value };
-    }
-    return {};
+  if (currentComponentName.value === "setPreferences") {
+    return { targetMemberId: memberIdToEdit.value };
+  }
+  return {};
 });
 
 // Only "sociogram-edit-member" is emitted; binding it to every step
 // makes Vue try to fall through the listener on the others (e.g. StepStart,
 // which renders a fragment root) and triggers a warning. Attach it conditionally.
 const stepListeners = computed(() => {
-    const listeners = {
-        "sociogram-change-component": changeComponent,
-        "sociogram-restart-app": sociogramStore.resetMembers,
-    };
+  const listeners = {
+    "sociogram-change-component": changeComponent,
+    "sociogram-restart-app": sociogramStore.resetMembers,
+  };
 
-    if (currentComponentName.value === "generateReport") {
-        listeners["sociogram-edit-member"] = editMember;
-    }
+  if (currentComponentName.value === "generateReport") {
+    listeners["sociogram-edit-member"] = editMember;
+  }
 
-    return listeners;
+  return listeners;
 });
 
 // --- Watchers -----------
@@ -89,26 +89,26 @@ const stepListeners = computed(() => {
 
 // --- Methods ------------
 function changeComponent(componentName) {
-    memberIdToEdit.value = null;
-    currentComponentName.value = componentName;
+  memberIdToEdit.value = null;
+  currentComponentName.value = componentName;
 }
 
 function editMember(memberId) {
-    memberIdToEdit.value = memberId;
-    currentComponentName.value = "setPreferences";
+  memberIdToEdit.value = memberId;
+  currentComponentName.value = "setPreferences";
 }
 </script>
 
 <template>
-    <div class="page">
-        <keep-alive>
-            <AppKeepAliveTransition :key="currentComponentName">
-                <component
-                    :is="stateComponents[currentComponentName]"
-                    v-bind="stepProps"
-                    v-on="stepListeners"
-                />
-            </AppKeepAliveTransition>
-        </keep-alive>
-    </div>
+  <div class="page">
+    <keep-alive>
+      <AppKeepAliveTransition :key="currentComponentName">
+        <component
+          :is="stateComponents[currentComponentName]"
+          v-bind="stepProps"
+          v-on="stepListeners"
+        />
+      </AppKeepAliveTransition>
+    </keep-alive>
+  </div>
 </template>

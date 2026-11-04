@@ -12,9 +12,7 @@ import { routes } from "@/router";
 const menuRoutes = routes.filter((item) => item.meta?.inMenu);
 
 export function useNavItems(typeOfMenu) {
-  const navItems = menuRoutes.filter((item) =>
-    item.meta.typeOfMenu.includes(typeOfMenu),
-  );
+  const navItems = menuRoutes.filter((item) => item.meta.typeOfMenu.includes(typeOfMenu));
 
   return { navItems };
 }

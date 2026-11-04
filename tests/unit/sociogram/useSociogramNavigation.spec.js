@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vite-plus/test";
 
 import {
   SOCIOGRAM_STEPS,
@@ -75,11 +75,7 @@ describe("useSociogramNavigation", () => {
     restart();
 
     expect(emit).toHaveBeenNthCalledWith(1, "sociogram-restart-app");
-    expect(emit).toHaveBeenNthCalledWith(
-      2,
-      "sociogram-change-component",
-      SOCIOGRAM_STEPS[0],
-    );
+    expect(emit).toHaveBeenNthCalledWith(2, "sociogram-change-component", SOCIOGRAM_STEPS[0]);
     expect(emit).toHaveBeenCalledTimes(2);
   });
 });

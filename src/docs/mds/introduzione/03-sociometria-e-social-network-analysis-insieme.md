@@ -11,8 +11,8 @@ capire quando l'una o l'altra è più adatta, e come possono integrarsi.
 ## 1 Due mondi che si somigliano
 
 Entrambe le discipline producono **mappe di relazioni**: la sociometria con il
-**sociogramma**, la SNA con i *grafi di rete* generati da software. Le
-differenze stanno nel *perché* e nel *come* si costruiscono queste mappe.
+**sociogramma**, la SNA con i _grafi di rete_ generati da software. Le
+differenze stanno nel _perché_ e nel _come_ si costruiscono queste mappe.
 
 - Per la **sociometria**, nata con Jacob L. Moreno, la mappa è un mezzo. Lo scopo è
   stimolare la **spontaneità** dei membri del gruppo e la loro capacità di
@@ -29,8 +29,8 @@ scelte fanno nascere; nella SNA contano soprattutto le mappe.
 
 Si consideri una classe di ventidue studenti in cui regna la sfiducia
 reciproca: i lavori di gruppo non decollano e ognuno pensa a sé. L'insegnante
-propone il criterio: *«di chi mi fido per portare avanti il progetto della
-classe?»*. Ciascuno risponde per iscritto con **sì, no o neutro**, motivando la
+propone il criterio: _«di chi mi fido per portare avanti il progetto della
+classe?»_. Ciascuno risponde per iscritto con **sì, no o neutro**, motivando la
 scelta, e poi condivide risposta e motivazioni con gli altri, a coppie.
 
 Il risultato più importante non è la mappa, disegnata alla lavagna, ma
@@ -52,7 +52,7 @@ condivise, generano azione**.
 Molte ricerche SNA raccolgono dati **senza che le persone sappiano** di essere
 osservate come gruppo: analisi delle chat di classe, estrazione di dati,
 sondaggi online. Moreno chiamava questo approccio **«quasi sociometrico»**
-(*near sociometric*).
+(_near sociometric_).
 
 Per la sociometria vale invece un principio di base: i partecipanti devono
 conoscere il processo, avere accesso alle mappe e ai dati che li riguardano, e
@@ -114,16 +114,16 @@ reciprocità delle scelte oltre quanto ci si aspetterebbe dal caso.
 
 Le relazioni possono essere di cinque tipi:
 
-| Tipo | Significato |
-| --- | --- |
-| **Positiva simmetrica** | Scelta reciproca, con beneficio per entrambi: due compagni che si scelgono per studiare insieme |
-| **A senso unico** | Molti si rivolgono a una persona per la sua funzione (per esempio il rappresentante di classe o chi tiene il materiale comune) |
-| **Asimmetrica** | A una scelta positiva corrisponde una scelta negativa o neutra: uno studente sceglie un compagno come amico, ma questi lo vede solo come compagno di banco |
-| **Negativa** | Una persona sceglie consapevolmente di non stare con un'altra, rispetto al criterio esplorato |
-| **Neutra** | Le due persone non si conoscono o non sono significative l'una per l'altra, come due studenti di classi diverse |
+| Tipo                    | Significato                                                                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Positiva simmetrica** | Scelta reciproca, con beneficio per entrambi: due compagni che si scelgono per studiare insieme                                                            |
+| **A senso unico**       | Molti si rivolgono a una persona per la sua funzione (per esempio il rappresentante di classe o chi tiene il materiale comune)                             |
+| **Asimmetrica**         | A una scelta positiva corrisponde una scelta negativa o neutra: uno studente sceglie un compagno come amico, ma questi lo vede solo come compagno di banco |
+| **Negativa**            | Una persona sceglie consapevolmente di non stare con un'altra, rispetto al criterio esplorato                                                              |
+| **Neutra**              | Le due persone non si conoscono o non sono significative l'una per l'altra, come due studenti di classi diverse                                            |
 
 La SNA tende invece a mappare **solo le scelte positive**, concentrandosi su
-reciprocità, densità e *buchi strutturali* (assenze di legami). Dal punto di
+reciprocità, densità e _buchi strutturali_ (assenze di legami). Dal punto di
 vista sociometrico, mostra quindi soltanto una parte della rete reale.
 
 ## 5 Il valore dei rifiuti
@@ -154,8 +154,8 @@ rifiuti possono poi essere discussi nella rete informale, e in esperienze di
 questo tipo si osservano sviluppi positivi tra studenti che prima lavoravano
 male insieme.
 
-La lezione è che **ignorare i rifiuti non è un'opzione**, ma decidere *se e
-come* renderli visibili richiede giudizio e cautela. Una mappa si può leggere
+La lezione è che **ignorare i rifiuti non è un'opzione**, ma decidere _se e
+come_ renderli visibili richiede giudizio e cautela. Una mappa si può leggere
 troppo facilmente come un verdetto sulle scelte e sulle relazioni degli altri.
 Del resto, essere rifiutati o trascurati può ferire; ma, come ricorda Zerka
 Moreno, non è realistico aspettarsi che tutti ci scelgano. Il «no» ponderato è
@@ -199,5 +199,5 @@ del gruppo.
 
 ## Fonte bibliografica
 
-Jones D. (2006), *Sociometry and Social Network Analysis: Applications and
-Implications*, ANZPA Journal 15, pp. 77–85.
+Jones D. (2006), _Sociometry and Social Network Analysis: Applications and
+Implications_, ANZPA Journal 15, pp. 77–85.

@@ -81,8 +81,7 @@ export const computeGivenNegative = (adjDislikes) => adjDislikes.sum(1);
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
  *   matrix row/column order).
  */
-export const computeMutualPositive = (adjLikes) =>
-  adjLikes.multiply(adjLikes.T).sum(1);
+export const computeMutualPositive = (adjLikes) => adjLikes.multiply(adjLikes.T).sum(1);
 
 /**
  * Mutual negative connections: how many mutual dislike pairs each member has.
@@ -95,8 +94,7 @@ export const computeMutualPositive = (adjLikes) =>
  * @returns {import("numpy-ts").NDArray} One value per member (aligned with the
  *   matrix row/column order).
  */
-export const computeMutualNegative = (adjDislikes) =>
-  adjDislikes.multiply(adjDislikes.T).sum(1);
+export const computeMutualNegative = (adjDislikes) => adjDislikes.multiply(adjDislikes.T).sum(1);
 
 /**
  * Impact index: total opinions received (positive + negative).
@@ -161,8 +159,7 @@ export const computeOrientation = (gp, gr) => gp.subtract(gr);
  * @param {import("numpy-ts").NDArray} orientation - Orientation index.
  * @returns {import("numpy-ts").NDArray} One value per member.
  */
-export const computeAffiliation = (balance, orientation) =>
-  balance.add(orientation);
+export const computeAffiliation = (balance, orientation) => balance.add(orientation);
 
 /**
  * Influence index: received positive plus mutual positive nominations.

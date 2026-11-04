@@ -15,12 +15,10 @@
  * @returns {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }}
  */
 export const classifyVisibility = (impact, expressivity) => {
-    const hasNoOpinionsReceived = impact.equal(0);
-    const hasNoOpinionsGiven = expressivity.equal(0);
-    return {
-        isolated: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven),
-        ignored: hasNoOpinionsReceived.logical_and(
-            hasNoOpinionsGiven.logical_not(),
-        ),
-    };
+  const hasNoOpinionsReceived = impact.equal(0);
+  const hasNoOpinionsGiven = expressivity.equal(0);
+  return {
+    isolated: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven),
+    ignored: hasNoOpinionsReceived.logical_and(hasNoOpinionsGiven.logical_not()),
+  };
 };

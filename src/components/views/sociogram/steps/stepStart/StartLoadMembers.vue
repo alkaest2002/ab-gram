@@ -31,17 +31,12 @@ const emit = defineEmits(["sociogram-start-load-members"]);
 </script>
 
 <template>
-    <div class="space-y-1">
-        <p class="eyebrow">Nuovo progetto</p>
-        <h3>Carica una nuova lista di nomi</h3>
-        <p class="text-sm">
-            Crea un nuovo progetto a partire da una lista di nomi.
-        </p>
-    </div>
-    <BaseButton
-        buttonVariant="solid"
-        @click="emit('sociogram-start-load-members')"
-    >
-        Crea progetto
-    </BaseButton>
+  <div class="space-y-1">
+    <p class="eyebrow">Nuovo progetto</p>
+    <h3>Carica una nuova lista di nomi</h3>
+    <p class="text-sm">Crea un nuovo progetto a partire da una lista di nomi.</p>
+  </div>
+  <BaseButton buttonVariant="solid" @click="emit('sociogram-start-load-members')">
+    Crea progetto
+  </BaseButton>
 </template>

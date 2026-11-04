@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vite-plus/test";
 
 // Capture the ForceAtlas2 options so the forwarded settings can be asserted.
 const { forceAtlas2Assign } = vi.hoisted(() => ({ forceAtlas2Assign: vi.fn() }));

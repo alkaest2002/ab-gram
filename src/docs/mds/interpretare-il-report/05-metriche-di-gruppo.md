@@ -30,7 +30,7 @@ $$
 Un legame è **reciproco** quando esiste anche la freccia nella direzione opposta
 (se $u$ sceglie $v$, anche $v$ sceglie $u$). La formula passa in rassegna ogni
 legame $(u,v)$ e aggiunge $1$ se il legame di ritorno $(v,u)$ esiste, $0$ in
-caso contrario. Il simbolo $\mathbf{1}[\dots]$ (detto *indicatore*) vale infatti
+caso contrario. Il simbolo $\mathbf{1}[\dots]$ (detto _indicatore_) vale infatti
 $1$ quando la condizione tra parentesi è vera e $0$ quando è falsa.
 
 $$
@@ -44,8 +44,8 @@ due volte.
 
 Ogni membro esprime dei legami verso gli altri (le sue scelte o i suoi rifiuti)
 e ne riceve dagli altri. Il numero di frecce che **partono** da un membro è il
-suo *grado in uscita* (o **legami uscenti**), mentre il numero di frecce che
-**arrivano** a lui è il suo *grado in ingresso* (o **legami entranti**). Se
+suo _grado in uscita_ (o **legami uscenti**), mentre il numero di frecce che
+**arrivano** a lui è il suo _grado in ingresso_ (o **legami entranti**). Se
 $a_{ij}$ vale $1$ quando $i$ sceglie $j$ e $0$ altrimenti:
 
 $$
@@ -83,7 +83,7 @@ $$
 ### 6 Centralizzazione
 
 Indica **quanto la rete ruota attorno a una sola persona**. Ogni nodo ha una
-*centralità* $C_i$, un valore che misura quanto è "importante" nella rete (ad
+_centralità_ $C_i$, un valore che misura quanto è "importante" nella rete (ad
 esempio in base a quante scelte riceve); $C_{\max}$ è la centralità più alta
 del gruppo. In questa sezione $C_i$ è il numero di scelte ricevute dal nodo $i$
 (centralità di grado in ingresso): con questa scelta il denominatore $(N-1)^2$ è
@@ -111,8 +111,8 @@ $$
 Misura la tendenza dei "vicini" di un nodo a essere collegati anche tra loro:
 in altre parole, se $A$ è collegato a $B$ e a $C$, quanto è probabile che anche
 $B$ e $C$ siano collegati? È il modo di tradurre in numeri il detto "gli amici
-dei miei amici sono miei amici" (in tecnico, *coefficiente di clustering
-globale*). Nella formula, $t_{\triangle}$ è il numero di **triangoli** presenti
+dei miei amici sono miei amici" (in tecnico, _coefficiente di clustering
+globale_). Nella formula, $t_{\triangle}$ è il numero di **triangoli** presenti
 nella rete (tre membri tutti collegati tra loro) e $d_v$ è il **numero di
 legami** del nodo $v$ (grado, calcolato sul grafico non orientato: due membri
 sono collegati se almeno uno dei due sceglie l'altro); il termine $\binom{d_v}{2}$ conta in quanti modi si
@@ -134,7 +134,7 @@ per due). Come per la reciprocità, si distinguono due versioni, che rispondono
 a domande diverse.
 
 **Coesione di tipo I.** Rapporto tra le scelte reciproche e tutte le scelte
-*possibili*: misura quanto il gruppo è coeso rispetto a quanto potrebbe esserlo.
+_possibili_: misura quanto il gruppo è coeso rispetto a quanto potrebbe esserlo.
 Vale $1$ quando tutti si scelgono a vicenda e $0$ quando nessuna scelta è
 ricambiata. Il denominatore $N(N-1)$ è il numero di scelte possibili (ogni
 membro può scegliere ogni altro).
@@ -144,9 +144,9 @@ Coh_I = \frac{\sum_{i,j} a_{ij} a_{ji}}{N(N-1)}
 $$
 
 **Coesione di tipo II.** Rapporto tra le scelte reciproche e le scelte
-effettivamente *espresse*: misura quanta parte delle scelte fatte viene
+effettivamente _espresse_: misura quanta parte delle scelte fatte viene
 ricambiata, senza tener conto di quante scelte si sarebbero potute fare.
-Coincide con l'*indice di reciprocità* della rete, ossia con la stessa misura
+Coincide con l'_indice di reciprocità_ della rete, ossia con la stessa misura
 di reciprocità vista sopra applicata alle scelte.
 
 $$
@@ -162,7 +162,7 @@ solo quando il rifiuto è ricambiato. Anche in questo caso si distinguono due
 versioni.
 
 **Conflitto di tipo I.** Rapporto tra i rifiuti reciproci e tutti i rifiuti
-*possibili*: vale $1$ quando tutti si rifiutano a vicenda e $0$ quando nessun
+_possibili_: vale $1$ quando tutti si rifiutano a vicenda e $0$ quando nessun
 rifiuto è ricambiato.
 
 $$
@@ -170,8 +170,8 @@ Con_I = \frac{\sum_{i,j} b_{ij} b_{ji}}{N(N-1)}
 $$
 
 **Conflitto di tipo II.** Rapporto tra i rifiuti reciproci e i rifiuti
-effettivamente *espressi*: misura quanta parte dei rifiuti fatti viene
-ricambiata. Coincide con l'*indice di reciprocità* della rete dei rifiuti,
+effettivamente _espressi_: misura quanta parte dei rifiuti fatti viene
+ricambiata. Coincide con l'_indice di reciprocità_ della rete dei rifiuti,
 ossia con la stessa misura di reciprocità vista sopra, applicata però ai
 legami negativi.
 
@@ -209,7 +209,7 @@ rifiuto ($1 \to 3$, $2 \to 1$, $3 \to 4$, $4 \to 2$).
 **Numero di nodi e di legami.** Il gruppo ha $N = 4$ nodi. Le frecce delle
 scelte sono $7$, quindi $E = 7$.
 
-**Legami reciproci.** L'unica coppia in cui $u$ sceglie $v$ *e* $v$ sceglie
+**Legami reciproci.** L'unica coppia in cui $u$ sceglie $v$ _e_ $v$ sceglie
 $u$ è quella dei membri $1$ e $2$ (ci sono sia $1 \to 2$ sia $2 \to 1$). I due
 legami vengono contati entrambi, perciò $E_{\leftrightarrow} = 2$.
 
@@ -249,7 +249,7 @@ $$
 
 Meno di un terzo delle scelte viene ricambiato.
 
-**Transitività.** Per questa misura guardiamo il grafico come *non orientato*,
+**Transitività.** Per questa misura guardiamo il grafico come _non orientato_,
 cioè consideriamo solo se due membri sono collegati (in un senso o nell'altro).
 Qui tutti e sei i possibili collegamenti tra coppie esistono (le frecce coprono
 le coppie $\{1,2\}$, $\{1,3\}$, $\{1,4\}$, $\{2,3\}$, $\{2,4\}$, $\{3,4\}$),
@@ -281,17 +281,17 @@ valgono $0$: il gruppo non ha tensioni ricambiate.
 
 Riassumendo:
 
-| Metrica | Valore |
-| ------- | :----: |
-| Numero di nodi ($N$) | $4$ |
-| Numero di legami ($E$) | $7$ |
-| Legami reciproci ($E_{\leftrightarrow}$) | $2$ |
-| Legami uscenti ed entranti | min $1$ · $Q_1\, 1{,}75$ · mediana $2$ · $Q_3\, 2$ · max $2$ |
-| Densità ($\Delta$) | $7/12 \approx 0{,}58$ |
-| Centralizzazione ($C$) | $1/9 \approx 0{,}11$ |
-| Reciprocità ($R$) | $2/7 \approx 0{,}29$ |
-| Transitività ($T$) | $1$ |
-| Coesione di tipo I ($Coh_I$) | $1/6 \approx 0{,}17$ |
-| Coesione di tipo II ($Coh_{II}$) | $2/7 \approx 0{,}29$ |
-| Conflitto di tipo I ($Con_I$) | $0$ |
-| Conflitto di tipo II ($Con_{II}$) | $0$ |
+| Metrica                                  |                            Valore                            |
+| ---------------------------------------- | :----------------------------------------------------------: |
+| Numero di nodi ($N$)                     |                             $4$                              |
+| Numero di legami ($E$)                   |                             $7$                              |
+| Legami reciproci ($E_{\leftrightarrow}$) |                             $2$                              |
+| Legami uscenti ed entranti               | min $1$ · $Q_1\, 1{,}75$ · mediana $2$ · $Q_3\, 2$ · max $2$ |
+| Densità ($\Delta$)                       |                    $7/12 \approx 0{,}58$                     |
+| Centralizzazione ($C$)                   |                     $1/9 \approx 0{,}11$                     |
+| Reciprocità ($R$)                        |                     $2/7 \approx 0{,}29$                     |
+| Transitività ($T$)                       |                             $1$                              |
+| Coesione di tipo I ($Coh_I$)             |                     $1/6 \approx 0{,}17$                     |
+| Coesione di tipo II ($Coh_{II}$)         |                     $2/7 \approx 0{,}29$                     |
+| Conflitto di tipo I ($Con_I$)            |                             $0$                              |
+| Conflitto di tipo II ($Con_{II}$)        |                             $0$                              |

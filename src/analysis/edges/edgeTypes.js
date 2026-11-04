@@ -25,10 +25,7 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
 
   // Initialize result with zero counts for each member and edge type
   const result = Object.fromEntries(
-    memberIds.map((memberId) => [
-      memberId,
-      Object.fromEntries(typeNames.map((type) => [type, 0])),
-    ]),
+    memberIds.map((memberId) => [memberId, Object.fromEntries(typeNames.map((type) => [type, 0]))]),
   );
 
   // Count edges for each type, updating the result object
@@ -61,8 +58,8 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
     for (const type of typeNames) {
       counts[type] = {
         cnt: total === 0 ? 0 : counts[type],
-        pct: total === 0 ? 0 : counts[type] / total
-    };
+        pct: total === 0 ? 0 : counts[type] / total,
+      };
     }
   }
 
@@ -166,7 +163,7 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
    * @param {string[][]} edges - Array of `[fromId, toId]` member-id pairs.
    * @returns {string[][]} The edges sorted by the choosing member's id.
    */
-  const sortEdges = (edges) => edges.sort((e1, e2) => e1[0].localeCompare(e2[0]))
+  const sortEdges = (edges) => edges.sort((e1, e2) => e1[0].localeCompare(e2[0]));
 
   const edgeTypes = {
     typeI: sortEdges(toEdges(typeI)),

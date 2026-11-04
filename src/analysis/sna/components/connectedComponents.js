@@ -2,10 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { DirectedGraph } from "graphology";
-import {
-  connectedComponents,
-  stronglyConnectedComponents,
-} from "graphology-components";
+import { connectedComponents, stronglyConnectedComponents } from "graphology-components";
 
 import { filterBySize, forEachMutualEdge } from "./base.js";
 
@@ -40,8 +37,7 @@ export const computeStrongComponentsWithReciprocalEdges = (graph) => {
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
  * @returns {string[][]} The components, each as a list of member ids.
  */
-export const computeStrongComponents = (graph) =>
-  filterBySize(stronglyConnectedComponents(graph));
+export const computeStrongComponents = (graph) => filterBySize(stronglyConnectedComponents(graph));
 
 /**
  * Compute the weakly connected components of the graph, ignoring the direction
@@ -51,5 +47,4 @@ export const computeStrongComponents = (graph) =>
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
  * @returns {string[][]} The components, each as a list of member ids.
  */
-export const computeWeakComponents = (graph) =>
-  filterBySize(connectedComponents(graph));
+export const computeWeakComponents = (graph) => filterBySize(connectedComponents(graph));

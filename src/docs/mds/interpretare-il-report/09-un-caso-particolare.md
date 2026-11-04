@@ -1,5 +1,5 @@
 ---
-title: Un caso particolare 
+title: Un caso particolare
 order: 9
 ---
 
@@ -21,8 +21,8 @@ gruppo.
   un membro fa da ponte** tra gli altri, anche quando riceve poche scelte.
 
 Il punto è semplice: **visibilità (Moreno) e importanza strutturale (SNA) non
-sono la stessa cosa**. L'impatto conta *quante* opinioni arrivano a un membro,
-ma non *da dove* arrivano: poche scelte possono essere proprio le uniche che
+sono la stessa cosa**. L'impatto conta _quante_ opinioni arrivano a un membro,
+ma non _da dove_ arrivano: poche scelte possono essere proprio le uniche che
 tengono collegati due sottogruppi, e in quel caso il membro, pur poco visibile,
 è strutturalmente centrale.
 
@@ -36,7 +36,7 @@ tutti si scelgono a vicenda. Il membro $9$ è l'unico anello di congiunzione:
   due frecce, una per verso);
 - tra i due sottogruppi, soltanto $4 \leftrightarrow 9$ e $9 \leftrightarrow 5$.
 
-I membri $4$ e $5$ sono i due *gatekeeper*: i soli che, dentro il proprio
+I membri $4$ e $5$ sono i due _gatekeeper_: i soli che, dentro il proprio
 sottogruppo, hanno un legame con il ponte.
 
 **Con gli occhi della sociometria.** Il membro $9$ riceve due sole scelte (da $4$ e da
@@ -63,13 +63,13 @@ C'è un secondo segnale: togliendo $9$ il gruppo si spezza in **due metà di par
 dimensione**, mentre togliendo $4$ o $5$ si perderebbe soltanto un nodo
 periferico in più, insieme al ponte.
 
-| Membro | Ruolo                | Scelte ricevute | Intermediazione ($C_B$) |
-| :----: | -------------------- | :-------------: | :---------------------: |
-| 1, 2, 3 | periferici di $A$   | 3               | $0$                     |
-| 4      | gatekeeper di $A$    | 4               | $0{,}54$                |
-| 5      | gatekeeper di $B$    | 4               | $0{,}54$                |
-| 6, 7, 8 | periferici di $B$   | 3               | $0$                     |
-| 9      | ponte                | **2**           | **$0{,}57$**            |
+| Membro  | Ruolo             | Scelte ricevute | Intermediazione ($C_B$) |
+| :-----: | ----------------- | :-------------: | :---------------------: |
+| 1, 2, 3 | periferici di $A$ |        3        |           $0$           |
+|    4    | gatekeeper di $A$ |        4        |        $0{,}54$         |
+|    5    | gatekeeper di $B$ |        4        |        $0{,}54$         |
+| 6, 7, 8 | periferici di $B$ |        3        |           $0$           |
+|    9    | ponte             |      **2**      |      **$0{,}57$**       |
 
 Il membro $9$ ha il valore più basso della colonna delle scelte e il più alto
 di quella dell'intermediazione. Per Moreno è il meno rilevante, per la SNA è un

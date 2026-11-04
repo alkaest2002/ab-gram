@@ -89,7 +89,7 @@ relazioni sono particolarmente fitte.
 
 ## 3 Componenti connesse
 
-Una **componente connessa** è un insieme di membri che sono *raggiungibili* tra
+Una **componente connessa** è un insieme di membri che sono _raggiungibili_ tra
 loro: da ciascuno si può arrivare a ciascun altro passando, se serve, per altri
 membri intermedi. È come una rete stradale: due città appartengono allo stesso
 "blocco" se c'è una strada che le collega, anche passando per altre città.
@@ -208,12 +208,12 @@ Attenzione: per questo motivo la clique **non** va inserita nella scala di
 severità vista sopra (reciproca → forte → debole). È una struttura di tipo
 diverso, che misura la compattezza e non la raggiungibilità.
 
-| | Clique | Componente debole | Componente forte |
-| --- | --- | --- | --- |
-| Cosa richiede | Legame diretto tra ogni coppia | Percorso tra ogni coppia, ignorando le frecce | Percorso tra ogni coppia, seguendo le frecce |
-| Direzione delle scelte | Non conta | Non conta | Conta |
-| Sovrapposizione | Possibile | No, dividono il gruppo | No, dividono il gruppo |
-| Risponde alla domanda | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?" | "Si può arrivare a tutti seguendo le scelte?" |
+|                        | Clique                                  | Componente debole                             | Componente forte                              |
+| ---------------------- | --------------------------------------- | --------------------------------------------- | --------------------------------------------- |
+| Cosa richiede          | Legame diretto tra ogni coppia          | Percorso tra ogni coppia, ignorando le frecce | Percorso tra ogni coppia, seguendo le frecce  |
+| Direzione delle scelte | Non conta                               | Non conta                                     | Conta                                         |
+| Sovrapposizione        | Possibile                               | No, dividono il gruppo                        | No, dividono il gruppo                        |
+| Risponde alla domanda  | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?"               | "Si può arrivare a tutti seguendo le scelte?" |
 
 ## 5 Comunità di Louvain
 
@@ -221,7 +221,7 @@ Le strutture viste finora (diadi, clique, componenti connesse) seguono una regol
 deterministica: un membro o soddisfa la condizione, o non la soddisfa. Le
 **comunità di Louvain** seguono un'idea diversa: invece di imporre una regola
 fissa, l'algoritmo cerca la suddivisione del gruppo che **massimizza la
-modularità**, cioè quella in cui i legami sono più densi *dentro* ogni comunità
+modularità**, cioè quella in cui i legami sono più densi _dentro_ ogni comunità
 di quanto ci si aspetterebbe se fossero distribuiti a caso.
 
 In pratica, Louvain raggruppa i membri in modo da avere **tante scelte dentro
@@ -252,11 +252,11 @@ gruppo quando i confini tra i sottogruppi non sono ovvi.
 
 ## 6 In sintesi
 
-| Struttura | Cosa richiede | Quanto è compatta |
-| --------- | ------------- | ----------------- |
-| Diade | Due membri che si scelgono a vicenda | Massima (ma coinvolge solo due persone) |
-| Clique | Ognuno collegato direttamente a tutti gli altri | Alta |
-| Componente forte con soli legami reciproci | Percorso tra ogni coppia usando solo legami reciproci | Media: catene di diadi |
-| Componente forte | Percorso tra ogni coppia seguendo le frecce | Più bassa |
-| Componente debole | Percorso tra ogni coppia ignorando le frecce | La più bassa: può contenere lunghe catene di intermediari |
-| Comunità di Louvain | Suddivisione che massimizza la modularità | Variabile: dipende dalla rete |
+| Struttura                                  | Cosa richiede                                         | Quanto è compatta                                         |
+| ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------- |
+| Diade                                      | Due membri che si scelgono a vicenda                  | Massima (ma coinvolge solo due persone)                   |
+| Clique                                     | Ognuno collegato direttamente a tutti gli altri       | Alta                                                      |
+| Componente forte con soli legami reciproci | Percorso tra ogni coppia usando solo legami reciproci | Media: catene di diadi                                    |
+| Componente forte                           | Percorso tra ogni coppia seguendo le frecce           | Più bassa                                                 |
+| Componente debole                          | Percorso tra ogni coppia ignorando le frecce          | La più bassa: può contenere lunghe catene di intermediari |
+| Comunità di Louvain                        | Suddivisione che massimizza la modularità             | Variabile: dipende dalla rete                             |

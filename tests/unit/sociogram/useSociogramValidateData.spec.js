@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vite-plus/test";
 
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData.js";
 import { MAX_MEMBERS_COUNT, MIN_MEMBERS_COUNT } from "@/utils/sociogram/validationHelpers.js";
@@ -57,9 +57,7 @@ describe("useSociogramValidateData (default)", () => {
   it("deduplicates repeated messages", () => {
     const snapshot = { members: ["A", "B"] };
 
-    expect(validate(snapshot).errors).toEqual([
-      "I dati di un membro del gruppo non sono validi.",
-    ]);
+    expect(validate(snapshot).errors).toEqual(["I dati di un membro del gruppo non sono validi."]);
   });
 
   it("rejects a snapshot that is not an object", () => {
@@ -80,10 +78,7 @@ describe("useSociogramValidateData (default)", () => {
   it(`rejects a snapshot with more than ${MAX_MEMBERS_COUNT} members`, () => {
     const roster = getHogwartsMembers();
     const snapshot = {
-      members: Array.from(
-        { length: MAX_MEMBERS_COUNT + 1 },
-        (_, i) => roster[i % roster.length],
-      ),
+      members: Array.from({ length: MAX_MEMBERS_COUNT + 1 }, (_, i) => roster[i % roster.length]),
     };
 
     expectInvalid(
@@ -157,20 +152,14 @@ describe("useSociogramValidateData (default)", () => {
 
   it(`rejects a member with more than ${MAX_MEMBERS_COUNT} likes`, () => {
     const snapshot = getHogwartsSnapshot();
-    snapshot.members[0].likes = Array.from(
-      { length: MAX_MEMBERS_COUNT + 1 },
-      () => "B",
-    );
+    snapshot.members[0].likes = Array.from({ length: MAX_MEMBERS_COUNT + 1 }, () => "B");
 
     expectInvalid(validate(snapshot), "Un membro del gruppo ha espresso troppe scelte.");
   });
 
   it(`rejects a member with more than ${MAX_MEMBERS_COUNT} dislikes`, () => {
     const snapshot = getHogwartsSnapshot();
-    snapshot.members[0].dislikes = Array.from(
-      { length: MAX_MEMBERS_COUNT + 1 },
-      () => "B",
-    );
+    snapshot.members[0].dislikes = Array.from({ length: MAX_MEMBERS_COUNT + 1 }, () => "B");
 
     expectInvalid(validate(snapshot), "Un membro del gruppo ha espresso troppi rifiuti.");
   });
@@ -179,20 +168,14 @@ describe("useSociogramValidateData (default)", () => {
     const snapshot = getHogwartsSnapshot();
     snapshot.members[0].likes = ["A"];
 
-    expectInvalid(
-      validate(snapshot),
-      "I membri del gruppo non possono scegliere sé stessi.",
-    );
+    expectInvalid(validate(snapshot), "I membri del gruppo non possono scegliere sé stessi.");
   });
 
   it("rejects a member who dislikes themself", () => {
     const snapshot = getHogwartsSnapshot();
     snapshot.members[0].dislikes = ["A"];
 
-    expectInvalid(
-      validate(snapshot),
-      "I membri del gruppo non possono rifiutare sé stessi.",
-    );
+    expectInvalid(validate(snapshot), "I membri del gruppo non possono rifiutare sé stessi.");
   });
 
   it("rejects a snapshot with duplicate member ids", () => {

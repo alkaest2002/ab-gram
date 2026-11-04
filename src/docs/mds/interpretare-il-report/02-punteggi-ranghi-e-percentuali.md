@@ -147,13 +147,13 @@ significato esteso.
 
 ## 9 In sintesi
 
-| Pagina | Punteggi grezzi | Ranghi | Percentuali |
-| --- | :---: | :---: | :---: |
-| Copertina | – | – | – |
-| Elenco dei membri | – | – | – |
-| Scelte e rifiuti | identificativi (+/-) | – | – |
-| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> | – | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
-| Tipi di relazione | conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span> | – | – |
-| Strutture interne della rete | conteggi <br><span class="text-xs text-muted">strutture per categoria</span> | – | – |
-| Pagine individuali | conteggi e decimali | sì | sì |
-| Glossario | – | – | – |
+| Pagina                          |                                Punteggi grezzi                                | Ranghi |                                Percentuali                                |
+| ------------------------------- | :---------------------------------------------------------------------------: | :----: | :-----------------------------------------------------------------------: |
+| Copertina                       |                                       –                                       |   –    |                                     –                                     |
+| Elenco dei membri               |                                       –                                       |   –    |                                     –                                     |
+| Scelte e rifiuti                |                             identificativi (+/-)                              |   –    |                                     –                                     |
+| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> |   –    | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
+| Tipi di relazione               |  conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span>   |   –    |                                     –                                     |
+| Strutture interne della rete    | conteggi <br><span class="text-xs text-muted">strutture per categoria</span>  |   –    |                                     –                                     |
+| Pagine individuali              |                              conteggi e decimali                              |   sì   |                                    sì                                     |
+| Glossario                       |                                       –                                       |   –    |                                     –                                     |

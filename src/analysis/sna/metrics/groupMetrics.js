@@ -70,9 +70,7 @@ export const computeNumberOfMutualEdges = (graph) => {
  * @returns {number[]} One degree per node.
  */
 const nodeDegrees = (graph, direction) =>
-  graph.nodes().map((node) =>
-    direction === "in" ? graph.inDegree(node) : graph.outDegree(node),
-  );
+  graph.nodes().map((node) => (direction === "in" ? graph.inDegree(node) : graph.outDegree(node)));
 
 /**
  * Minimum out-degree across all nodes.
@@ -108,9 +106,7 @@ export const computeMedianOutDegree = (graph) =>
  * @returns {number} The first quartile of out-degrees.
  */
 export const computeQ1OutDegree = (graph) =>
-  graph.order === 0
-    ? 0
-    : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 25));
+  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 25));
 
 /**
  * Third quartile (Q3, the 75th percentile) of the out-degree distribution.
@@ -119,9 +115,7 @@ export const computeQ1OutDegree = (graph) =>
  * @returns {number} The third quartile of out-degrees.
  */
 export const computeQ3OutDegree = (graph) =>
-  graph.order === 0
-    ? 0
-    : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 75));
+  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 75));
 
 /**
  * Interquartile range (Q3 − Q1) of the out-degree distribution.
@@ -169,9 +163,7 @@ export const computeMedianInDegree = (graph) =>
  * @returns {number} The first quartile of in-degrees.
  */
 export const computeQ1InDegree = (graph) =>
-  graph.order === 0
-    ? 0
-    : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 25));
+  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 25));
 
 /**
  * Third quartile (Q3, the 75th percentile) of the in-degree distribution.
@@ -180,9 +172,7 @@ export const computeQ1InDegree = (graph) =>
  * @returns {number} The third quartile of in-degrees.
  */
 export const computeQ3InDegree = (graph) =>
-  graph.order === 0
-    ? 0
-    : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 75));
+  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 75));
 
 /**
  * Interquartile range (Q3 − Q1) of the in-degree distribution.
@@ -282,10 +272,7 @@ export const computeNetworkTransitivity = (graph) => {
   // of triangles it stands in. Each edge of a triangle counts for `1`.
   // So that the sum of all edge strengths equals three times the number of closed triangles.
   const strengths = simmelianStrength(undirected);
-  const closedTriples = Object.values(strengths).reduce(
-    (total, strength) => total + strength,
-    0,
-  );
+  const closedTriples = Object.values(strengths).reduce((total, strength) => total + strength, 0);
 
   // Number of connected triples (2-paths): Σ C(deg, 2) over undirected degrees.
   let connectedTriples = 0;

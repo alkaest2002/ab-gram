@@ -30,8 +30,8 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-    <BaseNotify to="/">
-        <template #title> Si è verificato un problema imprevisto. </template>
-        <template #buttonLabel> Torna alla home </template>
-    </BaseNotify>
+  <BaseNotify to="/">
+    <template #title> Si è verificato un problema imprevisto. </template>
+    <template #buttonLabel> Torna alla home </template>
+  </BaseNotify>
 </template>
