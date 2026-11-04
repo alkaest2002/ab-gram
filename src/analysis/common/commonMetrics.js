@@ -22,50 +22,53 @@ import * as np from "numpy-ts";
  * @throws {Error} When `scores` has more than 2 dimensions.
  */
 export const computeRankedScores = (scores, higherRawScoreIsBetter = true) => {
-  // Throw if array with more than 2 dimensions.
-  if (scores.ndim > 2) {
-    throw new Error(
-      `computeRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
-    );
-  }
+    // Throw if array with more than 2 dimensions.
+    if (scores.ndim > 2) {
+        throw new Error(
+            `computeRankedScores expects a 1-D or 2-D array, received a ${scores.ndim}-D array.`,
+        );
+    }
 
-  // Flag for 1 dimensional array.
-  const is1D = scores.ndim === 1;
+    // Flag for 1 dimensional array.
+    const is1D = scores.ndim === 1;
 
-  // Normalize 1-D input to a single-column 2-D matrix.
-  const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
+    // Normalize 1-D input to a single-column 2-D matrix.
+    const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
 
-  // Get matrix shape
-  const [rows, cols] = matrix.shape;
+    // Get matrix shape
+    const [rows, cols] = matrix.shape;
 
-  // If no rows return empty results.
-  if (rows === 0) {
-    return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
-  }
+    // If no rows return empty results.
+    if (rows === 0) {
+        return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
+    }
 
-  // Initialize results
-  const rankedColumns = [];
+    // Initialize results
+    const rankedColumns = [];
 
-  // Iterate over columns
-  for (let col = 0; col < cols; col += 1) {
-    // Copy the column so `unique_inverse` reads a contiguous 1-D array.
-    const column = matrix.slice(":", col).copy();
+    // Iterate over columns
+    for (let col = 0; col < cols; col += 1) {
+        // Copy the column so `unique_inverse` reads a contiguous 1-D array.
+        const column = matrix.slice(":", col).copy();
 
-    // `unique_inverse` returns the column's unique values sorted ascending and,
-    // for each element, its 0-based index into that sorted list.
-    const { values, inverse_indices: inverse } = np.unique_inverse(column);
+        // `unique_inverse` returns the column's unique values sorted ascending and,
+        // for each element, its 0-based index into that sorted list.
+        const { values, inverse_indices } = np.unique_inverse(column);
 
-    // With higher-is-better, the largest value maps to rank 1; otherwise the
-    // smallest value does. Either way, ties share a rank.
-    rankedColumns.push(
-      higherRawScoreIsBetter
-        ? np.add(np.negative(inverse), values.size)
-        : np.add(inverse, 1),
-    );
-  }
+        // Convert inverse indices to a NumPy array for easier manipulation.
+        const npValues = np.array(inverse_indices, "int32");
 
-  // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
-  return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
+        // With higher-is-better, the largest value maps to rank 1; otherwise the
+        // smallest value does. Either way, ties share a rank.
+        rankedColumns.push(
+            higherRawScoreIsBetter
+                ? npValues.negative().add(values.size)
+                : npValues.add(1),
+        );
+    }
+
+    // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
+    return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
 };
 
 /**
@@ -85,33 +88,35 @@ export const computeRankedScores = (scores, higherRawScoreIsBetter = true) => {
  * @throws {Error} When `data` contains negative values.
  */
 export const computeGiniCoefficient = (data) => {
-  // Handle edge cases: falsy input or fewer than two values is perfectly equal.
-  if (!data || data.size <= 1) return 0;
+    // Handle edge cases: falsy input or fewer than two values is perfectly equal.
+    if (!data || data.size <= 1) return 0;
 
-  // Sort the array
-  const sortedData = np.sort(data);
-  const n = sortedData.size;
+    // Sort the array
+    const sortedData = np.sort(data);
+    const n = sortedData.size;
 
-  // Check for negative values
-  if (sortedData.min() < 0) {
-    throw new Error("Gini coefficient calculation requires non-negative values.");
-  }
+    // Check for negative values
+    if (sortedData.min() < 0) {
+        throw new Error(
+            "Gini coefficient calculation requires non-negative values.",
+        );
+    }
 
-  // Calculate total sum
-  const totalSum = sortedData.sum();
+    // Calculate total sum
+    const totalSum = sortedData.sum();
 
-  // Handle zero case
-  if (totalSum === 0) return 0;
+    // Handle zero case
+    if (totalSum === 0) return 0;
 
-  // Create index array [0, 1, 2, ..., n-1]
-  const indices = np.arange(n);
+    // Create index array [0, 1, 2, ..., n-1]
+    const indices = np.arange(n);
 
-  // Calculate weights: 2*i - n + 1
-  const weights = indices.multiply(2).subtract(n).add(1);
+    // Calculate weights: 2*i - n + 1
+    const weights = indices.multiply(2).subtract(n).add(1);
 
-  // Calculate weighted sum: Σ(value * weight)
-  const sumOfDifferences = sortedData.multiply(weights).sum();
+    // Calculate weighted sum: Σ(value * weight)
+    const sumOfDifferences = sortedData.multiply(weights).sum();
 
-  // Return Gini coefficient
-  return sumOfDifferences / (n * totalSum);
-}
+    // Return Gini coefficient
+    return sumOfDifferences / (n * totalSum);
+};
