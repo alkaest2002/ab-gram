@@ -123,7 +123,7 @@ function docEntries() {
         lastmod: lastModified(file),
       }))
       .sort((a, b) => a.order - b.order)
-      .map(({ order, ...entry }) => ({ ...entry, changefreq: "monthly", priority: "0.6" })),
+      .map(({ order: _order, ...entry }) => ({ ...entry, changefreq: "monthly", priority: "0.6" })),
   );
 }
 
