@@ -79,10 +79,10 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 ### 1.9 Sintesi
 
 Riepiloga tutti i membri in un unico elenco compatto: per ciascuno mostra
-l'identificativo, il nome, lo status sociometrico e sei indicatori di
-centralità (`DG`, `PK`, `CL`, `BT`, `HA`, `HU`) segnalati da un puntino. Il
-puntino è blu quando il membro rientra tra i primi tre per quel punteggio,
-altrimenti è grigio.
+l'identificativo, il nome, il bonus e il malus (`BNS/MLS`), lo status
+sociometrico e sei indicatori di centralità (`DG`, `PK`, `CL`, `BT`, `HA`,
+`HU`) segnalati da un puntino. Il puntino è blu quando il membro rientra tra i
+primi tre per quel punteggio, altrimenti è grigio.
 
 ### 1.10 Glossario
 

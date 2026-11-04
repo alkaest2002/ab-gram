@@ -14,6 +14,7 @@ import {
     metricIndexOf,
     readRaw,
     readRank,
+    formatValue,
 } from "@/utils/report/memberStatsHelpers";
 
 //   -- From relative.
@@ -66,13 +67,28 @@ const cards = computed(() => members.value.map(buildCard));
 
 // --- Methods ------------
 function buildCard(member) {
-    const morenoIndex = memberIndexIn(member.id, props.morenoMetrics);
+    const memberIndex = memberIndexIn(member.id, props.morenoMetrics);
     const statusIndex = metricIndexOf(props.morenoMetrics, "ss");
     const statusCode =
-        morenoIndex < 0 || statusIndex < 0
+        memberIndex < 0 || statusIndex < 0
             ? 99
-            : Number(readRaw(props.morenoMetrics, morenoIndex, statusIndex));
+            : Number(readRaw(props.morenoMetrics, memberIndex, statusIndex));
     const status = STATUS_UI_CONFIG[statusCode] ?? STATUS_UI_CONFIG[99];
+
+    const bonus = Number(
+        readRaw(
+            props.morenoMetrics,
+            memberIndex,
+            metricIndexOf(props.morenoMetrics, "bns"),
+        ),
+    );
+    const malus = Number(
+        readRaw(
+            props.morenoMetrics,
+            memberIndex,
+            metricIndexOf(props.morenoMetrics, "mls"),
+        ),
+    );
 
     const snaIndex = memberIndexIn(member.id, props.snaMetrics);
     const metrics = METRICS.map(({ label, key }) => {
@@ -86,6 +102,8 @@ function buildCard(member) {
         name: member.name,
         statusLabel: status.label,
         statusClass: status.text,
+        bonus,
+        malus,
         metrics,
     };
 }
@@ -103,32 +121,51 @@ function buildCard(member) {
                     <div
                         v-for="card in cards"
                         :key="card.id"
-                        class="summary-row"
+                        class="flex items-center gap-[3mm] min-h-[6.6mm] border-b border-line"
                         :class="{'py-[1.5mm]': cards.length < 25}"
                     >
-                        <div class="member-identity">
-                            <span class="id-badge">{{ card.id }}</span>
+                        <div class="flex flex-1 items-center gap-[1.5mm] min-w-0">
+                            <span
+                                class="inline-flex h-[4.6mm] min-w-[6mm] shrink-0 items-center justify-center px-[1mm] border border-ink rounded font-mono text-[7pt] font-semibold leading-none text-ink"
+                                >{{ card.id }}</span
+                            >
                             <span class="min-w-0 truncate text-[9pt] text-ink">{{
                                 card.name
                             }}</span>
                         </div>
 
                         <span
-                            class="member-status text-[9pt]"
+                            class="flex w-[30mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+                        >
+                            <span
+                                class="font-mono text-[8pt] font-medium text-muted"
+                                >BNS/MLS</span
+                            >
+                            <span
+                                class="font-mono text-[8pt] font-semibold leading-none"
+                                >{{ formatValue(card.bonus) }}/{{ formatValue(card.malus) }}</span
+                            >
+                        </span>
+
+                        <span
+                            class="shrink-0 w-[30mm] leading-[1.1] font-medium whitespace-nowrap text-[9pt]"
                             :class="card.statusClass"
                         >
                             {{ card.statusLabel }}
                         </span>
 
-                        <div class="member-metrics">
+                        <div class="flex shrink-0 items-center gap-[3mm]">
                             <span
                                 v-for="metric in card.metrics"
                                 :key="metric.label"
-                                class="metric"
+                                class="inline-flex items-center gap-[1.2mm]"
                             >
-                                <span class="metric-label">{{ metric.label }}</span>
                                 <span
-                                    class="metric-dot"
+                                    class="font-mono text-[8pt] font-semibold leading-none text-ink"
+                                    >{{ metric.label }}</span
+                                >
+                                <span
+                                    class="h-[2.2mm] w-[2.2mm] shrink-0 rounded-full"
                                     :class="metric.active ? 'bg-accent' : 'bg-gray-300'"
                                 ></span>
                             </span>
@@ -139,80 +176,3 @@ function buildCard(member) {
         </template>
     </BasePage>
 </template>
-
-<style scoped>
-/* One dense row per member, separated by a hairline: identity on the left, the
-   coloured sociometric status in the middle, and the six centrality indicators
-   as label + dot pairs on the right. Sizes stay in mm so the 35-member roster
-   fits on a single A4 sheet when printed. */
-.summary-row {
-    display: flex;
-    align-items: center;
-    gap: 3mm;
-    min-height: 6.6mm;
-    border-bottom: 1px solid var(--color-line);
-}
-
-.member-identity {
-    display: flex;
-    align-items: center;
-    gap: 1.5mm;
-    min-width: 0;
-    flex: 1 1 0;
-}
-
-.id-badge {
-    display: inline-flex;
-    height: 4.6mm;
-    min-width: 6mm;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-    padding: 0 1mm;
-    border: 1px solid var(--color-ink);
-    border-radius: 0.25rem;
-    font-family: var(--font-mono);
-    font-size: 7pt;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--color-ink);
-}
-
-.member-status {
-    flex-shrink: 0;
-    width: 30mm;
-    line-height: 1.1;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.member-metrics {
-    display: flex;
-    align-items: center;
-    gap: 3mm;
-    flex-shrink: 0;
-}
-
-.metric {
-    display: inline-flex;
-    align-items: center;
-    gap: 1.2mm;
-}
-
-.metric-label {
-    font-family: var(--font-mono);
-    font-size: 8pt;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--color-ink);
-}
-
-/* A small filled dot (not a circle with text inside): gray by default, accent
-   blue when the member's rank for that metric is 1, 2 or 3. */
-.metric-dot {
-    width: 2.2mm;
-    height: 2.2mm;
-    flex-shrink: 0;
-    border-radius: 9999px;
-}
-</style>
