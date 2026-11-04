@@ -122,6 +122,7 @@ export const computeHits = (graph) => {
     // HITS can also throw "failed to converge" on graphs with edges (e.g. with
     // dangling nodes). Rather than aborting the whole report, mark every score
     // as 0 to signal that the metric could not be computed.
+    console.error(error);
     return {
       authorities: Object.fromEntries(nodes.map((node) => [node, 0])),
       hubs: Object.fromEntries(nodes.map((node) => [node, 0])),
