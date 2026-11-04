@@ -8,12 +8,10 @@
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
  * @returns {number[]} Non-zero impacts in ascending order.
  */
-export const toSortedVisible = (impact) =>
-  impact
-    .flatten()
-    .toArray()
-    .filter((v) => v > 0)
-    .sort((a, b) => a - b); // numeric sort
+export const toSortedVisible = (impact) => {
+  const flat = impact.flatten();
+  return flat.compress(flat.greater(0)).sort().toArray();
+};
 
 /**
  * Nearest-rank index (0-based): ceil(n * percentile / 100) - 1, clamped to a
@@ -43,19 +41,6 @@ export const percentileOf = (sorted, percentile) => {
 };
 
 /**
- * True median: the middle value for odd n, or the mean of the two middle
- * values for even n. percentileOf(50) would return only one of them.
- *
- * @param {number[]} sorted - Sorted (ascending) values.
- * @returns {number} The median.
- */
-export const medianOf = (sorted) => {
-  const n = sorted.length;
-  const mid = n >> 1;
-  return n % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-};
-
-/**
  * Finalize an index-based low / average / high split. The low class is
  * sorted[0..lowEnd], average is sorted[lowEnd+1..highStart-1] and high is
  * sorted[highStart..]. A tail whose boundary values are equal (i.e. not
@@ -80,20 +65,4 @@ export const finalizeSplit = (sorted, lowEnd, highStart) => {
   }
 
   return { low, high };
-};
-
-/**
- * Cut a { low, high } pair at the given percentiles, then apply the separation
- * check so a tail whose boundary values are equal is switched off.
- *
- * @param {number[]} sorted - Sorted (ascending) visible impacts.
- * @param {number} lowPercentile - Percentile for the low cutoff.
- * @param {number} highPercentile - Percentile for the high cutoff.
- * @returns {{ low: number, high: number }} Finalized cutoffs (either may be infinite).
- */
-export const tailCutoffs = (sorted, lowPercentile, highPercentile) => {
-  const n = sorted.length;
-  const lowEnd = rankIndex(n, lowPercentile);
-  const highStart = n - 1 - rankIndex(n, 100 - highPercentile);
-  return finalizeSplit(sorted, lowEnd, highStart);
 };

@@ -22,15 +22,17 @@ export const largestGapStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
     // ========================================================================
     if (visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
-    const s = np.sort(np.array(visibleSortedImpacts)).toArray();
-    const gaps = np.diff(np.array(s));
+    // Convert to NumPy array for efficient gap calculations.
+    const npValues = np.array(visibleSortedImpacts);
+
+    const gaps = npValues.diff();
     const gapOrder = np.argsort(gaps).toArray(); // ascending by gap size
 
-    const n = s.length;
+    const n = npValues.size;
     const [c1, c2] = [gapOrder[n - 2], gapOrder[n - 3]].sort((a, b) => a - b);
 
     // ========================================================================
     // SEPARATION CHECK — c1 is the low/average boundary, c2 the average/high.
     // ========================================================================
-    return finalizeSplit(s, c1, c2 + 1);
+    return finalizeSplit(visibleSortedImpacts, c1, c2 + 1);
 };

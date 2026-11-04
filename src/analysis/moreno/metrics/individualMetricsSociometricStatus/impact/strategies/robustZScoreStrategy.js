@@ -1,8 +1,9 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
+import * as np from "numpy-ts";
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { medianOf, finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;
@@ -24,12 +25,15 @@ export const robustZScoreStrategy = ({ visibleSortedImpacts, visibleGroupSize })
     // ========================================================================
     if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
 
-    const med = medianOf(visibleSortedImpacts);
-    const deviations = visibleSortedImpacts.map((v) => Math.abs(v - med)).sort((a, b) => a - b);
-    const mad = Math.max(medianOf(deviations), MAD_FLOOR);
+    // Convert to NumPy array for efficient gap calculations.
+    const npValues = np.array(visibleSortedImpacts);
 
-    const lowFence = med - Z_CUTOFF * MAD_SCALE * mad;
-    const highFence = med + Z_CUTOFF * MAD_SCALE * mad;
+    const median = npValues.median();
+    const deviations = npValues.subtract(median).absolute();
+    const mad = Math.max(deviations.median(), MAD_FLOOR);
+
+    const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
+    const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
     let lowEnd = -1;
     for (let i = 0; i < visibleSortedImpacts.length; i += 1) {

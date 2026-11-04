@@ -1,6 +1,8 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
+import * as np from "numpy-ts";
+
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
@@ -77,8 +79,11 @@ export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     const distinctImpactValues = new Set(visibleSortedImpacts).size;
     if (distinctImpactValues < 3) return NO_SPLIT;
 
-    const mean = visibleSortedImpacts.reduce((s, v) => s + v, 0) / visibleGroupSize;
-    const sdam = visibleSortedImpacts.reduce((s, v) => s + (v - mean) ** 2, 0);
+    // Convert to NumPy array for efficient gap calculations.
+    const npValues = np.array(visibleSortedImpacts);
+
+    const mean = npValues.mean();
+    const sdam = npValues.subtract(mean).power(2).sum();
     if (sdam === 0) return NO_SPLIT;
 
     const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, 3);

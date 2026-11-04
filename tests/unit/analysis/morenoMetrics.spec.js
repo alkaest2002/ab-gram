@@ -117,14 +117,13 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(result.ids).toEqual(["a", "b", "c"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
-    // Sociometric status: with three visible members (impacts [1, 1, 3]), the
-    // tail strategies abstain (they need five visible members) and Tukey/
-    // binomial flag nothing, but the small-group strategy sees the 1 -> 3 gap
-    // and flags only the top tail (a, impact 3) as high. b and c stay
-    // average-impact, so balance decides: a controversial (8, high impact with
-    // neutral balance), b appreciated (3) and c disliked (5).
+    // Sociometric status: with only three visible members (impacts [1, 1, 3]),
+    // impact classification is skipped entirely (it needs at least four visible
+    // members), so everyone is average-impact. Balance then decides:
+    // a ambivalent (7, average impact with neutral balance), b appreciated (3)
+    // and c disliked (5).
     expect(result.rawValuesById).toEqual([
-      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 8, 70, 35],
+      [2, 1, 1, 1, 1, 1, 3, 1, 2, 0, 1, 3, 7, 70, 35],
       [1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 2, 2, 3, 35, 0],
       [0, 1, 1, 1, 0, 1, 1, -1, 2, 0, -1, 0, 5, 0, 35],
     ]);

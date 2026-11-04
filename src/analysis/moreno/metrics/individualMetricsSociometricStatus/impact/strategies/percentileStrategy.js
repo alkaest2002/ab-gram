@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+import { finalizeSplit, rankIndex } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;
@@ -25,5 +25,8 @@ export const percentileStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
     // ========================================================================
     // CLASSIFY + SEPARATION CHECK — tail cutoffs at the configured percentiles.
     // ========================================================================
-    return tailCutoffs(visibleSortedImpacts, LOW_PERCENTILE, HIGH_PERCENTILE);
+    const n = visibleSortedImpacts.length;
+    const lowEnd = rankIndex(n, LOW_PERCENTILE);
+    const highStart = n - 1 - rankIndex(n, 100 - HIGH_PERCENTILE);
+    return finalizeSplit(visibleSortedImpacts, lowEnd, highStart);
 };
