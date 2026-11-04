@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:run": "vitest run",
-    "generate:sitemap": "node scripts/generate-sitemap.mjs"
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "generate:notices": "node scripts/generate-third-party-notices.mjs"
   },
   "dependencies": {
     "graphology": "^0.26.0",
