@@ -1,29 +1,27 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+
+// Strategy parameters.
+const MIN_VISIBLE_MEMBERS = 5; // complement: votes only below this threshold
+const MIN_GAP = 2; // minimum jump in received opinions to count as a split
 
 /**
- * Small-group strategy: for the sub-minVisibleForEnablingAlgorithm regime
- * (2..threshold-1 visible members), find the largest gap between consecutive
- * sorted impacts and flag only the smaller side of that gap as the outlier
- * tail. The bulk stays average-impact so its balance can still decide status.
+ * Small-group strategy: for groups of 2..MIN_VISIBLE_MEMBERS-1 visible
+ * members, find the largest gap between consecutive sorted impacts and flag
+ * only the smaller side of that gap as the outlier tail. The bulk stays
+ * average-impact so its balance can still decide status.
  *
  * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Cache config.
-    const cfg = CONFIG.impact.smallGroup;
-
     // Rename for clarity.
     const values = visibleSortedImpacts;
 
-    // Complement to the tail strategies: only below its own visible threshold.
-    if (visibleGroupSize < 2 || visibleGroupSize >= cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    // Complement to the tail strategies: only below the visible threshold.
+    if (visibleGroupSize < 2 || visibleGroupSize >= MIN_VISIBLE_MEMBERS) return NO_SPLIT;
 
     // Find the largest gap between consecutive sorted values.
     let split = 0;
@@ -51,7 +49,7 @@ export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
     // A gap only counts if it's a real jump (>= 2 received opinions) and it
     // dominates the runner-up gap or the overall spread.
     const isDominant =
-        largestGap >= cfg.minGap &&
+        largestGap >= MIN_GAP &&
         (largestGap >= 2 * secondGap || largestGap >= 0.5 * spread);
 
     if (!isDominant) return NO_SPLIT;

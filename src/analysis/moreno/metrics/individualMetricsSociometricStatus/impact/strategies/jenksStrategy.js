@@ -1,11 +1,12 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { medianOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+
+// Strategy parameters.
+const MIN_VISIBLE_MEMBERS = 5;
+const MIN_GVF = 0.75; // goodness of variance fit: 1 - SDCM/SDAM
 
 /**
  * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
@@ -68,9 +69,6 @@ const jenksBreaks = (sorted, k) => {
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Cache config.
-    const cfg = CONFIG.impact.jenks;
-
     // Count how many distinct values there are.
     const distinctImpactValues = new Set(visibleSortedImpacts).size;
 
@@ -78,7 +76,7 @@ export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     const jenksClusters = 3;
 
     // No split if there are not enough visible members.
-    if (visibleGroupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    if (visibleGroupSize < MIN_VISIBLE_MEMBERS) return NO_SPLIT;
 
     // No split if there are not enough distinct values.
     if (distinctImpactValues < jenksClusters) return NO_SPLIT;
@@ -92,7 +90,7 @@ export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, jenksClusters);
 
     // No split if the goodness of variance fit is below the threshold.
-    if (1 - sdcm / sdam < cfg.minGvf) return NO_SPLIT;
+    if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
     const median = medianOf(visibleSortedImpacts);
     let low = visibleSortedImpacts[starts[0] - 1]; // max of the first class.

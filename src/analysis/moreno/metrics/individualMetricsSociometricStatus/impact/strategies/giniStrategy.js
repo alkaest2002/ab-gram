@@ -3,11 +3,16 @@
 
 import * as np from "numpy-ts";
 import { computeGiniCoefficient } from "@/analysis/common/commonMetrics.js";
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+
+// Strategy parameters.
+const MIN_VISIBLE_MEMBERS = 5;
+const STRONG_GINI = 0.3;
+const MODERATE_GINI = 0.2;
+const MIN_PTP_FOR_MODERATE = 3;
+const LOW_PERCENTILE = 5;
+const HIGH_PERCENTILE = 95;
 
 /**
  * Gini strategy: decides whether the distribution is unequal (sample-corrected
@@ -17,11 +22,8 @@ import { tailCutoffs } from "@/analysis/moreno/metrics/individualMetricsSociomet
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const giniStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Cache the configuration
-    const cfg = CONFIG.impact.gini;
-
-    // No split if there are not enough visible members
-    if (visibleGroupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    // No split if there are not enough visible members.
+    if (visibleGroupSize < MIN_VISIBLE_MEMBERS) return NO_SPLIT;
 
     // Compute the range of the data
     const ptp = visibleSortedImpacts[visibleSortedImpacts.length - 1] - visibleSortedImpacts[0];
@@ -33,10 +35,10 @@ export const giniStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
 
     // Is the Gini coefficient strong enough to suggest inequality?
     const unequal =
-        gini >= cfg.strong || (gini >= cfg.moderate && ptp >= cfg.minPtpForModerate);
+        gini >= STRONG_GINI || (gini >= MODERATE_GINI && ptp >= MIN_PTP_FOR_MODERATE);
 
     // No split if Gini is not strong enough to suggest inequality
     if (!unequal) return NO_SPLIT;
 
-    return tailCutoffs(visibleSortedImpacts, cfg.percentile.low, cfg.percentile.high);
+    return tailCutoffs(visibleSortedImpacts, LOW_PERCENTILE, HIGH_PERCENTILE);
 };

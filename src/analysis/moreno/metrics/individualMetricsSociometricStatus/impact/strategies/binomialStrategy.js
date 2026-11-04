@@ -1,10 +1,10 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+
+// Two-sided significance level: alpha / 2 is applied in each tail.
+const ALPHA = 0.01;
 
 /**
  * Cumulative distribution function of Binomial(n, p), computed in log space to
@@ -46,7 +46,7 @@ export const binomialStrategy = ({ allImpacts, originalGroupSize }) => {
     // same member in both likes and dislikes can push p past the model's range.
     if (!(p > 0 && p < 1)) return NO_SPLIT;
 
-    const tail = CONFIG.impact.binomial.alpha / 2;
+    const tail = ALPHA / 2;
     const cdf = binomialCdf(n, p);
 
     // Largest k with P(X <= k) <= tail.

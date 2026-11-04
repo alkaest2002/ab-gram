@@ -1,10 +1,11 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+
+// Strategy parameters.
+const MIN_VISIBLE_MEMBERS = 5;
+const MAX_HEAD_SHARE = 0.4; // keep splitting while the head is < 40% of the data
 
 /**
  * Head/tail breaks: recursively split the heavy-tailed "head" (values above
@@ -22,7 +23,7 @@ const headTailBreaks = (sorted) => {
         const head = current.filter((v) => v > mean);
         if (head.length === 0) break; // no split possible (all values equal)
         breaks.push(mean);
-        if (head.length / n >= CONFIG.impact.headTail.maxHeadShare) break; // classical stop
+        if (head.length / n >= MAX_HEAD_SHARE) break; // classical stop
         current = head;
     }
     return breaks;
@@ -37,11 +38,8 @@ const headTailBreaks = (sorted) => {
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const headTailStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-    // Cache config
-    const cfg = CONFIG.impact.headTail;
-
-    // No split if there are not enough visible members
-    if (visibleGroupSize < cfg.minVisibleForEnablingAlgorithm) return NO_SPLIT;
+    // No split if there are not enough visible members.
+    if (visibleGroupSize < MIN_VISIBLE_MEMBERS) return NO_SPLIT;
 
     // Compute the breaks for the head/tail strategy
     const breaks = headTailBreaks(visibleSortedImpacts);

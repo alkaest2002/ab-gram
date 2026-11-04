@@ -1,11 +1,11 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import {
-    CONFIG,
-    NO_SPLIT,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
 import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+
+// Strategy parameters.
+const K = 1.5; // mild outlier detection
 
 /**
  * Tukey strategy: strict inner fences (Q1 - k*IQR, Q3 + k*IQR) over visible
@@ -16,9 +16,6 @@ import { percentileOf } from "@/analysis/moreno/metrics/individualMetricsSociome
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const tukeyStrategy = ({ visibleSortedImpacts }) => {
-    // Cache config.
-    const cfg = CONFIG.impact.tukey;
-
     // IQR Guard: no split if IQR is zero (all values are the same).
     const q1 = percentileOf(visibleSortedImpacts, 25);
     const q3 = percentileOf(visibleSortedImpacts, 75);
@@ -26,8 +23,8 @@ export const tukeyStrategy = ({ visibleSortedImpacts }) => {
     if (iqr === 0) return NO_SPLIT; // fences would collapse onto the median
 
     // Compute the low and high fences.
-    const lowFence = q1 - cfg.k * iqr;
-    const highFence = q3 + cfg.k * iqr;
+    const lowFence = q1 - K * iqr;
+    const highFence = q3 + K * iqr;
 
     let low = -Infinity;
     for (const v of visibleSortedImpacts) {
