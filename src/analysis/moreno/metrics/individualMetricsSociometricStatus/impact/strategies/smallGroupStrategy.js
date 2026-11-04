@@ -32,7 +32,7 @@ export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
     if (visibleGroupSize < 2) return NO_SPLIT;
 
     // Convert to NumPy array for efficient gap calculations.
-    const npValues = np.array(visibleSortedImpacts);
+    const npValues = np.array(visibleSortedImpacts, "int32");
 
     // Gaps between consecutive sorted values: gaps[i] = values[i+1] - values[i].
     const gaps = npValues.diff();

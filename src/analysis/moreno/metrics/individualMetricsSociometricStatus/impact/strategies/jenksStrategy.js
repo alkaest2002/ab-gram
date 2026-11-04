@@ -80,7 +80,7 @@ export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
     if (distinctImpactValues < 3) return NO_SPLIT;
 
     // Convert to NumPy array for efficient gap calculations.
-    const npValues = np.array(visibleSortedImpacts);
+    const npValues = np.array(visibleSortedImpacts, "int32");
 
     const mean = npValues.mean();
     const sdam = npValues.subtract(mean).power(2).sum();

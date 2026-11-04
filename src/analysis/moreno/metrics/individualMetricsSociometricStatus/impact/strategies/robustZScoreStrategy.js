@@ -26,7 +26,7 @@ export const robustZScoreStrategy = ({ visibleSortedImpacts, visibleGroupSize })
     if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
 
     // Convert to NumPy array for efficient gap calculations.
-    const npValues = np.array(visibleSortedImpacts);
+    const npValues = np.array(visibleSortedImpacts, "int32");
 
     const median = npValues.median();
     const deviations = npValues.subtract(median).absolute();
