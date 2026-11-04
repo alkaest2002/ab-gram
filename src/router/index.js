@@ -46,7 +46,7 @@ const router = createRouter({
 });
 
 router.afterEach((to) => {
-  document.title = to.meta.title ? `${SITE_NAME} · ${to.meta.title}  ` : SITE_NAME;
+  document.title = to.meta.title ? `${SITE_NAME} · ${to.meta.title}` : SITE_NAME;
 });
 
 export default router;
