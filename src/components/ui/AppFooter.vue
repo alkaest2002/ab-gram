@@ -40,8 +40,8 @@ const currentYear = new Date().getFullYear();
     <div class="flex flex-col gap-8 px-6 pt-4 pb-10 sm:flex-row sm:items-start sm:justify-between">
       <div class="space-y-3">
         <p class="text-xs">
-          {{ originYear }} | {{ currentYear }} &copy; AB-Gram rilasciato con
-          <a href="https://opensource.org/licenses/MIT" target="_blank">Licenza MIT</a>
+          {{ originYear }} | {{ currentYear }} &copy; AB-Gram,
+          <span class="font-muted">licenza open source MIT</span>
         </p>
       </div>
 
