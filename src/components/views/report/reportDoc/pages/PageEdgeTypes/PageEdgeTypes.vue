@@ -24,7 +24,7 @@ const props = defineProps({
 // the three severity tiers used in the analysis. Each edge is presented as the
 // directed `A -> B` pair it is stored as, with no de-duplication of mutual
 // types: typeI and typeIV therefore list both `[A, B]` and `[B, A]`.
-const EDGE_TYPE_CONFIG = [
+const EDGE_TYPES_CONFIG = [
   {
     key: "healthy",
     label: "Relazioni sane",
@@ -61,7 +61,7 @@ const EDGE_TYPE_CONFIG = [
 
 // `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
 // missing/empty prop degrades to empty lists, so every type still renders.
-const categories = EDGE_TYPE_CONFIG.map((category) => {
+const categories = EDGE_TYPES_CONFIG.map((category) => {
   const types = category.types.map((type) => ({
     ...type,
     edges: toDisplayEdges(props.edgeTypes?.[type.key] ?? []),

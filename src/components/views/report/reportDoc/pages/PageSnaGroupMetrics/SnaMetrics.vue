@@ -32,45 +32,53 @@ const props = defineProps({
 // --- Stores -------------
 
 // --- State --------------
-// Metric key -> display label and formatting kind. Counts are whole numbers;
-// the four structural indices are proportions in [0, 1], shown as percentages
-// with a small bar so the value reads at a glance.
-const METRIC_CONFIG = {
-  numberOfNodes: { label: "Numero di membri nel gruppo", kind: "count" },
-  networkDensity: { label: "Densità della rete", kind: "ratio" },
-  networkCentralization: { label: "Centralizzazione della rete", kind: "ratio" },
-  networkReciprocity: { label: "Reciprocità della rete", kind: "ratio" },
-  networkTransitivity: { label: "Transitività della rete", kind: "ratio" },
-};
-
-// Per-type labels: the combined edge row and the Moreno indices appended below
-// it (cohesion for likes, conflict for dislikes).
-const SNA_TYPE_CONFIG = {
-  likes: {
-    edgeLabel: "Totale scelte (di cui reciproche)",
-    morenoIndex: "Indice di coesione",
+// Single source of truth for the stats table, in fixed display order. Counts
+// are whole numbers; the four structural indices are proportions in [0, 1],
+// shown as percentages with a small bar. Type-specific labels and the Moreno
+// column are resolved from the active `typeOfSna`; box-plot rows carry the five
+// column keys that make up one box.
+const SNA_METRICS_CONFIG = [
+  { key: "numberOfNodes", label: "Numero di membri nel gruppo", kind: "count" },
+  {
+    key: "numberOfEdges",
+    kind: "countPair",
+    label: {
+      likes: "Totale scelte (di cui reciproche)",
+      dislikes: "Totale rifiuti (di cui reciproci)",
+    },
   },
-  dislikes: {
-    edgeLabel: "Totale rifiuti (di cui reciproci)",
-    morenoIndex: "Indice di conflitto",
+  {
+    key: "outDegree",
+    label: "Legami uscenti",
+    kind: "boxplot",
+    fields: ["minOutDegree", "Q1OutDegree", "medianOutDegree", "Q3OutDegree", "maxOutDegree"],
   },
-};
-
-// Degree distribution keys, folded into a single box-plot row per direction.
-const OUT_DEGREE_KEYS = [
-  "minOutDegree",
-  "Q1OutDegree",
-  "medianOutDegree",
-  "Q3OutDegree",
-  "maxOutDegree",
+  {
+    key: "inDegree",
+    label: "Legami entranti",
+    kind: "boxplot",
+    fields: ["minInDegree", "Q1InDegree", "medianInDegree", "Q3InDegree", "maxInDegree"],
+  },
+  { key: "networkDensity", label: "Densità della rete", kind: "ratio" },
+  { key: "networkCentralization", label: "Centralizzazione della rete", kind: "ratio" },
+  { key: "networkTransitivity", label: "Transitività della rete", kind: "ratio" },
+  { key: "networkReciprocity", label: "Reciprocità della rete", kind: "ratio" },
+  {
+    key: "morenoIndex",
+    kind: "ratio",
+    label: {
+      likes: "Indice di coesione",
+      dislikes: "Indice di conflitto",
+    },
+    column: { likes: 0, dislikes: 2 },
+  },
 ];
-const IN_DEGREE_KEYS = ["minInDegree", "Q1InDegree", "medianInDegree", "Q3InDegree", "maxInDegree"];
 
 // --- Composables --------
 
 // --- Computed -----------
 const rows = computed(() => {
-  const typeConfig = SNA_TYPE_CONFIG[props.typeOfSna] ?? SNA_TYPE_CONFIG.likes;
+  const type = props.typeOfSna === "dislikes" ? "dislikes" : "likes";
   const keys = props.snaMetrics?.metrics ?? [];
   const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
 
@@ -79,57 +87,49 @@ const rows = computed(() => {
     return index === -1 ? 0 : (values[index] ?? 0);
   };
 
-  const metricRow = (key) => ({
-    key,
-    label: METRIC_CONFIG[key]?.label ?? key,
-    kind: METRIC_CONFIG[key]?.kind ?? "count",
-    value: valueOf(key),
+  const labelOf = (config) =>
+    typeof config.label === "object" ? (config.label[type] ?? "") : config.label;
+
+  return SNA_METRICS_CONFIG.map((config) => {
+    if (config.kind === "countPair") {
+      return {
+        key: config.key,
+        label: labelOf(config),
+        kind: config.kind,
+        value: {
+          total: valueOf("numberOfEdges"),
+          mutual: valueOf("numberOfMutualEdges"),
+        },
+      };
+    }
+
+    if (config.kind === "boxplot") {
+      return {
+        key: config.key,
+        label: config.label,
+        kind: config.kind,
+        value: {
+          min: valueOf(config.fields[0]),
+          q1: valueOf(config.fields[1]),
+          median: valueOf(config.fields[2]),
+          q3: valueOf(config.fields[3]),
+          max: valueOf(config.fields[4]),
+        },
+      };
+    }
+
+    const value =
+      config.key === "morenoIndex"
+        ? (props.morenoMetrics?.rawValuesById?.[0]?.[config.column[type]] ?? 0)
+        : valueOf(config.key);
+
+    return {
+      key: config.key,
+      label: labelOf(config),
+      kind: config.kind,
+      value,
+    };
   });
-
-  const boxplotRow = (key, label, fields) => ({
-    key,
-    label,
-    kind: "boxplot",
-    value: {
-      min: valueOf(fields[0]),
-      q1: valueOf(fields[1]),
-      median: valueOf(fields[2]),
-      q3: valueOf(fields[3]),
-      max: valueOf(fields[4]),
-    },
-  });
-
-  const morenoValue =
-    props.typeOfSna === "likes"
-      ? (props.morenoMetrics?.rawValuesById?.[0][0] ?? 0)
-      : (props.morenoMetrics?.rawValuesById?.[0][2] ?? 0);
-
-  // Fixed display order: counts and degree ties first, then the structural
-  // ratios and the complementary Moreno index.
-  return [
-    metricRow("numberOfNodes"),
-    {
-      key: "numberOfEdges",
-      label: typeConfig.edgeLabel,
-      kind: "countPair",
-      value: {
-        total: valueOf("numberOfEdges"),
-        mutual: valueOf("numberOfMutualEdges"),
-      },
-    },
-    boxplotRow("outDegree", "Legami uscenti", OUT_DEGREE_KEYS),
-    boxplotRow("inDegree", "Legami entranti", IN_DEGREE_KEYS),
-    metricRow("networkDensity"),
-    metricRow("networkCentralization"),
-    metricRow("networkTransitivity"),
-    metricRow("networkReciprocity"),
-    {
-      key: "morenoIndex",
-      label: typeConfig.morenoIndex,
-      kind: "ratio",
-      value: morenoValue,
-    },
-  ];
 });
 
 // --- Watchers -----------

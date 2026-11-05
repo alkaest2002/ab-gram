@@ -25,36 +25,32 @@ const props = defineProps({
 // --- Stores -------------
 
 // --- State --------------
-// Per-type presentation details. The two preference types share the same
+// Single source of truth for the page: per-type titles and the fixed reading
+// order of structure categories. The two preference types share the same
 // structure taxonomy, so only the page title changes.
-const SNA_CONFIG = {
-  likes: {
-    pageTitle: "Strutture interne alla rete delle scelte",
+const SNA_STRUCTURE_CONFIG = {
+  titles: {
+    likes: "Strutture interne alla rete delle scelte",
+    dislikes: "Strutture della rete dei rifiuti",
   },
-  dislikes: {
-    pageTitle: "Strutture della rete dei rifiuti",
-  },
+  categories: [
+    { key: "dyads", label: "Diadi" },
+    { key: "cliques", label: "Clique" },
+    { key: "weakComponents", label: "Componenti debolmente connesse" },
+    { key: "strongComponents", label: "Componenti fortemente connesse" },
+    {
+      key: "strongComponentsWithReciprocalEdges",
+      label: "Componenti fortemente connesse con legami reciproci",
+    },
+  ],
 };
 
-// The categories are shown in a fixed reading order (not the DataFrame column
-// order), so the structure lists are looked up by key rather than by position.
-const STRUCTURE_CATEGORIES = [
-  { key: "dyads", label: "Diadi" },
-  { key: "cliques", label: "Clique" },
-  { key: "weakComponents", label: "Componenti debolmente connesse" },
-  { key: "strongComponents", label: "Componenti fortemente connesse" },
-  {
-    key: "strongComponentsWithReciprocalEdges",
-    label: "Componenti fortemente connesse con legami reciproci",
-  },
-];
-
-const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
+const pageTitle = SNA_STRUCTURE_CONFIG.titles[props.typeOfSna] ?? SNA_STRUCTURE_CONFIG.titles.likes;
 
 // `structures` maps each structure type to the list of its structures (each
 // structure being a list of member ids). A missing/empty prop degrades to
 // empty lists.
-const categories = STRUCTURE_CATEGORIES.map((category) => ({
+const categories = SNA_STRUCTURE_CONFIG.categories.map((category) => ({
   ...category,
   structures: props.structures?.[category.key] ?? [],
 }));
@@ -83,7 +79,7 @@ const formatQ = (value) => {
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">{{ config.pageTitle }}</h2>
+      <h2 class="text-[16pt]">{{ pageTitle }}</h2>
     </template>
 
     <template #default>

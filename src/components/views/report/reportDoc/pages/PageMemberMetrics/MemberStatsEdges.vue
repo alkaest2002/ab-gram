@@ -26,7 +26,7 @@ const props = defineProps({
 // --- State --------------
 // Relationship edge types T1..T6 (typeVII is intentionally omitted), each paired
 // with the short label used on the page.
-const EDGE_TYPE_CONFIG = [
+const EDGE_TYPES_CONFIG = [
   { key: "typeI", label: "T1" },
   { key: "typeII", label: "T2" },
   { key: "typeIII", label: "T3" },
@@ -40,7 +40,7 @@ const EDGE_TYPE_CONFIG = [
 // of the member's total edges (`pct`).
 const edgeShares = (() => {
   const shares = props.edgeTypes?.memberInEdges?.[props.memberId] ?? {};
-  return EDGE_TYPE_CONFIG.map(({ key, label }) => {
+  return EDGE_TYPES_CONFIG.map(({ key, label }) => {
     const value = shares[key] ?? {};
     return {
       key,

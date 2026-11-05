@@ -27,7 +27,7 @@ const emit = defineEmits(["open-modal"]);
 
 // --- State --------------
 // Per-type legend text for the directed and mutual edge glyphs.
-const LEGEND_CONFIG = {
+const SNA_PLOT_CONFIG = {
   likes: {
     directed: "Scelta non reciproca",
     mutual: "Scelta reciproca",
@@ -41,7 +41,7 @@ const LEGEND_CONFIG = {
 // --- Composables --------
 
 // --- Computed -----------
-const legend = computed(() => LEGEND_CONFIG[props.typeOfSna] ?? LEGEND_CONFIG.likes);
+const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFIG.likes);
 
 // --- Watchers -----------
 

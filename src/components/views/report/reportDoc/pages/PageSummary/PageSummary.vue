@@ -45,7 +45,7 @@ const props = defineProps({
 // The six centrality indicators, in the fixed reading order used by the row.
 // They map the compact label to the real SNA metric key, matching the member
 // metrics page.
-const CENTRALITY_METRICS = [
+const CENTRALITY_METRICS_COMFIG = [
   { label: "DG", key: "inDegreeCentrality" },
   { label: "PK", key: "PageRank" },
   { label: "CL", key: "closenessCentrality" },
@@ -83,7 +83,7 @@ function buildCard(member) {
   );
 
   const snaIndex = memberIndexIn(member.id, props.snaMetrics);
-  const metrics = CENTRALITY_METRICS.map(({ label, key }) => {
+  const metrics = CENTRALITY_METRICS_COMFIG.map(({ label, key }) => {
     const metricIndex = metricIndexOf(props.snaMetrics, key);
     const rank = Number(readRank(props.snaMetrics, snaIndex, metricIndex));
     return { label, active: rank === 1 || rank === 2 || rank === 3 };

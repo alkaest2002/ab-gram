@@ -37,7 +37,7 @@ const props = defineProps({
 // order). The first twelve are Moreno's individual sociometric indices, the last
 // six the SNA centrality block. Each entry maps a short label to the real metric
 // key so a chip can read "gp 10 (1/10)" while the data is keyed "gp"/"PageRank".
-const METRIC_ROWS = [
+const MORENO_METRICS_CONFIG = [
   [
     { label: "GP", key: "gp", source: "moreno" },
     { label: "RP", key: "rp", source: "moreno" },
@@ -66,7 +66,7 @@ const METRIC_ROWS = [
 
 // Metric chips grouped by row (Moreno indices then SNA centralities). Each row
 // holds six chips so the page lays out exactly six metrics per line.
-const metricChips = METRIC_ROWS.map((row) =>
+const metricChips = MORENO_METRICS_CONFIG.map((row) =>
   row.map(({ label, key, source }) => buildChip(label, key, source)),
 );
 
