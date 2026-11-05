@@ -7,7 +7,7 @@
 // --- Imports ------------
 //   -- From components.
 import AppCardEdu from "@/components/ui/AppCardEdu.vue";
-import AppDiscordCard from "@/components/ui/AppDiscordCard.vue";
+import AppCardDonate from "@/components/ui/AppCardDonate.vue";
 
 //   -- From relative.
 import packageJson from "../../../package.json";
@@ -133,7 +133,7 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(([name, 
 
     <section class="space-y-8">
       <div class="grid gap-8 sm:grid-cols-2">
-        <AppDiscordCard :buttonVariant="'solid'" />
+        <AppCardDonate />
         <AppCardEdu />
       </div>
     </section>

@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From components.
-import DonationCard from "@/components/ui/AppCardDonate.vue";
+import DiscordCard from "@/components/ui/AppDiscordCard.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
 import Hero from "@/components/views/home/Hero.vue";
 import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
@@ -39,7 +39,7 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
       The page is laid out as a vertical sociogram running down the centre:
       numbered nodes (circles styled like the members of the graph) joined by
       directed edges. The call to action is the filled "star" node and the
-      donation card is the dashed "isolated" one — the member nobody has
+      discord card is the dashed "isolated" one — the member nobody has
       chosen yet.
     -->
   <div class="page home space-y-9 py-9 sm:space-y-12 sm:py-12">
@@ -64,9 +64,9 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
         <Featurettes />
       </section>
 
-      <!-- Donation / edu cards -->
+      <!-- Discord / edu cards -->
       <section class="grid w-full gap-8 lg:grid-cols-2">
-        <DonationCard />
+        <DiscordCard :buttonVariant="'solid'" />
         <EduCard />
       </section>
     </div>
