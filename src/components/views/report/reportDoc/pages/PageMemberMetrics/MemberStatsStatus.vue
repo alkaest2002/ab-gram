@@ -15,9 +15,7 @@ import {
   readRaw,
   formatValue,
 } from "@/utils/report/memberStatsHelpers";
-
-//   -- From constants.
-import { STATUS_UI_CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants";
+import { STATUS_UI } from "@/utils/report/sociometricStatusUI";
 
 // --- Props --------------
 const props = defineProps({
@@ -46,7 +44,7 @@ const sociometricStatus = computed(() => {
   if (memberIndex < 0 || metricIndex < 0) return null;
 
   const code = Number(readRaw(metrics, memberIndex, metricIndex));
-  const config = STATUS_UI_CONFIG[code];
+  const config = STATUS_UI[code];
   if (!config) return null;
 
   return {

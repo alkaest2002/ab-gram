@@ -20,8 +20,8 @@ import {
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 
-//   -- From constants.
-import { STATUS_UI_CONFIG } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants";
+//   -- From utils.
+import { STATUS_UI } from "@/utils/report/sociometricStatusUI";
 
 // --- Props --------------
 const props = defineProps({
@@ -73,7 +73,7 @@ function buildCard(member) {
     memberIndex < 0 || statusIndex < 0
       ? 99
       : Number(readRaw(props.morenoMetrics, memberIndex, statusIndex));
-  const status = STATUS_UI_CONFIG[statusCode] ?? STATUS_UI_CONFIG[99];
+  const status = STATUS_UI[statusCode] ?? STATUS_UI[99];
 
   const bonus = Number(
     readRaw(props.morenoMetrics, memberIndex, metricIndexOf(props.morenoMetrics, "bns")),
