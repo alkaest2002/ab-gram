@@ -4,6 +4,35 @@
 import * as np from "numpy-ts";
 
 /**
+ * Rank a single 1-D column.
+ *
+ * `unique_inverse` returns the column's unique values sorted ascending and,
+ * for each element, its 0-based index into that sorted list.
+ *
+ * @param {import("numpy-ts").NDArrayCore} column - 1-D array whose elements
+ *   are ranked.
+ * @param {boolean} higherRawScoreIsBetter - When true, higher raw scores
+ *   receive better (lower-numbered) ranks; otherwise lower raw scores do.
+ * @returns {import("numpy-ts").NDArray} 1-based dense ranks for `column`.
+ */
+const rankColumn = (column, higherRawScoreIsBetter) => {
+  // `apply_along_axis` hands this callback a strided view into the matrix.
+  // `unique_inverse` walks the underlying buffer contiguously and ignores
+  // strides, so copy first to make the column contiguous.
+  const contiguous = column.copy();
+
+  // Compute unique values and inverse indices for the column.
+  const { values, inverse_indices } = np.unique_inverse(contiguous);
+
+  // Convert inverse indices to a NumPy array for easier manipulation.
+  const npValues = np.array(inverse_indices, "int32");
+
+  // With higher-is-better, the largest value maps to rank 1; otherwise the
+  // smallest value does. Either way, ties share a rank.
+  return higherRawScoreIsBetter ? npValues.negative().add(values.size) : npValues.add(1);
+};
+
+/**
  * Compute dense ranks for every column of a matrix.
  *
  * Each column is ranked independently against its sorted unique values: ties
@@ -29,42 +58,13 @@ export const computeRankedScores = (scores, higherRawScoreIsBetter = true) => {
     );
   }
 
-  // Flag for 1 dimensional array.
-  const is1D = scores.ndim === 1;
-
-  // Normalize 1-D input to a single-column 2-D matrix.
-  const matrix = is1D ? scores.reshape(scores.shape[0], 1) : scores;
-
-  // Get matrix shape
-  const [rows, cols] = matrix.shape;
-
-  // If no rows return empty results.
-  if (rows === 0) {
-    return is1D ? np.empty([0], "int32") : np.empty([0, cols], "int32");
+  // Nothing to rank: preserve the input's shape and return an empty array.
+  if (scores.size === 0) {
+    return np.empty(scores.shape, "int32");
   }
 
-  // Initialize results
-  const rankedColumns = [];
-
-  // Iterate over columns
-  for (let col = 0; col < cols; col += 1) {
-    // Copy the column so `unique_inverse` reads a contiguous 1-D array.
-    const column = matrix.slice(":", col).copy();
-
-    // `unique_inverse` returns the column's unique values sorted ascending and,
-    // for each element, its 0-based index into that sorted list.
-    const { values, inverse_indices } = np.unique_inverse(column);
-
-    // Convert inverse indices to a NumPy array for easier manipulation.
-    const npValues = np.array(inverse_indices, "int32");
-
-    // With higher-is-better, the largest value maps to rank 1; otherwise the
-    // smallest value does. Either way, ties share a rank.
-    rankedColumns.push(
-      higherRawScoreIsBetter ? npValues.negative().add(values.size) : npValues.add(1),
-    );
-  }
-
-  // Keep the input's dimensionality: 1-D in -> 1-D out, 2-D in -> 2-D out.
-  return is1D ? rankedColumns[0] : np.column_stack(rankedColumns);
+  // `apply_along_axis` ranks each column along axis 0. For a 1-D array that
+  // means the whole array is ranked as a single column, which is exactly what
+  // we want, so no reshape is required.
+  return np.apply_along_axis(rankColumn, 0, scores, higherRawScoreIsBetter);
 };
