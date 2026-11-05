@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import * as np from "numpy-ts";
-import { computeRankedScores } from "@/analysis/common/commonMetrics";
+import { computeRankedScores } from "@/analysis/common/rankedScores";
 import { MAX_MEMBERS_COUNT } from "@/utils/sociogram/validationHelpers.js";
 import {
   computeCohesion,

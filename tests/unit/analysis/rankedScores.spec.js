@@ -4,7 +4,7 @@
 import { describe, it, expect } from "vite-plus/test";
 import * as np from "numpy-ts";
 
-import { computeRankedScores } from "@/analysis/common/commonMetrics.js";
+import { computeRankedScores } from "@/analysis/common/rankedScores.js";
 
 describe("computeRankedScores", () => {
   it("ranks a 1-D array descending (higher is better) with 1-based dense ranks by default", () => {
