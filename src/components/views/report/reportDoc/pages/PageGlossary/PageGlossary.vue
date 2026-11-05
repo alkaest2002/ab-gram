@@ -48,7 +48,8 @@ const GLOSSARY = [
 
   // SNA structures. In the member pages these labels are prefixed by "L-" for
   // likes (scelte).
-  { label: "L-DYD", extended: "Diadi (scelte)" },
+  { label: "L-DYA", extended: "Diadi asimmetriche (scelte)" },
+  { label: "L-DYS", extended: "Diadi simmetriche (scelte)" },
   { label: "L-CLQ", extended: "Clique (scelte)" },
   { label: "L-WCC", extended: "Componenti debolmente connesse (scelte)" },
   { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },

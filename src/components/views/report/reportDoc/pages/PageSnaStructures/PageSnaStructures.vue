@@ -34,7 +34,8 @@ const SNA_STRUCTURE_CONFIG = {
     dislikes: "Strutture della rete dei rifiuti",
   },
   categories: [
-    { key: "dyads", label: "Diadi" },
+    { key: "asymmetricDyads", label: "Diadi asimmetriche" },
+    { key: "symmetricDyads", label: "Diadi simmetriche" },
     { key: "cliques", label: "Clique" },
     { key: "weakComponents", label: "Componenti debolmente connesse" },
     { key: "strongComponents", label: "Componenti fortemente connesse" },

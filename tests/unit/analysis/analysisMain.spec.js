@@ -172,7 +172,8 @@ describe("getSociogramAnalysis", () => {
       2, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
     ]);
 
-    expect(snaDislikesStructures.dyads.structures).toEqual([["a", "b"]]);
+    expect(snaDislikesStructures.asymmetricDyads.structures).toEqual([]);
+    expect(snaDislikesStructures.symmetricDyads.structures).toEqual([["a", "b"]]);
     expect(snaDislikesStructures.cliques.structures).toEqual([]);
     expect(snaDislikesStructures.strongComponentsWithReciprocalEdges.structures).toEqual([]);
     expect(snaDislikesStructures.strongComponents.structures).toEqual([]);

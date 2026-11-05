@@ -9,7 +9,8 @@ import { getSnaStructures } from "@/analysis/sna/structures/snaStructures.js";
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 
 const STRUCTURE_KEYS = [
-  "dyads",
+  "asymmetricDyads",
+  "symmetricDyads",
   "cliques",
   "strongComponentsWithReciprocalEdges",
   "strongComponents",
@@ -39,7 +40,7 @@ describe("getSnaStructures", () => {
     expect(typeof result.louvainCommunities.modularity).toBe("number");
   });
 
-  it("reports dyads and cliques for a mutual triangle", () => {
+  it("reports symmetric dyads and cliques for a mutual triangle", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -48,14 +49,16 @@ describe("getSnaStructures", () => {
     const graph = createLikesGraph(members, "likes");
 
     const {
-      dyads,
+      asymmetricDyads,
+      symmetricDyads,
       cliques,
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads.structures).toEqual([
+    expect(asymmetricDyads.structures).toEqual([]);
+    expect(symmetricDyads.structures).toEqual([
       ["a", "b"],
       ["a", "c"],
       ["b", "c"],
@@ -64,6 +67,16 @@ describe("getSnaStructures", () => {
     expect(strongComponentsWithReciprocalEdges.structures).toEqual([["a", "b", "c"]]);
     expect(strongComponents.structures).toEqual([["a", "b", "c"]]);
     expect(weakComponents.structures).toEqual([["a", "b", "c"]]);
+  });
+
+  it("separates asymmetric and symmetric dyads", () => {
+    const members = [makeMember("a", ["b", "c"]), makeMember("b", ["a"]), makeMember("c", [])];
+    const graph = createLikesGraph(members, "likes");
+
+    const { asymmetricDyads, symmetricDyads } = getSnaStructures(graph);
+
+    expect(asymmetricDyads.structures).toEqual([["a", "c"]]);
+    expect(symmetricDyads.structures).toEqual([["a", "b"]]);
   });
 
   it("drops strong and weak components smaller than three members", () => {
@@ -76,14 +89,20 @@ describe("getSnaStructures", () => {
     const graph = createLikesGraph(members, "likes");
 
     const {
-      dyads,
+      asymmetricDyads,
+      symmetricDyads,
       cliques,
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads.structures).toEqual([]);
+    expect(asymmetricDyads.structures).toEqual([
+      ["a", "b"],
+      ["b", "c"],
+      ["c", "d"],
+    ]);
+    expect(symmetricDyads.structures).toEqual([]);
     expect(cliques.structures).toEqual([]);
     expect(strongComponentsWithReciprocalEdges.structures).toEqual([]);
     // Each node is its own strongly connected component, so every one is
@@ -102,14 +121,16 @@ describe("getSnaStructures", () => {
     const graph = createLikesGraph(members, "likes");
 
     const {
-      dyads,
+      asymmetricDyads,
+      symmetricDyads,
       cliques,
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads.structures).toEqual([
+    expect(asymmetricDyads.structures).toEqual([]);
+    expect(symmetricDyads.structures).toEqual([
       ["a", "b"],
       ["a", "d"],
       ["b", "c"],

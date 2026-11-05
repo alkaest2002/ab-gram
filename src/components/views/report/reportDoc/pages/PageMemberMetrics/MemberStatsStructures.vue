@@ -27,7 +27,8 @@ const props = defineProps({
 // --- State --------------
 // SNA structure categories, each paired with the short label used on the page.
 const STRUCTURES_CONFIG = [
-  { key: "dyads", label: "L-DYD" },
+  { key: "asymmetricDyads", label: "L-DYA" },
+  { key: "symmetricDyads", label: "L-DYS" },
   { key: "cliques", label: "L-CLQ" },
   { key: "weakComponents", label: "L-WCC" },
   { key: "strongComponents", label: "L-SCC" },

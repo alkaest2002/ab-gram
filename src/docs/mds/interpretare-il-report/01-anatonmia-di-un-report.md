@@ -62,9 +62,9 @@ sane, relazioni potenzialmente problematiche e relazioni problematiche.
 
 ### 1.7 Strutture interne alla rete delle scelte
 
-Scompone la rete delle scelte in diadi, clique, componenti debolmente
-connesse, componenti fortemente connesse, componenti fortemente connesse e
-reciproche, e comunità di Louvain.
+Scompone la rete delle scelte in diadi asimmetriche, diadi simmetriche, clique,
+componenti debolmente connesse, componenti fortemente connesse, componenti
+fortemente connesse e reciproche, e comunità di Louvain.
 
 ### 1.8 Pagine individuali dei membri
 

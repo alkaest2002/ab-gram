@@ -63,9 +63,9 @@ categoria. Non ci sono ranghi né percentuali.
 
 ## 6 Strutture interne alla rete delle scelte
 
-Per ogni categoria (diadi, clique, componenti debolmente connesse, fortemente
-connesse e fortemente reciproche) mostra il **numero di componenti individuate**:
-un punteggio grezzo espresso come conteggio.
+Per ogni categoria (diadi asimmetriche, diadi simmetriche, clique, componenti
+debolmente connesse, fortemente connesse e fortemente reciproche) mostra il
+**numero di componenti individuate**: un punteggio grezzo espresso come conteggio.
 
 ## 7 Pagine individuali dei membri
 
@@ -115,8 +115,8 @@ compare in questa sezione). Per ogni tipo ci sono due numeri:
 
 ### 7.4 Strutture interne
 
-Mostra, per la rete delle scelte (prefisso `L-`), le sei categorie DYD, CLQ,
-WCC, SCC, SCM e LVN (comunità di Louvain). Per ogni categoria ci sono due
+Mostra, per la rete delle scelte (prefisso `L-`), le sette categorie DYA, DYS,
+CLQ, WCC, SCC, SCM e LVN (comunità di Louvain). Per ogni categoria ci sono due
 numeri:
 
 - il **conteggio grezzo**: quante strutture di quel tipo contengono il membro;

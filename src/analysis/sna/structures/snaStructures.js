@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { computeDyads } from "./dyads.js";
+import { computeAsymmetricDyads, computeSymmetricDyads } from "./dyads.js";
 import { computeCliques } from "./cliques.js";
 import {
   computeStrongComponentsWithReciprocalEdges,
@@ -18,7 +18,8 @@ import { computeLouvainCommunities } from "./louvain.js";
  * @param {{ runs?: number, seed?: number }} [options] - Louvain options
  *   (`runs` restarts, `seed` for reproducible results).
  * @returns {{
- *   dyads: { structures: string[][] },
+ *   asymmetricDyads: { structures: string[][] },
+ *   symmetricDyads: { structures: string[][] },
  *   cliques: { structures: string[][] },
  *   strongComponentsWithReciprocalEdges: { structures: string[][] },
  *   strongComponents: { structures: string[][] },
@@ -28,7 +29,8 @@ import { computeLouvainCommunities } from "./louvain.js";
  *   the Louvain value additionally exposes its `modularity`.
  */
 export const getSnaStructures = (graph, options = {}) => ({
-  dyads: computeDyads(graph),
+  asymmetricDyads: computeAsymmetricDyads(graph),
+  symmetricDyads: computeSymmetricDyads(graph),
   cliques: computeCliques(graph),
   strongComponentsWithReciprocalEdges: computeStrongComponentsWithReciprocalEdges(graph),
   strongComponents: computeStrongComponents(graph),
