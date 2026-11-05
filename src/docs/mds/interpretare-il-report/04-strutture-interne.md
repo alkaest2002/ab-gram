@@ -7,8 +7,8 @@ Oltre alle metriche, la mappa del gruppo (in cui i membri sono
 punti e le scelte sono frecce) può essere scomposta in parti più piccole. Queste
 **strutture** rivelano come il gruppo è organizzato al suo interno: ci
 sono coppie affiatate, sotto-gruppi molto compatti o che non
-hanno alcun contatto tra loro. Ne vediamo quattro categorie: le diadi (asimmetriche
-e simmetriche), le clique, le componenti connesse e le comunità di Louvain.
+hanno alcun contatto tra loro. Ne vediamo quattro categorie: le diadi simmetriche,
+le clique, le componenti connesse e le comunità di Louvain.
 
 Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 **sceglie** il membro $j$, e $a_{ij} = 0$ che non lo sceglie.
@@ -45,29 +45,7 @@ per diadi, clique e componenti connesse consideriamo solo le scelte.
 
 ## 1 Diadi
 
-Una **diade** è una coppia di membri tra cui esiste almeno una scelta: cioè
-almeno uno dei due sceglie l'altro.
-
-$$
-a_{ij} = 1 \quad \text{oppure} \quad a_{ji} = 1
-$$
-
-A seconda che la scelta sia a senso unico o reciproca, distinguiamo due tipi.
-
-### 1.1 Diadi asimmetriche
-
-Una **diade asimmetrica** è una coppia in cui uno solo dei due sceglie l'altro:
-
-$$
-a_{ij} = 1 \quad \text{e} \quad a_{ji} = 0
-$$
-
-oppure il caso speculare ($a_{ij} = 0$ e $a_{ji} = 1$). In parole: c'è una
-freccia in una sola direzione.
-
-### 1.2 Diadi simmetriche
-
-Una **diade simmetrica** è una coppia in cui entrambi si scelgono a vicenda:
+Una **diade** è una coppia di membri che si scelgono a vicenda:
 
 $$
 a_{ij} = a_{ji} = 1
@@ -77,6 +55,18 @@ In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$.
 
 È l'unità più piccola possibile di reciprocità: un legame "confermato" da
 entrambe le parti, e non solo dichiarato da una.
+
+Si distingue così dalla **diade asimmetrica**: una coppia in cui uno solo dei
+due sceglie l'altro, cioè
+
+$$
+a_{ij} = 1 \quad \text{e} \quad a_{ji} = 0
+$$
+
+(oppure il caso speculare). In parole: c'è una freccia in una sola direzione.
+Le diadi asimmetriche **non vengono riportate** in questa pagina: il report
+mostra soltanto le diadi reciproche, perché una scelta a senso unico non
+basta a indicare un legame condiviso.
 
 ## 2 Clique
 
@@ -276,7 +266,6 @@ gruppo quando i confini tra i sottogruppi non sono ovvi.
 
 | Struttura                                  | Cosa richiede                                         | Quanto è compatta                                         |
 | ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------- |
-| Diade asimmetrica                          | Uno solo dei due membri sceglie l'altro               | Alta (ma coinvolge solo due persone)                      |
 | Diade simmetrica                           | Due membri che si scelgono a vicenda                  | Massima (ma coinvolge solo due persone)                   |
 | Clique                                     | Ognuno collegato direttamente a tutti gli altri       | Alta                                                      |
 | Componente forte con soli legami reciproci | Percorso tra ogni coppia usando solo legami reciproci | Media: catene di diadi                                    |
