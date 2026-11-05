@@ -23,11 +23,11 @@ const props = defineProps({
   // `getEdgeTypes` result, exposing `memberInEdges`.
   edgeTypes: { type: Object, default: () => ({}) },
   // `getSnaStructures` result for the choice ("likes") network, exposing the
-  // component lists per category.
-  likesComponents: { type: Object, default: () => ({}) },
+  // structure lists per category.
+  likesStructures: { type: Object, default: () => ({}) },
   // `getSnaStructures` result for the rejection ("dislikes") network, exposing
-  // the component lists per category.
-  dislikesComponents: { type: Object, default: () => ({}) },
+  // the structure lists per category.
+  dislikesStructures: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -61,11 +61,11 @@ const props = defineProps({
     <!-- Row 2: edge types. -->
     <MemberStatsEdges :member-id="props.memberId" :edge-types="props.edgeTypes" />
 
-    <!-- Row 3: component categories. -->
+    <!-- Row 3: structure categories. -->
     <MemberStatsStructures
       :member-id="props.memberId"
-      :likes-components="props.likesComponents"
-      :dislikes-components="props.dislikesComponents"
+      :likes-structures="props.likesStructures"
+      :dislikes-structures="props.dislikesStructures"
     />
 
     <!-- Row 4: sociometric status. -->

@@ -4,11 +4,11 @@
 import { describe, it, expect } from "vite-plus/test";
 
 import { createLikesGraph } from "@/analysis/sna/snaBase.js";
-import { getSnaStructures } from "@/analysis/sna/components/snaStructures.js";
+import { getSnaStructures } from "@/analysis/sna/structures/snaStructures.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
 
-const COMPONENT_KEYS = [
+const STRUCTURE_KEYS = [
   "dyads",
   "cliques",
   "strongComponentsWithReciprocalEdges",
@@ -17,7 +17,7 @@ const COMPONENT_KEYS = [
 ];
 
 describe("getSnaStructures", () => {
-  it("returns one array per component type and the louvain communities", () => {
+  it("returns one array per structure type and the louvain communities", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -27,8 +27,8 @@ describe("getSnaStructures", () => {
 
     const result = getSnaStructures(graph);
 
-    expect(Object.keys(result)).toEqual([...COMPONENT_KEYS, "louvainCommunities"]);
-    COMPONENT_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
+    expect(Object.keys(result)).toEqual([...STRUCTURE_KEYS, "louvainCommunities"]);
+    STRUCTURE_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
 
     expect(result.louvainCommunities).toHaveProperty("communities");
     expect(result.louvainCommunities).toHaveProperty("q");

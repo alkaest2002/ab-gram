@@ -13,7 +13,7 @@ import PageCover from "@/components/views/report/reportDoc/pages/PageCover/PageC
 import PageListOfMembers from "@/components/views/report/reportDoc/pages/PageListOfMembers/PageListOfMembers.vue";
 import PageListOfPreferences from "@/components/views/report/reportDoc/pages/PageListOfPreferences/PageListOfPreferences.vue";
 import PageSnaGroupMetrics from "@/components/views/report/reportDoc/pages/PageSnaGroupMetrics/PageSnaGroupMetrics.vue";
-import PageSnaComponents from "@/components/views/report/reportDoc/pages/PageSnaComponents/PageSnaComponents.vue";
+import PageSnaStructures from "@/components/views/report/reportDoc/pages/PageSnaStructures/PageSnaStructures.vue";
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes/PageEdgeTypes.vue";
 import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics/PageMemberMetrics.vue";
 import PageSummary from "@/components/views/report/reportDoc/pages/PageSummary/PageSummary.vue";
@@ -92,9 +92,9 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
       @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
     />
     <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />
-    <PageSnaComponents
+    <PageSnaStructures
       type-of-sna="likes"
-      :components="reportData.analysisData?.snaLikesComponents ?? {}"
+      :structures="reportData.analysisData?.snaLikesStructures ?? {}"
     />
     <PageMemberMetrics
       v-for="member in members"
@@ -104,8 +104,8 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
       :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
       :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
       :edge-types="reportData.analysisData?.edgeTypes ?? {}"
-      :likes-components="reportData.analysisData?.snaLikesComponents ?? {}"
-      :dislikes-components="reportData.analysisData?.snaDislikesComponents ?? {}"
+      :likes-structures="reportData.analysisData?.snaLikesStructures ?? {}"
+      :dislikes-structures="reportData.analysisData?.snaDislikesStructures ?? {}"
     />
     <PageSummary
       :members-data="reportData.membersData"

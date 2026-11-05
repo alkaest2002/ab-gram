@@ -11,7 +11,7 @@ import { filterBySize, forEachMutualEdge } from "./base.js";
  *
  * The graph is reduced to its reciprocal edges — the ones `createLikesGraph`
  * flagged with `isMutual` — then its strongly connected components are computed.
- * Only components of at least `MIN_COMPONENT_SIZE` members are returned.
+ * Only components of at least `MIN_STRUCTURE_SIZE` members are returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
  *   `createLikesGraph`.
@@ -31,7 +31,7 @@ export const computeStrongComponentsWithReciprocalEdges = (graph) => {
 
 /**
  * Compute the strongly connected components of the graph, following the
- * direction of every edge. Only components of at least `MIN_COMPONENT_SIZE`
+ * direction of every edge. Only components of at least `MIN_STRUCTURE_SIZE`
  * members are returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
@@ -41,7 +41,7 @@ export const computeStrongComponents = (graph) => filterBySize(stronglyConnected
 
 /**
  * Compute the weakly connected components of the graph, ignoring the direction
- * of every edge. Only components of at least `MIN_COMPONENT_SIZE` members are
+ * of every edge. Only components of at least `MIN_STRUCTURE_SIZE` members are
  * returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.

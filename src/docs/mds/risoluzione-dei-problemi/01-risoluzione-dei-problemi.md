@@ -87,7 +87,7 @@ sue preferenze e completarle.
 
 ## 6 La rete (o la pagina) dei rifiuti non compare
 
-Nel report la **Rete dei rifiuti** e le relative componenti compaiono solo se
+Nel report la **Rete dei rifiuti** e le relative strutture compaiono solo se
 c'è qualcosa da mostrare.
 
 ### 6.1 Soluzione

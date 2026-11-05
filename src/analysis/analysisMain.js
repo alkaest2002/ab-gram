@@ -11,7 +11,7 @@ import {
   getGroupLevelMetrics as snaGroupLevel,
   getIndividualLevelMetrics as snaIndividualLevel,
 } from "./sna/metrics/snaMetrics.js";
-import { getSnaStructures } from "./sna/components/snaStructures.js";
+import { getSnaStructures } from "./sna/structures/snaStructures.js";
 import { getSnaPlot } from "./sna/plots/snaPlots.js";
 import { createLikesGraph } from "./sna/snaBase.js";
 import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
@@ -32,8 +32,8 @@ import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
  *   morenoEgoGraphs: object[],
  *   snaLikesGroupLevelMetrics: object,
  *   snaDislikesGroupLevelMetrics: object,
- *   snaLikesComponents: object,
- *   snaDislikesComponents: object,
+ *   snaLikesStructures: object,
+ *   snaDislikesStructures: object,
  *   snaLikesIndividualLevelMetric: object,
  *   snaDislikesIndividualLevelMetric: object,
  *   snaLikesPlots: object[],
@@ -83,20 +83,20 @@ export const getSociogramAnalysis = (members) => {
 
   // Group-level SNA metrics for the likes graph.
   const snaLikesGroupLevelMetrics = snaGroupLevel(likesGraph);
-  const snaLikesComponents = getSnaStructures(likesGraph);
+  const snaLikesStructures = getSnaStructures(likesGraph);
   const snaLikesIndividualLevelMetric = snaIndividualLevel(likesGraph);
   const snaLikesPlots = getSnaPlot(likesGraph, "#0000FF");
 
   // Initialize SNA metrics for the dislikes graph.
   let snaDislikesGroupLevelMetrics = {};
-  let snaDislikesComponents = {};
+  let snaDislikesStructures = {};
   let snaDislikesIndividualLevelMetric = {};
   let snaDislikesPlots = [];
 
   // If the dislikes graph is not empty, compute its SNA metrics.
   if (dislikesGraph.size !== 0) {
     snaDislikesGroupLevelMetrics = snaGroupLevel(dislikesGraph);
-    snaDislikesComponents = getSnaStructures(dislikesGraph);
+    snaDislikesStructures = getSnaStructures(dislikesGraph);
     snaDislikesIndividualLevelMetric = snaIndividualLevel(dislikesGraph);
     snaDislikesPlots = getSnaPlot(dislikesGraph, "#FF0000");
   }
@@ -106,11 +106,11 @@ export const getSociogramAnalysis = (members) => {
     morenoGroupLevelMetrics,
     morenoIndividualLevelMetrics,
     morenoEgoGraphs,
-    snaLikesComponents,
+    snaLikesStructures,
     snaLikesGroupLevelMetrics,
     snaLikesIndividualLevelMetric,
     snaLikesPlots,
-    snaDislikesComponents,
+    snaDislikesStructures,
     snaDislikesGroupLevelMetrics,
     snaDislikesIndividualLevelMetric,
     snaDislikesPlots,

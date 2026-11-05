@@ -6,7 +6,7 @@
  *
  * Receives a plain (non-reactive) snapshot of the sociogram members and runs
  * the full sociogram analysis (`getSociogramAnalysis`), which computes the
- * adjacency matrices, edge types, Moreno metrics, SNA metrics, components and
+ * adjacency matrices, edge types, Moreno metrics, SNA metrics, structures and
  * SVG plots.
  *
  * Inbound message:  { members: Member[] }

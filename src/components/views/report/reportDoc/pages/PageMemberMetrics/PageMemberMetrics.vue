@@ -23,11 +23,11 @@ const props = defineProps({
   // `getEdgeTypes` result, exposing `memberInEdges`.
   edgeTypes: { type: Object, default: () => ({}) },
   // `getSnaStructures` result for the choice ("likes") network, exposing the
-  // component lists per category.
-  likesComponents: { type: Object, default: () => ({}) },
+  // structure lists per category.
+  likesStructures: { type: Object, default: () => ({}) },
   // `getSnaStructures` result for the rejection ("dislikes") network, exposing
-  // the component lists per category.
-  dislikesComponents: { type: Object, default: () => ({}) },
+  // the structure lists per category.
+  dislikesStructures: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -69,8 +69,8 @@ const props = defineProps({
           :moreno-metrics="morenoMetrics"
           :sna-metrics="snaMetrics"
           :edge-types="edgeTypes"
-          :likes-components="likesComponents"
-          :dislikes-components="dislikesComponents"
+          :likes-structures="likesStructures"
+          :dislikes-structures="dislikesStructures"
         />
       </div>
 

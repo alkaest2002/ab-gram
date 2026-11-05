@@ -15,7 +15,7 @@ const props = defineProps({
     required: true,
     validator: (value) => ["likes", "dislikes"].includes(value),
   },
-  components: { type: Object, default: () => ({}) },
+  structures: { type: Object, default: () => ({}) },
 });
 
 // --- Emits --------------
@@ -26,18 +26,18 @@ const props = defineProps({
 
 // --- State --------------
 // Per-type presentation details. The two preference types share the same
-// component taxonomy, so only the page title changes.
+// structure taxonomy, so only the page title changes.
 const SNA_CONFIG = {
   likes: {
     pageTitle: "Strutture interne alla rete delle scelte",
   },
   dislikes: {
-    pageTitle: "Componenti della rete dei rifiuti",
+    pageTitle: "Strutture della rete dei rifiuti",
   },
 };
 
 // The categories are shown in a fixed reading order (not the DataFrame column
-// order), so the component lists are looked up by key rather than by position.
+// order), so the structure lists are looked up by key rather than by position.
 const CATEGORIES = [
   { key: "dyads", label: "Diadi" },
   { key: "cliques", label: "Clique" },
@@ -51,18 +51,18 @@ const CATEGORIES = [
 
 const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 
-// `components` maps each component type to the list of its components (each
-// component being a list of member ids). A missing/empty prop degrades to
+// `structures` maps each structure type to the list of its structures (each
+// structure being a list of member ids). A missing/empty prop degrades to
 // empty lists.
 const categories = CATEGORIES.map((category) => ({
   ...category,
-  components: props.components?.[category.key] ?? [],
+  structures: props.structures?.[category.key] ?? [],
 }));
 
 // Louvain communities are a partition of the group with an associated
 // modularity Q value, reported next to the section title.
-const louvainCommunities = props.components?.louvainCommunities?.communities ?? [];
-const louvainQ = props.components?.louvainCommunities?.q ?? null;
+const louvainCommunities = props.structures?.louvainCommunities?.communities ?? [];
+const louvainQ = props.structures?.louvainCommunities?.q ?? null;
 
 const formatQ = (value) => {
   if (value === null || value === undefined || !Number.isFinite(value)) return "—";
@@ -94,25 +94,25 @@ const formatQ = (value) => {
               {{ category.label }}
             </h3>
             <span class="font-mono text-[9pt] font-semibold text-ink">
-              {{ category.components.length }}
+              {{ category.structures.length }}
             </span>
           </header>
 
-          <div v-if="category.components.length" class="pt-[2mm]">
+          <div v-if="category.structures.length" class="pt-[2mm]">
             <div class="flex flex-wrap gap-[1.5mm]">
               <span
-                v-for="(component, index) in category.components"
+                v-for="(structure, index) in category.structures"
                 :key="`${category.key}-${index}`"
                 class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] font-mono text-[9pt] font-semibold text-muted"
-                :class="{ 'py-[1mm]': component.length > 24 }"
+                :class="{ 'py-[1mm]': structure.length > 24 }"
               >
-                {{ component.join(" · ") }}
+                {{ structure.join(" · ") }}
               </span>
             </div>
           </div>
 
           <p v-else class="pt-[2mm] font-mono text-[9pt] text-muted italic">
-            nessuna componente di questo tipo
+            nessuna struttura di questo tipo
           </p>
         </section>
 

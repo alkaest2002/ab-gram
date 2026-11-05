@@ -2,29 +2,29 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Helpers shared by the SNA component modules (dyads, cliques and connected
+ * Helpers shared by the SNA structure modules (dyads, cliques and connected
  * components).
  */
 
 /**
- * Minimum number of members a component must have to be reported.
+ * Minimum number of members a structure must have to be reported.
  *
- * Dyads are always pairs (two members); every other component category must
- * have at least `MIN_COMPONENT_SIZE` members.
+ * Dyads are always pairs (two members); every other structure category must
+ * have at least `MIN_STRUCTURE_SIZE` members.
  */
-export const MIN_COMPONENT_SIZE = 3;
+export const MIN_STRUCTURE_SIZE = 3;
 
 /**
- * Keep only the components with at least `MIN_COMPONENT_SIZE` members.
+ * Keep only the structures with at least `MIN_STRUCTURE_SIZE` members.
  *
  * Shared by every category (other than dyads) so the size rule lives in one
  * place.
  *
- * @param {string[][]} components - Components as lists of member ids.
- * @returns {string[][]} The components that are large enough to be reported.
+ * @param {string[][]} structures - Structures as lists of member ids.
+ * @returns {string[][]} The structures that are large enough to be reported.
  */
-export const filterBySize = (components) =>
-  components.filter((component) => component.length >= MIN_COMPONENT_SIZE);
+export const filterBySize = (structures) =>
+  structures.filter((structure) => structure.length >= MIN_STRUCTURE_SIZE);
 
 /**
  * Visit every reciprocal edge of the graph.
@@ -47,18 +47,18 @@ export const forEachMutualEdge = (graph, callback) => {
 };
 
 /**
- * Sort every component's members and the component list itself.
+ * Sort every structure's members and the structure list itself.
  *
- * Each component's members are sorted alphabetically, then the component list
- * is ordered by length (smallest first). Components of equal length are ordered
+ * Each structure's members are sorted alphabetically, then the structure list
+ * is ordered by length (smallest first). Structures of equal length are ordered
  * lexicographically so the output stays deterministic regardless of the
  * graph's traversal order, which is convenient for reports and tests.
  *
- * @param {string[][]} components - Components as lists of member ids.
- * @returns {string[][]} The same components, deterministically ordered.
+ * @param {string[][]} structures - Structures as lists of member ids.
+ * @returns {string[][]} The same structures, deterministically ordered.
  */
-export const sortComponents = (components) => {
-  const sorted = components.map((component) => [...component].sort());
+export const sortStructures = (structures) => {
+  const sorted = structures.map((structure) => [...structure].sort());
 
   sorted.sort((a, b) => {
     if (a.length !== b.length) return a.length - b.length;

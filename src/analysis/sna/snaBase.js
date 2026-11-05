@@ -9,7 +9,7 @@ import { random } from "graphology-layout";
 //////////////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Graph helpers shared by the SNA modules (metrics, components, plots).
+ * Graph helpers shared by the SNA modules (metrics, structures, plots).
  *
  * The group is represented as two directed graphs, one per preference type.
  * In both, each node is a member (keyed by the member id) and each edge points
@@ -50,7 +50,7 @@ export const createLikesGraph = (members, typeOfPreference) => {
   // Create directed graph.
   const graph = new DirectedGraph();
 
-  // Tag the graph with its preference type so consumers (metrics, components,
+  // Tag the graph with its preference type so consumers (metrics, structures,
   // plots) can report which of "likes"/"dislikes" it represents.
   graph.setAttribute("typeOfPreference", typeOfPreference);
 

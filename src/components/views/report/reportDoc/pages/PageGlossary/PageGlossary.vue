@@ -46,7 +46,7 @@ const GLOSSARY = [
   { label: "HA", extended: "HITS autorità" },
   { label: "HU", extended: "HITS hub" },
 
-  // SNA components. In the member pages these labels are prefixed by "L-" for
+  // SNA structures. In the member pages these labels are prefixed by "L-" for
   // likes (scelte).
   { label: "L-DYD", extended: "Diadi (scelte)" },
   { label: "L-CLQ", extended: "Clique (scelte)" },

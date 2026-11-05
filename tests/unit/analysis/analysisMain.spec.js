@@ -33,11 +33,11 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("morenoGroupLevelMetrics");
     expect(result).toHaveProperty("morenoIndividualLevelMetrics");
     expect(result).toHaveProperty("morenoEgoGraphs");
-    expect(result).toHaveProperty("snaLikesComponents");
+    expect(result).toHaveProperty("snaLikesStructures");
     expect(result).toHaveProperty("snaLikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaLikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaLikesPlots");
-    expect(result).toHaveProperty("snaDislikesComponents");
+    expect(result).toHaveProperty("snaDislikesStructures");
     expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaDislikesPlots");
@@ -140,24 +140,24 @@ describe("getSociogramAnalysis", () => {
 
     const {
       snaDislikesGroupLevelMetrics,
-      snaDislikesComponents,
+      snaDislikesStructures,
       snaDislikesIndividualLevelMetric,
       snaDislikesPlots,
     } = getSociogramAnalysis(members);
 
     expect(snaDislikesGroupLevelMetrics).toEqual({});
-    expect(snaDislikesComponents).toEqual({});
+    expect(snaDislikesStructures).toEqual({});
     expect(snaDislikesIndividualLevelMetric).toEqual({});
     expect(snaDislikesPlots).toEqual([]);
   });
 
-  it("computes dislikes SNA metrics, components and plots when dislikes exist", () => {
+  it("computes dislikes SNA metrics, structures and plots when dislikes exist", () => {
     const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
 
     const {
       snaLikesGroupLevelMetrics,
       snaDislikesGroupLevelMetrics,
-      snaDislikesComponents,
+      snaDislikesStructures,
       snaDislikesIndividualLevelMetric,
       snaDislikesPlots,
     } = getSociogramAnalysis(members);
@@ -172,13 +172,13 @@ describe("getSociogramAnalysis", () => {
       2, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
     ]);
 
-    expect(snaDislikesComponents.dyads).toEqual([["a", "b"]]);
-    expect(snaDislikesComponents.cliques).toEqual([]);
-    expect(snaDislikesComponents.strongComponentsWithReciprocalEdges).toEqual([]);
-    expect(snaDislikesComponents.strongComponents).toEqual([]);
-    expect(snaDislikesComponents.weakComponents).toEqual([]);
-    expect(snaDislikesComponents.louvainCommunities.communities).toEqual([]);
-    expect(snaDislikesComponents.louvainCommunities.q).toBeCloseTo(0, 10);
+    expect(snaDislikesStructures.dyads).toEqual([["a", "b"]]);
+    expect(snaDislikesStructures.cliques).toEqual([]);
+    expect(snaDislikesStructures.strongComponentsWithReciprocalEdges).toEqual([]);
+    expect(snaDislikesStructures.strongComponents).toEqual([]);
+    expect(snaDislikesStructures.weakComponents).toEqual([]);
+    expect(snaDislikesStructures.louvainCommunities.communities).toEqual([]);
+    expect(snaDislikesStructures.louvainCommunities.q).toBeCloseTo(0, 10);
     expect(snaDislikesIndividualLevelMetric.ids).toEqual(["a", "b"]);
     expect(snaDislikesPlots).toHaveLength(1);
     expect(snaDislikesPlots[0].typeOfPreference).toBe("dislikes");

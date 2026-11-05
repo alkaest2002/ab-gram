@@ -5,7 +5,7 @@ order: 1
 
 Il report prodotto da AB-Gram è organizzato in pagine da leggere in sequenza,
 dalla copertina al glossario. La copertina e l'elenco dei membri inquadrano il
-gruppo; scelte e rifiuti, le reti, i tipi di relazione e le componenti della
+gruppo; scelte e rifiuti, le reti, i tipi di relazione e le strutture della
 rete delle scelte ne analizzano i legami; le pagine individuali approfondiscono
 la posizione di ciascun membro; la sintesi li riepiloga in un colpo d'occhio e
 il glossario chiude il documento.

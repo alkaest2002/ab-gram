@@ -92,7 +92,7 @@ export function formatValue(value) {
 }
 
 /**
- * The `pct` fields on edges/components are 0-1 fractions; present them as a
+ * The `pct` fields on edges/structures are 0-1 fractions; present them as a
  * whole percentage (a single decimal would be noise on these dense chips).
  *
  * @param {number} value

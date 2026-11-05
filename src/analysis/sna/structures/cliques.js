@@ -106,7 +106,7 @@ const findMaximalCliques = (adjacency) => {
  * to every other node, ignoring the direction of connections.
  *
  * A clique is therefore a maximal complete subgraph of the graph's undirected
- * projection. Only cliques of at least `MIN_COMPONENT_SIZE` members are
+ * projection. Only cliques of at least `MIN_STRUCTURE_SIZE` members are
  * returned, so triads and larger groups are reported while pairs are left to
  * `dyads`.
  *
