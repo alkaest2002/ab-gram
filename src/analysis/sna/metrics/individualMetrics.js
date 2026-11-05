@@ -101,8 +101,7 @@ export const computePageRank = (graph) => pagerank(graph);
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {{ authorities: Record<string, number>, hubs: Record<string, number> }}
  *   The authority and hub scores keyed by node id. When HITS fails to converge,
- *   every score is `-1` so callers can tell an uncomputable score apart from a
- *   legitimate zero score.
+ *   every score is `0`.
  */
 export const computeHits = (graph) => {
   const nodes = graph.nodes();
@@ -129,27 +128,3 @@ export const computeHits = (graph) => {
     };
   }
 };
-
-/**
- * HITS authority score of every node.
- *
- * Formula:
- *
- *   $$ a(i) = \sum_{j \in \text{In}(i)} h(j) $$
- *
- * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {Record<string, number>} Node id -> authority score.
- */
-export const computeHitsAuthority = (graph) => computeHits(graph).authorities;
-
-/**
- * HITS hub score of every node.
- *
- * Formula:
- *
- *   $$ h(i) = \sum_{j \in \text{Out}(i)} a(j) $$
- *
- * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {Record<string, number>} Node id -> hub score.
- */
-export const computeHitsHub = (graph) => computeHits(graph).hubs;
