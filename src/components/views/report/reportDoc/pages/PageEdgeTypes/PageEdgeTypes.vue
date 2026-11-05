@@ -24,7 +24,7 @@ const props = defineProps({
 // the three severity tiers used in the analysis. Each edge is presented as the
 // directed `A -> B` pair it is stored as, with no de-duplication of mutual
 // types: typeI and typeIV therefore list both `[A, B]` and `[B, A]`.
-const EDGE_TYPES = {
+const EDGE_TYPE_CONFIG = {
   typeI: { label: "Scelte reciproche" },
   typeII: { label: "Scelte non reciproche" },
   typeIII: { label: "Rifiuti non reciproci" },
@@ -37,7 +37,7 @@ const EDGE_TYPES = {
 // The three tiers are the headline of this page, so each one gets its own
 // emphasis colour. The palette stays within the site's two accents plus ink:
 // blue for healthy, black for potentially problematic, red for problematic.
-const CATEGORIES = [
+const EDGE_CATEGORIES = [
   {
     key: "healthy",
     label: "Relazioni sane",
@@ -70,12 +70,12 @@ const TONE_CLASSES = {
 
 // `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
 // missing/empty prop degrades to empty lists, so every type still renders.
-const categories = CATEGORIES.map((category) => {
+const categories = EDGE_CATEGORIES.map((category) => {
   const tone = TONE_CLASSES[category.tone];
 
   const types = category.types.map((key) => ({
     key,
-    label: EDGE_TYPES[key].label,
+    label: EDGE_TYPE_CONFIG[key].label,
     edges: toDisplayEdges(props.edgeTypes?.[key] ?? []),
   }));
 

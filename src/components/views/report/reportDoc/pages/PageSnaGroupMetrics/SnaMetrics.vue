@@ -45,7 +45,7 @@ const METRIC_CONFIG = {
 
 // Per-type labels: the combined edge row and the Moreno indices appended below
 // it (cohesion for likes, conflict for dislikes).
-const TYPE_CONFIG = {
+const SNA_TYPE_CONFIG = {
   likes: {
     edgeLabel: "Totale scelte (di cui reciproche)",
     morenoIndex: "Indice di coesione",
@@ -70,7 +70,7 @@ const IN_DEGREE_KEYS = ["minInDegree", "Q1InDegree", "medianInDegree", "Q3InDegr
 
 // --- Computed -----------
 const rows = computed(() => {
-  const typeConfig = TYPE_CONFIG[props.typeOfSna] ?? TYPE_CONFIG.likes;
+  const typeConfig = SNA_TYPE_CONFIG[props.typeOfSna] ?? SNA_TYPE_CONFIG.likes;
   const keys = props.snaMetrics?.metrics ?? [];
   const values = props.snaMetrics?.rawValuesById?.[0] ?? [];
 

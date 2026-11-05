@@ -38,7 +38,7 @@ const SNA_CONFIG = {
 
 // The categories are shown in a fixed reading order (not the DataFrame column
 // order), so the structure lists are looked up by key rather than by position.
-const CATEGORIES = [
+const STRUCTURE_CATEGORIES = [
   { key: "dyads", label: "Diadi" },
   { key: "cliques", label: "Clique" },
   { key: "weakComponents", label: "Componenti debolmente connesse" },
@@ -54,7 +54,7 @@ const config = SNA_CONFIG[props.typeOfSna] ?? SNA_CONFIG.likes;
 // `structures` maps each structure type to the list of its structures (each
 // structure being a list of member ids). A missing/empty prop degrades to
 // empty lists.
-const categories = CATEGORIES.map((category) => ({
+const categories = STRUCTURE_CATEGORIES.map((category) => ({
   ...category,
   structures: props.structures?.[category.key] ?? [],
 }));
