@@ -24,67 +24,53 @@ const props = defineProps({
 // the three severity tiers used in the analysis. Each edge is presented as the
 // directed `A -> B` pair it is stored as, with no de-duplication of mutual
 // types: typeI and typeIV therefore list both `[A, B]` and `[B, A]`.
-const EDGE_TYPE_CONFIG = {
-  typeI: { label: "Scelte reciproche" },
-  typeII: { label: "Scelte non reciproche" },
-  typeIII: { label: "Rifiuti non reciproci" },
-  typeIV: { label: "Rifiuti reciproci" },
-  typeV: { label: "Scelte contraccambiate da rifiuti" },
-  typeVI: { label: "Rifiuti contraccambiati da scelte" },
-  typeVII: { label: "Scelte e rifiuti insieme" },
-};
-
-// The three tiers are the headline of this page, so each one gets its own
-// emphasis colour. The palette stays within the site's two accents plus ink:
-// blue for healthy, black for potentially problematic, red for problematic.
-const EDGE_CATEGORIES = [
+const EDGE_TYPE_CONFIG = [
   {
     key: "healthy",
     label: "Relazioni sane",
-    tone: "accent",
-    types: ["typeI", "typeII"],
+    borderColor: "border-accent",
+    labelColor: "text-accent",
+    barColor: "bg-accent",
+    types: [
+      { key: "typeI", label: "Scelte reciproche" },
+      { key: "typeII", label: "Scelte non reciproche" },
+    ],
   },
   {
     key: "potentiallyProblematic",
     label: "Relazioni potenzialmente problematiche",
-    tone: "ink",
-    types: ["typeIII"],
+    borderColor: "border-orange-800",
+    labelColor: "text-orange-800",
+    barColor: "bg-orange-800",
+    types: [{ key: "typeIII", label: "Rifiuti non reciproci" }],
   },
   {
     key: "problematic",
     label: "Relazioni problematiche",
-    tone: "reject",
-    types: ["typeIV", "typeV", "typeVI", "typeVII"],
+    borderColor: "border-reject",
+    labelColor: "text-reject",
+    barColor: "bg-reject",
+    types: [
+      { key: "typeIV", label: "Rifiuti reciproci" },
+      { key: "typeV", label: "Scelte contraccambiate da rifiuti" },
+      { key: "typeVI", label: "Rifiuti contraccambiati da scelte" },
+      { key: "typeVII", label: "Scelte e rifiuti insieme" },
+    ],
   },
 ];
 
-const TONE_CLASSES = {
-  accent: { borderColor: "border-accent", labelColor: "text-accent", barColor: "bg-accent" },
-  ink: {
-    borderColor: "border-orange-800",
-    labelColor: "text-orange-800",
-    barColor: "bg-orange-800",
-  },
-  reject: { borderColor: "border-reject", labelColor: "text-reject", barColor: "bg-reject" },
-};
-
 // `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
 // missing/empty prop degrades to empty lists, so every type still renders.
-const categories = EDGE_CATEGORIES.map((category) => {
-  const tone = TONE_CLASSES[category.tone];
-
-  const types = category.types.map((key) => ({
-    key,
-    label: EDGE_TYPE_CONFIG[key].label,
-    edges: toDisplayEdges(props.edgeTypes?.[key] ?? []),
+const categories = EDGE_TYPE_CONFIG.map((category) => {
+  const types = category.types.map((type) => ({
+    ...type,
+    edges: toDisplayEdges(props.edgeTypes?.[type.key] ?? []),
   }));
 
   return {
-    key: category.key,
-    label: category.label,
-    total: types.reduce((sum, type) => sum + type.edges.length, 0),
+    ...category,
     types,
-    ...tone,
+    total: types.reduce((sum, type) => sum + type.edges.length, 0),
   };
 });
 
