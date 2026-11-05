@@ -71,23 +71,28 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * Low/high cutoffs are derived from members who received at least one opinion
  * (impact > 0), so isolated/ignored members don't drag the thresholds down.
  * Percentiles are nearest-rank, mirrored for the upper side so the bottom
- * p% and top p% always hold the same number of members; the median is the
- * true median (mean of the two middle values for even n).
- * Tails never include the tied median bulk: a cutoff that reaches the median
- * is pulled in to the nearest value strictly beyond it.
- * Six strategies each propose { low, high } cutoffs:
- * - Jenks: natural breaks into up to three classes, gated by goodness of
- *   variance fit (GVF >= 0.75) so structureless data abstains.
- * - Head/tail: recursive heavy-tailed-head split; the first and last classes
- *   become the low and high cutoffs.
- * - Gini: inequality-driven; cuts at the 5th/95th percentiles when the
- *   sample-corrected Gini and range indicate a real split.
- * - Percentile: nearest-rank 10th/95th percentiles, tie-trimmed; abstains
+ * p% and top p% always hold the same number of members. A tail whose
+ * boundary value is not separated from its neighbour by at least one vote is
+ * switched off (infinite bound) rather than kept.
+ * Eight strategies each propose { low, high } cutoffs:
+ * - Jenks: Fisher-Jenks natural breaks into exactly three classes, gated by
+ *   goodness of variance fit (GVF >= 0.75) so structureless data abstains;
+ *   abstains with fewer than 5 visible members or fewer than 3 distinct values.
+ * - Largest gap: for up to 4 visible members, splits at the two widest gaps
+ *   into low / average / high tails.
+ * - Head/tail: recursive heavy-tailed-head split; votes only on the high
+ *   cutoff (low = -Infinity); abstains with fewer than 5 visible members.
+ * - Percentile: nearest-rank 10th/90th percentiles, tie-trimmed; abstains
  *   with fewer than 5 visible members.
- * - Tukey: strict inner fences (Q1 - 1.5*IQR, Q3 + 1.5*IQR) over visible
- *   members; a value exactly on a fence is not an outlier.
+ * - Tukey: strict inner fences (Q1 - 1*IQR, Q3 + 1*IQR) over visible
+ *   members; a value exactly on a fence is not an outlier; abstains with
+ *   fewer than 3 visible members or zero IQR.
+ * - Robust z-score: flags values beyond median +/- 3.5 * 1.4826 * MAD (MAD
+ *   floored at 0.5); abstains with fewer than 5 visible members.
  * - Binomial (GB): exact two-sided Binomial(N-1, p) limits at alpha = 0.01,
  *   where p is the network's opinion density (computed over all members).
+ * - Small group: for 2..4 visible members, flags only the smaller side of
+ *   the largest gap as the outlier tail when that gap is dominant.
  * Each strategy classifies every member low/average/high; a strategy that
  * proposes no effective split (NO_SPLIT or thresholds that flag no visible
  * member) abstains from the vote. If every strategy abstains, everyone is
@@ -127,7 +132,7 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // Classify impact
   // --------------------------------------------------------------------------------------
   // Note: impact is a numpy-ts array
-  // visibleSortedImpacts: sorted visible impacts (those of members not ignored/excluded)
+  // visibleSortedImpacts: sorted visible impacts (members who received at least one opinion)
   // allImpacts: all impacts (all members impact)
   // originalGroupSize: number of members in the group
   // visibleGroupSize: number of members who received at least one opinion

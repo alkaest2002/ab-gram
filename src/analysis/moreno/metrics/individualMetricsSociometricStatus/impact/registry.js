@@ -14,12 +14,11 @@ import { smallGroupStrategy } from "@/analysis/moreno/metrics/individualMetricsS
 // remaining strategies vote with equal weight, so the order here is only for
 // readability and does not affect the outcome.
 // Jenks carves the widest natural gaps; largest-gap splits at the two widest
-// gaps; head/tail isolates the heavy-tailed high extreme; Gini recognises
-// distributional shape and cuts at deciles; percentile reads relative
-// standing; Tukey flags strict outliers beyond the inner fences; robust
-// z-score flags outliers beyond a median-absolute-deviation fence; binomial
-// (GB) flags only the extreme cases under the chance model. Small-group
-// finds the dominant gap in tiny (sub-5) groups.
+// gaps; head/tail isolates the heavy-tailed high extreme; percentile reads
+// relative standing; Tukey flags strict outliers beyond the inner fences;
+// robust z-score flags outliers beyond a median-absolute-deviation fence;
+// binomial (GB) flags only the extreme cases under the chance model;
+// small-group finds the dominant gap in tiny (sub-5) groups.
 export const IMPACT_STRATEGIES = [
   { name: "jenks", run: jenksStrategy },
   { name: "largest gap", run: largestGapStrategy },
