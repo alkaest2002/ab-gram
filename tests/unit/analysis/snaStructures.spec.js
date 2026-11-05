@@ -17,7 +17,7 @@ const STRUCTURE_KEYS = [
 ];
 
 describe("getSnaStructures", () => {
-  it("returns one array per structure type and the louvain communities", () => {
+  it("returns one object per structure type and the louvain communities", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -28,12 +28,15 @@ describe("getSnaStructures", () => {
     const result = getSnaStructures(graph);
 
     expect(Object.keys(result)).toEqual([...STRUCTURE_KEYS, "louvainCommunities"]);
-    STRUCTURE_KEYS.forEach((key) => expect(result[key]).toBeInstanceOf(Array));
+    STRUCTURE_KEYS.forEach((key) => {
+      expect(result[key]).toHaveProperty("structures");
+      expect(result[key].structures).toBeInstanceOf(Array);
+    });
 
-    expect(result.louvainCommunities).toHaveProperty("communities");
-    expect(result.louvainCommunities).toHaveProperty("q");
-    expect(result.louvainCommunities.communities).toBeInstanceOf(Array);
-    expect(typeof result.louvainCommunities.q).toBe("number");
+    expect(result.louvainCommunities).toHaveProperty("structures");
+    expect(result.louvainCommunities).toHaveProperty("modularity");
+    expect(result.louvainCommunities.structures).toBeInstanceOf(Array);
+    expect(typeof result.louvainCommunities.modularity).toBe("number");
   });
 
   it("reports dyads and cliques for a mutual triangle", () => {
@@ -52,15 +55,15 @@ describe("getSnaStructures", () => {
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads).toEqual([
+    expect(dyads.structures).toEqual([
       ["a", "b"],
       ["a", "c"],
       ["b", "c"],
     ]);
-    expect(cliques).toEqual([["a", "b", "c"]]);
-    expect(strongComponentsWithReciprocalEdges).toEqual([["a", "b", "c"]]);
-    expect(strongComponents).toEqual([["a", "b", "c"]]);
-    expect(weakComponents).toEqual([["a", "b", "c"]]);
+    expect(cliques.structures).toEqual([["a", "b", "c"]]);
+    expect(strongComponentsWithReciprocalEdges.structures).toEqual([["a", "b", "c"]]);
+    expect(strongComponents.structures).toEqual([["a", "b", "c"]]);
+    expect(weakComponents.structures).toEqual([["a", "b", "c"]]);
   });
 
   it("drops strong and weak components smaller than three members", () => {
@@ -80,13 +83,13 @@ describe("getSnaStructures", () => {
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads).toEqual([]);
-    expect(cliques).toEqual([]);
-    expect(strongComponentsWithReciprocalEdges).toEqual([]);
+    expect(dyads.structures).toEqual([]);
+    expect(cliques.structures).toEqual([]);
+    expect(strongComponentsWithReciprocalEdges.structures).toEqual([]);
     // Each node is its own strongly connected component, so every one is
     // smaller than the three-member minimum.
-    expect(strongComponents).toEqual([]);
-    expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
+    expect(strongComponents.structures).toEqual([]);
+    expect(weakComponents.structures).toEqual([["a", "b", "c", "d"]]);
   });
 
   it("reports strongly connected reciprocal components of at least three members", () => {
@@ -106,16 +109,16 @@ describe("getSnaStructures", () => {
       weakComponents,
     } = getSnaStructures(graph);
 
-    expect(dyads).toEqual([
+    expect(dyads.structures).toEqual([
       ["a", "b"],
       ["a", "d"],
       ["b", "c"],
       ["c", "d"],
     ]);
-    expect(cliques).toEqual([]);
-    expect(strongComponentsWithReciprocalEdges).toEqual([["a", "b", "c", "d"]]);
-    expect(strongComponents).toEqual([["a", "b", "c", "d"]]);
-    expect(weakComponents).toEqual([["a", "b", "c", "d"]]);
+    expect(cliques.structures).toEqual([]);
+    expect(strongComponentsWithReciprocalEdges.structures).toEqual([["a", "b", "c", "d"]]);
+    expect(strongComponents.structures).toEqual([["a", "b", "c", "d"]]);
+    expect(weakComponents.structures).toEqual([["a", "b", "c", "d"]]);
   });
 
   it("reports louvain communities as a partition of every member", () => {
@@ -129,8 +132,8 @@ describe("getSnaStructures", () => {
     const { louvainCommunities } = getSnaStructures(graph, { seed: 42, runs: 5 });
 
     // A partition: every member appears exactly once across the communities.
-    expect(louvainCommunities.communities.flat().sort()).toEqual(["a", "b", "c"]);
-    expect(Number.isFinite(louvainCommunities.q)).toBe(true);
+    expect(louvainCommunities.structures.flat().sort()).toEqual(["a", "b", "c"]);
+    expect(Number.isFinite(louvainCommunities.modularity)).toBe(true);
   });
 
   it("returns singleton communities and q = 0 for an edgeless graph", () => {
@@ -139,7 +142,7 @@ describe("getSnaStructures", () => {
 
     const { louvainCommunities } = getSnaStructures(graph);
 
-    expect(louvainCommunities.q).toBe(0);
-    expect(louvainCommunities.communities).toEqual([["a"], ["b"], ["c"]]);
+    expect(louvainCommunities.modularity).toBe(0);
+    expect(louvainCommunities.structures).toEqual([["a"], ["b"], ["c"]]);
   });
 });

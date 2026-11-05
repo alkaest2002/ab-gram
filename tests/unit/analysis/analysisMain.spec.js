@@ -172,13 +172,13 @@ describe("getSociogramAnalysis", () => {
       2, 2, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0,
     ]);
 
-    expect(snaDislikesStructures.dyads).toEqual([["a", "b"]]);
-    expect(snaDislikesStructures.cliques).toEqual([]);
-    expect(snaDislikesStructures.strongComponentsWithReciprocalEdges).toEqual([]);
-    expect(snaDislikesStructures.strongComponents).toEqual([]);
-    expect(snaDislikesStructures.weakComponents).toEqual([]);
-    expect(snaDislikesStructures.louvainCommunities.communities).toEqual([]);
-    expect(snaDislikesStructures.louvainCommunities.q).toBeCloseTo(0, 10);
+    expect(snaDislikesStructures.dyads.structures).toEqual([["a", "b"]]);
+    expect(snaDislikesStructures.cliques.structures).toEqual([]);
+    expect(snaDislikesStructures.strongComponentsWithReciprocalEdges.structures).toEqual([]);
+    expect(snaDislikesStructures.strongComponents.structures).toEqual([]);
+    expect(snaDislikesStructures.weakComponents.structures).toEqual([]);
+    expect(snaDislikesStructures.louvainCommunities.structures).toEqual([]);
+    expect(snaDislikesStructures.louvainCommunities.modularity).toBeCloseTo(0, 10);
     expect(snaDislikesIndividualLevelMetric.ids).toEqual(["a", "b"]);
     expect(snaDislikesPlots).toHaveLength(1);
     expect(snaDislikesPlots[0].typeOfPreference).toBe("dislikes");

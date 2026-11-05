@@ -5,6 +5,8 @@ import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
 import * as np from "numpy-ts";
 
+import { filterBySize, sortStructures } from "./base.js";
+
 /**
  * Directed community significance test.
  *
@@ -103,33 +105,11 @@ function bestLouvain(graph, runs = 5, rng = Math.random) {
     groups.get(id).push(node);
   }
 
-  // Note: restrict communities to communities gt than 2
+  // Restrict to communities of at least MIN_STRUCTURE_SIZE members.
   return {
     q: best.modularity,
-    communities: Array.from(groups.values()).filter((c) => c.length > 2),
+    communities: filterBySize(Array.from(groups.values())),
   };
-}
-
-/**
- * Compute the Louvain communities without the significance test.
- *
- * @param {import("graphology").DirectedGraph} graph - The graph.
- * @param {{ runs?: number, seed?: number }} [options] - Louvain options.
- * @returns {{ communities: string[][], q: number }} The partition and its
- *   modularity `q`.
- */
-export function getLouvainCommunities(graph, { runs = 5, seed } = {}) {
-  if (graph.size === 0) {
-    return {
-      communities: graph.nodes().map((node) => [node]),
-      q: 0,
-    };
-  }
-
-  const rng = seed === undefined ? Math.random : mulberry32(seed);
-  const { q, communities } = bestLouvain(graph, runs, rng);
-
-  return { communities, q };
 }
 
 /**
@@ -346,7 +326,7 @@ export function gate(
     p,
     significant: p <= alpha && mixed,
 
-    communities: observed.communities,
+    communities: sortStructures(observed.communities),
     communityCount: observed.communities.length,
 
     nodes: n,
@@ -368,3 +348,31 @@ export function gate(
     validate,
   };
 }
+
+/**
+ * Compute the Louvain communities of the graph.
+ *
+ * Like the other structure modules this returns a `structures` list, but it
+ * also reports the partition's modularity in an additional `modularity` key.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph.
+ * @param {{ runs?: number, seed?: number }} [options] - Louvain options.
+ * @returns {{ structures: string[][], modularity: number }} The communities and
+ *   their modularity.
+ */
+export const computeLouvainCommunities = (graph, { runs = 5, seed } = {}) => {
+  if (graph.size === 0) {
+    return {
+      structures: sortStructures(graph.nodes().map((node) => [node])),
+      modularity: 0,
+    };
+  }
+
+  const rng = seed === undefined ? Math.random : mulberry32(seed);
+  const { q, communities } = bestLouvain(graph, runs, rng);
+
+  return {
+    structures: sortStructures(communities),
+    modularity: q,
+  };
+};

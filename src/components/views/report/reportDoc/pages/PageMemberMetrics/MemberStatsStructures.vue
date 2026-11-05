@@ -35,16 +35,11 @@ const STRUCTURES_CONFIG = [
   { key: "louvainCommunities", label: "L-LVN" },
 ];
 
-// Each structure category is a list of structures, where a structure is a list
-// of member ids. Louvain communities are nested under `communities` alongside a
-// modularity `q`, so that category is read through its `communities` list. The
-// shares count how many of that category's structures contain the member
-// (`cnt`) and the 0-1 fraction it is present in (`pct`).
+// Each structure category exposes its `structures` list, where a structure is a
+// list of member ids. The shares count how many of that category's structures
+// contain the member (`cnt`) and the 0-1 fraction it is present in (`pct`).
 const structureShares = STRUCTURES_CONFIG.map(({ key, label }) => {
-  const list =
-    key === "louvainCommunities"
-      ? (props.likesStructures?.[key]?.communities ?? [])
-      : (props.likesStructures?.[key] ?? []);
+  const list = props.likesStructures?.[key]?.structures ?? [];
   const count = list.filter((structure) => structure.includes(props.memberId)).length;
   const share = list.length === 0 ? 0 : count / list.length;
   return { key, label, count, share };

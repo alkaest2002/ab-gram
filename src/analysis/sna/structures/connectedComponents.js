@@ -4,7 +4,7 @@
 import { DirectedGraph } from "graphology";
 import { connectedComponents, stronglyConnectedComponents } from "graphology-components";
 
-import { filterBySize, forEachMutualEdge } from "./base.js";
+import { filterBySize, forEachMutualEdge, sortStructures } from "./base.js";
 
 /**
  * Compute the strongly connected groups that only use reciprocal edges.
@@ -15,7 +15,7 @@ import { filterBySize, forEachMutualEdge } from "./base.js";
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
  *   `createLikesGraph`.
- * @returns {string[][]} The components, each as a list of member ids.
+ * @returns {{ structures: string[][] }} The components, each as a list of member ids.
  */
 export const computeStrongComponentsWithReciprocalEdges = (graph) => {
   const reciprocal = new DirectedGraph();
@@ -26,7 +26,9 @@ export const computeStrongComponentsWithReciprocalEdges = (graph) => {
     reciprocal.mergeDirectedEdge(source, target);
   });
 
-  return filterBySize(stronglyConnectedComponents(reciprocal));
+  return {
+    structures: sortStructures(filterBySize(stronglyConnectedComponents(reciprocal))),
+  };
 };
 
 /**
@@ -35,9 +37,11 @@ export const computeStrongComponentsWithReciprocalEdges = (graph) => {
  * members are returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {string[][]} The components, each as a list of member ids.
+ * @returns {{ structures: string[][] }} The components, each as a list of member ids.
  */
-export const computeStrongComponents = (graph) => filterBySize(stronglyConnectedComponents(graph));
+export const computeStrongComponents = (graph) => ({
+  structures: sortStructures(filterBySize(stronglyConnectedComponents(graph))),
+});
 
 /**
  * Compute the weakly connected components of the graph, ignoring the direction
@@ -45,6 +49,13 @@ export const computeStrongComponents = (graph) => filterBySize(stronglyConnected
  * returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {string[][]} The components, each as a list of member ids.
+ * @returns {{ structures: string[][] }} The components, each as a list of member ids.
  */
-export const computeWeakComponents = (graph) => filterBySize(connectedComponents(graph));
+export const computeWeakComponents = (graph) => {
+  const allComponents = connectedComponents(graph);
+  const filteredComponents = filterBySize(allComponents);
+  const structures = sortStructures(filteredComponents);
+  return {
+    structures,
+  };
+};

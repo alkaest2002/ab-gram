@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { filterBySize } from "./base.js";
+import { filterBySize, sortStructures } from "./base.js";
 
 /**
  * Build the undirected adjacency of a graph: for every node, the set of nodes
@@ -111,7 +111,13 @@ const findMaximalCliques = (adjacency) => {
  * `dyads`.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph.
- * @returns {string[][]} The cliques, each as a list of member ids.
+ * @returns {{ structures: string[][] }} The cliques, each as a list of member ids.
  */
-export const computeCliques = (graph) =>
-  filterBySize(findMaximalCliques(buildUndirectedAdjacency(graph)));
+export const computeCliques = (graph) => {
+  const allCliques = findMaximalCliques(buildUndirectedAdjacency(graph));
+  const filteredCliques = filterBySize(allCliques);
+  const structures = sortStructures(filteredCliques);
+  return {
+    structures,
+  };
+};

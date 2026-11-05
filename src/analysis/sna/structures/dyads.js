@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { forEachMutualEdge } from "./base.js";
+import { forEachMutualEdge, sortStructures } from "./base.js";
 
 /**
  * Compute the dyads: pairs of members with a bidirectional relationship.
@@ -14,7 +14,7 @@ import { forEachMutualEdge } from "./base.js";
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
  *   `createLikesGraph`.
- * @returns {string[][]} One `[a, b]` pair per reciprocal relationship.
+ * @returns {{ structures: string[][] }} The dyads, each an `[a, b]` pair.
  */
 export const computeDyads = (graph) => {
   const dyads = [];
@@ -26,5 +26,5 @@ export const computeDyads = (graph) => {
     }
   });
 
-  return dyads;
+  return { structures: sortStructures(dyads) };
 };

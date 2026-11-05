@@ -47,18 +47,18 @@ const SNA_STRUCTURE_CONFIG = {
 
 const pageTitle = SNA_STRUCTURE_CONFIG.titles[props.typeOfSna] ?? SNA_STRUCTURE_CONFIG.titles.likes;
 
-// `structures` maps each structure type to the list of its structures (each
-// structure being a list of member ids). A missing/empty prop degrades to
-// empty lists.
+// `structures` maps each structure type to an object exposing its `structures`
+// list (each structure being a list of member ids). A missing/empty prop
+// degrades to empty lists.
 const categories = SNA_STRUCTURE_CONFIG.categories.map((category) => ({
   ...category,
-  structures: props.structures?.[category.key] ?? [],
+  structures: props.structures?.[category.key]?.structures ?? [],
 }));
 
 // Louvain communities are a partition of the group with an associated
 // modularity Q value, reported next to the section title.
-const louvainCommunities = props.structures?.louvainCommunities?.communities ?? [];
-const louvainQ = props.structures?.louvainCommunities?.q ?? null;
+const louvainCommunities = props.structures?.louvainCommunities?.structures ?? [];
+const louvainModularity = props.structures?.louvainCommunities?.modularity ?? null;
 
 const formatQ = (value) => {
   if (value === null || value === undefined || !Number.isFinite(value)) return "—";
@@ -115,7 +115,7 @@ const formatQ = (value) => {
         <section class="shrink-0">
           <header class="flex items-baseline justify-between border-b border-line">
             <h3 class="font-mono text-[9pt] font-medium tracking-[0.08em] text-muted uppercase">
-              Comunità di Louvain ({{ formatQ(louvainQ) }})
+              Comunità di Louvain ({{ formatQ(louvainModularity) }})
             </h3>
             <span class="font-mono text-[9pt] font-semibold text-ink">
               {{ louvainCommunities.length }}
