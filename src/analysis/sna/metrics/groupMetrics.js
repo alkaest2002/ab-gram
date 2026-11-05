@@ -79,7 +79,7 @@ const nodeDegrees = (graph, direction) =>
  * @returns {number} The smallest out-degree.
  */
 export const computeMinOutDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.min(np.array(nodeDegrees(graph, "out"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "out")).min();
 
 /**
  * Maximum out-degree across all nodes.
@@ -88,7 +88,7 @@ export const computeMinOutDegree = (graph) =>
  * @returns {number} The largest out-degree.
  */
 export const computeMaxOutDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.max(np.array(nodeDegrees(graph, "out"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "out")).max();
 
 /**
  * Median out-degree across all nodes.
@@ -97,7 +97,7 @@ export const computeMaxOutDegree = (graph) =>
  * @returns {number} The median out-degree.
  */
 export const computeMedianOutDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "out"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "out")).median();
 
 /**
  * First quartile (Q1, the 25th percentile) of the out-degree distribution.
@@ -106,7 +106,7 @@ export const computeMedianOutDegree = (graph) =>
  * @returns {number} The first quartile of out-degrees.
  */
 export const computeQ1OutDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 25));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "out")).percentile(25);
 
 /**
  * Third quartile (Q3, the 75th percentile) of the out-degree distribution.
@@ -115,7 +115,7 @@ export const computeQ1OutDegree = (graph) =>
  * @returns {number} The third quartile of out-degrees.
  */
 export const computeQ3OutDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "out")), 75));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "out")).percentile(75);
 
 /**
  * Interquartile range (Q3 − Q1) of the out-degree distribution.
@@ -126,7 +126,7 @@ export const computeQ3OutDegree = (graph) =>
 export const computeIQROutDegree = (graph) => {
   if (graph.order === 0) return 0;
   const degrees = np.array(nodeDegrees(graph, "out"));
-  return Number(np.percentile(degrees, 75)) - Number(np.percentile(degrees, 25));
+  return degrees.percentile(75) - degrees.percentile(25);
 };
 
 /**
@@ -136,7 +136,7 @@ export const computeIQROutDegree = (graph) => {
  * @returns {number} The smallest in-degree.
  */
 export const computeMinInDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.min(np.array(nodeDegrees(graph, "in"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "in")).min();
 
 /**
  * Maximum in-degree across all nodes.
@@ -145,7 +145,7 @@ export const computeMinInDegree = (graph) =>
  * @returns {number} The largest in-degree.
  */
 export const computeMaxInDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.max(np.array(nodeDegrees(graph, "in"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "in")).max();
 
 /**
  * Median in-degree across all nodes.
@@ -154,7 +154,7 @@ export const computeMaxInDegree = (graph) =>
  * @returns {number} The median in-degree.
  */
 export const computeMedianInDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.median(np.array(nodeDegrees(graph, "in"))));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "in")).median();
 
 /**
  * First quartile (Q1, the 25th percentile) of the in-degree distribution.
@@ -163,7 +163,7 @@ export const computeMedianInDegree = (graph) =>
  * @returns {number} The first quartile of in-degrees.
  */
 export const computeQ1InDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 25));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "in")).percentile(25);
 
 /**
  * Third quartile (Q3, the 75th percentile) of the in-degree distribution.
@@ -172,7 +172,7 @@ export const computeQ1InDegree = (graph) =>
  * @returns {number} The third quartile of in-degrees.
  */
 export const computeQ3InDegree = (graph) =>
-  graph.order === 0 ? 0 : Number(np.percentile(np.array(nodeDegrees(graph, "in")), 75));
+  graph.order === 0 ? 0 : np.array(nodeDegrees(graph, "in")).percentile(75);
 
 /**
  * Interquartile range (Q3 − Q1) of the in-degree distribution.
@@ -183,7 +183,7 @@ export const computeQ3InDegree = (graph) =>
 export const computeIQRInDegree = (graph) => {
   if (graph.order === 0) return 0;
   const degrees = np.array(nodeDegrees(graph, "in"));
-  return Number(np.percentile(degrees, 75)) - Number(np.percentile(degrees, 25));
+  return degrees.percentile(75) - degrees.percentile(25);
 };
 
 /**
@@ -220,13 +220,10 @@ export const computeNetworkCentralization = (graph) => {
     Array.from({ length: n }, (_, i) => graph.inDegree(graph.nodes()[i])),
   );
 
-  // Compute the maximum centrality
-  const maxCentrality = np.max(centralities);
-
-  // 1. Subtract maxCentrality (results in negative differences)
-  // 2. Flip the sign with .neg() (or .negative()) to make them positive
+  // 1. Subtract the largest centrality (results in negative differences)
+  // 2. Flip the sign with .negative() to make them positive
   // 3. Sum the NDArray into a primitive JS number
-  const sumDiffs = centralities.subtract(maxCentrality).negative().sum();
+  const sumDiffs = centralities.subtract(centralities.max()).negative().sum();
 
   // 4. Return normalized centralization
   return sumDiffs / Math.pow(n - 1, 2);
