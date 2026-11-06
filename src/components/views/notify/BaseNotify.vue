@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
       </p>
     </div>
 
-    <div class="mt-10 flex w-full flex-col items-center gap-4 border-t border-line pt-8">
+    <div class="mt-10 flex w-full flex-col items-center gap-4">
       <BaseButton :to="to" :replace="replace" buttonVariant="solid">
         <slot name="buttonLabel" />
       </BaseButton>
