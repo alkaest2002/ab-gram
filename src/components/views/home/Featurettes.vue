@@ -23,17 +23,17 @@ const features = [
   {
     id: "free",
     title: "App gratuita",
-    text: "Nessun costo nascosto. Se vuoi, puoi lasciare una donazione libera per aiutarci a coprire le spese di hosting.",
+    text: "Gratis, nessun costo nascosto",
   },
   {
     id: "easy",
     title: "App semplice",
-    text: "Niente da installare né da configurare. Tutto funziona direttamente nel browser, in pochi passaggi, con pochi click.",
+    text: "Niente da installare, né da configurare",
   },
   {
     id: "privacy",
     title: "App attenta alla privacy",
-    text: "I tuoi dati restano sul tuo dispositivo: non raggiungono server esterni e non vengono inviati a nessuno.",
+    text: "I tuoi dati restano sul tuo dispositivo",
   },
 ];
 

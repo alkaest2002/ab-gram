@@ -25,7 +25,7 @@ const steps = [
     text: "Indica le scelte e i rifiuti di tutti i membri del gruppo.",
   },
   {
-    title: "Sociogramma",
+    title: "Report",
     text: "AB-Gram calcola, in automatico, indici sociometrici e grafici.",
   },
 ];
