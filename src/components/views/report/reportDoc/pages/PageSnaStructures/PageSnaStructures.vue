@@ -5,6 +5,9 @@
 
 <script setup>
 // --- Imports ------------
+//   -- From vue.
+import { computed } from "vue";
+
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 
@@ -42,23 +45,14 @@ const SNA_STRUCTURE_CONFIG = {
       key: "strongComponentsWithReciprocalEdges",
       label: "Componenti fortemente connesse con legami reciproci",
     },
+    {
+      key: "louvainCommunities",
+      label: "Comunità di Louvain",
+    },
   ],
 };
 
 const pageTitle = SNA_STRUCTURE_CONFIG.titles[props.typeOfSna] ?? SNA_STRUCTURE_CONFIG.titles.likes;
-
-// `structures` maps each structure type to an object exposing its `structures`
-// list (each structure being a list of member ids). A missing/empty prop
-// degrades to empty lists.
-const categories = SNA_STRUCTURE_CONFIG.categories.map((category) => ({
-  ...category,
-  structures: props.structures?.[category.key]?.structures ?? [],
-}));
-
-// Louvain communities are a partition of the group with an associated
-// modularity Q value, reported next to the section title.
-const louvainCommunities = props.structures?.louvainCommunities?.structures ?? [];
-const louvainModularity = props.structures?.louvainCommunities?.modularity ?? null;
 
 const formatQ = (value) => {
   if (value === null || value === undefined || !Number.isFinite(value)) return "—";
@@ -68,6 +62,19 @@ const formatQ = (value) => {
 // --- Composables --------
 
 // --- Computed -----------
+const categories = computed(() => {
+  return SNA_STRUCTURE_CONFIG.categories.map((category) => {
+    const isLouvain = category.key === "louvainCommunities";
+    const title = isLouvain
+      ? `${category.label} (${formatQ(props.structures?.louvainCommunities?.modularity)})`
+      : category.label;
+    return {
+      ...category,
+      structures: props.structures?.[category.key]?.structures ?? [],
+      title,
+    };
+  });
+});
 
 // --- Watchers -----------
 
@@ -87,7 +94,7 @@ const formatQ = (value) => {
         <section v-for="category in categories" :key="category.key" class="shrink-0">
           <header class="flex items-baseline justify-between border-b border-line">
             <h3 class="font-mono text-[9pt] font-medium tracking-[0.08em] text-muted uppercase">
-              {{ category.label }}
+              {{ category.title }}
             </h3>
             <span class="font-mono text-[9pt] font-semibold text-ink">
               {{ category.structures.length }}
@@ -109,34 +116,6 @@ const formatQ = (value) => {
 
           <p v-else class="pt-[2mm] font-mono text-[9pt] text-muted italic">
             nessuna struttura di questo tipo
-          </p>
-        </section>
-
-        <section class="shrink-0">
-          <header class="flex items-baseline justify-between border-b border-line">
-            <h3 class="font-mono text-[9pt] font-medium tracking-[0.08em] text-muted uppercase">
-              Comunità di Louvain ({{ formatQ(louvainModularity) }})
-            </h3>
-            <span class="font-mono text-[9pt] font-semibold text-ink">
-              {{ louvainCommunities.length }}
-            </span>
-          </header>
-
-          <div v-if="louvainCommunities.length" class="pt-[2mm]">
-            <div class="flex flex-wrap gap-[1.5mm]">
-              <span
-                v-for="(community, index) in louvainCommunities"
-                :key="`louvain-${index}`"
-                class="inline-flex items-center rounded-lg border-gray-200 bg-gray-200 px-[2.5mm] font-mono text-[9pt] font-semibold text-muted"
-                :class="{ 'py-[1mm]': community.length > 24 }"
-              >
-                {{ community.join(" · ") }}
-              </span>
-            </div>
-          </div>
-
-          <p v-else class="pt-[2mm] font-mono text-[9pt] text-muted italic">
-            nessuna comunità di questo tipo
           </p>
         </section>
       </div>
