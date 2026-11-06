@@ -22,7 +22,7 @@ export default {
     };
   },
   meta: {
-    title: "AB-Gram · Report",
+    title: "Report",
     inMenu: false,
     typeOfMenu: null,
   },
@@ -52,7 +52,7 @@ export default {
         return { name: "report" };
       },
       meta: {
-        title: "AB-Gram · Report",
+        title: "Report",
         inMenu: false,
         typeOfMenu: null,
         layout: "ReportLayout",
