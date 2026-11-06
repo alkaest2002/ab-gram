@@ -45,7 +45,7 @@ const steps = [
   <div>
     <header class="mx-auto max-w-2xl space-y-3">
       <p class="eyebrow">3 soli passaggi</p>
-      <h2 class="text-2xl">Dal gruppo al sociogramma</h2>
+      <h2 class="text-2xl">Dal gruppo al report sociometrico</h2>
     </header>
 
     <ol class="mx-auto mt-10 grid list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3">

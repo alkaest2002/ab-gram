@@ -23,7 +23,7 @@ const features = [
   {
     id: "free",
     title: "App gratuita",
-    text: "Gratis, nessun costo nascosto",
+    text: "Gratis per sempre, nessun costo nascosto",
   },
   {
     id: "easy",
@@ -52,7 +52,7 @@ const features = [
   <div class="space-y-8 text-center">
     <header class="mx-auto space-y-3">
       <p class="eyebrow">Perché AB-Gram</p>
-      <h2 class="text-2xl">Il breve manifesto</h2>
+      <h2 class="text-2xl">Un breve manifesto ideologico</h2>
     </header>
 
     <ul class="mx-auto w-full">
