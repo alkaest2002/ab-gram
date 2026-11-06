@@ -5,6 +5,9 @@
 
 <script setup>
 // --- Imports ------------
+//   -- From vue.
+import { computed } from "vue";
+
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 
@@ -59,24 +62,26 @@ const EDGE_TYPES_CONFIG = [
   },
 ];
 
-// `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
-// missing/empty prop degrades to empty lists, so every type still renders.
-const categories = EDGE_TYPES_CONFIG.map((category) => {
-  const types = category.types.map((type) => ({
-    ...type,
-    edges: toDisplayEdges(props.edgeTypes?.[type.key] ?? []),
-  }));
-
-  return {
-    ...category,
-    types,
-    total: types.reduce((sum, type) => sum + type.edges.length, 0),
-  };
-});
-
 // --- Composables --------
 
 // --- Computed -----------
+// `edgeTypes` maps each type key to the list of its `[aId, bId]` pairs. A
+// missing/empty prop degrades to empty lists, so every type still renders.
+const categories = computed(() => {
+  const withEdges = (type) => ({
+    ...type,
+    edges: toDisplayEdges(props.edgeTypes?.[type.key] ?? []),
+  });
+
+  const toCategory = (category) => {
+    const types = category.types.map(withEdges);
+    const total = types.reduce((sum, { edges }) => sum + edges.length, 0);
+
+    return { ...category, types, total };
+  };
+
+  return EDGE_TYPES_CONFIG.map(toCategory);
+});
 
 // --- Watchers -----------
 
