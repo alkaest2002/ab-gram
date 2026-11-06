@@ -4,14 +4,14 @@
 import { describe, it, expect, vi } from "vite-plus/test";
 
 // `snaPlots` builds its SVG as a plain string (no DOM), so it runs in Node and
-// inside a Web Worker alike. We only stub the force layout: `createSnaGraph`
+// inside a Web Worker alike. We only stub the force layout: `createSnaNetwork`
 // already assigns a random layout, so a no-op keeps the test fast and
 // deterministic while still leaving valid `x`/`y` coordinates in place.
 vi.mock("graphology-layout-forceatlas2", () => ({
   default: { assign: () => {} },
 }));
 
-import { createSnaGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaNetwork } from "@/analysis/sna/snaBase.js";
 import { getSnaPlot } from "@/analysis/sna/plots/snaPlots.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
@@ -22,11 +22,11 @@ const makeMember = (id, likes = [], dislikes = []) => ({
 });
 
 describe("getSnaPlot", () => {
-  it("returns a single plot for the likes graph", () => {
+  it("returns a single plot for the likes network", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
-    const likes = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const plots = getSnaPlot(likes, "#0000FF");
+    const plots = getSnaPlot(likesNetwork, "#0000FF");
 
     expect(plots).toHaveLength(1);
     expect(plots[0].typeOfPreference).toBe("likes");
@@ -35,11 +35,11 @@ describe("getSnaPlot", () => {
     expect(plots[0].svg).toContain("</svg>");
   });
 
-  it("carries the graph's preference type and accent color", () => {
+  it("carries the network's preference type and accent color", () => {
     const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
-    const dislikes = createSnaGraph(members, "dislikes");
+    const dislikesNetwork = createSnaNetwork(members, "dislikes");
 
-    const plots = getSnaPlot(dislikes, "#FF0000");
+    const plots = getSnaPlot(dislikesNetwork, "#FF0000");
 
     expect(plots).toHaveLength(1);
     expect(plots[0].typeOfPreference).toBe("dislikes");
@@ -50,9 +50,9 @@ describe("getSnaPlot", () => {
 
   it("renders a node per member and an edge per directed preference", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
-    const likes = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const plots = getSnaPlot(likes, "#0000FF");
+    const plots = getSnaPlot(likesNetwork, "#0000FF");
     const svg = plots[0].svg;
 
     // Two members => two circles and two labels.

@@ -89,7 +89,7 @@ const GROUP_LEVEL_METRIC_KEYS = [
  * and transitivity of one graph — either the "likes" or the "dislikes" graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createSnaGraph`.
+ *   by `createSnaNetwork`.
  * @returns {import("numpy-ts").NDArray}
  *   A `1` x `GROUP_LEVEL_METRIC_KEYS.length` matrix holding, in column order, the
  *   group-level metrics.
@@ -139,7 +139,7 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
  * Compute individual-level SNA metrics for every node in a preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createSnaGraph`.
+ *   by `createSnaNetwork`.
  * @returns {import("numpy-ts").NDArray}
  *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are nodes
  *   (aligned with `graph.nodes()` order) and columns are the metrics in
@@ -192,7 +192,7 @@ const computeIndividualLevelMetrics = (graph) => {
  * one row (labelled by the graph's preference type) and one column per metric.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createSnaGraph` (tagged with its `typeOfPreference`).
+ *   by `createSnaNetwork` (tagged with its `typeOfPreference`).
  * @returns {{
  *   ids: string[],
  *   metrics: string[],
@@ -227,7 +227,7 @@ export const getGroupLevelMetrics = (graph) => {
  * and return them as a plain object mirroring a pandas DataFrame.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createSnaGraph`.
+ *   by `createSnaNetwork`.
  * @returns {{
  *   ids: string[],
  *   metrics: string[],

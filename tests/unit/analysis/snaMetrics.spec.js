@@ -3,7 +3,7 @@
 
 import { describe, it, expect } from "vite-plus/test";
 
-import { createSnaGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaNetwork } from "@/analysis/sna/snaBase.js";
 import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
@@ -46,12 +46,12 @@ const INDIVIDUAL_COLUMNS = [
 
 describe("getGroupLevelMetrics", () => {
   it("computes every metric for a complete mutual triangle", () => {
-    const graph = createSnaGraph(
+    const likesNetwork = createSnaNetwork(
       [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
 
-    const result = getGroupLevelMetrics(graph);
+    const result = getGroupLevelMetrics(likesNetwork);
 
     expect(result.ids).toEqual(["likes"]);
     expect(result.metrics).toEqual(GROUP_COLUMNS);
@@ -63,12 +63,12 @@ describe("getGroupLevelMetrics", () => {
   });
 
   it("computes density and centralization for a star graph", () => {
-    const graph = createSnaGraph(
+    const likesNetwork = createSnaNetwork(
       [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
 
-    const result = getGroupLevelMetrics(graph);
+    const result = getGroupLevelMetrics(likesNetwork);
 
     const values = result.rawValuesById[0];
     const byName = Object.fromEntries(GROUP_COLUMNS.map((key, i) => [key, values[i]]));
@@ -95,9 +95,9 @@ describe("getGroupLevelMetrics", () => {
   });
 
   it("handles a single-node graph without dividing by zero", () => {
-    const graph = createSnaGraph([makeMember("a")], "likes");
+    const likesNetwork = createSnaNetwork([makeMember("a")], "likes");
 
-    const result = getGroupLevelMetrics(graph);
+    const result = getGroupLevelMetrics(likesNetwork);
 
     expect(result.rawValuesById[0]).toEqual([
       1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -107,12 +107,12 @@ describe("getGroupLevelMetrics", () => {
 
 describe("getIndividualLevelMetrics", () => {
   it("returns degree centralities for a star graph", () => {
-    const graph = createSnaGraph(
+    const likesNetwork = createSnaNetwork(
       [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
 
-    const result = getIndividualLevelMetrics(graph);
+    const result = getIndividualLevelMetrics(likesNetwork);
 
     expect(result.ids).toEqual(["a", "b", "c", "d"]);
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
@@ -140,21 +140,21 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("reports zero rows for a degenerate single-node graph", () => {
-    const graph = createSnaGraph([makeMember("a")], "likes");
+    const likesNetwork = createSnaNetwork([makeMember("a")], "likes");
 
-    const result = getIndividualLevelMetrics(graph);
+    const result = getIndividualLevelMetrics(likesNetwork);
 
     expect(result.ids).toEqual(["a"]);
     expect(result.rawValuesById).toEqual([INDIVIDUAL_COLUMNS.map(() => 0)]);
   });
 
   it("produces PageRank scores that sum to one", () => {
-    const graph = createSnaGraph(
+    const likesNetwork = createSnaNetwork(
       [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
 
-    const result = getIndividualLevelMetrics(graph);
+    const result = getIndividualLevelMetrics(likesNetwork);
     const pageRankColumn = INDIVIDUAL_COLUMNS.indexOf("PageRank");
 
     const total = result.rawValuesById.reduce((sum, row) => sum + row[pageRankColumn], 0);

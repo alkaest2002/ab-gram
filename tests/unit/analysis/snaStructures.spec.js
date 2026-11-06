@@ -3,7 +3,7 @@
 
 import { describe, it, expect } from "vite-plus/test";
 
-import { createSnaGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaNetwork } from "@/analysis/sna/snaBase.js";
 import { getSnaStructures } from "@/analysis/sna/structures/snaStructures.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
@@ -24,9 +24,9 @@ describe("getSnaStructures", () => {
       makeMember("b", ["a", "c"]),
       makeMember("c", ["a", "b"]),
     ];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const result = getSnaStructures(graph);
+    const result = getSnaStructures(likesNetwork);
 
     expect(Object.keys(result)).toEqual([...STRUCTURE_KEYS, "louvainCommunities"]);
     STRUCTURE_KEYS.forEach((key) => {
@@ -46,7 +46,7 @@ describe("getSnaStructures", () => {
       makeMember("b", ["a", "c"]),
       makeMember("c", ["a", "b"]),
     ];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
     const {
       asymmetricDyads,
@@ -55,7 +55,7 @@ describe("getSnaStructures", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaStructures(graph);
+    } = getSnaStructures(likesNetwork);
 
     expect(asymmetricDyads.structures).toEqual([]);
     expect(symmetricDyads.structures).toEqual([
@@ -71,9 +71,9 @@ describe("getSnaStructures", () => {
 
   it("separates asymmetric and symmetric dyads", () => {
     const members = [makeMember("a", ["b", "c"]), makeMember("b", ["a"]), makeMember("c", [])];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const { asymmetricDyads, symmetricDyads } = getSnaStructures(graph);
+    const { asymmetricDyads, symmetricDyads } = getSnaStructures(likesNetwork);
 
     expect(asymmetricDyads.structures).toEqual([["a", "c"]]);
     expect(symmetricDyads.structures).toEqual([["a", "b"]]);
@@ -86,7 +86,7 @@ describe("getSnaStructures", () => {
       makeMember("c", ["d"]),
       makeMember("d", []),
     ];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
     const {
       asymmetricDyads,
@@ -95,7 +95,7 @@ describe("getSnaStructures", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaStructures(graph);
+    } = getSnaStructures(likesNetwork);
 
     expect(asymmetricDyads.structures).toEqual([
       ["a", "b"],
@@ -118,7 +118,7 @@ describe("getSnaStructures", () => {
       makeMember("c", ["b", "d"]),
       makeMember("d", ["a", "c"]),
     ];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
     const {
       asymmetricDyads,
@@ -127,7 +127,7 @@ describe("getSnaStructures", () => {
       strongComponentsWithReciprocalEdges,
       strongComponents,
       weakComponents,
-    } = getSnaStructures(graph);
+    } = getSnaStructures(likesNetwork);
 
     expect(asymmetricDyads.structures).toEqual([]);
     expect(symmetricDyads.structures).toEqual([
@@ -148,9 +148,9 @@ describe("getSnaStructures", () => {
       makeMember("b", ["a", "c"]),
       makeMember("c", ["a", "b"]),
     ];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const { louvainCommunities } = getSnaStructures(graph, { seed: 42, runs: 5 });
+    const { louvainCommunities } = getSnaStructures(likesNetwork, { seed: 42, runs: 5 });
 
     // A partition: every member appears exactly once across the communities.
     expect(louvainCommunities.structures.flat().sort()).toEqual(["a", "b", "c"]);
@@ -159,9 +159,9 @@ describe("getSnaStructures", () => {
 
   it("returns singleton communities and q = 0 for an edgeless graph", () => {
     const members = [makeMember("a"), makeMember("b"), makeMember("c")];
-    const graph = createSnaGraph(members, "likes");
+    const likesNetwork = createSnaNetwork(members, "likes");
 
-    const { louvainCommunities } = getSnaStructures(graph);
+    const { louvainCommunities } = getSnaStructures(likesNetwork);
 
     expect(louvainCommunities.modularity).toBe(0);
     expect(louvainCommunities.structures).toEqual([["a"], ["b"], ["c"]]);

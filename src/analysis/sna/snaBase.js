@@ -46,32 +46,32 @@ function addMemberNodes(graph, members) {
  * @returns {import("graphology").DirectedGraph} A directed graph whose nodes
  *   are the members and whose edges connect each member to the members they link to
  */
-export const createSnaGraph = (members, typeOfPreference) => {
-  // Create directed graph.
-  const graph = new DirectedGraph();
+export const createSnaNetwork = (members, typeOfPreference) => {
+  // Create directed network.
+  const network = new DirectedGraph();
 
-  // Tag the graph with its preference type so consumers (metrics, structures,
+  // Tag the network with its preference type so consumers (metrics, structures,
   // plots) can report which of "likes"/"dislikes" it represents.
-  graph.setAttribute("typeOfPreference", typeOfPreference);
+  network.setAttribute("typeOfPreference", typeOfPreference);
 
-  // Add nodes to graph.
-  addMemberNodes(graph, members);
+  // Add nodes to network.
+  addMemberNodes(network, members);
 
-  // Add edges to graph.
+  // Add edges to network.
   members.forEach((member) => {
     member[typeOfPreference].forEach((typedId) => {
-      graph.mergeDirectedEdge(member.id, typedId);
+      network.mergeDirectedEdge(member.id, typedId);
     });
   });
 
   // Mark edges as mutual if it's the case.
-  graph.forEachDirectedEdge((edge, attributes, source, target) => {
-    const isMutual = graph.hasDirectedEdge(target, source);
-    graph.setEdgeAttribute(edge, "isMutual", isMutual);
+  network.forEachDirectedEdge((edge, attributes, source, target) => {
+    const isMutual = network.hasDirectedEdge(target, source);
+    network.setEdgeAttribute(edge, "isMutual", isMutual);
   });
 
   // Assign a random layout as the initial node coordinates.
-  random.assign(graph);
+  random.assign(network);
 
-  return graph;
+  return network;
 };
