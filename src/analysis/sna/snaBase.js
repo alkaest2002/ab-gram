@@ -46,7 +46,7 @@ function addMemberNodes(graph, members) {
  * @returns {import("graphology").DirectedGraph} A directed graph whose nodes
  *   are the members and whose edges connect each member to the members they link to
  */
-export const createLikesGraph = (members, typeOfPreference) => {
+export const createSnaGraph = (members, typeOfPreference) => {
   // Create directed graph.
   const graph = new DirectedGraph();
 

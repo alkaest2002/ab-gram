@@ -9,12 +9,12 @@ import { filterBySize, forEachMutualEdge, sortStructures } from "./base.js";
 /**
  * Compute the strongly connected groups that only use reciprocal edges.
  *
- * The graph is reduced to its reciprocal edges — the ones `createLikesGraph`
+ * The graph is reduced to its reciprocal edges — the ones `createSnaGraph`
  * flagged with `isMutual` — then its strongly connected components are computed.
  * Only components of at least `MIN_STRUCTURE_SIZE` members are returned.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
- *   `createLikesGraph`.
+ *   `createSnaGraph`.
  * @returns {{ structures: string[][] }} The components, each as a list of member ids.
  */
 export const computeStrongComponentsWithReciprocalEdges = (graph) => {

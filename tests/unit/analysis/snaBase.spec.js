@@ -4,14 +4,14 @@
 import { describe, it, expect } from "vite-plus/test";
 import { DirectedGraph } from "graphology";
 
-import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaGraph } from "@/analysis/sna/snaBase.js";
 import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
-describe("createLikesGraph", () => {
+describe("createSnaGraph", () => {
   it("adds a node per member keyed by id and labelled with their name", () => {
     const members = getHogwartsMembers();
 
-    const graph = createLikesGraph(members, "likes");
+    const graph = createSnaGraph(members, "likes");
 
     expect(graph.order).toBe(members.length);
     expect(graph.hasNode("A")).toBe(true);
@@ -21,13 +21,13 @@ describe("createLikesGraph", () => {
   });
 
   it("records the preference type as a graph attribute", () => {
-    const graph = createLikesGraph(getHogwartsMembers(), "dislikes");
+    const graph = createSnaGraph(getHogwartsMembers(), "dislikes");
 
     expect(graph.getAttribute("typeOfPreference")).toBe("dislikes");
   });
 
   it("adds a directed edge from each member to each chosen member", () => {
-    const graph = createLikesGraph(getHogwartsMembers(), "likes");
+    const graph = createSnaGraph(getHogwartsMembers(), "likes");
 
     // The roster contains 38 directed likes in total.
     expect(graph.size).toBe(38);
@@ -42,7 +42,7 @@ describe("createLikesGraph", () => {
   });
 
   it("marks mutual edges with isMutual and one-way edges without", () => {
-    const graph = createLikesGraph(getHogwartsMembers(), "likes");
+    const graph = createSnaGraph(getHogwartsMembers(), "likes");
 
     // A and B like each other, and A and E also like each other back.
     expect(graph.getEdgeAttribute("A", "B", "isMutual")).toBe(true);
@@ -51,7 +51,7 @@ describe("createLikesGraph", () => {
   });
 
   it("builds an independent graph for the dislikes preference", () => {
-    const graph = createLikesGraph(getHogwartsMembers(), "dislikes");
+    const graph = createSnaGraph(getHogwartsMembers(), "dislikes");
 
     // The roster contains 30 directed dislikes in total.
     expect(graph.size).toBe(30);
@@ -62,7 +62,7 @@ describe("createLikesGraph", () => {
   });
 
   it("returns a valid graphology DirectedGraph instance", () => {
-    const graph = createLikesGraph(getHogwartsMembers(), "likes");
+    const graph = createSnaGraph(getHogwartsMembers(), "likes");
 
     expect(graph).toBeInstanceOf(DirectedGraph);
   });

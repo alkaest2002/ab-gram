@@ -7,12 +7,12 @@ import { forEachMutualEdge } from "./base.js";
  * Compute the asymmetric dyads: pairs of members with a one-way relationship.
  *
  * An asymmetric dyad is an unordered pair `[a, b]` such that exactly one of
- * `a → b` and `b → a` exists. `createLikesGraph` marks every directed edge with
+ * `a → b` and `b → a` exists. `createSnaGraph` marks every directed edge with
  * `isMutual` when its reverse edge exists, so each non-mutual, non-loop edge
  * represents exactly one asymmetric dyad.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
- *   `createLikesGraph`.
+ *   `createSnaGraph`.
  * @returns {{ structures: string[][] }} The dyads, each an `[a, b]` pair.
  */
 export const computeAsymmetricDyads = (graph) => {
@@ -32,13 +32,13 @@ export const computeAsymmetricDyads = (graph) => {
  * relationship.
  *
  * A symmetric dyad is an unordered pair `[a, b]` such that both `a → b` and
- * `b → a` exist. `createLikesGraph` flags every reciprocal edge with `isMutual`,
+ * `b → a` exist. `createSnaGraph` flags every reciprocal edge with `isMutual`,
  * so a directed edge contributes a dyad when `isMutual` is set. Keeping only the
  * edge whose source sorts before its target guarantees each pair is emitted
  * exactly once, with a deterministic member order.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
- *   `createLikesGraph`.
+ *   `createSnaGraph`.
  * @returns {{ structures: string[][] }} The dyads, each an `[a, b]` pair.
  */
 export const computeSymmetricDyads = (graph) => {

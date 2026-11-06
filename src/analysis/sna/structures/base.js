@@ -29,12 +29,12 @@ export const filterBySize = (structures) =>
 /**
  * Visit every reciprocal edge of the graph.
  *
- * A reciprocal edge is a directed edge that `createLikesGraph` flagged with
+ * A reciprocal edge is a directed edge that `createSnaGraph` flagged with
  * `isMutual`. Self-loops are never visited: a member cannot form a
  * relationship with itself.
  *
  * @param {import("graphology").DirectedGraph} graph - The likes graph built by
- *   `createLikesGraph`.
+ *   `createSnaGraph`.
  * @param {(source: string, target: string) => void} callback - Called once per
  *   reciprocal, non-loop edge.
  */

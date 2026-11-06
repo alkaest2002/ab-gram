@@ -13,7 +13,7 @@ import {
 } from "./sna/metrics/snaMetrics.js";
 import { getSnaStructures } from "./sna/structures/snaStructures.js";
 import { getSnaPlot } from "./sna/plots/snaPlots.js";
-import { createLikesGraph } from "./sna/snaBase.js";
+import { createSnaGraph } from "./sna/snaBase.js";
 import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
 
 /**
@@ -55,8 +55,8 @@ export const getSociogramAnalysis = (members) => {
   const edgeTypes = getEdgeTypes(adjLikes, adjDislikes, memberIndices);
 
   // Build the likes and dislikes directed graphs once. SNA and MORENO consume them.
-  const likesGraph = createLikesGraph(members, "likes");
-  const dislikesGraph = createLikesGraph(members, "dislikes");
+  const likesGraph = createSnaGraph(members, "likes");
+  const dislikesGraph = createSnaGraph(members, "dislikes");
 
   /////////////////////////////////////////////////////////////////////////////////////////
   // MORENO

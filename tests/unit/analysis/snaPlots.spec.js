@@ -4,14 +4,14 @@
 import { describe, it, expect, vi } from "vite-plus/test";
 
 // `snaPlots` builds its SVG as a plain string (no DOM), so it runs in Node and
-// inside a Web Worker alike. We only stub the force layout: `createLikesGraph`
+// inside a Web Worker alike. We only stub the force layout: `createSnaGraph`
 // already assigns a random layout, so a no-op keeps the test fast and
 // deterministic while still leaving valid `x`/`y` coordinates in place.
 vi.mock("graphology-layout-forceatlas2", () => ({
   default: { assign: () => {} },
 }));
 
-import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaGraph } from "@/analysis/sna/snaBase.js";
 import { getSnaPlot } from "@/analysis/sna/plots/snaPlots.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
@@ -24,7 +24,7 @@ const makeMember = (id, likes = [], dislikes = []) => ({
 describe("getSnaPlot", () => {
   it("returns a single plot for the likes graph", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
-    const likes = createLikesGraph(members, "likes");
+    const likes = createSnaGraph(members, "likes");
 
     const plots = getSnaPlot(likes, "#0000FF");
 
@@ -37,7 +37,7 @@ describe("getSnaPlot", () => {
 
   it("carries the graph's preference type and accent color", () => {
     const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
-    const dislikes = createLikesGraph(members, "dislikes");
+    const dislikes = createSnaGraph(members, "dislikes");
 
     const plots = getSnaPlot(dislikes, "#FF0000");
 
@@ -50,7 +50,7 @@ describe("getSnaPlot", () => {
 
   it("renders a node per member and an edge per directed preference", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
-    const likes = createLikesGraph(members, "likes");
+    const likes = createSnaGraph(members, "likes");
 
     const plots = getSnaPlot(likes, "#0000FF");
     const svg = plots[0].svg;

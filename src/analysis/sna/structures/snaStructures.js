@@ -14,7 +14,7 @@ import { computeLouvainCommunities } from "./louvain.js";
  * Compute the SNA structures of a directed preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
- *   by `createLikesGraph`.
+ *   by `createSnaGraph`.
  * @param {{ runs?: number, seed?: number }} [options] - Louvain options
  *   (`runs` restarts, `seed` for reproducible results).
  * @returns {{

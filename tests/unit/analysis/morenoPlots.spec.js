@@ -3,7 +3,7 @@
 
 import { describe, it, expect, vi } from "vite-plus/test";
 
-import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaGraph } from "@/analysis/sna/snaBase.js";
 import {
   buildMorenoEgoPlot,
   getNodePaths,
@@ -31,8 +31,8 @@ describe("morenoPlots", () => {
     makeMember("g", "Grace", ["a"]),
   ];
 
-  const graph = createLikesGraph(members, "likes");
-  const dislikesGraph = createLikesGraph(members, "dislikes");
+  const graph = createSnaGraph(members, "likes");
+  const dislikesGraph = createSnaGraph(members, "dislikes");
 
   describe("getNodePaths", () => {
     it("classifies every node by its shortest directed path length", () => {
@@ -66,8 +66,8 @@ describe("morenoPlots", () => {
         makeMember("b", "Bob", ["c"], []),
         makeMember("c", "Carol", [], []),
       ];
-      const likes = createLikesGraph(dislikeMembers, "likes");
-      const dislikes = createLikesGraph(dislikeMembers, "dislikes");
+      const likes = createSnaGraph(dislikeMembers, "likes");
+      const dislikes = createSnaGraph(dislikeMembers, "dislikes");
 
       const paths = getNodePaths(likes, dislikes);
 
@@ -111,8 +111,8 @@ describe("morenoPlots", () => {
       makeMember("f", "Frank", [], []),
     ];
 
-    const likesGraph = createLikesGraph(egoMembers, "likes");
-    const dislikesGraph = createLikesGraph(egoMembers, "dislikes");
+    const likesGraph = createSnaGraph(egoMembers, "likes");
+    const dislikesGraph = createSnaGraph(egoMembers, "dislikes");
     const nodePaths = getNodePaths(likesGraph, dislikesGraph);
 
     it("places nodes on rings by reachability and colors them by priority", () => {
@@ -197,8 +197,8 @@ describe("morenoPlots", () => {
         makeMember("e", "Eve", ["a"]),
         makeMember("f", "Frank", ["a"]),
       ];
-      const likes = createLikesGraph(members, "likes");
-      const dislikes = createLikesGraph(members, "dislikes");
+      const likes = createSnaGraph(members, "likes");
+      const dislikes = createSnaGraph(members, "dislikes");
 
       // Ring 1 (mutuality, 5 nodes) consumes the first call; the four empty
       // rings consume the rest. A phase of 0.5 within one slot keeps the ring
@@ -237,8 +237,8 @@ describe("morenoPlots", () => {
         makeMember("b", "Bob", [], []),
         makeMember("c", "Carol", [], ["a"]),
       ];
-      const likes = createLikesGraph(outgoingMembers, "likes");
-      const dislikes = createLikesGraph(outgoingMembers, "dislikes");
+      const likes = createSnaGraph(outgoingMembers, "likes");
+      const dislikes = createSnaGraph(outgoingMembers, "dislikes");
 
       const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
@@ -257,8 +257,8 @@ describe("morenoPlots", () => {
         makeMember("b", "Bob", [], []),
         makeMember("c", "Carol", [], []),
       ];
-      const likes = createLikesGraph(dislikeMembers, "likes");
-      const dislikes = createLikesGraph(dislikeMembers, "dislikes");
+      const likes = createSnaGraph(dislikeMembers, "likes");
+      const dislikes = createSnaGraph(dislikeMembers, "dislikes");
 
       const { svg } = buildMorenoEgoPlot("a", likes, dislikes, getNodePaths(likes, dislikes));
 
@@ -291,8 +291,8 @@ describe("morenoPlots", () => {
         makeMember("b", "Bob", ["c"], []),
         makeMember("c", "Carol", [], []),
       ];
-      const sparseLikes = createLikesGraph(sparseMembers, "likes");
-      const sparseDislikes = createLikesGraph(sparseMembers, "dislikes");
+      const sparseLikes = createSnaGraph(sparseMembers, "likes");
+      const sparseDislikes = createSnaGraph(sparseMembers, "dislikes");
 
       const { svg } = buildMorenoEgoPlot(
         "a",
@@ -350,8 +350,8 @@ describe("morenoPlots", () => {
         makeMember("b", "Bob", ["c"], []),
         makeMember("c", "Carol", [], []),
       ];
-      const likes = createLikesGraph(members, "likes");
-      const dislikes = createLikesGraph(members, "dislikes");
+      const likes = createSnaGraph(members, "likes");
+      const dislikes = createSnaGraph(members, "dislikes");
 
       // Ring 1 (mutuality, empty) consumes the first call; ring 2 (oneHop, b)
       // gets 0.5 turns and ring 3 (twoHops, c) gets 0.25 turns.
@@ -393,8 +393,8 @@ describe("morenoPlots", () => {
   describe("getMorenoEgoPlots", () => {
     it("builds one cached plot per member", () => {
       const members = [makeMember("a", "Alice", ["b"], []), makeMember("b", "Bob", [], ["a"])];
-      const likes = createLikesGraph(members, "likes");
-      const dislikes = createLikesGraph(members, "dislikes");
+      const likes = createSnaGraph(members, "likes");
+      const dislikes = createSnaGraph(members, "dislikes");
 
       const plots = getMorenoEgoPlots(members, likes, dislikes);
 

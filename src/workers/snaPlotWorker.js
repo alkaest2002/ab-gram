@@ -13,14 +13,14 @@
  * Outbound message: { svg } or { error: string } when something went wrong.
  */
 
-import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaGraph } from "@/analysis/sna/snaBase.js";
 import { getSnaPlot } from "@/analysis/sna/plots/snaPlots.js";
 
 self.onmessage = (event) => {
   try {
     const { members, accentColor, config } = event.data ?? {};
     const { typeOfPreference, ...forceAtlas2Config } = config;
-    const graph = createLikesGraph(members, typeOfPreference);
+    const graph = createSnaGraph(members, typeOfPreference);
     const plot = getSnaPlot(graph, accentColor, forceAtlas2Config)[0];
     self.postMessage({ svg: plot.svg });
   } catch (error) {

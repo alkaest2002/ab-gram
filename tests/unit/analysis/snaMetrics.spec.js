@@ -3,7 +3,7 @@
 
 import { describe, it, expect } from "vite-plus/test";
 
-import { createLikesGraph } from "@/analysis/sna/snaBase.js";
+import { createSnaGraph } from "@/analysis/sna/snaBase.js";
 import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
@@ -46,7 +46,7 @@ const INDIVIDUAL_COLUMNS = [
 
 describe("getGroupLevelMetrics", () => {
   it("computes every metric for a complete mutual triangle", () => {
-    const graph = createLikesGraph(
+    const graph = createSnaGraph(
       [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
@@ -63,7 +63,7 @@ describe("getGroupLevelMetrics", () => {
   });
 
   it("computes density and centralization for a star graph", () => {
-    const graph = createLikesGraph(
+    const graph = createSnaGraph(
       [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
@@ -95,7 +95,7 @@ describe("getGroupLevelMetrics", () => {
   });
 
   it("handles a single-node graph without dividing by zero", () => {
-    const graph = createLikesGraph([makeMember("a")], "likes");
+    const graph = createSnaGraph([makeMember("a")], "likes");
 
     const result = getGroupLevelMetrics(graph);
 
@@ -107,7 +107,7 @@ describe("getGroupLevelMetrics", () => {
 
 describe("getIndividualLevelMetrics", () => {
   it("returns degree centralities for a star graph", () => {
-    const graph = createLikesGraph(
+    const graph = createSnaGraph(
       [makeMember("a", []), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d", ["a"])],
       "likes",
     );
@@ -140,7 +140,7 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("reports zero rows for a degenerate single-node graph", () => {
-    const graph = createLikesGraph([makeMember("a")], "likes");
+    const graph = createSnaGraph([makeMember("a")], "likes");
 
     const result = getIndividualLevelMetrics(graph);
 
@@ -149,7 +149,7 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("produces PageRank scores that sum to one", () => {
-    const graph = createLikesGraph(
+    const graph = createSnaGraph(
       [makeMember("a", ["b", "c"]), makeMember("b", ["a", "c"]), makeMember("c", ["a", "b"])],
       "likes",
     );
