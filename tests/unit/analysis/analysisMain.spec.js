@@ -41,6 +41,8 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaDislikesPlots");
+    expect(result).toHaveProperty("snaLikesNetwork");
+    expect(result).toHaveProperty("snaDislikesNetwork");
 
     // Eleven members flow through every step, and the roster contains both likes
     // and dislikes, so both SNA pipelines are populated.
@@ -79,6 +81,12 @@ describe("getSociogramAnalysis", () => {
     expect(result.snaDislikesPlots).toHaveLength(1);
     expect(result.snaDislikesPlots[0].typeOfPreference).toBe("dislikes");
     expect(result.snaDislikesPlots[0].accentColor).toBe("#FF0000");
+
+    // Both directed graphs are returned.
+    expect(result.snaLikesNetwork.getAttribute("typeOfPreference")).toBe("likes");
+    expect(result.snaLikesNetwork.order).toBe(11);
+    expect(result.snaDislikesNetwork.getAttribute("typeOfPreference")).toBe("dislikes");
+    expect(result.snaDislikesNetwork.order).toBe(11);
   });
 
   it("classifies the mutual like between the two members", () => {
@@ -143,12 +151,22 @@ describe("getSociogramAnalysis", () => {
       snaDislikesStructures,
       snaDislikesIndividualLevelMetric,
       snaDislikesPlots,
+      snaLikesNetwork,
+      snaDislikesNetwork,
     } = getSociogramAnalysis(members);
 
     expect(snaDislikesGroupLevelMetrics).toEqual({});
     expect(snaDislikesStructures).toEqual({});
     expect(snaDislikesIndividualLevelMetric).toEqual({});
     expect(snaDislikesPlots).toEqual([]);
+
+    // Both networks are still returned even when dislikes graph has no edges.
+    expect(snaLikesNetwork.getAttribute("typeOfPreference")).toBe("likes");
+    expect(snaLikesNetwork.order).toBe(2);
+    expect(snaLikesNetwork.size).toBe(2);
+    expect(snaDislikesNetwork.getAttribute("typeOfPreference")).toBe("dislikes");
+    expect(snaDislikesNetwork.order).toBe(2);
+    expect(snaDislikesNetwork.size).toBe(0);
   });
 
   it("computes dislikes SNA metrics, structures and plots when dislikes exist", () => {
@@ -184,6 +202,24 @@ describe("getSociogramAnalysis", () => {
     expect(snaDislikesPlots).toHaveLength(1);
     expect(snaDislikesPlots[0].typeOfPreference).toBe("dislikes");
     expect(snaDislikesPlots[0].accentColor).toBe("#FF0000");
+  });
+
+  it("returns both directed networks with correct preference types", () => {
+    const members = [makeMember("a", ["b"], ["b"]), makeMember("b", ["a"], ["a"])];
+
+    const { snaLikesNetwork, snaDislikesNetwork } = getSociogramAnalysis(members);
+
+    expect(snaLikesNetwork.getAttribute("typeOfPreference")).toBe("likes");
+    expect(snaLikesNetwork.order).toBe(2);
+    expect(snaLikesNetwork.size).toBe(2);
+    expect(snaLikesNetwork.hasDirectedEdge("a", "b")).toBe(true);
+    expect(snaLikesNetwork.hasDirectedEdge("b", "a")).toBe(true);
+
+    expect(snaDislikesNetwork.getAttribute("typeOfPreference")).toBe("dislikes");
+    expect(snaDislikesNetwork.order).toBe(2);
+    expect(snaDislikesNetwork.size).toBe(2);
+    expect(snaDislikesNetwork.hasDirectedEdge("a", "b")).toBe(true);
+    expect(snaDislikesNetwork.hasDirectedEdge("b", "a")).toBe(true);
   });
 
   it("produces a likes plot with the blue accent color", () => {
