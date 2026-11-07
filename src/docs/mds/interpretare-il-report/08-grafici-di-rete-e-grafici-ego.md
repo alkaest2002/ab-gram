@@ -36,11 +36,11 @@ sotto il grafico principale.
 
 La disposizione è calcolata con un algoritmo di posizionamento force-directed (a forze simulate), che tratta la rete come un sistema fisico: i nodi si comportano come particelle che si respingono a vicenda, mentre i collegamenti agiscono come molle che attirano i nodi connessi. A partire da una configurazione iniziale casuale, il sistema si evolve iterativamente fino a raggiungere uno stato di equilibrio, in cui le forze di attrazione e repulsione si bilanciano. Il risultato è che i membri collegati tra loro tendono ad avvicinarsi e i sottogruppi molto connessi appaiono come gruppi di nodi vicini.
 
-È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete.
+**È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete**.
 
 Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafico, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
 
-Va inoltre tenuto presente che lo spazio topologico del grafico non coincide necessariamente con lo spazio psico-sociale del gruppo. La posizione dei nodi, la vicinanza o la lontananza apparente tra i membri e la forma dei sottogruppi sono il risultato di un algoritmo di disegno, non una rappresentazione diretta della qualità, dell'intensità o della natura delle relazioni reali. Due membri possono apparire vicini soltanto per effetto del layout, oppure un nodo periferico può occupare una posizione centrale nel gruppo reale. Occorre quindi la massima cautela nel derivare inferenze forti dalle figure: i grafici vanno considerati uno strumento esplorativo, da affiancare e verificare con le misure quantitative e con la conoscenza qualitativa del gruppo.
+**Va inoltre tenuto presente che lo spazio topologico del grafico non coincide necessariamente con lo spazio psico-sociale del gruppo**. La posizione dei nodi, la vicinanza o la lontananza apparente tra i membri e la forma dei sottogruppi sono il risultato di un algoritmo di disegno, non una rappresentazione diretta della qualità, dell'intensità o della natura delle relazioni reali. Due membri possono apparire vicini soltanto per effetto del layout, oppure un nodo periferico può occupare una posizione centrale nel gruppo reale. Occorre quindi la massima cautela nel derivare inferenze forti dalle figure: i grafici vanno considerati uno strumento esplorativo, da affiancare e verificare con le misure quantitative e con la conoscenza qualitativa del gruppo.
 
 ### 1.5 Personalizzare il grafico
 
@@ -62,12 +62,7 @@ I comandi disponibili sono:
   N scelte (o rifiuti).
 
 È inoltre possibile fare clic sui cerchietti dei singoli nodi per attivarne o
-disattivarne l'evidenziazione in modo indipendente. I comandi sopra e i
-cerchietti sono coordinati: selezionare un comando aggiorna i cerchietti, e
-fare clic su un cerchietto passa alla modalità manuale.
-
-L'evidenziazione è immediata e non modifica la disposizione dei nodi: si
-limita a cambiare i colori direttamente nel grafico, senza ricalcolarlo.
+disattivarne l'evidenziazione in modo indipendente.
 
 #### Rigenerare la disposizione
 
@@ -128,6 +123,6 @@ I piccoli triangoli accanto a un nodo indicano la direzione del legame:
 
 ## 3 Come leggere i due grafici
 
-Usa il sociogramma di rete per avere il quadro d'insieme del gruppo, poi passa
+Usa il grafico di rete (scelte o rifiuti) per avere il quadro d'insieme del gruppo, poi passa
 ai grafici ego per approfondire la posizione di ciascun membro rispetto a tutti
 gli altri.
