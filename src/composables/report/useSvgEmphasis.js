@@ -63,9 +63,15 @@ export function useSvgEmphasis(containerRef, dimmedNodes, svgContent) {
       // SVG has no z-index: paint order follows document order. Re-append
       // emphasized elements after dimmed ones so they are painted on top.
       // Order: dimmed edges → emphasized edges → dimmed nodes → emphasized nodes.
+      //
+      // Only the connected nodes (direct `<svg>` children) are reordered. The
+      // isolated nodes live inside a translated `<g>`; re-appending them to the
+      // root would drop that transform and shift them up into the graph.
       if (dimmed.size > 0) {
         const edges = [...svg.querySelectorAll("[data-source]")];
-        const nodes = [...svg.querySelectorAll("circle[data-node]")];
+        const nodes = [...svg.querySelectorAll("circle[data-node]")].filter(
+          (circle) => circle.parentNode === svg,
+        );
 
         for (const edge of edges) {
           if (!edge.classList.contains("is-dimmed")) svg.appendChild(edge);
