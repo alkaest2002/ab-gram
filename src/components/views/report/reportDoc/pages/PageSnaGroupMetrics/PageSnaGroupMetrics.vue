@@ -14,7 +14,7 @@ import { createSnaPlotWorker } from "@/workers/workerHelpers";
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 import SnaPlot from "./SnaPlot.vue";
-import SnaRegeneratePlotModal from "./SnaRegeneratePlotModal.vue";
+import SnaCustomizePlotModal from "./SnaCustomizePlotModal.vue";
 import SnaMetrics from "./SnaMetrics.vue";
 
 // --- Props --------------
@@ -213,7 +213,7 @@ onBeforeUnmount(() => {
 
       <!-- Regeneration modal: teleported to <body> by the component so it
                  escapes the fixed-height, overflow-hidden report page. -->
-      <SnaRegeneratePlotModal
+      <SnaCustomizePlotModal
         :open="isModalOpen"
         :regenerating="isRegenerating"
         :error="error"
