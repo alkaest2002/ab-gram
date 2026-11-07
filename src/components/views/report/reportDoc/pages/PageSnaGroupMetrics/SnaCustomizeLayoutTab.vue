@@ -93,21 +93,21 @@ const gravity = computed({
       <BaseClickButton
         v-if="regenerating"
         class="flex-1 px-3 py-1 text-[9pt]"
-        button-variant="red"
+        buttonVariant="red"
         @click="emit('stop')"
       >
         Interrompi
       </BaseClickButton>
       <template v-else>
-        <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" type="submit" button-variant="solid">
-          Rigenera grafico
-        </BaseClickButton>
         <BaseClickButton
           class="flex-1 px-3 py-1 text-[9pt]"
-          button-variant="outline"
+          buttonVariant="outline"
           @click="emit('close')"
         >
           Annulla
+        </BaseClickButton>
+        <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" type="submit" buttonVariant="solid">
+          Rigenera grafico
         </BaseClickButton>
       </template>
     </div>

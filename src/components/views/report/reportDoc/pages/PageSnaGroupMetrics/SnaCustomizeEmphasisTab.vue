@@ -126,17 +126,17 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
     <div class="flex shrink-0 gap-3 pt-5">
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
-        button-variant="solid"
-        @click="emit('close')"
-      >
-        Mostra grafico
-      </BaseClickButton>
-      <BaseClickButton
-        class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="outline"
         @click="emit('close')"
       >
         Annulla
+      </BaseClickButton>
+      <BaseClickButton
+        class="flex-1 px-3 py-1 text-[9pt]"
+        button-variant="solid"
+        @click="emit('close')"
+      >
+        Mostra grafico
       </BaseClickButton>
     </div>
   </div>
