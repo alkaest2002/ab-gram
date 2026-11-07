@@ -148,17 +148,17 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
 }
 
 /* De-emphasized (dimmed) nodes and edges: the `.is-dimmed` class is toggled by
-   the `useSvgEmphasis` composable. Circles and lines get a light gray; labels
-   switch to a darker gray so they stay readable against the lighter background. */
+   the `useSvgEmphasis` composable. Circles get a light gray and labels switch
+   to a darker gray; edges (and their arrowheads) become fully transparent. */
 .plot-svg :deep(circle.is-dimmed) {
-  fill: #ffffff;
-  stroke: #d4d4d4;
+  fill: #cecece;
+  stroke: #cecece;
   stroke-width: 1;
 }
 .plot-svg :deep(line.is-dimmed) {
-  stroke: #d4d4d4;
+  opacity: 0;
 }
 .plot-svg :deep(text.is-dimmed) {
-  fill: #737373;
+  fill: #333;
 }
 </style>

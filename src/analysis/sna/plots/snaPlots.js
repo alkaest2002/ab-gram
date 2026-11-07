@@ -35,9 +35,10 @@ const NODE_LABEL_COLOR = "#FFFFFF";
 // Isolated nodes are drawn in black.
 const ISOLATED_NODE_COLOR = "#000000";
 
-// Dimmed (de-emphasized) arrowhead markers use a light gray that matches the
-// CSS `.is-dimmed` stroke color applied by `useSvgEmphasis`.
-const DIMMED_COLOR = "#DDD";
+// Dimmed (de-emphasized) arrowhead markers are transparent. The dimmed edge
+// line itself is hidden via `.is-dimmed { opacity: 0 }` (see `useSvgEmphasis`),
+// and a transparent marker ensures the arrowhead never shows either.
+const DIMMED_COLOR = "transparent";
 
 // Counter used to keep arrowhead marker ids unique when several plots are
 // embedded in the same document.

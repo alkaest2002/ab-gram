@@ -86,7 +86,11 @@ export function useNodeEmphasis(nodeInfo) {
   function toggleNode(id) {
     activeFilter.value = "custom";
     const next = new Set(emphasizedNodes.value);
-    next.has(id) ? next.delete(id) : next.add(id);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
     emphasizedNodes.value = next;
   }
 
