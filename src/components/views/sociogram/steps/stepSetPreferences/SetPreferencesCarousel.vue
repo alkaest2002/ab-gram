@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 defineProps({
@@ -44,14 +44,14 @@ defineEmits(["carousel-previous", "carousel-next"]);
 
 <template>
   <div class="flex items-center justify-between gap-4 rounded-lg border border-line p-4">
-    <BaseButton
-      buttonVariant="outline"
+    <BaseClickButton
+      button-variant="outline"
       :disabled="!canGoPrevious"
       aria-label="Membro precedente"
       @click="$emit('carousel-previous')"
     >
       &#8249;
-    </BaseButton>
+    </BaseClickButton>
 
     <div class="min-w-0 flex-1 text-center">
       <p class="eyebrow">
@@ -62,13 +62,13 @@ defineEmits(["carousel-previous", "carousel-next"]);
       </p>
     </div>
 
-    <BaseButton
-      buttonVariant="outline"
+    <BaseClickButton
+      button-variant="outline"
       :disabled="!canGoNext"
       aria-label="Membro successivo"
       @click="$emit('carousel-next')"
     >
       &#8250;
-    </BaseButton>
+    </BaseClickButton>
   </div>
 </template>

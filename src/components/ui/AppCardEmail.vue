@@ -8,7 +8,7 @@
 //   -- From components.
 import EmailIcon from "@/components/ui/icons/EmailIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 defineProps({
@@ -49,12 +49,12 @@ const openEmail = () => {
     possibile.
 
     <template #actions>
-      <BaseButton :buttonVariant="buttonVariant" @click="openEmail">
+      <BaseClickButton :button-variant="buttonVariant" @click="openEmail">
         <template #icon>
           <EmailIcon size="size-4" />
         </template>
         info@ab-gram.com
-      </BaseButton>
+      </BaseClickButton>
     </template>
   </BaseCard>
 </template>

@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 
@@ -36,7 +36,7 @@ const emit = defineEmits(["sociogram-start-load-members"]);
     <h3>Carica una nuova lista di nomi</h3>
     <p class="text-sm">Crea un nuovo progetto a partire da una lista di nomi.</p>
   </div>
-  <BaseButton buttonVariant="solid" @click="emit('sociogram-start-load-members')">
+  <BaseClickButton button-variant="solid" @click="emit('sociogram-start-load-members')">
     Crea progetto
-  </BaseButton>
+  </BaseClickButton>
 </template>

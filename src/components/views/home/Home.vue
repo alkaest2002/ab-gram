@@ -66,7 +66,7 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
 
       <!-- Discord / edu cards -->
       <section class="grid w-full gap-8 lg:grid-cols-2">
-        <DiscordCard :buttonVariant="'solid'" />
+        <DiscordCard :button-variant="'solid'" />
         <EduCard />
       </section>
     </div>

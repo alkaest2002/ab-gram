@@ -8,7 +8,7 @@
 //   -- From components.
 import HeartIcon from "@/components/ui/icons/HeartIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 defineProps({
@@ -47,12 +47,12 @@ const openDonation = () => window.open(donationUrl, "_blank", "noopener,noreferr
     Offrici un caffè con una piccola donazione volontaria e libera, tramite &copy; Stripe.
 
     <template #actions>
-      <BaseButton :buttonVariant="buttonVariant" @click="openDonation">
+      <BaseClickButton :button-variant="buttonVariant" @click="openDonation">
         <template #icon>
           <HeartIcon size="size-4" />
         </template>
         Dona con Stripe
-      </BaseButton>
+      </BaseClickButton>
     </template>
   </BaseCard>
 </template>

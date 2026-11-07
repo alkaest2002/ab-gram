@@ -8,6 +8,9 @@
 //   -- From vue.
 import { computed } from "vue";
 
+//   -- From components.
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
+
 // --- Props --------------
 const props = defineProps({
   // Whether a regeneration is running: disables the emphasis controls.
@@ -67,42 +70,27 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
 
         <!-- Toggle presets + min in-degree — all on one row ──────── -->
         <div class="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            class="rounded border px-3 py-1 text-[9pt] font-medium transition-all"
-            :class="
-              activeFilter === 'all-on'
-                ? 'border-ink bg-ink text-white'
-                : 'border-line text-muted hover:bg-line hover:text-ink'
-            "
+          <BaseClickButton
+            class="px-3 py-1 text-[9pt]"
+            :button-variant="activeFilter === 'all-on' ? 'solid' : 'outline'"
             @click="emit('apply-filter', 'all-on')"
           >
             Tutti visibili
-          </button>
-          <button
-            type="button"
-            class="rounded border px-3 py-1 text-[9pt] font-medium transition-all"
-            :class="
-              activeFilter === 'all-off'
-                ? 'border-ink bg-ink text-white'
-                : 'border-line text-muted hover:bg-line hover:text-ink'
-            "
+          </BaseClickButton>
+          <BaseClickButton
+            class="px-3 py-1 text-[9pt]"
+            :button-variant="activeFilter === 'all-off' ? 'solid' : 'outline'"
             @click="emit('apply-filter', 'all-off')"
           >
             Tutti nascosti
-          </button>
-          <button
-            type="button"
-            class="rounded border px-3 py-1 text-[9pt] font-medium transition-all"
-            :class="
-              activeFilter === 'min-in-degree'
-                ? 'border-ink bg-ink text-white'
-                : 'border-line text-muted hover:bg-line hover:text-ink'
-            "
+          </BaseClickButton>
+          <BaseClickButton
+            class="px-3 py-1 text-[9pt]"
+            :button-variant="activeFilter === 'min-in-degree' ? 'solid' : 'outline'"
             @click="emit('apply-filter', 'min-in-degree')"
           >
             Archi entranti ≥
-          </button>
+          </BaseClickButton>
           <input
             v-model.number="minInDegree"
             type="number"
@@ -136,20 +124,20 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
     </div>
 
     <div class="flex shrink-0 gap-3 pt-5">
-      <button
-        type="button"
-        class="flex-1 rounded py-2 text-[9pt] font-medium bg-ink text-white transition-opacity hover:opacity-90"
+      <BaseClickButton
+        class="flex-1 px-3 py-1 text-[9pt]"
+        button-variant="solid"
         @click="emit('close')"
       >
         Mostra grafico
-      </button>
-      <button
-        type="button"
-        class="flex-1 rounded py-2 text-[9pt] font-medium text-ink border border-line transition-colors hover:bg-line"
+      </BaseClickButton>
+      <BaseClickButton
+        class="flex-1 px-3 py-1 text-[9pt]"
+        button-variant="outline"
         @click="emit('close')"
       >
         Annulla
-      </button>
+      </BaseClickButton>
     </div>
   </div>
 </template>

@@ -9,7 +9,7 @@
 import { useSociogramStore } from "@/stores/sociogram";
 
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 //   -- From utils.
 import hogwartsDemo from "@/utils/sociogram/hogwarts.json";
@@ -63,9 +63,9 @@ function loadDemo() {
     </p>
   </div>
   <div class="flex flex-wrap gap-2">
-    <BaseButton buttonVariant="outline" @click="emit('sociogram-start-import-project')">
+    <BaseClickButton button-variant="outline" @click="emit('sociogram-start-import-project')">
       Importa progetto
-    </BaseButton>
-    <BaseButton buttonVariant="outline" @click="loadDemo"> Dati demo </BaseButton>
+    </BaseClickButton>
+    <BaseClickButton button-variant="outline" @click="loadDemo"> Dati demo </BaseClickButton>
   </div>
 </template>

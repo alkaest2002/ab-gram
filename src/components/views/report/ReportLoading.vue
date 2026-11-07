@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 
@@ -55,9 +55,9 @@ const emit = defineEmits(["stop-generating-report"]);
       </p>
     </div>
 
-    <BaseButton buttonVariant="outline" @click="emit('stop-generating-report')">
+    <BaseClickButton button-variant="outline" @click="emit('stop-generating-report')">
       Interrompi
-    </BaseButton>
+    </BaseClickButton>
 
     <span class="sr-only">Generazione del report in corso</span>
   </div>

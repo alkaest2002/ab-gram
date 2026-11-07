@@ -9,7 +9,7 @@
 import { onBeforeUnmount } from "vue";
 
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseLinkButton from "@/components/ui/BaseLinkButton.vue";
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
 //   -- From stores.
@@ -63,9 +63,9 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="mt-10 flex w-full flex-col items-center gap-4">
-      <BaseButton :to="to" :replace="replace" buttonVariant="solid">
+      <BaseLinkButton :to="to" :replace="replace" button-variant="solid">
         <slot name="buttonLabel" />
-      </BaseButton>
+      </BaseLinkButton>
     </div>
   </div>
 </template>

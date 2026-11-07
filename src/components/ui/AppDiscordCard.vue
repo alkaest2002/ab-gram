@@ -8,7 +8,7 @@
 //   -- From components.
 import DiscordIcon from "@/components/ui/icons/DiscordIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 defineProps({
@@ -48,12 +48,12 @@ const openDiscord = () => window.open(discordUrl, "_blank", "noopener,noreferrer
     sul progetto.
 
     <template #actions>
-      <BaseButton :buttonVariant="buttonVariant" @click="openDiscord">
+      <BaseClickButton :button-variant="buttonVariant" @click="openDiscord">
         <template #icon>
           <DiscordIcon size="size-4" />
         </template>
         Apri il server Discord
-      </BaseButton>
+      </BaseClickButton>
     </template>
   </BaseCard>
 </template>

@@ -7,7 +7,7 @@
 // --- Imports ------------
 //   -- From components.
 import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import FileIcon from "@/components/ui/icons/FileIcon.vue";
 
@@ -48,13 +48,13 @@ const openBrochure = () => window.open(brochureUrl, "_blank", "noopener,noreferr
     Se questo progetto ti è stato utile, segnalalo al Ministero dell'Istruzione e del Merito.
 
     <template #actions>
-      <AppCopyLinkButton :buttonVariant="buttonVariant" />
-      <BaseButton :buttonVariant="buttonVariant" @click="openBrochure">
+      <AppCopyLinkButton :button-variant="buttonVariant" />
+      <BaseClickButton :button-variant="buttonVariant" @click="openBrochure">
         <template #icon>
           <FileIcon size="size-4" />
         </template>
         Apri il dépliant
-      </BaseButton>
+      </BaseClickButton>
     </template>
   </BaseCard>
 </template>

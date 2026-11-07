@@ -143,7 +143,7 @@ watch(
             role="tab"
             :aria-selected="activeTab === tab.id"
             :aria-controls="`sna-tab-panel-${tab.id}`"
-            class="-mb-px border-b-2 px-4 py-2 text-[9pt] font-medium transition-colors"
+            class="-mb-px border-b-2 px-3 py-1 text-[8pt] font-medium transition-colors"
             :class="
               activeTab === tab.id
                 ? 'border-ink text-ink'

@@ -8,6 +8,9 @@
 //   -- From vue.
 import { computed } from "vue";
 
+//   -- From components.
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
+
 // --- Props --------------
 const props = defineProps({
   // Whether a regeneration is running: disables the inputs and swaps the
@@ -87,28 +90,25 @@ const gravity = computed({
     </div>
 
     <div class="flex shrink-0 gap-3 pt-5">
-      <button
+      <BaseClickButton
         v-if="regenerating"
-        type="button"
-        class="flex-1 rounded py-2 text-[9pt] font-medium bg-reject text-white transition-opacity hover:opacity-90"
+        class="flex-1 px-3 py-1 text-[9pt]"
+        button-variant="red"
         @click="emit('stop')"
       >
         Interrompi
-      </button>
+      </BaseClickButton>
       <template v-else>
-        <button
-          type="submit"
-          class="flex-1 rounded py-2 text-[9pt] font-medium bg-ink text-white transition-opacity hover:opacity-90"
-        >
+        <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" type="submit" button-variant="solid">
           Rigenera grafico
-        </button>
-        <button
-          type="button"
-          class="flex-1 rounded py-2 text-[9pt] font-medium text-ink border border-line transition-colors hover:bg-line"
+        </BaseClickButton>
+        <BaseClickButton
+          class="flex-1 px-3 py-1 text-[9pt]"
+          button-variant="outline"
           @click="emit('close')"
         >
           Annulla
-        </button>
+        </BaseClickButton>
       </template>
     </div>
   </form>

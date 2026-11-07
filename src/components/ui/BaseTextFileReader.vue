@@ -9,7 +9,7 @@
 import { ref } from "vue";
 
 //   -- From components.
-import BaseButton from "@/components/ui/BaseButton.vue";
+import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 //   -- From composables.
 import {
@@ -103,9 +103,9 @@ async function onFileChange(event) {
         </p>
       </div>
 
-      <BaseButton buttonVariant="solid" :disabled="isReadingFile" @click="pick">
+      <BaseClickButton button-variant="solid" :disabled="isReadingFile" @click="pick">
         {{ isReadingFile ? "Lettura…" : "Scegli file" }}
-      </BaseButton>
+      </BaseClickButton>
     </div>
   </div>
 </template>
