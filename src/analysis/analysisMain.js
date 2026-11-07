@@ -17,6 +17,26 @@ import { createSnaNetwork } from "./sna/snaBase.js";
 import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
 
 /**
+ * Extract per-node metadata needed by the emphasis UI.
+ *
+ * Returns a plain array (structured-clone safe) so it survives the worker
+ * boundary. Each entry carries the node id, whether it participates in at
+ * least one mutual edge, and its in-degree.
+ *
+ * @param {import("graphology").DirectedGraph} graph
+ * @returns {Array<{id: string, hasMutualEdge: boolean, inDegree: number}>}
+ */
+function computeNodeInfo(graph) {
+  return graph.nodes().map((node) => {
+    let hasMutualEdge = false;
+    graph.forEachOutEdge(node, (_edge, attrs) => {
+      if (attrs.isMutual) hasMutualEdge = true;
+    });
+    return { id: node, hasMutualEdge, inDegree: graph.inDegree(node) };
+  });
+}
+
+/**
  * Run the full sociogram analysis over a set of members.
  *
  * This is the entry point that combines every analysis step into a single
@@ -38,6 +58,8 @@ import { getMorenoEgoPlots } from "./moreno/plots/morenoPlots.js";
  *   snaDislikesIndividualLevelMetric: object,
  *   snaLikesPlots: object[],
  *   snaDislikesPlots: object[],
+ *   snaLikesNodeInfo: Array<{id: string, hasMutualEdge: boolean, inDegree: number}>,
+ *   snaDislikesNodeInfo: Array<{id: string, hasMutualEdge: boolean, inDegree: number}>,
  *   snaLikesNetwork: object,
  *   snaDislikesNetwork: object,
  * }} The combined sociogram analysis results.
@@ -88,6 +110,7 @@ export const getSociogramAnalysis = (members) => {
   const snaLikesStructures = getSnaStructures(snaLikesNetwork);
   const snaLikesIndividualLevelMetric = snaIndividualLevel(snaLikesNetwork);
   const snaLikesPlots = getSnaPlot(snaLikesNetwork, "#0000FF");
+  const snaLikesNodeInfo = computeNodeInfo(snaLikesNetwork);
 
   // Initialize SNA metrics for the dislikes network.
   let snaDislikesGroupLevelMetrics = {};
@@ -102,6 +125,7 @@ export const getSociogramAnalysis = (members) => {
     snaDislikesIndividualLevelMetric = snaIndividualLevel(snaDislikesNetwork);
     snaDislikesPlots = getSnaPlot(snaDislikesNetwork, "#FF0000");
   }
+  const snaDislikesNodeInfo = computeNodeInfo(snaDislikesNetwork);
 
   return {
     edgeTypes,
@@ -112,10 +136,12 @@ export const getSociogramAnalysis = (members) => {
     snaLikesGroupLevelMetrics,
     snaLikesIndividualLevelMetric,
     snaLikesPlots,
+    snaLikesNodeInfo,
     snaDislikesStructures,
     snaDislikesGroupLevelMetrics,
     snaDislikesIndividualLevelMetric,
     snaDislikesPlots,
+    snaDislikesNodeInfo,
     snaLikesNetwork,
     snaDislikesNetwork,
   };

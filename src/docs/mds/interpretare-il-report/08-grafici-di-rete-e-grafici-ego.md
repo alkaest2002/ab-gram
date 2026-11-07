@@ -40,12 +40,37 @@ La disposizione è calcolata con un algoritmo di posizionamento force-directed (
 
 Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafico, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
 
-### 1.5 Rigenerare la disposizione
+### 1.5 Personalizzare il grafico
 
-Se il grafico risulta troppo affollato o poco leggibile, un pulsante **Rigenera
-il grafico** in basso a destra del grafico (visibile a schermo, non in stampa)
-permette di ricalcolare la disposizione dei nodi. Aprendolo puoi regolare due
-parametri:
+Un pulsante **+** in basso a destra del grafico (visibile a schermo, non in
+stampa) apre il pannello di personalizzazione, diviso in due sezioni.
+
+#### Evidenziare parti della rete
+
+Nelle reti affollate è utile attenuare i nodi meno interessanti per mettere in
+risalto quelli su cui ci si vuole concentrare. I nodi attenuati diventano
+bianchi con contorno e identificativo grigi; anche le loro linee in uscita si
+attenuano.
+
+I comandi disponibili sono:
+
+- **Tutti visibili** — ripristina tutti i nodi al colore originale.
+- **Tutti nascosti** — attenua tutti i nodi.
+- **Archi entranti ≥ N** — mette in evidenza solo i nodi che ricevono almeno
+  N scelte (o rifiuti).
+
+È inoltre possibile fare clic sui cerchietti dei singoli nodi per attivarne o
+disattivarne l'evidenziazione in modo indipendente. I comandi sopra e i
+cerchietti sono coordinati: selezionare un comando aggiorna i cerchietti, e
+fare clic su un cerchietto passa alla modalità manuale.
+
+L'evidenziazione è immediata e non modifica la disposizione dei nodi: si
+limita a cambiare i colori direttamente nel grafico, senza ricalcolarlo.
+
+#### Rigenerare la disposizione
+
+Se il grafico risulta troppo affollato o poco leggibile è possibile
+ricalcolare la disposizione dei nodi regolando due parametri:
 
 - lo **Scaling ratio** governa quanto il grafico è disteso: valori più alti
   distanziano i gruppi e li rendono più leggibili, valori più bassi li
@@ -54,6 +79,7 @@ parametri:
   raccolto, valori troppo alti ne schiacciano la struttura nascondendo i
   sottogruppi.
 
+Premendo **Rigenera** l'algoritmo viene rieseguito con i nuovi parametri.
 Poiché la disposizione iniziale è casuale, rigenerare il grafico anche con gli
 stessi parametri può produrre un layout diverso: prova più volte finché non
 ottieni una disposizione chiara.

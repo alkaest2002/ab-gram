@@ -35,6 +35,10 @@ const NODE_LABEL_COLOR = "#FFFFFF";
 // Isolated nodes are drawn in black.
 const ISOLATED_NODE_COLOR = "#000000";
 
+// Dimmed (de-emphasized) arrowhead markers use a light gray that matches the
+// CSS `.is-dimmed` stroke color applied by `useSvgEmphasis`.
+const DIMMED_COLOR = "#DDD";
+
 // Counter used to keep arrowhead marker ids unique when several plots are
 // embedded in the same document.
 let markerCounter = 0;
@@ -200,6 +204,18 @@ const computeEdgeEndpoints = (from, to, radius) => {
 };
 
 /**
+ * Build the SVG markup for an arrowhead marker definition.
+ *
+ * @param {string} id - The marker id.
+ * @param {string} color - The stroke color for the arrowhead.
+ * @returns {string} A `<marker>` SVG element.
+ */
+const arrowMarker = (id, color) =>
+  `<marker id='${id}' markerWidth='${ARROW_SIZE}' markerHeight='${ARROW_SIZE}' refX='${ARROW_SIZE}' refY='${ARROW_SIZE / 2}' viewBox='0 0 ${ARROW_SIZE} ${ARROW_SIZE}' orient='auto'>` +
+  `<path d='M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}' fill='none' stroke='${color}' stroke-width='${ARROW_STROKE_WIDTH}' stroke-linecap='round'></path>` +
+  `</marker>`;
+
+/**
  * Build the markup for a single node: a small, fully colored circle with its
  * member id centered inside.
  *
@@ -214,8 +230,8 @@ const computeEdgeEndpoints = (from, to, radius) => {
  * @returns {string} The node's SVG markup.
  */
 const nodeMarkup = (x, y, label, fillColor) =>
-  `<circle r='${NODE_RADIUS}' fill='${fillColor}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}'></circle>` +
-  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${NODE_LABEL_COLOR}'>${escapeXml(label)}</text>`;
+  `<circle r='${NODE_RADIUS}' fill='${fillColor}' cx='${formatCoordinate(x)}' cy='${formatCoordinate(y)}' data-node='${escapeXml(label)}'></circle>` +
+  `<text font-size='${LABEL_FONT_SIZE}' text-anchor='middle' x='${formatCoordinate(x)}' y='${formatCoordinate(y)}' dominant-baseline='central' fill='${NODE_LABEL_COLOR}' data-node='${escapeXml(label)}'>${escapeXml(label)}</text>`;
 
 /**
  * Build the isolated members' plot dynamically.
@@ -310,22 +326,20 @@ const buildPlot = (graph, accentColor, config = {}) => {
   // or border, and no background rectangle is added. Its height is the sum of
   // the connected graph and the isolated plot (when present).
   const totalHeight = CANVAS_HEIGHT + isolatedPlot.height;
-  const markerId = `arrow-${markerCounter++}`;
+  const accentMarkerId = `arrow-${markerCounter++}`;
+  const dimmedMarkerId = `arrow-${markerCounter++}`;
 
   const parts = [];
 
   parts.push(
-    `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='${CANVAS_WIDTH}' height='${totalHeight}' viewBox='0 0 ${CANVAS_WIDTH} ${totalHeight}'>`,
+    `<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.1' width='${CANVAS_WIDTH}' height='${totalHeight}' viewBox='0 0 ${CANVAS_WIDTH} ${totalHeight}' data-accent-marker='${accentMarkerId}' data-dimmed-marker='${dimmedMarkerId}'>`,
   );
 
-  // Arrowhead for non-mutual edges: an open chevron (two thin strokes) instead
-  // of a filled triangle, so it reads light. `refX`/`refY` align the marker's
-  // tip (its right edge) with the line endpoint, and `orient='auto'` rotates it
-  // to follow the line's direction.
+  // Arrowhead markers for non-mutual edges: an accent-colored one for the
+  // default state and a dimmed one for CSS-driven de-emphasis. Both are open
+  // chevrons (no filled triangle), so they read light.
   parts.push(
-    `<defs><marker id='${markerId}' markerWidth='${ARROW_SIZE}' markerHeight='${ARROW_SIZE}' refX='${ARROW_SIZE}' refY='${ARROW_SIZE / 2}' viewBox='0 0 ${ARROW_SIZE} ${ARROW_SIZE}' orient='auto'>` +
-      `<path d='M0,0 L${ARROW_SIZE},${ARROW_SIZE / 2} L0,${ARROW_SIZE}' fill='none' stroke='${accentColor}' stroke-width='${ARROW_STROKE_WIDTH}' stroke-linecap='round'></path>` +
-      `</marker></defs>`,
+    `<defs>${arrowMarker(accentMarkerId, accentColor)}${arrowMarker(dimmedMarkerId, DIMMED_COLOR)}</defs>`,
   );
 
   const toSvg = buildCoordinateMapper(graph, connected);
@@ -339,10 +353,10 @@ const buildPlot = (graph, accentColor, config = {}) => {
     // Mutual edges are thicker and plain; non-mutual edges are thinner and
     // carry a light arrowhead pointing at their target.
     const width = attributes.isMutual ? MUTUAL_EDGE_WIDTH : NON_MUTUAL_EDGE_WIDTH;
-    const markerEnd = attributes.isMutual ? "" : ` marker-end='url(#${markerId})'`;
+    const markerEnd = attributes.isMutual ? "" : ` marker-end='url(#${accentMarkerId})'`;
 
     parts.push(
-      `<line x1='${formatCoordinate(x1)}' y1='${formatCoordinate(y1)}' x2='${formatCoordinate(x2)}' y2='${formatCoordinate(y2)}' stroke='${accentColor}' stroke-width='${width}'${markerEnd}></line>`,
+      `<line x1='${formatCoordinate(x1)}' y1='${formatCoordinate(y1)}' x2='${formatCoordinate(x2)}' y2='${formatCoordinate(y2)}' stroke='${accentColor}' stroke-width='${width}'${markerEnd} data-source='${escapeXml(source)}'></line>`,
     );
   });
 
@@ -383,7 +397,9 @@ const buildPlot = (graph, accentColor, config = {}) => {
  * by accent-colored edges, mutual edges drawn thicker and without arrowheads and
  * non-mutual edges thinner with a light chevron arrowhead pointing at their
  * target. Isolated members are drawn in black in a plot stacked vertically below
- * the connected graph.
+ * the connected graph. Every node carries a `data-node` attribute and every edge
+ * a `data-source` attribute, so emphasis can be driven by CSS class toggling
+ * without re-rendering the SVG.
  *
  * The SVG is built as a plain string (no DOM access), so it can run both in the
  * browser main thread and inside a Web Worker, where `document` is unavailable.

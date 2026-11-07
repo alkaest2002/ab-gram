@@ -62,8 +62,43 @@ describe("getSnaPlot", () => {
     // Two directed preferences => two edges (both mutual here).
     expect(svg.match(/<line /g)).toHaveLength(2);
 
-    // The arrowhead marker is always declared.
+    // The arrowhead markers are always declared (accent + dimmed).
     expect(svg).toContain("<marker ");
     expect(svg).toContain("<defs>");
+  });
+
+  it("stamps data-node on nodes and data-source on edges for CSS emphasis", () => {
+    const members = [makeMember("a", ["b"]), makeMember("b", ["a"]), makeMember("c", ["a"])];
+    const likesNetwork = createSnaNetwork(members, "likes");
+
+    const plots = getSnaPlot(likesNetwork, "#0000FF");
+    const svg = plots[0].svg;
+
+    // Every connected node has data-node on both its circle and text.
+    expect(svg.match(/data-node='a'/g).length).toBeGreaterThanOrEqual(2);
+    expect(svg.match(/data-node='b'/g).length).toBeGreaterThanOrEqual(2);
+    expect(svg.match(/data-node='c'/g).length).toBeGreaterThanOrEqual(2);
+
+    // Every edge carries data-source matching its source node.
+    expect(svg).toContain("data-source='a'");
+    expect(svg).toContain("data-source='b'");
+    expect(svg).toContain("data-source='c'");
+
+    // The SVG root carries marker ids so Vue can swap them.
+    expect(svg).toMatch(/data-accent-marker='[^']+'/);
+    expect(svg).toMatch(/data-dimmed-marker='[^']+'/);
+  });
+
+  it("declares both accent and dimmed arrowhead markers", () => {
+    const members = [makeMember("a", ["b"]), makeMember("b")];
+    const likesNetwork = createSnaNetwork(members, "likes");
+
+    const plots = getSnaPlot(likesNetwork, "#0000FF");
+    const svg = plots[0].svg;
+
+    // Two markers: one accent-colored, one dimmed.
+    expect(svg.match(/<marker /g)).toHaveLength(2);
+    expect(svg).toContain("stroke='#0000FF'");
+    expect(svg).toContain("stroke='#D4D4D4'");
   });
 });

@@ -41,6 +41,8 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("snaDislikesGroupLevelMetrics");
     expect(result).toHaveProperty("snaDislikesIndividualLevelMetric");
     expect(result).toHaveProperty("snaDislikesPlots");
+    expect(result).toHaveProperty("snaLikesNodeInfo");
+    expect(result).toHaveProperty("snaDislikesNodeInfo");
     expect(result).toHaveProperty("snaLikesNetwork");
     expect(result).toHaveProperty("snaDislikesNetwork");
 
@@ -81,6 +83,13 @@ describe("getSociogramAnalysis", () => {
     expect(result.snaDislikesPlots).toHaveLength(1);
     expect(result.snaDislikesPlots[0].typeOfPreference).toBe("dislikes");
     expect(result.snaDislikesPlots[0].accentColor).toBe("#FF0000");
+
+    // Node info: one entry per member with plain emphasis metadata.
+    expect(result.snaLikesNodeInfo).toHaveLength(11);
+    expect(result.snaLikesNodeInfo[0]).toHaveProperty("id");
+    expect(result.snaLikesNodeInfo[0]).toHaveProperty("hasMutualEdge");
+    expect(result.snaLikesNodeInfo[0]).toHaveProperty("inDegree");
+    expect(result.snaDislikesNodeInfo).toHaveLength(11);
 
     // Both directed graphs are returned.
     expect(result.snaLikesNetwork.getAttribute("typeOfPreference")).toBe("likes");

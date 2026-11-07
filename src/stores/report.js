@@ -45,6 +45,12 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA dislikes plots. */
   const snaDislikesPlots = ref([]);
 
+  /** @type {import("vue").Ref<Array<{id: string, hasMutualEdge: boolean, inDegree: number}>>} Per-node metadata for likes emphasis UI. */
+  const snaLikesNodeInfo = ref([]);
+
+  /** @type {import("vue").Ref<Array<{id: string, hasMutualEdge: boolean, inDegree: number}>>} Per-node metadata for dislikes emphasis UI. */
+  const snaDislikesNodeInfo = ref([]);
+
   /** @type {import("vue").Ref<object>} Directed graph for likes preferences. */
   const snaLikesNetwork = ref({});
 
@@ -73,6 +79,8 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesIndividualLevelMetric.value = value.snaDislikesIndividualLevelMetric ?? {};
     snaLikesPlots.value = value.snaLikesPlots ?? [];
     snaDislikesPlots.value = value.snaDislikesPlots ?? [];
+    snaLikesNodeInfo.value = value.snaLikesNodeInfo ?? [];
+    snaDislikesNodeInfo.value = value.snaDislikesNodeInfo ?? [];
     snaLikesNetwork.value = value.snaLikesNetwork ?? {};
     snaDislikesNetwork.value = value.snaDislikesNetwork ?? {};
   }
@@ -104,6 +112,8 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesIndividualLevelMetric.value = {};
     snaLikesPlots.value = [];
     snaDislikesPlots.value = [];
+    snaLikesNodeInfo.value = [];
+    snaDislikesNodeInfo.value = [];
     snaLikesNetwork.value = {};
     snaDislikesNetwork.value = {};
   }
@@ -122,6 +132,8 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesIndividualLevelMetric,
     snaDislikesStructures,
     snaDislikesPlots,
+    snaLikesNodeInfo,
+    snaDislikesNodeInfo,
     snaLikesNetwork,
     snaDislikesNetwork,
     setStatus,

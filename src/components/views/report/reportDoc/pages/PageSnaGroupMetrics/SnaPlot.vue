@@ -6,7 +6,10 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed } from "vue";
+import { computed, ref } from "vue";
+
+//   -- From composables.
+import { useSvgEmphasis } from "@/composables/report/useSvgEmphasis";
 
 // --- Props --------------
 const props = defineProps({
@@ -16,6 +19,8 @@ const props = defineProps({
   accentColor: { type: String, default: "" },
   // Preference type, selects the per-type legend text below.
   typeOfSna: { type: String, default: "likes" },
+  // Set of node ids to dim. When empty (default), all nodes are accent-colored.
+  dimmedNodes: { type: Set, default: () => new Set() },
 });
 
 // --- Emits --------------
@@ -38,7 +43,18 @@ const SNA_PLOT_CONFIG = {
   },
 };
 
+// Template ref for the SVG container, used by the emphasis composable.
+const svgContainer = ref(null);
+
 // --- Composables --------
+// Drives `.is-dimmed` class toggling on the injected SVG elements.
+// The `svg` content is passed as a tracked dependency so the effect re-runs
+// when `v-html` replaces the DOM after a worker regeneration.
+useSvgEmphasis(
+  svgContainer,
+  computed(() => props.dimmedNodes),
+  computed(() => props.svg),
+);
 
 // --- Computed -----------
 const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFIG.likes);
@@ -52,13 +68,13 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
 
 <template>
   <div class="sna-plot border-b border-line pb-1">
-    <div class="plot-svg relative">
+    <div ref="svgContainer" class="plot-svg relative">
       <div class="h-full w-full" v-html="svg"></div>
       <button
         type="button"
         class="absolute bottom-2 right-2 z-10 print:hidden flex h-5 w-5 items-center justify-center rounded-full border border-line bg-canvas/90 text-sm leading-none text-muted shadow-sm transition-colors hover:text-ink"
-        aria-label="Rigenera il grafico"
-        title="Rigenera il grafico"
+        aria-label="Personalizza il grafico"
+        title="Personalizza il grafico"
         @click="emit('open-modal')"
       >
         +
@@ -129,5 +145,20 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
   display: block;
   width: 100%;
   height: 100%;
+}
+
+/* De-emphasized (dimmed) nodes and edges: the `.is-dimmed` class is toggled by
+   the `useSvgEmphasis` composable. Circles and lines get a light gray; labels
+   switch to a darker gray so they stay readable against the lighter background. */
+.plot-svg :deep(circle.is-dimmed) {
+  fill: #ffffff;
+  stroke: #d4d4d4;
+  stroke-width: 1;
+}
+.plot-svg :deep(line.is-dimmed) {
+  stroke: #d4d4d4;
+}
+.plot-svg :deep(text.is-dimmed) {
+  fill: #737373;
 }
 </style>

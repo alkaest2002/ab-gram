@@ -80,6 +80,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
       :sna-plot="reportData.analysisData?.snaLikesPlots?.[0] ?? null"
       :sna-metrics="reportData.analysisData?.snaLikesGroupLevelMetrics ?? {}"
       :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+      :node-info="reportData.analysisData?.snaLikesNodeInfo ?? []"
       @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
     />
     <PageSnaGroupMetrics
@@ -89,6 +90,7 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
       :sna-plot="reportData.analysisData?.snaDislikesPlots?.[0] ?? null"
       :sna-metrics="reportData.analysisData?.snaDislikesGroupLevelMetrics ?? {}"
       :moreno-metrics="reportData.analysisData?.morenoGroupLevelMetrics ?? {}"
+      :node-info="reportData.analysisData?.snaDislikesNodeInfo ?? []"
       @regenerate-sna-plot="emit('regenerate-sna-plot', $event)"
     />
     <PageEdgeTypes :edge-types="reportData.analysisData?.edgeTypes ?? {}" />

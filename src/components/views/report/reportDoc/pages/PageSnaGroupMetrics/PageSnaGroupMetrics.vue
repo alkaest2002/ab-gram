@@ -6,10 +6,13 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 //   -- From utils.
 import { createSnaPlotWorker } from "@/workers/workerHelpers";
+
+//   -- From composables.
+import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
 
 //   -- From relative.
 import BasePage from "../BasePage.vue";
@@ -28,6 +31,7 @@ const props = defineProps({
   snaPlot: { type: Object, default: null },
   snaMetrics: { type: Object, default: () => ({}) },
   morenoMetrics: { type: Object, default: () => ({}) },
+  nodeInfo: { type: Array, default: () => [] },
 });
 
 // --- Emits --------------
@@ -76,11 +80,13 @@ const gravity = ref(1.1);
 let worker = null;
 
 // --- Composables --------
+const nodeInfoRef = computed(() => props.nodeInfo);
+const emphasis = useNodeEmphasis(nodeInfoRef);
 
 // --- Computed -----------
 
 // --- Watchers -----------
-// Lock page scroll while the regeneration modal is open.
+// Lock page scroll while the customization modal is open.
 watch(isModalOpen, (open) => document.body.classList.toggle("overflow-hidden", open));
 
 // --- Lifecycle ----------
@@ -201,6 +207,7 @@ onBeforeUnmount(() => {
           :svg="svg"
           :accent-color="accentColor"
           :type-of-sna="typeOfSna"
+          :dimmed-nodes="emphasis.dimmedNodes.value"
           @open-modal="openModal"
         />
         <SnaMetrics
@@ -211,17 +218,25 @@ onBeforeUnmount(() => {
         />
       </div>
 
-      <!-- Regeneration modal: teleported to <body> by the component so it
+      <!-- Customization modal: teleported to <body> by the component so it
                  escapes the fixed-height, overflow-hidden report page. -->
       <SnaCustomizePlotModal
         :open="isModalOpen"
         :regenerating="isRegenerating"
         :error="error"
+        :node-info="nodeInfo"
+        :accent-color="accentColor"
+        :active-filter="emphasis.activeFilter.value"
+        :emphasized-nodes="emphasis.emphasizedNodes.value"
+        :min-in-degree="emphasis.minInDegree.value"
         v-model:scaling-ratio="scalingRatio"
         v-model:gravity="gravity"
         @close="closeModal"
         @stop="stopWorker"
         @confirm="confirmRegenerate"
+        @apply-filter="emphasis.applyFilter"
+        @toggle-node="emphasis.toggleNode"
+        @update:min-in-degree="emphasis.minInDegree.value = $event"
       />
     </template>
   </BasePage>
