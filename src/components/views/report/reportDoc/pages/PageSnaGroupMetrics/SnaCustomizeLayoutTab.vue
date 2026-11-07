@@ -107,7 +107,7 @@ const gravity = computed({
           class="flex-1 rounded py-2 text-[9pt] font-medium text-ink border border-line transition-colors hover:bg-line"
           @click="emit('close')"
         >
-          Mostra grafico
+          Annulla
         </button>
       </template>
     </div>

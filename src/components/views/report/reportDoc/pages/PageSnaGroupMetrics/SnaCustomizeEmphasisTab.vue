@@ -135,13 +135,20 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
       </fieldset>
     </div>
 
-    <div class="shrink-0 pt-5">
+    <div class="flex shrink-0 gap-3 pt-5">
       <button
         type="button"
-        class="w-full rounded py-2 text-[9pt] font-medium bg-ink text-white transition-opacity hover:opacity-90"
+        class="flex-1 rounded py-2 text-[9pt] font-medium bg-ink text-white transition-opacity hover:opacity-90"
         @click="emit('close')"
       >
         Mostra grafico
+      </button>
+      <button
+        type="button"
+        class="flex-1 rounded py-2 text-[9pt] font-medium text-ink border border-line transition-colors hover:bg-line"
+        @click="emit('close')"
+      >
+        Annulla
       </button>
     </div>
   </div>
