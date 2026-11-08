@@ -3,6 +3,9 @@
 
 import { onBeforeUnmount, ref } from "vue";
 
+// Timeout for the "copied" state, in milliseconds.
+const TIMEOUT = 2000;
+
 /**
  * Copy a link to the clipboard and track a short "copied" state.
  *
@@ -25,7 +28,7 @@ export function useCopyLink(text = window.location.origin) {
 
     copied.value = true;
     clearTimeout(copyTimer);
-    copyTimer = setTimeout(() => (copied.value = false), 2000);
+    copyTimer = setTimeout(() => (copied.value = false), TIMEOUT);
   }
 
   return { copied, copyLink };
