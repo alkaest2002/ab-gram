@@ -160,7 +160,9 @@ function buildCard(member) {
       <section class="h-full overflow-hidden">
         <div class="flex h-full flex-col">
           <!-- On-screen sort controls (hidden in the printed report). -->
-          <div class="mb-[4mm] flex shrink-0 flex-wrap items-center gap-[1.5mm] print:hidden">
+          <div
+            class="mb-[4mm] flex shrink-0 flex-wrap items-center gap-[1mm] print:hidden justify-end"
+          >
             <span class="text-[8pt] font-medium uppercase tracking-[0.06em] text-muted">
               Ordina:
             </span>
@@ -168,12 +170,8 @@ function buildCard(member) {
               v-for="field in SORT_FIELDS"
               :key="field.key"
               type="button"
-              class="inline-flex items-center gap-[1mm] rounded-full border px-[2.5mm] py-[0.6mm] text-[8pt] font-medium transition-colors"
-              :class="
-                sortKey === field.key
-                  ? 'border-ink bg-ink text-white'
-                  : 'border-line text-muted hover:text-ink'
-              "
+              class="inline-flex items-center rounded-full px-[2.5mm] py-[0.6mm] text-[8pt] font-medium transition-colors"
+              :class="sortKey === field.key ? 'bg-line' : 'bg-white'"
               :aria-pressed="sortKey === field.key"
               @click="selectSort(field.key)"
             >
