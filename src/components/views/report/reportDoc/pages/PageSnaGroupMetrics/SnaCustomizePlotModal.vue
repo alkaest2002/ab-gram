@@ -98,6 +98,7 @@ watch(isOpen, (open, wasOpen) => {
 // --- Lifecycle ----------
 
 // --- Methods ------------
+// Expose the open/close methods to the parent.
 defineExpose({ open, forceClose });
 </script>
 
