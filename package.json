@@ -30,9 +30,9 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.20",
-    "@tailwindcss/vite": "^4.3.4",
+    "@tailwindcss/vite": "^4.3.5",
     "@vitejs/plugin-vue": "^6.0.10",
-    "tailwindcss": "^4.3.4",
+    "tailwindcss": "^4.3.5",
     "vite": "catalog:",
     "vite-plugin-vue-devtools": "^8.2.1",
     "vite-plus": "catalog:"
