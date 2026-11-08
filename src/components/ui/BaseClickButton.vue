@@ -19,7 +19,6 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["click"]);
 
 // --- Routers ------------
 
@@ -46,7 +45,7 @@ const classes = computed(() => ["btn", variantClasses[props.buttonVariant]]);
 </script>
 
 <template>
-  <button :type="type" :class="classes" @click="emit('click', $event)">
+  <button :type="type" :class="classes">
     <slot name="icon" />
     <slot />
   </button>
