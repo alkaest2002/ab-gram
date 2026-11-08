@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 //   -- From utils.
 import {
@@ -54,18 +54,76 @@ const CENTRALITY_METRICS_COMFIG = [
   { label: "HU", key: "hitsHub" },
 ];
 
+// Sortable columns for the summary list. Each maps a key to the label shown in
+// the on-screen sort controls (which are hidden in the printed report).
+const SORT_FIELDS = [
+  { key: "id", label: "ID" },
+  { key: "name", label: "Nome" },
+  { key: "status", label: "Status sociometrico" },
+];
+
+// Start sorted by id, ascending, so one field is always visually active.
+const sortKey = ref("id");
+const sortDirection = ref("asc");
+
 // --- Composables --------
 
 // --- Computed -----------
 const members = computed(() => props.membersData?.members ?? []);
 
-const cards = computed(() => members.value.map(buildCard));
+const sortedCards = computed(() => {
+  const list = members.value.map(buildCard);
+  if (!sortKey.value) return list;
+
+  const direction = sortDirection.value === "asc" ? 1 : -1;
+  return [...list].sort((a, b) => compareCards(a, b, sortKey.value) * direction);
+});
 
 // --- Watchers -----------
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function toggleSort(key) {
+  if (sortKey.value === key) {
+    sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
+  } else {
+    sortKey.value = key;
+    sortDirection.value = "asc";
+  }
+}
+
+function compareCards(a, b, key) {
+  switch (key) {
+    case "id":
+      return String(a.id).localeCompare(String(b.id), "it", {
+        numeric: true,
+        sensitivity: "base",
+      });
+    case "name":
+      return String(a.name ?? "").localeCompare(String(b.name ?? ""), "it", {
+        sensitivity: "base",
+      });
+    case "status":
+      return compareStatus(a, b);
+    default:
+      return 0;
+  }
+}
+
+function compareStatus(a, b) {
+  // Sort by the soft label first, then by bonus, then by malus.
+  const byLabel = String(a.statusLabel ?? "").localeCompare(String(b.statusLabel ?? ""), "it", {
+    sensitivity: "base",
+  });
+  if (byLabel !== 0) return byLabel;
+
+  const byBonus = a.bonus - b.bonus;
+  if (byBonus !== 0) return byBonus;
+
+  return a.malus - b.malus;
+}
+
 function buildCard(member) {
   const memberIndex = memberIndexIn(member.id, props.morenoMetrics);
   const statusIndex = metricIndexOf(props.morenoMetrics, "ss");
@@ -110,11 +168,35 @@ function buildCard(member) {
     <template #default>
       <section class="h-full overflow-hidden">
         <div class="flex h-full flex-col">
+          <!-- On-screen sort controls (hidden in the printed report). -->
+          <div class="mb-[2mm] flex shrink-0 flex-wrap items-center gap-[1.5mm] print:hidden">
+            <span class="text-[8pt] font-medium uppercase tracking-[0.06em] text-muted">
+              Ordina:
+            </span>
+            <button
+              v-for="field in SORT_FIELDS"
+              :key="field.key"
+              type="button"
+              class="inline-flex items-center gap-[1mm] rounded border px-[2mm] py-[0.6mm] text-[8pt] font-medium transition-colors"
+              :class="
+                sortKey === field.key
+                  ? 'border-ink bg-ink text-white'
+                  : 'border-line text-muted hover:text-ink'
+              "
+              @click="toggleSort(field.key)"
+            >
+              {{ field.label }}
+              <span v-if="sortKey === field.key" aria-hidden="true">
+                {{ sortDirection === "asc" ? "↑" : "↓" }}
+              </span>
+            </button>
+          </div>
+
           <div
-            v-for="card in cards"
+            v-for="card in sortedCards"
             :key="card.id"
             class="flex items-center gap-[3mm] min-h-[6.6mm] border-b border-line"
-            :class="{ 'py-[1.5mm]': cards.length < 25 }"
+            :class="{ 'py-[1.5mm]': sortedCards.length < 25 }"
           >
             <div class="flex flex-1 items-center gap-[1.5mm] min-w-0">
               <span
