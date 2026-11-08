@@ -8,11 +8,9 @@
 //   -- From vue.
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-//   -- From utils.
-import { createSnaPlotWorker } from "@/workers/workerHelpers";
-
 //   -- From composables.
 import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
+import { useSnaPlotWorker } from "@/composables/report/useSnaPlotWorker";
 
 //   -- From relative.
 import BasePage from "../BasePage.vue";
@@ -68,7 +66,6 @@ const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
 // the report store.
 const svg = ref(props.snaPlot?.svg ?? "");
 const isModalOpen = ref(false);
-const isRegenerating = ref(false);
 const error = ref("");
 
 // ForceAtlas2 settings edited by the modal. These mirror the module-level
@@ -76,12 +73,32 @@ const error = ref("");
 const scalingRatio = ref(0.6);
 const gravity = ref(1.1);
 
-// The regeneration worker, kept so it can be terminated mid-flight.
-let worker = null;
-
 // --- Composables --------
 const nodeInfoRef = computed(() => props.nodeInfo);
 const emphasis = useNodeEmphasis(nodeInfoRef);
+
+const {
+  isRegenerating,
+  regenerate,
+  stop: stopWorker,
+} = useSnaPlotWorker({
+  onSuccess: (regeneratedSvg) => {
+    const nextSvg = regeneratedSvg ?? svg.value;
+    svg.value = nextSvg;
+
+    // Bubbled up to `ReportGenerated`, which persists the regenerated plot
+    // in the report store so it survives re-renders and print/export.
+    emit("regenerate-sna-plot", {
+      typeOfPreference: props.typeOfSna,
+      accentColor,
+      svg: nextSvg,
+    });
+    isModalOpen.value = false;
+  },
+  onError: (message) => {
+    error.value = message;
+  },
+});
 
 // --- Computed -----------
 
@@ -105,17 +122,7 @@ function closeModal() {
   error.value = "";
 }
 
-function stopWorker() {
-  if (worker) {
-    worker.terminate();
-    worker = null;
-  }
-  isRegenerating.value = false;
-}
-
 function confirmRegenerate() {
-  if (isRegenerating.value) return;
-
   const settings = {
     scalingRatio: Number(scalingRatio.value),
     gravity: Number(gravity.value),
@@ -128,52 +135,11 @@ function confirmRegenerate() {
 
   error.value = "";
 
-  try {
-    worker = createSnaPlotWorker();
-  } catch (err) {
-    console.error("Failed to create SNA plot worker:", err);
-    error.value = "Impossibile avviare il worker.";
-    return;
-  }
-
-  isRegenerating.value = true;
-
-  worker.onmessage = (event) => {
-    const { data } = event;
-    stopWorker();
-
-    if (data?.error) {
-      error.value = data.error;
-      return;
-    }
-
-    const regeneratedSvg = data?.svg ?? svg.value;
-    svg.value = regeneratedSvg;
-
-    // Bubbled up to `ReportGenerated`, which persists the regenerated plot
-    // in the report store so it survives re-renders and print/export.
-    emit("regenerate-sna-plot", {
-      typeOfPreference: props.typeOfSna,
-      accentColor,
-      svg: regeneratedSvg,
-    });
-    isModalOpen.value = false;
-  };
-
-  worker.onerror = () => {
-    stopWorker();
-    error.value = "Impossibile rigenerare il grafico.";
-  };
-
-  // Hand the worker a plain, non-reactive snapshot of the members so it can
-  // be structured-cloned without dragging Vue proxies across the boundary.
-  worker.postMessage({
-    members: JSON.parse(JSON.stringify(props.members)),
+  regenerate({
+    members: props.members,
     accentColor,
-    config: {
-      typeOfPreference: props.typeOfSna,
-      settings,
-    },
+    typeOfSna: props.typeOfSna,
+    settings,
   });
 }
 
@@ -185,7 +151,6 @@ onMounted(() => window.addEventListener("keydown", handleKeydown));
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", handleKeydown);
   document.body.classList.remove("overflow-hidden");
-  stopWorker();
 });
 </script>
 
