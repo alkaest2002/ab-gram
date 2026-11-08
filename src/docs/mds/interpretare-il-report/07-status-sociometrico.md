@@ -53,11 +53,11 @@ report**:
 > indizio o un segnale da osservare, non come una definizione stabile della
 > persona.
 
-> **Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
-> soltanto una convenzione per identificare le categorie: non indicano un ordine,
-> un punteggio o una gravità crescente. Due codici vicini non sono più simili tra
-> loro di due codici lontani; ciò che conta è esclusivamente la categoria a cui
-> il codice è associato.
+**Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
+soltanto una convenzione per identificare le categorie: non indicano un ordine,
+un punteggio o una gravità crescente. Due codici vicini non sono più simili tra
+loro di due codici lontani; ciò che conta è esclusivamente la categoria a cui
+il codice è associato.
 
 La categoria dipende dal **livello di impatto** (basso, medio, alto) e, per i
 livelli medio e alto, dal **bilancio** (positivo, negativo, neutro). Le prime due
