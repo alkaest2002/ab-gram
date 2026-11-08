@@ -87,7 +87,7 @@ const receivedDislikesScore = computed(() => {
       <div class="min-w-0">
         <p class="font-display leading-none">
           <span class="font-medium text-[10pt]" :class="sociometricStatus.tone.text">{{
-            sociometricStatus.label
+            sociometricStatus.labelSoft
           }}</span>
           <span class="text-[9pt] text-muted mx-2">&rarr;</span>
           <span class="text-[9pt] text-muted">{{ sociometricStatus.description }}</span>

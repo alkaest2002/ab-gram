@@ -92,7 +92,7 @@ function buildCard(member) {
   return {
     id: member.id,
     name: member.name,
-    statusLabel: status.label,
+    statusLabel: status.labelSoft,
     statusClass: status.text,
     bonus,
     malus,
@@ -134,7 +134,7 @@ function buildCard(member) {
             </span>
 
             <span
-              class="shrink-0 w-[30mm] leading-[1.1] font-medium whitespace-nowrap text-[9pt]"
+              class="shrink-0 w-[36mm] leading-[1.15] font-medium text-[9pt]"
               :class="card.statusClass"
             >
               {{ card.statusLabel }}

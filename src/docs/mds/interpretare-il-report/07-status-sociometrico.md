@@ -29,19 +29,29 @@ precedenza sul bilancio.
 
 ## 2 Le nove categorie
 
-Ogni codice corrisponde a una categoria ben precisa:
+Ogni codice corrisponde a una categoria ben precisa. La tabella mostra sia la
+**categoria tecnica** usata dall'algoritmo, sia la **formulazione usata nel
+report**:
 
-| Codice | Categoria   | Impatto ricevuto | Bilancio  |
-| :----: | ----------- | :--------------: | :-------: |
-|   0    | isolato     |     nessuno      |     —     |
-|   1    | ignorato    |     nessuno      |     —     |
-|   2    | marginale   |      basso       | qualunque |
-|   3    | apprezzato  |      medio       | positivo  |
-|   4    | popolare    |       alto       | positivo  |
-|   5    | malvisto    |      medio       | negativo  |
-|   6    | rifiutato   |       alto       | negativo  |
-|   7    | ambivalente |      medio       |  neutro   |
-|   8    | controverso |       alto       |  neutro   |
+| Codice | Categoria tecnica | Nel report                 | Impatto ricevuto | Bilancio  |
+| :----: | ----------------- | -------------------------- | :--------------: | :-------: |
+|   0    | isolato           | segnali di isolamento      |     nessuno      |     —     |
+|   1    | ignorato          | segnali di riscontro nullo |     nessuno      |     —     |
+|   2    | marginale         | indizi di marginalità      |      basso       | qualunque |
+|   3    | apprezzato        | apprezzato                 |      medio       | positivo  |
+|   4    | popolare          | popolare                   |       alto       | positivo  |
+|   5    | malvisto          | note di disapprovazione    |      medio       | negativo  |
+|   6    | rifiutato         | segnali di rifiuto         |       alto       | negativo  |
+|   7    | ambivalente       | note di ambivalenza        |      medio       |  neutro   |
+|   8    | controverso       | accoglienza dibattuta      |       alto       |  neutro   |
+
+> **Nel report si usa la formulazione morbida.** La categoria tecnica (ad
+> esempio _rifiutato_ o _malvisto_) è una classificazione dell'algoritmo; nel
+> report compare invece una formulazione descrittiva (ad esempio _segnali di
+> rifiuto_ o _note di disapprovazione_). Questa scelta è un tentativo di
+> **evitare l'etichettamento sociale**: presentiamo lo stesso risultato come un
+> indizio o un segnale da osservare, non come una definizione stabile della
+> persona.
 
 > **Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
 > soltanto una convenzione per identificare le categorie: non indicano un ordine,
