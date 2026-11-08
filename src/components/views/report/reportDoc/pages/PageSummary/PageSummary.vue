@@ -161,7 +161,7 @@ function buildCard(member) {
         <div class="flex h-full flex-col">
           <!-- On-screen sort controls (hidden in the printed report). -->
           <div
-            class="mb-[4mm] flex shrink-0 flex-wrap items-center gap-[1mm] print:hidden justify-end"
+            class="pb-[2.5mm] flex shrink-0 flex-wrap items-center gap-[1mm] border-b border-line justify-end"
           >
             <span class="text-[8pt] font-medium uppercase tracking-[0.06em] text-muted">
               Ordina:
