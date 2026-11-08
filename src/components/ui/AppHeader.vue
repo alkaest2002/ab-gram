@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { onBeforeUnmount, watch } from "vue";
+import { watch } from "vue";
 
 //   -- From vue-router.
 import { RouterLink, useRoute } from "vue-router";
@@ -48,12 +48,6 @@ const { navItems } = useNavItems("header");
 // --- Watchers -----------
 // Navigating closes the collapsed menu.
 watch(() => route.fullPath, close);
-
-// When the panel is open, the page under the backdrop must not scroll.
-watch(isOpen, (open) => document.body.classList.toggle("overflow-hidden", open));
-
-// --- Lifecycle ----------
-onBeforeUnmount(() => document.body.classList.remove("overflow-hidden"));
 
 // --- Methods ------------
 // A header item is active on its own route and on any child route.

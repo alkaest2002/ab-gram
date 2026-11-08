@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 //   -- From composables.
 import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
@@ -65,7 +65,7 @@ const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
 // swap it in place; the change is local to this page and never writes back to
 // the report store.
 const svg = ref(props.snaPlot?.svg ?? "");
-const isModalOpen = ref(false);
+const customizeModal = ref(null);
 const error = ref("");
 
 // ForceAtlas2 settings edited by the modal. These mirror the module-level
@@ -93,7 +93,7 @@ const {
       accentColor,
       svg: nextSvg,
     });
-    isModalOpen.value = false;
+    customizeModal.value?.forceClose();
   },
   onError: (message) => {
     error.value = message;
@@ -103,22 +103,16 @@ const {
 // --- Computed -----------
 
 // --- Watchers -----------
-// Lock page scroll while the customization modal is open.
-watch(isModalOpen, (open) => document.body.classList.toggle("overflow-hidden", open));
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
 function openModal() {
   error.value = "";
-  isModalOpen.value = true;
+  customizeModal.value?.open();
 }
 
-function closeModal() {
-  // Ignore close attempts while a regeneration is running: the user must
-  // either let it finish or stop it explicitly.
-  if (isRegenerating.value) return;
-  isModalOpen.value = false;
+function handleModalClose() {
   error.value = "";
 }
 
@@ -142,16 +136,6 @@ function confirmRegenerate() {
     settings,
   });
 }
-
-function handleKeydown(event) {
-  if (event.key === "Escape") closeModal();
-}
-
-onMounted(() => window.addEventListener("keydown", handleKeydown));
-onBeforeUnmount(() => {
-  window.removeEventListener("keydown", handleKeydown);
-  document.body.classList.remove("overflow-hidden");
-});
 </script>
 
 <template>
@@ -186,7 +170,7 @@ onBeforeUnmount(() => {
       <!-- Customization modal: teleported to <body> by the component so it
                  escapes the fixed-height, overflow-hidden report page. -->
       <SnaCustomizePlotModal
-        :open="isModalOpen"
+        ref="customizeModal"
         :regenerating="isRegenerating"
         :error="error"
         :node-info="nodeInfo"
@@ -196,7 +180,7 @@ onBeforeUnmount(() => {
         :min-in-degree="emphasis.minInDegree.value"
         v-model:scaling-ratio="scalingRatio"
         v-model:gravity="gravity"
-        @close="closeModal"
+        @close="handleModalClose"
         @stop="stopWorker"
         @confirm="confirmRegenerate"
         @apply-filter="emphasis.applyFilter"

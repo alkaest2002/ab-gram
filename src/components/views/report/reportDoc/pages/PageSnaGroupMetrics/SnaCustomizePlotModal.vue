@@ -8,14 +8,15 @@
 //   -- From vue.
 import { ref, watch } from "vue";
 
+//   -- From composables.
+import { useDisclosure } from "@/composables/useDisclosure";
+
 //   -- From relative.
 import SnaCustomizeEmphasisTab from "./SnaCustomizeEmphasisTab.vue";
 import SnaCustomizeLayoutTab from "./SnaCustomizeLayoutTab.vue";
 
 // --- Props --------------
 const props = defineProps({
-  // Whether the modal is visible.
-  open: { type: Boolean, default: false },
   // Whether a regeneration is running: disables the form and swaps the
   // cancel/submit buttons for an interrupt button.
   regenerating: { type: Boolean, default: false },
@@ -60,16 +61,23 @@ const tabs = [
 const activeTab = ref("emphasize");
 
 // --- Composables --------
+// Own the open/closed state locally. The `canClose` guard keeps the dialog
+// locked while a regeneration is running (the user must stop it explicitly).
+const { isOpen, open, close } = useDisclosure(false, {
+  canClose: () => !props.regenerating,
+});
+
+// Force-close bypasses the guard: the parent calls it after a successful
+// regeneration, where the `regenerating` prop may still read as `true` in the
+// same tick the worker finishes.
+const forceClose = () => (isOpen.value = false);
 
 // --- Watchers -----------
 // Start each open on the first tab, so a previous session's selection never
 // leaks into a new dialog.
-watch(
-  () => props.open,
-  (open) => {
-    if (open) activeTab.value = "emphasize";
-  },
-);
+watch(isOpen, (open) => {
+  if (open) activeTab.value = "emphasize";
+});
 
 // While a regeneration is running, the only available action is "Interrompi",
 // which lives on the layout tab — jump there so it stays reachable.
@@ -80,9 +88,17 @@ watch(
   },
 );
 
+// Notify the parent when the dialog actually closes, so it can reset its
+// transient error state. `isOpen` only flips to false after `canClose` passes,
+// so this never fires for a blocked close.
+watch(isOpen, (open, wasOpen) => {
+  if (wasOpen && !open) emit("close");
+});
+
 // --- Lifecycle ----------
 
 // --- Methods ------------
+defineExpose({ open, forceClose });
 </script>
 
 <template>
@@ -90,9 +106,9 @@ watch(
          report page that would otherwise clip it. -->
   <Teleport to="body">
     <div
-      v-if="open"
+      v-if="isOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 print:hidden"
-      @click.self="emit('close')"
+      @click.self="close"
     >
       <div
         class="relative flex h-90 w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-canvas p-6 shadow-xl"
@@ -107,7 +123,7 @@ watch(
           aria-label="Chiudi"
           title="Chiudi"
           :disabled="regenerating"
-          @click="emit('close')"
+          @click="close"
         >
           <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
@@ -167,7 +183,7 @@ watch(
           @apply-filter="emit('apply-filter', $event)"
           @toggle-node="emit('toggle-node', $event)"
           @update:min-in-degree="emit('update:minInDegree', $event)"
-          @close="emit('close')"
+          @close="close"
         />
 
         <!-- ── Layout tab ─────────────────────────────────────────── -->
@@ -181,7 +197,7 @@ watch(
           @update:gravity="emit('update:gravity', $event)"
           @confirm="emit('confirm')"
           @stop="emit('stop')"
-          @close="emit('close')"
+          @close="close"
         />
       </div>
     </div>
