@@ -21,7 +21,7 @@ const props = defineProps({
   // Current emphasis state, owned by the parent via useNodeEmphasis.
   activeFilter: { type: String, default: "all-on" },
   emphasizedNodes: { type: Set, default: () => new Set() },
-  minInDegree: { type: Number, default: 1 },
+  minInDegree: { type: Number, default: 0 },
 });
 
 // --- Emits --------------
@@ -53,7 +53,10 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
 // all-on/all-off preset, so the switch stays the single source of truth for the
 // "everything visible" state no matter how it was reached.
 const allVisible = computed({
-  get: () => props.nodeInfo.length > 0 && props.emphasizedNodes.size === props.nodeInfo.length,
+  get: () =>
+    props.nodeInfo.length > 0 &&
+    props.emphasizedNodes.size === props.nodeInfo.length &&
+    props.activeFilter !== "min-in-degree",
   set: (value) => emit("apply-filter", value ? "all-on" : "all-off"),
 });
 

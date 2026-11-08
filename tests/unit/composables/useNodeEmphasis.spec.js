@@ -44,8 +44,9 @@ describe("useNodeEmphasis", () => {
 
   it("min-in-degree filters by threshold", () => {
     const e = useNodeEmphasis(makeNodeInfo());
+    e.minInDegree.value = 1;
     e.applyFilter("min-in-degree");
-    // default minInDegree=1 → a(2), b(1), d(3) qualify; c(0) does not
+    // nodes with inDegree >= 1 qualify → a(2), b(1), d(3); c(0) does not
     expect(e.emphasizedNodes.value).toEqual(new Set(["a", "b", "d"]));
     expect(e.dimmedNodes.value).toEqual(new Set(["c"]));
   });

@@ -29,7 +29,7 @@ const props = defineProps({
   // Current emphasis state, owned by the parent via useNodeEmphasis.
   activeFilter: { type: String, default: "all-on" },
   emphasizedNodes: { type: Set, default: () => new Set() },
-  minInDegree: { type: Number, default: 1 },
+  minInDegree: { type: Number, default: 0 },
 });
 
 // --- Emits --------------

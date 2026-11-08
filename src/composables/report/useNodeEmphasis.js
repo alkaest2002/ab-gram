@@ -32,7 +32,7 @@ export function useNodeEmphasis(nodeInfo) {
   const activeFilter = ref("all-on");
 
   /** Threshold for the "min-in-degree" filter. */
-  const minInDegree = ref(1);
+  const minInDegree = ref(0);
 
   /** The set of node ids currently emphasized (i.e. *not* dimmed). */
   const emphasizedNodes = ref(new Set());
