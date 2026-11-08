@@ -10,6 +10,7 @@ import { computed } from "vue";
 
 //   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
+import BaseToggle from "@/components/ui/BaseToggle.vue";
 
 // --- Props --------------
 const props = defineProps({
@@ -17,8 +18,6 @@ const props = defineProps({
   regenerating: { type: Boolean, default: false },
   // Per-node metadata for the clickable node circles.
   nodeInfo: { type: Array, default: () => [] },
-  // Accent color used by the plot, drives the node circle previews.
-  accentColor: { type: String, default: "" },
   // Current emphasis state, owned by the parent via useNodeEmphasis.
   activeFilter: { type: String, default: "all-on" },
   emphasizedNodes: { type: Set, default: () => new Set() },
@@ -50,6 +49,21 @@ const minInDegree = computed({
 // Maximum in-degree across all nodes, used as the upper bound for the input.
 const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(max, n.inDegree), 0));
 
+// v-model: true when every node is emphasized. Toggling applies the matching
+// all-on/all-off preset, so the switch stays the single source of truth for the
+// "everything visible" state no matter how it was reached.
+const allVisible = computed({
+  get: () => props.nodeInfo.length > 0 && props.emphasizedNodes.size === props.nodeInfo.length,
+  set: (value) => emit("apply-filter", value ? "all-on" : "all-off"),
+});
+
+// v-model: whether the "min in-degree" threshold filter is active. Turning it
+// off falls back to showing every node.
+const minInDegreeActive = computed({
+  get: () => props.activeFilter === "min-in-degree",
+  set: (value) => emit("apply-filter", value ? "min-in-degree" : "all-on"),
+});
+
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -68,37 +82,32 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
       <fieldset class="space-y-4" :disabled="regenerating">
         <legend class="sr-only">Evidenzia</legend>
 
-        <!-- Toggle presets + min in-degree — all on one row ──────── -->
+        <!-- All-visible and in-degree toggles — all on one row ──── -->
         <div class="flex flex-wrap items-center gap-2">
-          <BaseClickButton
-            class="px-3 py-1 text-[9pt]"
-            :button-variant="activeFilter === 'all-on' ? 'solid' : 'outline'"
-            @click="emit('apply-filter', 'all-on')"
+          <BaseToggle
+            v-model="allVisible"
+            label-position="right"
+            :disabled="regenerating"
+            size="sm"
           >
-            Tutti visibili
-          </BaseClickButton>
-          <BaseClickButton
-            class="px-3 py-1 text-[9pt]"
-            :button-variant="activeFilter === 'all-off' ? 'solid' : 'outline'"
-            @click="emit('apply-filter', 'all-off')"
+            <span class="text-[9pt]">Tutti visibili</span>
+          </BaseToggle>
+          <BaseToggle
+            v-model="minInDegreeActive"
+            label-position="right"
+            :disabled="regenerating"
+            size="sm"
           >
-            Tutti nascosti
-          </BaseClickButton>
-          <BaseClickButton
-            class="px-3 py-1 text-[9pt]"
-            :button-variant="activeFilter === 'min-in-degree' ? 'solid' : 'outline'"
-            @click="emit('apply-filter', 'min-in-degree')"
-          >
-            Archi entranti ≥
-          </BaseClickButton>
+            <span class="text-[9pt]">Archi entranti ≥</span>
+          </BaseToggle>
           <input
             v-model.number="minInDegree"
             type="number"
             min="0"
             :max="maxInDegree"
             step="1"
-            class="w-14 rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-accent disabled:opacity-50"
-            @focus="emit('apply-filter', 'min-in-degree')"
+            :disabled="!minInDegreeActive"
+            class="w-14 rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-ink disabled:opacity-50"
           />
         </div>
 
@@ -108,11 +117,12 @@ const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(ma
             v-for="node in nodeInfo"
             :key="node.id"
             type="button"
-            class="inline-flex size-6 items-center justify-center rounded-full border border-transparent text-[6.5pt] font-semibold leading-none text-white transition-all hover:opacity-80"
+            class="inline-flex size-6 items-center justify-center rounded-full border text-[6.5pt] font-semibold leading-none transition-all hover:opacity-80"
             :class="
-              emphasizedNodes.has(node.id) ? '' : 'bg-white! text-[#737373]! border-[#d4d4d4]!'
+              emphasizedNodes.has(node.id)
+                ? 'border-transparent bg-[#404040] text-white'
+                : 'border-[#d4d4d4] bg-white text-[#737373]'
             "
-            :style="{ backgroundColor: accentColor }"
             :title="node.id"
             :aria-pressed="emphasizedNodes.has(node.id)"
             @click="emit('toggle-node', node.id)"

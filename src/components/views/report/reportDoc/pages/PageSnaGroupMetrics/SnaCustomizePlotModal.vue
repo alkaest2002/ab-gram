@@ -26,8 +26,6 @@ const props = defineProps({
   gravity: { type: Number, default: 1.1 },
   // Per-node metadata for the emphasis controls.
   nodeInfo: { type: Array, default: () => [] },
-  // Accent color used by the plot, drives the node circle previews.
-  accentColor: { type: String, default: "" },
   // Current emphasis state, owned by the parent via useNodeEmphasis.
   activeFilter: { type: String, default: "all-on" },
   emphasizedNodes: { type: Set, default: () => new Set() },
@@ -177,7 +175,6 @@ defineExpose({ open, forceClose });
           v-show="activeTab === 'emphasize'"
           :regenerating="regenerating"
           :node-info="nodeInfo"
-          :accent-color="accentColor"
           :active-filter="activeFilter"
           :emphasized-nodes="emphasizedNodes"
           :min-in-degree="minInDegree"

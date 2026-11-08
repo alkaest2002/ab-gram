@@ -62,9 +62,8 @@ const SORT_FIELDS = [
   { key: "status", label: "Status sociometrico" },
 ];
 
-// Start sorted by id, ascending, so one field is always visually active.
+// The active ascending sort key (always one of the SORT_FIELDS keys).
 const sortKey = ref("id");
-const sortDirection = ref("asc");
 
 // --- Composables --------
 
@@ -73,10 +72,7 @@ const members = computed(() => props.membersData?.members ?? []);
 
 const sortedCards = computed(() => {
   const list = members.value.map(buildCard);
-  if (!sortKey.value) return list;
-
-  const direction = sortDirection.value === "asc" ? 1 : -1;
-  return [...list].sort((a, b) => compareCards(a, b, sortKey.value) * direction);
+  return [...list].sort((a, b) => compareCards(a, b, sortKey.value));
 });
 
 // --- Watchers -----------
@@ -84,13 +80,8 @@ const sortedCards = computed(() => {
 // --- Lifecycle ----------
 
 // --- Methods ------------
-function toggleSort(key) {
-  if (sortKey.value === key) {
-    sortDirection.value = sortDirection.value === "asc" ? "desc" : "asc";
-  } else {
-    sortKey.value = key;
-    sortDirection.value = "asc";
-  }
+function selectSort(key) {
+  sortKey.value = key;
 }
 
 function compareCards(a, b, key) {
@@ -169,7 +160,7 @@ function buildCard(member) {
       <section class="h-full overflow-hidden">
         <div class="flex h-full flex-col">
           <!-- On-screen sort controls (hidden in the printed report). -->
-          <div class="mb-[2mm] flex shrink-0 flex-wrap items-center gap-[1.5mm] print:hidden">
+          <div class="mb-[4mm] flex shrink-0 flex-wrap items-center gap-[1.5mm] print:hidden">
             <span class="text-[8pt] font-medium uppercase tracking-[0.06em] text-muted">
               Ordina:
             </span>
@@ -177,18 +168,16 @@ function buildCard(member) {
               v-for="field in SORT_FIELDS"
               :key="field.key"
               type="button"
-              class="inline-flex items-center gap-[1mm] rounded border px-[2mm] py-[0.6mm] text-[8pt] font-medium transition-colors"
+              class="inline-flex items-center gap-[1mm] rounded-full border px-[2.5mm] py-[0.6mm] text-[8pt] font-medium transition-colors"
               :class="
                 sortKey === field.key
                   ? 'border-ink bg-ink text-white'
                   : 'border-line text-muted hover:text-ink'
               "
-              @click="toggleSort(field.key)"
+              :aria-pressed="sortKey === field.key"
+              @click="selectSort(field.key)"
             >
               {{ field.label }}
-              <span v-if="sortKey === field.key" aria-hidden="true">
-                {{ sortDirection === "asc" ? "↑" : "↓" }}
-              </span>
             </button>
           </div>
 

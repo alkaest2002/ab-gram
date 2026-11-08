@@ -174,7 +174,6 @@ function confirmRegenerate() {
         :regenerating="isRegenerating"
         :error="error"
         :node-info="nodeInfo"
-        :accent-color="accentColor"
         :active-filter="emphasis.activeFilter.value"
         :emphasized-nodes="emphasis.emphasizedNodes.value"
         :min-in-degree="emphasis.minInDegree.value"

@@ -70,7 +70,7 @@ const gravity = computed({
             step="0.1"
             min="0"
             :disabled="regenerating"
-            class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-accent disabled:opacity-50"
+            class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-ink disabled:opacity-50"
           />
         </label>
         <label class="flex-1">
@@ -81,7 +81,7 @@ const gravity = computed({
             step="0.1"
             min="0"
             :disabled="regenerating"
-            class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-accent disabled:opacity-50"
+            class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-ink disabled:opacity-50"
           />
         </label>
       </div>
