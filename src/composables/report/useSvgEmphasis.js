@@ -40,6 +40,7 @@ export function useSvgEmphasis(containerRef, dimmedNodes, svgContent) {
       const svg = container.querySelector("svg");
       if (!svg) return;
 
+      // Get accent and dimmed marker IDs from the SVG dataset.
       const accentMarker = svg.dataset.accentMarker;
       const dimmedMarker = svg.dataset.dimmedMarker;
 
