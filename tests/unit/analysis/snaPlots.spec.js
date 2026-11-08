@@ -96,9 +96,10 @@ describe("getSnaPlot", () => {
     const plots = getSnaPlot(likesNetwork, "#0000FF");
     const svg = plots[0].svg;
 
-    // Two markers: one accent-colored, one dimmed.
+    // Two markers: one accent-colored, one transparent (dimmed edges are
+    // hidden entirely, so the arrowhead must be invisible too).
     expect(svg.match(/<marker /g)).toHaveLength(2);
     expect(svg).toContain("stroke='#0000FF'");
-    expect(svg).toContain("stroke='#D4D4D4'");
+    expect(svg).toContain("stroke='transparent'");
   });
 });
