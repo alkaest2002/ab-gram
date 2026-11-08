@@ -7,7 +7,7 @@
  */
 export const getTimeStamp = () => {
   return new Date()
-    .toISOString()
+    .toISOString() // ISO timestamp string
     .replace(/[:.]/g, "-") // Replace colons with hyphens (invalid in filenames)
     .slice(0, -5); // Remove milliseconds and Z
 };
