@@ -33,17 +33,17 @@ Ogni codice corrisponde a una categoria ben precisa. La tabella mostra sia la
 **categoria tecnica** usata dall'algoritmo, sia la **formulazione usata nel
 report**:
 
-| Codice | Categoria tecnica | Nel report                 | Impatto ricevuto | Bilancio  |
-| :----: | ----------------- | -------------------------- | :--------------: | :-------: |
-|   0    | isolato           | segnali di isolamento      |     nessuno      |     —     |
-|   1    | ignorato          | segnali di riscontro nullo |     nessuno      |     —     |
-|   2    | marginale         | indizi di marginalità      |      basso       | qualunque |
-|   3    | apprezzato        | apprezzato                 |      medio       | positivo  |
-|   4    | popolare          | popolare                   |       alto       | positivo  |
-|   5    | malvisto          | note di disapprovazione    |      medio       | negativo  |
-|   6    | rifiutato         | segnali di rifiuto         |       alto       | negativo  |
-|   7    | ambivalente       | note di ambivalenza        |      medio       |  neutro   |
-|   8    | controverso       | accoglienza dibattuta      |       alto       |  neutro   |
+| Codice | Categoria tecnica | Nel report              | Impatto | Bilancio  |
+| :----: | ----------------- | ----------------------- | :-----: | :-------: |
+|   0    | isolato           | segnali di isolamento   | nessuno |     —     |
+|   1    | ignorato          | riscontro assente       | nessuno |     —     |
+|   2    | marginale         | indizi di marginalità   |  basso  | qualunque |
+|   3    | apprezzato        | apprezzato              |  medio  | positivo  |
+|   4    | popolare          | popolare                |  alto   | positivo  |
+|   5    | malvisto          | note di disapprovazione |  medio  | negativo  |
+|   6    | rifiutato         | segnali di rifiuto      |  alto   | negativo  |
+|   7    | ambivalente       | elementi di ambivalenza |  medio  |  neutro   |
+|   8    | controverso       | accoglienza dibattuta   |  alto   |  neutro   |
 
 > **Nel report si usa la formulazione morbida.** La categoria tecnica (ad
 > esempio _rifiutato_ o _malvisto_) è una classificazione dell'algoritmo; nel

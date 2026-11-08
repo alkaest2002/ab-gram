@@ -32,7 +32,7 @@ export const STATUS_UI = Object.freeze({
   },
   1: {
     label: "Ignorato",
-    labelSoft: "Segnali di riscontro nullo",
+    labelSoft: "Riscontro assente",
     description: "ha espresso opinioni, ma non ha ricevuto alcuna risposta.",
     tone: "muted",
     bar: "bg-muted",
@@ -80,7 +80,7 @@ export const STATUS_UI = Object.freeze({
   },
   7: {
     label: "Ambivalente",
-    labelSoft: "Note di ambivalenza",
+    labelSoft: "Elementi di ambivalenza",
     description: "impatto medio con bilancio neutro.",
     tone: "warn",
     bar: "bg-warn",
