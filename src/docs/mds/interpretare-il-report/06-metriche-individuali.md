@@ -156,7 +156,7 @@ codice e la dizione mostrata nel report, sono:
 Le due colonne esprimono lo **stesso risultato** con un intento diverso. La
 **categoria** è la classificazione sociometrica in senso stretto, cioè
 un'etichetta analitica e definitiva (ad esempio "rifiutato"). La **dizione nel
-report** (`labelSoft`) ne attenua la formulazione trasformandola in un _segnale_
+report** ne attenua la formulazione trasformandola in un _segnale_
 o in un _indicatore_ (ad esempio "segnali di rifiuto"). Il report usa infatti
 questa seconda forma per descrivere la posizione di un membro senza
 attribuirgli un giudizio sociale definitivo e potenzialmente stigmatizzante.
