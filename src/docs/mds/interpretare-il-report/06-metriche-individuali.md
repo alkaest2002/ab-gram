@@ -139,19 +139,27 @@ Lo **status sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,
 l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra preferenze e
 rifiuti (se prevalgono gli uni o le altre). Le categorie, con il relativo
-codice, sono:
+codice e la dizione mostrata nel report, sono:
 
-| Codice | Categoria   |
-| :----: | ----------- |
-|   0    | isolato     |
-|   1    | ignorato    |
-|   2    | marginale   |
-|   3    | apprezzato  |
-|   4    | popolare    |
-|   5    | malvisto    |
-|   6    | rifiutato   |
-|   7    | ambivalente |
-|   8    | controverso |
+| Codice | Categoria   | Etichetta nel report    |
+| :----: | ----------- | ----------------------- |
+|   0    | isolato     | Segnali di isolamento   |
+|   1    | ignorato    | Riscontro assente       |
+|   2    | marginale   | Indizi di marginalità   |
+|   3    | apprezzato  | Apprezzato              |
+|   4    | popolare    | Popolare                |
+|   5    | malvisto    | Note di disapprovazione |
+|   6    | rifiutato   | Segnali di rifiuto      |
+|   7    | ambivalente | Elementi di ambivalenza |
+|   8    | controverso | Accoglienza dibattuta   |
+
+Le due colonne esprimono lo **stesso risultato** con un intento diverso. La
+**categoria** è la classificazione sociometrica in senso stretto, cioè
+un'etichetta analitica e definitiva (ad esempio "rifiutato"). La **dizione nel
+report** (`labelSoft`) ne attenua la formulazione trasformandola in un _segnale_
+o in un _indicatore_ (ad esempio "segnali di rifiuto"). Il report usa infatti
+questa seconda forma per descrivere la posizione di un membro senza
+attribuirgli un giudizio sociale definitivo e potenzialmente stigmatizzante.
 
 In generale, le categorie vanno da chi non riceve alcuna opinione (isolato) a
 chi ne riceve molte e discordanti (controverso), passando per situazioni in cui
