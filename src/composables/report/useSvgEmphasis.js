@@ -28,6 +28,7 @@ import { watchEffect } from "vue";
 export function useSvgEmphasis(containerRef, dimmedNodes, svgContent) {
   watchEffect(
     () => {
+      // Html element that contains svg
       const container = containerRef.value;
       if (!container) return;
 
