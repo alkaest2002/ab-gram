@@ -157,7 +157,7 @@ function confirmRegenerate() {
           :accent-color="accentColor"
           :type-of-sna="typeOfSna"
           :dimmed-nodes="emphasis.dimmedNodes.value"
-          @open-modal="openModal"
+          @open-sna-plot-modal="openModal"
         />
         <SnaMetrics
           :sna-metrics="snaMetrics"
@@ -176,15 +176,14 @@ function confirmRegenerate() {
         :node-info="nodeInfo"
         :active-filter="emphasis.activeFilter.value"
         :emphasized-nodes="emphasis.emphasizedNodes.value"
-        :min-in-degree="emphasis.minInDegree.value"
         v-model:scaling-ratio="scalingRatio"
         v-model:gravity="gravity"
-        @close="handleModalClose"
-        @stop="stopWorker"
-        @confirm="confirmRegenerate"
-        @apply-filter="emphasis.applyFilter"
-        @toggle-node="emphasis.toggleNode"
-        @update:min-in-degree="emphasis.minInDegree.value = $event"
+        v-model:min-in-degree="emphasis.minInDegree.value"
+        @close-sna-plot-modal="handleModalClose"
+        @stop-sna-plot-regeneration="stopWorker"
+        @confirm-sna-plot-regeneration="confirmRegenerate"
+        @node-emphasis-apply-filter="emphasis.applyFilter"
+        @node-emphasis-toggle-node="emphasis.toggleNode"
       />
     </template>
   </BasePage>

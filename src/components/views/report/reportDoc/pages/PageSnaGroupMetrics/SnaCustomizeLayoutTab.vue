@@ -23,7 +23,13 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["update:scalingRatio", "update:gravity", "confirm", "stop", "close"]);
+const emit = defineEmits([
+  "update:scalingRatio",
+  "update:gravity",
+  "confirm-sna-plot-regeneration",
+  "stop-sna-plot-regeneration",
+  "close-sna-plot-modal",
+]);
 
 // --- Routers ------------
 
@@ -50,6 +56,10 @@ const gravity = computed({
 // --- Lifecycle ----------
 
 // --- Methods ------------
+const handleClose = () => {
+  emit("stop-sna-plot-regeneration");
+  emit("close-sna-plot-modal");
+};
 </script>
 
 <template>
@@ -58,7 +68,7 @@ const gravity = computed({
     role="tabpanel"
     aria-labelledby="sna-tab-button-layout"
     class="mt-5 flex min-h-0 flex-1 flex-col"
-    @submit.prevent="emit('confirm')"
+    @submit.prevent="emit('confirm-sna-plot-regeneration')"
   >
     <div class="min-h-0 flex-1 overflow-y-auto">
       <div class="flex items-end gap-3">
@@ -85,31 +95,20 @@ const gravity = computed({
           />
         </label>
       </div>
-
       <p v-if="error" class="mt-2 text-[8pt] text-reject">{{ error }}</p>
     </div>
 
     <div class="flex shrink-0 gap-3 pt-5">
       <BaseClickButton
-        v-if="regenerating"
         class="flex-1 px-3 py-1 text-[9pt]"
-        buttonVariant="red"
-        @click="emit('stop')"
+        buttonVariant="outline"
+        @click="handleClose"
       >
-        Interrompi
+        Annulla
       </BaseClickButton>
-      <template v-else>
-        <BaseClickButton
-          class="flex-1 px-3 py-1 text-[9pt]"
-          buttonVariant="outline"
-          @click="emit('close')"
-        >
-          Annulla
-        </BaseClickButton>
-        <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" type="submit" buttonVariant="solid">
-          Rigenera grafico
-        </BaseClickButton>
-      </template>
+      <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" type="submit" buttonVariant="solid">
+        Rigenera grafico
+      </BaseClickButton>
     </div>
   </form>
 </template>

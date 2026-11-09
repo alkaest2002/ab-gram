@@ -37,11 +37,11 @@ const emit = defineEmits([
   "update:scalingRatio",
   "update:gravity",
   "update:minInDegree",
-  "close",
-  "stop",
-  "confirm",
-  "apply-filter",
-  "toggle-node",
+  "close-sna-plot-modal",
+  "stop-sna-plot-regeneration",
+  "confirm-sna-plot-regeneration",
+  "node-emphasis-apply-filter",
+  "node-emphasis-toggle-node",
 ]);
 
 // --- Routers ------------
@@ -90,7 +90,7 @@ watch(
 // transient error state. `isOpen` only flips to false after `canClose` passes,
 // so this never fires for a blocked close.
 watch(isOpen, (open, wasOpen) => {
-  if (wasOpen && !open) emit("close");
+  if (wasOpen && !open) emit("close-sna-plot-modal");
 });
 
 // --- Lifecycle ----------
@@ -178,10 +178,10 @@ defineExpose({ open, forceClose });
           :active-filter="activeFilter"
           :emphasized-nodes="emphasizedNodes"
           :min-in-degree="minInDegree"
-          @apply-filter="emit('apply-filter', $event)"
-          @toggle-node="emit('toggle-node', $event)"
-          @update:min-in-degree="emit('update:minInDegree', $event)"
-          @close="close"
+          @node-emphasis-apply-filter="emit('node-emphasis-apply-filter', $event)"
+          @node-emphasis-toggle-node="emit('node-emphasis-toggle-node', $event)"
+          @update:minInDegree="emit('update:minInDegree', $event)"
+          @close-sna-plot-modal="close"
         />
 
         <!-- ── Layout tab ─────────────────────────────────────────── -->
@@ -191,11 +191,11 @@ defineExpose({ open, forceClose });
           :error="error"
           :scaling-ratio="scalingRatio"
           :gravity="gravity"
-          @update:scaling-ratio="emit('update:scalingRatio', $event)"
+          @update:scalingRatio="emit('update:scalingRatio', $event)"
           @update:gravity="emit('update:gravity', $event)"
-          @confirm="emit('confirm')"
-          @stop="emit('stop')"
-          @close="close"
+          @confirm-sna-plot-regeneration="emit('confirm-sna-plot-regeneration')"
+          @stop-sna-plot-regeneration="emit('stop-sna-plot-regeneration')"
+          @close-sna-plot-modal="close"
         />
       </div>
     </div>

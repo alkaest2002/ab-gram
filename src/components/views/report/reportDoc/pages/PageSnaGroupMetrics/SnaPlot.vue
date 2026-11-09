@@ -24,7 +24,7 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["open-modal"]);
+const emit = defineEmits(["open-sna-plot-modal"]);
 
 // --- Routers ------------
 
@@ -75,7 +75,7 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
         class="absolute bottom-2 right-2 z-10 print:hidden flex h-5 w-5 items-center justify-center rounded-full border border-line bg-canvas/90 text-sm leading-none text-muted shadow-sm transition-colors hover:text-ink"
         aria-label="Personalizza il grafico"
         title="Personalizza il grafico"
-        @click="emit('open-modal')"
+        @click="emit('open-sna-plot-modal')"
       >
         +
       </button>

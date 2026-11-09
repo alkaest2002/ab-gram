@@ -25,7 +25,12 @@ const props = defineProps({
 });
 
 // --- Emits --------------
-const emit = defineEmits(["apply-filter", "toggle-node", "update:minInDegree", "close"]);
+const emit = defineEmits([
+  "node-emphasis-apply-filter",
+  "node-emphasis-toggle-node",
+  "update:minInDegree",
+  "close-sna-plot-modal",
+]);
 
 // --- Routers ------------
 
@@ -57,14 +62,14 @@ const allVisible = computed({
     props.nodeInfo.length > 0 &&
     props.emphasizedNodes.size === props.nodeInfo.length &&
     props.activeFilter !== "min-in-degree",
-  set: (value) => emit("apply-filter", value ? "all-on" : "all-off"),
+  set: (value) => emit("node-emphasis-apply-filter", value ? "all-on" : "all-off"),
 });
 
 // v-model: whether the "min in-degree" threshold filter is active. Turning it
 // off falls back to showing every node.
 const minInDegreeActive = computed({
   get: () => props.activeFilter === "min-in-degree",
-  set: (value) => emit("apply-filter", value ? "min-in-degree" : "all-on"),
+  set: (value) => emit("node-emphasis-apply-filter", value ? "min-in-degree" : "all-on"),
 });
 
 // --- Watchers -----------
@@ -128,7 +133,7 @@ const minInDegreeActive = computed({
             "
             :title="node.id"
             :aria-pressed="emphasizedNodes.has(node.id)"
-            @click="emit('toggle-node', node.id)"
+            @click="emit('node-emphasis-toggle-node', node.id)"
           >
             {{ node.id }}
           </button>
@@ -140,14 +145,14 @@ const minInDegreeActive = computed({
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="outline"
-        @click="emit('close')"
+        @click="emit('close-sna-plot-modal')"
       >
         Annulla
       </BaseClickButton>
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="solid"
-        @click="emit('close')"
+        @click="emit('close-sna-plot-modal')"
       >
         Mostra grafico
       </BaseClickButton>
