@@ -74,8 +74,8 @@ const scalingRatio = ref(0.6);
 const gravity = ref(1.1);
 
 // --- Composables --------
-const nodeInfoRef = computed(() => props.nodeInfo);
-const emphasis = useNodeEmphasis(nodeInfoRef);
+const nodeInfo = computed(() => props.nodeInfo);
+const emphasis = useNodeEmphasis(nodeInfo);
 
 const {
   isRegenerating,
