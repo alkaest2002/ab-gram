@@ -30,7 +30,7 @@ import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 // --- Props --------------
 
 // --- Emits --------------
-const emit = defineEmits(["sociogram-change-component", "sociogram-restart-app"]);
+const emit = defineEmits(["sociogram-go-to-step", "sociogram-restart-app"]);
 
 // --- Routers ------------
 

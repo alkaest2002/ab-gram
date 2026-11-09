@@ -27,7 +27,7 @@ const props = defineProps({
 // --- Emits --------------
 const emit = defineEmits([
   "node-emphasis-apply-filter",
-  "node-emphasis-toggle-node",
+  "node-emphasis-toggle",
   "update:minInDegree",
   "close-sna-plot-modal",
 ]);
@@ -133,7 +133,7 @@ const minInDegreeActive = computed({
             "
             :title="node.id"
             :aria-pressed="emphasizedNodes.has(node.id)"
-            @click="emit('node-emphasis-toggle-node', node.id)"
+            @click="emit('node-emphasis-toggle', node.id)"
           >
             {{ node.id }}
           </button>

@@ -39,9 +39,9 @@ const emit = defineEmits([
   "update:minInDegree",
   "close-sna-plot-modal",
   "stop-sna-plot-regeneration",
-  "confirm-sna-plot-regeneration",
+  "regenerate-sna-plot-layout",
   "node-emphasis-apply-filter",
-  "node-emphasis-toggle-node",
+  "node-emphasis-toggle",
 ]);
 
 // --- Routers ------------
@@ -179,7 +179,7 @@ defineExpose({ open, forceClose });
           :emphasized-nodes="emphasizedNodes"
           :min-in-degree="minInDegree"
           @node-emphasis-apply-filter="emit('node-emphasis-apply-filter', $event)"
-          @node-emphasis-toggle-node="emit('node-emphasis-toggle-node', $event)"
+          @node-emphasis-toggle="emit('node-emphasis-toggle', $event)"
           @update:minInDegree="emit('update:minInDegree', $event)"
           @close-sna-plot-modal="close"
         />
@@ -193,7 +193,7 @@ defineExpose({ open, forceClose });
           :gravity="gravity"
           @update:scalingRatio="emit('update:scalingRatio', $event)"
           @update:gravity="emit('update:gravity', $event)"
-          @confirm-sna-plot-regeneration="emit('confirm-sna-plot-regeneration')"
+          @regenerate-sna-plot-layout="emit('regenerate-sna-plot-layout')"
           @stop-sna-plot-regeneration="emit('stop-sna-plot-regeneration')"
           @close-sna-plot-modal="close"
         />

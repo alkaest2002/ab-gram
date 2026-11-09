@@ -26,7 +26,7 @@ const props = defineProps({
 const emit = defineEmits([
   "update:scalingRatio",
   "update:gravity",
-  "confirm-sna-plot-regeneration",
+  "regenerate-sna-plot-layout",
   "stop-sna-plot-regeneration",
   "close-sna-plot-modal",
 ]);
@@ -68,7 +68,7 @@ const handleClose = () => {
     role="tabpanel"
     aria-labelledby="sna-tab-button-layout"
     class="mt-5 flex min-h-0 flex-1 flex-col"
-    @submit.prevent="emit('confirm-sna-plot-regeneration')"
+    @submit.prevent="emit('regenerate-sna-plot-layout')"
   >
     <div class="min-h-0 flex-1 overflow-y-auto">
       <div class="flex items-end gap-3">

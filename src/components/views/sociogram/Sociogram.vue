@@ -72,7 +72,7 @@ const stepProps = computed(() => {
 // which renders a fragment root) and triggers a warning. Attach it conditionally.
 const stepListeners = computed(() => {
   const listeners = {
-    "sociogram-change-component": changeComponent,
+    "sociogram-go-to-step": changeComponent,
     "sociogram-restart-app": sociogramStore.resetMembers,
   };
 

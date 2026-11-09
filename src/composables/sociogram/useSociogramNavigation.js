@@ -22,7 +22,7 @@ export const SOCIOGRAM_STEPS = [
 export function useSociogramNavigation(emit) {
   function goToStep(componentName) {
     if (SOCIOGRAM_STEPS.includes(componentName)) {
-      emit("sociogram-change-component", componentName);
+      emit("sociogram-go-to-step", componentName);
     }
   }
 

@@ -181,9 +181,9 @@ function confirmRegenerate() {
         v-model:min-in-degree="emphasis.minInDegree.value"
         @close-sna-plot-modal="handleModalClose"
         @stop-sna-plot-regeneration="stopWorker"
-        @confirm-sna-plot-regeneration="confirmRegenerate"
+        @regenerate-sna-plot-layout="confirmRegenerate"
         @node-emphasis-apply-filter="emphasis.applyFilter"
-        @node-emphasis-toggle-node="emphasis.toggleNode"
+        @node-emphasis-toggle="emphasis.toggleNode"
       />
     </template>
   </BasePage>

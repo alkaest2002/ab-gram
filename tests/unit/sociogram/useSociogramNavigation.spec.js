@@ -41,12 +41,12 @@ describe("useSociogramNavigation", () => {
     expect(typeof restart).toBe("function");
   });
 
-  it("goToStep emits sociogram-change-component for every valid step", () => {
+  it("goToStep emits sociogram-go-to-step for every valid step", () => {
     const { emit, goToStep } = setup();
 
     for (const step of SOCIOGRAM_STEPS) {
       goToStep(step);
-      expect(emit).toHaveBeenCalledWith("sociogram-change-component", step);
+      expect(emit).toHaveBeenCalledWith("sociogram-go-to-step", step);
     }
 
     expect(emit).toHaveBeenCalledTimes(SOCIOGRAM_STEPS.length);
@@ -75,7 +75,7 @@ describe("useSociogramNavigation", () => {
     restart();
 
     expect(emit).toHaveBeenNthCalledWith(1, "sociogram-restart-app");
-    expect(emit).toHaveBeenNthCalledWith(2, "sociogram-change-component", SOCIOGRAM_STEPS[0]);
+    expect(emit).toHaveBeenNthCalledWith(2, "sociogram-go-to-step", SOCIOGRAM_STEPS[0]);
     expect(emit).toHaveBeenCalledTimes(2);
   });
 });
