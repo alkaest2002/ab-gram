@@ -70,10 +70,13 @@ const sortKey = ref("id");
 // --- Computed -----------
 const members = computed(() => props.membersData?.members ?? []);
 
-const sortedCards = computed(() => {
-  const list = members.value.map(buildCard);
-  return [...list].sort((a, b) => compareCards(a, b, sortKey.value));
-});
+// Cards built once from the source data — independent of the active sort key.
+const cards = computed(() => members.value.map(buildCard));
+
+// A lightweight re-sort whenever `sortKey` changes; cards are NOT rebuilt.
+const sortedCards = computed(() =>
+  [...cards.value].sort((a, b) => compareCards(a, b, sortKey.value)),
+);
 
 // --- Watchers -----------
 
