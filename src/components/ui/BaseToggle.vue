@@ -45,9 +45,12 @@ const layoutClasses = {
 };
 
 // Track/thumb sizes, written out in full so Tailwind sees them.
+// The thumb (`after:`) is sized larger than the track height so it pokes out
+// above and below the rail; the track width keeps 2 × thumb + 2 × inset so the
+// `translate-x-full` slide still lands flush against each end.
 const sizeClasses = {
-  sm: "h-4 w-7 after:size-3",
-  md: "h-5 w-9 after:size-4",
+  sm: "h-2 w-9 after:size-4",
+  md: "h-4 w-11 after:size-8",
 };
 
 // --- Composables --------
@@ -79,7 +82,7 @@ const checked = computed({
 
     <span
       aria-hidden="true"
-      class="relative inline-flex shrink-0 rounded-full bg-line transition-colors after:absolute after:inset-s-0.5 after:top-0.5 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:bg-ink peer-checked:after:translate-x-full peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent rtl:peer-checked:after:-translate-x-full"
+      class="relative inline-flex shrink-0 rounded-full bg-line transition-colors after:absolute after:inset-s-0.5 after:top-1/2 after:-translate-y-1/2 after:rounded-full after:bg-white after:border after:border-muted/50 after:shadow-sm after:transition-transform peer-checked:bg-ink peer-checked:after:border-ink peer-checked:after:translate-x-full peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 rtl:peer-checked:after:-translate-x-full"
       :class="sizeClasses[size]"
     ></span>
 
