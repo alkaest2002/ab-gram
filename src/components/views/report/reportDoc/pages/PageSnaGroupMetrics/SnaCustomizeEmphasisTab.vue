@@ -62,6 +62,16 @@ const minInDegree = computed({
   },
 });
 
+// v-model: whether the "min in-degree" threshold filter is active. Turning it
+// off falls back to showing every node.
+const minInDegreeActive = computed({
+  get: () => draft.typeOfFilter === "minInDegree",
+  set: (value) => {
+    draft.typeOfFilter = value ? "minInDegree" : "all-on";
+    draft.filterValue = value ? minInDegree.value : null;
+  },
+});
+
 // v-model: true when every node is emphasized. Toggling applies the matching
 // all-on/all-off preset.
 const allVisible = computed({
@@ -72,16 +82,6 @@ const allVisible = computed({
   set: (value) => {
     draft.typeOfFilter = value ? "all-on" : "all-off";
     draft.filterValue = null;
-  },
-});
-
-// v-model: whether the "min in-degree" threshold filter is active. Turning it
-// off falls back to showing every node.
-const minInDegreeActive = computed({
-  get: () => draft.typeOfFilter === "minInDegree",
-  set: (value) => {
-    draft.typeOfFilter = value ? "minInDegree" : "all-on";
-    draft.filterValue = value ? minInDegree.value : null;
   },
 });
 
