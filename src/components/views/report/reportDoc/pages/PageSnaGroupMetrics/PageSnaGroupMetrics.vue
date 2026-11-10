@@ -93,7 +93,7 @@ const {
       accentColor,
       svg: nextSvg,
     });
-    customizeModal.value?.forceClose();
+    customizeModal.value?.snaPlotModalForceClose();
   },
   onError: (message) => {
     error.value = message;
@@ -109,7 +109,7 @@ const {
 // --- Methods ------------
 function openModal() {
   error.value = "";
-  customizeModal.value?.open();
+  customizeModal.value?.snaPlotModalOpen();
 }
 
 function handleModalClose() {

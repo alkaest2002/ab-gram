@@ -61,20 +61,24 @@ const activeTab = ref("emphasize");
 // --- Composables --------
 // Own the open/closed state locally. The `canClose` guard keeps the dialog
 // locked while a regeneration is running (the user must stop it explicitly).
-const { isOpen, open, close } = useDisclosure(false, {
+const {
+  isOpen: snaPlotModalIsOpen,
+  open: snaPlotModalOpen,
+  close: snaPlotModalClose,
+} = useDisclosure(false, {
   canClose: () => !props.regenerating,
 });
 
 // Force-close bypasses the guard: the parent calls it after a successful
 // regeneration, where the `regenerating` prop may still read as `true` in the
 // same tick the worker finishes.
-const forceClose = () => (isOpen.value = false);
+const snaPlotModalForceClose = () => (snaPlotModalIsOpen.value = false);
 
 // --- Watchers -----------
 // Start each open on the first tab, so a previous session's selection never
 // leaks into a new dialog.
-watch(isOpen, (open) => {
-  if (open) activeTab.value = "emphasize";
+watch(snaPlotModalIsOpen, (isOpen) => {
+  if (isOpen) activeTab.value = "emphasize";
 });
 
 // While a regeneration is running, the only available action is "Interrompi",
@@ -89,15 +93,15 @@ watch(
 // Notify the parent when the dialog actually closes, so it can reset its
 // transient error state. `isOpen` only flips to false after `canClose` passes,
 // so this never fires for a blocked close.
-watch(isOpen, (open, wasOpen) => {
-  if (wasOpen && !open) emit("close-sna-plot-modal");
+watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
+  if (wasOpen && !isOpen) emit("close-sna-plot-modal");
 });
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
 // Expose the open/close methods to the parent.
-defineExpose({ open, forceClose });
+defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
 </script>
 
 <template>
@@ -105,9 +109,9 @@ defineExpose({ open, forceClose });
          report page that would otherwise clip it. -->
   <Teleport to="body">
     <div
-      v-if="isOpen"
+      v-if="snaPlotModalIsOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 print:hidden"
-      @click.self="close"
+      @click.self="snaPlotModalClose"
     >
       <div
         class="relative flex h-90 w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-canvas p-6 shadow-xl"
@@ -122,7 +126,7 @@ defineExpose({ open, forceClose });
           aria-label="Chiudi"
           title="Chiudi"
           :disabled="regenerating"
-          @click="close"
+          @click="snaPlotModalClose"
         >
           <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
@@ -181,7 +185,7 @@ defineExpose({ open, forceClose });
           @node-emphasis-apply-filter="emit('node-emphasis-apply-filter', $event)"
           @node-emphasis-toggle="emit('node-emphasis-toggle', $event)"
           @update:minInDegree="emit('update:minInDegree', $event)"
-          @close-sna-plot-modal="close"
+          @close-sna-plot-modal="snaPlotModalClose"
         />
 
         <!-- ── Layout tab ─────────────────────────────────────────── -->
@@ -195,7 +199,7 @@ defineExpose({ open, forceClose });
           @update:gravity="emit('update:gravity', $event)"
           @regenerate-sna-plot-layout="emit('regenerate-sna-plot-layout')"
           @stop-sna-plot-regeneration="emit('stop-sna-plot-regeneration')"
-          @close-sna-plot-modal="close"
+          @close-sna-plot-modal="snaPlotModalClose"
         />
       </div>
     </div>
