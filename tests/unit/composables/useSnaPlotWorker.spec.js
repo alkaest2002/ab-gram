@@ -48,10 +48,10 @@ describe("useSnaPlotWorker", () => {
   it("instantiates a worker and posts the members/config snapshot", () => {
     const { api, worker } = setup();
 
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
     expect(createSnaPlotWorker).toHaveBeenCalledTimes(1);
-    expect(api.isRegenerating.value).toBe(true);
+    expect(api.isPlotRegenerating.value).toBe(true);
     expect(worker.postMessage).toHaveBeenCalledTimes(1);
 
     const [message] = worker.postMessage.mock.calls[0];
@@ -67,18 +67,18 @@ describe("useSnaPlotWorker", () => {
     const { api, worker } = setup();
     const members = [{ id: "a", name: "A", likes: [], dislikes: [] }];
 
-    api.regenerate({ ...makePayload(), members });
+    api.regeneratePlot({ ...makePayload(), members });
 
     const [message] = worker.postMessage.mock.calls[0];
     expect(message.members).toEqual(members);
     expect(message.members).not.toBe(members);
   });
 
-  it("ignores a second regenerate while one is already in flight", () => {
+  it("ignores a second regeneratePlot while one is already in flight", () => {
     const { api, worker } = setup();
 
-    api.regenerate(makePayload());
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
+    api.regeneratePlot(makePayload());
 
     expect(createSnaPlotWorker).toHaveBeenCalledTimes(1);
     expect(worker.postMessage).toHaveBeenCalledTimes(1);
@@ -86,45 +86,45 @@ describe("useSnaPlotWorker", () => {
 
   it("calls onSuccess with the SVG and clears the in-flight flag", () => {
     const { api, worker, onSuccess, onError } = setup();
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
     worker.onmessage({ data: { svg: "<svg></svg>" } });
 
     expect(onSuccess).toHaveBeenCalledWith("<svg></svg>");
     expect(onError).not.toHaveBeenCalled();
-    expect(api.isRegenerating.value).toBe(false);
+    expect(api.isPlotRegenerating.value).toBe(false);
   });
 
   it("calls onError when the worker posts an error", () => {
     const { api, worker, onSuccess, onError } = setup();
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
     worker.onmessage({ data: { error: "boom" } });
 
     expect(onError).toHaveBeenCalledWith("boom");
     expect(onSuccess).not.toHaveBeenCalled();
-    expect(api.isRegenerating.value).toBe(false);
+    expect(api.isPlotRegenerating.value).toBe(false);
   });
 
   it("calls onError when the worker itself errors", () => {
     const { api, worker, onSuccess, onError } = setup();
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
     worker.onerror();
 
     expect(onError).toHaveBeenCalledWith("Impossibile rigenerare il grafico.");
     expect(onSuccess).not.toHaveBeenCalled();
-    expect(api.isRegenerating.value).toBe(false);
+    expect(api.isPlotRegenerating.value).toBe(false);
   });
 
-  it("terminates the worker when stop() is called", () => {
+  it("terminates the worker when stopRegeneratingPlot() is called", () => {
     const { api, worker } = setup();
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
-    api.stop();
+    api.stopRegeneratingPlot();
 
     expect(worker.terminate).toHaveBeenCalledTimes(1);
-    expect(api.isRegenerating.value).toBe(false);
+    expect(api.isPlotRegenerating.value).toBe(false);
   });
 
   it("reports an error when worker instantiation fails", () => {
@@ -136,9 +136,9 @@ describe("useSnaPlotWorker", () => {
     const onError = vi.fn();
     const api = useSnaPlotWorker({ onError });
 
-    api.regenerate(makePayload());
+    api.regeneratePlot(makePayload());
 
     expect(onError).toHaveBeenCalledWith("Impossibile avviare il worker.");
-    expect(api.isRegenerating.value).toBe(false);
+    expect(api.isPlotRegenerating.value).toBe(false);
   });
 });

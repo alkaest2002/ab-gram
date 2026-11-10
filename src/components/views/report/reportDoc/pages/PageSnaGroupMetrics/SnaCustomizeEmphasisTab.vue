@@ -29,7 +29,8 @@ const emit = defineEmits([
   "node-emphasis-apply-filter",
   "node-emphasis-toggle",
   "update:minInDegree",
-  "close-sna-plot-modal",
+  "sna-plot-apply-emphasis",
+  "sna-plot-close-modal",
 ]);
 
 // --- Routers ------------
@@ -145,14 +146,14 @@ const minInDegreeActive = computed({
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="outline"
-        @click="emit('close-sna-plot-modal')"
+        @click="emit('sna-plot-close-modal')"
       >
         Annulla
       </BaseClickButton>
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="solid"
-        @click="emit('close-sna-plot-modal')"
+        @click="emit('sna-plot-apply-emphasis')"
       >
         Mostra grafico
       </BaseClickButton>

@@ -50,4 +50,17 @@ describe("useNodeEmphasis", () => {
     expect(e.emphasizedNodes.value).toEqual(new Set(["a", "b", "d"]));
     expect(e.dimmedNodes.value).toEqual(new Set(["c"]));
   });
+
+  it("snapshot/setState round-trips the emphasis state", () => {
+    const source = useNodeEmphasis(makeNodeInfo());
+    source.toggleNode("a");
+    const snapshot = source.snapshot();
+
+    const target = useNodeEmphasis(makeNodeInfo());
+    target.setState(snapshot);
+
+    expect(target.activeFilter.value).toBe(snapshot.activeFilter);
+    expect(target.minInDegree.value).toBe(snapshot.minInDegree);
+    expect(target.emphasizedNodes.value).toEqual(snapshot.emphasizedNodes);
+  });
 });

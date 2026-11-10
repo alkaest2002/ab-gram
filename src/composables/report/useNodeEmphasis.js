@@ -25,6 +25,8 @@ import { computed, ref, watch } from "vue";
  *   isAllOff: import("vue").ComputedRef<boolean>,
  *   applyFilter: (filter: EmphasisFilter) => void,
  *   toggleNode: (id: string) => void,
+ *   snapshot: () => {activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>},
+ *   setState: (state: {activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}) => void,
  * }}
  */
 export function useNodeEmphasis(nodeInfo) {
@@ -94,6 +96,31 @@ export function useNodeEmphasis(nodeInfo) {
     emphasizedNodes.value = next;
   }
 
+  /**
+   * Return a plain snapshot of the current emphasis state, safe to pass across
+   * component boundaries (the reactive refs stay behind).
+   *
+   * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
+   */
+  function snapshot() {
+    return {
+      activeFilter: activeFilter.value,
+      minInDegree: minInDegree.value,
+      emphasizedNodes: new Set(emphasizedNodes.value),
+    };
+  }
+
+  /**
+   * Replace the emphasis state with a snapshot (the inverse of `snapshot`).
+   *
+   * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} state
+   */
+  function setState(state) {
+    activeFilter.value = state.activeFilter;
+    minInDegree.value = state.minInDegree;
+    emphasizedNodes.value = new Set(state.emphasizedNodes);
+  }
+
   // ── Watchers ───────────────────────────────────────────────────────────────
 
   // When the threshold changes while the min-in-degree filter is active,
@@ -124,5 +151,7 @@ export function useNodeEmphasis(nodeInfo) {
     isAllOff,
     applyFilter,
     toggleNode,
+    snapshot,
+    setState,
   };
 }

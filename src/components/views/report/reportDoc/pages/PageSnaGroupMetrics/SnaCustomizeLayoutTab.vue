@@ -13,8 +13,8 @@ import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------
 const props = defineProps({
-  // Whether a regeneration is running: disables the inputs and swaps the
-  // regenerate button for an interrupt button.
+  // Whether a regeneration is running: disables the inputs while the plot is
+  // being rebuilt off the main thread.
   regenerating: { type: Boolean, default: false },
   error: { type: String, default: "" },
   // ForceAtlas2 settings, bound two-way from the parent container.
@@ -26,9 +26,8 @@ const props = defineProps({
 const emit = defineEmits([
   "update:scalingRatio",
   "update:gravity",
-  "regenerate-sna-plot-layout",
-  "stop-sna-plot-regeneration",
-  "close-sna-plot-modal",
+  "sna-plot-regenerate-layout",
+  "sna-plot-close-modal",
 ]);
 
 // --- Routers ------------
@@ -57,8 +56,7 @@ const gravity = computed({
 
 // --- Methods ------------
 const handleClose = () => {
-  emit("stop-sna-plot-regeneration");
-  emit("close-sna-plot-modal");
+  emit("sna-plot-close-modal");
 };
 </script>
 
@@ -68,7 +66,7 @@ const handleClose = () => {
     role="tabpanel"
     aria-labelledby="sna-tab-button-layout"
     class="mt-5 flex min-h-0 flex-1 flex-col"
-    @submit.prevent="emit('regenerate-sna-plot-layout')"
+    @submit.prevent="emit('sna-plot-regenerate-layout')"
   >
     <div class="min-h-0 flex-1 overflow-y-auto">
       <div class="flex items-end gap-3">

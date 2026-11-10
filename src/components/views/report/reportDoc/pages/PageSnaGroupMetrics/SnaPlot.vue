@@ -9,22 +9,31 @@
 import { computed, ref } from "vue";
 
 //   -- From composables.
+import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
+import { useSnaPlotWorker } from "@/composables/report/useSnaPlotWorker";
 import { useSvgEmphasis } from "@/composables/report/useSvgEmphasis";
+
+//   -- From relative.
+import SnaCustomizePlotModal from "./SnaCustomizePlotModal.vue";
 
 // --- Props --------------
 const props = defineProps({
-  // Injected SVG markup for the network plot.
-  svg: { type: String, default: "" },
+  // Initial SVG markup for the network plot. SnaPlot owns a local copy so the
+  // worker can swap it in place after a regeneration without writing straight
+  // back to the report store.
+  initialSvg: { type: String, default: "" },
   // Accent hue shared by the plot, legend swatches and arrow glyphs.
   accentColor: { type: String, default: "" },
   // Preference type, selects the per-type legend text below.
   typeOfSna: { type: String, default: "likes" },
-  // Set of node ids to dim. When empty (default), all nodes are accent-colored.
-  dimmedNodes: { type: Set, default: () => new Set() },
+  // Members used to rebuild the graph during regeneration.
+  members: { type: Array, default: () => [] },
+  // Per-node metadata for the emphasis controls.
+  nodeInfo: { type: Array, default: () => [] },
 });
 
 // --- Emits --------------
-const emit = defineEmits(["open-sna-plot-modal"]);
+const emit = defineEmits(["regenerate-sna-plot"]);
 
 // --- Routers ------------
 
@@ -43,18 +52,48 @@ const SNA_PLOT_CONFIG = {
   },
 };
 
+// The rendered SVG, owned locally so regeneration can swap it in place.
+const svg = ref(props.initialSvg);
+
 // Template ref for the SVG container, used by the emphasis composable.
 const svgContainer = ref(null);
 
+// Modal ref and transient regeneration error.
+const customizeModal = ref(null);
+const error = ref("");
+
+// Committed ForceAtlas2 settings. These mirror the module-level defaults in
+// `snaPlots.js` (SCALING_RATIO / GRAVITY).
+const scalingRatio = ref(0.6);
+const gravity = ref(1.1);
+
 // --- Composables --------
-// Drives `.is-dimmed` class toggling on the injected SVG elements.
-// The `svg` content is passed as a tracked dependency so the effect re-runs
-// when `v-html` replaces the DOM after a worker regeneration.
-useSvgEmphasis(
-  svgContainer,
-  computed(() => props.dimmedNodes),
-  computed(() => props.svg),
-);
+const nodeInfo = computed(() => props.nodeInfo);
+const emphasis = useNodeEmphasis(nodeInfo);
+
+// Drives `.is-dimmed` class toggling on the injected SVG elements. The `svg`
+// content is passed as a tracked dependency so the effect re-runs when
+// `v-html` replaces the DOM after a worker regeneration.
+useSvgEmphasis(svgContainer, emphasis.dimmedNodes, svg);
+
+const { isPlotRegenerating, regeneratePlot } = useSnaPlotWorker({
+  onSuccess: (regeneratedSvg) => {
+    const nextSvg = regeneratedSvg ?? svg.value;
+    svg.value = nextSvg;
+
+    // Bubbled up to `ReportGenerated`, which persists the regenerated plot
+    // in the report store so it survives re-renders and print/export.
+    emit("regenerate-sna-plot", {
+      typeOfPreference: props.typeOfSna,
+      accentColor: props.accentColor,
+      svg: nextSvg,
+    });
+    customizeModal.value?.snaPlotModalForceClose();
+  },
+  onError: (message) => {
+    error.value = message;
+  },
+});
 
 // --- Computed -----------
 const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFIG.likes);
@@ -64,6 +103,39 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function openModal() {
+  error.value = "";
+  customizeModal.value?.snaPlotModalOpen();
+}
+
+function handleModalClose() {
+  error.value = "";
+}
+
+function applyEmphasis(state) {
+  emphasis.setState(state);
+}
+
+function confirmRegenerate() {
+  const settings = {
+    scalingRatio: Number(scalingRatio.value),
+    gravity: Number(gravity.value),
+  };
+
+  if (!Number.isFinite(settings.scalingRatio) || !Number.isFinite(settings.gravity)) {
+    error.value = "Inserisci valori numerici validi.";
+    return;
+  }
+
+  error.value = "";
+
+  regeneratePlot({
+    members: props.members,
+    accentColor: props.accentColor,
+    typeOfSna: props.typeOfSna,
+    settings,
+  });
+}
 </script>
 
 <template>
@@ -75,7 +147,7 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
         class="absolute bottom-2 right-2 z-10 print:hidden flex h-5 w-5 items-center justify-center rounded-full border border-line bg-canvas/90 text-sm leading-none text-muted shadow-sm transition-colors hover:text-ink"
         aria-label="Personalizza il grafico"
         title="Personalizza il grafico"
-        @click="emit('open-sna-plot-modal')"
+        @click="openModal"
       >
         +
       </button>
@@ -115,6 +187,22 @@ const legend = computed(() => SNA_PLOT_CONFIG[props.typeOfSna] ?? SNA_PLOT_CONFI
       </div>
     </div>
   </div>
+
+  <!-- Customization modal: teleported to <body> by the component so it escapes
+       the fixed-height, overflow-hidden report page. -->
+  <SnaCustomizePlotModal
+    ref="customizeModal"
+    :regenerating="isPlotRegenerating"
+    :error="error"
+    :node-info="nodeInfo"
+    :active-filter="emphasis.activeFilter.value"
+    :emphasized-nodes="emphasis.emphasizedNodes.value"
+    v-model:scaling-ratio="scalingRatio"
+    v-model:gravity="gravity"
+    @close-sna-plot-modal="handleModalClose"
+    @regenerate-sna-plot-layout="confirmRegenerate"
+    @apply-sna-emphasis="applyEmphasis"
+  />
 </template>
 
 <style scoped>

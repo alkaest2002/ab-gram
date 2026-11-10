@@ -10,38 +10,38 @@ import { createSnaPlotWorker } from "@/workers/workerHelpers";
  *
  * Wraps the instantiation, message handling, and termination of the
  * `snaPlotWorker` web worker so the owning component stays declarative: it
- * calls `regenerate()` with a snapshot of the members and ForceAtlas2 settings,
+ * calls `regeneratePlot()` with a snapshot of the members and ForceAtlas2 settings,
  * and receives the regenerated SVG (or an error) through the `onSuccess` /
  * `onError` callbacks. The worker is terminated automatically on unmount, and
- * `stop()` can cancel a regeneration in flight (e.g. the modal's "Stop" action).
+ * `stopRegeneratingPlot()` can cancel a regeneration in flight (e.g. the modal's "Stop" action).
  *
  * @param {{ onSuccess?: (svg: string | undefined) => void, onError?: (message: string) => void }} [options]
  *   Callbacks invoked when the worker completes or fails. `onError` also fires
  *   on instantiation failure (e.g. a worker blocked by the browser).
  * @returns {{
- *   isRegenerating: import("vue").Ref<boolean>,
- *   regenerate: (payload: {
+ *   isPlotRegenerating: import("vue").Ref<boolean>,
+ *   regeneratePlot: (payload: {
  *     members: Array,
  *     accentColor: string,
  *     typeOfSna: string,
  *     settings: { scalingRatio: number, gravity: number },
  *   }) => void,
- *   stop: () => void,
+ *   stopRegeneratingPlot: () => void,
  * }}
  */
 export function useSnaPlotWorker({ onSuccess, onError } = {}) {
-  const isRegenerating = ref(false);
+  const isPlotRegenerating = ref(false);
 
   /** The live worker, kept so it can be terminated mid-flight. */
   let worker = null;
 
   /** Terminate the worker (if any) and clear the in-flight flag. */
-  function stop() {
+  function stopRegeneratingPlot() {
     if (worker) {
       worker.terminate();
       worker = null;
     }
-    isRegenerating.value = false;
+    isPlotRegenerating.value = false;
   }
 
   /**
@@ -53,8 +53,8 @@ export function useSnaPlotWorker({ onSuccess, onError } = {}) {
    * @param {string} payload.typeOfSna - "likes" | "dislikes".
    * @param {{scalingRatio: number, gravity: number}} payload.settings - ForceAtlas2 settings.
    */
-  function regenerate({ members, accentColor, typeOfSna, settings }) {
-    if (isRegenerating.value) return;
+  function regeneratePlot({ members, accentColor, typeOfSna, settings }) {
+    if (isPlotRegenerating.value) return;
 
     try {
       worker = createSnaPlotWorker();
@@ -64,11 +64,11 @@ export function useSnaPlotWorker({ onSuccess, onError } = {}) {
       return;
     }
 
-    isRegenerating.value = true;
+    isPlotRegenerating.value = true;
 
     worker.onmessage = (event) => {
       const { data } = event;
-      stop();
+      stopRegeneratingPlot();
 
       if (data?.error) {
         onError?.(data.error);
@@ -79,7 +79,7 @@ export function useSnaPlotWorker({ onSuccess, onError } = {}) {
     };
 
     worker.onerror = () => {
-      stop();
+      stopRegeneratingPlot();
       // Call the error callback with a generic error message.
       onError?.("Impossibile rigenerare il grafico.");
     };
@@ -96,7 +96,7 @@ export function useSnaPlotWorker({ onSuccess, onError } = {}) {
     });
   }
 
-  onBeforeUnmount(stop);
+  onBeforeUnmount(stopRegeneratingPlot);
 
-  return { isRegenerating, regenerate, stop };
+  return { isPlotRegenerating, regeneratePlot, stopRegeneratingPlot };
 }
