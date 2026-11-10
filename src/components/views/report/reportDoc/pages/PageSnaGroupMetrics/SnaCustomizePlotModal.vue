@@ -10,7 +10,6 @@ import { ref, watch } from "vue";
 
 //   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
-import { cloneEmphasis } from "@/composables/report/useNodeEmphasis";
 
 //   -- From relative.
 import SnaCustomizeEmphasisTab from "./SnaCustomizeEmphasisTab.vue";
@@ -28,7 +27,7 @@ const props = defineProps({
   snaPlotConfig: {
     type: Object,
     default: () => ({
-      emphasis: { activeFilter: "all-on", minInDegree: 0, emphasizedNodes: new Set() },
+      emphasis: { typeOfFilter: "all-on", filterValue: null },
       layout: { scalingRatio: 0.6, gravity: 1.1 },
     }),
   },
@@ -55,11 +54,6 @@ const tabs = [
 
 const activeTab = ref("emphasize");
 
-// Local drafts, staged while the dialog is open and only committed to the
-// parent on submit, so cancelling leaves the applied configuration untouched.
-const draftEmphasis = ref(cloneEmphasis(props.snaPlotConfig.emphasis));
-const draftLayout = ref({ ...props.snaPlotConfig.layout });
-
 // --- Composables --------
 // Own the open/closed state locally. The `canClose` guard keeps the dialog
 // locked while a regeneration is running so it force-closes cleanly on success.
@@ -78,12 +72,10 @@ const snaPlotModalForceClose = () => (snaPlotModalIsOpen.value = false);
 
 // --- Watchers -----------
 // Start each open on the first tab, so a previous session's selection never
-// leaks into a new dialog, and reset both drafts to the applied configuration.
+// leaks into a new dialog. Both tab drafts reset when their tabs remount.
 watch(snaPlotModalIsOpen, (isOpen) => {
   if (isOpen) {
     activeTab.value = "emphasize";
-    draftEmphasis.value = cloneEmphasis(props.snaPlotConfig.emphasis);
-    draftLayout.value = { ...props.snaPlotConfig.layout };
   }
 });
 
@@ -97,18 +89,18 @@ watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
 // --- Lifecycle ----------
 
 // --- Methods ------------
-// Commit the staged emphasis state and close the dialog. Emphasis is applied
+// Commit the emphasis filter and close the dialog. Emphasis is applied
 // synchronously by the parent (no worker), so there's no success callback to
 // wait for before closing.
-const regenerateEmphasis = () => {
-  emit("sna-plot-regenerate-emphasis", cloneEmphasis(draftEmphasis.value));
+const regenerateEmphasis = (filter) => {
+  emit("sna-plot-regenerate-emphasis", filter);
   snaPlotModalClose();
 };
 
-// Commit the staged layout settings and ask the parent to regenerate. The
-// dialog stays open while the worker runs, then is force-closed on success.
-const regenerateLayout = () => {
-  emit("sna-plot-regenerate-layout", { ...draftLayout.value });
+// Ask the parent to regenerate with the submitted layout settings. The dialog
+// stays open while the worker runs, then is force-closed on success.
+const regenerateLayout = (layoutConfig) => {
+  emit("sna-plot-regenerate-layout", layoutConfig);
 };
 
 // Expose the open/close methods to the parent.
@@ -188,7 +180,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
         <!-- ── Emphasis tab ───────────────────────────────────────── -->
         <SnaCustomizeEmphasisTab
           v-show="activeTab === 'emphasize'"
-          v-model="draftEmphasis"
+          :sna-plot-emphasis-config="snaPlotConfig.emphasis"
           :sna-plot-is-regenerating="snaPlotIsRegenerating"
           :sna-plot-node-info="snaPlotNodeInfo"
           @sna-plot-regenerate-emphasis="regenerateEmphasis"
@@ -198,7 +190,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
         <!-- ── Layout tab ─────────────────────────────────────────── -->
         <SnaCustomizeLayoutTab
           v-show="activeTab === 'layout'"
-          v-model="draftLayout"
+          :sna-plot-layout-config="snaPlotConfig.layout"
           :sna-plot-is-regenerating="snaPlotIsRegenerating"
           :sna-plot-regeneration-error="snaPlotRegenerationError"
           @sna-plot-regenerate-layout="regenerateLayout"

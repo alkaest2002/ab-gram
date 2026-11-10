@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 
 //   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
@@ -17,38 +17,40 @@ const props = defineProps({
   // being rebuilt off the main thread.
   snaPlotIsRegenerating: { type: Boolean, default: false },
   snaPlotRegenerationError: { type: String, default: "" },
-  // Current layout customization, owned by the parent and bound via v-model.
-  modelValue: {
+  // Current layout config, owned by the parent.
+  snaPlotLayoutConfig: {
     type: Object,
     default: () => ({ scalingRatio: 0.6, gravity: 1.1 }),
   },
 });
 
 // --- Emits --------------
-const emit = defineEmits([
-  "update:modelValue",
-  "sna-plot-regenerate-layout",
-  "sna-plot-close-modal",
-]);
+const emit = defineEmits(["sna-plot-regenerate-layout", "sna-plot-close-modal"]);
 
 // --- Routers ------------
 
 // --- Stores -------------
 
 // --- State --------------
+// Local draft staged while the dialog is open. It is initialized from the
+// committed config on mount (the modal remounts this tab on each open) and only
+// committed to the parent on submit.
+const draft = reactive({ ...props.snaPlotLayoutConfig });
 
 // --- Composables --------
 
 // --- Computed -----------
-// v-model: read each setting from the model and emit a new model on change.
 const scalingRatio = computed({
-  get: () => props.modelValue.scalingRatio,
-  set: (value) =>
-    emit("update:modelValue", { ...props.modelValue, scalingRatio: Number(value) || 0 }),
+  get: () => draft.scalingRatio,
+  set: (value) => {
+    draft.scalingRatio = Number(value) || 0;
+  },
 });
 const gravity = computed({
-  get: () => props.modelValue.gravity,
-  set: (value) => emit("update:modelValue", { ...props.modelValue, gravity: Number(value) || 0 }),
+  get: () => draft.gravity,
+  set: (value) => {
+    draft.gravity = Number(value) || 0;
+  },
 });
 
 // --- Watchers -----------
@@ -56,9 +58,13 @@ const gravity = computed({
 // --- Lifecycle ----------
 
 // --- Methods ------------
-const handleClose = () => {
+function submit() {
+  emit("sna-plot-regenerate-layout", { ...draft });
+}
+
+function handleClose() {
   emit("sna-plot-close-modal");
-};
+}
 </script>
 
 <template>
@@ -67,7 +73,7 @@ const handleClose = () => {
     role="tabpanel"
     aria-labelledby="sna-tab-button-layout"
     class="mt-5 flex min-h-0 flex-1 flex-col"
-    @submit.prevent="emit('sna-plot-regenerate-layout')"
+    @submit.prevent="submit"
   >
     <div class="min-h-0 flex-1 overflow-y-auto">
       <div class="flex items-end gap-3">

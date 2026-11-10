@@ -6,14 +6,10 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed } from "vue";
+import { computed, reactive } from "vue";
 
 //   -- From composables.
-import {
-  applyEmphasisFilter,
-  setEmphasisMinInDegree,
-  toggleEmphasizedNode,
-} from "@/composables/report/useNodeEmphasis";
+import { cloneEmphasisFilter, resolveDimmedNodes } from "@/composables/report/useNodeEmphasis";
 
 //   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
@@ -25,71 +21,68 @@ const props = defineProps({
   snaPlotIsRegenerating: { type: Boolean, default: false },
   // Per-node metadata for the clickable node circles.
   snaPlotNodeInfo: { type: Array, default: () => [] },
-  // Current emphasis customization, owned by the parent and bound via v-model.
-  modelValue: {
+  // Current emphasis filter, owned by the parent.
+  snaPlotEmphasisConfig: {
     type: Object,
-    default: () => ({ activeFilter: "all-on", minInDegree: 0, emphasizedNodes: new Set() }),
+    default: () => ({ typeOfFilter: "all-on", filterValue: null }),
   },
 });
 
 // --- Emits --------------
-const emit = defineEmits([
-  "update:modelValue",
-  "sna-plot-regenerate-emphasis",
-  "sna-plot-close-modal",
-]);
+const emit = defineEmits(["sna-plot-regenerate-emphasis", "sna-plot-close-modal"]);
 
 // --- Routers ------------
 
 // --- Stores -------------
 
 // --- State --------------
+// Local draft staged while the dialog is open. It is initialized from the
+// committed config on mount (the modal remounts this tab on each open) and only
+// committed to the parent on submit.
+const draft = reactive(cloneEmphasisFilter(props.snaPlotEmphasisConfig));
 
 // --- Composables --------
 
 // --- Computed -----------
-// v-model: read the minimum in-degree from the model and emit a new model,
-// recomputing the emphasized set when the min-in-degree filter is active.
-const minInDegree = computed({
-  get: () => props.modelValue.minInDegree,
-  set: (value) => {
-    const n = Math.max(0, Math.floor(Number(value) || 0));
-    emit("update:modelValue", setEmphasisMinInDegree(props.snaPlotNodeInfo, props.modelValue, n));
-  },
-});
+// Nodes to dim, derived from the current draft and node metadata.
+const dimmedNodes = computed(() => resolveDimmedNodes(props.snaPlotNodeInfo, draft));
 
 // Maximum in-degree across all nodes, used as the upper bound for the input.
 const maxInDegree = computed(() =>
   props.snaPlotNodeInfo.reduce((max, n) => Math.max(max, n.inDegree), 0),
 );
 
+// The minimum in-degree threshold. Reading falls back to 0 when the current
+// draft has no numeric value; writing switches the draft to `"minInDegree"`.
+const minInDegree = computed({
+  get: () => (typeof draft.filterValue === "number" ? draft.filterValue : 0),
+  set: (value) => {
+    draft.typeOfFilter = "minInDegree";
+    draft.filterValue = Math.max(0, Math.floor(Number(value) || 0));
+  },
+});
+
 // v-model: true when every node is emphasized. Toggling applies the matching
 // all-on/all-off preset.
 const allVisible = computed({
   get: () =>
     props.snaPlotNodeInfo.length > 0 &&
-    props.modelValue.emphasizedNodes.size === props.snaPlotNodeInfo.length &&
-    props.modelValue.activeFilter !== "min-in-degree",
-  set: (value) =>
-    emit(
-      "update:modelValue",
-      applyEmphasisFilter(props.snaPlotNodeInfo, props.modelValue, value ? "all-on" : "all-off"),
-    ),
+    dimmedNodes.value.size === 0 &&
+    draft.typeOfFilter !== "minInDegree",
+  set: (value) => {
+    draft.typeOfFilter = value ? "all-on" : "all-off";
+    draft.filterValue = null;
+  },
 });
 
 // v-model: whether the "min in-degree" threshold filter is active. Turning it
 // off falls back to showing every node.
 const minInDegreeActive = computed({
-  get: () => props.modelValue.activeFilter === "min-in-degree",
-  set: (value) =>
-    emit(
-      "update:modelValue",
-      applyEmphasisFilter(
-        props.snaPlotNodeInfo,
-        props.modelValue,
-        value ? "min-in-degree" : "all-on",
-      ),
-    ),
+  get: () => draft.typeOfFilter === "minInDegree",
+  set: (value) => {
+    draft.typeOfFilter = value ? "minInDegree" : "all-on";
+    draft.filterValue = value ? minInDegree.value : null;
+  },
 });
 
 // --- Watchers -----------
@@ -98,7 +91,19 @@ const minInDegreeActive = computed({
 
 // --- Methods ------------
 function toggleNode(id) {
-  emit("update:modelValue", toggleEmphasizedNode(props.modelValue, id));
+  const nextDimmed = new Set(dimmedNodes.value);
+  if (nextDimmed.has(id)) {
+    nextDimmed.delete(id);
+  } else {
+    nextDimmed.add(id);
+  }
+
+  draft.typeOfFilter = "custom";
+  draft.filterValue = [...nextDimmed];
+}
+
+function submit() {
+  emit("sna-plot-regenerate-emphasis", cloneEmphasisFilter(draft));
 }
 </script>
 
@@ -150,12 +155,12 @@ function toggleNode(id) {
             type="button"
             class="inline-flex size-6 items-center justify-center rounded-full border text-[6.5pt] font-semibold leading-none transition-all hover:opacity-80"
             :class="
-              modelValue.emphasizedNodes.has(node.id)
+              !dimmedNodes.has(node.id)
                 ? 'border-transparent bg-[#404040] text-white'
                 : 'border-[#d4d4d4] bg-white text-[#737373]'
             "
             :title="node.id"
-            :aria-pressed="modelValue.emphasizedNodes.has(node.id)"
+            :aria-pressed="!dimmedNodes.has(node.id)"
             @click="toggleNode(node.id)"
           >
             {{ node.id }}
@@ -172,11 +177,7 @@ function toggleNode(id) {
       >
         Annulla
       </BaseClickButton>
-      <BaseClickButton
-        class="flex-1 px-3 py-1 text-[9pt]"
-        button-variant="solid"
-        @click="emit('sna-plot-regenerate-emphasis')"
-      >
+      <BaseClickButton class="flex-1 px-3 py-1 text-[9pt]" button-variant="solid" @click="submit">
         Mostra grafico
       </BaseClickButton>
     </div>
