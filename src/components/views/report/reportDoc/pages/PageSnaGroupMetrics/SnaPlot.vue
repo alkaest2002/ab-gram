@@ -204,7 +204,7 @@ function regenerateLayout(changes) {
     :sna-plot-regeneration-error="error"
     :sna-plot-node-info="nodeInfo"
     :sna-plot-config="config"
-    @sna-plot-modal-close="handleModalClose"
+    @sna-plot-close-modal="handleModalClose"
     @sna-plot-regenerate-emphasis="regenerateEmphasis"
     @sna-plot-regenerate-layout="regenerateLayout"
   />

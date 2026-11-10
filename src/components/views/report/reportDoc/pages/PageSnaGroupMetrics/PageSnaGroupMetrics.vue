@@ -60,13 +60,7 @@ const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
     </template>
 
     <template #default>
-      <!--
-              The content cell is split 2/3 – 1/3 with flexbox (no layout table):
-              the plot band on top, the compact stats band below. Only the metric
-              list at the bottom is a real table (genuinely tabular label/value
-              rows).
-            -->
-      <div v-if="snaPlot" class="sna-layout">
+      <div class="sna-layout">
         <SnaPlot
           :initial-svg="snaPlot.svg ?? ''"
           :accent-color="accentColor"

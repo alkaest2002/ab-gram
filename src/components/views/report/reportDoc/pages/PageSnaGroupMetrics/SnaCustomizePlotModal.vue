@@ -36,7 +36,7 @@ const props = defineProps({
 
 // --- Emits --------------
 const emit = defineEmits([
-  "sna-plot-modal-close",
+  "sna-plot-close-modal",
   "sna-plot-regenerate-emphasis",
   "sna-plot-regenerate-layout",
 ]);
@@ -91,7 +91,7 @@ watch(snaPlotModalIsOpen, (isOpen) => {
 // transient error state. `isOpen` only flips to false after `canClose` passes,
 // so this never fires for a blocked close.
 watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
-  if (wasOpen && !isOpen) emit("sna-plot-modal-close");
+  if (wasOpen && !isOpen) emit("sna-plot-close-modal");
 });
 
 // --- Lifecycle ----------
@@ -189,8 +189,8 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
         <SnaCustomizeEmphasisTab
           v-show="activeTab === 'emphasize'"
           v-model="draftEmphasis"
-          :regenerating="snaPlotIsRegenerating"
-          :node-info="snaPlotNodeInfo"
+          :sna-plot-is-regenerating="snaPlotIsRegenerating"
+          :sna-plot-node-info="snaPlotNodeInfo"
           @sna-plot-regenerate-emphasis="regenerateEmphasis"
           @sna-plot-close-modal="snaPlotModalClose"
         />
@@ -199,8 +199,8 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
         <SnaCustomizeLayoutTab
           v-show="activeTab === 'layout'"
           v-model="draftLayout"
-          :regenerating="snaPlotIsRegenerating"
-          :error="snaPlotRegenerationError"
+          :sna-plot-is-regenerating="snaPlotIsRegenerating"
+          :sna-plot-regeneration-error="snaPlotRegenerationError"
           @sna-plot-regenerate-layout="regenerateLayout"
           @sna-plot-close-modal="snaPlotModalClose"
         />

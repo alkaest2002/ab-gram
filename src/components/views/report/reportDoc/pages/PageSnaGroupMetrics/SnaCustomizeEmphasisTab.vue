@@ -22,9 +22,9 @@ import BaseToggle from "@/components/ui/BaseToggle.vue";
 // --- Props --------------
 const props = defineProps({
   // Whether a regeneration is running: disables the emphasis controls.
-  regenerating: { type: Boolean, default: false },
+  snaPlotIsRegenerating: { type: Boolean, default: false },
   // Per-node metadata for the clickable node circles.
-  nodeInfo: { type: Array, default: () => [] },
+  snaPlotNodeInfo: { type: Array, default: () => [] },
   // Current emphasis customization, owned by the parent and bound via v-model.
   modelValue: {
     type: Object,
@@ -54,24 +54,26 @@ const minInDegree = computed({
   get: () => props.modelValue.minInDegree,
   set: (value) => {
     const n = Math.max(0, Math.floor(Number(value) || 0));
-    emit("update:modelValue", setEmphasisMinInDegree(props.nodeInfo, props.modelValue, n));
+    emit("update:modelValue", setEmphasisMinInDegree(props.snaPlotNodeInfo, props.modelValue, n));
   },
 });
 
 // Maximum in-degree across all nodes, used as the upper bound for the input.
-const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(max, n.inDegree), 0));
+const maxInDegree = computed(() =>
+  props.snaPlotNodeInfo.reduce((max, n) => Math.max(max, n.inDegree), 0),
+);
 
 // v-model: true when every node is emphasized. Toggling applies the matching
 // all-on/all-off preset.
 const allVisible = computed({
   get: () =>
-    props.nodeInfo.length > 0 &&
-    props.modelValue.emphasizedNodes.size === props.nodeInfo.length &&
+    props.snaPlotNodeInfo.length > 0 &&
+    props.modelValue.emphasizedNodes.size === props.snaPlotNodeInfo.length &&
     props.modelValue.activeFilter !== "min-in-degree",
   set: (value) =>
     emit(
       "update:modelValue",
-      applyEmphasisFilter(props.nodeInfo, props.modelValue, value ? "all-on" : "all-off"),
+      applyEmphasisFilter(props.snaPlotNodeInfo, props.modelValue, value ? "all-on" : "all-off"),
     ),
 });
 
@@ -82,7 +84,11 @@ const minInDegreeActive = computed({
   set: (value) =>
     emit(
       "update:modelValue",
-      applyEmphasisFilter(props.nodeInfo, props.modelValue, value ? "min-in-degree" : "all-on"),
+      applyEmphasisFilter(
+        props.snaPlotNodeInfo,
+        props.modelValue,
+        value ? "min-in-degree" : "all-on",
+      ),
     ),
 });
 
@@ -104,7 +110,7 @@ function toggleNode(id) {
     class="mt-5 flex min-h-0 flex-1 flex-col"
   >
     <div class="min-h-0 flex-1 overflow-y-auto">
-      <fieldset class="space-y-4" :disabled="regenerating">
+      <fieldset class="space-y-4" :disabled="snaPlotIsRegenerating">
         <legend class="sr-only">Evidenzia</legend>
 
         <!-- All-visible and in-degree toggles — all on one row ──── -->
@@ -112,7 +118,7 @@ function toggleNode(id) {
           <BaseToggle
             v-model="allVisible"
             label-position="right"
-            :disabled="regenerating"
+            :disabled="snaPlotIsRegenerating"
             size="sm"
           >
             <span class="text-[9pt]">Tutti visibili</span>
@@ -120,7 +126,7 @@ function toggleNode(id) {
           <BaseToggle
             v-model="minInDegreeActive"
             label-position="right"
-            :disabled="regenerating"
+            :disabled="snaPlotIsRegenerating"
             size="sm"
           >
             <span class="text-[9pt]">Archi entranti ≥</span>
@@ -139,7 +145,7 @@ function toggleNode(id) {
         <!-- (c) Clickable node circles ───────────────────────────── -->
         <div class="flex flex-wrap gap-2">
           <button
-            v-for="node in nodeInfo"
+            v-for="node in snaPlotNodeInfo"
             :key="node.id"
             type="button"
             class="inline-flex size-6 items-center justify-center rounded-full border text-[6.5pt] font-semibold leading-none transition-all hover:opacity-80"

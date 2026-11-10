@@ -15,8 +15,8 @@ import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 const props = defineProps({
   // Whether a regeneration is running: disables the inputs while the plot is
   // being rebuilt off the main thread.
-  regenerating: { type: Boolean, default: false },
-  error: { type: String, default: "" },
+  snaPlotIsRegenerating: { type: Boolean, default: false },
+  snaPlotRegenerationError: { type: String, default: "" },
   // Current layout customization, owned by the parent and bound via v-model.
   modelValue: {
     type: Object,
@@ -78,7 +78,7 @@ const handleClose = () => {
             type="number"
             step="0.1"
             min="0"
-            :disabled="regenerating"
+            :disabled="snaPlotIsRegenerating"
             class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-ink disabled:opacity-50"
           />
         </label>
@@ -89,12 +89,14 @@ const handleClose = () => {
             type="number"
             step="0.1"
             min="0"
-            :disabled="regenerating"
+            :disabled="snaPlotIsRegenerating"
             class="mt-1 w-full rounded border border-line bg-canvas px-2 py-1 text-[9pt] text-ink outline-none transition-colors focus:border-ink disabled:opacity-50"
           />
         </label>
       </div>
-      <p v-if="error" class="mt-2 text-[8pt] text-reject">{{ error }}</p>
+      <p v-if="snaPlotRegenerationError" class="mt-2 text-[8pt] text-reject">
+        {{ snaPlotRegenerationError }}
+      </p>
     </div>
 
     <div class="flex shrink-0 gap-3 pt-5">
