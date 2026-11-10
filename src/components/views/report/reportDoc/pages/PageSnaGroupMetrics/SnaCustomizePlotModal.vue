@@ -6,11 +6,11 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 //   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
-import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
+import { cloneEmphasis } from "@/composables/report/useNodeEmphasis";
 
 //   -- From relative.
 import SnaCustomizeEmphasisTab from "./SnaCustomizeEmphasisTab.vue";
@@ -20,26 +20,25 @@ import SnaCustomizeLayoutTab from "./SnaCustomizeLayoutTab.vue";
 const props = defineProps({
   // Whether a regeneration is running: disables the form while the plot is
   // being rebuilt off the main thread.
-  regenerating: { type: Boolean, default: false },
-  error: { type: String, default: "" },
-  // ForceAtlas2 settings, bound two-way from the parent container.
-  scalingRatio: { type: Number, default: 0.6 },
-  gravity: { type: Number, default: 1.1 },
+  snaPlotIsRegenerating: { type: Boolean, default: false },
+  snaPlotRegenerationError: { type: String, default: "" },
   // Per-node metadata for the emphasis controls.
-  nodeInfo: { type: Array, default: () => [] },
-  // Current emphasis state, owned by the parent via useNodeEmphasis.
-  activeFilter: { type: String, default: "all-on" },
-  emphasizedNodes: { type: Set, default: () => new Set() },
-  minInDegree: { type: Number, default: 0 },
+  snaPlotNodeInfo: { type: Array, default: () => [] },
+  // Current SVG configuration snapshot, owned by SnaPlot.
+  snaPlotConfig: {
+    type: Object,
+    default: () => ({
+      emphasis: { activeFilter: "all-on", minInDegree: 0, emphasizedNodes: new Set() },
+      layout: { scalingRatio: 0.6, gravity: 1.1 },
+    }),
+  },
 });
 
 // --- Emits --------------
 const emit = defineEmits([
-  "update:scalingRatio",
-  "update:gravity",
-  "close-sna-plot-modal",
-  "regenerate-sna-plot-layout",
-  "apply-sna-emphasis",
+  "sna-plot-modal-close",
+  "sna-plot-regenerate-emphasis",
+  "sna-plot-regenerate-layout",
 ]);
 
 // --- Routers ------------
@@ -56,16 +55,10 @@ const tabs = [
 
 const activeTab = ref("emphasize");
 
-// Local draft of the ForceAtlas2 settings. Edits are staged here while the
-// dialog is open and only committed to the parent on "Rigenera grafico", so
-// cancelling leaves the applied settings untouched.
-const draftScalingRatio = ref(props.scalingRatio);
-const draftGravity = ref(props.gravity);
-
-// Local draft of the emphasis state. A dedicated `useNodeEmphasis` instance
-// stages the emphasis edits so they're committed to the parent only on
-// "Mostra grafico", mirroring the layout draft above.
-const draftEmphasis = useNodeEmphasis(computed(() => props.nodeInfo));
+// Local drafts, staged while the dialog is open and only committed to the
+// parent on submit, so cancelling leaves the applied configuration untouched.
+const draftEmphasis = ref(cloneEmphasis(props.snaPlotConfig.emphasis));
+const draftLayout = ref({ ...props.snaPlotConfig.layout });
 
 // --- Composables --------
 // Own the open/closed state locally. The `canClose` guard keeps the dialog
@@ -75,27 +68,22 @@ const {
   open: snaPlotModalOpen,
   close: snaPlotModalClose,
 } = useDisclosure(false, {
-  canClose: () => !props.regenerating,
+  canClose: () => !props.snaPlotIsRegenerating,
 });
 
 // Force-close bypasses the guard: the parent calls it after a successful
-// regeneration, where the `regenerating` prop may still read as `true` in the
+// regeneration, where the `snaPlotIsRegenerating` prop may still read as `true` in the
 // same tick the worker finishes.
 const snaPlotModalForceClose = () => (snaPlotModalIsOpen.value = false);
 
 // --- Watchers -----------
 // Start each open on the first tab, so a previous session's selection never
-// leaks into a new dialog, and reset the layout draft to the applied settings.
+// leaks into a new dialog, and reset both drafts to the applied configuration.
 watch(snaPlotModalIsOpen, (isOpen) => {
   if (isOpen) {
     activeTab.value = "emphasize";
-    draftScalingRatio.value = props.scalingRatio;
-    draftGravity.value = props.gravity;
-    draftEmphasis.setState({
-      activeFilter: props.activeFilter,
-      minInDegree: props.minInDegree,
-      emphasizedNodes: props.emphasizedNodes,
-    });
+    draftEmphasis.value = cloneEmphasis(props.snaPlotConfig.emphasis);
+    draftLayout.value = { ...props.snaPlotConfig.layout };
   }
 });
 
@@ -103,30 +91,24 @@ watch(snaPlotModalIsOpen, (isOpen) => {
 // transient error state. `isOpen` only flips to false after `canClose` passes,
 // so this never fires for a blocked close.
 watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
-  if (wasOpen && !isOpen) emit("close-sna-plot-modal");
+  if (wasOpen && !isOpen) emit("sna-plot-modal-close");
 });
 
 // --- Lifecycle ----------
 
 // --- Methods ------------
-// Stage an in-degree edit in the local emphasis draft.
-const setDraftMinInDegree = (value) => {
-  draftEmphasis.minInDegree.value = value;
-};
-
-// Commit the staged emphasis state to the parent, then close the dialog.
-const applyEmphasis = () => {
-  emit("apply-sna-emphasis", draftEmphasis.snapshot());
+// Commit the staged emphasis state and close the dialog. Emphasis is applied
+// synchronously by the parent (no worker), so there's no success callback to
+// wait for before closing.
+const regenerateEmphasis = () => {
+  emit("sna-plot-regenerate-emphasis", cloneEmphasis(draftEmphasis.value));
   snaPlotModalClose();
 };
 
-// Commit the staged layout settings to the parent, then start regeneration.
-// Committing first keeps the parent's refs in sync before `confirmRegenerate`
-// reads them, while still applying changes exactly once (on submit).
-const applyLayoutAndRegenerate = () => {
-  emit("update:scalingRatio", draftScalingRatio.value);
-  emit("update:gravity", draftGravity.value);
-  emit("regenerate-sna-plot-layout");
+// Commit the staged layout settings and ask the parent to regenerate. The
+// dialog stays open while the worker runs, then is force-closed on success.
+const regenerateLayout = () => {
+  emit("sna-plot-regenerate-layout", { ...draftLayout.value });
 };
 
 // Expose the open/close methods to the parent.
@@ -154,7 +136,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
           class="absolute right-2 top-2 flex size-7 items-center justify-center rounded-full text-muted transition-colors hover:bg-line hover:text-ink disabled:opacity-50"
           aria-label="Chiudi"
           title="Chiudi"
-          :disabled="regenerating"
+          :disabled="snaPlotIsRegenerating"
           @click="snaPlotModalClose"
         >
           <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -206,26 +188,20 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
         <!-- ── Emphasis tab ───────────────────────────────────────── -->
         <SnaCustomizeEmphasisTab
           v-show="activeTab === 'emphasize'"
-          :regenerating="regenerating"
-          :node-info="nodeInfo"
-          :active-filter="draftEmphasis.activeFilter.value"
-          :emphasized-nodes="draftEmphasis.emphasizedNodes.value"
-          :min-in-degree="draftEmphasis.minInDegree.value"
-          @node-emphasis-apply-filter="draftEmphasis.applyFilter"
-          @node-emphasis-toggle="draftEmphasis.toggleNode"
-          @update:minInDegree="setDraftMinInDegree"
-          @sna-plot-apply-emphasis="applyEmphasis"
+          v-model="draftEmphasis"
+          :regenerating="snaPlotIsRegenerating"
+          :node-info="snaPlotNodeInfo"
+          @sna-plot-regenerate-emphasis="regenerateEmphasis"
           @sna-plot-close-modal="snaPlotModalClose"
         />
 
         <!-- ── Layout tab ─────────────────────────────────────────── -->
         <SnaCustomizeLayoutTab
           v-show="activeTab === 'layout'"
-          :regenerating="regenerating"
-          :error="error"
-          v-model:scaling-ratio="draftScalingRatio"
-          v-model:gravity="draftGravity"
-          @sna-plot-regenerate-layout="applyLayoutAndRegenerate"
+          v-model="draftLayout"
+          :regenerating="snaPlotIsRegenerating"
+          :error="snaPlotRegenerationError"
+          @sna-plot-regenerate-layout="regenerateLayout"
           @sna-plot-close-modal="snaPlotModalClose"
         />
       </div>

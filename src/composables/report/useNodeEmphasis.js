@@ -1,157 +1,172 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { computed, ref, watch } from "vue";
+import { computed, reactive, watch } from "vue";
 
 /**
  * @typedef {"all-on"|"all-off"|"min-in-degree"|"custom"} EmphasisFilter
  */
 
+// ── Pure emphasis transitions ────────────────────────────────────────────────
+// These are the single source of truth for how an emphasis object changes. They
+// return a *new* object (never mutate their input), so the emphasis tab can call
+// them directly and emit the result as `update:modelValue`, while the stateful
+// `useNodeEmphasis` composable below wraps them for committed plot state.
+
 /**
- * Reactive emphasis state for SNA plot nodes.
+ * Resolve the emphasized node set for a named filter preset. `"custom"` has no
+ * preset, so it must be built by `toggleEmphasizedNode` instead.
  *
- * Provides filter presets (all on, all off, min in-degree) and
- * per-node toggling. The `dimmedNodes` computed is the complement of the
- * emphasized set — i.e. the nodes that should be visually de-emphasized.
+ * @param {Array<{id: string, inDegree: number}>} nodeInfo
+ * @param {Exclude<EmphasisFilter, "custom">} filter
+ * @param {number} minInDegree
+ * @returns {Set<string>}
+ */
+function resolveEmphasizedNodes(nodeInfo, filter, minInDegree) {
+  switch (filter) {
+    case "all-on":
+      return new Set(nodeInfo.map((n) => n.id));
+    case "all-off":
+      return new Set();
+    case "min-in-degree":
+      return new Set(nodeInfo.filter((n) => n.inDegree >= minInDegree).map((n) => n.id));
+    default:
+      return new Set();
+  }
+}
+
+/**
+ * Apply a named filter preset.
+ *
+ * @param {Array<{id: string, inDegree: number}>} nodeInfo
+ * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} emphasis
+ * @param {EmphasisFilter} filter
+ * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
+ */
+export function applyEmphasisFilter(nodeInfo, emphasis, filter) {
+  const emphasizedNodes =
+    filter === "custom"
+      ? new Set(emphasis.emphasizedNodes)
+      : resolveEmphasizedNodes(nodeInfo, filter, emphasis.minInDegree);
+
+  return {
+    activeFilter: filter,
+    minInDegree: emphasis.minInDegree,
+    emphasizedNodes,
+  };
+}
+
+/**
+ * Toggle a single node's emphasis and switch to `"custom"` mode.
+ *
+ * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} emphasis
+ * @param {string} id
+ * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
+ */
+export function toggleEmphasizedNode(emphasis, id) {
+  const emphasizedNodes = new Set(emphasis.emphasizedNodes);
+  if (emphasizedNodes.has(id)) {
+    emphasizedNodes.delete(id);
+  } else {
+    emphasizedNodes.add(id);
+  }
+
+  return {
+    activeFilter: "custom",
+    minInDegree: emphasis.minInDegree,
+    emphasizedNodes,
+  };
+}
+
+/**
+ * Update the min-in-degree threshold. When the `"min-in-degree"` filter is
+ * active the emphasized set is recomputed, otherwise it is left untouched.
+ *
+ * @param {Array<{id: string, inDegree: number}>} nodeInfo
+ * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} emphasis
+ * @param {number} minInDegree
+ * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
+ */
+export function setEmphasisMinInDegree(nodeInfo, emphasis, minInDegree) {
+  const emphasizedNodes =
+    emphasis.activeFilter === "min-in-degree"
+      ? resolveEmphasizedNodes(nodeInfo, "min-in-degree", minInDegree)
+      : new Set(emphasis.emphasizedNodes);
+
+  return {
+    activeFilter: emphasis.activeFilter,
+    minInDegree,
+    emphasizedNodes,
+  };
+}
+
+/**
+ * Return a plain copy of an emphasis object (fresh `Set`), safe to pass across
+ * component boundaries.
+ *
+ * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} emphasis
+ * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
+ */
+export function cloneEmphasis(emphasis) {
+  return {
+    activeFilter: emphasis.activeFilter,
+    minInDegree: emphasis.minInDegree,
+    emphasizedNodes: new Set(emphasis.emphasizedNodes),
+  };
+}
+
+// ── Stateful composable ──────────────────────────────────────────────────────
+
+/**
+ * Reactive emphasis state for the committed SNA plot configuration.
+ *
+ * Owns the `emphasis` slice of the `{ emphasis, layout }` config and derives
+ * `dimmedNodes` (the complement of the emphasized set) in a single place.
  *
  * @param {import("vue").Ref<Array<{id: string, hasMutualEdge: boolean, inDegree: number}>>} nodeInfo
  *   Reactive array of per-node metadata (from the report store).
  * @returns {{
- *   activeFilter: import("vue").Ref<EmphasisFilter>,
- *   minInDegree: import("vue").Ref<number>,
- *   emphasizedNodes: import("vue").Ref<Set<string>>,
+ *   emphasis: {activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>},
  *   dimmedNodes: import("vue").ComputedRef<Set<string>>,
- *   isAllOn: import("vue").ComputedRef<boolean>,
- *   isAllOff: import("vue").ComputedRef<boolean>,
- *   applyFilter: (filter: EmphasisFilter) => void,
- *   toggleNode: (id: string) => void,
- *   snapshot: () => {activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>},
  *   setState: (state: {activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}) => void,
  * }}
  */
 export function useNodeEmphasis(nodeInfo) {
-  /** Which filter last set the emphasis state. */
-  const activeFilter = ref("all-on");
-
-  /** Threshold for the "min-in-degree" filter. */
-  const minInDegree = ref(0);
-
-  /** The set of node ids currently emphasized (i.e. *not* dimmed). */
-  const emphasizedNodes = ref(new Set());
-
-  // ── Derived ────────────────────────────────────────────────────────────────
+  /** The emphasis slice of the plot configuration. */
+  const emphasis = reactive({
+    activeFilter: "all-on",
+    minInDegree: 0,
+    emphasizedNodes: new Set(),
+  });
 
   const allNodeIds = computed(() => nodeInfo.value.map((n) => n.id));
 
   /** Nodes *not* in the emphasized set — the ones to dim. */
   const dimmedNodes = computed(
-    () => new Set(allNodeIds.value.filter((id) => !emphasizedNodes.value.has(id))),
+    () => new Set(allNodeIds.value.filter((id) => !emphasis.emphasizedNodes.has(id))),
   );
 
-  const isAllOn = computed(
-    () => allNodeIds.value.length > 0 && emphasizedNodes.value.size === allNodeIds.value.length,
-  );
-
-  const isAllOff = computed(() => emphasizedNodes.value.size === 0);
-
-  // ── Actions ────────────────────────────────────────────────────────────────
-
   /**
-   * Apply a named filter preset, updating `emphasizedNodes` accordingly.
-   *
-   * @param {EmphasisFilter} filter
-   */
-  function applyFilter(filter) {
-    activeFilter.value = filter;
-
-    switch (filter) {
-      case "all-on":
-        emphasizedNodes.value = new Set(allNodeIds.value);
-        break;
-      case "all-off":
-        emphasizedNodes.value = new Set();
-        break;
-      case "min-in-degree":
-        emphasizedNodes.value = new Set(
-          nodeInfo.value.filter((n) => n.inDegree >= minInDegree.value).map((n) => n.id),
-        );
-        break;
-      // "custom" is set only by toggleNode; no preset to apply.
-    }
-  }
-
-  /**
-   * Toggle a single node's emphasis and switch to "custom" mode.
-   *
-   * @param {string} id - The node id.
-   */
-  function toggleNode(id) {
-    activeFilter.value = "custom";
-    const next = new Set(emphasizedNodes.value);
-    if (next.has(id)) {
-      next.delete(id);
-    } else {
-      next.add(id);
-    }
-    emphasizedNodes.value = next;
-  }
-
-  /**
-   * Return a plain snapshot of the current emphasis state, safe to pass across
-   * component boundaries (the reactive refs stay behind).
-   *
-   * @returns {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}}
-   */
-  function snapshot() {
-    return {
-      activeFilter: activeFilter.value,
-      minInDegree: minInDegree.value,
-      emphasizedNodes: new Set(emphasizedNodes.value),
-    };
-  }
-
-  /**
-   * Replace the emphasis state with a snapshot (the inverse of `snapshot`).
+   * Replace the emphasis state with a snapshot.
    *
    * @param {{activeFilter: EmphasisFilter, minInDegree: number, emphasizedNodes: Set<string>}} state
    */
   function setState(state) {
-    activeFilter.value = state.activeFilter;
-    minInDegree.value = state.minInDegree;
-    emphasizedNodes.value = new Set(state.emphasizedNodes);
+    emphasis.activeFilter = state.activeFilter;
+    emphasis.minInDegree = state.minInDegree;
+    emphasis.emphasizedNodes = new Set(state.emphasizedNodes);
   }
-
-  // ── Watchers ───────────────────────────────────────────────────────────────
-
-  // When the threshold changes while the min-in-degree filter is active,
-  // recompute the emphasized set automatically.
-  watch(minInDegree, () => {
-    if (activeFilter.value === "min-in-degree") {
-      applyFilter("min-in-degree");
-    }
-  });
 
   // Initialize with all nodes emphasized.
   watch(
     nodeInfo,
     () => {
-      if (activeFilter.value === "all-on") {
-        emphasizedNodes.value = new Set(allNodeIds.value);
+      if (emphasis.activeFilter === "all-on") {
+        emphasis.emphasizedNodes = new Set(allNodeIds.value);
       }
     },
     { immediate: true },
   );
 
-  return {
-    activeFilter,
-    minInDegree,
-    emphasizedNodes,
-    dimmedNodes,
-    isAllOn,
-    isAllOff,
-    applyFilter,
-    toggleNode,
-    snapshot,
-    setState,
-  };
+  return { emphasis, dimmedNodes, setState };
 }

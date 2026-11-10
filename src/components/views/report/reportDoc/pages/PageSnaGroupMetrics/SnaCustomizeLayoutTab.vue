@@ -17,15 +17,16 @@ const props = defineProps({
   // being rebuilt off the main thread.
   regenerating: { type: Boolean, default: false },
   error: { type: String, default: "" },
-  // ForceAtlas2 settings, bound two-way from the parent container.
-  scalingRatio: { type: Number, default: 0.6 },
-  gravity: { type: Number, default: 1.1 },
+  // Current layout customization, owned by the parent and bound via v-model.
+  modelValue: {
+    type: Object,
+    default: () => ({ scalingRatio: 0.6, gravity: 1.1 }),
+  },
 });
 
 // --- Emits --------------
 const emit = defineEmits([
-  "update:scalingRatio",
-  "update:gravity",
+  "update:modelValue",
   "sna-plot-regenerate-layout",
   "sna-plot-close-modal",
 ]);
@@ -39,15 +40,15 @@ const emit = defineEmits([
 // --- Composables --------
 
 // --- Computed -----------
-// v-model: read each setting from its prop and write it back by emitting
-// `update:*`, so the parent container stays the single source of truth.
+// v-model: read each setting from the model and emit a new model on change.
 const scalingRatio = computed({
-  get: () => props.scalingRatio,
-  set: (value) => emit("update:scalingRatio", Number(value) || 0),
+  get: () => props.modelValue.scalingRatio,
+  set: (value) =>
+    emit("update:modelValue", { ...props.modelValue, scalingRatio: Number(value) || 0 }),
 });
 const gravity = computed({
-  get: () => props.gravity,
-  set: (value) => emit("update:gravity", Number(value) || 0),
+  get: () => props.modelValue.gravity,
+  set: (value) => emit("update:modelValue", { ...props.modelValue, gravity: Number(value) || 0 }),
 });
 
 // --- Watchers -----------

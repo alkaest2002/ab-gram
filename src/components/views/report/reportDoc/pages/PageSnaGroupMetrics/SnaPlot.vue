@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 
 //   -- From composables.
 import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
@@ -62,19 +62,21 @@ const svgContainer = ref(null);
 const customizeModal = ref(null);
 const error = ref("");
 
-// Committed ForceAtlas2 settings. These mirror the module-level defaults in
-// `snaPlots.js` (SCALING_RATIO / GRAVITY).
-const scalingRatio = ref(0.6);
-const gravity = ref(1.1);
-
 // --- Composables --------
 const nodeInfo = computed(() => props.nodeInfo);
-const emphasis = useNodeEmphasis(nodeInfo);
+
+// Single source of truth for the SVG configuration. The emphasis slice is
+// owned by `useNodeEmphasis` (which also derives `dimmedNodes`); layout is a
+// separate reactive slice. Layout defaults mirror the module-level defaults in
+// `snaPlots.js` (SCALING_RATIO / GRAVITY).
+const { emphasis, dimmedNodes, setState: setEmphasis } = useNodeEmphasis(nodeInfo);
+const layout = reactive({ scalingRatio: 0.6, gravity: 1.1 });
+const config = reactive({ emphasis, layout });
 
 // Drives `.is-dimmed` class toggling on the injected SVG elements. The `svg`
 // content is passed as a tracked dependency so the effect re-runs when
 // `v-html` replaces the DOM after a worker regeneration.
-useSvgEmphasis(svgContainer, emphasis.dimmedNodes, svg);
+useSvgEmphasis(svgContainer, dimmedNodes, svg);
 
 const { isPlotRegenerating, regeneratePlot } = useSnaPlotWorker({
   onSuccess: (regeneratedSvg) => {
@@ -112,14 +114,18 @@ function handleModalClose() {
   error.value = "";
 }
 
-function applyEmphasis(state) {
-  emphasis.setState(state);
+// Apply an emphasis snapshot from the modal. No worker is involved: emphasis
+// only flips the `.is-dimmed` classes via `useSvgEmphasis`.
+function regenerateEmphasis(changes) {
+  setEmphasis(changes);
 }
 
-function confirmRegenerate() {
+// Apply the layout snapshot from the modal and rebuild the plot off the main
+// thread with the new ForceAtlas2 settings.
+function regenerateLayout(changes) {
   const settings = {
-    scalingRatio: Number(scalingRatio.value),
-    gravity: Number(gravity.value),
+    scalingRatio: Number(changes.scalingRatio),
+    gravity: Number(changes.gravity),
   };
 
   if (!Number.isFinite(settings.scalingRatio) || !Number.isFinite(settings.gravity)) {
@@ -128,6 +134,8 @@ function confirmRegenerate() {
   }
 
   error.value = "";
+  layout.scalingRatio = settings.scalingRatio;
+  layout.gravity = settings.gravity;
 
   regeneratePlot({
     members: props.members,
@@ -192,16 +200,13 @@ function confirmRegenerate() {
        the fixed-height, overflow-hidden report page. -->
   <SnaCustomizePlotModal
     ref="customizeModal"
-    :regenerating="isPlotRegenerating"
-    :error="error"
-    :node-info="nodeInfo"
-    :active-filter="emphasis.activeFilter.value"
-    :emphasized-nodes="emphasis.emphasizedNodes.value"
-    v-model:scaling-ratio="scalingRatio"
-    v-model:gravity="gravity"
-    @close-sna-plot-modal="handleModalClose"
-    @regenerate-sna-plot-layout="confirmRegenerate"
-    @apply-sna-emphasis="applyEmphasis"
+    :sna-plot-is-regenerating="isPlotRegenerating"
+    :sna-plot-regeneration-error="error"
+    :sna-plot-node-info="nodeInfo"
+    :sna-plot-config="config"
+    @sna-plot-modal-close="handleModalClose"
+    @sna-plot-regenerate-emphasis="regenerateEmphasis"
+    @sna-plot-regenerate-layout="regenerateLayout"
   />
 </template>
 

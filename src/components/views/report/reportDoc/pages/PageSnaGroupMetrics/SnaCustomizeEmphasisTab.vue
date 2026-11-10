@@ -8,6 +8,13 @@
 //   -- From vue.
 import { computed } from "vue";
 
+//   -- From composables.
+import {
+  applyEmphasisFilter,
+  setEmphasisMinInDegree,
+  toggleEmphasizedNode,
+} from "@/composables/report/useNodeEmphasis";
+
 //   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseToggle from "@/components/ui/BaseToggle.vue";
@@ -18,18 +25,17 @@ const props = defineProps({
   regenerating: { type: Boolean, default: false },
   // Per-node metadata for the clickable node circles.
   nodeInfo: { type: Array, default: () => [] },
-  // Current emphasis state, owned by the parent via useNodeEmphasis.
-  activeFilter: { type: String, default: "all-on" },
-  emphasizedNodes: { type: Set, default: () => new Set() },
-  minInDegree: { type: Number, default: 0 },
+  // Current emphasis customization, owned by the parent and bound via v-model.
+  modelValue: {
+    type: Object,
+    default: () => ({ activeFilter: "all-on", minInDegree: 0, emphasizedNodes: new Set() }),
+  },
 });
 
 // --- Emits --------------
 const emit = defineEmits([
-  "node-emphasis-apply-filter",
-  "node-emphasis-toggle",
-  "update:minInDegree",
-  "sna-plot-apply-emphasis",
+  "update:modelValue",
+  "sna-plot-regenerate-emphasis",
   "sna-plot-close-modal",
 ]);
 
@@ -42,13 +48,13 @@ const emit = defineEmits([
 // --- Composables --------
 
 // --- Computed -----------
-// v-model: read the minimum in-degree from the prop and write it back by
-// emitting `update:minInDegree`, keeping the parent the single source of truth.
+// v-model: read the minimum in-degree from the model and emit a new model,
+// recomputing the emphasized set when the min-in-degree filter is active.
 const minInDegree = computed({
-  get: () => props.minInDegree,
+  get: () => props.modelValue.minInDegree,
   set: (value) => {
     const n = Math.max(0, Math.floor(Number(value) || 0));
-    emit("update:minInDegree", n);
+    emit("update:modelValue", setEmphasisMinInDegree(props.nodeInfo, props.modelValue, n));
   },
 });
 
@@ -56,21 +62,28 @@ const minInDegree = computed({
 const maxInDegree = computed(() => props.nodeInfo.reduce((max, n) => Math.max(max, n.inDegree), 0));
 
 // v-model: true when every node is emphasized. Toggling applies the matching
-// all-on/all-off preset, so the switch stays the single source of truth for the
-// "everything visible" state no matter how it was reached.
+// all-on/all-off preset.
 const allVisible = computed({
   get: () =>
     props.nodeInfo.length > 0 &&
-    props.emphasizedNodes.size === props.nodeInfo.length &&
-    props.activeFilter !== "min-in-degree",
-  set: (value) => emit("node-emphasis-apply-filter", value ? "all-on" : "all-off"),
+    props.modelValue.emphasizedNodes.size === props.nodeInfo.length &&
+    props.modelValue.activeFilter !== "min-in-degree",
+  set: (value) =>
+    emit(
+      "update:modelValue",
+      applyEmphasisFilter(props.nodeInfo, props.modelValue, value ? "all-on" : "all-off"),
+    ),
 });
 
 // v-model: whether the "min in-degree" threshold filter is active. Turning it
 // off falls back to showing every node.
 const minInDegreeActive = computed({
-  get: () => props.activeFilter === "min-in-degree",
-  set: (value) => emit("node-emphasis-apply-filter", value ? "min-in-degree" : "all-on"),
+  get: () => props.modelValue.activeFilter === "min-in-degree",
+  set: (value) =>
+    emit(
+      "update:modelValue",
+      applyEmphasisFilter(props.nodeInfo, props.modelValue, value ? "min-in-degree" : "all-on"),
+    ),
 });
 
 // --- Watchers -----------
@@ -78,6 +91,9 @@ const minInDegreeActive = computed({
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function toggleNode(id) {
+  emit("update:modelValue", toggleEmphasizedNode(props.modelValue, id));
+}
 </script>
 
 <template>
@@ -128,13 +144,13 @@ const minInDegreeActive = computed({
             type="button"
             class="inline-flex size-6 items-center justify-center rounded-full border text-[6.5pt] font-semibold leading-none transition-all hover:opacity-80"
             :class="
-              emphasizedNodes.has(node.id)
+              modelValue.emphasizedNodes.has(node.id)
                 ? 'border-transparent bg-[#404040] text-white'
                 : 'border-[#d4d4d4] bg-white text-[#737373]'
             "
             :title="node.id"
-            :aria-pressed="emphasizedNodes.has(node.id)"
-            @click="emit('node-emphasis-toggle', node.id)"
+            :aria-pressed="modelValue.emphasizedNodes.has(node.id)"
+            @click="toggleNode(node.id)"
           >
             {{ node.id }}
           </button>
@@ -153,7 +169,7 @@ const minInDegreeActive = computed({
       <BaseClickButton
         class="flex-1 px-3 py-1 text-[9pt]"
         button-variant="solid"
-        @click="emit('sna-plot-apply-emphasis')"
+        @click="emit('sna-plot-regenerate-emphasis')"
       >
         Mostra grafico
       </BaseClickButton>
