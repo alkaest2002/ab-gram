@@ -39,13 +39,13 @@ const emit = defineEmits(["sna-plot-regenerate-emphasis", "sna-plot-close-modal"
 // Local draft staged while the dialog is open. It is initialized from the
 // committed config on mount (the modal remounts this tab on each open) and only
 // committed to the parent on submit.
-const draft = reactive(cloneEmphasisFilter(props.snaPlotEmphasisConfig));
+const draftEmphasis = reactive(cloneEmphasisFilter(props.snaPlotEmphasisConfig));
 
 // --- Composables --------
 
 // --- Computed -----------
 // Nodes to dim, derived from the current draft and node metadata.
-const dimmedNodes = computed(() => resolveDimmedNodes(props.snaPlotNodeInfo, draft));
+const dimmedNodes = computed(() => resolveDimmedNodes(props.snaPlotNodeInfo, draftEmphasis));
 
 // Maximum in-degree across all nodes, used as the upper bound for the input.
 const maxInDegree = computed(() =>
@@ -55,20 +55,20 @@ const maxInDegree = computed(() =>
 // The minimum in-degree threshold. Reading falls back to 0 when the current
 // draft has no numeric value; writing switches the draft to `"minInDegree"`.
 const minInDegree = computed({
-  get: () => (typeof draft.filterValue === "number" ? draft.filterValue : 0),
+  get: () => (typeof draftEmphasis.filterValue === "number" ? draftEmphasis.filterValue : 0),
   set: (value) => {
-    draft.typeOfFilter = "minInDegree";
-    draft.filterValue = Math.max(0, Math.floor(Number(value) || 0));
+    draftEmphasis.typeOfFilter = "minInDegree";
+    draftEmphasis.filterValue = Math.max(0, Math.floor(Number(value) || 0));
   },
 });
 
 // v-model: whether the "min in-degree" threshold filter is active. Turning it
 // off falls back to showing every node.
 const minInDegreeActive = computed({
-  get: () => draft.typeOfFilter === "minInDegree",
+  get: () => draftEmphasis.typeOfFilter === "minInDegree",
   set: (value) => {
-    draft.typeOfFilter = value ? "minInDegree" : "all-on";
-    draft.filterValue = value ? minInDegree.value : null;
+    draftEmphasis.typeOfFilter = value ? "minInDegree" : "all-on";
+    draftEmphasis.filterValue = value ? minInDegree.value : null;
   },
 });
 
@@ -78,10 +78,10 @@ const allVisible = computed({
   get: () =>
     props.snaPlotNodeInfo.length > 0 &&
     dimmedNodes.value.size === 0 &&
-    draft.typeOfFilter !== "minInDegree",
+    draftEmphasis.typeOfFilter !== "minInDegree",
   set: (value) => {
-    draft.typeOfFilter = value ? "all-on" : "all-off";
-    draft.filterValue = null;
+    draftEmphasis.typeOfFilter = value ? "all-on" : "all-off";
+    draftEmphasis.filterValue = null;
   },
 });
 
@@ -98,12 +98,12 @@ function toggleNode(id) {
     nextDimmed.add(id);
   }
 
-  draft.typeOfFilter = "custom";
-  draft.filterValue = [...nextDimmed];
+  draftEmphasis.typeOfFilter = "custom";
+  draftEmphasis.filterValue = [...nextDimmed];
 }
 
 function submit() {
-  emit("sna-plot-regenerate-emphasis", cloneEmphasisFilter(draft));
+  emit("sna-plot-regenerate-emphasis", cloneEmphasisFilter(draftEmphasis));
 }
 </script>
 
