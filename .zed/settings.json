@@ -30,6 +30,7 @@
       ]
     },
     "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
