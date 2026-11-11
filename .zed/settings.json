@@ -1,6 +1,7 @@
 {
   "languages": {
     "JavaScript": {
+      "language_servers": ["!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -17,6 +18,7 @@
       ]
     },
     "TypeScript": {
+      "language_servers": ["!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -57,6 +59,7 @@
       ]
     },
     "JSON": {
+      "language_servers": ["!package-version-server", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -96,6 +99,7 @@
       ]
     },
     "TSX": {
+      "language_servers": ["!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
@@ -109,6 +113,7 @@
       ]
     },
     "Vue.js": {
+      "language_servers": ["!eslint", "..."],
       "format_on_save": "on",
       "prettier": {
         "allowed": false
