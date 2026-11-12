@@ -116,8 +116,8 @@ function handleModalClose() {
 
 // Apply an emphasis snapshot from the modal. No worker is involved: emphasis
 // only flips the `.is-dimmed` classes via `useSvgEmphasis`.
-function regenerateEmphasis(changes) {
-  setEmphasis(changes);
+function regenerateEmphasis(changesToEmphasis) {
+  setEmphasis(changesToEmphasis);
 }
 
 // Apply the layout snapshot from the modal and rebuild the plot off the main
