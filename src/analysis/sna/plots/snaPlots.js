@@ -314,7 +314,9 @@ const buildPlot = (graph, accentColor, config = {}) => {
 
   // Split members: isolated nodes have no edge at all and are drawn in a
   // separate plot stacked below the connected graph.
+  /** @type {string[]} */
   const connected = [];
+  /** @type {string[]} */
   const isolated = [];
   graph.forEachNode((node) => {
     (graph.degree(node) === 0 ? isolated : connected).push(node);
@@ -330,6 +332,7 @@ const buildPlot = (graph, accentColor, config = {}) => {
   const accentMarkerId = `arrow-${markerCounter++}`;
   const dimmedMarkerId = `arrow-${markerCounter++}`;
 
+  /** @type {string[]} */
   const parts = [];
 
   parts.push(

@@ -21,6 +21,7 @@ const binomialCdf = (n, p) => {
   const logOdds = Math.log(p) - Math.log1p(-p);
   let logPmf = n * Math.log1p(-p); // log P(X = 0)
   let cumulative = 0;
+  /** @type {number[]} */
   const cdf = [];
   for (let k = 0; k <= n; k++) {
     cumulative += Math.exp(logPmf);

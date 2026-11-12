@@ -61,6 +61,7 @@ const pickCliquePivot = (p, x, adjacency) => {
  * @returns {string[][]} The maximal cliques, each as a list of node ids.
  */
 const findMaximalCliques = (adjacency) => {
+  /** @type {string[][]} */
   const cliques = [];
 
   /**

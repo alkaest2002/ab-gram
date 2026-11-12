@@ -35,6 +35,7 @@ const singleSource = (graph, source) => {
   let frontier = [source];
 
   while (frontier.length > 0) {
+    /** @type {string[]} */
     const nextFrontier = [];
 
     for (const node of frontier) {
@@ -89,6 +90,7 @@ const singleSource = (graph, source) => {
  *   target node ids, split by their relationship to that source.
  */
 export const getNodePaths = (likesGraph, dislikesGraph) => {
+  /** @type {Record<string, {mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]}>} */
   const result = {};
 
   likesGraph.forEachNode((source) => {
@@ -99,6 +101,7 @@ export const getNodePaths = (likesGraph, dislikesGraph) => {
     // shortest directed likes path, or absent when `targetId` cannot be reached.
     const distances = singleSource(likesGraph, source);
 
+    /** @type {{mutuality: string[], oneHop: string[], twoHops: string[], multipleHops: string[], difficultToReach: string[]}} */
     const categories = {
       mutuality: [],
       oneHop: [],
@@ -455,6 +458,7 @@ export const buildMorenoEgoPlot = (memberId, likesGraph, dislikesGraph, nodePath
     paths?.difficultToReach ?? [],
   ];
 
+  /** @type {string[]} */
   const parts = [];
 
   parts.push(

@@ -16,6 +16,7 @@ import { forEachMutualEdge } from "./base.js";
  * @returns {{ structures: string[][] }} The dyads, each an `[a, b]` pair.
  */
 export const computeAsymmetricDyads = (graph) => {
+  /** @type {string[][]} */
   const dyads = [];
 
   graph.forEachDirectedEdge((_edge, attributes, source, target) => {
@@ -42,6 +43,7 @@ export const computeAsymmetricDyads = (graph) => {
  * @returns {{ structures: string[][] }} The dyads, each an `[a, b]` pair.
  */
 export const computeSymmetricDyads = (graph) => {
+  /** @type {string[][]} */
   const dyads = [];
 
   forEachMutualEdge(graph, (source, target) => {

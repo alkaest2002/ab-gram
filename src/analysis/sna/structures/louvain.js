@@ -291,6 +291,7 @@ export function gate(
   const observed = bestLouvain(graph, runs, rng);
 
   // 2. Null distribution.
+  /** @type {number[]} */
   const nullQs = [];
   let totalAccepted = 0;
   let minAccepted = Infinity;

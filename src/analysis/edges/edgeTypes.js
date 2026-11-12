@@ -4,6 +4,7 @@
 import * as np from "numpy-ts";
 
 /** Edge types where `A -> B` and `B -> A` describe the same relationship. */
+/** @type {Set<string>} */
 const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
 
 /**
@@ -16,9 +17,9 @@ const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
  *
  * @param {string[]} memberIds
  * @param {Record<string, string[][]>} edgeTypes - Edge lists keyed by type name.
- * @returns {Record<string, Record<string, number>>} `result[memberId][edgeType]`,
- *   a value in `[0, 1]` equal to the share of the member's total edges of that
- *   type. Shares sum to 1, or are all 0 for a member with no edges.
+ * @returns {Record<string, Record<string, {cnt: number, pct: number}>>}
+ *   `result[memberId][edgeType]`, containing the edge count and its share of the
+ *   member's total edges. Shares sum to 1, or are all 0 for a member with no edges.
  */
 const computeMemberInEdges = (memberIds, edgeTypes) => {
   const typeNames = Object.keys(edgeTypes);
@@ -31,6 +32,7 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
   // Count edges for each type, updating the result object
   for (const [edgeType, edges] of Object.entries(edgeTypes)) {
     const isSymmetric = SYMMETRIC_TYPES.has(edgeType);
+    /** @type {Set<string>} */
     const seenPairs = new Set();
 
     for (const [fromId, toId] of edges) {
@@ -89,7 +91,7 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
  * @returns {{
  *   typeI: string[][], typeII: string[][], typeIII: string[][],
  *   typeIV: string[][], typeV: string[][], typeVI: string[][], typeVII: string[][],
- *   memberInEdges: Record<string, Record<string, number>>
+ *   memberInEdges: Record<string, Record<string, {cnt: number, pct: number}>>
  * }}
  *   Seven edge lists, each holding `[aId, bId]` member-id pairs, plus
  *   `memberInEdges`: for every member id, the share (in `[0, 1]`) of that

@@ -16,6 +16,7 @@ const MAX_HEAD_SHARE = 0.4;
  * @returns {number[]} Break means, in increasing order.
  */
 const headTailBreaks = (sorted) => {
+  /** @type {number[]} */
   const breaks = [];
   let current = sorted;
   while (current.length > 0) {

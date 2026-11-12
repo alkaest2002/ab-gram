@@ -51,6 +51,7 @@ const jenksBreaks = (sorted, k) => {
     }
   }
 
+  /** @type {number[]} */
   const starts = [];
   let j = n - 1;
   for (let c = k; c >= 2; c--) {

@@ -113,9 +113,13 @@ export const getSociogramAnalysis = (members) => {
   const snaLikesNodeInfo = computeNodeInfo(snaLikesNetwork);
 
   // Initialize SNA metrics for the dislikes network.
+  /** @type {ReturnType<typeof snaGroupLevel> | Record<string, never>} */
   let snaDislikesGroupLevelMetrics = {};
+  /** @type {ReturnType<typeof getSnaStructures> | Record<string, never>} */
   let snaDislikesStructures = {};
+  /** @type {ReturnType<typeof snaIndividualLevel> | Record<string, never>} */
   let snaDislikesIndividualLevelMetric = {};
+  /** @type {ReturnType<typeof getSnaPlot>} */
   let snaDislikesPlots = [];
 
   // If the dislikes network is not empty, compute its SNA metrics.
