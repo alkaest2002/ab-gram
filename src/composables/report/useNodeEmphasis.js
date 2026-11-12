@@ -5,7 +5,9 @@ import { computed, reactive } from "vue";
 
 /**
  * @typedef {"all-on"|"all-off"|"minInDegree"|"custom"} EmphasisFilter
- * @typedef {{ typeOfFilter: EmphasisFilter, filterValue: (number|null|string[]) }} EmphasisFilterState
+ * @typedef {{ typeOfFilter: "all-on" | "all-off", filterValue: null }
+ *   | { typeOfFilter: "minInDegree", filterValue: number }
+ *   | { typeOfFilter: "custom", filterValue: string[] }} EmphasisFilterState
  */
 
 /**
@@ -65,7 +67,7 @@ export function cloneEmphasisFilter(filter) {
  * }}
  */
 export function useNodeEmphasis(nodeInfo) {
-  /** The emphasis filter intent of the plot configuration. */
+  /** @type {EmphasisFilterState} The emphasis filter intent of the plot configuration. */
   const emphasis = reactive({
     typeOfFilter: "all-on",
     filterValue: null,
@@ -80,8 +82,7 @@ export function useNodeEmphasis(nodeInfo) {
    * @param {EmphasisFilterState} state
    */
   function setState(state) {
-    emphasis.typeOfFilter = state.typeOfFilter;
-    emphasis.filterValue = state.filterValue;
+    Object.assign(emphasis, state);
   }
 
   return { emphasis, dimmedNodes, setState };

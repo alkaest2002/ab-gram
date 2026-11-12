@@ -15,7 +15,7 @@ import { createSnaPlotWorker } from "@/workers/workerHelpers";
  * `onError` callbacks. The worker is terminated automatically on unmount, and
  * `stopRegeneratingPlot()` can cancel a regeneration in flight (e.g. the modal's "Stop" action).
  *
- * @param {{ onSuccess?: (svg: string | undefined) => void, onError?: (message: string) => void }} [options]
+ * @param {{ onSuccess?: (svg: string | undefined) => void, onError?: (message: string) => void }} [options={}]
  *   Callbacks invoked when the worker completes or fails. `onError` also fires
  *   on instantiation failure (e.g. a worker blocked by the browser).
  * @returns {{
@@ -32,7 +32,7 @@ import { createSnaPlotWorker } from "@/workers/workerHelpers";
 export function useSnaPlotWorker({ onSuccess, onError } = {}) {
   const isPlotRegenerating = ref(false);
 
-  /** The live worker, kept so it can be terminated mid-flight. */
+  /** @type {Worker | null} The live worker, retained so it can be terminated mid-flight. */
   let worker = null;
 
   /** Terminate the worker (if any) and clear the in-flight flag. */
@@ -48,7 +48,7 @@ export function useSnaPlotWorker({ onSuccess, onError } = {}) {
    * Regenerate a single SNA plot off the main thread.
    *
    * @param {object} payload
-   * @param {Array} payload.members - Members used to rebuild the graph.
+   * @param {Array<object>} payload.members - Members used to rebuild the graph.
    * @param {string} payload.accentColor - Plot accent color.
    * @param {string} payload.typeOfSna - "likes" | "dislikes".
    * @param {{scalingRatio: number, gravity: number}} payload.settings - ForceAtlas2 settings.

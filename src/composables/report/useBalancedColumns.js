@@ -12,7 +12,7 @@ import { computed, toValue } from "vue";
  * column fill.
  *
  * @template T
- * @param {import('vue').MaybeRefOrGetter<T[]>} items
+ * @param {import('vue').MaybeRefOrGetter<readonly T[]>} items
  * @returns {import('vue').ComputedRef<[T[], T[]]>}
  */
 export function useBalancedColumns(items) {

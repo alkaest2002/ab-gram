@@ -11,6 +11,12 @@ import { routes } from "@/router";
  */
 const menuRoutes = routes.filter((item) => item.meta?.inMenu);
 
+/**
+ * Return menu routes matching a menu placement.
+ *
+ * @param {string} typeOfMenu
+ * @returns {{ navItems: typeof menuRoutes }}
+ */
 export function useNavItems(typeOfMenu) {
   const navItems = menuRoutes.filter((item) => item.meta.typeOfMenu.includes(typeOfMenu));
 

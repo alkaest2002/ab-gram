@@ -10,9 +10,11 @@ const TIMEOUT = 2000;
  * Copy a link to the clipboard and track a short "copied" state.
  *
  * @param {string} [text=window.location.origin] - The text to copy.
+ * @returns {{ copied: import("vue").Ref<boolean>, copyLink: () => Promise<void> }}
  */
 export function useCopyLink(text = window.location.origin) {
   const copied = ref(false);
+  /** @type {ReturnType<typeof setTimeout> | null} */
   let copyTimer = null;
 
   onBeforeUnmount(() => clearTimeout(copyTimer));

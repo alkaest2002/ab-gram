@@ -17,6 +17,11 @@ import {
  *
  * @param {boolean} [dataIsComplete=false] Apply the completeness rules on top
  *   of the default structural checks.
+ * @returns {{ validate: (parsed: unknown) => {
+ *   isValid: boolean,
+ *   errors: string[],
+ *   data: object | null,
+ * } }}
  */
 export function useSociogramValidateData(dataIsComplete = false) {
   /**
@@ -27,6 +32,7 @@ export function useSociogramValidateData(dataIsComplete = false) {
    * @returns {{ isValid: boolean, errors: string[], data: object | null }}
    */
   function validate(parsed) {
+    /** @type {string[]} */
     const errors = [];
 
     const snapshotChecks = dataIsComplete

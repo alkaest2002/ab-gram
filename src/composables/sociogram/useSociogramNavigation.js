@@ -17,9 +17,15 @@ export const SOCIOGRAM_STEPS = [
 /**
  * Shared sociogram step navigation.
  *
- * @param {Function} emit The Vue emit function.
+ * @param {(event: string, payload?: import('@/stores/sociogram').SociogramStep) => void} emit
+ *   The Vue emit function.
+ * @returns {{
+ *   goToStep: (componentName: import('@/stores/sociogram').SociogramStep) => void,
+ *   restart: () => void,
+ * }}
  */
 export function useSociogramNavigation(emit) {
+  /** @param {import('@/stores/sociogram').SociogramStep} componentName */
   function goToStep(componentName) {
     if (SOCIOGRAM_STEPS.includes(componentName)) {
       emit("sociogram-go-to-step", componentName);

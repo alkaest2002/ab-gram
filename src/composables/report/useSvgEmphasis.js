@@ -24,6 +24,7 @@ import { watchEffect } from "vue";
  *   it as a dependency, so the effect re-runs whenever `v-html` replaces the
  *   DOM (e.g. after a worker regeneration) and classes need to be re-applied
  *   to the fresh elements.
+ * @returns {void}
  */
 export function useSvgEmphasis(containerRef, dimmedNodes, svgContent) {
   watchEffect(

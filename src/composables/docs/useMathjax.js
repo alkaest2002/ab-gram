@@ -15,6 +15,7 @@ import { nextTick, onMounted } from "vue";
 const MATHJAX_SRC = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js";
 let injected = false;
 
+/** Ensure the MathJax loader has been requested at most once. */
 function ensureMathJax() {
   if (injected || window.MathJax?.startup?.promise) return;
   injected = true;
@@ -36,8 +37,15 @@ function ensureMathJax() {
  * has run. We poll for it once and then wait on that promise. The result is
  * memoized so every caller shares a single poll.
  */
+/** @type {Promise<void> | null} */
 let readyPromise = null;
 
+/**
+ * Wait for MathJax startup, falling back after a timeout if loading fails.
+ *
+ * @param {number} [timeoutMs=10000]
+ * @returns {Promise<void>}
+ */
 function mathjaxReady(timeoutMs = 10000) {
   if (readyPromise) return readyPromise;
 
@@ -72,6 +80,9 @@ function mathjaxReady(timeoutMs = 10000) {
  * MathJax runs automatically only on page load, but the docs are rendered
  * client-side by Vue (and swapped on navigation), so we have to run it again
  * whenever the article content is (re)rendered.
+ *
+ * @param {import("vue").Ref<HTMLElement | null>} containerRef
+ * @returns {{ typeset: () => Promise<void>, clear: () => void }}
  */
 export function useMathjax(containerRef) {
   /**
@@ -92,6 +103,7 @@ export function useMathjax(containerRef) {
     mathjax.texReset?.();
   }
 
+  /** Re-typeset the current container after MathJax and Vue are ready. */
   async function typeset() {
     ensureMathJax();
     await mathjaxReady();

@@ -189,13 +189,13 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
 }
 
 /**
- * Fuzzy search over the sociogram members by name.
+ * Search sociogram members by normalized substring, ordered subsequence, or
+ * unordered character match. Candidates must contain every query character;
+ * the scoring helper's edit-distance fallback therefore does not broaden the
+ * public result set to substitutions or missing characters.
  *
- * OPTIMIZATIONS:
- * - Pre-compute character counts to avoid hasAllCharacters recomputation
- * - Single-pass scoring and filtering instead of filter-then-map
- * - Cache alphabetical sorting key instead of computing charCodeAt repeatedly
- * - Early termination in edit distance for typo tolerance
+ * Character counts and alphabetical keys are precomputed, and candidates are
+ * scored and filtered in a single pass.
  *
  * @param {import('vue').Ref<Array<{ id: string, name: string }>>} members
  * @returns {{
@@ -227,40 +227,46 @@ export function useSociogramSearchMembers(members) {
 
     // Single-pass scoring, filtering, and sorting
     const scored = normalizedCache.value
-      .reduce((results, entry) => {
-        // Initial check: exclude names that do not contain every query
-        // character before running the scoring mechanism.
-        if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
+      .reduce(
+        /**
+         * @param {Array<{ member: { id: string, name: string }, compositeScore: number }>} results
+         */
+        (results, entry) => {
+          // Initial check: exclude names that do not contain every query
+          // character before running the scoring mechanism.
+          if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
+            return results;
+          }
+
+          // Score the name against the normalized term
+          const primaryScore = scoreNormalizedName(
+            entry.normalized,
+            normalizedTerm,
+            entry.charCounts,
+          );
+
+          // Early termination: skip entries that don't match at all
+          if (primaryScore === null) return results;
+
+          const isExactMatch = primaryScore <= 1;
+          const nameLengthPenalty = entry.normalized.length * 0.001;
+
+          // Composite score: primary + exact match bonus + name length + alphabetical
+          const compositeScore =
+            primaryScore +
+            (isExactMatch ? -1000 : 0) + // Strong bonus for exact matches
+            nameLengthPenalty + // Slight bonus for shorter names
+            entry.alphabetical.charCodeAt(0) / 10000; // Minimal alphabetical factor
+
+          results.push({
+            member: entry.member,
+            compositeScore,
+          });
+
           return results;
-        }
-
-        // Score the name against the normalized term
-        const primaryScore = scoreNormalizedName(
-          entry.normalized,
-          normalizedTerm,
-          entry.charCounts,
-        );
-
-        // Early termination: skip entries that don't match at all
-        if (primaryScore === null) return results;
-
-        const isExactMatch = primaryScore <= 1;
-        const nameLengthPenalty = entry.normalized.length * 0.001;
-
-        // Composite score: primary + exact match bonus + name length + alphabetical
-        const compositeScore =
-          primaryScore +
-          (isExactMatch ? -1000 : 0) + // Strong bonus for exact matches
-          nameLengthPenalty + // Slight bonus for shorter names
-          entry.alphabetical.charCodeAt(0) / 10000; // Minimal alphabetical factor
-
-        results.push({
-          member: entry.member,
-          compositeScore,
-        });
-
-        return results;
-      }, [])
+        },
+        /** @type {Array<{ member: { id: string, name: string }, compositeScore: number }>} */ ([]),
+      )
       .sort((a, b) => a.compositeScore - b.compositeScore);
 
     return scored.map((entry) => entry.member);

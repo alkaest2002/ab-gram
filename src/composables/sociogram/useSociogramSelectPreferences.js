@@ -15,8 +15,12 @@ import { computed } from "vue";
  * @param {import('vue').Ref<string>} options.query - The search query text.
  * @param {import('vue').Ref<Array<{ id: string }>>} options.filteredMembers - Members shown by the current filter.
  * @param {import('vue').Ref<string[]>} options.modelValue - The selected member ids (v-model source).
- * @param {Function} options.emit - The component's emit function.
- * @returns {{ selectedIds: import('vue').ComputedRef<string[]>, toggle: Function, toggleFiltered: Function }}
+ * @param {(event: "update:modelValue", value: string[]) => void} options.emit - The component's emit function.
+ * @returns {{
+ *   selectedIds: import('vue').WritableComputedRef<string[]>,
+ *   toggle: (member: { id: string }) => void,
+ *   toggleFiltered: () => void,
+ * }}
  */
 export function useSociogramPreferencesSelection({ query, filteredMembers, modelValue, emit }) {
   const selectedIds = computed({
@@ -24,6 +28,7 @@ export function useSociogramPreferencesSelection({ query, filteredMembers, model
     set: (value) => emit("update:modelValue", value),
   });
 
+  /** @param {{ id: string }} member */
   function toggle(member) {
     const current = selectedIds.value;
     selectedIds.value = current.includes(member.id)

@@ -35,6 +35,11 @@ export const computeFileExtension = (mimeType) => {
  *
  * Wraps the "create a Blob, point an <a download> at it, click it" dance so
  * any view can offer a file download without duplicating the plumbing.
+ *
+ * @returns {{
+ *   download: (content: string, filename: string, mimeType?: string, addTimeStamp?: boolean, encode?: boolean) => void,
+ *   downloadJson: (data: unknown, filename: string, mimeType?: string, addTimeStamp?: boolean, encode?: boolean) => void,
+ * }}
  */
 export function useDownload() {
   /**
@@ -56,7 +61,7 @@ export function useDownload() {
     let filenameWithExtension = addTimeStamp ? `${filename}-${getTimeStamp()}` : filename;
     filenameWithExtension += computeFileExtension(mimeType);
 
-    let contentToDownload = encode ? btoa(content) : content;
+    const contentToDownload = encode ? btoa(content) : content;
     const blob = new Blob([contentToDownload], { type: mimeType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -70,7 +75,7 @@ export function useDownload() {
 
   /**
    * Download a value as pretty-printed JSON.
-   * @param {*} data - The value to serialize.
+   * @param {unknown} data - The value to serialize.
    * @param {string} filename - The suggested file name.
    * @param {string} [mimeType="application/json"] - The content type of the file.
    * @param {boolean} [addTimeStamp=true] - Whether to append a timestamp to the filename.

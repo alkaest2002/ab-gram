@@ -16,6 +16,12 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue";
  *   `false`, `close()` and `toggle()` leave the panel open. `lockScroll` toggles
  *   the `overflow-hidden` class on `<body>` while open and removes it on close
  *   and unmount (defaults to `true`).
+ * @returns {{
+ *   isOpen: import("vue").Ref<boolean>,
+ *   open: () => void,
+ *   close: () => void,
+ *   toggle: () => void,
+ * }}
  */
 export function useDisclosure(
   initialValue = false,
@@ -30,6 +36,7 @@ export function useDisclosure(
   };
   const toggle = () => (isOpen.value ? close() : open());
 
+  /** @param {KeyboardEvent} event */
   function handleKeydown(event) {
     if (event.key === "Escape") close();
   }

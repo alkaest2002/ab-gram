@@ -15,19 +15,21 @@ export const MAX_FILE_SIZE_LIMIT = 10 * 1024 * 1024; // 10 MiB
 export const ALLOWED_MIME_TYPES = ["text/plain"];
 
 /**
- * Streaming text reader. Reads `textFileToRead` in chunks — so a huge file is
- * never held fully in memory — and stops as soon as `maxFileSize` bytes have
- * been read. If `maxLines` is set (not `null`), at most that many lines are
+ * Streaming text reader. Reads `textFileToRead` incrementally and retains only
+ * the returned lines rather than loading the whole source file at once. Reading
+ * stops after the chunk that reaches `maxFileSize`; because streams deliver
+ * whole chunks, the consumed byte count can slightly exceed that threshold.
+ * If `maxLines` is set (not `null`), at most that many lines are
  * returned; if `maxLineLength` is set (not `null`), each line is truncated to
  * that many characters (safely handling multi-byte UTF-8). Both limits are
  * optional: pass `null` to leave them uncapped.
  *
- * The browser stays responsive because reading stops as soon as a limit is
- * reached (the stream is then cancelled) and each awaited `reader.read()` yields
+ * The browser stays responsive because reading stops once a limit is reached
+ * (the stream is then cancelled) and each awaited `reader.read()` yields
  * to the event loop between chunks, so only a small slice is processed at a time.
  *
  * @param {File | Blob | null} textFileToRead
- * @param {object} options Configuration options
+ * @param {object} [options={}] Configuration options
  * @param {number} [options.maxFileSize=DEFAULT_MAX_FILE_SIZE] Max bytes read from the file. Must be > 0 and <= MAX_FILE_SIZE_LIMIT.
  * @param {number | null} [options.maxLines=null] Max lines returned, or `null` for no limit. Must be <= MAX_LINES_LIMIT.
  * @param {number | null} [options.maxLineLength=null] Max characters kept per line, or `null` for no limit. Must be <= MAX_LINE_LENGTH_LIMIT.
@@ -53,11 +55,13 @@ export function useSociogramTextReader(textFileToRead, options = {}) {
 
   /** @type {import('vue').Ref<string[]>} */
   const lines = ref([]);
+  /** @type {import('vue').Ref<Error | null>} */
   const readError = ref(null);
   const isReadingFile = ref(false);
+  /** @type {import('vue').Ref<string[]>} */
   const decodingWarnings = ref([]);
 
-  // Tracks the reader for the in-flight read so a new readFile() can cancel it.
+  /** @type {ReadableStreamDefaultReader<Uint8Array> | null} In-flight reader cancelled by a new read. */
   let activeReader = null;
 
   /**
@@ -124,6 +128,12 @@ export function useSociogramTextReader(textFileToRead, options = {}) {
     return null;
   }
 
+  /**
+   * Read a text file into the reactive line collection.
+   *
+   * @param {File | Blob | null} [file=textFileToRead]
+   * @returns {Promise<void>}
+   */
   async function readFile(file = textFileToRead) {
     // Cancel any in-flight read before starting a new one, so concurrent calls
     // don't interleave and corrupt the shared refs.
@@ -189,6 +199,7 @@ export function useSociogramTextReader(textFileToRead, options = {}) {
     // Trailing characters of the previous chunk that don't end with a newline.
     // Will be finalized once a newline is encountered or stream ends.
     let remainder = "";
+    /** @type {ReadableStreamDefaultReader<Uint8Array> | null} */
     let reader = null;
     let bytesRead = 0;
 

@@ -8,7 +8,13 @@ import { flatOrdered } from "@/docs/navigation";
 
 /**
  * Previous/next page relative to the current route, crossing section boundaries.
- * Returns `null` for whichever neighbor doesn't exist (first/last page).
+ * Returns `null` for whichever neighbor doesn't exist (first/last page), or
+ * for both neighbors when the current route is not part of the docs navigation.
+ *
+ * @returns {{
+ *   prev: import("vue").ComputedRef<(typeof flatOrdered)[number] | null>,
+ *   next: import("vue").ComputedRef<(typeof flatOrdered)[number] | null>,
+ * }}
  */
 export function usePrevNext() {
   const route = useRoute();
