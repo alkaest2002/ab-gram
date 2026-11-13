@@ -9,12 +9,7 @@
 import { computed } from "vue";
 
 //   -- From utils.
-import {
-  memberIndexIn,
-  metricIndexOf,
-  readRaw,
-  formatValue,
-} from "@/utils/report/memberStatsHelpers";
+import { memberIndexIn, metricIndexOf, readRaw, formatValue } from "@/analysis/common/statsHelpers";
 import { STATUS_UI } from "@/utils/report/sociometricStatusUI";
 
 // --- Props --------------
