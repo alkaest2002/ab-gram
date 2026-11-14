@@ -4,9 +4,15 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
+/** @typedef {"idle" | "generating" | "generated" | "error"} ReportStatus */
+/** @typedef {ReturnType<typeof import("@/analysis/analysisMain.js").getSociogramAnalysis>} SociogramAnalysis */
+/** @typedef {{typeOfPreference: "likes" | "dislikes", accentColor: string, svg: string}} SnaPlot */
+
+/**
+ * Analysis results and lifecycle state for the currently generated report.
+ */
 export const useReportStore = defineStore("report", () => {
-  /** @type {import("vue").Ref<string>} Current report generation status. */
-  /* possible values: idle, generating, generated, error */
+  /** @type {import("vue").Ref<ReportStatus>} Current report generation status. */
   const status = ref("idle");
 
   /** @type {import("vue").Ref<object>} Classified directed preference edges. */
@@ -39,10 +45,10 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<object>} Individual-level SNA metrics for dislikes. */
   const snaDislikesIndividualLevelMetric = ref({});
 
-  /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA likes plots. */
+  /** @type {import("vue").Ref<SnaPlot[]>} SNA likes plots. */
   const snaLikesPlots = ref([]);
 
-  /** @type {import("vue").Ref<Array<{typeOfPreference: string, accentColor: string, svg: string}>>} SNA dislikes plots. */
+  /** @type {import("vue").Ref<SnaPlot[]>} SNA dislikes plots. */
   const snaDislikesPlots = ref([]);
 
   /** @type {import("vue").Ref<Array<{id: string, hasMutualEdge: boolean, inDegree: number}>>} Per-node metadata for likes emphasis UI. */
@@ -51,20 +57,27 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<Array<{id: string, hasMutualEdge: boolean, inDegree: number}>>} Per-node metadata for dislikes emphasis UI. */
   const snaDislikesNodeInfo = ref([]);
 
-  /** @type {import("vue").Ref<object>} Directed graph for likes preferences. */
+  /** @type {import("vue").Ref<import("graphology").DirectedGraph | Record<string, never>>} Directed graph for likes preferences. */
   const snaLikesNetwork = ref({});
 
-  /** @type {import("vue").Ref<object>} Directed graph for dislikes preferences. */
+  /** @type {import("vue").Ref<import("graphology").DirectedGraph | Record<string, never>>} Directed graph for dislikes preferences. */
   const snaDislikesNetwork = ref({});
 
-  /** @param {string} value */
+  /**
+   * Set the report generation lifecycle state.
+   * @param {ReportStatus} value
+   * @returns {void}
+   */
   function setStatus(value) {
     status.value = value;
   }
 
   /**
-   * Store the combined sociogram analysis result.
-   * @param {object} value - The object returned by `getSociogramAnalysis`.
+   * Replace all stored analysis sections with a newly generated result.
+   *
+   * Missing sections fall back to their initial empty representation.
+   * @param {Partial<SociogramAnalysis>} value - Result produced by `getSociogramAnalysis`.
+   * @returns {void}
    */
   function setAnalysis(value) {
     edgeTypes.value = value.edgeTypes ?? {};
@@ -86,8 +99,9 @@ export const useReportStore = defineStore("report", () => {
   }
 
   /**
-   * Replace the regenerated SNA plot for a single preference type.
-   * @param {{typeOfPreference: string, accentColor: string, svg: string}} plot - The regenerated plot.
+   * Replace the SNA plot for one preference type.
+   * @param {SnaPlot} plot - Regenerated plot and its rendering metadata.
+   * @returns {void}
    */
   function setSnaPlot(plot) {
     if (plot.typeOfPreference === "likes") {
@@ -97,7 +111,7 @@ export const useReportStore = defineStore("report", () => {
     }
   }
 
-  /** Reset the report store to its initial state. */
+  /** Reset report status and all analysis sections to their initial state. @returns {void} */
   function reset() {
     status.value = "idle";
     edgeTypes.value = {};

@@ -18,8 +18,8 @@ import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
  * @typedef {object} Member
  * @property {string} id - Unique member id.
  * @property {string} name - Display name.
- * @property {string[]} likes - Ids of the members this member prefers (each Id = single character A,B,C,...Z,0,1,2,3,..9).
- * @property {string[]} dislikes - Ids of the members this member rejects (each Id = single character A,B,C,...Z,0,1,2,3,..9).
+ * @property {string[]} likes - Ids of preferred members from `MEMBERS_INDICES`.
+ * @property {string[]} dislikes - Ids of rejected members from `MEMBERS_INDICES`.
  * @property {boolean} noLikes - Whether the member declared no likes.
  * @property {boolean} noDislikes - Whether the member declared no dislikes.
  */
@@ -47,7 +47,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
   /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
   const membersCount = computed(() => members.value.length);
 
-  /** @type {import("vue").ComputedRef<string>} The current status of the sociogram. */
+  /** @type {import("vue").ComputedRef<"empty" | "completed" | "partially-loaded">} Completion status derived from the loaded members. */
   const membersStatus = computed(() => {
     if (membersCount.value === 0) return "empty";
     if (members.value.every(isMemberComplete)) return "completed";
@@ -60,16 +60,19 @@ export const useSociogramStore = defineStore("sociogram", () => {
   });
 
   /**
-   * Replace the parsed members.
-   * @param {Member[]} membersData
+   * Replace all currently loaded members.
+   * @param {Member[]} membersData - Parsed members to store.
+   * @returns {void}
    */
   function initMembers(membersData) {
     members.value = membersData;
   }
 
   /**
-   * Append a member with the first id from the shared index sequence that is
-   * not yet in use. Does nothing once every index is in use.
+   * Append an empty member using the first available shared id.
+   *
+   * Does nothing once every id in `MEMBERS_INDICES` is in use.
+   * @returns {void}
    */
   function addMember() {
     const usedIds = new Set(members.value.map((m) => m.id));
@@ -89,6 +92,15 @@ export const useSociogramStore = defineStore("sociogram", () => {
     ];
   }
 
+  /**
+   * Update one field on an existing member.
+   *
+   * Unknown member ids are ignored. Callers are responsible for supplying a
+   * value compatible with the selected field.
+   *
+   * @param {{ memberId: string, key: keyof Member, value: Member[keyof Member] }} update
+   * @returns {void}
+   */
   function updateMember({ memberId, key, value }) {
     const memberIndex = members.value.findIndex((m) => m.id === memberId);
     if (memberIndex !== -1) {
@@ -97,8 +109,11 @@ export const useSociogramStore = defineStore("sociogram", () => {
   }
 
   /**
-   * Remove a single member by id.
-   * @param {string} memberId
+   * Remove a member and all likes/dislikes that reference it.
+   *
+   * A preference list emptied by removal is marked as explicitly unanswered.
+   * @param {string} memberId - Id of the member to remove.
+   * @returns {void}
    */
   function removeMember(memberId) {
     // Delete memberId by filtering out
@@ -119,7 +134,7 @@ export const useSociogramStore = defineStore("sociogram", () => {
       }
     });
   }
-  /** Clear all loaded members. */
+  /** Clear all loaded members. @returns {void} */
   function resetMembers() {
     members.value = [];
   }
