@@ -2,13 +2,12 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Worker instantiation helpers.
+ * Constructs and preloads the application's Web Workers.
  *
- * The actual worker entry scripts live in `src/workers` and are imported here
- * with Vite's `?worker` suffix (for the constructor) and `?worker&url` (for the
- * built chunk URL, used to warm the browser cache). This module is the single
- * place that knows how to construct them, so the instantiation/error-handling
- * boilerplate is shared instead of being duplicated per worker.
+ * Vite's `?worker` imports provide worker constructors, while `?worker&url`
+ * imports provide the emitted chunk URLs used for cache warming. Keeping both
+ * details here gives callers a bundler-independent API and centralizes
+ * instantiation errors and best-effort preloading.
  *
  * Usage:
  * ```js
@@ -29,17 +28,16 @@ import SnaPlotWorker from "@/workers/snaPlotWorker.js?worker";
 import reportWorkerUrl from "@/workers/reportWorker.js?worker&url";
 import snaPlotWorkerUrl from "@/workers/snaPlotWorker.js?worker&url";
 
-// Track which worker chunks have already been preloaded, keyed by their URL so
-// the bookkeeping is shared rather than duplicated per worker.
+/** Worker chunk URLs for which a preload has already been attempted. @type {Set<string>} */
 const preloadedWorkers = new Set();
 
 /**
- * Construct a worker, normalising instantiation errors.
+ * Construct a worker and normalize constructor failures.
  *
- * @param {new () => Worker} WorkerCtor - The Vite `?worker` module.
- * @param {string} label - Human-readable name used in logs and errors.
- * @returns {Worker} A new Worker instance.
- * @throws {Error} If worker instantiation fails.
+ * @param {new () => Worker} WorkerCtor - Constructor exposed by a Vite `?worker` import.
+ * @param {string} label - Human-readable worker name used in diagnostics.
+ * @returns {Worker} A newly started worker.
+ * @throws {Error} When the browser cannot instantiate the worker.
  */
 const instantiate = (WorkerCtor, label) => {
   try {
