@@ -10,7 +10,34 @@
  * Page titles and ordering come from each file's frontmatter.
  */
 
-// Section order is authoritative; the `folder` key maps to a directory in `mds/`.
+/**
+ * A documentation section declared by the application.
+ * @typedef {object} SectionDefinition
+ * @property {string} title - Display title used by documentation navigation.
+ * @property {string} folder - Directory name below `mds`.
+ */
+
+/**
+ * One Markdown page in the documentation navigation.
+ * @typedef {object} NavItem
+ * @property {string} title - Page title read from frontmatter.
+ * @property {string} path - Absolute application route for the page.
+ * @property {number} order - Sort position within the containing section.
+ */
+
+/**
+ * A configured documentation section and its discovered pages.
+ * @typedef {SectionDefinition & {items: NavItem[]}} NavSection
+ */
+
+/**
+ * Authoritative section labels and ordering.
+ *
+ * Each `folder` must correspond to a directory below `mds`; directories not
+ * listed here are excluded from navigation.
+ *
+ * @type {SectionDefinition[]}
+ */
 const sectionOrder = [
   { folder: "introduzione", title: "Introduzione" },
   { folder: "come-usare-l-app", title: "Come usare l'app" },
@@ -19,28 +46,27 @@ const sectionOrder = [
 ];
 
 /**
- * @typedef {Object} NavItem
- * @property {string} title        Page title, from frontmatter.
- * @property {string} path         Absolute route path, e.g. `/docs/come-usare-l-app/generare-il-report`.
- * @property {number} order        Sort order within its section, from frontmatter.
+ * Raw Markdown sources loaded eagerly for frontmatter extraction.
+ *
+ * Rendering uses a separate lazy glob in the documentation route module.
+ *
+ * @type {Record<string, string>}
  */
-
-/**
- * @typedef {Object} NavSection
- * @property {string} title   Section title, from `sectionOrder`.
- * @property {string} folder  Folder name under `mds/`, e.g. `come-usare-l-app`.
- * @property {NavItem[]} items Pages in this section, sorted by `order`.
- */
-
-// Eager glob of raw files: we only need frontmatter here, not the rendered page.
 const pages = import.meta.glob("./mds/**/*.md", {
   eager: true,
   query: "?raw",
   import: "default",
 });
 
-// Extracts the `---` frontmatter block and returns it as a plain object.
-// Values are returned as strings; callers coerce `order` to a number.
+/**
+ * Parse the first YAML-like frontmatter block from a Markdown source.
+ *
+ * This intentionally supports only the flat `key: value` fields used by the
+ * docs. Values remain strings; consumers coerce fields such as `order`.
+ *
+ * @param {string} raw - Raw Markdown source.
+ * @returns {Record<string, string>} Parsed fields, or an empty object when no block exists.
+ */
 function parseFrontmatter(raw) {
   const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
@@ -59,8 +85,13 @@ function parseFrontmatter(raw) {
   return data;
 }
 
+/**
+ * Extract a section folder and page slug from a Markdown module path.
+ *
+ * @param {string} path - Path shaped as `./mds/<folder>/<file>.md`.
+ * @returns {{folder: string, slug: string}} Parsed folder and extension-free slug.
+ */
 function splitPath(path) {
-  // "./mds/<folder>/<file>.md" -> { folder, slug }
   const parts = path.split("/");
   return {
     folder: parts[parts.length - 2],
@@ -68,6 +99,14 @@ function splitPath(path) {
   };
 }
 
+/**
+ * Documentation sections with pages discovered from the Markdown glob.
+ *
+ * Pages are matched by configured folder and sorted by their numeric
+ * frontmatter `order` value.
+ *
+ * @type {NavSection[]}
+ */
 const navigation = sectionOrder.map((section) => {
   const items = Object.entries(pages)
     .filter(([path]) => path.startsWith(`./mds/${section.folder}/`))
@@ -85,7 +124,13 @@ const navigation = sectionOrder.map((section) => {
   return { ...section, items };
 });
 
-// Flat, ordered list across all sections — used for the prev/next pager.
+/**
+ * All documentation pages in section/page order.
+ *
+ * Used by the previous/next pager and as the source of the default docs route.
+ *
+ * @type {NavItem[]}
+ */
 const flatOrdered = navigation.flatMap((section) => section.items);
 
 export { navigation, flatOrdered };
