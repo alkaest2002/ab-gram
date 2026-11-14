@@ -61,14 +61,31 @@ export function headingAnchor(md) {
  * @returns {void}
  */
 export function routerLinks(md) {
+  /**
+   * Determine whether an href targets a web, email, or telephone resource.
+   * @param {string} href
+   * @returns {boolean}
+   */
   function isExternal(href) {
     return /^(?:https?:)?\/\//i.test(href) || /^(?:mailto:|tel:)/i.test(href);
   }
 
+  /**
+   * Determine whether an href is an absolute route within the application.
+   * @param {string} href
+   * @returns {boolean}
+   */
   function isInternal(href) {
     return href.startsWith("/") && !href.startsWith("//");
   }
 
+  /**
+   * Find the opening token paired with a closing link token.
+   *
+   * @param {any[]} tokens - Token stream being rendered.
+   * @param {number} idx - Index of the closing link token.
+   * @returns {any} The paired opening token, or `null` when none is present.
+   */
   function findMatchingOpenLink(tokens, idx) {
     let depth = 0;
     for (let i = idx - 1; i >= 0; i -= 1) {

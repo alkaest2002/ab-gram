@@ -1,18 +1,28 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-// Moreno's sociometric status codes (0-8) with Italian labels, descriptions,
-// and UI styling (tone, CSS classes for bar and text).
-//
-// Each entry carries two labels:
-// - `label` is the analytic sociometric category (e.g. "Rifiutato");
-// - `labelSoft` is the wording shown in the report, a softer, descriptive
-//   phrasing (e.g. "Segnali di rifiuto") that expresses the same result as an
-//   indicator rather than a fixed social judgment.
-//
-// The report uses `labelSoft` in place of `label` as a deliberate attempt to
-// avoid labelling a member with a definitive, potentially stigmatising
-// category.
+/**
+ * Presentation metadata for a Moreno sociometric status.
+ *
+ * @typedef {object} SociometricStatusUI
+ * @property {string} label - Formal analytic category.
+ * @property {string} labelSoft - Softer wording suitable for member-facing reports.
+ * @property {string} description - Short explanation completing the status label.
+ * @property {"muted" | "accent" | "reject" | "warn"} tone - Semantic UI tone.
+ * @property {string} bar - Utility class applied to status bars.
+ * @property {string} text - Utility class applied to status text.
+ */
+
+/**
+ * UI metadata keyed by Moreno sociometric status code.
+ *
+ * Codes `0`–`8` represent the analytic categories; `99` is the fallback for an
+ * unclassified result. Reports intentionally display `labelSoft` to frame each
+ * result as an indicator rather than a definitive, potentially stigmatizing
+ * judgment about a member.
+ *
+ * @type {Readonly<Record<number, SociometricStatusUI>>}
+ */
 export const STATUS_UI = Object.freeze({
   99: {
     label: "Non classificato",

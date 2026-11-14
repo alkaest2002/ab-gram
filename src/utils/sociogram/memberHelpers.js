@@ -105,22 +105,13 @@ export function orderMemberId(ids) {
 }
 
 /**
- * Count name issues across the loaded members.
+ * Determine whether a member has completed both preference categories.
  *
- * Names are trimmed once before counting, so both figures below compare the
- * same value. Empty (blank) names and duplicated non-empty names are reported
- * separately: a group may legitimately contain two members with the same name,
- * but that must be reviewed before advancing.
- *
- * @param {Array<{ name?: string }>} members
- * @returns {{ emptyNamesCount: number, duplicateNamesCount: number }}
- */
-/**
- * Whether a member has completed both preference categories: each must be
- * resolved by selecting at least one entry or by declaring "no answer" for it.
+ * Each category is resolved by selecting at least one member or explicitly
+ * declaring that no preference or rejection was expressed.
  *
  * @param {{ likes?: string[], dislikes?: string[], noLikes?: boolean, noDislikes?: boolean } | null} member
- * @returns {boolean}
+ * @returns {boolean} `true` when both preference categories are resolved.
  */
 export function isMemberComplete(member) {
   if (!member) return false;
@@ -131,6 +122,15 @@ export function isMemberComplete(member) {
   return hasLikes && hasDislikes;
 }
 
+/**
+ * Count blank and duplicate names across the loaded members.
+ *
+ * Names are trimmed before comparison. Duplicate counts represent occurrences
+ * beyond the first, while blank names are counted separately.
+ *
+ * @param {Array<{ name?: string }>} members - Members whose names are inspected.
+ * @returns {{ emptyNamesCount: number, duplicateNamesCount: number }} The detected issue counts.
+ */
 export function getMembersNameIssues(members) {
   const names = members.map((member) => String(member?.name ?? "").trim());
   const nonEmptyNames = names.filter(Boolean);

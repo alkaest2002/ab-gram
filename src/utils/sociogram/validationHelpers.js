@@ -24,25 +24,56 @@
  *     that compare members against each other.
  */
 
-/** Shared id sequence used to label members in order of addition. */
+/**
+ * Structurally valid member stored in a sociogram snapshot.
+ *
+ * @typedef {object} SociogramMember
+ * @property {string} id
+ * @property {string} name
+ * @property {string[]} likes
+ * @property {string[]} dislikes
+ * @property {boolean} noLikes
+ * @property {boolean} noDislikes
+ */
+
+/** @typedef {{ members: SociogramMember[] }} SociogramSnapshot */
+/** @typedef {string | null} ValidationResult */
+/** @typedef {(value: any) => ValidationResult} ValidationCheck */
+
+/** Shared id sequence used to label members in order of addition. @type {string[]} */
 export const MEMBERS_INDICES = "ABCDEFGHIJKLMNOPQRSTUVWXYZ2468#@%$&".split("");
 
-/** Member ids are single characters drawn from MEMBERS_INDICES */
+/** Pattern matching one valid member id from `MEMBERS_INDICES`. @type {RegExp} */
 export const MEMBER_ID_PATTERN = /^[A-Z2468#@%$&]$/;
 
-/** Minimum number of members required for a complete sociogram. */
+/** Minimum number of members required for a complete sociogram. @type {number} */
 export const MIN_MEMBERS_COUNT = 8;
 
-/** Maximum number of members (mirrors `maxMembersCount` in the store). */
+/** Maximum number of members (mirrors `maxMembersCount` in the store). @type {number} */
 export const MAX_MEMBERS_COUNT = MEMBERS_INDICES.length;
 
-/** Maximum length of a member's name. */
+/** Maximum permitted length of a member name. @type {number} */
 export const MAX_NAME_LENGTH = 150;
 
+/**
+ * Test whether a value is a non-null object.
+ *
+ * Despite its historical name, this predicate also accepts arrays; callers
+ * that require a specific collection shape perform that check separately.
+ *
+ * @param {unknown} value
+ * @returns {boolean}
+ */
 export function isPlainObject(value) {
   return Boolean(value) && typeof value === "object";
 }
 
+/**
+ * Test whether a value is an array containing only valid member ids.
+ *
+ * @param {unknown} value
+ * @returns {boolean}
+ */
 export function isIdList(value) {
   return (
     Array.isArray(value) &&
@@ -50,7 +81,13 @@ export function isIdList(value) {
   );
 }
 
-/** Collect every id referenced by `field` (e.g. "likes") across the members. */
+/**
+ * Collect the unique member ids referenced by one preference field.
+ *
+ * @param {SociogramMember[]} members
+ * @param {"likes" | "dislikes"} field
+ * @returns {Set<string>}
+ */
 export function collectReferencedIds(members, field) {
   const ids = new Set();
   for (const member of members) {
@@ -62,16 +99,20 @@ export function collectReferencedIds(members, field) {
 }
 
 /**
+ * Require the decoded snapshot root to be an object.
+ *
  * @param {unknown} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function SnapshotShouldBeAnObject(parsed) {
   return isPlainObject(parsed) ? null : "Il progetto contiene dati sociometrici non validi.";
 }
 
 /**
- * @param {unknown} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * Require the snapshot to expose a members array.
+ *
+ * @param {any} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function SnapshotShouldHaveMembers(parsed) {
   return Array.isArray(parsed.members)
@@ -80,8 +121,10 @@ export function SnapshotShouldHaveMembers(parsed) {
 }
 
 /**
- * @param {object} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * Reject snapshots containing more members than the supported id sequence.
+ *
+ * @param {SociogramSnapshot} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MembersShouldNotExceedMaxCount(parsed) {
   return parsed.members.length <= MAX_MEMBERS_COUNT
@@ -92,8 +135,8 @@ export function MembersShouldNotExceedMaxCount(parsed) {
 /**
  * Complete-data rule: a finished sociogram needs at least `MIN_MEMBERS_COUNT`.
  *
- * @param {object} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * @param {SociogramSnapshot} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MembersShouldHaveAtLeastMinCount(parsed) {
   return parsed.members.length >= MIN_MEMBERS_COUNT
@@ -102,16 +145,19 @@ export function MembersShouldHaveAtLeastMinCount(parsed) {
 }
 
 /**
+ * Require each member entry to be an object before field-level checks run.
+ *
  * @param {unknown} member
- * @returns {string | null} Error message, or null when the check passes.
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldBeAnObject(member) {
   return isPlainObject(member) ? null : "I dati di un membro del gruppo non sono validi.";
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require a member to have a non-empty string id.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveAnId(member) {
   return typeof member.id === "string" && member.id.length > 0
@@ -120,16 +166,18 @@ export function MemberShouldHaveAnId(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require a member name to be a string.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveAName(member) {
   return typeof member.name === "string" ? null : "Ogni membro del gruppo deve avere un nome.";
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require a member name not to exceed `MAX_NAME_LENGTH`.
+ * @param {SociogramMember} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberNameShouldNotExceedMaxLength(member) {
   return member.name.length <= MAX_NAME_LENGTH
@@ -138,8 +186,9 @@ export function MemberNameShouldNotExceedMaxLength(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Reject a likes list longer than the maximum possible group size.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function LikesShouldNotExceedMemberCount(member) {
   const exceeds = Array.isArray(member.likes) && member.likes.length > MAX_MEMBERS_COUNT;
@@ -147,8 +196,9 @@ export function LikesShouldNotExceedMemberCount(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Reject a dislikes list longer than the maximum possible group size.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function DislikesShouldNotExceedMemberCount(member) {
   const exceeds = Array.isArray(member.dislikes) && member.dislikes.length > MAX_MEMBERS_COUNT;
@@ -156,8 +206,9 @@ export function DislikesShouldNotExceedMemberCount(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require `likes` to contain only syntactically valid member ids.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveValidLikes(member) {
   return isIdList(member.likes)
@@ -166,8 +217,9 @@ export function MemberShouldHaveValidLikes(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require `dislikes` to contain only syntactically valid member ids.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveValidDislikes(member) {
   return isIdList(member.dislikes)
@@ -176,8 +228,9 @@ export function MemberShouldHaveValidDislikes(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require the no-likes declaration to be boolean.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveANoLikesFlag(member) {
   return typeof member.noLikes === "boolean"
@@ -186,8 +239,9 @@ export function MemberShouldHaveANoLikesFlag(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Require the no-dislikes declaration to be boolean.
+ * @param {Partial<SociogramMember>} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveANoDislikesFlag(member) {
   return typeof member.noDislikes === "boolean"
@@ -196,8 +250,9 @@ export function MemberShouldHaveANoDislikesFlag(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Reject a member whose likes list references their own id.
+ * @param {SociogramMember} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldNotLikeSelf(member) {
   return member.likes.includes(member.id)
@@ -206,8 +261,9 @@ export function MemberShouldNotLikeSelf(member) {
 }
 
 /**
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * Reject a member whose dislikes list references their own id.
+ * @param {SociogramMember} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldNotDislikeSelf(member) {
   return member.dislikes.includes(member.id)
@@ -219,8 +275,8 @@ export function MemberShouldNotDislikeSelf(member) {
  * Complete-data rule: a member must record at least one like, unless they
  * declared they have none via the `noLikes` flag.
  *
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * @param {SociogramMember} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveLikesUnlessNoLikes(member) {
   return member.noLikes || member.likes.length > 0
@@ -232,8 +288,8 @@ export function MemberShouldHaveLikesUnlessNoLikes(member) {
  * Complete-data rule: a member must record at least one dislike, unless they
  * declared they have none via the `noDislikes` flag.
  *
- * @param {object} member
- * @returns {string | null} Error message, or null when the check passes.
+ * @param {SociogramMember} member
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveDislikesUnlessNoDislikes(member) {
   return member.noDislikes || member.dislikes.length > 0
@@ -242,8 +298,9 @@ export function MemberShouldHaveDislikesUnlessNoDislikes(member) {
 }
 
 /**
- * @param {object} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * Require every member id in the snapshot to be unique.
+ * @param {SociogramSnapshot} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberIdsShouldBeUnique(parsed) {
   const ids = parsed.members.map((member) => member.id);
@@ -253,8 +310,9 @@ export function MemberIdsShouldBeUnique(parsed) {
 }
 
 /**
- * @param {object} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * Require every liked id to reference a member in the same snapshot.
+ * @param {SociogramSnapshot} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function LikesShouldReferenceExistingMembers(parsed) {
   const memberIds = new Set(parsed.members.map((member) => member.id));
@@ -270,8 +328,9 @@ export function LikesShouldReferenceExistingMembers(parsed) {
 }
 
 /**
- * @param {object} parsed
- * @returns {string | null} Error message, or null when the check passes.
+ * Require every disliked id to reference a member in the same snapshot.
+ * @param {SociogramSnapshot} parsed
+ * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function DislikesShouldReferenceExistingMembers(parsed) {
   const memberIds = new Set(parsed.members.map((member) => member.id));
@@ -286,15 +345,19 @@ export function DislikesShouldReferenceExistingMembers(parsed) {
   return null;
 }
 
-// Snapshot-level checks. Run in order; the first to return an error wins.
+/** Snapshot-level checks, evaluated in order until one fails. @type {ValidationCheck[]} */
 export const SNAPSHOT_CHECKS = [
   SnapshotShouldBeAnObject,
   SnapshotShouldHaveMembers,
   MembersShouldNotExceedMaxCount,
 ];
 
-// Per-member checks. Run in order after `MemberShouldBeAnObject`; the field
-// checks below rely on `member` already being a plain object.
+/**
+ * Per-member structural checks, evaluated in order.
+ *
+ * Field checks rely on `MemberShouldBeAnObject` succeeding first.
+ * @type {ValidationCheck[]}
+ */
 export const MEMBER_CHECKS = [
   MemberShouldBeAnObject,
   MemberShouldHaveAnId,
@@ -310,18 +373,23 @@ export const MEMBER_CHECKS = [
   MemberShouldNotDislikeSelf,
 ];
 
-// Cross-member checks. Run once after every member has passed MEMBER_CHECKS;
-// they assume each member is structurally valid.
+/**
+ * Snapshot checks that compare structurally valid members with one another.
+ * @type {ValidationCheck[]}
+ */
 export const CROSS_MEMBER_CHECKS = [
   MemberIdsShouldBeUnique,
   LikesShouldReferenceExistingMembers,
   DislikesShouldReferenceExistingMembers,
 ];
 
-// Complete-data checks. Applied on top of the default checks only when the
-// importer declares the snapshot is a finished sociogram (`dataIsComplete`).
+/**
+ * Additional snapshot checks for imports declared to be complete sociograms.
+ * @type {ValidationCheck[]}
+ */
 export const COMPLETE_SNAPSHOT_CHECKS = [MembersShouldHaveAtLeastMinCount];
 
+/** Additional per-member checks for complete sociograms. @type {ValidationCheck[]} */
 export const COMPLETE_MEMBER_CHECKS = [
   MemberShouldHaveLikesUnlessNoLikes,
   MemberShouldHaveDislikesUnlessNoDislikes,
