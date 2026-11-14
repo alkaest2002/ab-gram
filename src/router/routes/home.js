@@ -3,7 +3,8 @@
 
 import Home from "@/components/views/home/Home.vue";
 
-export default {
+/** Application landing-page route. @type {import("vue-router").RouteRecordRaw} */
+const homeRoute = {
   path: "/",
   name: "home",
   component: Home,
@@ -13,3 +14,5 @@ export default {
     layout: "DefaultLayout",
   },
 };
+
+export default homeRoute;

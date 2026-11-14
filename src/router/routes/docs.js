@@ -4,10 +4,22 @@
 import Docs from "@/components/views/docs/Docs.vue";
 import { navigation, flatOrdered } from "@/docs/navigation";
 
-// Lazy Markdown components. With an alias glob, keys are root-relative
-// (leading slash), e.g. "/src/docs/mds/folder/slug.md".
+/**
+ * Lazy Markdown page components keyed by root-relative source path.
+ *
+ * Using an alias glob produces keys such as
+ * `/src/docs/mds/<section>/<slug>.md`.
+ */
 const pages = import.meta.glob("@/docs/mds/**/*.md");
 
+/**
+ * Convert documentation navigation entries into nested Vue Router records.
+ *
+ * Child paths are relative to `/docs`, and route names are derived from each
+ * section/slug pair to remain unique across the documentation tree.
+ *
+ * @type {import("vue-router").RouteRecordRaw[]}
+ */
 const children = navigation.flatMap((section) =>
   section.items.map((item) => {
     const relative = item.path.replace(/^\/docs\//, ""); // "folder/slug"
@@ -20,7 +32,8 @@ const children = navigation.flatMap((section) =>
   }),
 );
 
-export default {
+/** Documentation shell with one generated child route per Markdown page. @type {import("vue-router").RouteRecordRaw} */
+const docsRoute = {
   path: "/docs",
   name: "docs",
   component: Docs,
@@ -33,3 +46,5 @@ export default {
   },
   children,
 };
+
+export default docsRoute;

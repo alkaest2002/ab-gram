@@ -1,7 +1,8 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-export default {
+/** Catch-all route rendered when no earlier route matches. @type {import("vue-router").RouteRecordRaw} */
+const notFoundRoute = {
   path: "/:pathMatch(.*)*",
   name: "not-found",
   component: () => import("@/components/views/NotFound.vue"),
@@ -11,3 +12,5 @@ export default {
     layout: "EmptyLayout",
   },
 };
+
+export default notFoundRoute;

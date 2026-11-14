@@ -77,7 +77,7 @@ function goNext() {
   const { isValid, errors } = validate({ members: toRaw(members.value) });
   if (!isValid) {
     appStore.setNotifyData(errors);
-    router.push({ name: "sociogramValidatioError" });
+    router.push({ name: "sociogramValidationError" });
     return;
   }
   router.replace({ name: "report" });

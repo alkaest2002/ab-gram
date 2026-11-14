@@ -4,9 +4,17 @@
 import { useSociogramStore } from "@/stores/sociogram";
 import { useReportStore } from "@/stores/report";
 
-export default {
+/**
+ * Report-generation routes guarded by sociogram and report lifecycle state.
+ *
+ * Entering any report route requires a completed sociogram. The generated
+ * report child adds a second guard so it cannot be opened before analysis has
+ * completed successfully.
+ *
+ * @type {import("vue-router").RouteRecordRaw}
+ */
+const reportRoute = {
   path: "/report",
-  component: "",
   beforeEnter() {
     const sociogramStore = useSociogramStore();
 
@@ -60,3 +68,5 @@ export default {
     },
   ],
 };
+
+export default reportRoute;

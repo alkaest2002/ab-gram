@@ -1,7 +1,8 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-export default {
+/** Sociogram creation and editing workflow route. @type {import("vue-router").RouteRecordRaw} */
+const sociogramRoute = {
   path: "/sociogram",
   name: "sociogram",
   component: () => import("@/components/views/sociogram/Sociogram.vue"),
@@ -12,3 +13,5 @@ export default {
     layout: "DefaultLayout",
   },
 };
+
+export default sociogramRoute;

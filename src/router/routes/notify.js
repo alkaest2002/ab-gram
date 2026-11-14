@@ -1,10 +1,17 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-export default {
+/**
+ * Notification and recoverable-error routes.
+ *
+ * The parent redirects bare `/notify` visits to the generic error page; child
+ * routes select a specialized message while sharing the empty-page layout.
+ *
+ * @type {import("vue-router").RouteRecordRaw}
+ */
+const notifyRoute = {
   path: "/notify",
   name: "notify",
-  component: "",
   redirect: "/notify/generic-error",
   meta: {
     title: "Notify",
@@ -26,7 +33,7 @@ export default {
     },
     {
       path: "sociogram-validation-error",
-      name: "sociogramValidatioError",
+      name: "sociogramValidationError",
       component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
       meta: {
         title: "Errore di Validazione",
@@ -70,7 +77,7 @@ export default {
     },
     {
       path: "report-stopped",
-      name: "Avviso di Annullamento della Generazione del Report",
+      name: "reportStopped",
       component: () => import("@/components/views/notify/ReportStopped.vue"),
       meta: {
         title: "Informazione",
@@ -81,7 +88,7 @@ export default {
     },
     {
       path: "file-input-error",
-      name: "Errore nel File di Input",
+      name: "fileInputError",
       component: () => import("@/components/views/notify/FileInputError.vue"),
       meta: {
         title: "Informazione",
@@ -92,3 +99,5 @@ export default {
     },
   ],
 };
+
+export default notifyRoute;
