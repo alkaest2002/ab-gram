@@ -143,16 +143,11 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // Classify impact
   // --------------------------------------------------------------------------------------
   // Note: impact is a numpy-ts array
-  // visibleSortedImpacts: sorted visible impacts (members who received at least one opinion)
-  // allImpacts: all impacts (all members impact)
-  // originalGroupSize: number of members in the group
-  // visibleGroupSize: number of members who received at least one opinion
-  const visibleSortedImpacts = toSortedVisible(impact);
+  // impactVisibleSorted: sorted visible impacts (members who received at least one opinion)
+  // impactOriginal: all impacts (all members impact)
   const impactClassification = classifyImpactByVote(impact, {
-    visibleSortedImpacts,
-    allImpacts: impact.flatten().toArray(),
-    originalGroupSize: impact.size,
-    visibleGroupSize: visibleSortedImpacts.length,
+    impactVisibleSorted: toSortedVisible(impact),
+    impactOriginal: impact.flatten().toArray(),
   });
 
   // --------------------------------------------------------------------------------------

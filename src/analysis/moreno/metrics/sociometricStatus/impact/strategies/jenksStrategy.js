@@ -66,30 +66,30 @@ const jenksBreaks = (sorted, k) => {
  * Jenks natural breaks (k = 3): cutoffs fall in the widest gaps, gated by the
  * goodness of variance fit (GVF = 1 - SDCM/SDAM) so structureless data abstains.
  *
- * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
+ * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const jenksStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
+export const jenksStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
 
-  const distinctImpactValues = new Set(visibleSortedImpacts).size;
+  const distinctImpactValues = new Set(impactVisibleSorted).size;
   if (distinctImpactValues < 3) return NO_SPLIT;
 
   // Convert to NumPy array for efficient gap calculations.
-  const npValues = np.array(visibleSortedImpacts, "int32");
+  const npValues = np.array(impactVisibleSorted, "int32");
 
   const mean = npValues.mean();
   const sdam = npValues.subtract(mean).power(2).sum();
   if (sdam === 0) return NO_SPLIT;
 
-  const { starts, sdcm } = jenksBreaks(visibleSortedImpacts, 3);
+  const { starts, sdcm } = jenksBreaks(impactVisibleSorted, 3);
   if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
   // ========================================================================
   // CLASSIFY + SEPARATION CHECK — class 1 is low, class 3 is high.
   // ========================================================================
-  return finalizeSplit(visibleSortedImpacts, starts[0] - 1, starts[1]);
+  return finalizeSplit(impactVisibleSorted, starts[0] - 1, starts[1]);
 };

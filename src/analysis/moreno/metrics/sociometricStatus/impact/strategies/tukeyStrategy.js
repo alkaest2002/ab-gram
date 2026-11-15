@@ -16,11 +16,11 @@ const K = 1;
  * impacts. Values beyond a fence are outliers; cutoffs are the nearest observed
  * values strictly beyond each fence.
  *
- * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const tukeyStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
-  const values = visibleSortedImpacts;
+export const tukeyStrategy = ({ impactVisibleSorted }) => {
+  const values = impactVisibleSorted;
 
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
@@ -28,7 +28,7 @@ export const tukeyStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
   const q1 = percentileOf(values, 25);
   const q3 = percentileOf(values, 75);
   const iqr = q3 - q1;
-  if (visibleGroupSize < MIN_MEMBERS || iqr === 0) return NO_SPLIT;
+  if (impactVisibleSorted.length < MIN_MEMBERS || iqr === 0) return NO_SPLIT;
 
   // ========================================================================
   // CLASSIFY — split the sorted values at the fences.

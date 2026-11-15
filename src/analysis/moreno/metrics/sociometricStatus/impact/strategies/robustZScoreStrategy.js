@@ -16,17 +16,17 @@ const MAD_SCALE = 1.4826; // MAD -> normal-distribution standard-deviation scale
  * (median absolute deviation) exceeds Z_CUTOFF. More resistant to outliers
  * than Tukey's IQR fences.
  *
- * @param {{ visibleSortedImpacts: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const robustZScoreStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
+export const robustZScoreStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VVOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
 
   // Convert to NumPy array for efficient gap calculations.
-  const npValues = np.array(visibleSortedImpacts, "int32");
+  const npValues = np.array(impactVisibleSorted, "int32");
 
   const median = npValues.median();
   const deviations = npValues.subtract(median).absolute();
@@ -36,19 +36,19 @@ export const robustZScoreStrategy = ({ visibleSortedImpacts, visibleGroupSize })
   const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
   let lowEnd = -1;
-  for (let i = 0; i < visibleSortedImpacts.length; i += 1) {
-    if (visibleSortedImpacts[i] < lowFence) lowEnd = i;
+  for (let i = 0; i < impactVisibleSorted.length; i += 1) {
+    if (impactVisibleSorted[i] < lowFence) lowEnd = i;
     else break;
   }
 
-  let highStart = visibleSortedImpacts.length;
-  for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
-    if (visibleSortedImpacts[i] > highFence) highStart = i;
+  let highStart = impactVisibleSorted.length;
+  for (let i = impactVisibleSorted.length - 1; i >= 0; i -= 1) {
+    if (impactVisibleSorted[i] > highFence) highStart = i;
     else break;
   }
 
   // ========================================================================
   // SEPARATION CHECK — switch off a tail that is not separated by one vote.
   // ========================================================================
-  return finalizeSplit(visibleSortedImpacts, lowEnd, highStart);
+  return finalizeSplit(impactVisibleSorted, lowEnd, highStart);
 };

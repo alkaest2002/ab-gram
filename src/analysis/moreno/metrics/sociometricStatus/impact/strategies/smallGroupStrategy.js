@@ -19,10 +19,11 @@ const SPREAD_FACTOR = 0.5; // ...or >= this fraction of the group's spread.
  * only the smaller side of that gap as the outlier tail. The bulk stays
  * average-impact so its balance can still decide status.
  *
- * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
+ * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
+export const smallGroupStrategy = ({ impactVisibleSorted }) => {
+  const visibleGroupSize = impactVisibleSorted.length;
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
@@ -32,7 +33,7 @@ export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
   if (visibleGroupSize < 2) return NO_SPLIT;
 
   // Convert to NumPy array for efficient gap calculations.
-  const npValues = np.array(visibleSortedImpacts, "int32");
+  const npValues = np.array(impactVisibleSorted, "int32");
 
   // Gaps between consecutive sorted values: gaps[i] = values[i+1] - values[i].
   const gaps = npValues.diff();
@@ -71,10 +72,10 @@ export const smallGroupStrategy = ({ visibleSortedImpacts, visibleGroupSize }) =
 
   // finalizeSplit still receives the original array, as before.
   if (leftCount < rightCount) {
-    return finalizeSplit(visibleSortedImpacts, split, visibleSortedImpacts.length);
+    return finalizeSplit(impactVisibleSorted, split, impactVisibleSorted.length);
   }
   if (rightCount < leftCount) {
-    return finalizeSplit(visibleSortedImpacts, -1, split + 1);
+    return finalizeSplit(impactVisibleSorted, -1, split + 1);
   }
-  return finalizeSplit(visibleSortedImpacts, split, split + 1);
+  return finalizeSplit(impactVisibleSorted, split, split + 1);
 };

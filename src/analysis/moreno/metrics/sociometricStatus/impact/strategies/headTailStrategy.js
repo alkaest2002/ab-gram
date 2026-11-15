@@ -36,30 +36,30 @@ const headTailBreaks = (sorted) => {
  * high end, so this votes on the high cutoff and abstains on the low side
  * (low = -Infinity).
  *
- * @param {{ visibleSortedImpacts: number[], visibleGroupSize: number }} context - Sorted visible impacts and their count.
+ * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const headTailStrategy = ({ visibleSortedImpacts, visibleGroupSize }) => {
+export const headTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (visibleGroupSize < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
 
-  const breaks = headTailBreaks(visibleSortedImpacts);
+  const breaks = headTailBreaks(impactVisibleSorted);
   if (breaks.length === 0) return NO_SPLIT;
 
   // ========================================================================
   // CLASSIFY — high = lower bound of the last (highest) class (final head).
   // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
-  let highStart = visibleSortedImpacts.length;
-  for (let i = visibleSortedImpacts.length - 1; i >= 0; i -= 1) {
-    if (visibleSortedImpacts[i] > lastBreak) highStart = i;
+  let highStart = impactVisibleSorted.length;
+  for (let i = impactVisibleSorted.length - 1; i >= 0; i -= 1) {
+    if (impactVisibleSorted[i] > lastBreak) highStart = i;
     else break;
   }
 
   // ========================================================================
   // SEPARATION CHECK — no low tail; switch off high if it is not separated.
   // ========================================================================
-  return finalizeSplit(visibleSortedImpacts, -1, highStart);
+  return finalizeSplit(impactVisibleSorted, -1, highStart);
 };

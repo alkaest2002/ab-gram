@@ -65,7 +65,7 @@ const countVotes = (booleanArrays) =>
  * Tie-breaks: a non-average class beats average, and low beats high.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @param {{ visibleSortedImpacts: number[], allImpacts: number[], originalGroupSize: number, visibleGroupSize: number }} context - Visible impacts, all impacts and the original/visible group sizes.
+ * @param {{ impactVisibleSorted: number[], impactOriginal: number[] }} context - Sorted visible impacts and all impacts.
  * @returns {{
  *   isLowImpact: import("numpy-ts").NDArray,
  *   isHighImpact: import("numpy-ts").NDArray,
@@ -75,13 +75,13 @@ const countVotes = (booleanArrays) =>
 export const classifyImpactByVote = (impact, context) => {
   // With few visible impacts there is no meaningful spread, so
   // skip the vote and classify everyone as average.
-  if (context.visibleSortedImpacts.length < 4) return classifyImpact(impact, NO_SPLIT);
+  if (context.impactVisibleSorted.length < 4) return classifyImpact(impact, NO_SPLIT);
 
   // Filter active strategies based on ability to classify the impact.
   // i.e., at least there is a label different from 0
   // that is at least one impact is classified as low or high).
   const active = IMPACT_STRATEGIES.map(({ run }) => run(context)).filter((thresholds) =>
-    labelValues(context.visibleSortedImpacts, thresholds).some((label) => label !== 0),
+    labelValues(context.impactVisibleSorted, thresholds).some((label) => label !== 0),
   );
 
   // If no active strategies is able to classify the impact,
