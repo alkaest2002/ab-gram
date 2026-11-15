@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
-import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;

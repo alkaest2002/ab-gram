@@ -3,12 +3,23 @@
 
 import * as np from "numpy-ts";
 import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
-import { toSortedVisible } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
 import { classifyImpactByVote } from "@/analysis/moreno/metrics/sociometricStatus/impact/classify.js";
 import { classifyBalance } from "@/analysis/moreno/metrics/sociometricStatus/balance/classify.js";
 import { classifyVisibility } from "@/analysis/moreno/metrics/sociometricStatus/visibility/classify.js";
 
 export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
+
+/**
+ * Visible impacts, sorted ascending: the non-zero impact values flattened
+ * from the NDArray into a plain number array.
+ *
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @returns {number[]} Non-zero impacts in ascending order.
+ */
+const toSortedVisible = (impact) => {
+  const flat = impact.flatten();
+  return flat.compress(flat.greater(0)).sort().toArray();
+};
 
 // ============================================================================
 // STATUS ASSIGNMENT (decision tree, first match wins)

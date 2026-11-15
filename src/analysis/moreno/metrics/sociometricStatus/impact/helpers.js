@@ -2,18 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Visible impacts, sorted ascending: the non-zero impact values flattened
- * from the NDArray into a plain number array.
- *
- * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @returns {number[]} Non-zero impacts in ascending order.
- */
-export const toSortedVisible = (impact) => {
-  const flat = impact.flatten();
-  return flat.compress(flat.greater(0)).sort().toArray();
-};
-
-/**
  * Nearest-rank index (0-based): ceil(n * percentile / 100) - 1, clamped to a
  * valid index.
  *

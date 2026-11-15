@@ -5,7 +5,7 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 import {
   percentileOf,
   finalizeSplit,
-} from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
+} from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters
 const MIN_MEMBERS = 3;
