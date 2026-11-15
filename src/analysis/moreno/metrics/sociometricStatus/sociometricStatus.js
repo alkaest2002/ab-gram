@@ -10,7 +10,7 @@ import { classifyVisibility } from "@/analysis/moreno/metrics/sociometricStatus/
 export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 
 /**
- * Visible impacts, sorted ascending: the non-zero impact values flattened
+ * Visible impacts (gt 0), sorted ascending: the non-zero impact values flattened
  * from the NDArray into a plain number array.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
