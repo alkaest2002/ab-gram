@@ -9,18 +9,6 @@ import { classifyVisibility } from "@/analysis/moreno/metrics/sociometricStatus/
 
 export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 
-/**
- * Visible impacts (gt 0), sorted ascending: the non-zero impact values flattened
- * from the NDArray into a plain number array.
- *
- * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @returns {number[]} Non-zero impacts in ascending order.
- */
-const toSortedVisible = (impact) => {
-  const flat = impact.flatten();
-  return flat.compress(flat.greater(0)).sort().toArray();
-};
-
 // ============================================================================
 // STATUS ASSIGNMENT (decision tree, first match wins)
 // ============================================================================
@@ -146,7 +134,7 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // impactVisibleSorted: sorted visible impacts (members who received at least one opinion)
   // impactOriginal: all impacts (all members impact)
   const impactClassification = classifyImpactByVote(impact, {
-    impactVisibleSorted: toSortedVisible(impact),
+    impactVisibleSorted: impact.compress(impact.greater(0)).sort().toArray(),
     impactOriginal: impact.flatten().toArray(),
   });
 
