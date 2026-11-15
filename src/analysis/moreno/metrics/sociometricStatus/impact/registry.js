@@ -1,14 +1,14 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { jenksStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/jenksStrategy.js";
-import { largestGapStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/largestGapStrategy.js";
-import { headTailStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/headTailStrategy.js";
-import { percentileStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/percentileStrategy.js";
-import { tukeyStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/tukeyStrategy.js";
-import { robustZScoreStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/robustZScoreStrategy.js";
-import { binomialStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/binomialStrategy.js";
-import { smallGroupStrategy } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/strategies/smallGroupStrategy.js";
+import { jenksStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/jenksStrategy.js";
+import { largestGapStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/largestGapStrategy.js";
+import { headTailStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/headTailStrategy.js";
+import { percentileStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/percentileStrategy.js";
+import { tukeyStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/tukeyStrategy.js";
+import { robustZScoreStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/robustZScoreStrategy.js";
+import { binomialStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/binomialStrategy.js";
+import { smallGroupStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/smallGroupStrategy.js";
 
 // A strategy that proposes no effective split abstains from the vote; the
 // remaining strategies vote with equal weight, so the order here is only for

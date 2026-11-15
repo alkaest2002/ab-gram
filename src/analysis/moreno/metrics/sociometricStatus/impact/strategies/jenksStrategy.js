@@ -3,8 +3,8 @@
 
 import * as np from "numpy-ts";
 
-import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { finalizeSplit } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
+import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;

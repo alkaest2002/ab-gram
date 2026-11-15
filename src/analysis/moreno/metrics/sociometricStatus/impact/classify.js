@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 import * as np from "numpy-ts";
-import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/registry.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
+import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/sociometricStatus/impact/registry.js";
 
 // ============================================================================
 // IMPACT CLASSIFICATION

@@ -28,7 +28,7 @@ import {
   computeReceivedPreferenceScore,
 } from "./individualMetrics.js";
 
-import { computeSociometricStatus } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatus.js";
+import { computeSociometricStatus } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatus.js";
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // GROUP LEVEL METRICS

@@ -8,7 +8,7 @@ import {
   getGroupLevelMetrics,
   getIndividualLevelMetrics,
 } from "@/analysis/moreno/metrics/morenoMetrics.js";
-import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatus.js";
+import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatus.js";
 import { createAdjacencyMatrices } from "@/analysis/common/adjacencyMatrices.js";
 import { getSmallGroupMembers, getMediumGroupMembers } from "../../fixtures/sociometric.js";
 

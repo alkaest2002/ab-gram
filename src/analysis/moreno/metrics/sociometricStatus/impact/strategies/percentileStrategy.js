@@ -1,11 +1,11 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { NO_SPLIT } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import {
   finalizeSplit,
   rankIndex,
-} from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
+} from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;

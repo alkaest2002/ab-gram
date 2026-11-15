@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 
 import * as np from "numpy-ts";
-import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
-import { toSortedVisible } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/sociometricStatusHelpers.js";
-import { classifyImpactByVote } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/impact/classify.js";
-import { classifyBalance } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/balance/classify.js";
-import { classifyVisibility } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/visibility/classify.js";
+import { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
+import { toSortedVisible } from "@/analysis/moreno/metrics/sociometricStatus/sociometricStatusHelpers.js";
+import { classifyImpactByVote } from "@/analysis/moreno/metrics/sociometricStatus/impact/classify.js";
+import { classifyBalance } from "@/analysis/moreno/metrics/sociometricStatus/balance/classify.js";
+import { classifyVisibility } from "@/analysis/moreno/metrics/sociometricStatus/visibility/classify.js";
 
-export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/individualMetricsSociometricStatus/constants.js";
+export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 
 // ============================================================================
 // STATUS ASSIGNMENT (decision tree, first match wins)
