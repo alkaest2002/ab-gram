@@ -15,12 +15,12 @@ import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/sociometricStatus/i
  * Map values to -1 (low), 0 (average) or +1 (high) for a { low, high } pair.
  * Low wins when both thresholds would apply.
  *
- * @param {number[]} values - Sorted visible impacts.
+ * @param {import("numpy-ts").NDArray} values - Sorted visible impacts.
  * @param {{ low: number, high: number }} thresholds - Inclusive cutoffs.
- * @returns {number[]} Labels in the same order as `values`.
+ * @returns {boolean} Whether at least one value is outside the thresholds.
  */
-const labelValues = (values, { low, high }) =>
-  values.map((v) => (v <= low ? -1 : v >= high ? 1 : 0)); // low wins ties
+const classifiesAnyValue = (values, { low, high }) =>
+  values.less_equal(low).logical_or(values.greater_equal(high)).sum() > 0;
 
 /**
  * Classify every member as low / high / average for one threshold pair.
@@ -65,23 +65,24 @@ const countVotes = (booleanArrays) =>
  * Tie-breaks: a non-average class beats average, and low beats high.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @param {{ impactVisibleSorted: number[], impactOriginal: number[] }} context - Sorted visible impacts and all impacts.
+ * @param {import("numpy-ts").NDArray} impactVisibleSorted - Sorted visible impacts.
  * @returns {{
  *   isLowImpact: import("numpy-ts").NDArray,
  *   isHighImpact: import("numpy-ts").NDArray,
  *   isAverageImpact: import("numpy-ts").NDArray,
  * }}
  */
-export const classifyImpactByVote = (impact, context) => {
+export const classifyImpactByVote = (impact, impactVisibleSorted) => {
   // With few visible impacts there is no meaningful spread, so
   // skip the vote and classify everyone as average.
-  if (context.impactVisibleSorted.length < 4) return classifyImpact(impact, NO_SPLIT);
+  if (impactVisibleSorted.size < 4) return classifyImpact(impact, NO_SPLIT);
 
   // Filter active strategies based on ability to classify the impact.
   // i.e., at least there is a label different from 0
   // that is at least one impact is classified as low or high).
+  const context = { impact, impactVisibleSorted };
   const active = IMPACT_STRATEGIES.map(({ run }) => run(context)).filter((thresholds) =>
-    labelValues(context.impactVisibleSorted, thresholds).some((label) => label !== 0),
+    classifiesAnyValue(impactVisibleSorted, thresholds),
   );
 
   // If no active strategies is able to classify the impact,

@@ -35,18 +35,18 @@ const binomialCdf = (n, p) => {
  * Binomial (GB) strategy: exact two-sided binomial test under the chance
  * model. Limits are the counts whose tail probability is <= alpha/2.
  *
- * @param {{ impactOriginal: number[] }} context - All impacts.
+ * @param {{ impact: import("numpy-ts").NDArray }} context - All impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
-export const binomialStrategy = ({ impactOriginal }) => {
-  const originalGroupSize = impactOriginal.length;
+export const binomialStrategy = ({ impact }) => {
+  const originalGroupSize = impact.size;
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
   if (originalGroupSize < MIN_MEMBERS) return NO_SPLIT;
 
   const n = originalGroupSize - 1; // possible givers for any one member
-  const total = impactOriginal.reduce((s, v) => s + v, 0);
+  const total = impact.sum();
   const p = total / (originalGroupSize * n);
 
   // The p < 1 guard also covers degenerate density: a giver nominating the

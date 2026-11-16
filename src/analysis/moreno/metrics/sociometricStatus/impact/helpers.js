@@ -17,15 +17,15 @@ export const rankIndex = (n, percentile) =>
  * from the lower ones (p > 50 uses the (100 - p) rank counted from the top),
  * so "bottom p%" and "top p%" always contain the same number of members.
  *
- * @param {number[]} sorted - Sorted (ascending) values.
+ * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) values.
  * @param {number} percentile - Percentile between 0 and 100.
  * @returns {number} The observed value at that percentile.
  */
 export const percentileOf = (sorted, percentile) => {
-  const n = sorted.length;
+  const n = sorted.size;
   return percentile <= 50
-    ? sorted[rankIndex(n, percentile)]
-    : sorted[n - 1 - rankIndex(n, 100 - percentile)];
+    ? sorted.get([rankIndex(n, percentile)])
+    : sorted.get([n - 1 - rankIndex(n, 100 - percentile)]);
 };
 
 /**
@@ -34,22 +34,22 @@ export const percentileOf = (sorted, percentile) => {
  * sorted[highStart..]. A tail whose boundary values are equal (i.e. not
  * separated by at least one vote) is switched off (infinite bound).
  *
- * @param {number[]} sorted - Sorted (ascending) visible impacts.
+ * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) visible impacts.
  * @param {number} lowEnd - Index of the last low value, or -1 for no low tail.
- * @param {number} highStart - Index of the first high value, or sorted.length for no high tail.
+ * @param {number} highStart - Index of the first high value, or sorted.size for no high tail.
  * @returns {{ low: number, high: number }} Finalized cutoffs, either bound may be infinite.
  */
 export const finalizeSplit = (sorted, lowEnd, highStart) => {
   let low = -Infinity;
   if (lowEnd >= 0) {
-    low = sorted[lowEnd];
-    if (lowEnd + 1 < sorted.length && sorted[lowEnd + 1] === low) low = -Infinity;
+    low = sorted.get([lowEnd]);
+    if (lowEnd + 1 < sorted.size && sorted.get([lowEnd + 1]) === low) low = -Infinity;
   }
 
   let high = Infinity;
-  if (highStart < sorted.length) {
-    high = sorted[highStart];
-    if (highStart - 1 >= 0 && sorted[highStart - 1] === high) high = Infinity;
+  if (highStart < sorted.size) {
+    high = sorted.get([highStart]);
+    if (highStart - 1 >= 0 && sorted.get([highStart - 1]) === high) high = Infinity;
   }
 
   return { low, high };

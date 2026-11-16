@@ -12,20 +12,20 @@ const MAX_HEAD_SHARE = 0.4;
  * Head/tail breaks: recursively split the heavy-tailed "head" (values above
  * the mean) until the classical stop condition.
  *
- * @param {number[]} sorted - Sorted (ascending) values.
+ * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) values.
  * @returns {number[]} Break means, in increasing order.
  */
 const headTailBreaks = (sorted) => {
   /** @type {number[]} */
   const breaks = [];
   let current = sorted;
-  while (current.length > 0) {
-    const n = current.length;
-    const mean = current.reduce((s, v) => s + v, 0) / n;
-    const head = current.filter((v) => v > mean);
-    if (head.length === 0) break; // no split possible (all values equal)
+  while (current.size > 0) {
+    const n = current.size;
+    const mean = current.mean();
+    const head = current.compress(current.greater(mean));
+    if (head.size === 0) break; // no split possible (all values equal)
     breaks.push(mean);
-    if (head.length / n >= MAX_HEAD_SHARE) break; // classical stop
+    if (head.size / n >= MAX_HEAD_SHARE) break; // classical stop
     current = head;
   }
   return breaks;
@@ -36,14 +36,14 @@ const headTailBreaks = (sorted) => {
  * high end, so this votes on the high cutoff and abstains on the low side
  * (low = -Infinity).
  *
- * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const headTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
 
   const breaks = headTailBreaks(impactVisibleSorted);
   if (breaks.length === 0) return NO_SPLIT;
@@ -52,9 +52,9 @@ export const headTailStrategy = ({ impactVisibleSorted }) => {
   // CLASSIFY — high = lower bound of the last (highest) class (final head).
   // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
-  let highStart = impactVisibleSorted.length;
-  for (let i = impactVisibleSorted.length - 1; i >= 0; i -= 1) {
-    if (impactVisibleSorted[i] > lastBreak) highStart = i;
+  let highStart = impactVisibleSorted.size;
+  for (let i = impactVisibleSorted.size - 1; i >= 0; i -= 1) {
+    if (impactVisibleSorted.get([i]) > lastBreak) highStart = i;
     else break;
   }
 

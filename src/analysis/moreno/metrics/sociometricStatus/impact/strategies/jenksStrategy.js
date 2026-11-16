@@ -1,8 +1,6 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import * as np from "numpy-ts";
-
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
@@ -13,19 +11,20 @@ const MIN_GVF = 0.75;
 /**
  * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
  *
- * @param {number[]} sorted - Sorted (ascending) values.
+ * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) values.
  * @param {number} k - Number of classes.
  * @returns {{ starts: number[], sdcm: number }} Start index of every class except the first, and the total within-class sum of squares (SDCM).
  */
 const jenksBreaks = (sorted, k) => {
-  const n = sorted.length;
+  const n = sorted.size;
 
   // Prefix sums give the SSE of any slice in O(1).
   const s1 = [0];
   const s2 = [0];
-  for (const v of sorted) {
-    s1.push(s1[s1.length - 1] + v);
-    s2.push(s2[s2.length - 1] + v * v);
+  for (let i = 0; i < n; i += 1) {
+    const value = sorted.get([i]);
+    s1.push(s1[s1.length - 1] + value);
+    s2.push(s2[s2.length - 1] + value * value);
   }
   // SSE of sorted[i..j], inclusive.
   const sse = (i, j) => {
@@ -66,23 +65,25 @@ const jenksBreaks = (sorted, k) => {
  * Jenks natural breaks (k = 3): cutoffs fall in the widest gaps, gated by the
  * goodness of variance fit (GVF = 1 - SDCM/SDAM) so structureless data abstains.
  *
- * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const jenksStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
 
-  const distinctImpactValues = new Set(impactVisibleSorted).size;
+  let distinctImpactValues = 1;
+  for (let i = 1; i < impactVisibleSorted.size; i += 1) {
+    if (impactVisibleSorted.get([i]) !== impactVisibleSorted.get([i - 1])) {
+      distinctImpactValues += 1;
+    }
+  }
   if (distinctImpactValues < 3) return NO_SPLIT;
 
-  // Convert to NumPy array for efficient gap calculations.
-  const npValues = np.array(impactVisibleSorted, "int32");
-
-  const mean = npValues.mean();
-  const sdam = npValues.subtract(mean).power(2).sum();
+  const mean = impactVisibleSorted.mean();
+  const sdam = impactVisibleSorted.subtract(mean).power(2).sum();
   if (sdam === 0) return NO_SPLIT;
 
   const { starts, sdcm } = jenksBreaks(impactVisibleSorted, 3);

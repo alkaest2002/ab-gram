@@ -16,19 +16,19 @@ const HIGH_PERCENTILE = 90;
  * Plain-percentile strategy: cuts at the configured low/high percentiles with
  * tie-trimming. Abstains with fewer than its minimum visible members.
  *
- * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const percentileStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (impactVisibleSorted.length < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
 
   // ========================================================================
   // CLASSIFY + SEPARATION CHECK — tail cutoffs at the configured percentiles.
   // ========================================================================
-  const n = impactVisibleSorted.length;
+  const n = impactVisibleSorted.size;
   const lowEnd = rankIndex(n, LOW_PERCENTILE);
   const highStart = n - 1 - rankIndex(n, 100 - HIGH_PERCENTILE);
   return finalizeSplit(impactVisibleSorted, lowEnd, highStart);

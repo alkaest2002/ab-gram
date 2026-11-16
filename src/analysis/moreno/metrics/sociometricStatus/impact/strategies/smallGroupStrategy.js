@@ -1,8 +1,6 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import * as np from "numpy-ts";
-
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
@@ -19,11 +17,11 @@ const SPREAD_FACTOR = 0.5; // ...or >= this fraction of the group's spread.
  * only the smaller side of that gap as the outlier tail. The bulk stays
  * average-impact so its balance can still decide status.
  *
- * @param {{ impactVisibleSorted: number[] }} context - Sorted visible impacts.
+ * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const smallGroupStrategy = ({ impactVisibleSorted }) => {
-  const visibleGroupSize = impactVisibleSorted.length;
+  const visibleGroupSize = impactVisibleSorted.size;
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
@@ -32,11 +30,8 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   // Need at least two values to have a gap.
   if (visibleGroupSize < 2) return NO_SPLIT;
 
-  // Convert to NumPy array for efficient gap calculations.
-  const npValues = np.array(impactVisibleSorted, "int32");
-
   // Gaps between consecutive sorted values: gaps[i] = values[i+1] - values[i].
-  const gaps = npValues.diff();
+  const gaps = impactVisibleSorted.diff();
 
   // Largest gap and where it sits (argmax returns the first occurrence,
   // matching the original strict ">" comparison).
@@ -52,7 +47,7 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   const secondGap = gaps.size > 1 ? sortedGaps.get([gaps.size - 2]) : 0;
 
   // The spread of values in the group.
-  const spread = npValues.max() - npValues.min();
+  const spread = impactVisibleSorted.max() - impactVisibleSorted.min();
 
   // A candidate gap must be a real jump and dominate the field: at least
   // MIN_GAP received opinions, and either RUNNER_UP_FACTOR× the runner-up
@@ -70,9 +65,8 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   const leftCount = split + 1;
   const rightCount = visibleGroupSize - leftCount;
 
-  // finalizeSplit still receives the original array, as before.
   if (leftCount < rightCount) {
-    return finalizeSplit(impactVisibleSorted, split, impactVisibleSorted.length);
+    return finalizeSplit(impactVisibleSorted, split, impactVisibleSorted.size);
   }
   if (rightCount < leftCount) {
     return finalizeSplit(impactVisibleSorted, -1, split + 1);
