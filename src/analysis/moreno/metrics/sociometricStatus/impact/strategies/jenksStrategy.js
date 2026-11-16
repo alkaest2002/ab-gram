@@ -74,13 +74,8 @@ export const jenksStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
 
-  let distinctImpactValues = 1;
-  for (let i = 1; i < impactVisibleSorted.size; i += 1) {
-    if (impactVisibleSorted.get([i]) !== impactVisibleSorted.get([i - 1])) {
-      distinctImpactValues += 1;
-    }
-  }
-  if (distinctImpactValues < 3) return NO_SPLIT;
+  // If there are less than 3 distinct impact values, abstain.
+  if (impactVisibleSorted.diff().not_equal(0).sum() < 2) return NO_SPLIT;
 
   const mean = impactVisibleSorted.mean();
   const sdam = impactVisibleSorted.subtract(mean).power(2).sum();
