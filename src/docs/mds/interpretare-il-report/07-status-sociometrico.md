@@ -280,10 +280,10 @@ uguali).
 #### 4.2.6 Metodo di Tukey
 
 **Intuizione:** il classico criterio dei **valori anomali** basato sui
-quartili, i "recinti interni" del box plot. Detti
+quartili, gli "inner fences" del box plot. Detti
 $Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
-impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, i
-recinti sono
+impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, gli
+"inner fences" sono
 
 - $L = Q_1 - 1 \cdot IQR$;
 - $H = Q_3 + 1 \cdot IQR$.
@@ -493,7 +493,7 @@ non è un'informazione affidabile.
 | Jenks: numero di classi                    | $3$ (bassa, media, alta)                                                                    |
 | Jenks: goodness of variance fit minima     | $GVF \ge 0{,}75$                                                                            |
 | Head/tail: quota massima della testa       | $0{,}4$ (testa sotto il $40\%$ dei valori)                                                  |
-| Tukey: recinti interni                     | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                   |
+| Tukey: "inner fences"                      | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                   |
 | Robust z-score: soglia                     | $3{,}5$ (scala MAD $1{,}4826$, minimo MAD $0{,}5$)                                          |
 | Binomiale: livello di significatività      | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda)                                           |
 | Piccoli gruppi: salto minimo tra impatti   | $2$ (gap minimo)                                                                            |
