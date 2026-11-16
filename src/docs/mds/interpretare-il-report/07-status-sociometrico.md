@@ -3,6 +3,11 @@ title: Status sociometrico
 order: 7
 ---
 
+<script setup>
+    import { useSociogramStore } from "@/stores/sociogram";
+    const store = useSociogramStore()
+</script>
+
 Lo **status sociometrico** ($ss_i$) è l'etichetta finale che riassume la
 posizione di ciascun membro nel gruppo. A differenza degli indici visti nella
 pagina sulle metriche individuali,

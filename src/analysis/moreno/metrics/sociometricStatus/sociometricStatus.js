@@ -73,7 +73,7 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * p% and top p% always hold the same number of members. A tail whose
  * boundary value is not separated from its neighbour by at least one vote is
  * switched off (infinite bound) rather than kept.
- * Eight strategies each propose { low, high } cutoffs:
+ * Nine strategies each propose { low, high } cutoffs:
  * - Jenks (4..35 visible): Fisher-Jenks natural breaks into exactly three
  *   classes, gated by goodness of variance fit (GVF >= 0.75) and at least
  *   three distinct values.
@@ -81,6 +81,8 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  *   average / high tails.
  * - Head/tail (4..35 visible): recursive heavy-tailed-head split; votes only
  *   on the high cutoff (low = -Infinity).
+ * - Inverted head/tail (4..35 visible): mirrored recursive low-tail split;
+ *   votes only on the low cutoff (high = Infinity).
  * - Percentile (10..35 visible): nearest-rank 10th/90th percentiles,
  *   tie-trimmed.
  * - Tukey (7..35 visible): strict inner fences (Q1 - 1*IQR, Q3 + 1*IQR); a

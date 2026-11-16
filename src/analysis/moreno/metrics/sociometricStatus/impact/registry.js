@@ -4,6 +4,7 @@
 import { jenksStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/jenksStrategy.js";
 import { largestGapStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/largestGapStrategy.js";
 import { headTailStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/headTailStrategy.js";
+import { invertedHeadTailStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/invertedHeadTailStrategy.js";
 import { percentileStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/percentileStrategy.js";
 import { tukeyStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/tukeyStrategy.js";
 import { robustZScoreStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/robustZScoreStrategy.js";
@@ -14,8 +15,9 @@ import { smallGroupStrategy } from "@/analysis/moreno/metrics/sociometricStatus/
 // remaining strategies vote with equal weight, so the order here is only for
 // readability and does not affect the outcome.
 // Jenks carves the widest natural gaps; largest-gap splits at the two widest
-// gaps; head/tail isolates the heavy-tailed high extreme; percentile reads
-// relative standing; Tukey flags strict outliers beyond the inner fences;
+// gaps; head/tail isolates the heavy-tailed high extreme; inverted head/tail
+// isolates its mirrored low extreme; percentile reads relative standing; Tukey
+// flags strict outliers beyond the inner fences;
 // robust z-score flags outliers beyond a median-absolute-deviation fence;
 // binomial (GB) flags only the extreme cases under the chance model;
 // small-group finds the dominant gap in tiny (sub-5) groups.
@@ -23,6 +25,7 @@ export const IMPACT_STRATEGIES = [
   { name: "jenks", run: jenksStrategy },
   { name: "largest gap", run: largestGapStrategy },
   { name: "head/tail", run: headTailStrategy },
+  { name: "inverted head/tail", run: invertedHeadTailStrategy },
   { name: "percentile", run: percentileStrategy },
   { name: "tukey", run: tukeyStrategy },
   { name: "robust z-score", run: robustZScoreStrategy },
