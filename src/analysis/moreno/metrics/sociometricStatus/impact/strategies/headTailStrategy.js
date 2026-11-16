@@ -5,7 +5,8 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
-const MIN_MEMBERS = 5;
+const MIN_MEMBERS = 4;
+const MAX_MEMBERS = 35;
 const MAX_HEAD_SHARE = 0.4;
 
 /**
@@ -32,9 +33,9 @@ const headTailBreaks = (sorted) => {
 };
 
 /**
- * Head/tail breaks strategy: head/tail breaks only carves the heavy-tailed
- * high end, so this votes on the high cutoff and abstains on the low side
- * (low = -Infinity).
+ * Head/tail breaks strategy for 4–35 visible members: head/tail breaks only
+ * carves the heavy-tailed high end, so this votes on the high cutoff and
+ * abstains on the low side (low = -Infinity).
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -43,7 +44,9 @@ export const headTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
+    return NO_SPLIT;
+  }
 
   const breaks = headTailBreaks(impactVisibleSorted);
   if (breaks.length === 0) return NO_SPLIT;

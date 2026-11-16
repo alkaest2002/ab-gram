@@ -8,13 +8,14 @@ import {
 } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters
-const MIN_MEMBERS = 3;
+const MIN_MEMBERS = 7;
+const MAX_MEMBERS = 35;
 const K = 1;
 
 /**
- * Tukey strategy: strict inner fences (Q1 - k*IQR, Q3 + k*IQR) over visible
- * impacts. Values beyond a fence are outliers; cutoffs are the nearest observed
- * values strictly beyond each fence.
+ * Tukey strategy for 7–35 visible members: strict inner fences
+ * (Q1 - k*IQR, Q3 + k*IQR) over visible impacts. Values beyond a fence are
+ * outliers; cutoffs are the nearest observed values strictly beyond each fence.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -25,10 +26,12 @@ export const tukeyStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
+  if (values.size < MIN_MEMBERS || values.size > MAX_MEMBERS) return NO_SPLIT;
+
   const q1 = percentileOf(values, 25);
   const q3 = percentileOf(values, 75);
   const iqr = q3 - q1;
-  if (impactVisibleSorted.size < MIN_MEMBERS || iqr === 0) return NO_SPLIT;
+  if (iqr === 0) return NO_SPLIT;
 
   // ========================================================================
   // CLASSIFY — split the sorted values at the fences.

@@ -5,6 +5,7 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
+const MIN_MEMBERS = 4;
 const MAX_MEMBERS = 4;
 const MIN_GAP = 2; // A candidate gap must be at least this many received opinions.
 
@@ -12,10 +13,10 @@ const MIN_GAP = 2; // A candidate gap must be at least this many received opinio
 const RUNNER_UP_FACTOR = 1.5; // Largest gap must be >= this × the runner-up gap.
 const SPREAD_FACTOR = 0.5; // ...or >= this fraction of the group's spread.
 /**
- * Small-group strategy: for groups of 2..MIN_MEMBERS-1 visible
- * members, find the largest gap between consecutive sorted impacts and flag
- * only the smaller side of that gap as the outlier tail. The bulk stays
- * average-impact so its balance can still decide status.
+ * Small-group strategy for exactly 4 visible members: find the largest gap
+ * between consecutive sorted impacts and flag only the smaller side of that
+ * gap as the outlier tail. The bulk stays average-impact so its balance can
+ * still decide status.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -25,10 +26,7 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
-
-  // Need at least two values to have a gap.
-  if (visibleGroupSize < 2) return NO_SPLIT;
+  if (visibleGroupSize < MIN_MEMBERS || visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
   // Gaps between consecutive sorted values: gaps[i] = values[i+1] - values[i].
   const gaps = impactVisibleSorted.diff();

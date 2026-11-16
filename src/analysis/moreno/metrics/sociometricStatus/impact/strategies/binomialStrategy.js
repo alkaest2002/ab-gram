@@ -5,7 +5,8 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 
 // Strategy parameters.
 const MIN_MEMBERS = 5;
-const ALPHA = 0.01;
+const MAX_MEMBERS = 35;
+const ALPHA = 0.05;
 
 /**
  * Cumulative distribution function of Binomial(n, p), computed in log space to
@@ -32,8 +33,9 @@ const binomialCdf = (n, p) => {
 };
 
 /**
- * Binomial (GB) strategy: exact two-sided binomial test under the chance
- * model. Limits are the counts whose tail probability is <= alpha/2.
+ * Binomial (GB) strategy for groups of 5–35 members: exact two-sided binomial
+ * test under the chance model. Limits are the counts whose tail probability
+ * is <= alpha/2.
  *
  * @param {{ impact: import("numpy-ts").NDArray }} context - All impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -43,7 +45,7 @@ export const binomialStrategy = ({ impact }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (originalGroupSize < MIN_MEMBERS) return NO_SPLIT;
+  if (originalGroupSize < MIN_MEMBERS || originalGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
   const n = originalGroupSize - 1; // possible givers for any one member
   const total = impact.sum();

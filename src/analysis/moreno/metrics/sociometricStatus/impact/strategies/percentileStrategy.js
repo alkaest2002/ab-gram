@@ -8,13 +8,14 @@ import {
 } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
-const MIN_MEMBERS = 5;
+const MIN_MEMBERS = 10;
+const MAX_MEMBERS = 35;
 const LOW_PERCENTILE = 10;
 const HIGH_PERCENTILE = 90;
 
 /**
- * Plain-percentile strategy: cuts at the configured low/high percentiles with
- * tie-trimming. Abstains with fewer than its minimum visible members.
+ * Plain-percentile strategy for 10–35 visible members: cuts at the configured
+ * low/high percentiles with tie-trimming.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -23,7 +24,9 @@ export const percentileStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
   // ========================================================================
-  if (impactVisibleSorted.size < MIN_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
+    return NO_SPLIT;
+  }
 
   // ========================================================================
   // CLASSIFY + SEPARATION CHECK — tail cutoffs at the configured percentiles.
