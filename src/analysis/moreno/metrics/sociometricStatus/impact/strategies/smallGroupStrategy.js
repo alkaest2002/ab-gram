@@ -64,10 +64,10 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   const rightCount = visibleGroupSize - leftCount;
 
   if (leftCount < rightCount) {
-    return finalizeSplit(impactVisibleSorted, split, impactVisibleSorted.size);
+    return finalizeSplit(impactVisibleSorted, split, Infinity);
   }
   if (rightCount < leftCount) {
-    return finalizeSplit(impactVisibleSorted, -1, split + 1);
+    return finalizeSplit(impactVisibleSorted, -Infinity, split + 1);
   }
   return finalizeSplit(impactVisibleSorted, split, split + 1);
 };

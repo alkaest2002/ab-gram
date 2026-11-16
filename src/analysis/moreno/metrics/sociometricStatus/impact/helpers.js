@@ -35,19 +35,19 @@ export const percentileOf = (sorted, percentile) => {
  * separated by at least one vote) is switched off (infinite bound).
  *
  * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) visible impacts.
- * @param {number} lowEnd - Index of the last low value, or -1 for no low tail.
- * @param {number} highStart - Index of the first high value, or sorted.size for no high tail.
+ * @param {number} lowEnd - Index of the last low value, or -Infinity for no low tail.
+ * @param {number} highStart - Index of the first high value, or Infinity for no high tail.
  * @returns {{ low: number, high: number }} Finalized cutoffs, either bound may be infinite.
  */
 export const finalizeSplit = (sorted, lowEnd, highStart) => {
   let low = -Infinity;
-  if (lowEnd >= 0) {
+  if (lowEnd !== -Infinity) {
     low = sorted.get([lowEnd]);
     if (lowEnd + 1 < sorted.size && sorted.get([lowEnd + 1]) === low) low = -Infinity;
   }
 
   let high = Infinity;
-  if (highStart < sorted.size) {
+  if (highStart !== Infinity) {
     high = sorted.get([highStart]);
     if (highStart - 1 >= 0 && sorted.get([highStart - 1]) === high) high = Infinity;
   }

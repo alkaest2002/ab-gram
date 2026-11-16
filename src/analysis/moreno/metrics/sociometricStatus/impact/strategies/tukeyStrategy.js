@@ -39,13 +39,13 @@ export const tukeyStrategy = ({ impactVisibleSorted }) => {
   const lowFence = q1 - K * iqr;
   const highFence = q3 + K * iqr;
 
-  let lowEnd = -1;
+  let lowEnd = -Infinity;
   for (let i = 0; i < values.size; i += 1) {
     if (values.get([i]) < lowFence) lowEnd = i;
     else break;
   }
 
-  let highStart = values.size;
+  let highStart = Infinity;
   for (let i = values.size - 1; i >= 0; i -= 1) {
     if (values.get([i]) > highFence) highStart = i;
     else break;

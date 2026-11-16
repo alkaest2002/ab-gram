@@ -34,13 +34,13 @@ export const robustZScoreStrategy = ({ impactVisibleSorted }) => {
   const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
   const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
-  let lowEnd = -1;
+  let lowEnd = -Infinity;
   for (let i = 0; i < impactVisibleSorted.size; i += 1) {
     if (impactVisibleSorted.get([i]) < lowFence) lowEnd = i;
     else break;
   }
 
-  let highStart = impactVisibleSorted.size;
+  let highStart = Infinity;
   for (let i = impactVisibleSorted.size - 1; i >= 0; i -= 1) {
     if (impactVisibleSorted.get([i]) > highFence) highStart = i;
     else break;
