@@ -61,5 +61,5 @@ export const headTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
   // SEPARATION CHECK — no low tail; switch off high if it is not separated.
   // ========================================================================
-  return finalizeSplit(impactVisibleSorted, -1, highStart);
+  return finalizeSplit(impactVisibleSorted, -Infinity, highStart);
 };
