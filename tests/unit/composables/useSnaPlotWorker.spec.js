@@ -1,7 +1,8 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { describe, it, expect, vi } from "vite-plus/test";
+import { afterEach, describe, it, expect, vi } from "vite-plus/test";
+import { createRenderer, defineComponent } from "vue";
 
 import { useSnaPlotWorker } from "@/composables/report/useSnaPlotWorker";
 
@@ -27,6 +28,35 @@ const makePayload = () => ({
   settings: { scalingRatio: 1, gravity: 1 },
 });
 
+// A minimal host renderer supplies a real component lifecycle without needing
+// a browser DOM or an additional test dependency.
+const renderer = createRenderer({
+  patchProp: () => {},
+  insert: (child, parent) => {
+    child.parent = parent;
+    parent.children.push(child);
+  },
+  remove: () => {},
+  createElement: () => ({ children: [], parent: null }),
+  createText: (text) => ({ text, parent: null }),
+  createComment: (text) => ({ text, parent: null }),
+  setText: (node, text) => {
+    node.text = text;
+  },
+  setElementText: (node, text) => {
+    node.text = text;
+  },
+  parentNode: (node) => node.parent,
+  nextSibling: () => null,
+});
+
+const mountedApps = [];
+
+afterEach(() => {
+  for (const app of mountedApps.splice(0)) app.unmount();
+  vi.restoreAllMocks();
+});
+
 /**
  * Instantiate the composable with a fresh fake worker and spy callbacks.
  * Resetting `createSnaPlotWorker` at the start of each call keeps the mock
@@ -39,9 +69,26 @@ function setup() {
 
   const onSuccess = vi.fn();
   const onError = vi.fn();
-  const api = useSnaPlotWorker({ onSuccess, onError });
+  let api;
 
-  return { api, worker, onSuccess, onError };
+  const app = renderer.createApp(
+    defineComponent({
+      setup() {
+        api = useSnaPlotWorker({ onSuccess, onError });
+        return () => null;
+      },
+    }),
+  );
+  app.mount({ children: [] });
+  mountedApps.push(app);
+
+  const unmount = () => {
+    const index = mountedApps.indexOf(app);
+    if (index !== -1) mountedApps.splice(index, 1);
+    app.unmount();
+  };
+
+  return { api, worker, onSuccess, onError, unmount };
 }
 
 describe("useSnaPlotWorker", () => {
@@ -127,17 +174,27 @@ describe("useSnaPlotWorker", () => {
     expect(api.isPlotRegenerating.value).toBe(false);
   });
 
-  it("reports an error when worker instantiation fails", () => {
-    createSnaPlotWorker.mockReset();
-    createSnaPlotWorker.mockImplementation(() => {
-      throw new Error("blocked");
-    });
+  it("terminates the worker automatically when the component unmounts", () => {
+    const { api, worker, unmount } = setup();
+    api.regeneratePlot(makePayload());
 
-    const onError = vi.fn();
-    const api = useSnaPlotWorker({ onError });
+    unmount();
+
+    expect(worker.terminate).toHaveBeenCalledTimes(1);
+    expect(api.isPlotRegenerating.value).toBe(false);
+  });
+
+  it("reports an error when worker instantiation fails", () => {
+    const { api, onError } = setup();
+    const error = new Error("blocked");
+    createSnaPlotWorker.mockImplementation(() => {
+      throw error;
+    });
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
 
     api.regeneratePlot(makePayload());
 
+    expect(consoleError).toHaveBeenCalledWith("Failed to create SNA plot worker:", error);
     expect(onError).toHaveBeenCalledWith("Impossibile avviare il worker.");
     expect(api.isPlotRegenerating.value).toBe(false);
   });

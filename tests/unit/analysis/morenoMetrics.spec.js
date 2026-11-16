@@ -229,7 +229,7 @@ describe("getIndividualLevelMetrics", () => {
     expect(statusByName).toEqual({
       Anna: S.POPULAR,
       Bruno: S.POPULAR,
-      Carla: S.APPRECIATED,
+      Carla: S.POPULAR,
       Dino: S.APPRECIATED,
       Elsa: S.CONTROVERSIAL,
       Franco: S.DISLIKED,
@@ -276,10 +276,10 @@ describe("getIndividualLevelMetrics", () => {
     ]);
   });
 
-  it("lets the agreeing splitting strategies decide when the others abstain", () => {
-    // Received likes [1, 1, 2, 2, 2, 3]: the current strategy set splits only
-    // the top (impact 3) as high, leaving impacts 1 and 2 average. So m0..m4
-    // are appreciated and m5 is popular.
+  it("includes the largest-gap vote for a six-member visible group", () => {
+    // Received likes [1, 1, 2, 2, 2, 3]: largest gap is eligible at N = 6 and
+    // splits impact 1 low and impact 3 high. The committee therefore classifies
+    // m0..m1 as marginal, m2..m4 as appreciated and m5 as popular.
     const members = [
       { id: "m0", likes: ["m5"], dislikes: [] },
       { id: "m1", likes: ["m5"], dislikes: [] },
@@ -299,8 +299,8 @@ describe("getIndividualLevelMetrics", () => {
 
     const statusColumn = INDIVIDUAL_COLUMNS.indexOf("ss");
     expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
-      SOCIOMETRIC_STATUS.APPRECIATED,
-      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.MARGINAL,
       SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.APPRECIATED,
       SOCIOMETRIC_STATUS.APPRECIATED,
