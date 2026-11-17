@@ -27,16 +27,20 @@ export const robustZScoreStrategy = ({ impactVisibleSorted }) => {
     return NO_SPLIT;
   }
 
+  // Compute the median and median absolute deviation (MAD) of the visible impacts.
   const median = impactVisibleSorted.median();
   const deviations = impactVisibleSorted.subtract(median).absolute();
   const mad = Math.max(deviations.median(), MAD_FLOOR);
 
+  // Compute the low and high fences for outlier detection.
   const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
   const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
+  // Count the number of low and high outliers.
   const lowCount = impactVisibleSorted.compress(impactVisibleSorted.less(lowFence)).size;
   const highCount = impactVisibleSorted.compress(impactVisibleSorted.greater(highFence)).size;
 
+  // Find the indices of the low and high outliers.
   const lowEnd = lowCount > 0 ? lowCount - 1 : -Infinity;
   const highStart = highCount > 0 ? impactVisibleSorted.size - highCount : Infinity;
 

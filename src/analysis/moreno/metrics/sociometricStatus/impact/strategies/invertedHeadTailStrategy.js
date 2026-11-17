@@ -55,11 +55,8 @@ export const invertedHeadTailStrategy = ({ impactVisibleSorted }) => {
   // CLASSIFY — low = upper bound of the last (lowest) class (final tail).
   // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
-  let lowEnd = -Infinity;
-  for (let i = 0; i < impactVisibleSorted.size; i += 1) {
-    if (impactVisibleSorted.get([i]) < lastBreak) lowEnd = i;
-    else break;
-  }
+  const lowCount = impactVisibleSorted.compress(impactVisibleSorted.less(lastBreak)).size;
+  const lowEnd = lowCount > 0 ? lowCount - 1 : -Infinity;
 
   // ========================================================================
   // SEPARATION CHECK — no high tail; switch off low if it is not separated.

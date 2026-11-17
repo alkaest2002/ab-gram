@@ -55,11 +55,8 @@ export const headTailStrategy = ({ impactVisibleSorted }) => {
   // CLASSIFY — high = lower bound of the last (highest) class (final head).
   // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
-  let highStart = Infinity;
-  for (let i = impactVisibleSorted.size - 1; i >= 0; i -= 1) {
-    if (impactVisibleSorted.get([i]) > lastBreak) highStart = i;
-    else break;
-  }
+  const highCount = impactVisibleSorted.compress(impactVisibleSorted.greater(lastBreak)).size;
+  const highStart = highCount > 0 ? impactVisibleSorted.size - highCount : Infinity;
 
   // ========================================================================
   // SEPARATION CHECK — no low tail; switch off high if it is not separated.
