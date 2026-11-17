@@ -21,38 +21,29 @@ const K = 1;
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
  */
 export const tukeyStrategy = ({ impactVisibleSorted }) => {
-  const values = impactVisibleSorted;
-
   // ========================================================================
   // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
-  if (values.size < MIN_MEMBERS || values.size > MAX_MEMBERS) return NO_SPLIT;
+  if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS)
+    return NO_SPLIT;
 
-  const q1 = percentileOf(values, 25);
-  const q3 = percentileOf(values, 75);
+  const q1 = percentileOf(impactVisibleSorted, 25);
+  const q3 = percentileOf(impactVisibleSorted, 75);
   const iqr = q3 - q1;
   if (iqr === 0) return NO_SPLIT;
 
   // ========================================================================
   // FIND CLASSIFICATION BOUNDARIES — split the sorted values at the fences.
   // ========================================================================
-  const lowFence = q1 - K * iqr;
-  const highFence = q3 + K * iqr;
-
-  let lowEnd = -Infinity;
-  for (let i = 0; i < values.size; i += 1) {
-    if (values.get([i]) < lowFence) lowEnd = i;
-    else break;
-  }
-
-  let highStart = Infinity;
-  for (let i = values.size - 1; i >= 0; i -= 1) {
-    if (values.get([i]) > highFence) highStart = i;
-    else break;
-  }
+  const lowCount = impactVisibleSorted.less(q1 - K * iqr).sum();
+  const highCount = impactVisibleSorted.greater(q3 + K * iqr).sum();
 
   // ========================================================================
   // SEPARATION CHECK — switch off a tail that is not separated by one vote.
   // ========================================================================
-  return finalizeSplit(values, lowEnd, highStart);
+  return finalizeSplit(
+    impactVisibleSorted,
+    lowCount ? lowCount - 1 : -Infinity,
+    highCount ? impactVisibleSorted.size - highCount : Infinity,
+  );
 };
