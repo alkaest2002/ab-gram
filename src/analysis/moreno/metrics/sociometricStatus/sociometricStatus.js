@@ -122,7 +122,11 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * @param {import("numpy-ts").NDArray} rr - Received negative nominations.
  * @param {import("numpy-ts").NDArray} expressivity - Opinions given (gp + gr).
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
- * @returns {import("numpy-ts").NDArray} Status codes, same shape as the inputs.
+ * @returns {{
+ *   status: import("numpy-ts").NDArray,
+ *   impactThresholds: Array<{ strategy: string, thresholds: { low: number, high: number } }>,
+ * }} Status codes (same shape as the inputs) plus the impact thresholds each
+ *   strategy proposed, for research/debugging.
  */
 export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // --------------------------------------------------------------------------------------
@@ -144,5 +148,11 @@ export const computeSociometricStatus = (rp, rr, expressivity, impact) => {
   // --------------------------------------------------------------------------------------
   // Assign status
   // --------------------------------------------------------------------------------------
-  return assignStatus(visibilityClassification, impactClassification, balanceClassification);
+  const status = assignStatus(
+    visibilityClassification,
+    impactClassification,
+    balanceClassification,
+  );
+
+  return { status, impactThresholds: impactClassification.impactThresholds };
 };

@@ -7,6 +7,8 @@ import { defineStore } from "pinia";
 /** @typedef {"idle" | "generating" | "generated" | "error"} ReportStatus */
 /** @typedef {ReturnType<typeof import("@/analysis/analysisMain.js").getSociogramAnalysis>} SociogramAnalysis */
 /** @typedef {{typeOfPreference: "likes" | "dislikes", accentColor: string, svg: string}} SnaPlot */
+/** @typedef {{ strategy: string, thresholds: { low: number, high: number } }} ImpactThreshold */
+/** @typedef {{ sociometricStatus?: { impactThresholds?: ImpactThreshold[] } }} Research */
 
 /**
  * Analysis results and lifecycle state for the currently generated report.
@@ -63,6 +65,9 @@ export const useReportStore = defineStore("report", () => {
   /** @type {import("vue").Ref<import("graphology").DirectedGraph | Record<string, never>>} Directed graph for dislikes preferences. */
   const snaDislikesNetwork = ref({});
 
+  /** @type {import("vue").Ref<Research>} Research/debugging metadata produced by the analysis. */
+  const research = ref({});
+
   /**
    * Set the report generation lifecycle state.
    * @param {ReportStatus} value
@@ -96,6 +101,7 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesNodeInfo.value = value.snaDislikesNodeInfo ?? [];
     snaLikesNetwork.value = value.snaLikesNetwork ?? {};
     snaDislikesNetwork.value = value.snaDislikesNetwork ?? {};
+    research.value = value.research ?? {};
   }
 
   /**
@@ -130,6 +136,7 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesNodeInfo.value = [];
     snaLikesNetwork.value = {};
     snaDislikesNetwork.value = {};
+    research.value = {};
   }
 
   return {
@@ -150,6 +157,7 @@ export const useReportStore = defineStore("report", () => {
     snaDislikesNodeInfo,
     snaLikesNetwork,
     snaDislikesNetwork,
+    research,
     setStatus,
     setAnalysis,
     setSnaPlot,

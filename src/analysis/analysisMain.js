@@ -62,6 +62,7 @@ function computeNodeInfo(graph) {
  *   snaDislikesNodeInfo: Array<{id: string, hasMutualEdge: boolean, inDegree: number}>,
  *   snaLikesNetwork: object,
  *   snaDislikesNetwork: object,
+ *   research: object,
  * }} The combined sociogram analysis results.
  */
 export const getSociogramAnalysis = (members) => {
@@ -131,6 +132,14 @@ export const getSociogramAnalysis = (members) => {
   }
   const snaDislikesNodeInfo = computeNodeInfo(snaDislikesNetwork);
 
+  // Research metadata: the impact-classification thresholds each strategy
+  // proposed, surfaced for the report's research/debugging section.
+  const research = {
+    sociometricStatus: {
+      impactThresholds: morenoIndividualLevelMetrics.impactThresholds ?? [],
+    },
+  };
+
   return {
     edgeTypes,
     morenoGroupLevelMetrics,
@@ -148,5 +157,6 @@ export const getSociogramAnalysis = (members) => {
     snaDislikesNodeInfo,
     snaLikesNetwork,
     snaDislikesNetwork,
+    research,
   };
 };

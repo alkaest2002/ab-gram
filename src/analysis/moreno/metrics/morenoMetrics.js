@@ -131,14 +131,23 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
  * @param {import("numpy-ts").NDArray} adjLikes - Likes adjacency matrix.
  * @param {import("numpy-ts").NDArray} adjDislikes - Dislikes adjacency matrix.
  * @param {Array<{ id: string, likes?: string[], dislikes?: string[] }>} members - All members, in matrix row/column order, used for the order-weighted bonus/malus scores.
- * @returns {import("numpy-ts").NDArray}
- *   A `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix. Rows are members
- *   (aligned with the matrix row/column order) and columns are the metrics in
- *   `INDIVIDUAL_LEVEL_METRIC_KEYS` order.
+ * @returns {{
+ *   rawValues: import("numpy-ts").NDArray,
+ *   impactThresholds: Array<{ strategy: string, thresholds: { low: number, high: number } }>,
+ * }}
+ *   `rawValues` is a `size` x `INDIVIDUAL_LEVEL_METRIC_KEYS.length` matrix.
+ *   Rows are members (aligned with the matrix row/column order) and columns are
+ *   the metrics in `INDIVIDUAL_LEVEL_METRIC_KEYS` order. `impactThresholds` is
+ *   the impact-classification thresholds each strategy proposed.
  */
 const computeIndividualLevelMetrics = (adjLikes, adjDislikes, members) => {
   const size = adjLikes.shape[0];
-  if (size === 0) return np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]);
+  if (size === 0) {
+    return {
+      rawValues: np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]),
+      impactThresholds: [],
+    };
+  }
 
   // Received nominations: column sums (how many members chose me).
   const rp = computeReceivedPositive(adjLikes);
@@ -159,7 +168,12 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes, members) => {
   const orientation = computeOrientation(gp, gr);
   const affiliation = computeAffiliation(balance, orientation);
   const influence = computeInfluence(rp, mp);
-  const sociometricStatus = computeSociometricStatus(rp, rr, expressivity, impact);
+  const { status: sociometricStatus, impactThresholds } = computeSociometricStatus(
+    rp,
+    rr,
+    expressivity,
+    impact,
+  );
 
   // Bonus/malus depend on the order of the preference lists, which the 0/1
   // adjacency matrices do not retain, so they are derived from `members`.
@@ -167,23 +181,26 @@ const computeIndividualLevelMetrics = (adjLikes, adjDislikes, members) => {
   const malus = computeReceivedPreferenceScore(members, "dislikes", MAX_MEMBERS_COUNT);
 
   // Stack every metric as a column, keeping the numpy array until export.
-  return np.column_stack([
-    rp,
-    rr,
-    gp,
-    gr,
-    mp,
-    mr,
-    impact,
-    balance,
-    expressivity,
-    orientation,
-    affiliation,
-    influence,
-    sociometricStatus,
-    bonus,
-    malus,
-  ]);
+  return {
+    rawValues: np.column_stack([
+      rp,
+      rr,
+      gp,
+      gr,
+      mp,
+      mr,
+      impact,
+      balance,
+      expressivity,
+      orientation,
+      affiliation,
+      influence,
+      sociometricStatus,
+      bonus,
+      malus,
+    ]),
+    impactThresholds,
+  };
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -252,16 +269,22 @@ export const getGroupLevelMetrics = (adjLikes, adjDislikes) => {
  *   rawValuesByMetric: number[][],
  *   rankedValuesById: number[][],
  *   rankedValuesByMetric: number[][],
+ *   impactThresholds: Array<{ strategy: string, thresholds: { low: number, high: number } }>,
  * }}
  *   `ids` is the member id per row (the `memberIndices` argument) and `metrics`
  *   is the metric name per column (in `INDIVIDUAL_LEVEL_METRIC_KEYS` order).
  *   `rawValuesById[i][j]` and `rankedValuesById[i][j]` hold the raw and ranked
  *   score of member `ids[i]` for metric `metrics[j]`. `rawValuesByMetric` and
  *   `rankedValuesByMetric` hold the same data transposed (rows indexed by
- *   `metrics`, columns by `ids`).
+ *   `metrics`, columns by `ids`). `impactThresholds` is the impact-classification
+ *   threshold each strategy proposed, for research/debugging.
  */
 export const getIndividualLevelMetrics = (adjLikes, adjDislikes, memberIndices, members) => {
-  const rawValues = computeIndividualLevelMetrics(adjLikes, adjDislikes, members);
+  const { rawValues, impactThresholds } = computeIndividualLevelMetrics(
+    adjLikes,
+    adjDislikes,
+    members,
+  );
   const rankedValues = computeRankedScores(rawValues);
 
   return {
@@ -271,5 +294,6 @@ export const getIndividualLevelMetrics = (adjLikes, adjDislikes, memberIndices, 
     rankedValuesById: rankedValues.tolist(),
     rawValuesByMetric: rawValues.T.tolist(),
     rankedValuesByMetric: rankedValues.T.tolist(),
+    impactThresholds,
   };
 };

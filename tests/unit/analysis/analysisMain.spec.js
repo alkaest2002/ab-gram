@@ -45,6 +45,20 @@ describe("getSociogramAnalysis", () => {
     expect(result).toHaveProperty("snaDislikesNodeInfo");
     expect(result).toHaveProperty("snaLikesNetwork");
     expect(result).toHaveProperty("snaDislikesNetwork");
+    expect(result).toHaveProperty("research");
+
+    // Research exposes the impact thresholds every strategy proposed.
+    expect(result.research).toHaveProperty("sociometricStatus");
+    expect(result.research.sociometricStatus.impactThresholds).toHaveLength(9);
+    expect(result.research.sociometricStatus.impactThresholds[0]).toEqual(
+      expect.objectContaining({
+        strategy: expect.any(String),
+        thresholds: expect.objectContaining({
+          low: expect.any(Number),
+          high: expect.any(Number),
+        }),
+      }),
+    );
 
     // Eleven members flow through every step, and the roster contains both likes
     // and dislikes, so both SNA pipelines are populated.
