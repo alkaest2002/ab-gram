@@ -31,12 +31,11 @@ export const largestGapStrategy = ({ impactVisibleSorted }) => {
   // FIND CLASSIFICATION BOUNDARIES — split at the two widest gaps.
   // ========================================================================
   // Gap i lies between sorted[i] and sorted[i + 1]. Sort gap indices by
-  // ascending size; the boundary pair must be uniquely determined.
+  // ascending size.
   const gaps = impactVisibleSorted.diff();
-  const gapOrder = Array.from({ length: n - 1 }, (_, i) => i).sort(
-    (a, b) => Number(gaps.get([a])) - Number(gaps.get([b])),
-  );
+  const gapOrder = gaps.argsort().toArray();
 
+  // The boundary pair must be uniquely determined; abstain when gaps tie.
   if (gaps.get([gapOrder[n - 3]]) === gaps.get([gapOrder[n - 4]])) return NO_SPLIT;
 
   // The two widest gaps are the last two entries; order them by position.
