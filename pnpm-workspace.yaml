@@ -1,3 +1,6 @@
+runtimeOnFail: ignore
+pmOnFail: ignore
+
 minimumReleaseAgeExclude:
   - vite@8.3.3 || 8.3.5
   - "@vue/compiler-core@3.5.44"

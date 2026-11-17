@@ -50,7 +50,7 @@ From the collected data, AB-Gram produces:
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) `^22.18.0 || ^24.11.0 || >=26.0.0`
-- [pnpm](https://pnpm.io/) `12.16.1`
+- [pnpm](https://pnpm.io/) `12.21.0`
 
 ## Getting started
 
