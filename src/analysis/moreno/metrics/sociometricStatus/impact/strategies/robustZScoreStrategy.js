@@ -21,12 +21,15 @@ const MAD_SCALE = 1.4826; // MAD -> normal-distribution standard-deviation scale
  */
 export const robustZScoreStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
     return NO_SPLIT;
   }
 
+  // ========================================================================
+  // FIND CLASSIFICATION BOUNDARIES — use robust z-score fences.
+  // ========================================================================
   // Compute the median and median absolute deviation (MAD) of the visible impacts.
   const median = impactVisibleSorted.median();
   const deviations = impactVisibleSorted.subtract(median).absolute();

@@ -42,18 +42,18 @@ const headTailBreaks = (sorted) => {
  */
 export const headTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
     return NO_SPLIT;
   }
 
+  // ========================================================================
+  // FIND CLASSIFICATION BOUNDARIES — use the final head as the high tail.
+  // ========================================================================
   const breaks = headTailBreaks(impactVisibleSorted);
   if (breaks.length === 0) return NO_SPLIT;
 
-  // ========================================================================
-  // CLASSIFY — high = lower bound of the last (highest) class (final head).
-  // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
   const highCount = impactVisibleSorted.compress(impactVisibleSorted.greater(lastBreak)).size;
   const highStart = highCount > 0 ? impactVisibleSorted.size - highCount : Infinity;

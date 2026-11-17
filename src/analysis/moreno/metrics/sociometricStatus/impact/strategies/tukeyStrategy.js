@@ -7,7 +7,7 @@ import {
   finalizeSplit,
 } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
-// Strategy parameters
+// Strategy parameters.
 const MIN_MEMBERS = 7;
 const MAX_MEMBERS = 35;
 const K = 1;
@@ -24,7 +24,7 @@ export const tukeyStrategy = ({ impactVisibleSorted }) => {
   const values = impactVisibleSorted;
 
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (values.size < MIN_MEMBERS || values.size > MAX_MEMBERS) return NO_SPLIT;
 
@@ -34,7 +34,7 @@ export const tukeyStrategy = ({ impactVisibleSorted }) => {
   if (iqr === 0) return NO_SPLIT;
 
   // ========================================================================
-  // CLASSIFY — split the sorted values at the fences.
+  // FIND CLASSIFICATION BOUNDARIES — split the sorted values at the fences.
   // ========================================================================
   const lowFence = q1 - K * iqr;
   const highFence = q3 + K * iqr;

@@ -24,7 +24,7 @@ const SPREAD_FACTOR = 0.5; // ...or >= this fraction of the group's spread.
 export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   const visibleGroupSize = impactVisibleSorted.size;
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (visibleGroupSize < MIN_MEMBERS || visibleGroupSize > MAX_MEMBERS) return NO_SPLIT;
 
@@ -57,12 +57,14 @@ export const smallGroupStrategy = ({ impactVisibleSorted }) => {
   if (!isDominant) return NO_SPLIT;
 
   // ========================================================================
-  // CLASSIFY + SEPARATION CHECK — flag only the smaller side of the gap; the
-  // bulk stays average. Equal sides (n = 4, 2v2) is a genuine two-way split.
+  // FIND CLASSIFICATION BOUNDARIES — compare sizes on either side of the gap.
   // ========================================================================
   const leftCount = split + 1;
   const rightCount = visibleGroupSize - leftCount;
 
+  // ========================================================================
+  // SEPARATION CHECK — validate the smaller tail, or both for equal sides.
+  // ========================================================================
   if (leftCount < rightCount) {
     return finalizeSplit(impactVisibleSorted, split, Infinity);
   }

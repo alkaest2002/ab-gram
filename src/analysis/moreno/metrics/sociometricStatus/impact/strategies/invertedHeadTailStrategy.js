@@ -42,18 +42,18 @@ const invertedHeadTailBreaks = (sorted) => {
  */
 export const invertedHeadTailStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
     return NO_SPLIT;
   }
 
+  // ========================================================================
+  // FIND CLASSIFICATION BOUNDARIES — use the final tail as the low tail.
+  // ========================================================================
   const breaks = invertedHeadTailBreaks(impactVisibleSorted);
   if (breaks.length === 0) return NO_SPLIT;
 
-  // ========================================================================
-  // CLASSIFY — low = upper bound of the last (lowest) class (final tail).
-  // ========================================================================
   const lastBreak = breaks[breaks.length - 1];
   const lowCount = impactVisibleSorted.compress(impactVisibleSorted.less(lastBreak)).size;
   const lowEnd = lowCount > 0 ? lowCount - 1 : -Infinity;

@@ -23,10 +23,13 @@ export const largestGapStrategy = ({ impactVisibleSorted }) => {
   const n = impactVisibleSorted.size;
 
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (n < MIN_MEMBERS || n > MAX_MEMBERS) return NO_SPLIT;
 
+  // ========================================================================
+  // FIND CLASSIFICATION BOUNDARIES — split at the two widest gaps.
+  // ========================================================================
   // Gap i lies between sorted[i] and sorted[i + 1]. Sort gap indices by
   // ascending size, then by ascending index, so ties are deterministic.
   const gaps = impactVisibleSorted.diff();

@@ -72,7 +72,7 @@ const jenksBreaks = (sorted, k) => {
  */
 export const jenksStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
     return NO_SPLIT;
@@ -85,11 +85,14 @@ export const jenksStrategy = ({ impactVisibleSorted }) => {
   const sdam = impactVisibleSorted.subtract(mean).power(2).sum();
   if (sdam === 0) return NO_SPLIT;
 
+  // ========================================================================
+  // FIND CLASSIFICATION BOUNDARIES — use three classes with sufficient fit.
+  // ========================================================================
   const { starts, sdcm } = jenksBreaks(impactVisibleSorted, 3);
   if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
   // ========================================================================
-  // CLASSIFY + SEPARATION CHECK — class 1 is low, class 3 is high.
+  // SEPARATION CHECK — validate class 1 as low and class 3 as high.
   // ========================================================================
   return finalizeSplit(impactVisibleSorted, starts[0] - 1, starts[1]);
 };

@@ -22,17 +22,21 @@ const HIGH_PERCENTILE = 90;
  */
 export const percentileStrategy = ({ impactVisibleSorted }) => {
   // ========================================================================
-  // VOTE ELIGIBILITY — abstain vote under this/these condition(s).
+  // VOTE ELIGIBILITY — abstain when the strategy requirements are not met.
   // ========================================================================
   if (impactVisibleSorted.size < MIN_MEMBERS || impactVisibleSorted.size > MAX_MEMBERS) {
     return NO_SPLIT;
   }
 
   // ========================================================================
-  // CLASSIFY + SEPARATION CHECK — tail cutoffs at the configured percentiles.
+  // FIND CLASSIFICATION BOUNDARIES — use the configured tail percentiles.
   // ========================================================================
   const n = impactVisibleSorted.size;
   const lowEnd = rankIndex(n, LOW_PERCENTILE);
   const highStart = n - 1 - rankIndex(n, 100 - HIGH_PERCENTILE);
+
+  // ========================================================================
+  // SEPARATION CHECK — switch off a tail that is not separated by one vote.
+  // ========================================================================
   return finalizeSplit(impactVisibleSorted, lowEnd, highStart);
 };
