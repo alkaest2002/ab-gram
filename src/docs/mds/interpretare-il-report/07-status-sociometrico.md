@@ -180,9 +180,20 @@ piatta il metodo si astiene, invece di votare sempre.
 
 **Intuizione:** dividere la distribuzione in corrispondenza dei **due salti più
 grandi** tra impatti consecutivi. Sugli impatti visibili ordinati
-$x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_i - x_{i-1}$ per
-$i = 1, \dots, N-1$; i due salti più ampi individuano le due separazioni
-naturale tra coda bassa, fascia media e coda alta.
+$x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_{i+1} - x_i$ per
+$i = 0, \dots, N-2$; i due salti più ampi individuano le due separazioni
+tra coda bassa, fascia media e coda alta.
+
+Il metodo **si astiene quando la scelta dei due salti è ambigua**: il
+secondo salto più ampio ha la stessa ampiezza del terzo. Sono invece ammessi
+due salti massimi uguali, purché entrambi siano strettamente più ampi di
+tutti gli altri; le parità tra salti non selezionati non impediscono il voto.
+
+Per esempio, con impatti $[0, 2, 4, 6, 8, 10]$ tutti i salti valgono $2$ e
+il metodo si astiene. Si astiene anche con $[0, 2, 7, 9]$: il salto massimo
+vale $5$, ma non è possibile scegliere univocamente il secondo tra i due
+salti di ampiezza $2$. Con $[0, 4, 4, 8]$, invece, i due salti massimi di
+ampiezza $4$ sono univocamente individuati: le soglie sono $L = 0$ e $H = 8$.
 
 Il metodo è ammesso con **da $4$ a $6$ membri visibili** e si astiene al di
 fuori di questo intervallo: è pensato per i gruppi piccoli. Le soglie sono

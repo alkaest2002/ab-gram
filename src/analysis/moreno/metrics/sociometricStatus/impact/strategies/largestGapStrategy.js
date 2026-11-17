@@ -13,8 +13,8 @@ const MAX_MEMBERS = 6;
  * the two widest gaps into low / average / high tails. A side whose gap is
  * empty (equal values) collapses to the corresponding infinite bound.
  *
- * Ties between equally wide gaps are broken deterministically in favour of
- * the lower index.
+ * Abstains when the second-largest gap ties with an unselected gap, making
+ * the boundary pair ambiguous. Exactly two equally largest gaps are allowed.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -31,11 +31,13 @@ export const largestGapStrategy = ({ impactVisibleSorted }) => {
   // FIND CLASSIFICATION BOUNDARIES — split at the two widest gaps.
   // ========================================================================
   // Gap i lies between sorted[i] and sorted[i + 1]. Sort gap indices by
-  // ascending size, then by ascending index, so ties are deterministic.
+  // ascending size; the boundary pair must be uniquely determined.
   const gaps = impactVisibleSorted.diff();
   const gapOrder = Array.from({ length: n - 1 }, (_, i) => i).sort(
-    (a, b) => Number(gaps.get([a])) - Number(gaps.get([b])) || a - b,
+    (a, b) => Number(gaps.get([a])) - Number(gaps.get([b])),
   );
+
+  if (gaps.get([gapOrder[n - 3]]) === gaps.get([gapOrder[n - 4]])) return NO_SPLIT;
 
   // The two widest gaps are the last two entries; order them by position.
   const [c1, c2] = [gapOrder[n - 2], gapOrder[n - 3]].sort((a, b) => a - b);
