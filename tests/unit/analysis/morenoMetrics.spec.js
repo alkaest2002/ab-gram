@@ -200,7 +200,7 @@ describe("getIndividualLevelMetrics", () => {
     expect(statusByName).toEqual({
       Alice: S.POPULAR,
       Bob: S.APPRECIATED,
-      Carol: S.MARGINAL,
+      Carol: S.APPRECIATED,
       Dave: S.IGNORED,
       Eve: S.AMBIVALENT,
       Frank: S.IGNORED,

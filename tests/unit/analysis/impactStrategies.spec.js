@@ -39,6 +39,40 @@ describe("impact strategy member ranges", () => {
   });
 });
 
+describe("Tukey strategy", () => {
+  it.each([
+    ["isolates both tails", [0, 4, 5, 5, 5, 6, 10], { low: 0, high: 10 }],
+    ["excludes values on the fences", [2, 4, 5, 5, 5, 6, 8], { low: -Infinity, high: Infinity }],
+    ["isolates only the low tail", [0, 4, 5, 5, 5, 6, 8], { low: 0, high: Infinity }],
+    ["isolates only the high tail", [2, 4, 5, 5, 5, 6, 10], { low: -Infinity, high: 10 }],
+    [
+      "excludes fence values alongside outliers",
+      [0, 2, 4, 4, 5, 5, 5, 6, 6, 8, 10],
+      { low: 0, high: 10 },
+    ],
+    [
+      "uses the nearest outlier in each tail",
+      [0, 1, 4, 4, 5, 5, 5, 6, 6, 9, 10],
+      { low: 1, high: 9 },
+    ],
+    ["handles an even-sized group", [0, 4, 5, 5, 5, 5, 6, 10], { low: 0, high: 10 }],
+    [
+      "remains eligible at 35 members",
+      [0, ...Array(16).fill(4), 5, ...Array(16).fill(6), 10],
+      { low: 0, high: 10 },
+    ],
+  ])("%s", (_name, values, expected) => {
+    expect(tukeyStrategy({ impactVisibleSorted: np.array(values) })).toEqual(expected);
+  });
+
+  it.each([
+    ["constant values", [3, 3, 3, 3, 3, 3, 3]],
+    ["nonconstant values", [0, 5, 5, 5, 5, 5, 10]],
+  ])("abstains when the interquartile range is zero for %s", (_name, values) => {
+    expect(tukeyStrategy({ impactVisibleSorted: np.array(values) })).toBe(NO_SPLIT);
+  });
+});
+
 describe("inverted head/tail strategy", () => {
   it("isolates a sparse low tail and abstains on the high cutoff", () => {
     const impactVisibleSorted = np.array([1, 8, 9, 10, 11]);
