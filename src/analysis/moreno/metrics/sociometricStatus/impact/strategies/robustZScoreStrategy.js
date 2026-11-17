@@ -34,17 +34,11 @@ export const robustZScoreStrategy = ({ impactVisibleSorted }) => {
   const lowFence = median - Z_CUTOFF * MAD_SCALE * mad;
   const highFence = median + Z_CUTOFF * MAD_SCALE * mad;
 
-  let lowEnd = -Infinity;
-  for (let i = 0; i < impactVisibleSorted.size; i += 1) {
-    if (impactVisibleSorted.get([i]) < lowFence) lowEnd = i;
-    else break;
-  }
+  const lowCount = impactVisibleSorted.compress(impactVisibleSorted.less(lowFence)).size;
+  const highCount = impactVisibleSorted.compress(impactVisibleSorted.greater(highFence)).size;
 
-  let highStart = Infinity;
-  for (let i = impactVisibleSorted.size - 1; i >= 0; i -= 1) {
-    if (impactVisibleSorted.get([i]) > highFence) highStart = i;
-    else break;
-  }
+  const lowEnd = lowCount > 0 ? lowCount - 1 : -Infinity;
+  const highStart = highCount > 0 ? impactVisibleSorted.size - highCount : Infinity;
 
   // ========================================================================
   // SEPARATION CHECK — switch off a tail that is not separated by one vote.
