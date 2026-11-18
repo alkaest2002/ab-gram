@@ -3,199 +3,287 @@ title: Sociometria e Social Network Analysis insieme
 order: 3
 ---
 
-La **sociometria** e la **Social Network Analysis** (SNA) studiano entrambe le
-relazioni dentro i gruppi, come una classe, e le organizzazioni, ma lo fanno
-con scopi, metodi e sensibilità molto diversi. Conoscere le differenze aiuta a
-capire quando l'una o l'altra è più adatta, e come possono integrarsi.
+La **sociometria** e la **Social Network Analysis** (SNA, analisi delle reti
+sociali) studiano le relazioni tra persone: chi sceglie chi, per quale attività,
+con quale reciprocità. In una classe, entrambe possono aiutare a comprendere
+alleanze, isolamento, fiducia e possibilità di collaborazione.
 
-## 1 Due mondi che si somigliano
+Non sono però sinonimi. La sociometria di **Jacob L. Moreno** collega
+l'esplorazione delle relazioni all'incontro e alla trasformazione del gruppo;
+la SNA offre un insieme di concetti e metodi per descrivere e analizzare la
+struttura delle reti. Le due prospettive possono integrarsi: **comprendere una
+rete e aiutare un gruppo a cambiare sono obiettivi distinti, ma compatibili**.
 
-Entrambe le discipline producono **mappe di relazioni**: la sociometria con il
-**sociogramma**, la SNA con i _grafi di rete_ generati da software. Le
-differenze stanno nel _perché_ e nel _come_ si costruiscono queste mappe.
+Questo capitolo riprende il confronto proposto da D. Jones (2006), adattandolo
+al contesto scolastico. Le differenze vanno lette come orientamenti, non come
+confini assoluti: esistono anche ricerche SNA partecipative e orientate
+all'intervento.
 
-- Per la **sociometria**, nata con Jacob L. Moreno, la mappa è un mezzo. Lo scopo è
-  stimolare la **spontaneità** dei membri del gruppo e la loro capacità di
-  rispondere in modo creativo e autentico ai problemi di tutti i giorni.
-- Per la **SNA**, la mappa e i numeri che la accompagnano sono spesso il
-  risultato finale: si analizzano le relazioni, visivamente e
-  matematicamente, per capire come influenzano il comportamento di individui e
-  gruppi.
+## 1 Una mappa, due prospettive
 
-In sintesi, nella sociometria contano soprattutto le conversazioni che le
-scelte fanno nascere; nella SNA contano soprattutto le mappe.
+Entrambi gli approcci possono rappresentare le relazioni con una mappa. Nella
+tradizione sociometrica si parla di **sociogramma**; nella SNA, di **grafo di
+rete**, composto da nodi (per esempio gli studenti) e legami (le relazioni
+rilevate). La differenza non sta nell'uso della carta o del software, ma nelle
+domande che guidano il lavoro e nell'uso dei risultati.
 
-## 2 Un esempio dalla scuola
+| Aspetto                   | Sociometria moreniana                                             | Social Network Analysis                                             |
+| ------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Obiettivo caratterizzante | Esplorare le scelte e favorire lo sviluppo del gruppo             | Descrivere e spiegare la struttura delle relazioni e i suoi effetti |
+| Ruolo della mappa         | Sostenere consapevolezza, incontro e azione                       | Rappresentare i dati e accompagnarne l'analisi                      |
+| Partecipazione            | Il coinvolgimento del gruppo è centrale nel processo              | Varia secondo il disegno di ricerca o di intervento                 |
+| Strumenti                 | Criteri di scelta, sociogrammi, confronto ed esperienze di gruppo | Grafi, indicatori, modelli e metodi di analisi delle reti           |
 
-Si consideri una classe di ventidue studenti in cui regna la sfiducia
-reciproca: i lavori di gruppo non decollano e ognuno pensa a sé. L'insegnante
-propone il criterio: _«di chi mi fido per portare avanti il progetto della
-classe?»_. Ciascuno risponde per iscritto con **sì, no o neutro**, motivando la
-scelta, e poi condivide risposta e motivazioni con gli altri, a coppie.
+Per Moreno, la **spontaneità** non coincide con l'agire impulsivo: riguarda la
+capacità di rispondere in modo adeguato e creativo alle situazioni. In questa
+prospettiva, conoscere le relazioni serve anche ad aprire nuove possibilità di
+azione, non soltanto a fotografare quelle esistenti.
 
-Il risultato più importante non è la mappa, disegnata alla lavagna, ma
-l'incontro che ne segue: due studenti che si erano scelti negativamente
-parlano apertamente delle proprie ragioni e in seguito diventano compagni di
-lavoro affiatati. La classe resta unita fino alla fine del ciclo e si fa
-conoscere in istituto come un gruppo che sa collaborare.
+## 2 Il criterio viene prima della mappa
 
-In una lezione precedente, con un criterio più "operativo" (scegliere il
-compagno con cui confrontare i propri appunti), la stessa classe aveva
-messo in comune in poche ore materiali che ognuno teneva per sé e costruito un
-piano di ripasso condiviso. La lezione è che **le scelte, quando vengono
-condivise, generano azione**.
+Una rete non descrive «come sono» gli studenti una volta per tutte. Descrive
+le relazioni rilevate **rispetto a una domanda, in un gruppo e in un momento
+precisi**.
 
-## 3 Le differenze principali
+Chiedere _«Con chi vorresti preparare una presentazione?»_ non equivale a
+chiedere _«A chi ti rivolgi quando sei in difficoltà?»_. La prima domanda
+esplora una preferenza di collaborazione; la seconda una relazione di aiuto.
+Le mappe possono essere diverse senza contraddirsi.
 
-### 3.1 Il coinvolgimento dei partecipanti
+Il **criterio sociometrico** è la situazione o l'attività rispetto alla quale
+si esprime una scelta. Per essere utile dovrebbe essere:
 
-Molte ricerche SNA raccolgono dati **senza che le persone sappiano** di essere
-osservate come gruppo: analisi delle chat di classe, estrazione di dati,
-sondaggi online. Moreno chiamava questo approccio **«quasi sociometrico»**
-(_near sociometric_).
+- **comprensibile**, senza formulazioni ambigue;
+- **rilevante** per la vita e gli obiettivi del gruppo;
+- **specifico**, così da chiarire quale relazione si sta esplorando;
+- **sostenibile**, cioè proporzionato alla fiducia presente e alla possibilità
+  di gestire ciò che emergerà.
 
-Per la sociometria vale invece un principio di base: i partecipanti devono
-conoscere il processo, avere accesso alle mappe e ai dati che li riguardano, e
-sapere chi altro potrà vederli. Sociogrammi e mappe di rete dovrebbero essere
-**proprietà del gruppo** e non solo di chi conduce o dell'istituzione. Prima
-dell'esplorazione conviene stabilire un accordo tra chi conduce, partecipanti e
-scuola.
+Va chiarito anche se si rilevano relazioni già esistenti o preferenze per
+un'attività futura: _«Con chi hai studiato?»_ e _«Con chi vorresti studiare?»_
+non producono lo stesso tipo di dato.
 
-### 3.2 Dati o incontro
+Nella sociometria il criterio è legato al percorso del gruppo; nella SNA
+dipende dalla domanda di ricerca o di intervento. In entrambi i casi, una
+mappa tecnicamente corretta può essere poco utile se la domanda è mal posta.
 
-La SNA valorizza la raccolta e l'analisi dei dati e la loro rappresentazione con
-software sofisticati. La sociometria usa le scelte per **avviare interazioni**
-tra le persone. Quando gli studenti vedono che le loro scelte sono rispettate e
-producono effetti concreti, il morale, la cooperazione e la coesione della
-classe migliorano.
+## 3 Dalla scelta all'incontro: un esempio scolastico
 
-### 3.3 Sviluppo del gruppo o progetto di ricerca
+Si immagini una classe di ventidue studenti in cui i lavori di gruppo
+procedono con fatica e i materiali restano nelle disponibilità dei singoli.
+Un primo criterio, concreto e circoscritto, potrebbe essere: _«Con chi
+vorresti confrontare i tuoi appunti per preparare il prossimo ripasso?»_.
 
-Cambiando criterio cambia la rete: gli stessi studenti disegnano mappe
-diverse a seconda della domanda. Qui i due approcci divergono:
+Le preferenze raccolte possono aiutare a organizzare coppie o piccoli gruppi.
+Il passaggio decisivo, però, è ciò che accade dopo: gli studenti confrontano i
+materiali, concordano come completarli e costruiscono un piano di lavoro.
+**La scelta diventa un'occasione di azione condivisa**.
 
-- il sociometrista sceglie criteri **legati alla vita reale del gruppo** e al suo
-  sviluppo;
-- la SNA usa spesso criteri dettati dal **progetto di ricerca o dal committente**
-  (per esempio: con chi sei in contatto regolare? a chi ti rivolgi prima di
-  un'interrogazione? a chi chiedi un parere su un'idea nuova? chi sono i tuoi
-  amici?), che possono avere poco a che fare con le esigenze del gruppo.
+Un criterio come _«Di chi ti fidi per portare avanti un progetto della
+classe?»_ coinvolge invece una dimensione più delicata. Può far emergere
+aspettative, delusioni e divergenze che richiedono una conduzione competente.
+Un confronto tra compagni può aiutare a chiarirle, ma non va imposto e non
+garantisce una riconciliazione.
 
-In più, nella SNA di norma **non è previsto un momento in cui le persone
-condividono le proprie scelte tra loro**: si perde così una ricca fonte di dati
-relazionali e di interazione.
+La mappa, da sola, non migliora il clima della classe. Può sostenere un
+cambiamento se è inserita in un percorso con obiettivi chiari, attività
+coerenti e occasioni di verifica.
 
-### 3.4 Passione per la tecnologia
+## 4 Partecipazione, restituzione e tutela
 
-Gran parte della SNA è trainata dalla passione per gli algoritmi e per le
-visualizzazioni (chi ha passato la palla a chi in una partita di calcetto, chi
-ha scritto a chi nella chat di classe, quali docenti siedono in più
-commissioni). La sociometria trova il suo punto di forza nelle **interazioni
-autentiche** e nelle risposte nuove che emergono nel gruppo.
+### 4.1 Raccogliere dati non significa sempre coinvolgere il gruppo
 
-La SNA tende inoltre a tenersi lontana dalle **emozioni forti** che
-l'esplorazione delle relazioni può suscitare. Per la sociometria emozione,
-pensiero e azione sono invece inseparabili, e un'esplorazione rischia di
-incontrare **resistenze** se:
+La SNA può utilizzare questionari, osservazioni o tracce digitali, come gli
+scambi in una piattaforma. Il livello di partecipazione dipende dal progetto:
+non è corretto identificarla con una raccolta di dati svolta all'insaputa
+delle persone.
 
-- il criterio non è rilevante per lo scopo del gruppo (per esempio chiedere agli
-  studenti di un laboratorio, riuniti solo per un progetto, con chi trascorrono
-  il fine settimana);
-- non sono stati stabiliti accordi di riservatezza;
-- l'accesso alle informazioni va oltre il gruppo dei partecipanti;
-- i partecipanti non hanno concordato lo scopo della raccolta dati.
+Nel confronto ripreso da Jones, l'espressione **«quasi sociometrico»**
+(_near sociometric_) richiama la distinzione tra rilevare relazioni e
+coinvolgere i partecipanti in un processo sociometrico. Non è un'etichetta da
+applicare indistintamente a tutta la SNA.
 
-## 4 Il contributo di Moreno: la tele
+La sociometria moreniana insiste sulla partecipazione attiva e sulla
+possibilità di utilizzare quanto emerge per la vita del gruppo. Questo non
+implica, però, che ogni informazione debba essere mostrata a tutti.
 
-Per Moreno le persone si comportano un po' come le molecole: tra loro ci sono
-**attrazione**, **repulsione** o **neutralità**. Chiamò **tele** questo flusso
-di sentimento a due vie, in uscita e in entrata, responsabile fra l'altro della
-reciprocità delle scelte oltre quanto ci si aspetterebbe dal caso.
+### 4.2 Decidere prima che cosa sarà condiviso
 
-Le relazioni possono essere di cinque tipi:
+Prima della raccolta occorre chiarire:
 
-| Tipo                    | Significato                                                                                                                                                |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Positiva simmetrica** | Scelta reciproca, con beneficio per entrambi: due compagni che si scelgono per studiare insieme                                                            |
-| **A senso unico**       | Molti si rivolgono a una persona per la sua funzione (per esempio il rappresentante di classe o chi tiene il materiale comune)                             |
-| **Asimmetrica**         | A una scelta positiva corrisponde una scelta negativa o neutra: uno studente sceglie un compagno come amico, ma questi lo vede solo come compagno di banco |
-| **Negativa**            | Una persona sceglie consapevolmente di non stare con un'altra, rispetto al criterio esplorato                                                              |
-| **Neutra**              | Le due persone non si conoscono o non sono significative l'una per l'altra, come due studenti di classi diverse                                            |
+- lo **scopo** dell'esplorazione e l'uso previsto dei risultati;
+- quali informazioni saranno raccolte e con quali modalità;
+- chi potrà accedere a risposte individuali, mappe e sintesi;
+- come avverrà la restituzione e quali possibilità ci saranno di non
+  rispondere o di non condividere pubblicamente una scelta;
+- come saranno custoditi i dati e per quanto tempo.
 
-La SNA tende invece a mappare **solo le scelte positive**, concentrandosi su
-reciprocità, densità e _buchi strutturali_ (assenze di legami). Dal punto di
-vista sociometrico, mostra quindi soltanto una parte della rete reale.
+A scuola, soprattutto con minorenni, questi aspetti devono rispettare le
+procedure dell'istituto e gli obblighi applicabili in materia di protezione
+dei dati. Un accordo nel gruppo non sostituisce tali adempimenti.
 
-## 5 Il valore dei rifiuti
+**Partecipazione non significa esposizione pubblica.** Una mappa nominativa
+può rendere immediatamente riconoscibili isolamento, rifiuti o squilibri.
+Anche una restituzione individuale richiede cautela: conoscere le scelte
+ricevute può rivelare informazioni sugli altri.
 
-Nella prospettiva sociometrica la tele positiva tiene unito il gruppo, mentre
-quella negativa è alla base della disgregazione delle relazioni. Per questo i
-**rifiuti** vanno inclusi nell'indagine, anche quando non vengono resi pubblici.
+### 4.3 Le emozioni fanno parte del processo
 
-Si consideri una classe di 17 studenti, a cui si chiede di chi si fidano per
-risolvere i problemi del gruppo in modo coerente. Su 272 relazioni possibili
-ne risultano 143 positive, cioè una **densità** di circa il 53%.
+Esplorare le relazioni può suscitare curiosità, sollievo, imbarazzo o timore.
+Queste reazioni non appartengono soltanto alla sociometria: possono emergere
+in qualunque indagine sulle reti personali.
+
+Una mancata risposta o un'esitazione non vanno interpretate automaticamente
+come opposizione. Possono segnalare una domanda poco chiara, uno scopo non
+condiviso o una tutela insufficiente. Per esempio, chiedere con chi si
+trascorre il fine settimana a studenti riuniti solo per un laboratorio può
+risultare estraneo al compito e inutilmente invasivo.
+
+## 5 Il contributo di Moreno: la tele
+
+Moreno usa il concetto di **tele** per descrivere la dimensione relazionale
+che collega le persone, includendo attrazione, rifiuto e reciprocità. Non si
+tratta soltanto di un sentimento individuale, ma di un processo che riguarda
+il rapporto tra persone.
+
+La tele è un concetto della teoria moreniana: **non coincide con un singolo
+indicatore di rete**, né può essere dedotta automaticamente da una scelta
+reciproca.
+
+Per leggere un sociogramma è utile distinguere le risposte individuali dalla
+loro combinazione nella coppia:
+
+| Configurazione rispetto a un criterio | Esempio                                                                                       |
+| ------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Scelta positiva reciproca**         | Due studenti si scelgono entrambi per preparare una presentazione                             |
+| **Scelta positiva non ricambiata**    | Uno studente sceglie un compagno, che esprime neutralità verso di lui                         |
+| **Scelte di segno opposto**           | Uno studente sceglie un compagno, che indica di non voler lavorare con lui in quella attività |
+| **Rifiuto reciproco**                 | Entrambi indicano di non voler collaborare tra loro rispetto al criterio proposto             |
+| **Neutralità reciproca**              | Entrambi dichiarano di non avere una preferenza rispetto al criterio                          |
+
+Una scelta non ricambiata non equivale necessariamente a un conflitto.
+Analogamente, **neutralità, mancata risposta e assenza di legame non sono
+sinonimi**: il loro significato dipende dalla domanda e dalle modalità di
+rilevazione. Se si possono indicare al massimo tre compagni, per esempio,
+non essere nominati non significa essere rifiutati.
+
+Anche la SNA può analizzare legami negativi, reti con segno e più tipi di
+relazione. Quando una ricerca rileva soltanto legami positivi, descrive
+quella specifica dimensione della rete, non l'intera vita relazionale del
+gruppo.
+
+## 6 Leggere i numeri senza perdere le persone
+
+Si consideri una classe di **17 studenti**. Se ciascuno può esprimere una
+scelta verso tutti gli altri, escludendo sé stesso, le relazioni dirette
+possibili sono:
 
 $$
-\text{densità} = \frac{\text{relazioni esistenti}}{\text{relazioni possibili}}
-= \frac{143}{272} \approx 53\%
+n(n-1) = 17 \times 16 = 272
 $$
 
-Il dato sembra incoraggiante, e 59 delle 136 coppie possibili sono
-reciproche. Ma i rifiuti sono il 34% delle relazioni possibili, e spiegano le
-difficoltà di collaborazione della classe.
+Le relazioni sono **dirette** perché la scelta di Anna verso Luca è distinta
+da quella di Luca verso Anna. Se le scelte positive rilevate sono 143, la
+densità della rete positiva è:
 
-In un caso come questo può essere opportuno **non mostrare** la mappa dei
-rifiuti, che metterebbe in evidenza gli studenti che rifiutano di più, e
-potrebbe esporre chi è molto rifiutato, senza aiutare la classe in quel momento.
-Si può invece consegnare a ciascuno i propri dati personali (scelte fatte e
-ricevute, positive, negative e neutre) accanto ai valori medi della classe. I
-rifiuti possono poi essere discussi nella rete informale, e in esperienze di
-questo tipo si osservano sviluppi positivi tra studenti che prima lavoravano
-male insieme.
+$$
+\text{densità positiva} =
+\frac{\text{legami positivi rilevati}}{\text{legami diretti possibili}}
+= \frac{143}{272} \approx 52{,}6\%
+$$
 
-La lezione è che **ignorare i rifiuti non è un'opzione**, ma decidere _se e
-come_ renderli visibili richiede giudizio e cautela. Una mappa si può leggere
-troppo facilmente come un verdetto sulle scelte e sulle relazioni degli altri.
-Del resto, essere rifiutati o trascurati può ferire; ma, come ricorda Zerka
-Moreno, non è realistico aspettarsi che tutti ci scelgano. Il «no» ponderato è
-una parte importante della vita di gruppo.
+Il valore descrive la quota di legami positivi rispetto a quelli possibili;
+**non è, da solo, un indice di benessere della classe**.
 
-## 6 Cosa si possono dare le due discipline
+Le coppie di studenti, contate invece senza distinguere l'ordine, sono:
 
-**La SNA offre alla sociometria**:
+$$
+\frac{n(n-1)}{2} = \frac{17 \times 16}{2} = 136
+$$
 
-- tecnologie di mappatura che permettono di visualizzare e riconfigurare i dati
-  sociometrici (per esempio la percentuale di relazioni esistenti su quelle
-  possibili);
-- ricerche che hanno permesso di studiare meglio la differenza tra struttura
-  formale e relazioni informali (ad esempio tra l'organigramma della scuola e le
-  reti di consiglio e di fiducia tra docenti o studenti);
-- metodi di raccolta dati, esperienza sulle reti di diffusione (come i leader
-  d'opinione nei comportamenti a rischio tra gli adolescenti), sul
-  comportamento di gruppo online e forum in cui sviluppare la conoscenza.
+Se 59 coppie si scelgono reciprocamente, queste corrispondono a 118 dei 143
+legami positivi. Non bisogna quindi confondere il numero di **coppie
+reciproche** con quello delle **scelte individuali**.
 
-**La sociometria offre alla SNA**:
+Supponiamo inoltre che i rifiuti rappresentino circa il 34% delle 272
+relazioni possibili. Questo dato aggiunge una dimensione importante, ma non
+spiega da solo le difficoltà della classe: occorre capire come i rifiuti si
+distribuiscono, rispetto a quale criterio e in quale contesto.
 
-- una visione del lavoro con le persone orientata a creatività e vitalità;
-- l'invito a considerarsi **parte** dell'esplorazione, e non osservatori esterni,
-  e ad aspettarsi le resistenze come aspetto normale del lavoro con le reti
-  informali;
-- un legame più stretto tra teorie del comportamento e pratica.
+La lettura degli indicatori richiede inoltre di sapere se tutti hanno
+risposto, se il numero di nomine era limitato e come sono state codificate
+neutralità e risposte mancanti. Senza queste informazioni, i confronti tra
+classi o tra rilevazioni possono essere fuorvianti.
 
-## 7 In sintesi
+## 7 Il valore e la delicatezza dei rifiuti
 
-Le due discipline hanno in comune l'interesse per lo sviluppo di relazioni
-efficaci, ma non lo stesso punto di vista: la sociometria mette al centro le
-persone e la loro spontaneità, la SNA i dati e la loro interpretazione
-matematica. Chi lavora con le relazioni ha una responsabilità comune: non può
-ignorare di lavorare con **persone**, né pensare di osservare un gruppo senza
-esserne toccato. Lasciare i partecipanti in una condizione peggiore di quella
-di partenza è un cattivo servizio.
+Nella prospettiva sociometrica i rifiuti possono aiutare a comprendere
+ostacoli alla collaborazione e distanze che una mappa delle sole scelte
+positive non mostra. Non vanno però trattati come giudizi sul valore delle
+persone: **una scelta negativa riguarda un criterio e un momento**, non
+un'identità permanente.
 
-Per questo entrambe devono curare **come** vengono usati i sociogrammi e **con
-chi** vengono condivisi, in processi ben progettati e rispettosi degli interessi
-del gruppo.
+Riconoscerne l'importanza non significa doverli raccogliere in ogni attività,
+né renderli pubblici. Prima di farlo occorre chiedersi se siano necessari
+allo scopo e se esistano condizioni adeguate per gestirne gli effetti.
+
+In particolare, è opportuno:
+
+- evitare classifiche di popolarità o etichette come «rifiutato» e «isolato»
+  usate per definire uno studente;
+- non proiettare automaticamente mappe nominative delle scelte negative;
+- non imporre confronti diretti o richieste pubbliche di giustificazione;
+- preferire, quando adeguato, restituzioni aggregate e colloqui riservati;
+- prevedere sostegno se emergono sofferenza, esclusione o dinamiche di
+  prevaricazione.
+
+Un «no» può esprimere un confine legittimo o una difficoltà circoscritta, non
+necessariamente ostilità. Allo stesso tempo, rifiuti ripetuti e concentrati
+su una persona meritano attenzione. La responsabilità di chi conduce è
+**comprendere senza esporre e intervenire senza stigmatizzare**.
+
+## 8 Come integrare le due prospettive
+
+**La SNA offre alla sociometria** strumenti per rappresentare le reti,
+distinguere struttura formale e relazioni informali, analizzare reciprocità
+e distribuzione dei legami e confrontare rilevazioni nel tempo. Aiuta a
+formulare domande più precise e a verificare se un cambiamento atteso trova
+riscontro nei dati.
+
+**La sociometria offre al lavoro di analisi delle reti** un richiamo alla
+partecipazione, al significato vissuto delle scelte e alle conseguenze della
+restituzione. Invita a chiedersi non soltanto _«Che cosa mostra la rete?»_, ma
+anche _«Che cosa rende possibile questo lavoro per le persone coinvolte?»_.
+
+Un percorso integrato in classe può seguire cinque passaggi:
+
+1. **Definire il bisogno:** per esempio, ampliare le occasioni di
+   collaborazione durante un progetto.
+2. **Scegliere criterio e tutele:** formulare una domanda pertinente e
+   concordare modalità di raccolta e restituzione.
+3. **Leggere i dati nel contesto:** affiancare mappe e indicatori alle
+   osservazioni e alla voce degli studenti, senza trasformarli in diagnosi.
+4. **Progettare un'azione:** organizzare attività che offrano nuove occasioni
+   di incontro, senza usare la mappa come un algoritmo automatico per
+   comporre i gruppi.
+5. **Verificare gli esiti:** osservare collaborazione, partecipazione e
+   vissuti; se utile, ripetere la rilevazione con modalità confrontabili.
+
+Un cambiamento nella mappa non dimostra, da solo, che l'intervento ne sia
+stato la causa. È un elemento da interpretare insieme agli altri riscontri.
+
+## 9 In sintesi
+
+Sociometria e SNA condividono l'attenzione alle relazioni, ma mettono a fuoco
+aspetti diversi: la prima collega l'esplorazione delle scelte allo sviluppo
+del gruppo; la seconda offre metodi per analizzare la struttura delle reti.
+Nessuna delle due può essere ridotta, rispettivamente, alle sole conversazioni
+o ai soli numeri.
+
+L'integrazione è utile quando **il rigore dell'analisi sostiene la qualità
+dell'intervento** e la cura delle persone orienta la raccolta e l'uso dei
+dati. Una buona mappa non è un verdetto sulla classe: è uno strumento parziale,
+situato e da utilizzare con responsabilità.
 
 ## Fonte bibliografica
 
