@@ -43,13 +43,7 @@ const stateComponents = {
   generateReport: StepGenerateReport,
 };
 
-const currentComponentName = ref(
-  membersStatus.value === "empty"
-    ? "start"
-    : membersStatus.value === "partially-loaded"
-      ? "manageMembers"
-      : "generateReport",
-);
+const currentComponentName = ref(membersStatus.value === "empty" ? "start" : "manageMembers");
 
 // UI state: the member to point the preferences carousel at when it opens.
 // Set only by the report summary's "edit this member" cards; cleared on any
