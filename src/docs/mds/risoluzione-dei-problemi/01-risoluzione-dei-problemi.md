@@ -3,25 +3,48 @@ title: Risoluzione dei problemi
 order: 1
 ---
 
-Questa pagina raccoglie i problemi più frequenti e come risolverli, seguendo
-l'ordine del flusso di lavoro: dal caricamento dei nominativi fino alla lettura
-dei grafici del report.
+<script setup>
+    import { useSociogramStore } from "@/stores/sociogram";
+    const store = useSociogramStore()
+</script>
+
+Questa pagina raccoglie i problemi più frequenti, dal caricamento dei nominativi
+alla lettura del report. Individua il sintomo e segui i controlli nell'ordine indicato.
+
+> **Prima di ricaricare o chiudere la pagina**, scarica il progetto con **Scarica
+> progetto**, se il pulsante è disponibile. I dati restano solo nella memoria
+> dell'applicazione: ricaricare la pagina non è un tentativo di riparazione sicuro.
+
+## Come trovare la soluzione
+
+- **Caricamento:** sezioni 1 e 8, per distinguere l'elenco dei nomi dall'archivio.
+- **Compilazione:** sezioni 2–4, per passaggi bloccati, nomi e contraddizioni.
+- **Report:** sezioni 5–6 e 9–11, per generazione, rifiuti, grafici, sigle e PDF.
+- **Lavoro non più visibile:** sezione 7, per capire cosa puoi recuperare.
 
 ## 1 Il file dei nominativi non viene caricato
 
-Quando carichi l'elenco dei nomi, l'applicazione può rifiutare il file o
-segnalare un errore. Le cause più comuni sono il formato o i limiti.
+Se il file viene rifiutato, controlla prima che sia un elenco di nomi in testo
+semplice, non un documento Word, un foglio di calcolo o un archivio di progetto.
+Se invece mancano persone o i nomi risultano tagliati, verifica i limiti di lettura.
 
 ### 1.1 Soluzione
 
-- Usa un **file di testo** con **un solo nominativo per riga**.
-- Controlla i limiti: al massimo **35 nominativi** e al massimo **150
-  caratteri** per ogni nome.
+- Salva un **file `.txt` in testo semplice**, preferibilmente con codifica
+  **UTF-8**, con **un solo nominativo per riga**. Cambiare soltanto l'estensione
+  di un documento non lo converte in testo.
+- Per generare il report servono da **{{ store.minMembersCount }} a
+  {{ store.maxMembersCount }} membri**. Durante il caricamento vengono letti al
+  massimo **{{ store.maxMembersCount }} nominativi** e mantenuti al massimo
+  **{{ store.maxMemberNameLength }} caratteri** per nome: ciò che supera questi
+  limiti può essere escluso o troncato. Controlla sempre l'elenco risultante.
 - Rimuovi righe vuote o intestazioni: ogni riga non vuota viene letta come un
   nome.
 - Se hai esportato i nomi da un foglio di calcolo, salva come testo semplice e
   verifica che non siano rimasti separatori (virgole, punti e virgola) all'interno
   delle righe.
+- Se compaiono caratteri anomali al posto delle lettere accentate, salva di nuovo
+  il file in UTF-8 e ricaricalo prima di inserire le preferenze.
 
 ## 2 Il pulsante «Avanti» resta disattivato
 
@@ -33,12 +56,13 @@ Ogni passaggio si sblocca solo quando i suoi dati sono completi, quindi
 - **Caricamento dei nomi:** serve **almeno un nominativo** per proseguire.
 - **Gestione dei membri:** non devono esserci **nomi vuoti** né **nomi
   duplicati** (vedi la sezione seguente).
-- **Scelte e rifiuti:** ogni membro deve essere **completo**, cioè avere le
-  scelte e i rifiuti indicati oppure la casella _«Non ha espresso preferenze»_ /
-  _«Non ha espresso rifiuti»_ spuntata. La barra di avanzamento mostra quanti
-  membri mancano.
-- **Riepilogo:** il gruppo deve contenere **almeno 5 membri** e tutti i membri
-  devono essere completi.
+- **Scelte e rifiuti:** per ogni membro devi completare **entrambe le parti**:
+  inserire almeno una scelta oppure spuntare _«Non ha espresso preferenze»_;
+  inserire almeno un rifiuto oppure spuntare _«Non ha espresso rifiuti»_. La barra
+  di avanzamento indica quanti membri restano da completare. Non spuntare le
+  caselle solo per sbloccare il passaggio: usale quando corrispondono alle
+  risposte raccolte.
+- **Riepilogo:** il gruppo deve contenere **almeno {{ store.minMembersCount }} membri e non più di {{ store.maxMembersCount }} membri**; tutti i membri devono essere completi.
 
 ## 3 Ci sono nomi duplicati o vuoti
 
@@ -78,7 +102,8 @@ l'applicazione segnala il problema invece di produrre un report parziale.
 
 Assicurati che:
 
-- il gruppo contenga **almeno 5 membri**;
+- il gruppo contenga **almeno {{ store.minMembersCount }} membri e non più di {{ store.maxMembersCount }} membri**;
+- i nomi siano compilati, distinti e non superino **{{ store.maxMemberNameLength }} caratteri**;
 - **ogni membro** abbia scelte e rifiuti completi, oppure abbia dichiarato di
   non averne con le apposite caselle.
 
@@ -88,21 +113,32 @@ sue preferenze e completarle.
 ## 6 La rete (o la pagina) dei rifiuti non compare
 
 Nel report la **Rete dei rifiuti** e le relative strutture compaiono solo se
-c'è qualcosa da mostrare.
+è stato registrato almeno un rifiuto. La loro assenza, da sola, non indica un
+problema di generazione.
 
 ### 6.1 Soluzione
 
-Le pagine dei rifiuti vengono generate **solo quando almeno un membro ha
-espresso un rifiuto**. Se nessuno ne ha espressi, la loro assenza è corretta e
-non indica un errore.
+Controlla nel riepilogo se sono presenti rifiuti:
+
+- Se nessuno ne ha espressi, è normale che queste pagine non compaiano.
+- Se i questionari contengono rifiuti ma il riepilogo no, torna alle preferenze,
+  completa i dati mancanti e genera di nuovo il report.
 
 ## 7 Ho perso il lavoro dopo aver aggiornato la pagina
 
 AB-Gram **non salva i dati nella cache del browser**: restano nella memoria
-dell'applicazione solo finché la pagina è aperta. Aggiornare la pagina o usare i
-tasti _indietro_ / _avanti_ del browser azzera il lavoro in corso.
+dell'applicazione durante la sessione. Chiudere o ricaricare la pagina fa perdere
+i dati non esportati; anche uscire dall'app con la navigazione del browser può
+interrompere il lavoro.
 
 ### 7.1 Soluzione
+
+Se hai già ricaricato la pagina, scegli **Importa progetto** e apri l'ultimo
+archivio scaricato. Recupererai i dati presenti al momento di quel download,
+non le modifiche successive. **Senza un archivio, l'applicazione non può
+recuperare il lavoro della sessione precedente.**
+
+Per evitare che accada di nuovo:
 
 - Mentre lavori, **non aggiornare la pagina** e non usare i tasti _indietro_ e
   _avanti_ del browser.
@@ -121,8 +157,14 @@ coerenti**. Se il controllo non passa, mostra un errore di validazione.
   progetto_, non un file creato o modificato a mano.
 - **Non modificare** il contenuto dell'archivio: anche piccole modifiche possono
   renderlo incoerente.
-- Verifica che l'archivio rispetti i vincoli (ad esempio non più di 35 nomi).
-  Se l'avevi prodotto con una versione diversa dell'app, rigeneralo.
+- Non confondere i due file `.txt`: l'elenco dei soli nominativi va caricato
+  creando un nuovo progetto; l'archivio va aperto con **Importa progetto**.
+- Leggi il messaggio di validazione e prova, se disponibile, una copia precedente
+  dell'archivio. Non è necessario che tutte le preferenze siano già complete:
+  un archivio può contenere un lavoro ancora in corso.
+- Se il file proviene da una versione diversa dell'app, conserva l'originale.
+  Puoi esportarlo di nuovo solo se riesci ancora ad aprirlo nella versione che
+  l'ha creato; altrimenti non è garantito che sia recuperabile.
 
 ## 9 Il grafico di rete è confuso o sovrapposto
 
@@ -158,3 +200,15 @@ per risparmiare spazio.
 Consulta il **Glossario**, l'ultima pagina del report, che elenca ogni sigla con
 il suo significato esteso. Le definizioni complete delle metriche si trovano
 nelle pagine _Metriche individuali_ e _Metriche di gruppo_ di questa guida.
+
+## 11 Il lavoro scaricato non contiene il report
+
+**Scarica progetto** salva i dati del sociogramma, non una copia delle pagine
+del report. L'archivio serve a riprendere la compilazione e a generare nuovamente
+il report nell'applicazione.
+
+### 11.1 Soluzione
+
+Per conservare anche il report, usa la funzione di stampa del report e scegli
+il salvataggio in PDF nella finestra di stampa del browser. Conserva anche
+l'archivio se vuoi poter modificare in seguito nomi, scelte e rifiuti.
