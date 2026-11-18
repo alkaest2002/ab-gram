@@ -24,18 +24,25 @@ export const createAdjacencyMatrix = (members, preference) => {
     throw new Error(`Unknown preference "${String(preference)}". Expected "likes" or "dislikes".`);
   }
 
+  // Create a look-up table for member indices by ID (O(n) search).
   const indexById = new Map(members.map((member, index) => [member.id, index]));
+
+  // Create the adjacency matrix initialized to 0.
   const size = members.length;
-  const matrix = Array.from({ length: size }, () => Array.from({ length: size }, () => 0));
+  const matrix = np.zeros([size, size]);
 
-  members.forEach((member, i) => {
-    for (const chosenId of member[preference]) {
-      const j = indexById.get(chosenId);
-      if (j !== undefined) matrix[i][j] = 1;
-    }
-  });
+  // Flat row-major indices of every directed choice.
+  const flatChoices = members.flatMap((member, i) =>
+    member[preference]
+      .map((id) => indexById.get(id))
+      .filter((index) => index !== undefined)
+      .map((index) => i * size + index),
+  );
 
-  return np.array(matrix);
+  // Set the chosen indices to 1 at the corresponding positions.
+  np.put(matrix, flatChoices, [1]);
+
+  return matrix;
 };
 
 /**
