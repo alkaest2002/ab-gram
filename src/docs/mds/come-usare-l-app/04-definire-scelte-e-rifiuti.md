@@ -3,7 +3,7 @@ title: Definire scelte e rifiuti
 order: 4
 ---
 
-Nel terzo passaggio raccogli le preferenze di ogni membro del gruppo: per ciascuno
+Nel terzo passaggio inserisci le preferenze già raccolte di ogni membro del gruppo: per ciascuno
 indichi le **scelte** (le persone con cui prova affinità) e i **rifiuti** (le
 persone da cui si sente distante).
 
@@ -44,7 +44,7 @@ gruppi piccoli.
 Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 
 1. **Cerca** il nome digitandone alcune lettere nel campo _Cerca un nome…_
-   (la ricerca perdona piccoli errori di battitura).
+   (puoi omettere lettere o cambiarne l’ordine, ma non aggiungerne di estranee).
 2. **Seleziona o deseleziona** il primo risultato premendo **Invio**
    (vedi [Selezionare con il tasto Invio](#55-selezionare-con-il-tasto-invio)).
 3. **Spostati** tra i campi e le caselle con **Tab** (avanti) e
@@ -62,7 +62,7 @@ Spunta la casella corrispondente:
 - **Non ha espresso preferenze**;
 - **Non ha espresso rifiuti**.
 
-Le due indicazioni si escludono a vicenda con l'elenco: selezionare una persona
+Ogni casella è alternativa al proprio elenco, non all’altra casella: selezionare una persona
 azzera automaticamente la casella "non ha espresso…", e spuntare la casella
 svuota l'elenco.
 
@@ -72,16 +72,11 @@ Puoi compilare la rilevazione limitandoti alle sole **scelte**, senza rifiuti:
 per ogni membro spunta **Non ha espresso rifiuti** e lascia vuoto l'elenco dei
 rifiuti.
 
-Questa possibilità è lecita, ma va usata con consapevolezza:
+Il **report sarà meno informativo** sulle relazioni negative: una rete dei
+rifiuti vuota non dimostra che nel gruppo non esistano tensioni.
 
-- il **report sarà meno informativo**: senza rifiuti mancano le informazioni sul
-  conflitto, la rete dei rifiuti è vuota e gran parte dei tipi di legame non può
-  presentarsi;
-- in **alcuni casi limite**, alcuni algoritmi possono **non convergere
-  facilmente**. In particolare PageRank e HITS possono non stabilizzarsi quando
-  la rete delle scelte è molto rada (poche relazioni, nodi isolati o nodi senza
-  legami in uscita). In questi casi alcune metriche possono risultare mancanti o
-  nulle.
+Usa questa indicazione solo per una risposta effettivamente vuota o per una
+rilevazione che non prevede rifiuti, non per mascherare dati ancora da raccogliere.
 
 ## 3 Una persona scelta e rifiutata
 
@@ -179,11 +174,12 @@ membro** dell'elenco filtrato, cioè il più pertinente. Si agisce su un membro
 alla volta, così **l'ordine** in cui compaiono le scelte (o i rifiuti)
 rispecchia quello in cui li hai indicati.
 
-Questo ordine non è casuale: viene usato per calcolare diverse metriche del
+L’ordine di inserimento viene usato per calcolare diverse metriche del
 report. Ad esempio, il **bonus** e il **malus** tengono conto di _quanto presto_
 un membro è stato scelto o rifiutato. Selezionando un membro alla volta sei
 certo che il primo indicato sia davvero la prima scelta, il secondo la seconda,
-e così via.
+e così via. Se il questionario prevedeva una graduatoria, rispetta quella
+raccolta; altrimenti non interpretare l’ordine come intensità della preferenza.
 
 Se la persona che vuoi indicare **non è il primo elemento** dell'elenco, continua
 ad aggiungere caratteri finché non lo diventa: più precisa è la ricerca, più sei

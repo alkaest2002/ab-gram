@@ -19,6 +19,9 @@ per:
 
 ## 2 Come caricarli
 
+Se hai già un lavoro in corso, scaricalo prima di caricare la demo: i dati
+di esempio sostituiscono quelli in memoria.
+
 Nella schermata iniziale, nella sezione dedicata ai progetti archiviati, premi
 il pulsante **Dati demo**. L'applicazione carica il gruppo di esempio e ti porta
 direttamente all'elenco dei membri, da cui puoi proseguire come in un progetto

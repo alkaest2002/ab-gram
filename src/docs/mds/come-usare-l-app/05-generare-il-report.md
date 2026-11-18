@@ -4,7 +4,7 @@ order: 5
 ---
 
 Il quarto passaggio è il **riepilogo**: qui controlli i dati raccolti prima di
-generare il report. È l'ultima occasione per verificare che tutto sia corretto:
+generare il report. È il controllo finale prima dell’elaborazione:
 il report si basa esclusivamente su ciò che vedi in questa schermata, quindi
 dedicare qualche minuto a un controllo attento ti evita di dover ripetere
 l'operazione.
@@ -27,7 +27,9 @@ Scorri le schede una per una e verifica in particolare che:
 
 - i nomi siano scritti correttamente e non manchi nessuno;
 - le scelte e i rifiuti corrispondano a quanto indicato da ciascun membro;
-- nessuna scheda risulti vuota o incompleta per distrazione.
+- gli elenchi rispettino l’ordine delle risposte raccolte;
+- gli elenchi vuoti corrispondano a un’assenza dichiarata di preferenze,
+  non a dati dimenticati.
 
 ### 1.2 Correggere un membro
 
@@ -43,7 +45,7 @@ completi e, se tutto è in ordine, genera il report.
 
 ### 2.1 Requisiti per la generazione
 
-- Il gruppo deve contenere **almeno 5 membri**.
+- Il gruppo deve contenere **almeno 8 membri**.
 - Ogni membro deve avere scelte e rifiuti completi (o aver esplicitamente
   dichiarato di non averne).
 

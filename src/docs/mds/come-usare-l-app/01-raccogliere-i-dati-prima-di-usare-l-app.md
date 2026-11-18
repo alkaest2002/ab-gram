@@ -119,8 +119,8 @@ informazioni:
 
 - **Scelte**: le persone con cui il membro prova affinità, cioè con cui
   vorrebbe realizzare quanto espresso nel criterio sociometrico.
-- **Rifiuti**: le persone da cui il membro si sente distante, cioè con cui
-  preferirebbe non interagire.
+- **Rifiuti**: le persone con cui il membro preferirebbe non svolgere
+  l’attività o condividere la situazione indicata nel criterio.
 
 Ricorda che la direzione conta: la scelta parte da **chi** la esprime e arriva a
 **chi** è scelto. Se un membro non ha espresso né scelte né rifiuti, annotalo:
@@ -128,8 +128,9 @@ potrai registrarlo nell'app.
 
 ### 3.1 È possibile raccogliere solo le scelte
 
-Scelte e rifiuti sono complementari e, nella maggior parte dei casi, conviene
-raccoglierli entrambi. È comunque possibile limitarsi alle sole **scelte**:
+Scelte e rifiuti descrivono aspetti diversi delle relazioni. Decidi cosa
+raccogliere in base allo scopo della rilevazione e al contesto, senza forzare
+le persone a esprimere rifiuti. È possibile limitarsi alle sole **scelte**:
 l'applicazione accetta un gruppo in cui ogni membro ha espresso scelte e nessun
 rifiuto.
 
@@ -138,19 +139,16 @@ Questa opzione ha però dei costi:
 - il **report è meno informativo**: senza rifiuti mancano le informazioni sul
   conflitto, la rete dei rifiuti è vuota e non possono comparire i tipi di
   legame che coinvolgono almeno un rifiuto, che sono la maggior parte;
-- in **alcuni casi limite**, alcuni algoritmi possono **non convergere
-  facilmente**. Le misure di centralità calcolate per iterazioni successive,
-  come PageRank e HITS, possono non stabilizzarsi quando la rete delle scelte è
-  molto rada (poche relazioni, nodi isolati o nodi senza legami in uscita). In
-  questi casi alcune metriche possono risultare mancanti o nulle.
+- le metriche relative ai rifiuti vanno lette come **assenza di dati raccolti**,
+  non come prova che nel gruppo non esistano tensioni.
 
 Se decidi di raccogliere solo le scelte, tieni conto di questi limiti quando
 leggi e interpreti il report.
 
 ### 3.2 Quante scelte e quanti rifiuti raccogliere
 
-AB-Gram non pone vincoli al numero di scelte e di rifiuti che ogni membro può
-esprimere: puoi registrare tutte le preferenze raccolte, senza scartarne
+AB-Gram non impone un tetto aggiuntivo alle preferenze: ogni membro può
+scegliere o rifiutare ciascuno degli altri membri una sola volta per elenco. Quindi puoi registrare tutte le preferenze raccolte, senza scartarne
 nessuna.
 
 Il numero, però, non è irrilevante. I risultati sono più chiari quando le
@@ -163,8 +161,8 @@ _prima_ della raccolta, aiutando il gruppo a rispondere con misura.
 Alcuni membri tendono a scegliere o a rifiutare quasi tutti. Non puoi (e non
 devi) impedirlo, ma puoi ridurne la frequenza con qualche accorgimento:
 
-- **spiega a cosa serve la rilevazione** e perché la precisione conta: se tutti
-  sono scelti, o tutti rifiutati, la risposta non dice più nulla di nessuno;
+- **spiega a cosa serve la rilevazione** e perché la precisione conta: scegliere o
+  rifiutare tutti distingue poco le singole relazioni, ma resta un dato da registrare;
 - **riporta sempre il criterio** e invita a pensare alla situazione concreta
   («con chi faresti davvero questa gita?»), non a una simpatia generica;
 - **chiedi di partire da chi viene in mente per primo** e di fermarsi quando i
@@ -179,15 +177,14 @@ devi) impedirlo, ma puoi ridurne la frequenza con qualche accorgimento:
   giuste o sbagliate e le risposte non saranno mostrate al gruppo.
 
 Se nonostante questo qualcuno risponde in modo generalizzato, **registra comunque
-le sue risposte**. Il fenomeno ha infatti una propria rilevanza psicologica: può
-segnalare un forte bisogno di inclusione, il desiderio di compiacere, difficoltà
-a discriminare tra i compagni o, nel caso dei rifiuti, un'ostilità diffusa o un
-clima di gruppo teso. Non va interpretato in modo meccanico, ma merita di essere
-osservato e, se opportuno, approfondito con la persona.
+le sue risposte**. Una risposta generalizzata, da sola, non permette di dedurre motivazioni o
+caratteristiche psicologiche. Interpretala nel contesto della rilevazione,
+senza attribuire etichette alla persona.
 
 #### 3.2.2 Inserire solo le prime _n_ scelte e/o i primi _n_ rifiuti
 
-In casi particolari AB-Gram permette di inserire, per ciascun membro, soltanto
+Non esiste un comando di troncamento automatico: puoi scegliere di inserire
+manualmente, per ciascun membro, soltanto
 le **prime _n_ scelte** e/o i **primi _n_ rifiuti**. Il valore di _n_ lo
 stabilisci tu caso per caso e può essere diverso per scelte e rifiuti.
 
@@ -245,3 +242,18 @@ Puoi raccogliere i dati in due modi, a tua scelta:
 
 In entrambi i casi il principio è lo stesso: per ciascun membro, registra le sue
 scelte e i suoi rifiuti.
+
+## 5 Controlli prima di aprire l'app
+
+- Prepara un elenco con un nominativo univoco per persona; quando possibile,
+  usa codici o pseudonimi e conserva separatamente la corrispondenza con i nomi.
+- Distingui **nessuna preferenza espressa** da **risposta non raccolta**:
+  un’assenza o una scheda mancante non equivalgono a una risposta vuota.
+- Conserva l’ordine delle scelte e dei rifiuti: alcune metriche lo utilizzano.
+  Se vuoi interpretarlo come priorità, chiedi esplicitamente risposte ordinate
+  già nel questionario; non ricavare una graduatoria da un elenco non ordinato.
+- Annota criterio, data e condizioni della rilevazione separatamente: l’app
+  non prevede campi dedicati a queste informazioni.
+- Raccogli le risposte individualmente e non rendere visibili al gruppo quelle
+  altrui. Se usi moduli o fogli online, verifica anche come quei servizi
+  conservano e condividono i dati: le garanzie di AB-Gram non si estendono a essi.

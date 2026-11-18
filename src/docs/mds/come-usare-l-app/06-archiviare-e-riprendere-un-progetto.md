@@ -14,17 +14,18 @@ aver scaricato l'archivio, il lavoro non salvato andrà perso.
 
 ## 1 Scaricare l'archivio
 
-Il pulsante **Scarica archivio** è disponibile nei passaggi del flusso non appena
-ci sono dati da salvare. Cliccandolo, l'applicazione scarica un file di testo
+Il pulsante con l’icona di download, indicato come **Scarica progetto**,
+è disponibile nella barra di navigazione quando il passaggio lo consente.
+Se è disattivato mentre modifichi i nomi, correggi prima le voci vuote o duplicate. Cliccandolo, l'applicazione scarica un file di testo
 contenente una fotografia completa del sociogramma: nomi, scelte e rifiuti.
 
 Il file ha un nome del tipo:
 
 ```txt
-dati-2026-10-10T14-30-00.txt
+sociogram-data-2026-10-10T14-30-00.txt
 ```
 
-Il nome riporta la data e l'ora del salvataggio, così puoi distinguere
+Il nome riporta la data e l’ora UTC del salvataggio, così puoi distinguere
 facilmente le versioni successive dello stesso progetto.
 
 ### 1.1 Quando usarlo
@@ -38,11 +39,17 @@ facilmente le versioni successive dello stesso progetto.
 
 ## 2 Riprendere un progetto
 
-Per riaprire un archivio, avvia l'applicazione e scegli **Importa progetto**
-nella schermata iniziale, oppure consulta "Importare un progetto archiviato".
+Per riaprire un archivio:
 
-Il progetto viene ricostruito esattamente da dove lo avevi interrotto, inclusi
-i passaggi già completati. Prima di caricare i dati, l'applicazione verifica
+1. Nella schermata iniziale scegli **Importa progetto**.
+2. Seleziona il file `.txt` scaricato con **Scarica progetto**, non il semplice
+   elenco di nominativi usato per creare un nuovo progetto.
+3. Attendi il riepilogo con il numero di membri importati e premi **Avanti**.
+4. Rivedi l’elenco dei membri e prosegui verso le preferenze o il riepilogo.
+
+L’archivio ripristina i nominativi, l’ordine delle preferenze e le indicazioni
+di assenza di scelte o rifiuti, anche se la compilazione era parziale. Non
+ripristina il passaggio o la persona visualizzata al momento del download. Prima di caricare i dati, l'applicazione verifica
 che il file sia un archivio valido e coerente; se qualcosa non va, mostra un
 messaggio che spiega il problema.
 
@@ -83,3 +90,14 @@ L'archivio contiene i nomi e le relazioni del gruppo. Poiché l'applicazione
 non conserva nulla per conto tuo, la custodia del file è interamente nelle
 tue mani: salvalo in un luogo sicuro, condividilo solo con chi è autorizzato a
 vederlo ed eliminalo quando non ti serve più.
+
+## 4 Proteggere l’archivio
+
+Il contenuto è **codificato, non cifrato**: chi possiede il file può recuperare
+nomi e relazioni. Conservalo in un luogo protetto e condividilo solo con chi è
+autorizzato. La codifica non rende anonimi i dati.
+
+Ogni download crea una nuova copia: non aggiorna automaticamente quelle già
+scaricate. Verifica che il file sia presente prima di chiudere la pagina e
+conserva la versione più recente. L’archivio contiene i dati del progetto,
+non una copia del report generato.

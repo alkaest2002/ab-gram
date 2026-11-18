@@ -34,7 +34,8 @@ ciascuno associato a un ID diverso.
 Alcune cose da sapere sugli ID:
 
 - **Sono assegnati automaticamente.** Non devi sceglierli né inserirli: l'applicazione
-  li attribuisce da sola quando carichi, aggiungi o modifichi i nominativi.
+  li attribuisce quando carichi o aggiungi i nominativi. Correggere un nome
+  non cambia il suo ID.
 - **Non hanno alcun significato particolare.** Non indicano un ruolo, una
   posizione o un ordine di importanza: l'ID di una persona non dice nulla su di
   lei.
@@ -70,10 +71,8 @@ pulsante si riattiva e puoi proseguire.
 - Rileggi l'elenco una volta completo: è più facile correggere un nome qui che
   in una fase successiva.
 - Usa nomi chiari e riconoscibili da chi compilerà o leggerà il sociogramma.
-- Nel passaggio successivo puoi limitarti alle sole **scelte**, senza rifiuti:
-  il report sarà però **meno informativo** e, in alcuni casi limite, alcuni
-  algoritmi potrebbero **non convergere facilmente** (per i dettagli, vedi
-  "Raccogliere i dati prima di usare l'app").
+- Puoi registrare solo le **scelte**, se la rilevazione non comprende i rifiuti.
+  Il report non descriverà però le relazioni negative non raccolte.
 - Ricorda che l'applicazione non conserva i dati tra una sessione e l'altra:
   se vuoi interrompere il lavoro, archivia il progetto e importalo di nuovo
   in seguito.

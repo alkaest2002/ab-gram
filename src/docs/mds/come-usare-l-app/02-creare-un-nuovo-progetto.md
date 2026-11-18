@@ -14,8 +14,8 @@ percorsi:
 - **Crea progetto** — avvia un nuovo progetto a partire da una lista di nomi.
 - **Importa progetto** — riprende un progetto archiviato in precedenza.
 
-Entrambi i pulsanti azzerano i dati in memoria, così ogni nuovo
-lavoro parte sempre da zero.
+Prima di iniziare un nuovo progetto o importarne un altro, scarica il progetto
+attuale se vuoi conservarlo: i dati caricati possono essere sostituiti.
 
 ## 1 Avviare un nuovo progetto
 
@@ -30,6 +30,11 @@ L'applicazione accetta un file di testo (.txt) con **un nominativo per riga**:
 Rossi Mario
 Bianchi Anna
 Verdi Luca
+Neri Giulia
+Galli Paolo
+Costa Elena
+Fontana Marco
+Ricci Sara
 ```
 
 #### 1.1.1 Limiti
@@ -69,4 +74,7 @@ dell'applicazione finché la pagina è aperta. Per questo motivo:
 - Non aggiornare la pagina mentre stai lavorando.
 - Non usare i tasti _indietro_ e _avanti_ del browser.
 
-Puoi comunque mettere in pausa e riprendere un lavoro in qualsiasi momento.
+Per mettere in pausa il lavoro, usa **Scarica progetto** prima di uscire.
+Potrai riprenderlo con **Importa progetto**: lasciare semplicemente la pagina
+non equivale a salvarlo. Usa i pulsanti **Indietro** e **Avanti** dell’app
+per spostarti tra i passaggi.
