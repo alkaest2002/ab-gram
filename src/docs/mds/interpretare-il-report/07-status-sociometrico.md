@@ -23,7 +23,7 @@ L'algoritmo risponde a tre domande, nell'ordine:
 1. **Il membro è visibile?** Ha ricevuto almeno un'opinione? Se no, è isolato o
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
-   basso, medio o alto? Le soglie non sono fissate da un solo metodo: otto
+   basso, medio o alto? Le soglie non sono fissate da un solo metodo: nove
    metodi statistici le propongono e si adotta quello più in accordo con gli
    altri.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
@@ -109,21 +109,24 @@ l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
 
 In questo passo l'impatto ricevuto viene suddiviso in tre classi: **basso**, **medio** e **alto**. Poiché non esiste un unico modo "giusto" di fissare le soglie (ogni metodo statistico ha pregi e difetti a seconda della forma della distribuzione), l'algoritmo applica più strategie di classificazione in parallelo e le fa "votare": ciascun metodo assegna una classe a ogni membro, e la classe finale è quella scelta dalla maggioranza. Il passo si articola in tre mosse:
 
-1. otto **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.8);
-2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.9);
+1. nove **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.9);
+2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.10);
 3. la classe finale di ogni membro è decisa per **maggioranza** tra i metodi
-   che propongono una divisione (§ 4.2.10).
+   che propongono una divisione (§ 4.2.11).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
 e una **soglia alta** $H$, con questo significato:
 
-- impatto **basso** se $n_i \le L$;
-- impatto **alto** se $n_i \ge H$;
-- impatto **medio** negli altri casi.
+- impatto **basso** se $n_i \le L$ (lato basso attivo, $L$ finito);
+- impatto **alto** se $n_i \ge H$ (lato alto attivo, $H$ finito);
+- impatto **medio** se **entrambe** le soglie sono finite e $L < n_i < H$.
 
 Un lato può essere "mai segnalato" ($L = -\infty$ oppure $H = +\infty$). Se
-**entrambi** i lati sono disattivati si parla di **nessuna divisione**: tutti i
-membri sono classificati a impatto medio.
+**entrambi** i lati sono disattivati si parla di **nessuna divisione**: il
+metodo si astiene e non vota alcun membro. Se è disattivato **un solo** lato, il
+metodo classifica soltanto il lato rimasto attivo e **si astiene su tutti gli
+altri** membri: non li etichetta come medi, ma semplicemente non esprime alcun
+voto su di essi.
 
 **Controllo di separazione.** Prima di consegnare le soglie, ogni metodo
 verifica che le classi siano davvero **separate da almeno un voto**: se il
@@ -142,11 +145,13 @@ soglie.** Un metodo può **astenersi** del tutto (nessuna divisione), proporre
   disattivato, cioè infinito);
 - **solo il lato alto** — _head/tail breaks_ segnala esclusivamente $H$ e lascia
   sempre $L = -\infty$ (§ 4.2.5);
+- **solo il lato basso** — _inverted head/tail breaks_ segnala esclusivamente
+  $L$ e lascia sempre $H = +\infty$ (§ 4.2.6);
 - **un solo lato, basso o alto** — il metodo dei piccoli gruppi isola di norma
-  solo la coda più piccola, lasciando l'altro lato disattivato (§ 4.2.8).
+  solo la coda più piccola, lasciando l'altro lato disattivato (§ 4.2.9).
 
 Le soglie dei metodi basati sulla distribuzione
-(percentili, Jenks, head/tail, Tukey, largest gap, robust z-score, piccoli gruppi) si calcolano **esclusivamente sui
+(percentili, Jenks, head/tail, inverted head/tail, Tukey, largest gap, robust z-score, piccoli gruppi) si calcolano **esclusivamente sui
 membri che hanno ricevuto almeno un'opinione** ($n_i > 0$). Se si includessero
 anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
@@ -288,7 +293,28 @@ Il metodo è ammesso con **da $4$ a $35$ membri visibili**; si astiene al di
 fuori di questo intervallo o quando non produce alcun taglio (valori tutti
 uguali).
 
-#### 4.2.6 Metodo di Tukey
+#### 4.2.6 Metodo inverted head/tail breaks
+
+**Intuizione:** è l'immagine speculare del metodo _head/tail_: nelle
+distribuzioni con una **coda rada verso il basso**, pochi valori molto bassi si
+staccano nettamente dalla massa dei valori più alti. Il metodo separa
+ricorsivamente la "coda" (la minoranza di valori piccoli) dal resto.
+
+A ogni passo si calcola la media dei valori correnti e si considera "coda"
+l'insieme dei valori **minori della media**. Si ripete sulla coda fino alla
+**condizione di arresto speculare**: la coda smette di essere una minoranza
+(raggiunge il $40\%$ dei valori correnti), oppure non resta nulla da dividere
+(tutti i valori sono uguali). Ogni media calcolata è un **punto di taglio**.
+
+- $L$ = il valore più alto della **coda finale** (l'ultima classe, la più
+  bassa);
+- $H = +\infty$: il lato alto non viene **mai** segnalato.
+
+Il metodo è ammesso con **da $4$ a $35$ membri visibili**; si astiene al di
+fuori di questo intervallo o quando non produce alcun taglio (valori tutti
+uguali).
+
+#### 4.2.7 Metodo di Tukey
 
 **Intuizione:** il classico criterio dei **valori anomali** basato sui
 quartili, gli "inner fences" del box plot. Detti
@@ -304,7 +330,7 @@ fuori di questo intervallo oppure se $IQR = 0$. Il metodo di Tukey è
 conservativo: segnala solo gli scostamenti davvero estremi
 e, nei gruppi omogenei, spesso non segnala nessuno.
 
-#### 4.2.7 Metodo binomiale (GB)
+#### 4.2.8 Metodo binomiale (GB)
 
 **Intuizione:** _che cosa produrrebbe il puro caso?_ Se ogni opinione fosse
 espressa a caso, il numero di opinioni ricevute da un membro seguirebbe una
@@ -337,13 +363,13 @@ non è applicabile).
 > $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
 > un'approssimazione ragionevole.
 
-#### 4.2.8 Metodo dei piccoli gruppi
+#### 4.2.9 Metodo dei piccoli gruppi
 
 **Intuizione:** con esattamente $4$ membri visibili i percentili sono
 inaffidabili e serve un criterio dedicato. Qui si cerca
 invece il **salto più grande** tra impatti consecutivi: se è un salto
 "vero" e domina gli altri, si segnala **solo la coda più piccola** che quel salto
-isola, lasciando il resto a impatto medio (così il bilancio può ancora decidere).
+isola, astenendosi sugli altri membri (non li vota né come bassi né come medi).
 
 Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, i salti tra
 valori consecutivi sono $g_i = x_i - x_{i-1}$ per $i = 1, \dots, N-1$. Siano
@@ -365,17 +391,19 @@ Se il salto è dominante, sia $k$ l'indice del valore **sopra** il salto massimo
   $L = x_{k-1}$ e $H = x_k$.
 
 Per esempio, con $[1, 1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e
-i tre $1$ restano medi; con $[1, 3, 3, 3]$ viene segnalato solo l'$1$ come
-impatto basso.
+il metodo si astiene sui tre $1$; con $[1, 3, 3, 3]$ viene segnalato solo l'$1$
+come impatto basso e il metodo si astiene sui tre $3$.
 
-#### 4.2.9 Applicazione delle soglie di ciascun metodo
+#### 4.2.10 Applicazione delle soglie di ciascun metodo
 
-Ogni metodo applica le **proprie** soglie a tutti i membri con $n_i > 0$ (gli
-altri sono già stati classificati al Passo 1):
+Ogni metodo applica le **proprie** soglie ai membri con $n_i > 0$ (gli altri
+sono già stati classificati al Passo 1):
 
-- **impatto basso**: $n_i \le L$;
-- **impatto alto**: $n_i \ge H$;
-- **impatto medio**: tutti gli altri.
+- **impatto basso**: $n_i \le L$, se il lato basso è attivo ($L$ finito);
+- **impatto alto**: $n_i \ge H$, se il lato alto è attivo ($H$ finito);
+- **impatto medio**: $L < n_i < H$, ma solo quando **entrambe** le soglie sono
+  finite. Se un lato è disattivato, i membri che non cadono nel lato attivo
+  **non** vengono votati: il metodo si astiene su di essi.
 
 Le soglie sono **inclusive** ($\le$ e $\ge$): se più membri si trovano
 esattamente su una soglia, vengono tutti classificati dalla stessa parte, e per
@@ -384,27 +412,34 @@ nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
 coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
 prevale sempre "basso".
 
-#### 4.2.10 La votazione tra i metodi
+#### 4.2.11 La votazione tra i metodi
 
 **Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
-"votare": ogni metodo classifica ogni membro e vince la classe scelta dalla
-**maggioranza**.
+"votare": ogni metodo classifica i membri che riesce a classificare e vince la
+classe scelta dalla **maggioranza**.
 
-1. Ogni metodo etichetta ciascun membro visibile con $-1$ (basso), $0$ (medio)
-   o $+1$ (alto); se un valore soddisfa entrambe le condizioni, prevale "basso".
+1. Ogni metodo etichetta con $-1$ (basso) i membri che ricadono nel lato basso
+   attivo e con $+1$ (alto) quelli che ricadono nel lato alto attivo; etichetta
+   con $0$ (medio) i membri compresi tra le due soglie **solo quando entrambe
+   sono finite**. Sui membri che non classifica (perché il lato corrispondente è
+   disattivato) il metodo **si astiene** e non esprime alcun voto. Se un valore
+   soddisfa entrambe le condizioni, prevale "basso".
 2. Per ogni numerosità supportata ($4 \le N \le 35$), almeno tre metodi sono
    ammessi in base al numero di dati. Un metodo ammesso che propone **nessuna
-   divisione** ($L = -\infty$, $H = +\infty$) **si astiene**: non partecipa al
-   voto. Se _tutti_ i metodi si astengono,
-   non c'è alcuna divisione e tutti restano a impatto medio.
-3. Per ogni membro si contano i voti dei **metodi non astenuti** per basso,
-   medio e alto. La classe finale è quella con **più voti**.
+   divisione** ($L = -\infty$, $H = +\infty$) **si astiene del tutto**: non
+   partecipa al voto. Se _tutti_ i metodi si astengono, non c'è alcuna divisione
+   e tutti restano a impatto medio.
+3. Per ogni membro si contano i voti espressi per basso, medio e alto. Un membro
+   per cui **nessun** metodo ha votato resta a impatto medio; negli altri casi la
+   classe finale è quella con **più voti**.
 4. **In caso di parità**, una classe non media (basso o alto) **prevale sulla
    media**; tra basso e alto prevale **basso**.
 
 In questo modo un metodo che non vede alcuna divisione non può annacquare il
 segnale degli altri: se un solo metodo riconosce una coda, la sua classificazione
-resta l'unica disponibile e viene adottata.
+resta l'unica disponibile e viene adottata. Allo stesso modo, un metodo a una
+sola soglia (come _head/tail_) vota solo per la coda che segnala e non "spinge"
+i restanti membri verso la classe media.
 
 **Perché la maggioranza? Il teorema della giuria di Condorcet.** Affidarsi alla
 maggioranza non è una scelta arbitraria: discende dal **teorema della giuria di
@@ -485,31 +520,32 @@ non è un'informazione affidabile.
 
 ## 5 Riepilogo dei parametri
 
-| Parametro                                  | Valore                                                                                      |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------- |
-| Metodi di soglia in competizione           | Jenks, largest gap, head/tail, percentili, Tukey, robust z-score, binomiale, piccoli gruppi |
-| Aggregazione tra i metodi                  | voto di maggioranza tra i metodi che dividono                                               |
-| Metodi che non dividono                    | si astengono (non votano)                                                                   |
-| Parità nel voto                            | non medio prevale su medio; basso prevale su alto                                           |
-| Votazione con meno di $4$ membri visibili  | saltata: tutti restano a impatto medio                                                      |
-| Comitato minimo per $4 \le N \le 35$       | almeno $3$ metodi ammessi in base alla numerosità                                           |
-| Membri visibili per percentili             | $10 \le N \le 35$                                                                           |
-| Membri visibili per Jenks e head/tail      | $4 \le N \le 35$                                                                            |
-| Membri visibili per Tukey e robust z-score | $7 \le N \le 35$                                                                            |
-| Membri del gruppo per binomiale            | $5 \le N \le 35$                                                                            |
-| Membri visibili per largest gap            | $4 \le N \le 6$                                                                             |
-| Membri visibili per piccoli gruppi         | $N = 4$                                                                                     |
-| Percentili per impatto basso / alto        | $10$ / $90$                                                                                 |
-| Controllo di separazione                   | coda disattivata se la soglia coincide col valore adiacente                                 |
-| Jenks: numero di classi                    | $3$ (bassa, media, alta)                                                                    |
-| Jenks: goodness of variance fit minima     | $GVF \ge 0{,}75$                                                                            |
-| Head/tail: quota massima della testa       | $0{,}4$ (testa sotto il $40\%$ dei valori)                                                  |
-| Tukey: "inner fences"                      | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                   |
-| Robust z-score: soglia                     | $3{,}5$ (scala MAD $1{,}4826$, minimo MAD $0{,}5$)                                          |
-| Binomiale: livello di significatività      | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda)                                           |
-| Piccoli gruppi: salto minimo tra impatti   | $2$ (gap minimo)                                                                            |
-| Rapporto soglia del bilancio, pochi dati   | $2{,}0$ (per $n_i \le 3$)                                                                   |
-| Rapporto soglia del bilancio, molti dati   | $1{,}5$ (per $n_i \ge 15$)                                                                  |
+| Parametro                                                 | Valore                                                                                                          |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Metodi di soglia in competizione                          | Jenks, largest gap, head/tail, inverted head/tail, percentili, Tukey, robust z-score, binomiale, piccoli gruppi |
+| Aggregazione tra i metodi                                 | voto di maggioranza tra i metodi che dividono                                                                   |
+| Metodi che non dividono                                   | si astengono (non votano)                                                                                       |
+| Metodi a una sola soglia                                  | votano solo la coda attiva; si astengono sugli altri membri                                                     |
+| Parità nel voto                                           | non medio prevale su medio; basso prevale su alto                                                               |
+| Votazione con meno di $4$ membri visibili                 | saltata: tutti restano a impatto medio                                                                          |
+| Comitato minimo per $4 \le N \le 35$                      | almeno $3$ metodi ammessi in base alla numerosità                                                               |
+| Membri visibili per percentili                            | $10 \le N \le 35$                                                                                               |
+| Membri visibili per Jenks, head/tail e inverted head/tail | $4 \le N \le 35$                                                                                                |
+| Membri visibili per Tukey e robust z-score                | $7 \le N \le 35$                                                                                                |
+| Membri del gruppo per binomiale                           | $5 \le N \le 35$                                                                                                |
+| Membri visibili per largest gap                           | $4 \le N \le 6$                                                                                                 |
+| Membri visibili per piccoli gruppi                        | $N = 4$                                                                                                         |
+| Percentili per impatto basso / alto                       | $10$ / $90$                                                                                                     |
+| Controllo di separazione                                  | coda disattivata se la soglia coincide col valore adiacente                                                     |
+| Jenks: numero di classi                                   | $3$ (bassa, media, alta)                                                                                        |
+| Jenks: goodness of variance fit minima                    | $GVF \ge 0{,}75$                                                                                                |
+| Head/tail e inverted head/tail: quota massima             | $0{,}4$ (testa/coda sotto il $40\%$ dei valori)                                                                 |
+| Tukey: "inner fences"                                     | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                                       |
+| Robust z-score: soglia                                    | $3{,}5$ (scala MAD $1{,}4826$, minimo MAD $0{,}5$)                                                              |
+| Binomiale: livello di significatività                     | $\alpha = 0{,}05$ a due code ($0{,}025$ per coda)                                                               |
+| Piccoli gruppi: salto minimo tra impatti                  | $2$ (gap minimo)                                                                                                |
+| Rapporto soglia del bilancio, pochi dati                  | $2{,}0$ (per $n_i \le 3$)                                                                                       |
+| Rapporto soglia del bilancio, molti dati                  | $1{,}5$ (per $n_i \ge 15$)                                                                                      |
 
 ## 6 Bonus e malus: distinguere dentro lo stesso status
 
@@ -588,7 +624,7 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dagli
-otto metodi.
+nove metodi.
 
 - **Jenks.** Le tre classi $[2, 2, 2]$, $[3]$ e $[5, 5]$ hanno varianza interna
   nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
@@ -599,6 +635,10 @@ otto metodi.
   ($2$ valori su $6$, meno del $40\%$). L'ultima classe (valori $> 3{,}17$)
   ha primo valore $5$: $H = 5$ e $L = -\infty$ (il lato basso non è mai
   segnalato).
+- **Inverted head/tail.** La media è $19/6 \approx 3{,}17$; la coda (valori
+  minori della media) è $[2, 2, 2, 3]$, cioè $4$ valori su $6$ (oltre il
+  $40\%$), quindi ci si ferma subito. La coda finale ha valore più alto $3$:
+  $L = 3$ e $H = +\infty$ (il lato alto non è mai segnalato).
 - **Percentili.** Con $N = 6 < 10$ il metodo non è ammesso e si astiene.
 - **Tukey.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
 - **Robust z-score.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
@@ -613,22 +653,26 @@ otto metodi.
 
 Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
 
-| Metodo         | Etichette                                  |
-| -------------- | ------------------------------------------ |
-| Jenks          | $+1, +1, -1, 0, -1, -1$                    |
-| largest gap    | $+1, +1, -1, 0, -1, -1$                    |
-| head/tail      | $+1, +1, 0, 0, 0, 0$                       |
-| percentili     | _si astiene_                               |
-| Tukey          | _si astiene_                               |
-| robust z-score | _si astiene_                               |
-| binomiale      | _si astiene_                               |
-| piccoli gruppi | _si astiene_                               |
-| **Voto**       | **alto, alto, basso, medio, basso, basso** |
+| Metodo             | Etichette                                  |
+| ------------------ | ------------------------------------------ |
+| Jenks              | $+1, +1, -1, 0, -1, -1$                    |
+| largest gap        | $+1, +1, -1, 0, -1, -1$                    |
+| head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot$       |
+| inverted head/tail | $\cdot, \cdot, -1, -1, -1, -1$             |
+| percentili         | _si astiene_                               |
+| Tukey              | _si astiene_                               |
+| robust z-score     | _si astiene_                               |
+| binomiale          | _si astiene_                               |
+| piccoli gruppi     | _si astiene_                               |
+| **Voto**           | **alto, alto, basso, medio, basso, basso** |
 
-Votano Jenks, largest gap e head/tail: tutti concordano sull'alto per $5$;
-Jenks e largest gap classificano $2$ come basso, mentre head/tail lo lascia
-medio. La maggioranza assegna quindi $5$ all'impatto alto, $2$ al basso e $3$
-al medio. Ne risulta:
+Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
+Votano Jenks, largest gap, head/tail e inverted head/tail. Per $5$ concordano
+Jenks, largest gap e head/tail sull'alto; per $2$ Jenks e largest gap votano
+basso, mentre inverted head/tail vota basso per ogni impatto $\le 3$ (membri
+$3$, $4$, $5$ e $6$). La maggioranza assegna quindi $5$ all'impatto alto, $2$ al
+basso e $3$ al medio (il membro $4$ resta medio: due voti "medio" contro uno
+"basso"). Ne risulta:
 
 - impatto basso ($\le 2$): membri $3$, $5$ e $6$;
 - impatto alto ($\ge 5$): membri $1$ e $2$;
@@ -713,7 +757,7 @@ ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
 $N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dagli
-otto metodi.
+nove metodi.
 
 - **Jenks.** Le tre classi $[1, 1, 1]$, $[2]$ e $[5, 5]$ hanno varianza interna
   nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
@@ -723,6 +767,10 @@ otto metodi.
 - **Head/tail.** La media è $15/6 = 2{,}5$; la testa è $[5, 5]$
   ($2$ valori su $6$, meno del $40\%$). L'ultima classe (valori $> 2{,}5$)
   ha primo valore $5$: $H = 5$ e $L = -\infty$.
+- **Inverted head/tail.** La media è $15/6 = 2{,}5$; la coda (valori minori
+  della media) è $[1, 1, 1, 2]$, cioè $4$ valori su $6$ (oltre il $40\%$),
+  quindi ci si ferma subito. La coda finale ha valore più alto $2$: $L = 2$ e
+  $H = +\infty$.
 - **Percentili.** Con $N = 6 < 10$ il metodo non è ammesso e si astiene.
 - **Tukey.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
 - **Robust z-score.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
@@ -733,21 +781,26 @@ otto metodi.
   significatività. Risultato: **nessuna divisione**.
 - **Piccoli gruppi.** Anche qui $N = 6 \ne 4$: il metodo si astiene.
 
-| Metodo         | Etichette                                  |
-| -------------- | ------------------------------------------ |
-| Jenks          | $-1, -1, -1, +1, +1, 0$                    |
-| largest gap    | $-1, -1, -1, +1, +1, 0$                    |
-| head/tail      | $0, 0, 0, +1, +1, 0$                       |
-| percentili     | _si astiene_                               |
-| Tukey          | _si astiene_                               |
-| robust z-score | _si astiene_                               |
-| binomiale      | _si astiene_                               |
-| piccoli gruppi | _si astiene_                               |
-| **Voto**       | **basso, basso, basso, alto, alto, medio** |
+| Metodo             | Etichette                                  |
+| ------------------ | ------------------------------------------ |
+| Jenks              | $-1, -1, -1, +1, +1, 0$                    |
+| largest gap        | $-1, -1, -1, +1, +1, 0$                    |
+| head/tail          | $\cdot, \cdot, \cdot, +1, +1, \cdot$       |
+| inverted head/tail | $-1, -1, -1, \cdot, \cdot, -1$             |
+| percentili         | _si astiene_                               |
+| Tukey              | _si astiene_                               |
+| robust z-score     | _si astiene_                               |
+| binomiale          | _si astiene_                               |
+| piccoli gruppi     | _si astiene_                               |
+| **Voto**           | **basso, basso, basso, alto, alto, medio** |
 
-Votano Jenks, largest gap e head/tail. Per $5$ concordano tutti sull'alto;
-Jenks e largest gap classificano $1$ come basso, mentre head/tail lo lascia
-medio. Ne risulta:
+Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
+Votano Jenks, largest gap, head/tail e inverted head/tail. Per $5$ concordano
+Jenks, largest gap e head/tail sull'alto; per $1$ Jenks e largest gap votano
+basso, mentre inverted head/tail vota basso per ogni impatto $\le 2$ (membri
+$1$, $2$, $3$ e $6$). La maggioranza assegna quindi $5$ all'impatto alto, $1$ al
+basso e $2$ al medio (il membro $6$ resta medio: due voti "medio" contro uno
+"basso"). Ne risulta:
 
 - impatto basso ($\le 1$): membri $1$, $2$ e $3$;
 - impatto alto ($\ge 5$): membri $4$ e $5$;

@@ -196,11 +196,13 @@ describe("getIndividualLevelMetrics", () => {
       members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
+    // Single-sided strategies now abstain on members they don't flag instead
+    // of voting them average, so Bob and Carol (low impact) are marginal.
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
       Alice: S.POPULAR,
-      Bob: S.APPRECIATED,
-      Carol: S.APPRECIATED,
+      Bob: S.MARGINAL,
+      Carol: S.MARGINAL,
       Dave: S.IGNORED,
       Eve: S.AMBIVALENT,
       Frank: S.IGNORED,
@@ -225,15 +227,18 @@ describe("getIndividualLevelMetrics", () => {
       members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
+    // Single-sided strategies now abstain on members they don't flag, so the
+    // 2/3 impact gap separates low (marginal) from high (popular) with no
+    // average band left over.
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
       Anna: S.POPULAR,
       Bruno: S.POPULAR,
-      Carla: S.APPRECIATED,
-      Dino: S.APPRECIATED,
+      Carla: S.POPULAR,
+      Dino: S.MARGINAL,
       Elsa: S.CONTROVERSIAL,
-      Franco: S.DISLIKED,
-      Gina: S.APPRECIATED,
+      Franco: S.MARGINAL,
+      Gina: S.MARGINAL,
       Hugo: S.MARGINAL,
       Irene: S.IGNORED,
       Juri: S.IGNORED,

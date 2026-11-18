@@ -2,29 +2,30 @@
 // SPDX-License-Identifier: MIT
 
 import * as np from "numpy-ts";
-import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import { IMPACT_STRATEGIES } from "@/analysis/moreno/metrics/sociometricStatus/impact/registry.js";
 
 // ============================================================================
 // IMPACT CLASSIFICATION
-// Each threshold strategy classifies every member low/average/high; the final
-// impact class is the majority vote of the strategies that propose a split.
+// Each threshold strategy votes for the members it flags on a finite side;
+// the final impact class is the majority vote across the active strategies.
 // ============================================================================
 
 /**
- * Map values to -1 (low), 0 (average) or +1 (high) for a { low, high } pair.
- * Low wins when both thresholds would apply.
+ * Whether a { low, high } pair proposes at least one numeric cutoff.
+ * Infinite bounds mean "that side is never flagged"; a pair with two infinite
+ * bounds (NO_SPLIT) proposes no split and abstains from the vote.
  *
- * @param {import("numpy-ts").NDArray} values - Sorted visible impacts.
  * @param {{ low: number, high: number }} thresholds - Inclusive cutoffs.
- * @returns {boolean} Whether at least one value is outside the thresholds.
+ * @returns {boolean} True when at least one bound is finite.
  */
-const classifiesAnyValue = (values, { low, high }) =>
-  values.less_equal(low).logical_or(values.greater_equal(high)).sum() > 0;
+const hasNumericThreshold = ({ low, high }) => isFinite(low) || isFinite(high);
 
 /**
- * Classify every member as low / high / average for one threshold pair.
- * Infinite bounds mean "that side is never flagged".
+ * Classify members for one threshold pair. Each finite bound flags its side
+ * (low when impact <= low, high when impact >= high); an infinite bound flags
+ * nothing on that side. "Average" is proposed only when both bounds are finite
+ * (a real middle band); otherwise the strategy abstains on the members it does
+ * not flag.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
  * @param {{ low: number, high: number }} thresholds - Inclusive cutoffs.
@@ -35,14 +36,38 @@ const classifiesAnyValue = (values, { low, high }) =>
  * }}
  */
 const classifyImpact = (impact, thresholds) => {
-  const none = impact.less(0); // all-false boolean array (impact is non-negative)
-  const isLowImpact = isFinite(thresholds.low) ? impact.less_equal(thresholds.low) : none;
-  let isHighImpact = isFinite(thresholds.high) ? impact.greater_equal(thresholds.high) : none;
+  const none = np.zeros(impact.shape).astype("bool"); // all-false boolean array (impact is non-negative)
+  const hasLow = isFinite(thresholds.low);
+  const hasHigh = isFinite(thresholds.high);
+
+  const isLowImpact = hasLow ? impact.less_equal(thresholds.low) : none;
+  let isHighImpact = hasHigh ? impact.greater_equal(thresholds.high) : none;
 
   // Low wins deterministically if both ever apply.
   isHighImpact = isHighImpact.logical_and(isLowImpact.logical_not());
-  const isAverageImpact = isLowImpact.logical_or(isHighImpact).logical_not();
+
+  // A single-sided strategy (only one finite bound) abstains on the rest
+  // instead of voting them average, so it only votes for its flagged tail.
+  const isAverageImpact =
+    hasLow && hasHigh ? isLowImpact.logical_or(isHighImpact).logical_not() : none;
+
   return { isLowImpact, isHighImpact, isAverageImpact };
+};
+
+/**
+ * Classify every member as average (no low or high impact).
+ *
+ * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
+ * @returns {{
+ *   isLowImpact: import("numpy-ts").NDArray,
+ *   isHighImpact: import("numpy-ts").NDArray,
+ *   isAverageImpact: import("numpy-ts").NDArray,
+ * }}
+ */
+const classifyAllAverage = (impact) => {
+  const none = np.zeros(impact.shape).astype("bool");
+  const all = np.ones(impact.shape).astype("bool");
+  return { isLowImpact: none, isHighImpact: none, isAverageImpact: all };
 };
 
 /**
@@ -61,7 +86,8 @@ const countVotes = (booleanArrays) =>
 
 /**
  * Classify impact by majority vote across the strategies that propose a split.
- * A strategy that abstains does not vote; if all abstain, everyone is average.
+ * Each strategy votes only for the members it flags on a finite side and
+ * abstains on the rest; if no strategy votes for a member, it is average.
  * Tie-breaks: a non-average class beats average, and low beats high.
  *
  * @param {import("numpy-ts").NDArray} impact - Opinions received (rp + rr).
@@ -86,18 +112,15 @@ export const classifyImpactByVote = (impact, impactVisibleSorted) => {
   // With few visible impacts there is no meaningful spread, so
   // skip the vote and classify everyone as average.
   if (impactVisibleSorted.size < 4) {
-    return { ...classifyImpact(impact, NO_SPLIT), impactThresholds };
+    return { ...classifyAllAverage(impact), impactThresholds };
   }
 
-  // Strategies that classify at least one value vote; the rest abstain.
-  const active = impactThresholds.filter(({ thresholds }) =>
-    classifiesAnyValue(impactVisibleSorted, thresholds),
-  );
+  // Strategies that propose at least one numeric cutoff vote; the rest abstain.
+  const active = impactThresholds.filter(({ thresholds }) => hasNumericThreshold(thresholds));
 
-  // If no active strategies is able to classify the impact,
-  // use the default NO_SPLIT strategy.
+  // If no strategy proposes a numeric cutoff, classify everyone as average.
   if (active.length === 0) {
-    return { ...classifyImpact(impact, NO_SPLIT), impactThresholds };
+    return { ...classifyAllAverage(impact), impactThresholds };
   }
 
   // Do the classification for each active strategy.
@@ -108,11 +131,15 @@ export const classifyImpactByVote = (impact, impactVisibleSorted) => {
   const highVotes = countVotes(perStrategy.map(({ isHighImpact }) => isHighImpact));
   const averageVotes = countVotes(perStrategy.map(({ isAverageImpact }) => isAverageImpact));
 
-  // Average wins only with a strict majority; otherwise a non-average class
-  // beats average on ties, and low beats high on a low/high tie.
+  // Members nobody voted on (every active strategy abstained) are average.
+  const noVotes = lowVotes.add(averageVotes).add(highVotes).equal(0);
+
+  // Average wins with a strict majority (or when nobody voted); otherwise a
+  // non-average class beats average on ties, and low beats high on a low/high tie.
   const isAverageImpact = averageVotes
     .greater(lowVotes)
-    .logical_and(averageVotes.greater(highVotes));
+    .logical_and(averageVotes.greater(highVotes))
+    .logical_or(noVotes);
   const isLowImpact = isAverageImpact.logical_not().logical_and(lowVotes.greater_equal(highVotes));
   const isHighImpact = isAverageImpact.logical_not().logical_and(highVotes.greater(lowVotes));
 
