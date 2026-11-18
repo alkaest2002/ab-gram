@@ -19,13 +19,13 @@ const rankColumn = (column, higherRawScoreIsBetter) => {
   // `apply_along_axis` hands this callback a strided view into the matrix.
   // `unique_inverse` walks the underlying buffer contiguously and ignores
   // strides, so copy first to make the column contiguous.
-  const contiguous = column.copy();
+  const contiguousColumn = column.copy();
 
   // Compute unique values and inverse indices for the column.
-  const { values, inverse_indices } = np.unique_inverse(contiguous);
+  const { values, inverse_indices } = np.unique_inverse(contiguousColumn);
 
   // Convert inverse indices to a NumPy array for easier manipulation.
-  const npValues = np.array(inverse_indices, "int32");
+  const npValues = np.array(inverse_indices);
 
   // With higher-is-better, the largest value maps to rank 1; otherwise the
   // smallest value does. Either way, ties share a rank.
