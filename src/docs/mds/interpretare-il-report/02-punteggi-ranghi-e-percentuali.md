@@ -5,8 +5,8 @@ order: 2
 
 Il report presenta i risultati con tre tipi di valori:
 
-- **Punteggio grezzo** — il valore calcolato direttamente sui dati, senza
-  trasformazioni. Può essere un conteggio (numero di membri, di scelte, di
+- **Punteggio grezzo** — il valore della metrica prima della sua presentazione
+  come rango o percentuale. Può essere un conteggio (numero di membri, di scelte, di
   rifiuti) oppure un indice compreso tra 0 e 1 (come le centralità SNA).
 - **Rango** — la posizione del membro nella classifica del gruppo per una certa
   metrica, scritta nella forma `rango / rango massimo`. Il valore più alto
@@ -58,19 +58,21 @@ mostrati con una cifra decimale):
 
 Classifica le relazioni in sette tipi, raggruppati in tre fasce (relazioni sane,
 potenzialmente problematiche e problematiche). Per ogni tipo e per ogni fascia
-mostra un **conteggio grezzo**: quante coppie di membri ricadono in quella
-categoria. Non ci sono ranghi né percentuali.
+mostra un **conteggio grezzo** delle direzioni elencate. Una coppia reciproca
+può produrre due voci; una direzione può comparire in più tipi se sono presenti
+sia scelte sia rifiuti. Non si tratta quindi di un conteggio di coppie uniche.
+Non ci sono ranghi né percentuali.
 
 ## 6 Strutture interne alla rete delle scelte
 
-Per ogni categoria (diadi simmetriche, clique, componenti debolmente connesse,
-fortemente connesse e fortemente reciproche) mostra il **numero di componenti
-individuate**: un punteggio grezzo espresso come conteggio.
+Per ogni categoria di strutture riportata (diadi, clique, componenti e
+comunità di Louvain) mostra il **numero di strutture individuate**:
+un punteggio grezzo espresso come conteggio.
 
 ## 7 Pagine individuali dei membri
 
 È la pagina più ricca di informazioni: combina punteggi grezzi, ranghi e percentuali.
-Si divide in quattro blocchi.
+Si divide in cinque blocchi.
 
 ### 7.1 Grafico ego
 
@@ -137,23 +139,32 @@ rango né percentuale.
 
 Il loro scopo è distinguere due membri che ricadono nella **stessa** categoria
 di status: a parità di etichetta, un bonus più alto (o un malus più basso)
-indica una posizione più favorevole nel gruppo. Il calcolo e il significato sono
+descrive un diverso peso delle nomine ricevute, non un valore personale né
+una misura complessiva del benessere. L'ordine è interpretabile come priorità
+solo se previsto dalla consegna. Il calcolo e il significato sono
 spiegati nella pagina dedicata allo status sociometrico.
 
-## 8 Glossario
+## 8 Sintesi
+
+Riunisce bonus, malus, status sociometrico e segnalazioni relative alle
+centralità. I puntini evidenziano posizioni nella classifica, non nuovi
+punteggi: non vanno sommati per costruire una graduatoria complessiva.
+
+## 9 Glossario
 
 Non contiene punteggi. Riporta l'elenco delle sigle usate nelle pagine e il loro
 significato esteso.
 
-## 9 In sintesi
+## 10 In sintesi
 
-| Pagina                          |                                Punteggi grezzi                                | Ranghi |                                Percentuali                                |
-| ------------------------------- | :---------------------------------------------------------------------------: | :----: | :-----------------------------------------------------------------------: |
-| Copertina                       |                                       –                                       |   –    |                                     –                                     |
-| Elenco dei membri               |                                       –                                       |   –    |                                     –                                     |
-| Scelte e rifiuti                |                             identificativi (+/-)                              |   –    |                                     –                                     |
-| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> |   –    | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
-| Tipi di relazione               |  conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span>   |   –    |                                     –                                     |
-| Strutture interne della rete    | conteggi <br><span class="text-xs text-muted">strutture per categoria</span>  |   –    |                                     –                                     |
-| Pagine individuali              |                              conteggi e decimali                              |   sì   |                                    sì                                     |
-| Glossario                       |                                       –                                       |   –    |                                     –                                     |
+| Pagina                          |                                Punteggi grezzi                                |        Ranghi         |                                Percentuali                                |
+| ------------------------------- | :---------------------------------------------------------------------------: | :-------------------: | :-----------------------------------------------------------------------: |
+| Copertina                       |                                       –                                       |           –           |                                     –                                     |
+| Elenco dei membri               |                                       –                                       |           –           |                                     –                                     |
+| Scelte e rifiuti                |                     – (solo identificativi, non punteggi)                     |           –           |                                     –                                     |
+| Rete delle scelte / dei rifiuti | conteggi<br><span class="text-xs text-muted">membri, legami, reciproci</span> |           –           | sì <br><span class="text-xs text-muted">indici di rete e di gruppo</span> |
+| Tipi di relazione               |  conteggi <br><span class="text-xs text-muted">per tipo e per fascia</span>   |           –           |                                     –                                     |
+| Strutture interne della rete    | conteggi <br><span class="text-xs text-muted">strutture per categoria</span>  |           –           |                                     –                                     |
+| Pagine individuali              |                              conteggi e decimali                              |          sì           |                                    sì                                     |
+| Sintesi                         |                                 bonus e malus                                 | segnalazioni di rango |                                     –                                     |
+| Glossario                       |                                       –                                       |           –           |                                     –                                     |

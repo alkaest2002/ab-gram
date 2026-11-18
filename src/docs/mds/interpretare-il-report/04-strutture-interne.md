@@ -3,76 +3,66 @@ title: Strutture interne
 order: 4
 ---
 
-Oltre alle metriche, la mappa del gruppo (in cui i membri sono
-punti e le scelte sono frecce) può essere scomposta in parti più piccole. Queste
-**strutture** rivelano come il gruppo è organizzato al suo interno: ci
-sono coppie affiatate, sotto-gruppi molto compatti o che non
-hanno alcun contatto tra loro. Ne vediamo quattro categorie: le diadi simmetriche,
-le clique, le componenti connesse e le comunità di Louvain.
+Oltre alle metriche, il report descrive alcune **strutture interne** della rete
+delle scelte: diadi simmetriche, clique, componenti connesse e comunità di
+Louvain. Queste strutture aiutano a esplorare come si distribuiscono i legami
+rilevati, ma non dimostrano, da sole, amicizia, affiatamento o appartenenza a
+un sottogruppo nella vita quotidiana.
 
 Come nella sezione precedente, $a_{ij} = 1$ significa che il membro $i$
 **sceglie** il membro $j$, e $a_{ij} = 0$ che non lo sceglie.
 
 ## Che cos'è una struttura interna
 
-Con **struttura interna** indichiamo una parte del gruppo — una coppia, una componente connessa
-o una comunità — che possiamo isolare dal resto per studiarla. Le strutture
-descritte in questa pagina individuano queste parti in modi diversi: alcune
-seguono regole precise (le diadi, le clique e le componenti connesse), altre
-nascono da un algoritmo che cerca la suddivisione migliore (le comunità di
-Louvain).
+Con **struttura interna** indichiamo un insieme di membri individuato nella
+rete secondo un criterio preciso. Diadi, clique e componenti connesse hanno
+definizioni matematiche esatte; Louvain è invece un algoritmo euristico che
+cerca una suddivisione con modularità elevata, senza garantire di trovare la
+migliore possibile.
 
-In ogni caso si tratta di **ipotesi, non di certezze**. Gli algoritmi che le
-individuano sono strumenti **euristici**: suggeriscono strutture plausibili a
-partire dai dati, ma non osservano direttamente le relazioni reali. Anche quando
-la regola è esatta (come per le clique), il risultato va letto come un
-**candidato da verificare** osservando il gruppo nella realtà.
+Occorre distinguere due piani: **la struttura presente nei dati** e **il suo
+significato nel gruppo reale**. Il secondo richiede un confronto con le
+osservazioni e con il contesto della rilevazione. Ogni risultato dipende dalla
+domanda posta, dalle risposte raccolte e dal momento in cui sono state espresse.
 
 ## Perché analizziamo solo le scelte
 
-Tutte le strutture di questa sezione si basano sulle **scelte** ($a_{ij} = 1$),
-cioè sui legami positivi della matrice $A$. Il motivo è di fondo: un sotto-gruppo
-è una struttura che sta insieme per **affinità** o **attrazione**, e l'affinità
-si manifesta con una scelta, non con un rifiuto. Un insieme di persone che si
-rifiutano a vicenda non forma un "struttura affiatata": è solo un insieme di
-persone in conflitto.
+Le strutture presentate in questa sezione si basano sulle **scelte**, cioè sui
+legami positivi della matrice $A$. L'obiettivo è descrivere le connessioni
+espresse rispetto al criterio del questionario.
 
-Le stesse definizioni valgono formalmente anche per i rifiuti (matrice $B$), ma
-il risultato sarebbe fuorviante: dire che due membri "si raggiungono" lungo una
-catena di rifiuti, o che formano una "clique" perché tutti si rifiutano a
-vicenda, descrive un'ostilità, non una struttura di appartenenza. Per questo,
-per diadi, clique e componenti connesse consideriamo solo le scelte.
+Anche una rete di rifiuti può essere analizzata matematicamente, ma richiede
+un'interpretazione diversa: una catena di rifiuti non equivale a un percorso
+di affinità. Inoltre, un rifiuto riferito a un'attività specifica non dimostra,
+da solo, ostilità o conflitto tra le persone.
 
 ## 1 Diadi
 
-Una **diade** è una coppia di membri che si scelgono a vicenda:
+In questa pagina, una **diade simmetrica** è una coppia di membri che si
+scelgono a vicenda:
 
 $$
 a_{ij} = a_{ji} = 1
 $$
 
-In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$.
+In parole: $i$ sceglie $j$ **e** $j$ sceglie $i$. È la forma più semplice di
+reciprocità nelle risposte, non una conferma della qualità del rapporto.
 
-È l'unità più piccola possibile di reciprocità: un legame "confermato" da
-entrambe le parti, e non solo dichiarato da una.
-
-Si distingue così dalla **diade asimmetrica**: una coppia in cui uno solo dei
-due sceglie l'altro, cioè
+Si distingue dalla **diade asimmetrica**, in cui uno solo dei due sceglie
+l'altro:
 
 $$
 a_{ij} = 1 \quad \text{e} \quad a_{ji} = 0
 $$
 
-(oppure il caso speculare). In parole: c'è una freccia in una sola direzione.
-Le diadi asimmetriche **non vengono riportate** in questa pagina: il report
-mostra soltanto le diadi reciproche, perché una scelta a senso unico non
-basta a indicare un legame condiviso.
+Vale anche il caso speculare. Il report delle diadi mostra soltanto le coppie
+reciproche. L'assenza di reciprocità non implica necessariamente un rifiuto:
+una mancata scelta può dipendere anche dai limiti del questionario.
 
 ## 2 Clique
 
-Una **clique** è una struttura in cui ognuno è collegato direttamente a tutti
-gli altri, senza considerare chi ha scelto chi. Pensa a una cerchia di amici in
-cui tutti si conoscono personalmente, e non solo tramite qualcuno in comune.
+Una **clique** è un insieme in cui ogni coppia di membri è collegata da almeno
+una scelta, senza richiedere che sia reciproca:
 
 $$
 \forall\, i, j \in C,\ i \neq j : \quad a_{ij} = 1 \ \lor\ a_{ji} = 1
@@ -80,195 +70,153 @@ $$
 
 Per leggere la formula:
 
-- $C$ è l'insieme di membri che stiamo esaminando;
+- $C$ è l'insieme di membri esaminato;
 - $\forall$ significa "per ogni" e $\lor$ significa "oppure";
-- quindi: per **ogni** coppia di membri diversi $i$ e $j$ di $C$, almeno uno dei
-  due sceglie l'altro.
+- per **ogni** coppia di membri diversi di $C$, almeno uno sceglie l'altro.
 
-Basta che il legame esista in **una sola direzione**: non serve che la scelta
-sia reciproca.
+Si parla di clique **massimale** quando non è possibile aggiungere un altro
+membro mantenendo questa proprietà. "Massimale" non significa necessariamente
+"la più grande della rete".
 
-Due precisazioni utili:
-
-- di solito si cercano le clique **massimali**, cioè quelle a cui non si può
-  aggiungere nessun altro membro senza perdere la proprietà (altrimenti ogni
-  sottoinsieme di una clique sarebbe a sua volta una clique);
-- una coppia collegata è tecnicamente una clique di due membri, ma è un caso
-  banale. In pratica l'attenzione va alle clique di **almeno tre** membri.
-
-Le clique mettono in evidenza i sottogruppi **più compatti**, quelli in cui le
-relazioni sono particolarmente fitte.
+Una coppia collegata è tecnicamente una clique di due membri; per esplorare i
+sottogruppi, l'interesse si concentra soprattutto sugli insiemi di almeno tre
+membri. Le clique descrivono una trama fitta di scelte dirette, non
+necessariamente una cerchia di amici o un gruppo affiatato.
 
 ## 3 Componenti connesse
 
-Una **componente connessa** è un insieme di membri che sono _raggiungibili_ tra
-loro: da ciascuno si può arrivare a ciascun altro passando, se serve, per altri
-membri intermedi. È come una rete stradale: due città appartengono allo stesso
-"blocco" se c'è una strada che le collega, anche passando per altre città.
+Una **componente connessa** è un insieme massimale di membri collegati da
+percorsi secondo un dato criterio. Un percorso può passare attraverso più
+membri intermedi: non richiede una scelta diretta tra ogni coppia.
 
-Esistono tre varianti, a seconda di quanto si tiene conto della direzione delle
-scelte (cioè del verso delle frecce):
+Si distinguono tre varianti:
 
-- **Componenti deboli**: ogni membro raggiunge ogni altro **ignorando la
-  direzione** dei legami. Le frecce si possono percorrere in qualsiasi verso.
-- **Componenti forti**: ogni membro raggiunge ogni altro **seguendo la
-  direzione** dei legami. Le frecce si possono percorrere solo nel verso in cui
-  sono disegnate.
-- **Componenti forti con soli legami reciproci**: come le componenti forti, ma
-  usando **solo le relazioni reciproche** ($a_{ij} = a_{ji} = 1$), cioè quelle
-  in cui entrambi si scelgono. Una scelta a senso unico non conta come
-  collegamento. Poiché un legame reciproco va in entrambe le direzioni, qui la
-  direzione non pesa più: si tratta semplicemente dei "blocchi" che si formano
-  unendo le diadi simmetriche.
+- **Componenti deboli**: tutti i membri sono raggiungibili tra loro
+  **ignorando la direzione** delle scelte.
+- **Componenti forti**: tutti i membri sono raggiungibili tra loro
+  **seguendo la direzione** delle scelte.
+- **Componenti forti con soli legami reciproci**: si usano soltanto i legami
+  per cui $a_{ij} = a_{ji} = 1$. Poiché ogni collegamento vale nei due versi,
+  queste componenti sono gli insiemi connessi ottenuti unendo le diadi
+  simmetriche.
 
 ### 3.1 Un esempio
 
-Immagina tre membri in catena: il membro $1$ sceglie il $2$, e il $2$ sceglie
-il $3$ (nessun'altra scelta).
+Immagina tre membri e nessun'altra scelta oltre a queste:
 
 $$
 1 \rightarrow 2 \rightarrow 3
 $$
 
-- Come **componente debole** il gruppo è unito: ignorando le frecce, tutti sono
+- C'è una sola **componente debole**: ignorando la direzione, tutti sono
   collegati.
-- Come **componente forte** non lo è: dal membro $1$ si arriva al $3$ seguendo le
-  frecce, ma dal $3$ non si può tornare indietro. Le componenti forti sono tre,
-  una per ciascun membro: $\{1\}$, $\{2\}$, $\{3\}$.
-- Come componente forte con **soli legami reciproci** non lo è nemmeno, perché
-  non c'è nessuna scelta reciproca.
+- Le **componenti forti** sono tre: $\{1\}$, $\{2\}$ e $\{3\}$. Seguendo le
+  frecce, dal membro $3$ non si può tornare agli altri.
+- Anche considerando **solo i legami reciproci** si ottengono tre componenti
+  di un solo membro, perché non ci sono scelte reciproche.
 
-### 3.2 Quanto è severo il criterio
+Un membro può quindi formare una componente da solo anche se ha scelte in
+entrata o in uscita: dipende dal criterio adottato.
 
-Le tre varianti sono annidate: ogni legame reciproco è anche un legame
-orientato, e ogni legame orientato è anche un legame se ignoriamo la direzione.
-Di conseguenza:
+### 3.2 Come si confrontano i criteri
+
+Le componenti sono annidate:
 
 $$
 \text{comp. forte reciproca} \ \subseteq\ \text{comp. forte} \ \subseteq\ \text{comp. debole}
 $$
 
-Cioè ogni componente forte con soli legami reciproci sta dentro una componente
-forte, e ogni componente forte sta dentro una componente debole. Più il criterio
-è severo, più il legame tra i membri deve essere solido perché li si consideri
-parte della stessa componente, e più il gruppo tende a spezzarsi in pezzi
-piccoli.
+Ogni componente forte con soli legami reciproci è contenuta in una componente
+forte, a sua volta contenuta in una componente debole. Un criterio più
+restrittivo può dividere la rete in insiemi più piccoli, ma non misura una
+maggiore "solidità" affettiva dei rapporti.
 
-Le componenti aiutano così a capire se il gruppo è **unito** oppure **diviso in
-sottogruppi separati**, senza contatti tra loro.
+Solo tra **componenti deboli distinte** non esistono scelte di collegamento,
+in nessuna direzione, nei dati raccolti. Tra componenti forti distinte possono
+invece esserci scelte a senso unico. In entrambi i casi, non si può concludere
+che nella realtà manchino contatti o comunicazioni.
 
 ## 4 Clique o componenti: che differenza c'è?
 
-Clique e componenti connesse descrivono due idee diverse di "stare insieme", e
-vanno tenute distinte.
+### 4.1 Legame diretto o percorso
 
-### 4.1 Cosa richiedono
-
-- **La clique chiede un legame diretto tra ogni coppia.** Se $i$ e $j$ fanno
-  parte della stessa clique, tra loro c'è per forza una scelta, in almeno una
-  delle due direzioni. Non basta conoscersi "tramite qualcuno".
-- **La componente chiede solo che esista un percorso.** Due membri possono
-  appartenere alla stessa componente senza essersi mai scelti direttamente,
-  purché li colleghi una catena di intermediari.
-
-Per questo le componenti connesse sono strutture **meno compatte** delle clique: possono
-contenere legami radi e lunghe catene di intermediari, mentre una clique impone
-un legame diretto tra ogni coppia.
+- **La clique richiede una scelta diretta tra ogni coppia**, in almeno una
+  direzione.
+- **La componente richiede un percorso**, secondo il criterio adottato.
+  Può quindi contenere lunghe catene di intermediari e poche scelte dirette.
 
 ### 4.2 Sovrapposizione
 
-Le componenti conesse **dividono** il gruppo: ogni membro appartiene a una sola
-componente (un membro isolato forma una componente da solo). Le clique invece
-possono **sovrapporsi**: lo stesso membro può far parte di più clique, e molti
-membri possono non far parte di nessuna clique di dimensione apprezzabile.
+Per ciascuno dei tre criteri, le componenti **dividono** l'insieme dei membri:
+ognuno appartiene a una sola componente. Le clique possono invece
+**sovrapporsi**: lo stesso membro può appartenere a più clique, oppure a
+nessuna clique di almeno tre membri.
 
-### 4.3 Una clique non è per forza una componente forte
+### 4.3 Una clique non è necessariamente una componente forte
 
-Qui conta la direzione. Nella nostra definizione di clique basta una scelta in
-un solo verso, mentre le componenti forti richiedono di poter percorrere le
-frecce nel loro verso.
+Considera le sole scelte $1 \rightarrow 2$, $1 \rightarrow 3$ e
+$2 \rightarrow 3$. L'insieme $\{1, 2, 3\}$ è una clique, perché ogni coppia è
+collegata. Non è una componente forte, perché dal membro $3$ non si raggiungono
+gli altri. In questa rete di tre membri è invece una componente debole.
 
-Esempio: il membro $1$ sceglie il $2$ e il $3$, e il $2$ sceglie il $3$.
+### 4.4 Una componente non è necessariamente una clique
 
-- Ogni coppia è collegata ($1$-$2$, $1$-$3$, $2$-$3$), quindi $\{1, 2, 3\}$ è una
-  **clique**.
-- Ma dal $3$ non si raggiunge nessuno, quindi **non** è una componente forte.
-  È invece una componente debole.
-
-### 4.4 Una componente non è per forza una clique
-
-Esempio: quattro membri in cerchio, con $1$ che sceglie il $2$, il $2$ il $3$,
-il $3$ il $4$ e il $4$ l'$1$.
+Considera il ciclo:
 
 $$
 1 \rightarrow 2 \rightarrow 3 \rightarrow 4 \rightarrow 1
 $$
 
-- Seguendo le frecce ognuno raggiunge tutti gli altri, quindi è una
-  **componente forte**.
-- Ma $1$ e $3$ non si sono scelti direttamente (e lo stesso vale per $2$ e $4$),
-  quindi **non** è una clique.
+Tutti raggiungono tutti seguendo le frecce: è una componente forte. Non è una
+clique, perché mancano scelte dirette tra $1$ e $3$ e tra $2$ e $4$.
 
-### 4.5 Il legame tra le due nozioni
-
-Una sola implicazione vale sempre: **ogni clique sta dentro una componente
-debole**, perché i suoi membri sono già collegati direttamente tra loro. Non
-vale il contrario: una componente debole può essere molto più grande, e molto
-più rada, di qualunque clique al suo interno.
-
-Attenzione: per questo motivo la clique **non** va inserita nella scala di
-severità vista sopra (reciproca → forte → debole). È una struttura di tipo
-diverso, che misura la compattezza e non la raggiungibilità.
-
-|                        | Clique                                  | Componente debole                             | Componente forte                              |
-| ---------------------- | --------------------------------------- | --------------------------------------------- | --------------------------------------------- |
-| Cosa richiede          | Legame diretto tra ogni coppia          | Percorso tra ogni coppia, ignorando le frecce | Percorso tra ogni coppia, seguendo le frecce  |
-| Direzione delle scelte | Non conta                               | Non conta                                     | Conta                                         |
-| Sovrapposizione        | Possibile                               | No, dividono il gruppo                        | No, dividono il gruppo                        |
-| Risponde alla domanda  | "Chi è molto legato a tutti gli altri?" | "Il gruppo è in un pezzo solo?"               | "Si può arrivare a tutti seguendo le scelte?" |
+Ogni clique è contenuta in una componente debole, ma non vale il contrario.
+La clique non va quindi inserita nella scala reciproca → forte → debole:
+descrive la presenza di collegamenti diretti, non soltanto la raggiungibilità.
 
 ## 5 Comunità di Louvain
 
-Le strutture viste finora (diadi, clique, componenti connesse) seguono una regola netta e
-deterministica: un membro o soddisfa la condizione, o non la soddisfa. Le
-**comunità di Louvain** seguono un'idea diversa: invece di imporre una regola
-fissa, l'algoritmo cerca la suddivisione del gruppo che **massimizza la
-modularità**, cioè quella in cui i legami sono più densi _dentro_ ogni comunità
-di quanto ci si aspetterebbe se fossero distribuiti a caso.
+L'algoritmo di **Louvain** cerca una suddivisione della rete con **modularità**
+elevata: privilegia comunità nelle quali le scelte interne sono più numerose
+di quanto previsto da un modello di riferimento che tiene conto dei gradi
+dei nodi.
 
-In pratica, Louvain raggruppa i membri in modo da avere **tante scelte dentro
-ogni gruppo** e **poche scelte tra gruppi diversi**.
+Non cerca gruppi necessariamente separati: tra comunità diverse possono
+esistere scelte. Ogni membro viene assegnato a una sola comunità nella
+suddivisione ottenuta.
 
 ### 5.1 La modularità Q
 
-La qualità della suddivisione trovata è misurata da un numero chiamato
-**modularità** ($Q$). Non ha un'unità di misura: serve solo a confrontare quanto
-la suddivisione è "migliore del caso".
+La **modularità** ($Q$) è un indice senza unità di misura che valuta una
+suddivisione rispetto al modello di riferimento:
 
-- $Q$ vicino a $0$: i legami sono distribuiti quasi come se fossero casuali; il
-  gruppo non mostra una struttura a comunità marcata.
-- $Q$ più alto: i legami sono concentrati dentro le comunità; la struttura è
-  più netta.
+- $Q$ vicino a $0$: la suddivisione presenta uno scarto ridotto rispetto al
+  riferimento;
+- $Q$ positivo e più alto: le scelte interne alle comunità sono più
+  concentrate rispetto a quel riferimento.
 
-### 5.2 Cosa cambia rispetto a diadi, clique e componenti connesse
+$Q$ non misura il benessere del gruppo e non dimostra, da solo, che esistano
+sottogruppi socialmente significativi. Un valore vicino a zero non prova che
+le relazioni siano casuali; un valore elevato non equivale a un test di
+significatività. I confronti tra reti diverse richiedono cautela.
 
-- Le diadi, clique e componenti connesse **dividono** il gruppo seguendo una regola fissa (esiste un
-  percorso?) e ogni membro appartiene a una sola componente.
-- Le comunità di Louvain nascono da una **ottimizzazione**: non c'è una regola
-  unica, ma la suddivisione che meglio separa i legami interni da quelli esterni.
-- Anche qui ogni membro appartiene a **una sola** comunità, ma i confini possono
-  cambiare se cambia la rete.
+### 5.2 Cosa cambia rispetto alle altre strutture
 
-Le comunità di Louvain aiutano a cogliere l'organizzazione **d'insieme** del
-gruppo quando i confini tra i sottogruppi non sono ovvi.
+Diadi, clique e componenti seguono definizioni esatte, ma **non tutte dividono
+il gruppo**: diadi e clique possono sovrapporsi. Le comunità di Louvain
+costituiscono invece una partizione ottenuta tramite ottimizzazione euristica.
+
+La suddivisione può variare tra esecuzioni e al cambiare dei dati. È utile per
+formulare ipotesi sull'organizzazione della rete, non per attribuire ai membri
+appartenenze rigide o identità stabili.
 
 ## 6 In sintesi
 
-| Struttura                                  | Cosa richiede                                         | Quanto è compatta                                         |
-| ------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------- |
-| Diade simmetrica                           | Due membri che si scelgono a vicenda                  | Massima (ma coinvolge solo due persone)                   |
-| Clique                                     | Ognuno collegato direttamente a tutti gli altri       | Alta                                                      |
-| Componente forte con soli legami reciproci | Percorso tra ogni coppia usando solo legami reciproci | Media: catene di diadi                                    |
-| Componente forte                           | Percorso tra ogni coppia seguendo le frecce           | Più bassa                                                 |
-| Componente debole                          | Percorso tra ogni coppia ignorando le frecce          | La più bassa: può contenere lunghe catene di intermediari |
-| Comunità di Louvain                        | Suddivisione che massimizza la modularità             | Variabile: dipende dalla rete                             |
+| Struttura                                  | Criterio                                        | Cautela di lettura                                          |
+| ------------------------------------------ | ----------------------------------------------- | ----------------------------------------------------------- |
+| Diade simmetrica                           | Due membri si scelgono a vicenda                | Reciprocità delle risposte, non misura di affiatamento      |
+| Clique                                     | Almeno una scelta diretta tra ogni coppia       | Non richiede reciprocità; può sovrapporsi ad altre clique   |
+| Componente forte con soli legami reciproci | Percorsi formati soltanto da scelte reciproche  | Può contenere lunghe catene, non solo legami diretti        |
+| Componente forte                           | Percorsi in entrambi i versi seguendo le frecce | Può avere collegamenti a senso unico con altre componenti   |
+| Componente debole                          | Percorsi ignorando la direzione delle scelte    | La connessione riguarda i dati, non tutti i rapporti reali  |
+| Comunità di Louvain                        | Partizione con modularità elevata               | È un risultato euristico, non un'appartenenza sociale certa |

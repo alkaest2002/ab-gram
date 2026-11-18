@@ -5,7 +5,12 @@ order: 5
 
 Le metriche di gruppo **riassumono la struttura sociale con pochi numeri**.
 Sono utili per confrontare gruppi diversi, oppure lo stesso gruppo in momenti
-diversi.
+diversi, purché siano confrontabili le domande, i criteri di raccolta e i limiti
+al numero di nomine. Dimensione del gruppo e partecipazione possono incidere
+sui risultati: un valore, da solo, non descrive la qualità delle relazioni.
+
+Le formule si riferiscono a reti dirette senza legami verso sé stessi e
+considerano separatamente scelte e rifiuti, senza pesarne l'ordine.
 
 ### 1 Numero di nodi
 
@@ -60,15 +65,18 @@ mediana, terzo quartile e massimo. I due riepiloghi (uscenti ed entranti) sono
 riuniti in un'unica tabella, con una riga di intestazione e una riga per
 ciascuna direzione:
 
-- **min** — il grado più piccolo, cioè il membro con meno legami uscenti (o
-  entranti);
+- **min** — il grado più piccolo osservato tra i membri;
 - **Q1** (primo quartile) — il valore al di sotto del quale si colloca il 25%
   dei gradi;
 - **mediana** — il valore centrale: metà dei membri ha un grado minore o uguale
   a questo valore e l'altra metà maggiore o uguale;
 - **Q3** (terzo quartile) — il valore al di sotto del quale si colloca il 75%
   dei gradi;
-- **max** — il grado più grande, cioè il membro con più legami.
+- **max** — il grado più grande osservato tra i membri.
+
+I quartili sono calcolati con interpolazione lineare: possono quindi essere
+frazionari anche se i gradi sono interi. Con pochi membri o molti valori uguali,
+le percentuali indicate non corrispondono necessariamente a quote esatte di persone.
 
 ### 5 Densità
 
@@ -82,8 +90,8 @@ $$
 
 ### 6 Centralizzazione
 
-Indica **quanto la rete ruota attorno a una sola persona**. Ogni nodo ha una
-_centralità_ $C_i$, un valore che misura quanto è "importante" nella rete (ad
+Indica **quanto i legami ricevuti si concentrano su un membro**. Ogni nodo ha una
+_centralità_ $C_i$, un valore che descrive la sua posizione strutturale (ad
 esempio in base a quante scelte riceve); $C_{\max}$ è la centralità più alta
 del gruppo. In questa sezione $C_i$ è il numero di scelte ricevute dal nodo $i$
 (centralità di grado in ingresso): con questa scelta il denominatore $(N-1)^2$ è
@@ -100,7 +108,9 @@ $$
 ### 7 Reciprocità
 
 Indica **quanta parte dei legami viene ricambiata**: è il rapporto tra i legami
-ricambiati e tutti i legami presenti.
+ricambiati e tutti i legami presenti. Non misura l'intensità o la stabilità
+delle relazioni. Se non ci sono legami, il programma restituisce $0$ per
+convenzione, non perché siano state osservate scelte non ricambiate.
 
 $$
 R = \frac{\sum_{i,j} a_{ij} a_{ji}}{\sum_{i,j} a_{ij}}
@@ -110,9 +120,8 @@ $$
 
 Misura la tendenza dei "vicini" di un nodo a essere collegati anche tra loro:
 in altre parole, se $A$ è collegato a $B$ e a $C$, quanto è probabile che anche
-$B$ e $C$ siano collegati? È il modo di tradurre in numeri il detto "gli amici
-dei miei amici sono miei amici" (in tecnico, _coefficiente di clustering
-globale_). Nella formula, $t_{\triangle}$ è il numero di **triangoli** presenti
+$B$ e $C$ siano collegati? È il _coefficiente di clustering globale_: descrive
+la chiusura dei collegamenti, non dimostra l'esistenza di amicizie. Nella formula, $t_{\triangle}$ è il numero di **triangoli** presenti
 nella rete (tre membri tutti collegati tra loro) e $d_v$ è il **numero di
 legami** del nodo $v$ (grado, calcolato sul grafico non orientato: due membri
 sono collegati se almeno uno dei due sceglie l'altro); il termine $\binom{d_v}{2}$ conta in quanti modi si
@@ -125,13 +134,13 @@ $$
 
 ### 9 Indice di coesione
 
-L'indice di coesione misura **quanto il gruppo è unito**, contando le scelte
-reciproche. Qui $a_{ij}$ vale $1$ se $i$ sceglie $j$ e $0$ altrimenti, così il
+L'indice di coesione descrive **la presenza di scelte reciproche** nel gruppo.
+È un indicatore strutturale, non una misura completa dell'unità o del benessere
+del gruppo. Qui $a_{ij}$ vale $1$ se $i$ sceglie $j$ e $0$ altrimenti, così il
 prodotto $a_{ij}a_{ji}$ vale $1$ solo quando la scelta è ricambiata. Il
 numeratore $\sum_{i,j} a_{ij}a_{ji}$ è esattamente il numero di legami
 reciproci $E_{\leftrightarrow}$ descritto sopra (ogni coppia ricambiata conta
-per due). Come per la reciprocità, si distinguono due versioni, che rispondono
-a domande diverse.
+per due). Si distinguono due versioni, che rispondono a domande diverse.
 
 **Coesione di tipo I.** Rapporto tra le scelte reciproche e tutte le scelte
 _possibili_: misura quanto il gruppo è coeso rispetto a quanto potrebbe esserlo.
@@ -156,7 +165,8 @@ $$
 ### 10 Indice di conflitto
 
 L'indice di conflitto è il "gemello" della coesione applicato ai rifiuti:
-misura **quanto il gruppo è attraversato da tensioni reciproche**. Qui $b_{ij}$
+descrive **la presenza di rifiuti reciproci rilevati**. Non misura tutte le
+forme di conflitto e non consente, da solo, di dedurre tensioni effettive. Qui $b_{ij}$
 vale $1$ se $i$ rifiuta $j$ e $0$ altrimenti, quindi $b_{ij}b_{ji}$ vale $1$
 solo quando il rifiuto è ricambiato. Anche in questo caso si distinguono due
 versioni.
@@ -178,6 +188,12 @@ legami negativi.
 $$
 Con_{II} = \frac{\sum_{i,j} b_{ij} b_{ji}}{\sum_{i,j} b_{ij}}
 $$
+
+Per gli indici di tipo II, in assenza di scelte o di rifiuti il programma
+restituisce $0$ per convenzione. Anche densità e centralizzazione valgono $0$
+con meno di due nodi; la transitività vale $0$ se non ci sono terne connesse.
+Questi casi vanno distinti da quelli in cui la struttura è osservabile ma la
+misura risulta nulla.
 
 ## 11 Un esempio svolto
 
@@ -226,7 +242,8 @@ $$
 \Delta = \frac{E}{N(N-1)} = \frac{7}{12} \approx 0{,}58
 $$
 
-Il gruppo è abbastanza fitto: più della metà delle scelte possibili è espressa.
+È espressa più della metà delle scelte teoricamente possibili; non è una soglia
+generale per definire una rete «fitta».
 
 **Centralizzazione.** Usiamo come centralità $C_i$ il numero di scelte ricevute:
 il membro $1$ ne riceve $2$ (dal $2$ e dal $4$), il $2$ ne riceve $2$ (dal $1$
@@ -238,7 +255,8 @@ $$
 C = \frac{1}{9} \approx 0{,}11
 $$
 
-Il valore è basso: nessun membro accentra su di sé l'attenzione del gruppo.
+Le scelte ricevute sono distribuite in modo relativamente uniforme: tre membri
+ne ricevono due e uno ne riceve una.
 
 **Reciprocità.** Il numeratore $\sum_{i,j} a_{ij} a_{ji}$ è proprio
 $E_{\leftrightarrow} = 2$, mentre il denominatore è $E = 7$:
@@ -261,7 +279,8 @@ $$
 T = \frac{3 \cdot 4}{12} = 1
 $$
 
-La rete è massimamente transitiva: ogni amico degli amici è a sua volta amico.
+Tutte le terne connesse sono chiuse nella proiezione non orientata. Questo
+risultato non implica che le scelte siano tutte reciproche.
 
 **Coesione.** La somma dei prodotti $a_{ij} a_{ji}$ vale $2$ (i due legami
 reciproci tra $1$ e $2$). La coesione di tipo I la rapporta alle $N(N-1) = 12$
@@ -277,7 +296,8 @@ La coesione di tipo II coincide con la reciprocità, come previsto.
 
 **Conflitto.** Nei rifiuti non c'è nessuna coppia reciproca
 ($\sum_{i,j} b_{ij} b_{ji} = 0$), quindi entrambi gli indici di conflitto
-valgono $0$: il gruppo non ha tensioni ricambiate.
+valgono $0$: non sono stati rilevati rifiuti reciproci, ma sono presenti
+quattro rifiuti unilaterali. Il valore nullo non dimostra l'assenza di conflitti.
 
 Riassumendo:
 

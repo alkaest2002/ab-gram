@@ -10,8 +10,11 @@ gli altri. Si dividono in due famiglie:
 - gli **indici di Moreno**, che contano in modo semplice le scelte e i rifiuti
   dati e ricevuti da ogni persona;
 - le **centralità della social network analysis (SNA)**, cioè dell'"analisi
-  delle reti sociali", che misurano quanto una persona è importante nella rete
-  di relazioni, tenendo conto anche dei legami indiretti.
+  delle reti sociali", che descrivono diverse forme di posizione strutturale,
+  in alcuni casi tenendo conto anche dei legami indiretti.
+
+Le misure riguardano le nomine raccolte, nel gruppo e nel momento considerati:
+non sono valutazioni della persona, diagnosi o prove di ruoli sociali stabili.
 
 In tutte le formule, $n$ è il **numero di membri** del gruppo e $i$ indica il
 membro di cui stiamo calcolando la metrica.
@@ -66,7 +69,9 @@ $$
 
 ### 1.2 Scelte reciproche
 
-Contano i casi in cui il sentimento espresso dal membro viene ricambiato.
+Contano i casi in cui una nomina trova riscontro in una nomina dello stesso
+segno nella direzione opposta. Non misurano direttamente sentimenti o intensità
+della relazione.
 
 - **Reciprocità positiva** ($mp_i$): quante preferenze del membro sono
   ricambiate, cioè con quante persone c'è una scelta a vicenda.
@@ -96,15 +101,14 @@ im_i = rp_i + rr_i
 $$
 
 - **Bilancio** ($bl_i$): la differenza tra preferenze e rifiuti ricevuti. È
-  positivo se il membro è più apprezzato che rifiutato, negativo nel caso
-  opposto.
+  positivo se riceve più preferenze che rifiuti, negativo nel caso opposto.
 
 $$
 bl_i = rp_i - rr_i
 $$
 
-- **Espressività** ($ei_i$): quante opinioni ha espresso in totale. Dice **quanto
-  il membro si "sbilancia"** verso gli altri.
+- **Espressività** ($ei_i$): **numero totale di opinioni espresse** dal membro
+  nella rilevazione, entro i limiti consentiti.
 
 $$
 ei_i = gp_i + gr_i
@@ -119,15 +123,16 @@ or_i = gp_i - gr_i
 $$
 
 - **Affiliazione** ($ai_i$): somma di bilancio e orientamento. Unisce in un solo
-  numero quanto il membro è ben accolto dagli altri e quanto è lui stesso
-  disposto ad accogliere.
+  numero lo squilibrio tra nomine positive e negative, ricevute ed espresse.
+  Non misura direttamente la disponibilità personale ad accogliere gli altri.
 
 $$
 ai_i = bl_i + or_i
 $$
 
 - **Influenza** ($ii_i$): preferenze ricevute più preferenze reciproche. Le
-  scelte ricambiate "pesano" quindi il doppio, perché indicano un legame solido.
+  scelte ricambiate "pesano" quindi il doppio: è una scelta di costruzione
+  dell'indice, non una prova di solidità del legame o di influenza effettiva.
 
 $$
 ii_i = rp_i + mp_i
@@ -135,7 +140,7 @@ $$
 
 ### 1.4 Status sociometrico
 
-Lo **status sociometrico** ($ss_i$) è una vera e propria etichetta: classifica
+Lo **status sociometrico** ($ss_i$) è una categoria descrittiva: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,
 l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra preferenze e
 rifiuti (se prevalgono gli uni o le altre). Le categorie, con il relativo
@@ -155,21 +160,22 @@ codice e la dizione mostrata nel report, sono:
 
 Le due colonne esprimono lo **stesso risultato** con un intento diverso. La
 **categoria** è la classificazione sociometrica in senso stretto, cioè
-un'etichetta analitica e definitiva (ad esempio "rifiutato"). La **dizione nel
+un'etichetta analitica riferita ai dati raccolti (ad esempio "rifiutato"). La **dizione nel
 report** ne attenua la formulazione trasformandola in un _segnale_
 o in un _indicatore_ (ad esempio "segnali di rifiuto"). Il report usa infatti
 questa seconda forma per descrivere la posizione di un membro senza
 attribuirgli un giudizio sociale definitivo e potenzialmente stigmatizzante.
 
-In generale, le categorie vanno da chi non riceve alcuna opinione (isolato) a
-chi ne riceve molte e discordanti (controverso), passando per situazioni in cui
-prevale poca attenzione (ignorato, marginale), il consenso (apprezzato,
-popolare) oppure il rifiuto (malvisto, rifiutato).
+Le categorie non formano una graduatoria. «Isolato» indica assenza di nomine
+sia ricevute sia espresse; «ignorato» indica assenza di nomine ricevute, ma
+presenza di nomine espresse. Per gli altri membri contano il livello relativo
+dell'impatto e una regola di prevalenza tra preferenze e rifiuti. Il bilancio
+«neutro» usato per lo status non coincide necessariamente con $bl_i = 0$.
 
 La regola che assegna il codice è più complessa delle formule viste finora,
 perché procede in più passaggi successivi: ogni passaggio è matematicamente
 semplice, ma nel loro insieme sono troppi per essere riassunti in una formula
-leggibile. Per questo motivo la formula viene riportata nel documento successivo.
+leggibile. L'algoritmo è descritto nel documento successivo.
 
 ### 1.5 Un esempio svolto
 
@@ -214,7 +220,7 @@ $gp_1 = 2$. Ripetendo il conteggio per tutti si ottiene:
 | Affiliazione ($ai$)             |    2     |    2     |    1     |    1     |
 | Influenza ($ii$)                |    3     |    3     |    1     |    2     |
 
-I membri $1$ e $2$ risultano i più coinvolti: sono gli unici ad avere una scelta
+I membri $1$ e $2$ si distinguono per questi indici: sono gli unici ad avere una scelta
 reciproca (si scelgono tra loro) e hanno i valori più alti di affiliazione e
 influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
 
@@ -235,8 +241,10 @@ che nella sezione precedente indicava il rifiuto.
 ### 2.1 Grado
 
 La **centralità di grado** conta quanti legami ha il membro, rapportati al
-numero massimo possibile ($n-1$, cioè tutti gli altri membri). È la misura più
-intuitiva di "popolarità": vale $1$ se il membro è collegato a tutti.
+numero di altri membri ($n-1$). È la misura più
+immediata di connessione. Per il grado entrante o uscente vale $1$ quando
+sono presenti tutti i $n-1$ legami della direzione considerata. Il grado totale
+somma entranti e uscenti e può arrivare a $2$ in una rete diretta.
 
 $$
 C_D(i) = \frac{d(i)}{n - 1}
@@ -253,26 +261,31 @@ $$
 ### 2.2 Vicinanza
 
 La **centralità di vicinanza** misura quanto il membro è **vicino** agli altri,
-cioè quanti pochi "passaggi" servono in media per raggiungerli seguendo le
-frecce. Nella formula, $R_i$ è l'insieme dei membri **raggiungibili** da $i$,
-$|R_i|$ ne è il numero e $d(i,j)$ è la lunghezza del percorso più breve da $i$ a
-$j$ (cioè il numero minimo di frecce da seguire). Più il valore è alto, più il
-membro è "a portata di mano" di tutti gli altri.
+nella direzione dei legami **entranti**: l'implementazione considera quanti
+pochi passaggi servono agli altri per raggiungere $i$ seguendo le frecce.
+Nella formula, $R_i$ è l'insieme degli altri membri che possono raggiungere $i$,
+$|R_i|$ ne è il numero e $d(j,i)$ è la lunghezza del percorso più breve da $j$
+a $i$. Il calcolo esclude i membri che non possono raggiungerlo e non applica
+una correzione per la quota di membri che possono raggiungerlo: un valore alto può quindi
+riguardare anche un sottoinsieme piccolo. Se nessun altro membro raggiunge $i$,
+il programma restituisce $0$.
 
 $$
-C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(i,j)}
+C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(j,i)}
 $$
 
 ### 2.3 Intermediazione
 
 La **centralità di intermediazione** misura quanto il membro **fa da ponte**:
 quante volte si trova sulla strada più breve tra due altri membri. Chi ha
-un valore alto controlla in qualche modo il passaggio delle informazioni nel
-gruppo. Nella formula, $\sigma_{st}$ è il numero di percorsi più brevi da $s$ a
+un valore alto occupa una posizione di potenziale raccordo nella rete rilevata:
+non significa necessariamente che controlli le informazioni o che queste
+circolino seguendo le nomine. Nella formula, $\sigma_{st}$ è il numero di percorsi più brevi da $s$ a
 $t$, e $\sigma_{st}(i)$ è il numero di quelli che passano per $i$; il rapporto
 tra i due dice quale "quota" dei percorsi passa dal membro $i$. La condizione
 $s \neq i \neq t$ indica che si considerano solo coppie $s,t$ diverse da $i$.
-Il denominatore $(n-1)(n-2)$ è il numero di coppie possibili e serve a
+Si richiede anche $s \ne t$; le coppie senza percorso non contribuiscono.
+Il denominatore $(n-1)(n-2)$ è il numero di coppie ordinate possibili e serve a
 riportare il risultato tra $0$ e $1$.
 
 $$
@@ -299,18 +312,26 @@ $$
 PR(i) = \frac{1 - \alpha}{n} + \alpha \sum_{j \in \text{In}(i)} \frac{PR(j)}{d_{\text{out}}(j)}, \qquad \alpha = 0.85
 $$
 
+Questa forma vale quando ogni nodo ha almeno un legame uscente. Se ci sono
+nodi senza uscite, l'implementazione redistribuisce uniformemente la loro massa:
+al secondo membro si aggiunge $\frac{\alpha}{n}\sum_{j:\,d_{\text{out}}(j)=0} PR(j)$.
+
 ### 2.5 HITS
 
 **HITS** distingue **due ruoli complementari** che un membro può avere
 contemporaneamente:
 
-- l'**autorità** ($a$): chi riceve legami da buoni _hub_, cioè è scelto da chi
-  sa scegliere bene;
-- l'**hub** ($h$): chi indica buone _autorità_, cioè sceglie le persone giuste.
+- l'**autorità** ($a$): riceve legami da nodi con punteggio _hub_ elevato;
+- l'**hub** ($h$): esprime legami verso nodi con punteggio di autorità elevato.
+
+Sono ruoli matematici complementari: non indicano che qualcuno sappia scegliere
+«bene», scelga le persone «giuste» o possieda autorità effettiva nel gruppo.
 
 Le due definizioni si richiamano a vicenda ($\text{Out}(i)$ è l'insieme dei
 membri scelti da $i$) e, come per il PageRank, i valori si calcolano per
-approssimazioni successive.
+approssimazioni successive, con normalizzazione dei punteggi. Se la rete non
+ha legami o HITS non converge, il programma restituisce tutti zeri: in
+quest'ultimo caso non sono punteggi interpretabili come assenza di centralità.
 
 $$
 a(i) = \sum_{j \in \text{In}(i)} h(j), \qquad h(i) = \sum_{j \in \text{Out}(i)} a(j)
@@ -328,20 +349,19 @@ membro sono le scelte ricevute ($rp$) e quelli uscenti sono le scelte date
 | ---------------------------------- | :------------------: | :------------------: | :----------------------: | :----------------------: |
 | Grado entrante ($C_D^{\text{in}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $1/3 \approx 0{,}33$   |   $2/3 \approx 0{,}67$   |
 | Grado uscente ($C_D^{\text{out}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $2/3 \approx 0{,}67$   |   $1/3 \approx 0{,}33$   |
-| Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/4 = 0{,}75$      |      $3/5 = 0{,}60$      |
+| Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/5 = 0{,}60$      |      $3/4 = 0{,}75$      |
 | Intermediazione ($C_B$)            |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
 
 Qualche esempio di come si arriva ai numeri:
 
-- **Vicinanza del membro 4.** Dal membro $4$ si raggiunge il $1$ in un passo,
-  mentre il $2$ e il $3$ richiedono due passi (passando dal $1$). Quindi
-  $|R_4| = 3$ e la somma delle distanze è $1 + 2 + 2 = 5$, da cui $3/5$. Il
-  membro $4$ ha la vicinanza più bassa perché sceglie una sola persona e deve
-  passare da lei per arrivare a tutti gli altri.
+- **Vicinanza del membro 3.** Il membro $1$ lo raggiunge in un passo;
+  il $2$ e il $4$ lo raggiungono in due passi, passando dal $1$. Quindi
+  $|R_3| = 3$ e la somma delle distanze entranti è $1 + 2 + 2 = 5$, da cui
+  $3/5$. È il valore più basso dell'esempio.
 - **Intermediazione del membro 1.** Il membro $1$ sta sull'unico percorso più
   breve tra $2$ e $3$, tra $4$ e $2$ e tra $4$ e $3$: contribuisce con $3$ al
   numeratore, che diviso per $(n-1)(n-2) = 6$ dà $0{,}50$. Il membro $1$ è
-  dunque il vero "ponte" del gruppo: ad esempio, il membro $4$ sceglie soltanto
+  dunque il nodo con maggiore intermediazione in questa rete: ad esempio, il membro $4$ sceglie soltanto
   lui, e tutte le sue strade verso gli altri passano da lì.
 
 Per **PageRank** e **HITS** il calcolo è iterativo, quindi qui riportiamo i
@@ -356,7 +376,7 @@ dei quattro membri sia $1$:
 
 Come si leggono questi numeri:
 
-- **PageRank.** Il membro $1$ è il più importante: lo scelgono il $2$ e il $4$, e
+- **PageRank.** Il membro $1$ ha il PageRank più alto: lo scelgono il $2$ e il $4$, e
   il $4$ ha _come unica scelta_ proprio il $1$, quindi gli cede tutta la propria
   importanza. Come verifica, per il membro $1$ si ha
   $PR(1) = \frac{0{,}15}{4} + 0{,}85\left(\frac{PR(2)}{2} + \frac{PR(4)}{1}\right)
@@ -364,8 +384,8 @@ Come si leggono questi numeri:
   dove il $2$ divide la propria importanza tra due scelte (il $1$ e il $4$),
   mentre il $4$ la dà tutta al $1$. Il membro $3$ ha il valore più basso perché
   riceve una sola scelta, e per di più da un membro che ne fa due.
-- **HITS.** Il membro $4$ è la **migliore autorità**: è scelto da $2$ e $3$, che
-  sono ottimi hub. Il membro $3$ è invece il **miglior hub**: indica proprio il
+- **HITS.** Il membro $4$ è il **punteggio di autorità più alto**: è scelto da $2$ e $3$, che
+  sono ottimi hub. Il membro $3$ è invece il **punteggio hub più alto**: indica proprio il
   $2$ e il $4$, le due autorità più forti. Il membro $2$ è il più equilibrato,
   perché è alto in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
@@ -373,11 +393,11 @@ Come si leggono questi numeri:
 
 ## 3 In sintesi
 
-| Centralità      | Domanda a cui risponde                   | Valore alto significa                                              |
-| --------------- | ---------------------------------------- | ------------------------------------------------------------------ |
-| Grado           | Quanti legami ha?                        | È molto collegato (o molto scelto, se si guarda il grado entrante) |
-| Vicinanza       | Quanto è vicino a tutti gli altri?       | Può raggiungere gli altri con pochi passaggi                       |
-| Intermediazione | Quanto fa da ponte tra gli altri?        | Molti percorsi più brevi passano da lui                            |
-| PageRank        | Chi lo sceglie è a sua volta importante? | È scelto da persone importanti                                     |
-| HITS (autorità) | È scelto da chi sceglie bene?            | È un riferimento riconosciuto                                      |
-| HITS (hub)      | Sceglie le persone giuste?               | Indica buoni riferimenti agli altri                                |
+| Centralità      | Domanda a cui risponde                          | Valore alto significa                                              |
+| --------------- | ----------------------------------------------- | ------------------------------------------------------------------ |
+| Grado           | Quanti legami ha?                               | È molto collegato (o molto scelto, se si guarda il grado entrante) |
+| Vicinanza       | Quanto è vicino a tutti gli altri?              | È raggiungibile con pochi passaggi dai membri considerati          |
+| Intermediazione | Quanto fa da ponte tra gli altri?               | Molti percorsi più brevi passano da lui                            |
+| PageRank        | Chi lo sceglie ha a sua volta un PageRank alto? | Riceve contributi elevati secondo PageRank                         |
+| HITS (autorità) | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                             |
+| HITS (hub)      | Indica autorità con punteggi alti?              | Indica nodi con alta autorità HITS                                 |

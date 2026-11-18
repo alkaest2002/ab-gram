@@ -1,5 +1,5 @@
 ---
-title: Anatonomia di un report AB-Gram
+title: Anatomia di un report AB-Gram
 order: 1
 ---
 
@@ -25,7 +25,7 @@ Le pagine si susseguono in quest'ordine:
 - Sintesi
 - Glossario
 
-> La sezione 5 compare solo quando almeno un membro ha espresso un rifiuto. In
+> La rete dei rifiuti compare solo quando almeno un membro ha espresso un rifiuto. In
 > sua assenza, la numerazione delle pagine successive scala di conseguenza.
 
 ### 1.1 Copertina
@@ -59,6 +59,8 @@ almeno un membro ha espresso un rifiuto.
 
 Classifica ogni relazione in sette tipi, raggruppati in tre fasce: relazioni
 sane, relazioni potenzialmente problematiche e relazioni problematiche.
+Si tratta di etichette operative, non di giudizi sulle persone. I conteggi
+riguardano le direzioni dei legami, non necessariamente coppie distinte.
 
 ### 1.7 Strutture interne alla rete delle scelte
 
@@ -102,4 +104,7 @@ esteso.
    sigla poco chiara.
 
 Ricorda che il report ha finalità descrittive: i risultati vanno letti come
-una fotografia delle relazioni nel gruppo, non come una diagnosi.
+una fotografia delle risposte raccolte nel gruppo, non come una diagnosi.
+La domanda posta, i limiti alle nomine e il momento della rilevazione ne
+condizionano la lettura. Anche gli identificativi numerici possono rendere
+riconoscibili le persone: condividi il report soltanto con chi è autorizzato.

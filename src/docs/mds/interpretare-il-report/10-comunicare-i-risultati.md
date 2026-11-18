@@ -3,98 +3,131 @@ title: Comunicare i risultati
 order: 10
 ---
 
-Un sociogramma non è un punto d'arrivo: è un **punto di partenza**. Serve a
-capire come sono fatte le relazioni all'interno di un gruppo (una classe, un
-reparto, un team di progetto) e, soprattutto, a decidere **che cosa fare** di
-conseguenza.
+Un sociogramma non è un punto d'arrivo: è un **punto di partenza** per esplorare
+le relazioni rilevate in un gruppo e progettare interventi. Non descrive tutto
+ciò che accade tra le persone e non costituisce una diagnosi individuale.
 
-Questa pagina ti aiuta a usare bene i risultati: come trasformarli in interventi, con chi
-condividerli e che cosa è opportuno, o meno, restituire al gruppo.
+Questa pagina propone criteri per usare i risultati, condividerli con chi può
+intervenire e restituirli al gruppo, tutelando **riservatezza e dignità delle
+persone**.
 
 ## 1 Dai dati all'intervento
 
-Un risultato è _azionabile_ quando permette di prendere una decisione, e non si
-limita a descrivere una situazione. Il sociogramma può ispirare uno o più
-interventi, con tre obiettivi principali.
+Prima di decidere un intervento, confronta i risultati con le osservazioni,
+le condizioni della rilevazione e, quando opportuno, il punto di vista delle
+persone coinvolte. Una mancata scelta non equivale a un rifiuto e un rifiuto
+riferito a un compito non dimostra necessariamente un conflitto personale.
 
-- **Ridurre i conflitti.** Le scelte e i rifiuti incrociati aiutano a individuare
-  le aree di tensione, ad esempio coppie o sottogruppi in forte contrapposizione.
-  Puoi intervenire sulla composizione dei gruppi di lavoro, sulla distribuzione
-  degli spazi e dei compiti, o su momenti di mediazione e confronto guidato.
+I dati possono aiutare a definire tre obiettivi:
 
-- **Consolidare la rete di relazioni positive.** Le affinità reciproche e i
-  sottogruppi coesi sono una risorsa. Puoi valorizzarli affidando incarichi in cui
-  la collaborazione funziona già e usando le persone più connesse come ponte verso
-  chi lo è meno.
+- **Approfondire e ridurre le tensioni.** Alcune configurazioni di scelte e
+  rifiuti suggeriscono situazioni da osservare meglio. Se il contesto lo
+  conferma, puoi rivedere gruppi di lavoro, spazi e compiti o proporre un
+  confronto guidato. Non ricostruire pubblicamente chi ha rifiutato chi.
+- **Sostenere le occasioni di collaborazione.** Le scelte reciproche possono
+  suggerire abbinamenti da sperimentare, senza irrigidire i sottogruppi né
+  assegnare automaticamente alle persone più connesse il compito di aiutare
+  le altre. Considera disponibilità, preferenze e carico richiesto.
+- **Favorire la partecipazione.** Poche scelte ricevute o numerosi rifiuti
+  meritano attenzione, ma non indicano da soli un disagio. Puoi proporre
+  attività accessibili, affiancamenti concordati e occasioni di ascolto,
+  intervenendo anche sulle condizioni del gruppo, non solo sul singolo.
 
-- **Migliorare la posizione di chi si trova ai margini.** Chi risulta isolato o
-  rifiutato è chi ha più bisogno di attenzione. Gli interventi possibili vanno
-  dall'inserirlo in gruppi di lavoro scelti con cura, all'affiancarlo a persone con
-  cui ha affinità, fino al colloquio individuale (vedi più avanti).
+A scuola, per esempio, si possono sperimentare attività cooperative, rivedere
+la disposizione dei posti o offrire un sostegno discreto alla partecipazione.
+Nel lavoro, si possono migliorare gli affiancamenti, l'inserimento di chi è
+arrivato da poco e l'organizzazione delle collaborazioni. I risultati non
+vanno usati da soli per valutazioni disciplinari o decisioni penalizzanti.
 
-Qualche esempio, a seconda del contesto:
-
-- **a scuola:** formare gruppi di studio o di lavoro equilibrati, rivedere la
-  disposizione dei posti, programmare attività cooperative, impostare un percorso
-  di sostegno per un alunno ai margini;
-- **in ambito lavorativo:** comporre i team di progetto in modo più funzionale, definire
-  affiancamenti e tutoraggi, intervenire su un conflitto latente prima che pesi sul
-  clima e sulla produttività, favorire l'inserimento di chi è arrivato da poco.
-
-Gli interventi funzionano meglio se sono pochi, mirati e verificabili. Dopo un
-congruo intervallo di tempo ragionevole (6/12 mesi), ripetere la rilevazione con lo stesso criterio
-permette di capire se qualcosa è cambiato.
+Scegli pochi interventi, con obiettivi e tempi di verifica espliciti.
+L'intervallo prima di una nuova rilevazione dipende dal contesto e dai tempi
+attesi del cambiamento: non esiste una scadenza valida per ogni gruppo.
+Mantieni comparabili domanda e condizioni, documentando eventuali variazioni
+nella composizione del gruppo. Un cambiamento nei dati non dimostra, da solo,
+l'efficacia dell'intervento.
 
 ## 2 Condividere gli esiti con chi può agire
 
-Gli esiti vanno portati a chi ha un ruolo di guida o di responsabilità nel gruppo
-e può leggerli insieme a ciò che già conosce:
+Condividi solo le informazioni **necessarie allo scopo**, con le figure
+autorizzate che hanno un compito concreto nell'intervento. Un ruolo di guida
+non comporta automaticamente l'accesso a tutte le risposte individuali.
 
-- **a scuola:** l'insegnante tutor e il consiglio di classe, che possono integrarli
-  con osservazioni personali e con informazioni provenienti dall'ambiente
-  extrascolastico, come la famiglia;
-- **in ambito lavorativo:** il responsabile del gruppo e, dove previsto, le figure
-  che si occupano di risorse umane o di sviluppo organizzativo.
+A seconda del contesto, possono essere coinvolti il tutor o i docenti
+competenti, il responsabile del gruppo o le figure di supporto organizzativo.
+Definisci prima chi può accedere ai dati, con quale finalità e con quali limiti,
+in coerenza con l'informativa e con le regole applicabili.
 
-Il sociogramma da solo racconta una parte della storia. Prende pieno valore
-quando viene affiancato alla conoscenza diretta di chi vive il gruppo ogni
-giorno, ed è da questo confronto che nascono interventi davvero adatti.
+Nella condivisione:
+
+- preferisci sintesi aggregate quando bastano per decidere;
+- limita report nominativi, matrici e grafici individuali ai destinatari che
+  ne hanno effettiva necessità;
+- usa canali e archivi ad accesso controllato, evitando inoltri indiscriminati;
+- concorda tempi di conservazione e modalità di eliminazione delle copie;
+- integra altre informazioni solo se pertinenti e legittimamente disponibili,
+  senza raccogliere dettagli personali non necessari.
+
+**Gli identificativi non rendono automaticamente anonimo un report.** In un
+gruppo piccolo, anche un codice o una configurazione di legami possono rendere
+riconoscibile una persona. Le stesse cautele valgono per stampe, esportazioni e
+schermate.
 
 ## 3 Restituire gli esiti al gruppo
 
-Rispondere a un questionario sociometrico suscita di solito curiosità, e il gruppo chiede
-spesso di sapere come è andata. La richiesta è legittima, ma va gestita senza
-perdere di vista la **riservatezza** con cui la rilevazione è stata presentata e
-condotta.
+La curiosità sui risultati è comprensibile. La restituzione va però preparata
+nel rispetto degli impegni presi prima della rilevazione: spiega che cosa i
+dati permettono di osservare e quali aspetti non consentono di conoscere.
 
-### 3.1 Che cosa tenere per sé
+### 3.1 Che cosa non diffondere
 
-Non vanno resi noti al gruppo i dati individuali che identificano lo status sociometrico di ciascuno. Diffonderli non rafforzerebbe la coesione: rischierebbe anzi di compromettere proprio quella rete di rapporti che, magari perché fragile, aveva reso utile il ricorso all'indagine sociometrica.
+Non mostrare al gruppo risposte individuali, elenchi di scelte o rifiuti,
+classifiche, status dei singoli, grafici ego o reti che rendano riconoscibili
+i membri. Evita anche esempi apparentemente anonimi dai quali si possa
+ricostruire chi è coinvolto.
 
-C'è poi un secondo pericolo, quello dell'_identificazione nel ruolo_. Rendere noto lo status sociometrico significa attribuire a ciascuno un'etichetta, che il gruppo tende a considerare stabile e che la persona stessa può finire per sentire come propria. Ad esempio, chi è indicato come rifiutato rischia di essere trattato di conseguenza e di comportarsi di conseguenza, rafforzando la posizione marginale che si voleva invece migliorare; chi è indicato come popolare può sentirsi vincolato a un ruolo di leader che non ha scelto. Il sociogramma fotografa una situazione in un momento preciso, in relazione a un criterio specifico, e non descrive ciò che una persona è: un'etichetta diffusa lo fa sembrare tale, e rende più difficile il cambiamento.
+Le categorie sociometriche descrivono risultati riferiti a una domanda e a un
+momento, **non ciò che una persona è**. Diffonderle come etichette può
+cristallizzare aspettative, esporre a imbarazzo e rafforzare dinamiche di
+esclusione. Anche un'etichetta apparentemente positiva, come "popolare", può
+imporre un ruolo non desiderato.
 
 ### 3.2 Che cosa si può condividere
 
-Si possono invece illustrare gli **indici globali**, che descrivono il gruppo nel
-suo insieme senza nominare nessuno. Presentati con cura, questi dati offrono al gruppo l'occasione per riflettere
-insieme su come sono i rapporti tra i membri, su come si gestiscono i contrasti,
-su quanto stare insieme risulti appagante e su come costruire un buon rapporto
-anche con chi ha un ruolo di guida (insegnanti, responsabili). In questo modo la
-restituzione diventa essa stessa un primo intervento.
+Puoi proporre **sintesi aggregate** e temi di riflessione sulla collaborazione,
+sulla partecipazione e sulla gestione dei contrasti, purché non consentano di
+identificare le risposte dei singoli. Nei gruppi piccoli, anche un dato globale
+può rivelare informazioni personali: valuta se ometterlo o formularne una
+sintesi più generale.
+
+Presenta gli indici con i loro limiti, senza tradurli automaticamente in giudizi
+sul benessere, sulla soddisfazione o sulla qualità complessiva del gruppo.
+Invita a discutere **che cosa si può migliorare insieme**, non a indovinare chi
+ha scelto o rifiutato chi. Concludi con proposte concrete e condivise.
 
 ## 4 Parlarne in un colloquio individuale
 
-I dati personali non si diffondono, ma possono avere un uso mirato e protetto.
-**Con delicatezza e prudenza**, puoi portarli in un **colloquio a tu per tu** con
-chi risulta avere una posizione fragile nel gruppo. Lo scopo è aiutare la persona a prendere
-coscienza della propria situazione e a trovare la motivazione per cambiare, con
-un sostegno concreto da parte tua.
+Un colloquio può offrire uno spazio di ascolto e sostegno, ma non deve diventare
+una comunicazione di etichette o una richiesta alla persona di "correggere" la
+propria posizione. Parti dalla sua esperienza, senza presumere che i dati
+coincidano con ciò che vive o prova.
+
+Se è appropriato discutere alcuni risultati personali, valuta prima finalità,
+necessità e possibili effetti. Presentali in modo comprensibile e contestuale,
+senza rivelare le risposte altrui né consentire di attribuirle. Anche un indice
+personale può rendere deducibili informazioni su altri membri, soprattutto
+nei gruppi piccoli.
+
+Concorda eventuali azioni di sostegno, considerando anche le responsabilità
+educative o organizzative e le dinamiche collettive. Non promettere una
+segretezza assoluta se esistono obblighi di tutela: chiarisci i limiti della
+riservatezza e segui le procedure previste nel contesto, in particolare quando
+sono coinvolti minori o emergono situazioni di rischio.
 
 ## 5 Riepilogo
 
-| A chi                                                                                               | Che cosa                                                                               | A quale scopo                                                                                               |
-| --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Figure di guida e responsabilità (tutor e consiglio di classe, responsabile di team, risorse umane) | Gli esiti del sociogramma, letti insieme a osservazioni dirette e informazioni esterne | Decidere gli interventi: ridurre i conflitti, consolidare le relazioni positive, sostenere chi è ai margini |
-| Gruppo                                                                                              | Soltanto gli indici globali                                                            | Stimolare la riflessione collettiva sulla qualità delle relazioni                                           |
-| Singola persona (colloquio individuale)                                                             | I suoi indici personali, con cautela                                                   | Favorire consapevolezza e desiderio di cambiare                                                             |
-| Chiunque altro                                                                                      | Nessun dato personale riferibile ai ruoli di popolare, isolato e rifiutato             | Tutelare la riservatezza                                                                                    |
+| Destinatari                                       | Che cosa condividere                                             | Finalità e cautele                                                          |
+| ------------------------------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Figure autorizzate con un compito nell'intervento | Solo i dati necessari, preferibilmente aggregati                 | Progettare e verificare interventi, con accesso controllato                 |
+| Gruppo                                            | Sintesi aggregate non riconducibili ai singoli                   | Riflettere su azioni comuni, senza etichette o ricostruzioni delle risposte |
+| Singola persona, in colloquio                     | Eventuali risultati personali pertinenti e contestualizzati      | Ascoltare e concordare sostegni, proteggendo anche i dati altrui            |
+| Altri destinatari                                 | Nessun dato personale senza una finalità e un titolo appropriati | Evitare divulgazioni e usi incompatibili con la rilevazione                 |

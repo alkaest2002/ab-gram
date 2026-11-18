@@ -17,7 +17,8 @@ rifiuti in rosso.
 
 - Ogni nodo è un membro, rappresentato da un cerchio colorato con il suo
   identificativo.
-- Ogni linea è una relazione tra due membri.
+- Ogni linea rappresenta una scelta o un rifiuto rilevato dal questionario,
+  non l'insieme delle relazioni reali tra due persone.
 
 ### 1.2 Freccia e spessore
 
@@ -29,18 +30,28 @@ La direzione e il tipo di legame sono codificati dalla linea:
 
 ### 1.3 Membri isolati
 
-I membri che non hanno alcuna relazione sono disegnati separatamente, in nero,
-sotto il grafico principale.
+I membri senza legami in entrata né in uscita **nella rete visualizzata** sono
+disegnati separatamente, in nero, sotto il grafico principale. Non avere legami
+nella rete dei rifiuti non significa non avere scelte, e viceversa. La
+separazione nel disegno non dimostra un isolamento nella vita del gruppo.
 
 ### 1.4 Posizione dei nodi
 
-La disposizione è calcolata con un algoritmo di posizionamento force-directed (a forze simulate), che tratta la rete come un sistema fisico: i nodi si comportano come particelle che si respingono a vicenda, mentre i collegamenti agiscono come molle che attirano i nodi connessi. A partire da una configurazione iniziale casuale, il sistema si evolve iterativamente fino a raggiungere uno stato di equilibrio, in cui le forze di attrazione e repulsione si bilanciano. Il risultato è che i membri collegati tra loro tendono ad avvicinarsi e i sottogruppi molto connessi appaiono come gruppi di nodi vicini.
+La disposizione è calcolata da un algoritmo _force-directed_ (a forze
+simulate): i nodi si respingono e i collegamenti tendono ad avvicinare i nodi
+connessi. È un metodo per rendere leggibile la rete, non una misura delle
+distanze sociali o affettive.
 
-**È importante notare che la posizione dei nodi non esprime un ordine di importanza: la distanza dal centro o dai bordi del grafico non indica un ruolo più o meno rilevante all’interno della rete**.
+**Essere al centro del disegno non significa essere più importanti nel
+gruppo; essere ai bordi non significa essere esclusi.** Anche nella rete dei
+rifiuti, due nodi collegati possono apparire vicini per effetto dell'algoritmo.
 
-Inoltre, poiché l’inizializzazione è casuale, l'algoritmo può convergere verso configurazioni di equilibrio diverse a ogni esecuzione, anche a partire dagli stessi dati: il layout finale, e quindi l’orientamento, la forma complessiva e la collocazione relativa dei gruppi, può variare da una generazione all’altra. Per questi motivi non bisogna attribuire eccessiva importanza alle caratteristiche topologiche apparenti del grafico, come la centralità visiva di un nodo o la distanza tra due gruppi; per valutarle in modo affidabile è preferibile ricorrere a misure quantitative calcolate sulla rete (ad esempio grado, centralità e modularità).
-
-> Va inoltre tenuto presente che lo spazio topologico del grafico non coincide necessariamente con lo spazio psico-sociale del gruppo. La posizione dei nodi, la vicinanza o la lontananza apparente tra i membri e la forma dei sottogruppi sono il risultato di un algoritmo di disegno, non una rappresentazione diretta della qualità, dell'intensità o della natura delle relazioni reali. Due membri possono apparire vicini soltanto per effetto del layout, oppure un nodo periferico può occupare una posizione centrale nel gruppo reale. Occorre quindi la massima cautela nel derivare inferenze forti dalle figure: i grafici vanno considerati uno strumento esplorativo, da affiancare e verificare con le misure quantitative e con la conoscenza qualitativa del gruppo.
+La disposizione iniziale è casuale: orientamento, forma e posizione dei nodi
+possono cambiare tra generazioni basate sugli stessi dati. Per confrontare le
+reti, considera i legami e le misure pertinenti, non le distanze sul foglio.
+Anche le metriche descrivono proprietà dei dati, non dimostrano da sole la
+qualità delle relazioni: vanno lette insieme al criterio della rilevazione e
+alla conoscenza del contesto.
 
 ### 1.5 Personalizzare il grafico
 
@@ -49,7 +60,7 @@ stampa) apre il pannello di personalizzazione, diviso in due sezioni.
 
 #### Evidenziare parti della rete
 
-Nelle reti affollate è utile attenuare i nodi meno interessanti per mettere in
+Nelle reti affollate è utile attenuare i nodi non coinvolti nell'analisi per mettere in
 risalto quelli su cui ci si vuole concentrare. I nodi attenuati diventano
 bianchi con contorno e identificativo grigi; anche le loro linee in uscita si
 attenuano.
@@ -79,7 +90,9 @@ ricalcolare la disposizione dei nodi regolando due parametri:
 Premendo **Rigenera** l'algoritmo viene rieseguito con i nuovi parametri.
 Poiché la disposizione iniziale è casuale, rigenerare il grafico anche con gli
 stessi parametri può produrre un layout diverso: prova più volte finché non
-ottieni una disposizione chiara.
+ottieni una disposizione leggibile. La rigenerazione cambia il disegno, non
+le risposte o le metriche: non scegliere una disposizione perché sembra
+confermare un'ipotesi sul gruppo.
 
 ## 2 Il grafico ego
 
@@ -90,8 +103,8 @@ al centro e dispone tutti gli altri intorno a lui.
 
 - Il membro analizzato sta al centro.
 - Gli altri membri sono collocati su cinque anelli concentrici, in base a
-  quanti passi di "scelta" servono per raggiungerli partendo dal membro
-  centrale:
+  ai percorsi di scelta che partono dal membro centrale, con un trattamento
+  specifico per i membri da lui rifiutati:
 
 | Anello | Sigla  | Significato                                  |
 | ------ | ------ | -------------------------------------------- |
@@ -99,10 +112,19 @@ al centro e dispone tutti gli altri intorno a lui.
 | 2      | `0HP`  | Scelto direttamente, senza ricambio          |
 | 3      | `1HP`  | Raggiungibile tramite un solo intermediario  |
 | 4      | `2HP+` | Raggiungibile tramite due o più intermediari |
-| 5      | `DTR`  | Difficile da raggiungere                     |
+| 5      | `DTR`  | Categoria «difficile da raggiungere»         |
 
 I cerchi tratteggiati separano gli anelli e le sigle sono riportate lungo la
 linea verticale superiore, dal centro verso l'esterno.
+
+La categoria `DTR` comprende anche i membri rifiutati direttamente dal membro
+centrale. Non è quindi una semplice distanza più lunga delle altre, né un
+giudizio sull'accessibilità o sulla disponibilità della persona. I percorsi
+seguono la direzione delle scelte: ricevere una scelta non equivale a poter
+raggiungere chi l'ha espressa.
+
+Gli anelli rappresentano categorie, non distanze affettive. La posizione
+angolare dei nodi sullo stesso anello non ha un significato relazionale.
 
 ### 2.2 Colori dei nodi
 
@@ -125,4 +147,9 @@ I piccoli triangoli accanto a un nodo indicano la direzione del legame:
 
 Usa il grafico di rete (scelte o rifiuti) per avere il quadro d'insieme del gruppo, poi passa
 ai grafici ego per approfondire la posizione di ciascun membro rispetto a tutti
-gli altri.
+gli altri, limitatamente alle risposte raccolte.
+
+I grafici possono rendere riconoscibili le persone anche quando usano codici.
+Non mostrarli al gruppo né diffonderli senza valutare finalità, destinatari e
+rischi per la riservatezza; per la restituzione, segui le cautele della pagina
+«Comunicare i risultati».

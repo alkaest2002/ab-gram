@@ -9,7 +9,8 @@ order: 7
 </script>
 
 Lo **status sociometrico** ($ss_i$) è l'etichetta finale che riassume la
-posizione di ciascun membro nel gruppo. A differenza degli indici visti nella
+posizione di ciascun membro nella rilevazione. Non è una caratteristica stabile
+della persona né una diagnosi: dipende dal gruppo, dalla domanda e dai dati raccolti. A differenza degli indici visti nella
 pagina sulle metriche individuali,
 che sono numeri, qui si tratta di una **categoria**: l'algoritmo combina due
 informazioni già incontrate — l'**impatto** ricevuto (quanto il membro è
@@ -24,8 +25,8 @@ L'algoritmo risponde a tre domande, nell'ordine:
    ignorato e la classificazione finisce qui.
 2. **Quanto è visibile?** Rispetto agli altri membri visibili, il suo impatto è
    basso, medio o alto? Le soglie non sono fissate da un solo metodo: nove
-   metodi statistici le propongono e si adotta quello più in accordo con gli
-   altri.
+   metodi propongono soglie; per ogni membro si contano i voti delle strategie
+   che lo classificano.
 3. **Prevalgono le preferenze o i rifiuti?** Il bilancio è positivo, negativo o
    neutro?
 
@@ -58,7 +59,7 @@ report**:
 > indizio o un segnale da osservare, non come una definizione stabile della
 > persona.
 
-**Il codice numerico non ha alcun significato.** I numeri da 0 a 8 sono
+**Il codice numerico è un identificatore, non un punteggio.** I numeri da 0 a 8 sono
 soltanto una convenzione per identificare le categorie: non indicano un ordine,
 un punteggio o una gravità crescente. Due codici vicini non sono più simili tra
 loro di due codici lontani; ciò che conta è esclusivamente la categoria a cui
@@ -101,17 +102,24 @@ membro ha ricevuto opinioni ($n_i > 0$) e se ne ha espresse
 - **ignorato** (1): nessuna opinione ricevuta **ma** qualcuna espressa
   ($n_i = 0$ e $\mathrm{espressività}_i > 0$).
 
-In pratica l'isolato non partecipa affatto allo scambio di opinioni, mentre
-l'ignorato esprime opinioni ma nessuno gliene rivolge. Tutti gli altri membri
+Nei dati raccolti, il membro classificato come isolato non ha nomine in
+entrata né in uscita; quello classificato come ignorato ne esprime, ma non ne
+riceve. Prima di interpretarli come segnali relazionali, occorre verificare
+che non dipendano da mancate risposte o dati incompleti. Tutti gli altri membri
 ($n_i > 0$) procedono al passo successivo.
 
 ### 4.2 Passo 2 — Classificazione dell'impatto
 
-In questo passo l'impatto ricevuto viene suddiviso in tre classi: **basso**, **medio** e **alto**. Poiché non esiste un unico modo "giusto" di fissare le soglie (ogni metodo statistico ha pregi e difetti a seconda della forma della distribuzione), l'algoritmo applica più strategie di classificazione in parallelo e le fa "votare": ciascun metodo assegna una classe a ogni membro, e la classe finale è quella scelta dalla maggioranza. Il passo si articola in tre mosse:
+In questo passo l'impatto ricevuto viene suddiviso in tre classi: **basso**,
+**medio** e **alto**. L'algoritmo combina più strategie, sensibili ad aspetti
+diversi della distribuzione. Ogni metodo può classificare un membro oppure
+astenersi; per quel membro viene scelta la classe con più voti, applicando le
+regole di spareggio. Non occorre una maggioranza assoluta e non viene scelto
+un unico metodo vincitore per tutto il gruppo. Il passo si articola in tre mosse:
 
 1. nove **metodi** propongono ciascuno una coppia di soglie (§ 4.2.1–4.2.9);
 2. ogni metodo **applica le proprie soglie** e classifica i membri (§ 4.2.10);
-3. la classe finale di ogni membro è decisa per **maggioranza** tra i metodi
+3. la classe finale di ogni membro è decisa dal **maggior numero di voti** tra i metodi
    che propongono una divisione (§ 4.2.11).
 
 **Convenzione sulle soglie.** Ogni metodo restituisce una **soglia bassa** $L$
@@ -128,8 +136,8 @@ metodo classifica soltanto il lato rimasto attivo e **si astiene su tutti gli
 altri** membri: non li etichetta come medi, ma semplicemente non esprime alcun
 voto su di essi.
 
-**Controllo di separazione.** Prima di consegnare le soglie, ogni metodo
-verifica che le classi siano davvero **separate da almeno un voto**: se il
+**Controllo di separazione.** Prima di consegnare le soglie, i metodi basati sulla distribuzione
+verificano che le classi siano davvero **separate da almeno un voto**: se il
 massimo dei valori bassi coincide col primo valore medio, la soglia bassa viene
 disattivata ($L = -\infty$); se l'ultimo valore medio coincide col primo valore
 alto, viene disattivata la soglia alta ($H = +\infty$). Così non si divide mai
@@ -194,11 +202,11 @@ secondo salto più ampio ha la stessa ampiezza del terzo. Sono invece ammessi
 due salti massimi uguali, purché entrambi siano strettamente più ampi di
 tutti gli altri; le parità tra salti non selezionati non impediscono il voto.
 
-Per esempio, con impatti $[0, 2, 4, 6, 8, 10]$ tutti i salti valgono $2$ e
-il metodo si astiene. Si astiene anche con $[0, 2, 7, 9]$: il salto massimo
-vale $5$, ma non è possibile scegliere univocamente il secondo tra i due
-salti di ampiezza $2$. Con $[0, 4, 4, 8]$, invece, i due salti massimi di
-ampiezza $4$ sono univocamente individuati: le soglie sono $L = 0$ e $H = 8$.
+Per esempio, con impatti visibili $[1, 3, 5, 7, 9, 11]$ tutti i salti valgono
+$2$ e il metodo si astiene. Si astiene anche con $[1, 3, 8, 10]$: il salto
+massimo vale $5$, ma non è possibile scegliere univocamente il secondo tra i
+due salti di ampiezza $2$. Con $[1, 5, 5, 9]$, invece, i due salti massimi di
+ampiezza $4$ sono univocamente individuati: le soglie sono $L = 1$ e $H = 9$.
 
 Il metodo è ammesso con **da $4$ a $6$ membri visibili** e si astiene al di
 fuori di questo intervallo: è pensato per i gruppi piccoli. Le soglie sono
@@ -215,7 +223,8 @@ valori ai lati sono uguali) viene disattivata.
 **Intuizione:** segnalare come anomali i valori che si discostano **troppo** dal
 centro della distribuzione, misurando la distanza non con la media (sensibile
 agli outlier) ma con la **mediana** e la **deviazione assoluta mediana** (MAD).
-È un'alternativa più robusta di Tukey quando ci sono valori estremi.
+È un criterio robusto basato sulla distanza dalla mediana; non è sempre
+preferibile agli altri metodi.
 
 Sia $m$ la mediana degli impatti dei membri visibili e sia
 $MAD = \max\bigl(\text{mediana}(|x_i - m|),\ 0{,}5\bigr)$ (il minimo $0{,}5$
@@ -243,14 +252,14 @@ _natural breaks_ di Jenks, qui adattato a **tre classi** (bassa, media, alta).
 
 Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$,
 si cercano i due tagli che separano tre classi consecutive minimizzando la
-somma delle varianze interne, detta $SDCM$. La bontà del partizionamento si
+somma degli scarti quadratici dalle medie delle rispettive classi, detta $SDCM$. La bontà del partizionamento si
 misura con il **goodness of variance fit**
 
 $$
 GVF = 1 - \frac{SDCM}{SDAM}
 $$
 
-dove $SDAM$ è la varianza totale degli impatti. Il metodo **si astiene** quando:
+dove $SDAM$ è la somma degli scarti quadratici dalla media complessiva degli impatti. Il metodo **si astiene** quando:
 
 - non ci sono da $4$ a $35$ membri visibili;
 - ci sono meno di $3$ valori distinti (non si possono formare tre classi);
@@ -316,19 +325,21 @@ uguali).
 
 #### 4.2.7 Metodo di Tukey
 
-**Intuizione:** il classico criterio dei **valori anomali** basato sui
-quartili, gli "inner fences" del box plot. Detti
+**Intuizione:** una variante del criterio di Tukey per i **valori anomali**,
+basata sui quartili. Il programma usa un moltiplicatore $1$, non il consueto
+$1{,}5$ degli _inner fences_ del box plot. Detti
 $Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
-impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, gli
-"inner fences" sono
+impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, i
+recinti usati sono
 
-- $L = Q_1 - 1 \cdot IQR$;
-- $H = Q_3 + 1 \cdot IQR$.
+- recinto basso: $Q_1 - 1 \cdot IQR$;
+- recinto alto: $Q_3 + 1 \cdot IQR$.
 
 Il metodo è ammesso con **da $7$ a $35$ membri visibili**; si astiene al di
-fuori di questo intervallo oppure se $IQR = 0$. Il metodo di Tukey è
-conservativo: segnala solo gli scostamenti davvero estremi
-e, nei gruppi omogenei, spesso non segnala nessuno.
+fuori di questo intervallo oppure se $IQR = 0$. Le soglie effettive sono il massimo valore osservato strettamente sotto il
+recinto basso e il minimo valore strettamente sopra quello alto; un lato
+senza valori oltre il recinto viene disattivato. Con moltiplicatore $1$ il
+criterio è meno restrittivo della versione usuale con $1{,}5$.
 
 #### 4.2.8 Metodo binomiale (GB)
 
@@ -360,8 +371,11 @@ non è applicabile).
 > **Un'approssimazione.** Poiché $n_i = rp_i + rr_i$, un membro può ricevere
 > sia una preferenza sia un rifiuto dallo stesso membro: l'impatto può quindi
 > superare $n - 1$, cosa che il modello binomiale non prevede. La protezione
-> $p < 1$ gestisce il caso estremo; per scostamenti moderati il metodo resta
-> un'approssimazione ragionevole.
+> $p < 1$ esclude alcuni casi estremi, ma non risolve questa incompatibilità
+> quando $p$ resta inferiore a $1$. Inoltre il modello presuppone prove
+> indipendenti con uguale probabilità, ipotesi non garantite dalle nomine.
+> Le soglie sono quindi riferite a un modello semplificato, non dimostrano che
+> una posizione sia statisticamente anomala nel gruppo reale.
 
 #### 4.2.9 Metodo dei piccoli gruppi
 
@@ -416,7 +430,7 @@ prevale sempre "basso".
 
 **Intuizione:** nessun metodo è sempre migliore degli altri, quindi li si lascia
 "votare": ogni metodo classifica i membri che riesce a classificare e vince la
-classe scelta dalla **maggioranza**.
+classe con il **maggior numero di voti espressi per quel membro**.
 
 1. Ogni metodo etichetta con $-1$ (basso) i membri che ricadono nel lato basso
    attivo e con $+1$ (alto) quelli che ricadono nel lato alto attivo; etichetta
@@ -441,34 +455,24 @@ resta l'unica disponibile e viene adottata. Allo stesso modo, un metodo a una
 sola soglia (come _head/tail_) vota solo per la coda che segnala e non "spinge"
 i restanti membri verso la classe media.
 
-**Perché la maggioranza? Il teorema della giuria di Condorcet.** Affidarsi alla
-maggioranza non è una scelta arbitraria: discende dal **teorema della giuria di
-Condorcet**. Se ogni "giurato" (qui, ogni metodo) ha probabilità $p > 1/2$ di
-dare la risposta giusta e i giurati decidono in modo **indipendente**, allora:
+**Perché combinare più metodi?** È una scelta euristica per non dipendere da
+un solo criterio di soglia. Non garantisce però maggiore accuratezza: i metodi
+lavorano sugli stessi dati, possono produrre risultati correlati e non hanno
+una probabilità nota di individuare una classificazione «corretta».
 
-- la decisione a maggioranza ha **più probabilità di essere corretta** di
-  qualunque giurato preso singolarmente;
-- al crescere del numero di giurati, la probabilità che la maggioranza sia
-  corretta **tende a $1$**.
-
-L'intuizione è che gli errori dei singoli metodi tendono a cancellarsi a
-vicenda, mentre le risposte corrette si sommano: anche se ogni metodo è
-debolmente migliore del caso, mettendoli insieme il gruppo diventa molto più
-affidabile di ciascuno.
-
-> **Un avvertimento importante.** Le ipotesi del teorema (indipendenza e
-> $p > 1/2$ per ogni giurato) qui valgono solo **in parte**: i metodi lavorano
-> sugli stessi dati e sono quindi **correlati** tra loro — se i dati sono
-> ambigui, possono sbagliare _tutti insieme_. Per questo il voto di maggioranza
-> va letto come un'**euristica robusta** (un modo per non dipendere da un unico
-> metodo), non come una garanzia matematica di correttezza.
+Il teorema della giuria di Condorcet non giustifica direttamente questa regola:
+la sua formulazione classica riguarda decisioni binarie con ipotesi specifiche
+sull'indipendenza e sull'accuratezza dei votanti; qui ci sono tre classi,
+astensioni e spareggi. Anche l'accordo di più strategie non equivale a una
+validazione dello status. Se vota un solo metodo, il risultato esprime soltanto
+quel criterio, non un consenso tra metodi.
 
 ### 4.3 Passo 3 — Classificazione del bilancio
 
 Il bilancio confronta preferenze e rifiuti ricevuti, ma non in modo "secco"
 ($rp$ contro $rr$): la soglia che separa "prevale il positivo" da "prevale il
-negativo" è un **rapporto dinamico**, che si fa più severo quando le opinioni del gruppo sono
-poche. La logica è: poche opinioni ricevute $\Rightarrow$ meno certezza
+negativo" è un **rapporto dinamico**, che si fa più severo quando le opinioni
+ricevute dal singolo membro sono poche. La logica è: poche opinioni ricevute $\Rightarrow$ meno certezza
 $\Rightarrow$ serve uno squilibrio più netto per parlare di prevalenza.
 
 La soglia $t(n_i)$ dipende dall'impatto $n_i$:
@@ -479,7 +483,7 @@ $$
 
 In pratica:
 
-- con $n_i \le 3$ la soglia vale $2{,}0$ (severa: serve il doppio);
+- con $n_i \le 3$ la soglia vale $2{,}0$ (serve **più del doppio**);
 - con $n_i \ge 15$ vale $1{,}5$ (più indulgente);
 - in mezzo scende **linearmente** tra i due valori.
 
@@ -489,7 +493,11 @@ A questo punto il bilancio è:
 - **negativo** se $rr_i > t(n_i) \cdot rp_i$;
 - **neutro** in tutti gli altri casi.
 
-Due conseguenze utili da ricordare: chi riceve solo preferenze ($rr_i = 0$) ha
+Questa classe di bilancio non è il semplice segno dell'indice $bl_i = rp_i - rr_i$:
+può risultare neutra anche se i due conteggi sono diversi. È una regola
+operativa, non un test di significatività.
+
+Per i membri visibili, due conseguenze utili da ricordare: chi riceve solo preferenze ($rr_i = 0$) ha
 sempre bilancio positivo, e viceversa per chi riceve solo rifiuti; il bilancio
 neutro compare solo quando preferenze e rifiuti sono abbastanza vicini da non
 superare la soglia.
@@ -515,15 +523,17 @@ L'ordine conta, perché garantisce le priorità giuste.
 
 Nota una conseguenza della priorità 3: **l'impatto basso vince sul bilancio**.
 Un membro nella fascia bassa è "marginale" anche se le sue poche opinioni sono
-per lo più negative. È una scelta voluta: con così poche opinioni il bilancio
-non è un'informazione affidabile.
+per lo più negative. Per scelta dell'algoritmo, in questa fascia il bilancio
+non viene usato per distinguere ulteriormente lo status. È una priorità
+operativa: «basso» è relativo alla distribuzione e non significa necessariamente
+che il numero assoluto di opinioni sia trascurabile.
 
 ## 5 Riepilogo dei parametri
 
 | Parametro                                                 | Valore                                                                                                          |
 | --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | Metodi di soglia in competizione                          | Jenks, largest gap, head/tail, inverted head/tail, percentili, Tukey, robust z-score, binomiale, piccoli gruppi |
-| Aggregazione tra i metodi                                 | voto di maggioranza tra i metodi che dividono                                                                   |
+| Aggregazione tra i metodi                                 | classe con più voti tra i metodi che classificano il membro                                                     |
 | Metodi che non dividono                                   | si astengono (non votano)                                                                                       |
 | Metodi a una sola soglia                                  | votano solo la coda attiva; si astengono sugli altri membri                                                     |
 | Parità nel voto                                           | non medio prevale su medio; basso prevale su alto                                                               |
@@ -532,7 +542,7 @@ non è un'informazione affidabile.
 | Membri visibili per percentili                            | $10 \le N \le 35$                                                                                               |
 | Membri visibili per Jenks, head/tail e inverted head/tail | $4 \le N \le 35$                                                                                                |
 | Membri visibili per Tukey e robust z-score                | $7 \le N \le 35$                                                                                                |
-| Membri del gruppo per binomiale                           | $5 \le N \le 35$                                                                                                |
+| Membri del gruppo per binomiale                           | $5 \le n \le 35$                                                                                                |
 | Membri visibili per largest gap                           | $4 \le N \le 6$                                                                                                 |
 | Membri visibili per piccoli gruppi                        | $N = 4$                                                                                                         |
 | Percentili per impatto basso / alto                       | $10$ / $90$                                                                                                     |
@@ -573,16 +583,19 @@ che scelgono $i$ e $R_i$ è l'insieme dei membri che lo rifiutano. Il termine
 $M - p_j(i) + 1$ vale $M$ quando $i$ è indicato per primo e diminuisce di $1$
 per ogni posizione successiva.
 
-- Un **bonus alto** ($bns_i$) significa che il membro è stato **scelto tra i
-  primi** nelle sequenze di preferenza degli altri: non solo è apprezzato, ma è
-  tra le prime persone a cui gli altri pensano.
-- Un **malus alto** ($mls_i$) significa che il membro è stato **rifiutato tra i
-  primi**: è tra le prime persone indicate come rifiuto.
+- Un **bonus alto** ($bns_i$) può dipendere da molte preferenze ricevute,
+  da posizioni iniziali nelle liste o da entrambe le cose.
+- Un **malus alto** ($mls_i$) può dipendere da molti rifiuti ricevuti,
+  da posizioni iniziali nelle liste o da entrambe le cose.
 
-Questi punteggi aiutano quindi a **ipotizzare una graduatoria** tra membri che
-ricadono nello stesso status sociometrico: a parità di categoria, chi ha un
-bonus più alto (o un malus più basso) occupa una posizione più favorevole
-all'interno del gruppo.
+L'ordine è interpretabile come priorità solo se la consegna richiedeva
+esplicitamente una graduazione: il programma pesa l'ordine registrato, ma non
+può stabilire se rispecchi davvero un'intensità di preferenza o rifiuto.
+
+Questi punteggi consentono un confronto descrittivo tra membri nello stesso
+status, tenendo distinti numero e ordine delle nomine. Non definiscono da soli
+una graduatoria sociale: bonus e malus possono entrambi essere alti e non vanno
+ridotti automaticamente a un unico giudizio di posizione «favorevole».
 
 Il **valore assoluto** di $bns_i$ e $mls_i$ **non ha di per sé alcun significato**:
 non esiste una soglia oltre la quale un punteggio è "buono" o "cattivo", né un
@@ -608,18 +621,18 @@ ordine dalla prima all'ultima (per semplicità non ci sono rifiuti):
 |   6    | 1, 2               |
 
 Dalle scelte ricaviamo $rp$ (scelte ricevute), $gp$ (scelte date) e l'impatto
-$n = rp$ (non essendoci rifiuti, $rr = 0$):
+$n_i = rp_i$ (non essendoci rifiuti, $rr = 0$):
 
-| Membro | $rp$ | $gp$ | $n = rp$ |
-| :----: | :--: | :--: | :------: |
-|   1    |  5   |  5   |    5     |
-|   2    |  5   |  5   |    5     |
-|   3    |  2   |  3   |    2     |
-|   4    |  3   |  2   |    3     |
-|   5    |  2   |  2   |    2     |
-|   6    |  2   |  2   |    2     |
+| Membro | $rp$ | $gp$ | $n_i = rp_i$ |
+| :----: | :--: | :--: | :----------: |
+|   1    |  5   |  5   |      5       |
+|   2    |  5   |  5   |      5       |
+|   3    |  2   |  3   |      2       |
+|   4    |  3   |  2   |      3       |
+|   5    |  2   |  2   |      2       |
+|   6    |  2   |  2   |      2       |
 
-**Passo 1 — Visibilità.** Tutti hanno $n > 0$, quindi nessuno è isolato o
+**Passo 1 — Visibilità.** Tutti hanno $n_i > 0$, quindi nessuno è isolato o
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
@@ -721,8 +734,8 @@ ottiene:
 
 Il membro $1$ ha un bonus più alto del membro $2$ ($175$ contro $171$) pur
 avendo lo stesso numero di scelte ricevute: è stato indicato **prima** nelle
-preferenze altrui. A parità di status **popolare**, il membro $1$ occupa quindi
-la posizione più favorevole.
+preferenze altrui. A parità di conteggio e di status **popolare**, il punteggio
+distingue quindi l'ordine registrato, non il valore sociale delle due persone.
 
 ## 8 Un secondo esempio: rifiuti e malus
 
@@ -740,19 +753,19 @@ ordine dal primo all'ultimo:
 |   5    | 4, 6                |
 |   6    | 4, 5                |
 
-Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n = rr$
+Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n_i = rr_i$
 (non essendoci scelte, $rp = 0$):
 
-| Membro | $rr$ | $gr$ | $n = rr$ |
-| :----: | :--: | :--: | :------: |
-|   1    |  1   |  3   |    1     |
-|   2    |  1   |  3   |    1     |
-|   3    |  1   |  3   |    1     |
-|   4    |  5   |  2   |    5     |
-|   5    |  5   |  2   |    5     |
-|   6    |  2   |  2   |    2     |
+| Membro | $rr$ | $gr$ | $n_i = rr_i$ |
+| :----: | :--: | :--: | :----------: |
+|   1    |  1   |  3   |      1       |
+|   2    |  1   |  3   |      1       |
+|   3    |  1   |  3   |      1       |
+|   4    |  5   |  2   |      5       |
+|   5    |  5   |  2   |      5       |
+|   6    |  2   |  2   |      2       |
 
-**Passo 1 — Visibilità.** Tutti hanno $n > 0$, quindi nessuno è isolato o
+**Passo 1 — Visibilità.** Tutti hanno $n_i > 0$, quindi nessuno è isolato o
 ignorato: tutti proseguono.
 
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
@@ -847,4 +860,5 @@ ottiene:
 
 Il membro $4$ ha un malus più alto del membro $5$ ($175$ contro $171$): è stato
 rifiutato **prima** nelle sequenze di rifiuto altrui. A parità di status
-**rifiutato**, il membro $4$ occupa quindi la posizione meno favorevole.
+**rifiutato** e di conteggio, questa differenza riguarda l'ordine registrato:
+non misura da sola la gravità del rifiuto o del disagio.
