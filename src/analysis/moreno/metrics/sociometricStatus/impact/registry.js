@@ -11,16 +11,6 @@ import { robustZScoreStrategy } from "@/analysis/moreno/metrics/sociometricStatu
 import { binomialStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/binomialStrategy.js";
 import { smallGroupStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/smallGroupStrategy.js";
 
-// A strategy that proposes no effective split abstains from the vote; the
-// remaining strategies vote with equal weight, so the order here is only for
-// readability and does not affect the outcome.
-// Jenks carves the widest natural gaps; largest-gap splits at the two widest
-// gaps; head/tail isolates the heavy-tailed high extreme; inverted head/tail
-// isolates its mirrored low extreme; percentile reads relative standing; Tukey
-// flags strict outliers beyond the inner fences;
-// robust z-score flags outliers beyond a median-absolute-deviation fence;
-// binomial (GB) flags only the extreme cases under the chance model;
-// small-group finds the dominant gap in tiny (sub-5) groups.
 export const IMPACT_STRATEGIES = [
   { name: "jenks", run: jenksStrategy },
   { name: "largest gap", run: largestGapStrategy },
