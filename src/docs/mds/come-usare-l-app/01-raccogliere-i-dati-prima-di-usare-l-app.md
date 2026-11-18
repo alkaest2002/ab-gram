@@ -67,7 +67,7 @@ Nella pratica, i criteri si possono ricondurre a due grandi famiglie.
   dettate dall'intesa personale e dalla sintonia, non dalla competenza di chi viene
   nominato.
 
-- **Criteri strumentali.** Riguardano ciò che il gruppo deve fare, non solo lo
+- **Criteri funzionali.** Riguardano ciò che il gruppo deve fare, non solo lo
   stare insieme. Rientrano in questa famiglia sia le situazioni in cui si cerca una
   guida (esempi: _chi vorresti, o non vorresti, come portavoce, referente o
   coordinatore_), sia quelle in cui si lavora a uno scopo comune (esempi: _con chi
