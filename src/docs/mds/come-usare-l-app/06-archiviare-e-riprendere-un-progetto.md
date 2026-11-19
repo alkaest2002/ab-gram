@@ -19,6 +19,10 @@ Il pulsante con l’icona di download, indicato come **Scarica progetto**,
 Se è disattivato mentre modifichi i nomi, correggi prima le voci vuote o duplicate. Cliccandolo, l'applicazione scarica un file di testo
 contenente una fotografia completa del sociogramma: nomi, scelte e rifiuti.
 
+**L'archivio è offuscato tramite codifica Base64, non è cifrato.** La codifica
+è reversibile e non protegge i dati: chiunque possieda il file può recuperare
+nomi e relazioni. L'archivio non è anonimizzato e va custodito con cura.
+
 Il file ha un nome del tipo:
 
 ```txt
@@ -67,10 +71,21 @@ esempio un file che non è un archivio valido).
 
 ## 4 Conservare gli archivi
 
-Poiché il file archiviato contiene i dati del tuo sociogramma, trattalo con la
-stessa cura che riserveresti a qualsiasi documento con informazioni sulle
-persone: salvalo in un luogo sicuro e condividilo solo con chi è autorizzato a
-vederlo.
+Poiché il file archiviato contiene i nomi e le relazioni del gruppo e
+**l'offuscamento non offre la protezione di una cifratura**, trattalo come un
+documento con informazioni personali. La custodia del file è interamente
+nelle tue mani:
+
+- Salvalo in un luogo protetto, con accesso riservato alle persone autorizzate.
+- Se devi trasferirlo, usa un canale sicuro; se serve cifrarlo, usa strumenti
+  esterni adatti, perché AB-Gram non cifra l'archivio.
+- Condividilo solo con chi è autorizzato a vedere nomi e relazioni.
+- Eliminalo, insieme alle copie non più necessarie, quando non ti serve più.
+
+Ogni download crea una nuova copia: non aggiorna automaticamente quelle già
+scaricate. Verifica che il file sia presente prima di chiudere la pagina e
+conserva la versione più recente. L'archivio contiene i dati del progetto,
+non una copia del report generato.
 
 ## 5 Buone pratiche
 
@@ -84,20 +99,19 @@ vederlo.
 4. Non modificare il contenuto del file: l'import verifica che i dati siano
    validi e coerenti, e un archivio alterato potrebbe essere rifiutato.
 
-## 4 Privacy e conservazione dei file
+## 6 Archivio del progetto e download JSON del report
 
-L'archivio contiene i nomi e le relazioni del gruppo. Poiché l'applicazione
-non conserva nulla per conto tuo, la custodia del file è interamente nelle
-tue mani: salvalo in un luogo sicuro, condividilo solo con chi è autorizzato a
-vederlo ed eliminalo quando non ti serve più.
+I due download hanno scopi diversi:
 
-## 4 Proteggere l’archivio
+- **Scarica progetto** produce l'archivio `.txt`, completo di nomi e relazioni,
+  da importare per riprendere il lavoro. È offuscato, non cifrato.
+- **JSON**, nella barra dei comandi del report, produce un file `.json`
+  pensato per ulteriori analisi. I nomi sono sostituiti con `[REDACTED]`,
+  anche negli attributi dei nodi delle reti esportate; identificativi,
+  relazioni e risultati dell'analisi restano disponibili. Non sostituisce
+  l'archivio da usare con **Importa progetto**.
 
-Il contenuto è **codificato, non cifrato**: chi possiede il file può recuperare
-nomi e relazioni. Conservalo in un luogo protetto e condividilo solo con chi è
-autorizzato. La codifica non rende anonimi i dati.
-
-Ogni download crea una nuova copia: non aggiorna automaticamente quelle già
-scaricate. Verifica che il file sia presente prima di chiudere la pagina e
-conserva la versione più recente. L’archivio contiene i dati del progetto,
-non una copia del report generato.
+Il JSON non è cifrato e la rimozione dei nomi **non garantisce l'anonimato**:
+le relazioni e le altre informazioni possono consentire di riconoscere le
+persone, soprattutto se combinate con dati esterni. Proteggi anche questo
+file e valuta attentamente con chi condividerlo.

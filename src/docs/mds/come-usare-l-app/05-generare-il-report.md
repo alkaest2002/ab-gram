@@ -65,3 +65,26 @@ consulta "Archiviare e riprendere un progetto".
 ## 4 Dopo la generazione
 
 Una volta generato, puoi passare alla sezione "Interpretare il report".
+Nella barra dei comandi del report trovi anche i pulsanti **PDF** e **JSON**.
+
+### 4.1 Scaricare il JSON per l'analisi
+
+Il pulsante **JSON** scarica i dati del report in un formato pensato per
+ulteriori analisi con strumenti esterni. I nomi nell'esportazione sono **oscurati**:
+i nomi sono sostituiti con `[REDACTED]`, sia nell'elenco dei membri sia negli
+attributi dei nodi delle reti esportate. Gli identificativi dei membri,
+le relazioni e i risultati dell'analisi vengono mantenuti.
+
+L'oscuramento riguarda solo il JSON scaricato: il report visualizzato e
+il PDF continuano a contenere i nomi. Il JSON non è un archivio per riprendere
+il progetto e non va usato con **Importa progetto**; per questo serve il file
+`.txt` ottenuto con **Scarica progetto**.
+
+**L'oscuramento dei nomi non rende i dati anonimi né cifrati.** Le relazioni e gli altri dati
+possono comunque consentire di riconoscere le persone, anche incrociandoli
+con informazioni esterne. Conserva il JSON in un luogo protetto e condividilo
+solo con persone autorizzate.
+
+Anche l'archivio del progetto richiede attenzione: contiene i nomi originali
+ed è **offuscato, non cifrato**. Per le precauzioni di conservazione e
+condivisione, consulta "Archiviare e riprendere un progetto".

@@ -35,6 +35,13 @@ From the collected data, AB-Gram produces:
 5. Generate the report. Analysis and plot layout run in Web Workers so the UI stays responsive.
 6. Read, filter, print, and archive the results.
 
+## Downloads and data protection
+
+- **Project archive (`.txt`, “Scarica progetto”):** saves the member names and relationships so you can import the project and resume your work. Its contents are **obfuscated using Base64 encoding, not encrypted**. Anyone with the file can decode it and recover the original data. Store archives securely, restrict access, use secure transfer channels, and delete copies when no longer needed. Use separate encryption tools if encryption is required.
+- **Report JSON (`.json`, “JSON”):** intended for further analysis with external tools, not for restoring a project. Member names are **redacted** as `[REDACTED]`, including names in exported network node attributes. Member IDs, relationships, and analysis results are preserved. This does not change names in the displayed report or PDF.
+
+**Name redaction does not guarantee anonymity, and the JSON is not encrypted.** Relationships and other information may still allow people to be identified, especially when combined with external data. Protect JSON exports and share them only with authorized recipients.
+
 ## Tech stack
 
 - [Vue 3](https://vuejs.org/) with the Composition API

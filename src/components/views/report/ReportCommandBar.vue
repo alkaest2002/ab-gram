@@ -49,8 +49,17 @@ function printReport() {
   window.print();
 }
 
+function redactReportData(reportData) {
+  // JSON serialization also includes names stored in Graphology node attributes.
+  return JSON.parse(
+    JSON.stringify(reportData, (key, value) =>
+      key === "name" || key === "memberName" ? "[REDACTED]" : value,
+    ),
+  );
+}
+
 function downloadReport() {
-  downloadJson(props.reportData, "report-data", "application/json", true, false);
+  downloadJson(redactReportData(props.reportData), "report-data", "application/json", true, false);
 }
 </script>
 
