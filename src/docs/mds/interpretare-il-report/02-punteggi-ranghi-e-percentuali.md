@@ -1,5 +1,5 @@
 ---
-title: Punteggi, ranghi e percentuali
+title: Tipi di punteggi
 order: 2
 ---
 

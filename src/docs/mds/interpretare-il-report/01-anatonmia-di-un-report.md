@@ -1,5 +1,5 @@
 ---
-title: Anatomia di un report AB-Gram
+title: Il report AB-Gram
 order: 1
 ---
 

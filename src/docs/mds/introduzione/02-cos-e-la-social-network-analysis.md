@@ -1,5 +1,5 @@
 ---
-title: Cos'è la Social Network Analysis?
+title: La Social Network Analysis (SNA)
 order: 2
 ---
 

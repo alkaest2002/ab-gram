@@ -1,5 +1,5 @@
 ---
-title: Cos'è la sociometria?
+title: La sociometria di Moreno
 order: 1
 ---
 

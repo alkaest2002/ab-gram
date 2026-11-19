@@ -1,5 +1,5 @@
 ---
-title: Sociometria e Social Network Analysis insieme
+title: Sociometria e SNA insieme
 order: 3
 ---
 
