@@ -67,7 +67,7 @@ defineEmits(["sociogram-edit-member"]);
       <div class="space-y-1.5">
         <div class="flex items-center justify-between gap-3">
           <span class="eyebrow flex items-center gap-1.5">
-            <span
+            <span class="tracking-tight"
               >{{ member.likes.length }} {{ member.likes.length == 1 ? "Scelta" : "Scelte" }}</span
             >
           </span>
@@ -84,7 +84,7 @@ defineEmits(["sociogram-edit-member"]);
       <div class="space-y-1.5">
         <div class="flex items-center justify-between gap-3">
           <span class="eyebrow flex items-center gap-1.5">
-            <span
+            <span class="tracking-tight"
               >{{ member.dislikes.length }}
               {{ member.dislikes.length == 1 ? "Rifiuto" : "Rifiuti" }}</span
             >
