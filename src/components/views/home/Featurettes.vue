@@ -64,7 +64,7 @@ const features = [
       <li
         v-for="feature in features"
         :key="feature.id"
-        class="flex flex-col items-center gap-3 border-t border-line py-8 last:border-b sm:py-10"
+        class="flex flex-col items-center gap-3 border-b border-line py-8 sm:py-10"
       >
         <span class="text-black" aria-hidden="true">
           <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
