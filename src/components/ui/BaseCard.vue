@@ -9,7 +9,7 @@
 // --- Props --------------
 defineProps({
   /** Whether to show the accent gradient strip along the top edge. */
-  showAccent: { type: Boolean, default: true },
+  showAccent: { type: Boolean, default: false },
 });
 
 // --- Emits --------------
