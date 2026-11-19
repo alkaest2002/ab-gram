@@ -175,14 +175,20 @@ ammessi possono comunque astenersi se i dati non soddisfano i loro controlli int
 
 #### 4.2.1 Metodo dei percentili
 
-**Intuizione:** segnalare solo le **code evidenti** della distribuzione.
+**Intuizione:** individuare le posizioni **relativamente basse e alte** nel gruppo.
 
-- $L = \text{percentile}(10)$;
-- $H = \text{percentile}(90)$.
+- $L = \text{percentile}(15)$;
+- $H = \text{percentile}(85)$.
 
 Il metodo è ammesso con **da $20$ a $35$ membri visibili** e si astiene al di
-fuori di questo intervallo: con $N = 20$ ogni coda del $10\%$ corrisponde a
-due persone, prima del controllo di separazione.
+fuori di questo intervallo. Le soglie individuano nominalmente il $15\%$
+inferiore e superiore: con $N = 20$ corrispondono a tre persone per coda,
+prima del controllo di separazione e degli effetti delle parità.
+
+La scelta del $15$° e dell'$85$° percentile è **euristica**: descrive posizioni
+relative, non rappresenta una soglia di significatività statistica e non
+garantisce la presenza di gruppi nettamente separati né la stabilità delle
+classificazioni rispetto a piccole variazioni nelle nomine.
 
 Le soglie vengono poi sottoposte al **controllo di separazione** (§ 4.2): una
 coda la cui soglia coincide con il valore adiacente dell'altra classe — il
@@ -548,7 +554,7 @@ che il numero assoluto di opinioni sia trascurabile.
 | Membri del gruppo per binomiale                           | $5 \le n \le 35$                                                                                                |
 | Membri visibili per largest gap                           | $4 \le N \le 6$                                                                                                 |
 | Membri visibili per piccoli gruppi                        | $4 \le N \le 6$                                                                                                 |
-| Percentili per impatto basso / alto                       | $10$ / $90$                                                                                                     |
+| Percentili per impatto basso / alto                       | $15$ / $85$                                                                                                     |
 | Controllo di separazione                                  | coda disattivata se la soglia coincide col valore adiacente                                                     |
 | Jenks: numero di classi                                   | $3$ (bassa, media, alta)                                                                                        |
 | Jenks: goodness of variance fit minima                    | $GVF \ge 0{,}75$                                                                                                |

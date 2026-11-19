@@ -10,11 +10,11 @@ import {
 // Strategy parameters.
 const MIN_MEMBERS = 20;
 const MAX_MEMBERS = 35;
-const LOW_PERCENTILE = 10;
-const HIGH_PERCENTILE = 90;
+const LOW_PERCENTILE = 15;
+const HIGH_PERCENTILE = 85;
 
 /**
- * Plain-percentile strategy for 10–35 visible members: cuts at the configured
+ * Plain-percentile strategy for 20–35 visible members: cuts at the configured
  * low/high percentiles with tie-trimming.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.

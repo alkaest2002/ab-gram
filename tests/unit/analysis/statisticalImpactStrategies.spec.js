@@ -123,10 +123,10 @@ describe("percentile statistical impact strategy", () => {
   });
 
   it.each([
-    [20, 1, 18],
-    [21, 2, 18],
-    [35, 3, 31],
-  ])("uses mirrored nearest ranks for %i members", (size, low, high) => {
+    [20, 2, 17],
+    [21, 3, 17],
+    [35, 5, 29],
+  ])("uses mirrored 15th/85th percentile nearest ranks for %i members", (size, low, high) => {
     expect(
       visibleSplit(
         percentileStrategy,
@@ -139,12 +139,16 @@ describe("percentile statistical impact strategy", () => {
   });
 
   it.each([
-    ["low boundary tie", [0, 0, 0, ...Array(15).fill(5), 9, 10], { low: -Infinity, high: 9 }],
-    ["high boundary tie", [0, 1, ...Array(15).fill(5), 9, 9, 9], { low: 1, high: Infinity }],
-    ["both boundary ties", [0, 0, 0, ...Array(14).fill(5), 9, 9, 9], NO_SPLIT],
+    ["low boundary tie", [0, 0, 0, 0, ...Array(13).fill(5), 8, 9, 10], { low: -Infinity, high: 8 }],
+    ["high boundary tie", [0, 1, 2, ...Array(13).fill(5), 9, 9, 9, 9], { low: 2, high: Infinity }],
+    ["both boundary ties", [0, 0, 0, 0, ...Array(12).fill(5), 9, 9, 9, 9], NO_SPLIT],
     ["constant values", Array(20).fill(3), NO_SPLIT],
     ["zero values", Array(20).fill(0), NO_SPLIT],
-    ["ties contained within tails", [0, 0, ...Array(16).fill(5), 10, 10], { low: 0, high: 10 }],
+    [
+      "ties contained within tails",
+      [0, 0, 0, ...Array(14).fill(5), 10, 10, 10],
+      { low: 0, high: 10 },
+    ],
   ])("handles %s without moving the rank boundary", (_name, values, expected) => {
     expect(visibleSplit(percentileStrategy, values)).toEqual(expected);
   });
@@ -152,13 +156,13 @@ describe("percentile statistical impact strategy", () => {
   it("uses visible rather than original group size", () => {
     expect(
       percentileStrategy({ impactVisibleSorted: np.arange(20), impact: np.arange(36) }),
-    ).toEqual({ low: 1, high: 18 });
+    ).toEqual({ low: 2, high: 17 });
   });
 
   it("uses observed values rather than interpolated percentile cutoffs", () => {
     expect(visibleSplit(percentileStrategy, [0, 2, 4, ...Array(14).fill(10), 16, 20, 30])).toEqual({
-      low: 2,
-      high: 20,
+      low: 4,
+      high: 16,
     });
   });
 });
