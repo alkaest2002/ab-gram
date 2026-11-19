@@ -34,7 +34,7 @@
       <h2 class="text-2xl">Il gruppo a colpo d'occhio</h2>
     </header>
 
-    <figure class="graph">
+    <figure class="graph rounded-lg">
       <div class="graph-stage">
         <svg
           viewBox="0 -4 560 400"
@@ -206,7 +206,7 @@
 <style scoped>
 .graph {
   border: 1px solid var(--color-line);
-  border-radius: 1.25rem;
+
   background: #fff;
   overflow: hidden;
 }
@@ -215,7 +215,7 @@
 .graph-stage {
   position: relative;
   isolation: isolate;
-  padding: 1rem 1.25rem 0.5rem;
+  padding: 2rem 1.5rem 1.5rem;
 }
 
 .graph-stage::before {
