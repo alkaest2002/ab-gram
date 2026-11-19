@@ -238,6 +238,12 @@ parentesi) indicano rispettivamente il **numero di legami** di un nodo e la
 **distanza** tra due nodi, e non vanno confusi con $b_{ij}$ (senza parentesi),
 che nella sezione precedente indicava il rifiuto.
 
+Con meno di due membri, il report restituisce $0$ per tutte le centralità
+individuali: è una convenzione dell'applicazione, anche per PageRank, che su
+un singolo nodo avrebbe invece valore teorico $1$. L'intermediazione vale
+$0$ anche con due membri, perché non esistono coppie di altri nodi tra cui
+fare da intermediario; la sua formula normalizzata si applica per $n \ge 3$.
+
 ### 2.1 Grado
 
 La **centralità di grado** conta quanti legami ha il membro, rapportati al
@@ -257,6 +263,8 @@ $d_{\text{out}}$: le frecce che partono dal membro):
 $$
 C_D^{\text{in}}(i) = \frac{d_{\text{in}}(i)}{n - 1}, \qquad C_D^{\text{out}}(i) = \frac{d_{\text{out}}(i)}{n - 1}
 $$
+
+Il riquadro **DG** del report usa il grado **entrante**, non quello totale.
 
 ### 2.2 Vicinanza
 
@@ -329,13 +337,18 @@ Sono ruoli matematici complementari: non indicano che qualcuno sappia scegliere
 
 Le due definizioni si richiamano a vicenda ($\text{Out}(i)$ è l'insieme dei
 membri scelti da $i$) e, come per il PageRank, i valori si calcolano per
-approssimazioni successive, con normalizzazione dei punteggi. Se la rete non
-ha legami o HITS non converge, il programma restituisce tutti zeri: in
-quest'ultimo caso non sono punteggi interpretabili come assenza di centralità.
+approssimazioni successive, con normalizzazione dei punteggi. Le relazioni
+seguenti indicano **proporzionalità**, non uguaglianza tra i punteggi finali:
+le somme vengono normalizzate e, al termine, autorità e hub hanno ciascuno
+somma $1$ sull'insieme dei membri.
 
 $$
-a(i) = \sum_{j \in \text{In}(i)} h(j), \qquad h(i) = \sum_{j \in \text{Out}(i)} a(j)
+a(i) \propto \sum_{j \in \text{In}(i)} h(j), \qquad h(i) \propto \sum_{j \in \text{Out}(i)} a(j)
 $$
+
+Se la rete non ha legami o HITS non converge, il programma restituisce tutti
+zeri: in quest'ultimo caso non sono punteggi interpretabili come assenza di
+centralità.
 
 ### 2.6 Un esempio svolto
 
@@ -380,14 +393,14 @@ Come si leggono questi numeri:
   il $4$ ha _come unica scelta_ proprio il $1$, quindi gli cede tutta la propria
   importanza. Come verifica, per il membro $1$ si ha
   $PR(1) = \frac{0{,}15}{4} + 0{,}85\left(\frac{PR(2)}{2} + \frac{PR(4)}{1}\right)
-  \approx 0{,}0375 + 0{,}85\,(0{,}129 + 0{,}224) \approx 0{,}337$,
+  \approx 0{,}0375 + 0{,}85\,(0{,}128887 + 0{,}223934) \approx 0{,}337$,
   dove il $2$ divide la propria importanza tra due scelte (il $1$ e il $4$),
   mentre il $4$ la dà tutta al $1$. Il membro $3$ ha il valore più basso perché
   riceve una sola scelta, e per di più da un membro che ne fa due.
-- **HITS.** Il membro $4$ è il **punteggio di autorità più alto**: è scelto da $2$ e $3$, che
-  sono ottimi hub. Il membro $3$ è invece il **punteggio hub più alto**: indica proprio il
-  $2$ e il $4$, le due autorità più forti. Il membro $2$ è il più equilibrato,
-  perché è alto in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
+- **HITS.** Il membro $4$ ha il **punteggio di autorità più alto**: è scelto da $2$ e $3$, che
+  hanno punteggi hub elevati. Il membro $3$ ha invece il **punteggio hub più alto**: indica proprio il
+  $2$ e il $4$, le due autorità più forti. Il membro $2$ ha punteggi elevati
+  in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
   nel grafico i loro ruoli sono speculari.
 

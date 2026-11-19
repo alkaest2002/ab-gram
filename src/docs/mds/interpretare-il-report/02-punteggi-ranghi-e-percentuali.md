@@ -51,8 +51,9 @@ mostrati con una cifra decimale):
 - centralizzazione della rete;
 - reciprocità della rete;
 - transitività della rete;
-- indice di coesione (tipo I e tipo II) nella rete delle scelte, oppure indice
-  di conflitto (tipo I e tipo II) nella rete dei rifiuti.
+- indice di coesione di tipo I nella rete delle scelte, oppure indice di
+  conflitto di tipo I nella rete dei rifiuti. Il tipo II coincide con la
+  reciprocità della rispettiva rete e non è mostrato in una riga separata.
 
 ## 5 Tipi di relazione
 

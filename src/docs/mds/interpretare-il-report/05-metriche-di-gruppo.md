@@ -75,8 +75,10 @@ ciascuna direzione:
 - **max** — il grado più grande osservato tra i membri.
 
 I quartili sono calcolati con interpolazione lineare: possono quindi essere
-frazionari anche se i gradi sono interi. Con pochi membri o molti valori uguali,
-le percentuali indicate non corrispondono necessariamente a quote esatte di persone.
+frazionari anche se i gradi sono interi. Nella tabella del report, però, Q1 e Q3
+sono arrotondati all'intero più vicino; la mediana mantiene il valore calcolato.
+Con pochi membri o molti valori uguali, le percentuali indicate non
+corrispondono necessariamente a quote esatte di persone.
 
 ### 5 Densità
 
@@ -193,7 +195,12 @@ Per gli indici di tipo II, in assenza di scelte o di rifiuti il programma
 restituisce $0$ per convenzione. Anche densità e centralizzazione valgono $0$
 con meno di due nodi; la transitività vale $0$ se non ci sono terne connesse.
 Questi casi vanno distinti da quelli in cui la struttura è osservabile ma la
-misura risulta nulla.
+misura risulta nulla. Anche gli indici di tipo I valgono $0$ per convenzione
+con meno di due nodi.
+
+Nel report, la riga «Indice di coesione» (o «Indice di conflitto») mostra il
+**tipo I**. Il tipo II non ha una riga separata, perché coincide con la
+«Reciprocità della rete» delle scelte (o dei rifiuti).
 
 ## 11 Un esempio svolto
 
@@ -233,7 +240,8 @@ legami vengono contati entrambi, perciò $E_{\leftrightarrow} = 2$.
 membro $4$ sceglie solo il membro $1$, tutti gli altri ne scelgono due); i gradi
 in ingresso sono $2$, $2$, $1$, $2$ (il membro $3$ è scelto solo dal membro $1$).
 In entrambi i casi la sintesi a cinque numeri è: minimo $1$, primo quartile
-$1{,}75$, mediana $2$, terzo quartile $2$ e massimo $2$.
+$1{,}75$, mediana $2$, terzo quartile $2$ e massimo $2$. Questi sono i valori
+calcolati; nella tabella del report il primo quartile viene mostrato come $2$.
 
 **Densità.** Il rapporto tra i legami presenti e quelli possibili, con
 $N(N-1) = 4 \cdot 3 = 12$ legami possibili:

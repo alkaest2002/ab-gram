@@ -177,8 +177,18 @@ ammessi possono comunque astenersi se i dati non soddisfano i loro controlli int
 
 **Intuizione:** individuare le posizioni **relativamente basse e alte** nel gruppo.
 
-- $L = \text{percentile}(15)$;
-- $H = \text{percentile}(85)$.
+Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si pone
+$r = \lceil 0{,}15N \rceil$ e, prima del controllo di separazione:
+
+- $L = x_{r-1}$;
+- $H = x_{N-r}$.
+
+Il simbolo $\lceil\cdot\rceil$ indica l'arrotondamento all'intero superiore.
+Il programma usa quindi il rango più vicino per la coda bassa e lo stesso
+rango contato dall'alto per la coda alta, **senza interpolazione**. Non è la
+stessa convenzione dei quartili dei gradi descritti nelle metriche di gruppo;
+la soglia alta può inoltre differire dall'usuale percentile all'$85\%$
+calcolato contando dal basso.
 
 Il metodo è ammesso con **da $20$ a $35$ membri visibili** e si astiene al di
 fuori di questo intervallo. Le soglie individuano nominalmente il $15\%$
@@ -242,11 +252,21 @@ $$
 z_i = \frac{x_i - m}{1{,}4826 \cdot MAD}
 $$
 
-e si considerano anomali i valori con $|z_i| > 3{,}5$. Le soglie sono il valore
-osservato più vicino **strettamente oltre** i due recinti
+e si considerano anomali i valori con $|z_i| > 3{,}5$. I due **recinti** sono
 
-- $L = m - 3{,}5 \cdot 1{,}4826 \cdot MAD$;
-- $H = m + 3{,}5 \cdot 1{,}4826 \cdot MAD$.
+- $F_L = m - 3{,}5 \cdot 1{,}4826 \cdot MAD$;
+- $F_H = m + 3{,}5 \cdot 1{,}4826 \cdot MAD$.
+
+Le **soglie effettive** sono invece i valori osservati più vicini
+strettamente oltre i recinti:
+
+$$
+L = \max\{x_i : x_i < F_L\}, \qquad
+H = \min\{x_i : x_i > F_H\}
+$$
+
+Se non ci sono valori sotto il recinto basso si pone $L = -\infty$; se non
+ce ne sono sopra il recinto alto si pone $H = +\infty$.
 
 Il metodo è ammesso con **da $7$ a $35$ membri visibili** e si astiene al di
 fuori di questo intervallo. Vale poi il **controllo di separazione** (§ 4.2).
@@ -335,10 +355,16 @@ uguali).
 
 **Intuizione:** una variante del criterio di Tukey per i **valori anomali**,
 basata sui quartili. Il programma usa un moltiplicatore $1$, non il consueto
-$1{,}5$ degli _inner fences_ del box plot. Detti
-$Q_1 = \text{percentile}(25)$ e $Q_3 = \text{percentile}(75)$ i quartili degli
-impatti dei membri visibili e $IQR = Q_3 - Q_1$ lo scarto interquartile, i
-recinti usati sono
+$1{,}5$ degli _inner fences_ del box plot. Sugli impatti visibili ordinati
+$x_0 \le \dots \le x_{N-1}$, i quartili sono valori osservati scelti con
+ranghi speculari, senza interpolazione:
+
+$$
+Q_1 = x_{\lceil 0{,}25N \rceil - 1}, \qquad
+Q_3 = x_{N - \lceil 0{,}25N \rceil}
+$$
+
+Detto $IQR = Q_3 - Q_1$ lo scarto interquartile, i recinti usati sono
 
 - recinto basso: $Q_1 - 1 \cdot IQR$;
 - recinto alto: $Q_3 + 1 \cdot IQR$.
@@ -405,7 +431,10 @@ $R = x_{N-1} - x_0$ l'escursione totale. Il metodo **si astiene** quando:
   $g_{\max} < 0{,}5 \cdot R$.
 
 Se il salto è dominante, sia $k$ l'indice del valore **sopra** il salto massimo
-(il salto è tra $x_{k-1}$ e $x_k$). Si segnala solo la coda più piccola:
+(il salto è tra $x_{k-1}$ e $x_k$). Se più salti massimi hanno la stessa
+ampiezza, viene scelto il **primo** nella sequenza ordinata, diversamente
+dalla regola di astensione del metodo largest gap. Si segnala solo la coda
+più piccola:
 
 - coda **bassa** più piccola $\Rightarrow$ $L = x_{k-1}$ e $H = +\infty$;
 - coda **alta** più piccola $\Rightarrow$ $L = -\infty$ e $H = x_k$;
@@ -428,11 +457,12 @@ sono già stati classificati al Passo 1):
   **non** vengono votati: il metodo si astiene su di essi.
 
 Le soglie sono **inclusive** ($\le$ e $\ge$): se più membri si trovano
-esattamente su una soglia, vengono tutti classificati dalla stessa parte, e per
-questo una classe può risultare più ampia di quanto suggerirebbe il percentile
-nominale. Nei gruppi piccoli i percentili sono inoltre "grossolani" e tendono a
-coincidere con minimo e massimo. Se un membro risultasse sia basso sia alto,
-prevale sempre "basso".
+esattamente su una soglia attiva, vengono tutti classificati dalla stessa
+parte. Nel metodo dei percentili la quota nominale del $15\%$ può essere
+superata per l'arrotondamento del numero di membri della coda; se invece una
+parità attraversa il confine di rango scelto, il controllo di separazione
+disattiva quella coda, anziché ampliarla. Se un membro risultasse sia basso
+sia alto, prevale sempre "basso".
 
 #### 4.2.11 La votazione tra i metodi
 
