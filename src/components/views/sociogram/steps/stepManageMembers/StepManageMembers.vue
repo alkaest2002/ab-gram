@@ -44,12 +44,12 @@ const { members, membersCount } = storeToRefs(sociogramStore);
 const { goToStep, restart } = useSociogramNavigation(emit);
 
 // --- Computed -----------
-// The group list can only advance when there is at least one member, none of
-// them are blank, and no two members share the same name.
+// The group list can only advance when the minimum member count is met, none of
+// the names are blank, and no two members share the same name.
 const nameIssues = computed(() => getMembersNameIssues(members.value));
 const canGoNext = computed(
   () =>
-    membersCount.value > 0 &&
+    membersCount.value >= sociogramStore.minMembersCount &&
     nameIssues.value.emptyNamesCount === 0 &&
     nameIssues.value.duplicateNamesCount === 0,
 );
