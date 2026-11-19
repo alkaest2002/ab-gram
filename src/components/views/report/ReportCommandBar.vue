@@ -50,7 +50,6 @@ function printReport() {
 }
 
 function redactReportData(reportData) {
-  // JSON serialization also includes names stored in Graphology node attributes.
   return JSON.parse(
     JSON.stringify(reportData, (key, value) =>
       key === "name" || key === "memberName" ? "[REDACTED]" : value,
