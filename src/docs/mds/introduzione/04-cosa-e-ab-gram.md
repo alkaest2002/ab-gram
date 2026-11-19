@@ -49,49 +49,35 @@ relazione si vuole conoscere**. Chiedere «Con chi vorresti lavorare?» non equi
 a chiedere «Con chi trascorri il tempo libero?»: le risposte descrivono aspetti
 diversi delle relazioni.
 
-## 3 Cosa serve per iniziare
+## 3 Le tre caratteristiche principali
 
-Servono **un elenco dei membri** e **le loro risposte a una domanda comune**.
-La raccolta avviene **prima e al di fuori dell'app**: AB-Gram non somministra il
-questionario, ma analizza i dati già raccolti, per esempio con un colloquio, un
-questionario cartaceo o un modulo online.
+AB-Gram si basa su tre principi: essere **gratuita**, **semplice** e **attenta
+alla privacy**.
 
-### 3.1 L'elenco dei membri
+### 3.1 Un'app gratuita
 
-Prepara la lista delle persone che fanno parte del gruppo, una per riga. Per
-esempio:
+AB-Gram è **open source**, distribuita con **licenza MIT** e **gratuita per
+sempre**. Il codice sorgente è disponibile su
+[GitHub](https://github.com/alkaest2002/ab-gram): chiunque può consultarlo,
+utilizzarlo e modificarlo nel rispetto della licenza.
 
-```txt
-Rossi Mario
-Verdi Giuseppe
-Grandi Francesca
-Bianchi Elena
-```
+### 3.2 Un'app semplice
 
-Usa nomi o identificativi univoci, in modo da associare ogni risposta alla
-persona corretta. Nel raccogliere e utilizzare questi dati, tutela la
-riservatezza dei partecipanti, soprattutto se sono minorenni.
+Si usa direttamente nel browser, **senza creare un account** e senza installare
+o configurare programmi. Basta aprire l'app e inserire i dati del gruppo per
+iniziare a esplorarne le relazioni.
 
-### 3.2 Le scelte e gli eventuali rifiuti
+### 3.3 Un'app attenta alla privacy
 
-Chiedi a ciascun membro di indicare le proprie preferenze rispetto alla stessa
-domanda, per esempio:
+L'elaborazione dei dati avviene **interamente nella memoria del computer**, nel
+browser, tramite **librerie JavaScript specializzate**: dalla costruzione del
+sociogramma al calcolo degli indici sociometrici e delle misure di rete. I dati
+del gruppo restano sul dispositivo e **non vengono inviati a un server per
+l'analisi**.
 
-> Con chi ti piacerebbe lavorare a un progetto?
-
-Se è pertinente all'obiettivo dell'analisi, puoi raccogliere anche i rifiuti:
-
-> Con chi preferiresti non lavorare a un progetto?
-
-Il numero di scelte e di rifiuti non è vincolato dall'app. È però importante
-stabilire istruzioni chiare e uguali per tutti: se prevedi un limite di risposte,
-comunicalo prima della raccolta.
-
-**Una mancata scelta non è un rifiuto**: non indicare una persona tra le proprie
-preferenze è diverso dall'esprimere esplicitamente di non voler lavorare con lei.
-
-Una volta inseriti l'elenco e le risposte, AB-Gram genera il sociogramma e calcola
-le misure disponibili.
+Questo non sostituisce l'attenzione di chi usa l'app: è comunque importante
+tutelare la riservatezza dei partecipanti, soprattutto se sono minorenni, e
+custodire con cura gli eventuali file salvati o esportati.
 
 ## 4 Un caso concreto
 
