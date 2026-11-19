@@ -24,7 +24,7 @@ const smallGroup = [
 
 const mediumGroup = [
   { id: "a", name: "Anna", likes: [], dislikes: [] },
-  { id: "b", name: "Bruno", likes: ["a"], dislikes: ["e"] },
+  { id: "b", name: "Milo", likes: ["a"], dislikes: ["e"] },
   { id: "c", name: "Carla", likes: ["a", "b"], dislikes: ["e"] },
   { id: "d", name: "Dino", likes: ["b", "c"], dislikes: ["f"] },
   { id: "e", name: "Elsa", likes: ["a"], dislikes: [] },

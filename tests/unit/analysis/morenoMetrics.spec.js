@@ -234,7 +234,7 @@ describe("getIndividualLevelMetrics", () => {
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
       Anna: S.POPULAR,
-      Bruno: S.POPULAR,
+      Milo: S.POPULAR,
       Carla: S.POPULAR,
       Dino: S.MARGINAL,
       Elsa: S.CONTROVERSIAL,

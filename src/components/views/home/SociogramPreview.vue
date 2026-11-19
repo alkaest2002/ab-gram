@@ -41,8 +41,8 @@
           class="graph-svg"
           role="img"
           aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre preferenze ed è al
-            centro del grafico; Bruno e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
-            Bruno si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
+            centro del grafico; Milo e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
+            Milo si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
             Iris, Luca e Marta scelgono senza essere scelti: Iris e Luca ricevono un rifiuto, Marta
             non riceve né preferenze né rifiuti."
         >
@@ -88,7 +88,7 @@
             <path d="M131.1 137.1 Q186.9 168.1 236.8 177.7" />
             <!-- Dario → Emma -->
             <path d="M425.6 127.9 Q362.9 139.9 318.5 164.6" />
-            <!-- Bruno → Dario -->
+            <!-- Milo → Dario -->
             <path d="M310.6 62.9 Q374.1 73.1 423.4 102.5" />
             <!-- Emma → Gina -->
             <path d="M312.3 204 Q362.9 232.1 418.7 242.8" />
@@ -100,13 +100,13 @@
             <path d="M499.5 315 Q490.4 291.7 480.2 279.3" />
             <!-- Luca → Fabio -->
             <path d="M72 337 Q163 320 254 317" />
-            <!-- Marta → Bruno -->
+            <!-- Marta → Milo -->
             <path d="M64 49 Q159 46 254 57" />
           </g>
 
           <!-- Mutual pairs -->
           <g class="edge edge-mutual" marker-start="url(#tip-mutual)" marker-end="url(#tip-mutual)">
-            <!-- Bruno ↔ Emma -->
+            <!-- Milo ↔ Emma -->
             <path d="M275.2 95.7 Q271.8 122 274.4 142.4" />
             <!-- Elsa ↔ Fabio -->
             <path d="M136.6 269.5 Q185.9 298.9 242.5 308" />
@@ -124,7 +124,7 @@
 
           <!-- Mutual rejections -->
           <g class="edge edge-reject" marker-start="url(#tip-reject)" marker-end="url(#tip-reject)">
-            <!-- Anna ⇠⇢ Bruno -->
+            <!-- Anna ⇠⇢ Milo -->
             <path d="M136.6 102.5 Q185.9 73.1 242.5 64" />
           </g>
 
@@ -138,7 +138,7 @@
             <g transform="translate(280 58)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">B</text>
-              <text class="name" y="-39">Bruno</text>
+              <text class="name" y="-39">Milo</text>
             </g>
 
             <!-- The star of the group: filled, a bit larger. -->
@@ -188,7 +188,7 @@
               <text class="name" y="39">Luca</text>
             </g>
 
-            <!-- Isolated and ignored: Marta chooses Bruno, nobody chooses her. -->
+            <!-- Isolated and ignored: Marta chooses Milo, nobody chooses her. -->
             <g class="is-alone" transform="translate(40 48)">
               <circle class="dot" r="24" />
               <text class="initial" dy="0.34em">M</text>
