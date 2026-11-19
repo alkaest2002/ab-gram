@@ -22,12 +22,12 @@ const contextWithSize = (size) => {
 
 describe("impact strategy member ranges", () => {
   const cases = [
-    ["small group", smallGroupStrategy, 4, 4],
+    ["small group", smallGroupStrategy, 4, 6],
     ["largest gap", largestGapStrategy, 4, 6],
-    ["Jenks", jenksStrategy, 4, 35],
-    ["head/tail", headTailStrategy, 4, 35],
-    ["inverted head/tail", invertedHeadTailStrategy, 4, 35],
-    ["percentile", percentileStrategy, 10, 35],
+    ["Jenks", jenksStrategy, 7, 35],
+    ["head/tail", headTailStrategy, 7, 35],
+    ["inverted head/tail", invertedHeadTailStrategy, 7, 35],
+    ["percentile", percentileStrategy, 20, 35],
     ["Tukey", tukeyStrategy, 7, 35],
     ["robust z-score", robustZScoreStrategy, 7, 35],
     ["binomial", binomialStrategy, 5, 35],
@@ -75,7 +75,7 @@ describe("Tukey strategy", () => {
 
 describe("inverted head/tail strategy", () => {
   it("isolates a sparse low tail and abstains on the high cutoff", () => {
-    const impactVisibleSorted = np.array([1, 8, 9, 10, 11]);
+    const impactVisibleSorted = np.array([1, 8, 9, 9, 10, 10, 11]);
 
     expect(invertedHeadTailStrategy({ impactVisibleSorted })).toEqual({
       low: 1,
@@ -84,16 +84,17 @@ describe("inverted head/tail strategy", () => {
   });
 
   it("mirrors head/tail classification across a reflected distribution", () => {
-    const ascending = np.array([1, 2, 3, 4, 11]);
-    const reflected = np.array([-11, -4, -3, -2, -1]);
+    const ascending = np.array([1, 2, 2, 3, 3, 4, 11]);
+    const reflected = np.array([-11, -4, -3, -3, -2, -2, -1]);
     const highSplit = headTailStrategy({ impactVisibleSorted: ascending });
     const lowSplit = invertedHeadTailStrategy({ impactVisibleSorted: reflected });
 
+    expect(highSplit).toEqual({ low: -Infinity, high: 11 });
     expect(lowSplit).toEqual({ low: -highSplit.high, high: Infinity });
   });
 
   it("abstains when all impacts are equal", () => {
-    const impactVisibleSorted = np.array([3, 3, 3, 3]);
+    const impactVisibleSorted = np.array([3, 3, 3, 3, 3, 3, 3]);
 
     expect(invertedHeadTailStrategy({ impactVisibleSorted })).toBe(NO_SPLIT);
   });

@@ -5,7 +5,7 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
-const MIN_MEMBERS = 4;
+const MIN_MEMBERS = 7;
 const MAX_MEMBERS = 35;
 const MIN_GVF = 0.75;
 

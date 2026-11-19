@@ -196,13 +196,14 @@ describe("getIndividualLevelMetrics", () => {
       members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
-    // Single-sided strategies now abstain on members they don't flag instead
-    // of voting them average, so Bob and Carol (low impact) are marginal.
+    // Only four members receive opinions. Jenks and both head/tail strategies
+    // are ineligible; the small-group high-tail vote leaves Bob and Carol at
+    // average impact with positive balance.
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
       Alice: S.POPULAR,
-      Bob: S.MARGINAL,
-      Carol: S.MARGINAL,
+      Bob: S.APPRECIATED,
+      Carol: S.APPRECIATED,
       Dave: S.IGNORED,
       Eve: S.AMBIVALENT,
       Frank: S.IGNORED,
@@ -248,11 +249,11 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("classifies the likes-only example by the vote of the splitting strategies", () => {
-    // Received likes [5, 5, 2, 3, 2, 2]: percentile, Jenks, Gini and head/tail
-    // all see the 2/3/5 spread. Percentile, Jenks and Gini propose the same
-    // (low <= 2, high >= 5) split, while head/tail flags only the high tail (5).
-    // Tukey, binomial and small-group abstain, so 5 -> high, 2 -> low and
-    // 3 -> average.
+    // Received likes [5, 5, 2, 3, 2, 2]: largest gap proposes low <= 2 and
+    // high >= 5, while small-group flags only the smaller high tail (5).
+    // Jenks, both head/tail strategies, percentile, Tukey and robust z-score
+    // are ineligible at six visible members; binomial abstains. The resulting
+    // vote keeps 5 high, 2 low and 3 average.
     const members = [
       { id: "1", likes: ["2", "3", "4", "5", "6"], dislikes: [] },
       { id: "2", likes: ["1", "3", "4", "5", "6"], dislikes: [] },

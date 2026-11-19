@@ -17,24 +17,24 @@ for (const inverted of [false, true]) {
     strategy({ impactVisibleSorted: np.array(inverted ? reflect(values) : values) });
 
   describe(inverted ? "inverted head/tail breaks" : "head/tail breaks", () => {
-    it.each([0, 3, 36])("abstains at ineligible size %i", (size) => {
+    it.each([0, 3, 4, 5, 6, 36])("abstains at ineligible size %i", (size) => {
       expect(run(Array(size).fill(5))).toBe(NO_SPLIT);
     });
 
     it.each([0, 5])("abstains for constant values of %i", (value) => {
-      expect(run(Array(4).fill(value))).toBe(NO_SPLIT);
+      expect(run(Array(7).fill(value))).toBe(NO_SPLIT);
     });
 
     it.each([
-      ["minimum eligible size", [0, 1, 2, 9], 9],
+      ["minimum eligible size", [0, 0, 0, 1, 1, 2, 9], 9],
       ["maximum eligible size", [...Array(34).fill(1), 20], 20],
-      ["stops at exactly 40 percent", [0, 0, 0, 4, 6], 4],
-      ["stops above 40 percent", [0, 1, 3, 4], 3],
+      ["stops at exactly 40 percent", [0, 0, 0, 0, 0, 0, 4, 4, 6, 6], 4],
+      ["stops above 40 percent", [0, 0, 0, 1, 3, 3, 4], 3],
       ["recurses below 40 percent", [0, 0, 0, 0, 0, 0, 0, 4, 6], 6],
       ["recurses through multiple levels", [...Array(12).fill(0), 10, 10, 10, 20, 100], 100],
-      ["excludes values equal to the mean", [0, 2, 2, 4], 4],
-      ["keeps a repeated extreme together", [0, 0, 0, 0, 8, 8], 8],
-      ["returns an observed cutoff rather than the mean", [0, 1, 2, 10], 10],
+      ["excludes values equal to the mean", [0, 0, 2, 2, 2, 4, 4], 4],
+      ["keeps a repeated extreme together", [0, 0, 0, 0, 0, 8, 8], 8],
+      ["returns an observed cutoff rather than the mean", [0, 0, 1, 1, 2, 2, 10], 10],
     ])("%s", (_name, values, cutoff) => {
       expect(run(values)).toEqual(
         inverted ? { low: 100 - cutoff, high: Infinity } : { low: -Infinity, high: cutoff },
@@ -42,7 +42,7 @@ for (const inverted of [false, true]) {
     });
 
     it("uses visible size rather than original group size", () => {
-      const values = [0, 1, 2, 9];
+      const values = [0, 0, 0, 1, 1, 2, 9];
       expect(
         strategy({
           impactVisibleSorted: np.array(inverted ? reflect(values) : values),

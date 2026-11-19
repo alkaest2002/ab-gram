@@ -8,7 +8,7 @@ import {
 } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
-const MIN_MEMBERS = 10;
+const MIN_MEMBERS = 20;
 const MAX_MEMBERS = 35;
 const LOW_PERCENTILE = 10;
 const HIGH_PERCENTILE = 90;

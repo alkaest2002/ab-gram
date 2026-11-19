@@ -43,18 +43,18 @@ const exhaustiveJenks = (values) => {
 
 describe("partition impact strategy eligibility", () => {
   it.each([
-    ["Jenks", jenksStrategy, 35],
-    ["largest gap", largestGapStrategy, 6],
-    ["small group", smallGroupStrategy, 4],
-  ])("makes %s abstain outside the visible-member range", (_name, strategy, max) => {
-    for (const size of [0, 1, 3, max + 1]) {
+    ["Jenks", jenksStrategy, 7, 35],
+    ["largest gap", largestGapStrategy, 4, 6],
+    ["small group", smallGroupStrategy, 4, 6],
+  ])("makes %s abstain outside the visible-member range", (_name, strategy, min, max) => {
+    for (const size of [0, 1, min - 1, max + 1]) {
       const impactVisibleSorted = np.arange(size);
       expect(strategy({ impactVisibleSorted, impact: np.arange(4) })).toBe(NO_SPLIT);
     }
   });
 
   it.each([
-    ["Jenks minimum", jenksStrategy, [0, 0, 5, 10], { low: 0, high: 10 }],
+    ["Jenks minimum", jenksStrategy, [0, 0, 0, 5, 5, 10, 10], { low: 0, high: 10 }],
     [
       "Jenks maximum",
       jenksStrategy,
@@ -63,7 +63,8 @@ describe("partition impact strategy eligibility", () => {
     ],
     ["largest gap minimum", largestGapStrategy, [0, 0, 5, 10], { low: 0, high: 10 }],
     ["largest gap maximum", largestGapStrategy, [0, 0, 5, 5, 10, 10], { low: 0, high: 10 }],
-    ["small group only size", smallGroupStrategy, [0, 0, 5, 5], { low: 0, high: 5 }],
+    ["small group minimum", smallGroupStrategy, [0, 0, 5, 5], { low: 0, high: 5 }],
+    ["small group maximum", smallGroupStrategy, [0, 0, 0, 5, 5, 5], { low: 0, high: 5 }],
   ])("accepts %s using visible rather than original size", (_name, strategy, values, expected) => {
     expect(strategy({ impactVisibleSorted: np.array(values), impact: np.arange(36) })).toEqual(
       expected,
@@ -73,18 +74,22 @@ describe("partition impact strategy eligibility", () => {
 
 describe("Jenks partition strategy", () => {
   it.each([
-    ["all zeros", [0, 0, 0, 0]],
-    ["constant positives", [5, 5, 5, 5]],
-    ["two distinct values", [0, 0, 8, 8]],
+    ["all zeros", Array(7).fill(0)],
+    ["constant positives", Array(7).fill(5)],
+    ["two distinct values", [0, 0, 0, 8, 8, 8, 8]],
     ["two distinct values at maximum size", [...Array(17).fill(0), ...Array(18).fill(8)]],
   ])("abstains for %s", (_name, values) => {
     expect(split(jenksStrategy, values)).toBe(NO_SPLIT);
   });
 
   it.each([
-    ["three tied clusters", [0, 0, 3, 3, 8, 8], { low: 0, high: 8 }],
-    ["equal-cost optima prefer earlier breaks", [0, 1, 2, 3], { low: 0, high: 2 }],
-    ["variance optimum differs from the two largest gaps", [0, 1, 2, 3, 4, 5], { low: 1, high: 4 }],
+    ["three tied clusters", [0, 0, 3, 3, 3, 8, 8], { low: 0, high: 8 }],
+    ["equal-cost optima prefer earlier breaks", [0, 1, 2, 3, 4, 5, 6], { low: 1, high: 4 }],
+    [
+      "variance optimum differs from the two largest gaps",
+      [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      { low: 2, high: 6 },
+    ],
   ])("handles %s", (_name, values, expected) => {
     expect(split(jenksStrategy, values)).toEqual(expected);
   });
@@ -99,7 +104,7 @@ describe("Jenks partition strategy", () => {
       }
       for (let value = minimum; value <= 4; value++) visit([...values, value], size, value);
     };
-    for (const size of [4, 5, 6]) visit([], size, 0);
+    for (const size of [7, 8, 9]) visit([], size, 0);
   });
 });
 
@@ -133,6 +138,11 @@ describe("small-group partition strategy", () => {
   it.each([
     ["all zeros", [0, 0, 0, 0], NO_SPLIT],
     ["constant positives", [4, 4, 4, 4], NO_SPLIT],
+    ["five-member low minority", [0, 4, 4, 5, 6], { low: 0, high: Infinity }],
+    ["five-member high minority", [0, 1, 2, 6, 6], { low: -Infinity, high: 6 }],
+    ["six-member low minority", [0, 0, 4, 4, 5, 6], { low: 0, high: Infinity }],
+    ["six-member high minority", [0, 1, 2, 2, 6, 6], { low: -Infinity, high: 6 }],
+    ["six-member equal sides", [0, 0, 1, 5, 6, 6], { low: 1, high: 5 }],
     ["only the smaller low side", [0, 4, 5, 6], { low: 0, high: Infinity }],
     ["only the smaller high side", [0, 1, 2, 6], { low: -Infinity, high: 6 }],
     ["both equal-size sides", [0, 1, 5, 6], { low: 1, high: 5 }],

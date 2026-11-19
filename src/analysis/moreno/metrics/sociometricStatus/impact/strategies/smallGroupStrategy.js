@@ -6,7 +6,7 @@ import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impac
 
 // Strategy parameters.
 const MIN_MEMBERS = 4;
-const MAX_MEMBERS = 4;
+const MAX_MEMBERS = 6;
 const MIN_GAP = 2; // A candidate gap must be at least this many received opinions.
 
 // Dominance of the candidate gap relative to its competition.

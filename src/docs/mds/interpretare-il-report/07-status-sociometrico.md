@@ -168,8 +168,10 @@ mai raggiunta.
 **Pochissimi membri visibili.** Se i membri visibili sono **meno di quattro**,
 non c'è abbastanza varietà per distinguere tre classi: la votazione viene
 saltata e tutti i membri visibili restano a impatto medio. Da $4$ a $35$ membri
-visibili, almeno tre metodi sono sempre ammessi al voto in base alla numerosità;
-possono comunque astenersi se i dati non soddisfano i loro controlli interni.
+visibili, almeno due metodi sono sempre ammessi al voto in base alla numerosità:
+con $N = n = 4$ sono largest gap e piccoli gruppi. Il binomiale usa invece
+la numerosità totale $n$ del gruppo ed è ammesso da $5$ a $35$ membri. I metodi
+ammessi possono comunque astenersi se i dati non soddisfano i loro controlli interni.
 
 #### 4.2.1 Metodo dei percentili
 
@@ -178,9 +180,9 @@ possono comunque astenersi se i dati non soddisfano i loro controlli interni.
 - $L = \text{percentile}(10)$;
 - $H = \text{percentile}(90)$.
 
-Il metodo è ammesso con **da $10$ a $35$ membri visibili** e si astiene al di
-fuori di questo intervallo: da $N = 10$ il $10\%$ inferiore e superiore
-corrisponde naturalmente ad almeno una persona per coda.
+Il metodo è ammesso con **da $20$ a $35$ membri visibili** e si astiene al di
+fuori di questo intervallo: con $N = 20$ ogni coda del $10\%$ corrisponde a
+due persone, prima del controllo di separazione.
 
 Le soglie vengono poi sottoposte al **controllo di separazione** (§ 4.2): una
 coda la cui soglia coincide con il valore adiacente dell'altra classe — il
@@ -261,7 +263,7 @@ $$
 
 dove $SDAM$ è la somma degli scarti quadratici dalla media complessiva degli impatti. Il metodo **si astiene** quando:
 
-- non ci sono da $4$ a $35$ membri visibili;
+- non ci sono da $7$ a $35$ membri visibili;
 - ci sono meno di $3$ valori distinti (non si possono formare tre classi);
 - $GVF < 0{,}75$: la distribuzione è troppo "senza struttura" per giustificare
   una divisione.
@@ -298,7 +300,7 @@ tagli ordinano i valori in classi consecutive, dalla più bassa alla più alta.
 - $H$ = il primo valore dell'**ultima** classe (la più alta), cioè la "testa"
   finale.
 
-Il metodo è ammesso con **da $4$ a $35$ membri visibili**; si astiene al di
+Il metodo è ammesso con **da $7$ a $35$ membri visibili**; si astiene al di
 fuori di questo intervallo o quando non produce alcun taglio (valori tutti
 uguali).
 
@@ -319,7 +321,7 @@ l'insieme dei valori **minori della media**. Si ripete sulla coda fino alla
   bassa);
 - $H = +\infty$: il lato alto non viene **mai** segnalato.
 
-Il metodo è ammesso con **da $4$ a $35$ membri visibili**; si astiene al di
+Il metodo è ammesso con **da $7$ a $35$ membri visibili**; si astiene al di
 fuori di questo intervallo o quando non produce alcun taglio (valori tutti
 uguali).
 
@@ -379,8 +381,8 @@ non è applicabile).
 
 #### 4.2.9 Metodo dei piccoli gruppi
 
-**Intuizione:** con esattamente $4$ membri visibili i percentili sono
-inaffidabili e serve un criterio dedicato. Qui si cerca
+**Intuizione:** con **da $4$ a $6$ membri visibili** serve un criterio
+dedicato ai piccoli gruppi. Qui si cerca
 invece il **salto più grande** tra impatti consecutivi: se è un salto
 "vero" e domina gli altri, si segnala **solo la coda più piccola** che quel salto
 isola, astenendosi sugli altri membri (non li vota né come bassi né come medi).
@@ -390,10 +392,10 @@ valori consecutivi sono $g_i = x_i - x_{i-1}$ per $i = 1, \dots, N-1$. Siano
 $g_{\max}$ il salto più grande e $g_2$ il secondo per grandezza; sia inoltre
 $R = x_{N-1} - x_0$ l'escursione totale. Il metodo **si astiene** quando:
 
-- $N \ne 4$;
+- $N < 4$ oppure $N > 6$;
 - $g_{\max} = 0$ (tutti gli impatti sono uguali);
 - $g_{\max} < 2$ (un salto di una sola opinione non è abbastanza);
-- il salto non domina gli altri: $g_{\max} < 2 \cdot g_2$ **e**
+- il salto non domina gli altri: $g_{\max} < 1{,}5 \cdot g_2$ **e**
   $g_{\max} < 0{,}5 \cdot R$.
 
 Se il salto è dominante, sia $k$ l'indice del valore **sopra** il salto massimo
@@ -401,7 +403,7 @@ Se il salto è dominante, sia $k$ l'indice del valore **sopra** il salto massimo
 
 - coda **bassa** più piccola $\Rightarrow$ $L = x_{k-1}$ e $H = +\infty$;
 - coda **alta** più piccola $\Rightarrow$ $L = -\infty$ e $H = x_k$;
-- code **uguali** (possibile solo con $N = 4$, due contro due) $\Rightarrow$
+- code **uguali** (possibile con $N = 4$, due contro due, o $N = 6$, tre contro tre) $\Rightarrow$
   $L = x_{k-1}$ e $H = x_k$.
 
 Per esempio, con $[1, 1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e
@@ -438,8 +440,9 @@ classe con il **maggior numero di voti espressi per quel membro**.
    sono finite**. Sui membri che non classifica (perché il lato corrispondente è
    disattivato) il metodo **si astiene** e non esprime alcun voto. Se un valore
    soddisfa entrambe le condizioni, prevale "basso".
-2. Per ogni numerosità supportata ($4 \le N \le 35$), almeno tre metodi sono
-   ammessi in base al numero di dati. Un metodo ammesso che propone **nessuna
+2. Per ogni numerosità supportata ($4 \le N \le 35$), almeno due metodi sono
+   ammessi in base alla numerosità: con $N = n = 4$ sono largest gap e piccoli
+   gruppi. Il binomiale considera il totale $n$, non i soli visibili $N$. Un metodo ammesso che propone **nessuna
    divisione** ($L = -\infty$, $H = +\infty$) **si astiene del tutto**: non
    partecipa al voto. Se _tutti_ i metodi si astengono, non c'è alcuna divisione
    e tutti restano a impatto medio.
@@ -538,13 +541,13 @@ che il numero assoluto di opinioni sia trascurabile.
 | Metodi a una sola soglia                                  | votano solo la coda attiva; si astengono sugli altri membri                                                     |
 | Parità nel voto                                           | non medio prevale su medio; basso prevale su alto                                                               |
 | Votazione con meno di $4$ membri visibili                 | saltata: tutti restano a impatto medio                                                                          |
-| Comitato minimo per $4 \le N \le 35$                      | almeno $3$ metodi ammessi in base alla numerosità                                                               |
-| Membri visibili per percentili                            | $10 \le N \le 35$                                                                                               |
-| Membri visibili per Jenks, head/tail e inverted head/tail | $4 \le N \le 35$                                                                                                |
+| Comitato minimo per $4 \le N \le 35$                      | almeno $2$ metodi ammessi in base alla numerosità                                                               |
+| Membri visibili per percentili                            | $20 \le N \le 35$                                                                                               |
+| Membri visibili per Jenks, head/tail e inverted head/tail | $7 \le N \le 35$                                                                                                |
 | Membri visibili per Tukey e robust z-score                | $7 \le N \le 35$                                                                                                |
 | Membri del gruppo per binomiale                           | $5 \le n \le 35$                                                                                                |
 | Membri visibili per largest gap                           | $4 \le N \le 6$                                                                                                 |
-| Membri visibili per piccoli gruppi                        | $N = 4$                                                                                                         |
+| Membri visibili per piccoli gruppi                        | $4 \le N \le 6$                                                                                                 |
 | Percentili per impatto basso / alto                       | $10$ / $90$                                                                                                     |
 | Controllo di separazione                                  | coda disattivata se la soglia coincide col valore adiacente                                                     |
 | Jenks: numero di classi                                   | $3$ (bassa, media, alta)                                                                                        |
@@ -608,257 +611,268 @@ tipicamente dentro la stessa categoria di status — e non come misura assoluta.
 
 ### 7.1 Calcolo dello status sociometrico
 
-Consideriamo un gruppo di sei membri che esprimono le proprie preferenze, in
+Consideriamo un gruppo di **sette membri** che esprimono le proprie preferenze, in
 ordine dalla prima all'ultima (per semplicità non ci sono rifiuti):
 
 | Membro | Scelte (in ordine) |
-| :----: | ------------------ |
-|   1    | 2, 3, 4, 5, 6      |
-|   2    | 1, 3, 4, 5, 6      |
-|   3    | 1, 2, 4            |
-|   4    | 1, 2               |
-|   5    | 1, 2               |
-|   6    | 1, 2               |
+| ------ | ------------------ |
+| 1      | 2, 3, 4, 5, 6, 7   |
+| 2      | 1, 3, 4, 5, 6, 7   |
+| 3      | 1, 2, 4            |
+| 4      | 1, 2               |
+| 5      | 1, 2               |
+| 6      | 1, 2               |
+| 7      | 1, 2               |
 
-Dalle scelte ricaviamo $rp$ (scelte ricevute), $gp$ (scelte date) e l'impatto
-$n_i = rp_i$ (non essendoci rifiuti, $rr = 0$):
+Dalle nomine ricaviamo $rp$ (scelte ricevute), $gp$
+(scelte espresse) e l'impatto $n_i = rp_i$ (non essendoci rifiuti, $rr = 0$):
 
 | Membro | $rp$ | $gp$ | $n_i = rp_i$ |
-| :----: | :--: | :--: | :----------: |
-|   1    |  5   |  5   |      5       |
-|   2    |  5   |  5   |      5       |
-|   3    |  2   |  3   |      2       |
-|   4    |  3   |  2   |      3       |
-|   5    |  2   |  2   |      2       |
-|   6    |  2   |  2   |      2       |
+| ------ | ---- | ---- | ------------ |
+| 1      | 6    | 6    | 6            |
+| 2      | 6    | 6    | 6            |
+| 3      | 2    | 3    | 2            |
+| 4      | 3    | 2    | 3            |
+| 5      | 2    | 2    | 2            |
+| 6      | 2    | 2    | 2            |
+| 7      | 2    | 2    | 2            |
 
 **Passo 1 — Visibilità.** Tutti hanno $n_i > 0$, quindi nessuno è isolato o
 ignorato: tutti proseguono.
 
-**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 3, 5, 5]$ con
-$N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dagli
-nove metodi.
+**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 2, 3, 6, 6]$ con
+$N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
-- **Jenks.** Le tre classi $[2, 2, 2]$, $[3]$ e $[5, 5]$ hanno varianza interna
-  nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
-  risultano $L = 2$ e $H = 5$.
-- **Largest gap.** Con $N = 6$ il metodo è ammesso. I due salti più grandi
-  separano $[2, 2, 2]$, $[3]$ e $[5, 5]$, quindi $L = 2$ e $H = 5$.
-- **Head/tail.** La media è $19/6 \approx 3{,}17$; la testa è $[5, 5]$
-  ($2$ valori su $6$, meno del $40\%$). L'ultima classe (valori $> 3{,}17$)
-  ha primo valore $5$: $H = 5$ e $L = -\infty$ (il lato basso non è mai
-  segnalato).
-- **Inverted head/tail.** La media è $19/6 \approx 3{,}17$; la coda (valori
-  minori della media) è $[2, 2, 2, 3]$, cioè $4$ valori su $6$ (oltre il
-  $40\%$), quindi ci si ferma subito. La coda finale ha valore più alto $3$:
-  $L = 3$ e $H = +\infty$ (il lato alto non è mai segnalato).
-- **Percentili.** Con $N = 6 < 10$ il metodo non è ammesso e si astiene.
-- **Tukey.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
-- **Robust z-score.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
-- **Binomiale.** Le opinioni totali sono $19$, quindi
-  $p = 19 / (6 \cdot 5) \approx 0{,}63$ e $X \sim \text{Binomiale}(5;\ 0{,}63)$.
-  Con $\alpha = 0{,}05$ si ha $P(X \le 0) \approx 0{,}007 \le 0{,}025$, quindi
-  $L = 0$; invece $P(X \ge 5) \approx 0{,}10 > 0{,}025$, quindi il lato alto è
-  disattivato. Poiché nessun membro visibile ha impatto $0$, il metodo non
-  classifica alcun valore visibile e non partecipa al voto.
-- **Piccoli gruppi.** Il metodo si attiva solo con $N = 4$: qui $N = 6$, quindi
-  si astiene.
+- **Jenks.** Le classi $[2, 2, 2, 2]$, $[3]$ e $[6, 6]$
+  hanno varianza interna nulla: $SDCM = 0$, $SDAM = 150/7$ e
+  $GVF = 1$. Le soglie sono $L = 2$ e $H = 6$.
+- **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
+- **Head/tail.** La media è $23/7 \approx 3{,}286$. La testa $[6, 6]$
+  contiene $2/7 < 0{,}4$ dei membri; alla successiva iterazione i valori sono
+  uguali e non si producono altri tagli. Quindi $L = -\infty$ e $H = 6$.
+- **Inverted head/tail.** Alla stessa media, la coda è $[2, 2, 2, 2, 3]$:
+  contiene $5/7 \ge 0{,}4$ dei membri, quindi la ricorsione si arresta subito.
+  Le soglie sono $L = 3$ e $H = +\infty$.
+- **Percentili.** Con $N = 7 < 20$ il metodo non è ammesso e si astiene.
+- **Tukey.** I quartili sono $Q_1 = 2$ e $Q_3 = 6$, quindi
+  $IQR = 4$ e i recinti sono $-2$ e $10$. Nessun valore è
+  strettamente oltre i recinti: **nessuna divisione**.
+- **Robust z-score.** La mediana è $2$ e la MAD grezza è $0$, portata
+  al minimo $0{,}5$. I recinti sono $2 \pm 2{,}59455$, cioè
+  $-0{,}59455$ e $4{,}59455$. Solo i due $6$ superano il recinto alto:
+  $L = -\infty$ e $H = 6$.
+- **Binomiale.** Le opinioni totali sono $23$, quindi $p = 23/42$
+  e $X \sim \text{Binomiale}(6;\ 23/42)$. Si ha
+  $P(X \le 0) \approx 0{,}00857 \le 0{,}025$, mentre
+  $P(X \le 1) \approx 0{,}07082 > 0{,}025$: quindi $L = 0$.
+  Invece $P(X \ge 6) \approx 0{,}02697 > 0{,}025$: il lato alto è
+  disattivato. La soglia bassa è finita, ma non classifica alcun membro
+  visibile: su tutti e sette il metodo si astiene.
+- **Piccoli gruppi.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 
-Etichettando i sei membri in ordine di membro (basso/medio/alto) si ottiene:
+Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
-| Metodo             | Etichette                                  |
-| ------------------ | ------------------------------------------ |
-| Jenks              | $+1, +1, -1, 0, -1, -1$                    |
-| largest gap        | $+1, +1, -1, 0, -1, -1$                    |
-| head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot$       |
-| inverted head/tail | $\cdot, \cdot, -1, -1, -1, -1$             |
-| percentili         | _si astiene_                               |
-| Tukey              | _si astiene_                               |
-| robust z-score     | _si astiene_                               |
-| binomiale          | _si astiene_                               |
-| piccoli gruppi     | _si astiene_                               |
-| **Voto**           | **alto, alto, basso, medio, basso, basso** |
+| Metodo             | Etichette                                         |
+| ------------------ | ------------------------------------------------- |
+| Jenks              | $+1, +1, -1, 0, -1, -1, -1$                       |
+| largest gap        | _si astiene_                                      |
+| head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
+| inverted head/tail | $\cdot, \cdot, -1, -1, -1, -1, -1$                |
+| percentili         | _si astiene_                                      |
+| Tukey              | _si astiene_                                      |
+| robust z-score     | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
+| binomiale          | _si astiene_                                      |
+| piccoli gruppi     | _si astiene_                                      |
+| **Voto**           | **alto, alto, basso, basso, basso, basso, basso** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
-Votano Jenks, largest gap, head/tail e inverted head/tail. Per $5$ concordano
-Jenks, largest gap e head/tail sull'alto; per $2$ Jenks e largest gap votano
-basso, mentre inverted head/tail vota basso per ogni impatto $\le 3$ (membri
-$3$, $4$, $5$ e $6$). La maggioranza assegna quindi $5$ all'impatto alto, $2$ al
-basso e $3$ al medio (il membro $4$ resta medio: due voti "medio" contro uno
-"basso"). Ne risulta:
+I membri $1$ e $2$ ricevono tre voti per alto e nessun voto contrario.
+I quattro membri con impatto $2$ ricevono due voti per basso (Jenks e
+inverted head/tail). Il membro $4$ riceve un voto per medio da Jenks e
+uno per basso da inverted head/tail: nello spareggio prevale **basso**.
+Ne risulta:
 
-- impatto basso ($\le 2$): membri $3$, $5$ e $6$;
-- impatto alto ($\ge 5$): membri $1$ e $2$;
-- impatto medio: membro $4$.
+- impatto basso: membri $3$, $4$, $5$, $6$, $7$;
+- impatto alto: membri $1$ e $2$;
+- nessun membro a impatto medio.
 
 **Passo 3 — Bilancio.** Non ci sono rifiuti ($rr = 0$), quindi il bilancio è
 sempre positivo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso         | Status     | Codice |
-| :----: | ---------------- | ---------- | :----: |
-|   1    | alto + positivo  | popolare   |   4    |
-|   2    | alto + positivo  | popolare   |   4    |
-|   3    | basso            | marginale  |   2    |
-|   4    | medio + positivo | apprezzato |   3    |
-|   5    | basso            | marginale  |   2    |
-|   6    | basso            | marginale  |   2    |
+| Membro | Percorso        | Status    | Codice |
+| ------ | --------------- | --------- | ------ |
+| 1      | alto + positivo | popolare  | 4      |
+| 2      | alto + positivo | popolare  | 4      |
+| 3      | basso           | marginale | 2      |
+| 4      | basso           | marginale | 2      |
+| 5      | basso           | marginale | 2      |
+| 6      | basso           | marginale | 2      |
+| 7      | basso           | marginale | 2      |
 
-I membri $1$ e $2$ finiscono entrambi nella categoria **popolare**: ricevono lo
-stesso numero di scelte ($5$) e hanno lo stesso status. Per distinguerli serve
-guardare **all'ordine** con cui sono stati scelti: è qui che entrano in gioco
-bonus e malus.
+I membri $1$ e $2$ finiscono entrambi nella categoria **popolare**:
+ricevono lo stesso numero di scelte ($6$). Per distinguerli serve guardare
+**all'ordine** delle nomine.
 
 ### 7.2 Calcolo del bonus/malus
 
-Con $M = 35$, il contributo di chi indica $i$ al posto $p_j(i)$ è
+Con $M = 35$, il contributo di una nomina al posto $p_j(i)$ è
 $M - p_j(i) + 1$. Calcoliamo il bonus dei due membri **popolari**:
 
-- **Membro 1.** È indicato per primo da tutti e cinque i membri che lo scelgono:
-  $bns_1 = 5 \cdot 35 = 175$.
-- **Membro 2.** È indicato per primo solo dal membro $1$ e per secondo dagli
-  altri quattro: $bns_2 = 35 + 4 \cdot 34 = 171$.
+- **Membro 1.** È indicato per primo da tutti e sei i membri che lo
+  scelgono: $bns_1 = 6 \cdot 35 = 210$.
+- **Membro 2.** È indicato per primo solo dal membro $1$ e per secondo
+  dagli altri cinque: $bns_2 = 35 + 5 \cdot 34 = 205$.
 
 Non essendoci rifiuti, il malus è $0$ per tutti. Ripetendo per gli altri si
 ottiene:
 
-| Membro | Status     | $bns_i$ | $mls_i$ |
-| :----: | ---------- | :-----: | :-----: |
-|   1    | popolare   |   175   |    0    |
-|   2    | popolare   |   171   |    0    |
-|   3    | marginale  |   68    |    0    |
-|   4    | apprezzato |   99    |    0    |
-|   5    | marginale  |   64    |    0    |
-|   6    | marginale  |   62    |    0    |
+| Membro | Status    | $bns_i$ | $mls_i$ |
+| ------ | --------- | ------- | ------- |
+| 1      | popolare  | 210     | 0       |
+| 2      | popolare  | 205     | 0       |
+| 3      | marginale | 68      | 0       |
+| 4      | marginale | 99      | 0       |
+| 5      | marginale | 64      | 0       |
+| 6      | marginale | 62      | 0       |
+| 7      | marginale | 60      | 0       |
 
-Il membro $1$ ha un bonus più alto del membro $2$ ($175$ contro $171$) pur
-avendo lo stesso numero di scelte ricevute: è stato indicato **prima** nelle
-preferenze altrui. A parità di conteggio e di status **popolare**, il punteggio
-distingue quindi l'ordine registrato, non il valore sociale delle due persone.
+Il membro $1$ ha un bonus più alto del membro $2$ ($210$ contro $205$):
+è stato scelto **prima** nelle sequenze altrui. A parità di conteggio e di
+status, questa differenza riguarda l'ordine registrato, non il valore sociale
+delle due persone.
 
 ## 8 Un secondo esempio: rifiuti e malus
 
 ### 8.1 Calcolo dello status sociometrico
 
-Riprendiamo la stessa idea, ma con soli rifiuti (nessuna scelta), sempre in
-ordine dal primo all'ultimo:
+Consideriamo un altro gruppo di **sette membri**, con soli rifiuti (nessuna scelta),
+in ordine dal primo all'ultimo:
 
 | Membro | Rifiuti (in ordine) |
-| :----: | ------------------- |
-|   1    | 4, 5, 2             |
-|   2    | 4, 5, 3             |
-|   3    | 4, 5, 6             |
-|   4    | 5, 1                |
-|   5    | 4, 6                |
-|   6    | 4, 5                |
+| ------ | ------------------- |
+| 1      | 4, 5, 2, 7          |
+| 2      | 4, 5, 3             |
+| 3      | 4, 5, 6             |
+| 4      | 5, 1                |
+| 5      | 4, 6                |
+| 6      | 4, 5                |
+| 7      | 4, 5                |
 
-Ricaviamo $rr$ (rifiuti ricevuti), $gr$ (rifiuti dati) e l'impatto $n_i = rr_i$
-(non essendoci scelte, $rp = 0$):
+Dalle nomine ricaviamo $rr$ (rifiuti ricevuti), $gr$
+(rifiuti espressi) e l'impatto $n_i = rr_i$ (non essendoci scelte, $rp = 0$):
 
 | Membro | $rr$ | $gr$ | $n_i = rr_i$ |
-| :----: | :--: | :--: | :----------: |
-|   1    |  1   |  3   |      1       |
-|   2    |  1   |  3   |      1       |
-|   3    |  1   |  3   |      1       |
-|   4    |  5   |  2   |      5       |
-|   5    |  5   |  2   |      5       |
-|   6    |  2   |  2   |      2       |
+| ------ | ---- | ---- | ------------ |
+| 1      | 1    | 4    | 1            |
+| 2      | 1    | 3    | 1            |
+| 3      | 1    | 3    | 1            |
+| 4      | 6    | 2    | 6            |
+| 5      | 6    | 2    | 6            |
+| 6      | 2    | 2    | 2            |
+| 7      | 1    | 2    | 1            |
 
 **Passo 1 — Visibilità.** Tutti hanno $n_i > 0$, quindi nessuno è isolato o
 ignorato: tutti proseguono.
 
-**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 2, 5, 5]$ con
-$N = 6$ (e $n = 6$ membri nel gruppo). Calcoliamo le soglie proposte dagli
-nove metodi.
+**Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 1, 2, 6, 6]$ con
+$N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
-- **Jenks.** Le tre classi $[1, 1, 1]$, $[2]$ e $[5, 5]$ hanno varianza interna
-  nulla, quindi $GVF = 1 \ge 0{,}75$: il partizionamento è accettato. Ne
-  risultano $L = 1$ e $H = 5$.
-- **Largest gap.** Con $N = 6$ il metodo è ammesso. I due salti più grandi
-  separano $[1, 1, 1]$, $[2]$ e $[5, 5]$, quindi $L = 1$ e $H = 5$.
-- **Head/tail.** La media è $15/6 = 2{,}5$; la testa è $[5, 5]$
-  ($2$ valori su $6$, meno del $40\%$). L'ultima classe (valori $> 2{,}5$)
-  ha primo valore $5$: $H = 5$ e $L = -\infty$.
-- **Inverted head/tail.** La media è $15/6 = 2{,}5$; la coda (valori minori
-  della media) è $[1, 1, 1, 2]$, cioè $4$ valori su $6$ (oltre il $40\%$),
-  quindi ci si ferma subito. La coda finale ha valore più alto $2$: $L = 2$ e
-  $H = +\infty$.
-- **Percentili.** Con $N = 6 < 10$ il metodo non è ammesso e si astiene.
-- **Tukey.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
-- **Robust z-score.** Con $N = 6 < 7$ il metodo non è ammesso e si astiene.
-- **Binomiale.** Le opinioni totali sono $15$, quindi
-  $p = 15 / (6 \cdot 5) = 0{,}5$ e $X \sim \text{Binomiale}(5;\ 0{,}5)$.
-  Con $\alpha = 0{,}05$, $P(X \le 0) \approx 0{,}031 > 0{,}025$ e
-  $P(X \ge 5) \approx 0{,}031 > 0{,}025$: nessuna delle due code raggiunge la
-  significatività. Risultato: **nessuna divisione**.
-- **Piccoli gruppi.** Anche qui $N = 6 \ne 4$: il metodo si astiene.
+- **Jenks.** Le classi $[1, 1, 1, 1]$, $[2]$ e $[6, 6]$
+  hanno varianza interna nulla: $SDCM = 0$, $SDAM = 236/7$ e
+  $GVF = 1$. Le soglie sono $L = 1$ e $H = 6$.
+- **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
+- **Head/tail.** La media è $18/7 \approx 2{,}571$. La testa $[6, 6]$
+  contiene $2/7 < 0{,}4$ dei membri; alla successiva iterazione i valori sono
+  uguali e non si producono altri tagli. Quindi $L = -\infty$ e $H = 6$.
+- **Inverted head/tail.** Alla stessa media, la coda è $[1, 1, 1, 1, 2]$:
+  contiene $5/7 \ge 0{,}4$ dei membri, quindi la ricorsione si arresta subito.
+  Le soglie sono $L = 2$ e $H = +\infty$.
+- **Percentili.** Con $N = 7 < 20$ il metodo non è ammesso e si astiene.
+- **Tukey.** I quartili sono $Q_1 = 1$ e $Q_3 = 6$, quindi
+  $IQR = 5$ e i recinti sono $-4$ e $11$. Nessun valore è
+  strettamente oltre i recinti: **nessuna divisione**.
+- **Robust z-score.** La mediana è $1$ e la MAD grezza è $0$, portata
+  al minimo $0{,}5$. I recinti sono $1 \pm 2{,}59455$, cioè
+  $-1{,}59455$ e $3{,}59455$. Solo i due $6$ superano il recinto alto:
+  $L = -\infty$ e $H = 6$.
+- **Binomiale.** Le opinioni totali sono $18$, quindi $p = 18/42 = 3/7$
+  e $X \sim \text{Binomiale}(6;\ 3/7)$. Si ha
+  $P(X \le 0) \approx 0{,}03482 > 0{,}025$: il lato basso è disattivato.
+  Invece $P(X \ge 6) \approx 0{,}00620 \le 0{,}025$, mentre
+  $P(X \ge 5) \approx 0{,}05577 > 0{,}025$: quindi $H = 6$.
+- **Piccoli gruppi.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 
-| Metodo             | Etichette                                  |
-| ------------------ | ------------------------------------------ |
-| Jenks              | $-1, -1, -1, +1, +1, 0$                    |
-| largest gap        | $-1, -1, -1, +1, +1, 0$                    |
-| head/tail          | $\cdot, \cdot, \cdot, +1, +1, \cdot$       |
-| inverted head/tail | $-1, -1, -1, \cdot, \cdot, -1$             |
-| percentili         | _si astiene_                               |
-| Tukey              | _si astiene_                               |
-| robust z-score     | _si astiene_                               |
-| binomiale          | _si astiene_                               |
-| piccoli gruppi     | _si astiene_                               |
-| **Voto**           | **basso, basso, basso, alto, alto, medio** |
+Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
+
+| Metodo             | Etichette                                         |
+| ------------------ | ------------------------------------------------- |
+| Jenks              | $-1, -1, -1, +1, +1, 0, -1$                       |
+| largest gap        | _si astiene_                                      |
+| head/tail          | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
+| inverted head/tail | $-1, -1, -1, \cdot, \cdot, -1, -1$                |
+| percentili         | _si astiene_                                      |
+| Tukey              | _si astiene_                                      |
+| robust z-score     | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
+| binomiale          | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
+| piccoli gruppi     | _si astiene_                                      |
+| **Voto**           | **basso, basso, basso, alto, alto, basso, basso** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
-Votano Jenks, largest gap, head/tail e inverted head/tail. Per $5$ concordano
-Jenks, largest gap e head/tail sull'alto; per $1$ Jenks e largest gap votano
-basso, mentre inverted head/tail vota basso per ogni impatto $\le 2$ (membri
-$1$, $2$, $3$ e $6$). La maggioranza assegna quindi $5$ all'impatto alto, $1$ al
-basso e $2$ al medio (il membro $6$ resta medio: due voti "medio" contro uno
-"basso"). Ne risulta:
+I membri $4$ e $5$ ricevono quattro voti per alto e nessun voto contrario.
+I quattro membri con impatto $1$ ricevono due voti per basso (Jenks e
+inverted head/tail). Il membro $6$ riceve un voto per medio da Jenks e
+uno per basso da inverted head/tail: nello spareggio prevale **basso**.
+Ne risulta:
 
-- impatto basso ($\le 1$): membri $1$, $2$ e $3$;
-- impatto alto ($\ge 5$): membri $4$ e $5$;
-- impatto medio: membro $6$.
+- impatto basso: membri $1$, $2$, $3$, $6$, $7$;
+- impatto alto: membri $4$ e $5$;
+- nessun membro a impatto medio.
 
 **Passo 3 — Bilancio.** Non ci sono scelte ($rp = 0$), quindi il bilancio è
 sempre negativo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso         | Status    | Codice |
-| :----: | ---------------- | --------- | :----: |
-|   1    | basso            | marginale |   2    |
-|   2    | basso            | marginale |   2    |
-|   3    | basso            | marginale |   2    |
-|   4    | alto + negativo  | rifiutato |   6    |
-|   5    | alto + negativo  | rifiutato |   6    |
-|   6    | medio + negativo | malvisto  |   5    |
+| Membro | Percorso        | Status    | Codice |
+| ------ | --------------- | --------- | ------ |
+| 1      | basso           | marginale | 2      |
+| 2      | basso           | marginale | 2      |
+| 3      | basso           | marginale | 2      |
+| 4      | alto + negativo | rifiutato | 6      |
+| 5      | alto + negativo | rifiutato | 6      |
+| 6      | basso           | marginale | 2      |
+| 7      | basso           | marginale | 2      |
 
-I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**: ricevono lo
-stesso numero di rifiuti ($5$) e hanno lo stesso status. Anche qui, per
-distinguerli serve guardare **all'ordine** dei rifiuti.
+I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**:
+ricevono lo stesso numero di rifiuti ($6$). Per distinguerli serve guardare
+**all'ordine** delle nomine.
 
 ### 8.2 Calcolo del bonus/malus
 
-Calcoliamo il malus dei due membri **rifiutati**:
+Con $M = 35$, il contributo di una nomina al posto $p_j(i)$ è
+$M - p_j(i) + 1$. Calcoliamo il malus dei due membri **rifiutati**:
 
-- **Membro 4.** È indicato per primo da tutti e cinque i membri che lo
-  rifiutano: $mls_4 = 5 \cdot 35 = 175$.
-- **Membro 5.** È indicato per primo solo dal membro $4$ e per secondo dagli
-  altri quattro: $mls_5 = 35 + 4 \cdot 34 = 171$.
+- **Membro 4.** È indicato per primo da tutti e sei i membri che lo
+  rifiutano: $mls_4 = 6 \cdot 35 = 210$.
+- **Membro 5.** È indicato per primo solo dal membro $4$ e per secondo
+  dagli altri cinque: $mls_5 = 35 + 5 \cdot 34 = 205$.
 
 Non essendoci scelte, il bonus è $0$ per tutti. Ripetendo per gli altri si
 ottiene:
 
 | Membro | Status    | $bns_i$ | $mls_i$ |
-| :----: | --------- | :-----: | :-----: |
-|   1    | marginale |    0    |   34    |
-|   2    | marginale |    0    |   33    |
-|   3    | marginale |    0    |   33    |
-|   4    | rifiutato |    0    |   175   |
-|   5    | rifiutato |    0    |   171   |
-|   6    | malvisto  |    0    |   67    |
+| ------ | --------- | ------- | ------- |
+| 1      | marginale | 0       | 34      |
+| 2      | marginale | 0       | 33      |
+| 3      | marginale | 0       | 33      |
+| 4      | rifiutato | 0       | 210     |
+| 5      | rifiutato | 0       | 205     |
+| 6      | marginale | 0       | 67      |
+| 7      | marginale | 0       | 32      |
 
-Il membro $4$ ha un malus più alto del membro $5$ ($175$ contro $171$): è stato
-rifiutato **prima** nelle sequenze di rifiuto altrui. A parità di status
-**rifiutato** e di conteggio, questa differenza riguarda l'ordine registrato:
-non misura da sola la gravità del rifiuto o del disagio.
+Il membro $4$ ha un malus più alto del membro $5$ ($210$ contro $205$):
+è stato rifiutato **prima** nelle sequenze altrui. A parità di conteggio e di
+status, questa differenza riguarda l'ordine registrato, non misura da sola la
+gravità del rifiuto o del disagio.

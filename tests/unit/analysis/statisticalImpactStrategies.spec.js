@@ -118,13 +118,11 @@ describe("robust z-score statistical impact strategy", () => {
 });
 
 describe("percentile statistical impact strategy", () => {
-  it.each([0, 9, 36])("abstains outside eligibility at %i visible members", (size) => {
+  it.each([0, 10, 19, 36])("abstains outside eligibility at %i visible members", (size) => {
     expect(visibleSplit(percentileStrategy, Array(size).fill(5))).toBe(NO_SPLIT);
   });
 
   it.each([
-    [10, 0, 9],
-    [11, 1, 9],
     [20, 1, 18],
     [21, 2, 18],
     [35, 3, 31],
@@ -141,18 +139,24 @@ describe("percentile statistical impact strategy", () => {
   });
 
   it.each([
-    ["low boundary tie", [0, 0, 2, 3, 4, 5, 6, 7, 8, 9], { low: -Infinity, high: 9 }],
-    ["high boundary tie", [0, 1, 2, 3, 4, 5, 6, 7, 9, 9], { low: 0, high: Infinity }],
-    ["both boundary ties", [0, 0, 2, 3, 4, 5, 6, 7, 9, 9], NO_SPLIT],
-    ["constant values", Array(10).fill(3), NO_SPLIT],
-    ["zero values", Array(10).fill(0), NO_SPLIT],
-    ["ties contained within tails", [0, 0, 2, 3, 4, 5, 6, 7, 8, 10, 10], { low: 0, high: 10 }],
+    ["low boundary tie", [0, 0, 0, ...Array(15).fill(5), 9, 10], { low: -Infinity, high: 9 }],
+    ["high boundary tie", [0, 1, ...Array(15).fill(5), 9, 9, 9], { low: 1, high: Infinity }],
+    ["both boundary ties", [0, 0, 0, ...Array(14).fill(5), 9, 9, 9], NO_SPLIT],
+    ["constant values", Array(20).fill(3), NO_SPLIT],
+    ["zero values", Array(20).fill(0), NO_SPLIT],
+    ["ties contained within tails", [0, 0, ...Array(16).fill(5), 10, 10], { low: 0, high: 10 }],
   ])("handles %s without moving the rank boundary", (_name, values, expected) => {
     expect(visibleSplit(percentileStrategy, values)).toEqual(expected);
   });
 
+  it("uses visible rather than original group size", () => {
+    expect(
+      percentileStrategy({ impactVisibleSorted: np.arange(20), impact: np.arange(36) }),
+    ).toEqual({ low: 1, high: 18 });
+  });
+
   it("uses observed values rather than interpolated percentile cutoffs", () => {
-    expect(visibleSplit(percentileStrategy, [0, 2, 4, 6, 8, 10, 12, 14, 16, 20, 30])).toEqual({
+    expect(visibleSplit(percentileStrategy, [0, 2, 4, ...Array(14).fill(10), 16, 20, 30])).toEqual({
       low: 2,
       high: 20,
     });
