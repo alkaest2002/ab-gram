@@ -15,12 +15,12 @@ import { storeToRefs } from "pinia";
 import { useSociogramStore } from "@/stores/sociogram";
 
 //   -- From components.
-import StepStart from "@/components/views/sociogram/steps/stepStart/StepStart.vue";
+import StepCreateProject from "@/components/views/sociogram/steps/stepCreateProject/StepCreateProject.vue";
 import StepImportProject from "@/components/views/sociogram/steps/stepImportProject/StepImportProject.vue";
 import StepLoadMembers from "@/components/views/sociogram/steps/stepLoadMembers/StepLoadMembers.vue";
-import ManageMembers from "@/components/views/sociogram/steps/stepManageMembers/StepManageMembers.vue";
+import StepManageMembers from "@/components/views/sociogram/steps/stepManageMembers/StepManageMembers.vue";
 import StepSetPreferences from "@/components/views/sociogram/steps/stepSetPreferences/StepSetPreferences.vue";
-import StepGenerateReport from "@/components/views/sociogram/steps/stepGenerateReport/StepGenerateReport.vue";
+import StepSummarizeData from "@/components/views/sociogram/steps/stepSummarizeData/StepSummarizeData.vue";
 import AppKeepAliveTransition from "@/components/ui/AppKeepAliveTransition.vue";
 
 // --- Props --------------
@@ -35,15 +35,17 @@ const { membersStatus } = storeToRefs(sociogramStore);
 
 // --- State --------------
 const stateComponents = {
-  start: StepStart,
+  createProject: StepCreateProject,
   importProject: StepImportProject,
   loadMembers: StepLoadMembers,
-  manageMembers: ManageMembers,
+  manageMembers: StepManageMembers,
   setPreferences: StepSetPreferences,
-  generateReport: StepGenerateReport,
+  summarizeData: StepSummarizeData,
 };
 
-const currentComponentName = ref(membersStatus.value === "empty" ? "start" : "manageMembers");
+const currentComponentName = ref(
+  membersStatus.value === "empty" ? "createProject" : "manageMembers",
+);
 
 // UI state: the member to point the preferences carousel at when it opens.
 // Set only by the report summary's "edit this member" cards; cleared on any
@@ -62,7 +64,7 @@ const stepProps = computed(() => {
 });
 
 // Only "sociogram-edit-member" is emitted; binding it to every step
-// makes Vue try to fall through the listener on the others (e.g. StepStart,
+// makes Vue try to fall through the listener on the others (e.g. StepCreateProject,
 // which renders a fragment root) and triggers a warning. Attach it conditionally.
 const stepListeners = computed(() => {
   const listeners = {
@@ -70,7 +72,7 @@ const stepListeners = computed(() => {
     "sociogram-restart-app": sociogramStore.resetMembers,
   };
 
-  if (currentComponentName.value === "generateReport") {
+  if (currentComponentName.value === "summarizeData") {
     listeners["sociogram-edit-member"] = editMember;
   }
 

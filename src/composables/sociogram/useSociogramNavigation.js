@@ -1,40 +1,39 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-/**
- * Ordered list of the sociogram steps.
- * @type {import('@/stores/sociogram').SociogramStep[]}
- */
-export const SOCIOGRAM_STEPS = [
-  "start",
-  "importProject",
-  "loadMembers",
-  "manageMembers",
-  "setPreferences",
-  "generateReport",
-];
+/** Named constants for the sociogram steps. */
+export const SOCIOGRAM_STEPS = Object.freeze({
+  CREATE_PROJECT: "createProject",
+  IMPORT_PROJECT: "importProject",
+  LOAD_MEMBERS: "loadMembers",
+  MANAGE_MEMBERS: "manageMembers",
+  SET_PREFERENCES: "setPreferences",
+  SUMMARIZE_DATA: "summarizeData",
+});
+
+/** @typedef {(typeof SOCIOGRAM_STEPS)[keyof typeof SOCIOGRAM_STEPS]} SociogramStep */
 
 /**
  * Shared sociogram step navigation.
  *
- * @param {(event: string, payload?: import('@/stores/sociogram').SociogramStep) => void} emit
+ * @param {(event: string, payload?: SociogramStep) => void} emit
  *   The Vue emit function.
  * @returns {{
- *   goToStep: (componentName: import('@/stores/sociogram').SociogramStep) => void,
+ *   goToStep: (componentName: SociogramStep) => void,
  *   restart: () => void,
  * }}
  */
 export function useSociogramNavigation(emit) {
-  /** @param {import('@/stores/sociogram').SociogramStep} componentName */
+  /** @param {SociogramStep} componentName */
   function goToStep(componentName) {
-    if (SOCIOGRAM_STEPS.includes(componentName)) {
+    if (Object.values(SOCIOGRAM_STEPS).includes(componentName)) {
       emit("sociogram-go-to-step", componentName);
     }
   }
 
   function restart() {
     emit("sociogram-restart-app");
-    goToStep(SOCIOGRAM_STEPS[0]);
+    goToStep(SOCIOGRAM_STEPS.CREATE_PROJECT);
   }
 
   return {

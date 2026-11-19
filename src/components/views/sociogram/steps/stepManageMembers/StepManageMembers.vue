@@ -85,7 +85,7 @@ const canGoNext = computed(
     :enable-next="canGoNext"
     :enable-archive="canGoNext"
     :enable-restart="canGoNext"
-    @sociogram-navigation-previous="goToStep('start')"
+    @sociogram-navigation-previous="goToStep('createProject')"
     @sociogram-navigation-next="goToStep('setPreferences')"
     @sociogram-navigation-restart="restart"
   />

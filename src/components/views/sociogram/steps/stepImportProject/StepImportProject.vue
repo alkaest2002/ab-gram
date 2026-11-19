@@ -129,7 +129,7 @@ function onFileReadError({ message }) {
     :enable-next="hasImported"
     :enable-archive="hasImported"
     :enable-restart="hasImported"
-    @sociogram-navigation-previous="goToStep('start')"
+    @sociogram-navigation-previous="goToStep('createProject')"
     @sociogram-navigation-next="goToStep('manageMembers')"
     @sociogram-navigation-restart="restart"
   />

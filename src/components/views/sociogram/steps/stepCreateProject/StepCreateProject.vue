@@ -11,8 +11,8 @@ import { useSociogramStore } from "@/stores/sociogram";
 //   -- From components.
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
-import StartLoadMembers from "@/components/views/sociogram/steps/stepStart/StartLoadMembers.vue";
-import StartImportProject from "@/components/views/sociogram/steps/stepStart/StartImportProject.vue";
+import CreateProjectLoadMembers from "@/components/views/sociogram/steps/stepCreateProject/CreateProjectLoadMembers.vue";
+import CreateProjectImportProject from "@/components/views/sociogram/steps/stepCreateProject/CreateProjectImportProject.vue";
 
 //   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -66,11 +66,11 @@ function startFromScratch(step) {
 
       <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-      <StartLoadMembers @sociogram-start-load-members="startFromScratch('loadMembers')" />
+      <CreateProjectLoadMembers @sociogram-start-load-members="startFromScratch('loadMembers')" />
 
       <div class="h-px w-full bg-line" aria-hidden="true"></div>
 
-      <StartImportProject
+      <CreateProjectImportProject
         @sociogram-start-import-project="startFromScratch('importProject')"
         @sociogram-start-demo="goToStep('manageMembers')"
       />

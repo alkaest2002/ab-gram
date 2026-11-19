@@ -278,7 +278,7 @@ function handleWindowKeydown(event) {
     :enable-restart="true"
     :enable-archive="true"
     @sociogram-navigation-previous="goToStep('manageMembers')"
-    @sociogram-navigation-next="goToStep('generateReport')"
+    @sociogram-navigation-next="goToStep('summarizeData')"
     @sociogram-navigation-restart="restart"
   />
 </template>

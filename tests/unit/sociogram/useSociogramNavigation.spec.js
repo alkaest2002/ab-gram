@@ -21,15 +21,21 @@ function setup() {
 }
 
 describe("SOCIOGRAM_STEPS", () => {
-  it("lists the sociogram steps in navigation order", () => {
-    expect(SOCIOGRAM_STEPS).toEqual([
-      "start",
-      "importProject",
-      "loadMembers",
-      "manageMembers",
-      "setPreferences",
-      "generateReport",
-    ]);
+  it("exposes named constants for the sociogram steps", () => {
+    expect(SOCIOGRAM_STEPS).toEqual({
+      CREATE_PROJECT: "createProject",
+      IMPORT_PROJECT: "importProject",
+      LOAD_MEMBERS: "loadMembers",
+      MANAGE_MEMBERS: "manageMembers",
+      SET_PREFERENCES: "setPreferences",
+      SUMMARIZE_DATA: "summarizeData",
+    });
+  });
+
+  it("is frozen and prevents step constants from being changed", () => {
+    expect(Object.isFrozen(SOCIOGRAM_STEPS)).toBe(true);
+    expect(Reflect.set(SOCIOGRAM_STEPS, "CREATE_PROJECT", "changed")).toBe(false);
+    expect(SOCIOGRAM_STEPS.CREATE_PROJECT).toBe("createProject");
   });
 });
 
@@ -44,18 +50,27 @@ describe("useSociogramNavigation", () => {
   it("goToStep emits sociogram-go-to-step for every valid step", () => {
     const { emit, goToStep } = setup();
 
-    for (const step of SOCIOGRAM_STEPS) {
+    for (const step of Object.values(SOCIOGRAM_STEPS)) {
       goToStep(step);
       expect(emit).toHaveBeenCalledWith("sociogram-go-to-step", step);
     }
 
-    expect(emit).toHaveBeenCalledTimes(SOCIOGRAM_STEPS.length);
+    expect(emit).toHaveBeenCalledTimes(Object.values(SOCIOGRAM_STEPS).length);
   });
 
   it("goToStep does not emit for an unknown component", () => {
     const { emit, goToStep } = setup();
 
     goToStep("notARealStep");
+
+    expect(emit).not.toHaveBeenCalled();
+  });
+
+  it("goToStep does not emit for obsolete step names", () => {
+    const { emit, goToStep } = setup();
+
+    goToStep("start");
+    goToStep("generateReport");
 
     expect(emit).not.toHaveBeenCalled();
   });
@@ -69,13 +84,13 @@ describe("useSociogramNavigation", () => {
     expect(emit).not.toHaveBeenCalled();
   });
 
-  it("restart emits sociogram-restart-app and navigates to the first step", () => {
+  it("restart emits sociogram-restart-app and navigates to create project", () => {
     const { emit, restart } = setup();
 
     restart();
 
     expect(emit).toHaveBeenNthCalledWith(1, "sociogram-restart-app");
-    expect(emit).toHaveBeenNthCalledWith(2, "sociogram-go-to-step", SOCIOGRAM_STEPS[0]);
+    expect(emit).toHaveBeenNthCalledWith(2, "sociogram-go-to-step", "createProject");
     expect(emit).toHaveBeenCalledTimes(2);
   });
 });

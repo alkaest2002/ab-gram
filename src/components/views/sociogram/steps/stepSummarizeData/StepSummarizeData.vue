@@ -21,7 +21,7 @@ import { useAppStore } from "@/stores/app";
 //   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
-import GenerateReportMemberCard from "@/components/views/sociogram/steps/stepGenerateReport/GenerateReportMemberCard.vue";
+import SummarizeDataMemberCard from "@/components/views/sociogram/steps/stepSummarizeData/SummarizeDataMemberCard.vue";
 
 //   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
@@ -99,7 +99,7 @@ function goNext() {
         <p class="eyebrow">LISTA DEI MEMBRI</p>
       </div>
       <div class="grid gap-x-8 gap-y-5 md:grid-cols-2">
-        <GenerateReportMemberCard
+        <SummarizeDataMemberCard
           v-for="member in summary"
           :key="member.id"
           :member="member"

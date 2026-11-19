@@ -124,7 +124,7 @@ function onFileReadError({ message }) {
     :enable-next="hasLoaded"
     :enable-archive="hasLoaded"
     :enable-restart="hasLoaded"
-    @sociogram-navigation-previous="goToStep('start')"
+    @sociogram-navigation-previous="goToStep('createProject')"
     @sociogram-navigation-next="goToStep('manageMembers')"
     @sociogram-navigation-restart="restart"
   />
