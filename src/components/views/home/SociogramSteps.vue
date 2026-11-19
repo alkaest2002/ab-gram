@@ -56,7 +56,7 @@ const steps = [
       >
         <!-- Numbered node, like a member of the graph. -->
         <span
-          class="-mt-6 grid size-12 place-items-center rounded-full font-mono text-2xl font-semibold text-white ring-4 ring-white bg-gray-700"
+          class="-mt-6 grid size-12 place-items-center rounded-full font-mono text-2xl font-semibold text-white ring-4 ring-white bg-slate-700"
           aria-hidden="true"
         >
           {{ i + 1 }}
