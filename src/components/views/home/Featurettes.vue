@@ -61,11 +61,7 @@ const features = [
     </header>
 
     <ul class="mx-auto w-full">
-      <li
-        v-for="feature in features"
-        :key="feature.id"
-        class="flex flex-col items-center gap-3 border-b border-line py-8 sm:py-10"
-      >
+      <li v-for="feature in features" :key="feature.id" class="flex flex-col items-center py-6">
         <span class="text-black" aria-hidden="true">
           <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
           <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" :stroke-width="1" />
