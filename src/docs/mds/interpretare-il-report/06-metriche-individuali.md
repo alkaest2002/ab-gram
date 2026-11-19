@@ -264,7 +264,10 @@ $$
 C_D^{\text{in}}(i) = \frac{d_{\text{in}}(i)}{n - 1}, \qquad C_D^{\text{out}}(i) = \frac{d_{\text{out}}(i)}{n - 1}
 $$
 
-Il riquadro **DG** del report usa il grado **entrante**, non quello totale.
+**AB-Gram riporta la centralità di grado entrante (_in-degree centrality_)**
+nel riquadro **DG** del report: è il numero di scelte ricevute dal membro,
+diviso per $n-1$, cioè $C_D^{\text{in}}(i) = rp_i/(n-1)$. Non è il conteggio
+grezzo delle scelte ricevute, né la centralità di grado uscente o totale.
 
 ### 2.2 Vicinanza
 
