@@ -55,7 +55,7 @@ const isActive = (path) => route.path === path || route.path.startsWith(`${path}
 </script>
 
 <template>
-  <header class="sticky top-0 z-20 border-b border-line">
+  <header class="sticky top-0 z-20 border-b border-gray-200">
     <div
       class="pointer-events-none absolute inset-0 -z-10 bg-canvas/85 backdrop-blur"
       aria-hidden="true"
