@@ -28,18 +28,19 @@
 </script>
 
 <template>
-  <div>
-    <p class="font-mono text-xs font-medium tracking-[0.14em] text-muted uppercase">
+  <div class="py-6 sm:py-10">
+    <p class="font-mono text-xs font-medium tracking-[0.18em] text-muted uppercase">
       Sociometria nel browser
     </p>
 
     <h1
-      class="mt-3 font-display text-[2.125rem] leading-[1.08] font-bold tracking-[-0.02em] text-ink sm:text-[3.125rem]"
+      class="mx-auto mt-6 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.04] font-bold tracking-[-0.04em] text-balance text-ink"
     >
-      Analizza le <em class="relative">dinamiche dei gruppi</em>
+      Analizza le
+      <em class="block">dinamiche dei <span class="text-accent">gruppi</span></em>
     </h1>
 
-    <p class="mx-auto mt-6 max-w-[56ch] text-base sm:text-[1.0625rem]">
+    <p class="mx-auto mt-8 max-w-[46ch] text-lg leading-relaxed sm:text-xl">
       Registra
       <strong class="font-semibold text-accent">scelte</strong> e
       <strong class="font-semibold text-reject">rifiuti</strong>
