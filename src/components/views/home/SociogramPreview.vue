@@ -28,7 +28,7 @@
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-8 sm:space-y-10">
     <header class="mx-auto max-w-2xl space-y-3">
       <p class="eyebrow">Un esempio</p>
       <h2 class="text-2xl">Il gruppo a colpo d'occhio</h2>

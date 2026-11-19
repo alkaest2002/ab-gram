@@ -28,7 +28,7 @@
 </script>
 
 <template>
-  <div class="py-6 sm:py-10">
+  <div>
     <p class="font-mono text-xs font-medium tracking-[0.18em] text-muted uppercase">
       Sociometria nel browser
     </p>

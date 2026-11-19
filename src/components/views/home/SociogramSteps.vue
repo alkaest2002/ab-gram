@@ -42,21 +42,21 @@ const steps = [
 </script>
 
 <template>
-  <div>
+  <div class="space-y-8 sm:space-y-10">
     <header class="mx-auto max-w-2xl space-y-3">
       <p class="eyebrow">3 soli passaggi</p>
       <h2 class="text-2xl">Dal gruppo al report sociometrico</h2>
     </header>
 
-    <ol class="mx-auto mt-10 grid list-none grid-cols-1 gap-11 p-0 sm:grid-cols-3">
+    <ol class="mx-auto grid list-none grid-cols-1 gap-x-8 gap-y-14 p-0 pt-6 sm:grid-cols-3">
       <li
         v-for="(step, i) in steps"
         :key="step.title"
-        class="relative flex flex-col items-center rounded-lg border border-line bg-white px-5 pt-0 pb-6"
+        class="relative flex flex-col items-center rounded-lg border border-line bg-white px-6 pt-0 pb-6"
       >
         <!-- Numbered node, like a member of the graph. -->
         <span
-          class="-mt-4 grid size-8 place-items-center rounded-full font-mono text-sm font-semibold text-white ring-4 ring-white bg-ink"
+          class="-mt-6 grid size-12 place-items-center rounded-full font-mono text-xl font-semibold text-white ring-4 ring-white bg-ink"
           aria-hidden="true"
         >
           {{ i + 1 }}
@@ -64,7 +64,7 @@ const steps = [
 
         <!-- Mini graph: the step as the sociogram would draw it. -->
         <svg
-          class="mt-5 h-12 w-24"
+          class="mt-6 h-12 w-24"
           viewBox="0 0 96 48"
           fill="none"
           stroke="currentColor"
@@ -116,7 +116,7 @@ const steps = [
           </g>
         </svg>
 
-        <h3 class="mt-5 text-base font-semibold text-ink">
+        <h3 class="mt-6 text-base font-semibold text-ink">
           {{ step.title }}
         </h3>
         <p class="mt-2 max-w-[28ch] text-sm">{{ step.text }}</p>

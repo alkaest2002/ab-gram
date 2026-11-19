@@ -49,17 +49,22 @@ const features = [
 </script>
 
 <template>
-  <div class="space-y-8 text-center">
-    <header class="mx-auto space-y-3">
+  <div class="space-y-8 text-center sm:space-y-10">
+    <header class="mx-auto space-y-6">
       <p class="eyebrow">Perché AB-Gram</p>
-      <h2 class="text-2xl">Un breve manifesto ideologico</h2>
+      <h2
+        class="mx-auto max-w-[22ch] font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.08] font-bold tracking-[-0.035em] text-balance text-ink"
+      >
+        Un breve
+        <span class="block"><em class="text-accent">manifesto</em> ideologico</span>
+      </h2>
     </header>
 
     <ul class="mx-auto w-full">
       <li
         v-for="feature in features"
         :key="feature.id"
-        class="flex flex-col items-center gap-2.5 border-t border-line py-7 last:border-b"
+        class="flex flex-col items-center gap-3 border-t border-line py-8 last:border-b sm:py-10"
       >
         <span class="text-black" aria-hidden="true">
           <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
