@@ -6,12 +6,10 @@
   --font-display: var(--font-sans);
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  /* Two accents only — blue ("A") and red ("B") — over a white canvas and
-     near-black ink. No pastel tints. */
   --color-canvas: #ffffff;
-  --color-ink: #333;
+  --color-ink: #333333;
   --color-muted: #5b5a63;
-  --color-line: #e3e3e6;
+  --color-line: #dddddd;
   --color-accent: #2563eb;
   --color-reject: #dc2626;
   --color-warn: #a46700;
