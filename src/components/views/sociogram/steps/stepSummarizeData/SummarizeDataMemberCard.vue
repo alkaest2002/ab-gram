@@ -37,7 +37,7 @@ defineEmits(["sociogram-edit-member"]);
 
 <template>
   <div
-    class="card p-4 cursor-pointer transition-colors hover:border-muted focus-visible:outline-ink"
+    class="card group p-4 cursor-pointer focus-visible:outline-ink"
     role="button"
     tabindex="0"
     :aria-label="`Modifica le preferenze di ${member.name}`"
@@ -47,7 +47,13 @@ defineEmits(["sociogram-edit-member"]);
   >
     <div class="flex items-center gap-3">
       <svg viewBox="0 0 32 32" class="size-9 shrink-0" aria-hidden="true">
-        <circle cx="16" cy="16" r="14.3" class="fill-canvas stroke-line" stroke-width="1" />
+        <circle
+          cx="16"
+          cy="16"
+          r="14.3"
+          class="fill-canvas stroke-line transition-colors group-hover:fill-ink/5 group-focus-visible:fill-ink/5 motion-reduce:transition-none"
+          stroke-width="1"
+        />
         <text
           x="16"
           y="16"
