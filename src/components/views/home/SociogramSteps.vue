@@ -18,7 +18,7 @@
 const steps = [
   {
     title: "Gruppo",
-    text: "Inserisci i membri che compongono il gruppo che intendi studiare.",
+    text: "Inserisci i membri del gruppo che intendi studiare.",
   },
   {
     title: "Scelte e rifiuti",
@@ -26,7 +26,7 @@ const steps = [
   },
   {
     title: "Report",
-    text: "AB-Gram calcola, in automatico, indici sociometrici e grafici.",
+    text: "AB-Gram calcola, in automatico, indici grafici.",
   },
 ];
 
@@ -56,7 +56,7 @@ const steps = [
       >
         <!-- Numbered node, like a member of the graph. -->
         <span
-          class="-mt-6 grid size-12 place-items-center rounded-full font-mono text-2xl font-semibold text-white ring-4 ring-white bg-ink"
+          class="-mt-6 grid size-12 place-items-center rounded-full font-mono text-2xl font-semibold text-white ring-4 ring-white bg-gray-700"
           aria-hidden="true"
         >
           {{ i + 1 }}
