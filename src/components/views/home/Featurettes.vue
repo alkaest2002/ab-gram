@@ -22,18 +22,18 @@ import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 const features = [
   {
     id: "free",
-    title: "App gratuita",
-    text: "Gratis per sempre, nessun costo nascosto",
+    title: "app gratuita",
+    text: "Open source, licenza MIT, gratis per sempre",
   },
   {
     id: "easy",
-    title: "App semplice",
-    text: "Niente da installare, né da configurare",
+    title: "app semplice",
+    text: "Nessun account, niente da installare o configurare",
   },
   {
     id: "privacy",
-    title: "App attenta alla privacy",
-    text: "I tuoi dati restano sul tuo dispositivo",
+    title: "app attenta alla privacy",
+    text: "I dati restano memorizzati nel tuo dispositivo",
   },
 ];
 
@@ -56,19 +56,34 @@ const features = [
         class="mx-auto max-w-[22ch] font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.08] font-bold tracking-[-0.035em] text-balance text-ink"
       >
         Un breve
-        <span class="block"><em class="text-accent">manifesto</em> ideologico</span>
+        <span class="block"><em class="text-reject">manifesto</em> ideologico</span>
       </h2>
     </header>
 
     <ul class="mx-auto w-full">
       <li v-for="feature in features" :key="feature.id" class="flex flex-col items-center py-6">
         <span class="text-black" aria-hidden="true">
-          <PiggyIcon v-if="feature.id === 'free'" size="size-18" :stroke-width="1" />
-          <SmileyIcon v-else-if="feature.id === 'easy'" size="size-18" :stroke-width="1" />
-          <ShieldIcon v-else-if="feature.id === 'privacy'" size="size-18" :stroke-width="1" />
+          <PiggyIcon
+            v-if="feature.id === 'free'"
+            size="size-18"
+            :stroke-width="1"
+            class="text-ink"
+          />
+          <SmileyIcon
+            v-else-if="feature.id === 'easy'"
+            size="size-18"
+            :stroke-width="1"
+            class="text-ink"
+          />
+          <ShieldIcon
+            v-else-if="feature.id === 'privacy'"
+            size="size-18"
+            :stroke-width="1"
+            class="text-ink"
+          />
         </span>
 
-        <h3 class="tracking-[-0.01em] text-xl text-black">
+        <h3 class="tracking-[-0.01em] text-xl text-ink">
           {{ feature.title }}
         </h3>
 
