@@ -61,7 +61,7 @@ function startFromScratch(step) {
       <StepHeader>
         <template #title>È la prima volta che usi l'app?</template>
         AB-Gram misura e visualizza le dinamiche relazionali dei gruppi sociali attraverso indici
-        sociometrici e mappe visive.
+        numerici e mappe visive.
       </StepHeader>
 
       <div class="h-px w-full bg-line" aria-hidden="true"></div>
