@@ -90,7 +90,7 @@ function startFromScratch(step) {
         un secondo momento.
       </p>
       <p class="mt-3 text-sm leading-relaxed text-muted">
-        L’app è stata testata sui seguenti browser per desktop::
+        L’app è stata testata sui seguenti browser per desktop:
 
         <a
           v-for="browser in browsers"
