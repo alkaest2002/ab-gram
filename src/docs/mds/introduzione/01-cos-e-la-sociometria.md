@@ -59,9 +59,9 @@ indicazioni.
 
 |           | Anna | Bea | Carlo |
 | --------- | :--: | :-: | :---: |
-| **Anna**  |  —   |  +  |       |
-| **Bea**   |      |  —  |   −   |
-| **Carlo** |  +   |     |   —   |
+| **Anna**  |  ·   |  +  |   ·   |
+| **Bea**   |  ·   |  ·  |   −   |
+| **Carlo** |  +   |  ·  |   ·   |
 
 Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna. La diagonale è esclusa:
 nel questionario non si indicano scelte o rifiuti verso se stessi.
@@ -133,7 +133,7 @@ I risultati richiedono però alcune cautele:
   numero di indicazioni consentite e la partecipazione dei membri incidono
   sulla lettura dei risultati.
 - **Richiedono riservatezza.** Scelte e rifiuti sono informazioni delicate:
-  vanno trattati con cura, evitando esposizioni pubbliche ed etichette
+  vanno trattate con cura, evitando esposizioni pubbliche ed etichette
   stigmatizzanti.
 
 L'analisi sociometrica è quindi un **punto di partenza per comprendere il gruppo
