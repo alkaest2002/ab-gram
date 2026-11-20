@@ -9,14 +9,16 @@ import {
   computeWeakComponents,
 } from "./connectedComponents.js";
 import { computeLouvainCommunities } from "./louvain.js";
+import { computeLeidenCommunities } from "./leiden.js";
 
 /**
  * Compute the SNA structures of a directed preference graph.
  *
  * @param {import("graphology").DirectedGraph} graph - A preference graph built
  *   by `createSnaNetwork`.
- * @param {{ runs?: number, seed?: number }} [options] - Louvain options
- *   (`runs` restarts, `seed` for reproducible results).
+ * @param {{ runs?: number, seed?: number, maxIterations?: number }} [options] -
+ *   Community-detection options (`runs` restarts, `seed` for reproducible
+ *   results, `maxIterations` to bound the Leiden runtime).
  * @returns {{
  *   asymmetricDyads: { structures: string[][] },
  *   symmetricDyads: { structures: string[][] },
@@ -25,8 +27,9 @@ import { computeLouvainCommunities } from "./louvain.js";
  *   strongComponents: { structures: string[][] },
  *   weakComponents: { structures: string[][] },
  *   louvainCommunities: { structures: string[][], modularity: number },
+ *   leidenCommunities: { structures: string[][], modularity: number },
  * }} The structures keyed by category. Every value exposes a `structures` list;
- *   the Louvain value additionally exposes its `modularity`.
+ *   the community-detection values additionally expose their `modularity`.
  */
 export const getSnaStructures = (graph, options = {}) => ({
   asymmetricDyads: computeAsymmetricDyads(graph),
@@ -36,4 +39,5 @@ export const getSnaStructures = (graph, options = {}) => ({
   strongComponents: computeStrongComponents(graph),
   weakComponents: computeWeakComponents(graph),
   louvainCommunities: computeLouvainCommunities(graph, options),
+  leidenCommunities: computeLeidenCommunities(graph, options),
 });

@@ -221,6 +221,8 @@ describe("getSociogramAnalysis", () => {
     expect(snaDislikesStructures.weakComponents.structures).toEqual([]);
     expect(snaDislikesStructures.louvainCommunities.structures).toEqual([]);
     expect(snaDislikesStructures.louvainCommunities.modularity).toBeCloseTo(0, 10);
+    expect(snaDislikesStructures.leidenCommunities.structures).toEqual([]);
+    expect(snaDislikesStructures.leidenCommunities.modularity).toBeCloseTo(0, 10);
     expect(snaDislikesIndividualLevelMetric.ids).toEqual(["a", "b"]);
     expect(snaDislikesPlots).toHaveLength(1);
     expect(snaDislikesPlots[0].typeOfPreference).toBe("dislikes");

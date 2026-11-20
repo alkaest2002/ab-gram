@@ -22,7 +22,7 @@ From the collected data, AB-Gram produces:
 - **Social network measures**, computed separately for the likes and dislikes graphs:
   - _Group:_ node, edge, and mutual-edge counts; in-/out-degree distribution summaries; density; centralization; reciprocity; and transitivity.
   - _Individual:_ in-degree, out-degree, and degree centrality, closeness, betweenness, PageRank, and HITS (authority and hub).
-  - _Structures:_ symmetric and asymmetric dyads, cliques, strongly connected components (plain and reciprocal-edge), weakly connected components, and Louvain communities.
+  - _Structures:_ symmetric and asymmetric dyads, cliques, strongly connected components (plain and reciprocal-edge), weakly connected components, and Louvain and Leiden communities.
 - **Classified relationship edges** — seven edge types spanning healthy, potentially problematic, and problematic relationships (e.g. mutual like, one-sided dislike, mutual dislike).
 - **Ego plots** (Moreno) and **network plots** (ForceAtlas2) for visual inspection.
 
@@ -49,7 +49,7 @@ From the collected data, AB-Gram produces:
 - [Pinia](https://pinia.vuejs.org/) for state management
 - [Vue Router](https://router.vuejs.org/) for navigation
 - [Tailwind CSS](https://tailwindcss.com/) v4
-- [graphology](https://graphology.github.io/) for graph structures, metrics, and layout (ForceAtlas2, Louvain, components, operators)
+- [graphology](https://graphology.github.io/) for graph structures, metrics, and layout (ForceAtlas2, Louvain, Leiden, components, operators)
 - [numpy-ts](https://github.com/fnnxdev/numpy-ts) for vectorized matrix calculations
 - [MathJax](https://www.mathjax.org/) v4 for rendering formulas in the docs
 - Markdown files rendered as documentation pages via `unplugin-vue-markdown`

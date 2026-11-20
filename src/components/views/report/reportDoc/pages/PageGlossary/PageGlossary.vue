@@ -55,6 +55,7 @@ const GLOSSARY = [
   { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },
   { label: "L-SCM", extended: "Componenti fortemente connesse e reciproche (scelte)" },
   { label: "L-LVN", extended: "Comunità di Louvain (scelte)" },
+  { label: "L-LDN", extended: "Comunità di Leiden (scelte)" },
 
   // Edge types.
   { label: "T1", extended: "Scelte reciproche" },

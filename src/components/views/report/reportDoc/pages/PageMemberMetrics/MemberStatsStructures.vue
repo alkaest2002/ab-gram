@@ -34,6 +34,7 @@ const STRUCTURES_CONFIG = [
   { key: "strongComponents", label: "L-SCC" },
   { key: "strongComponentsWithReciprocalEdges", label: "L-SCM" },
   { key: "louvainCommunities", label: "L-LVN" },
+  { key: "leidenCommunities", label: "L-LDN" },
 ];
 
 // Each structure category exposes its `structures` list, where a structure is a
@@ -62,22 +63,20 @@ const structureShares = STRUCTURES_CONFIG.map(({ key, label }) => {
     <header class="mb-[2mm] border-b border-line pb-[0.5mm]">
       <h3 class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]">Strutture interne</h3>
     </header>
-    <div class="flex flex-col gap-[1mm]">
-      <div class="flex gap-[1mm]">
-        <span
-          v-for="item in structureShares"
-          :key="item.key"
-          class="flex flex-1 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
-        >
-          <span class="font-mono text-[9pt] font-medium text-muted">{{ item.label }}</span>
-          <span class="flex items-center gap-[1mm]">
-            <span class="font-mono text-[9pt] font-semibold leading-none">{{ item.count }}</span>
-            <span class="font-mono text-[7pt] leading-none text-muted">{{
-              formatShare(item.share)
-            }}</span>
-          </span>
+    <div class="grid grid-cols-6 gap-[1mm]">
+      <span
+        v-for="item in structureShares"
+        :key="item.key"
+        class="flex items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+      >
+        <span class="font-mono text-[9pt] font-medium text-muted">{{ item.label }}</span>
+        <span class="flex items-center gap-[1mm]">
+          <span class="font-mono text-[9pt] font-semibold leading-none">{{ item.count }}</span>
+          <span class="font-mono text-[7pt] leading-none text-muted">{{
+            formatShare(item.share)
+          }}</span>
         </span>
-      </div>
+      </span>
     </div>
   </section>
 </template>

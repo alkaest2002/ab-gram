@@ -71,7 +71,7 @@ const receivedDislikesScore = computed(() => {
 </script>
 
 <template>
-  <section v-if="sociometricStatus" class="min-w-0 mt-6">
+  <section v-if="sociometricStatus" class="min-w-0 mt-2">
     <header class="mb-[2mm] border-b border-line pb-[0.5mm]">
       <h3 class="font-mono text-[9pt] font-bold uppercase tracking-[0.08em]">
         Status sociometrico

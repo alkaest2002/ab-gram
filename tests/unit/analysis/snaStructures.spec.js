@@ -18,7 +18,7 @@ const STRUCTURE_KEYS = [
 ];
 
 describe("getSnaStructures", () => {
-  it("returns one object per structure type and the louvain communities", () => {
+  it("returns one object per structure type and the community partitions", () => {
     const members = [
       makeMember("a", ["b", "c"]),
       makeMember("b", ["a", "c"]),
@@ -28,7 +28,11 @@ describe("getSnaStructures", () => {
 
     const result = getSnaStructures(likesNetwork);
 
-    expect(Object.keys(result)).toEqual([...STRUCTURE_KEYS, "louvainCommunities"]);
+    expect(Object.keys(result)).toEqual([
+      ...STRUCTURE_KEYS,
+      "louvainCommunities",
+      "leidenCommunities",
+    ]);
     STRUCTURE_KEYS.forEach((key) => {
       expect(result[key]).toHaveProperty("structures");
       expect(result[key].structures).toBeInstanceOf(Array);
@@ -38,6 +42,11 @@ describe("getSnaStructures", () => {
     expect(result.louvainCommunities).toHaveProperty("modularity");
     expect(result.louvainCommunities.structures).toBeInstanceOf(Array);
     expect(typeof result.louvainCommunities.modularity).toBe("number");
+
+    expect(result.leidenCommunities).toHaveProperty("structures");
+    expect(result.leidenCommunities).toHaveProperty("modularity");
+    expect(result.leidenCommunities.structures).toBeInstanceOf(Array);
+    expect(typeof result.leidenCommunities.modularity).toBe("number");
   });
 
   it("reports symmetric dyads and cliques for a mutual triangle", () => {
@@ -157,13 +166,30 @@ describe("getSnaStructures", () => {
     expect(Number.isFinite(louvainCommunities.modularity)).toBe(true);
   });
 
+  it("reports leiden communities as a partition of every member", () => {
+    const members = [
+      makeMember("a", ["b", "c"]),
+      makeMember("b", ["a", "c"]),
+      makeMember("c", ["a", "b"]),
+    ];
+    const likesNetwork = createSnaNetwork(members, "likes");
+
+    const { leidenCommunities } = getSnaStructures(likesNetwork, { seed: 42, runs: 5 });
+
+    // A partition: every member appears exactly once across the communities.
+    expect(leidenCommunities.structures.flat().sort()).toEqual(["a", "b", "c"]);
+    expect(Number.isFinite(leidenCommunities.modularity)).toBe(true);
+  });
+
   it("returns singleton communities and q = 0 for an edgeless graph", () => {
     const members = [makeMember("a"), makeMember("b"), makeMember("c")];
     const likesNetwork = createSnaNetwork(members, "likes");
 
-    const { louvainCommunities } = getSnaStructures(likesNetwork);
+    const { louvainCommunities, leidenCommunities } = getSnaStructures(likesNetwork);
 
     expect(louvainCommunities.modularity).toBe(0);
     expect(louvainCommunities.structures).toEqual([["a"], ["b"], ["c"]]);
+    expect(leidenCommunities.modularity).toBe(0);
+    expect(leidenCommunities.structures).toEqual([["a"], ["b"], ["c"]]);
   });
 });

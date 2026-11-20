@@ -37,7 +37,6 @@ const SNA_STRUCTURE_CONFIG = {
     dislikes: "Strutture della rete dei rifiuti",
   },
   categories: [
-    { key: "symmetricDyads", label: "Diadi simmetriche" },
     { key: "cliques", label: "Clique" },
     { key: "weakComponents", label: "Componenti debolmente connesse" },
     { key: "strongComponents", label: "Componenti fortemente connesse" },
@@ -49,6 +48,10 @@ const SNA_STRUCTURE_CONFIG = {
       key: "louvainCommunities",
       label: "Comunità di Louvain",
     },
+    {
+      key: "leidenCommunities",
+      label: "Comunità di Leiden",
+    },
   ],
 };
 
@@ -59,14 +62,17 @@ const formatQ = (value) => {
   return `Q = ${Number(value).toFixed(3)}`;
 };
 
+// The two community-detection categories report their modularity next to the
+// label; every other category only shows the category name.
+const isCommunityCategory = (key) => key === "louvainCommunities" || key === "leidenCommunities";
+
 // --- Composables --------
 
 // --- Computed -----------
 const categories = computed(() => {
   return SNA_STRUCTURE_CONFIG.categories.map((category) => {
-    const isLouvain = category.key === "louvainCommunities";
-    const title = isLouvain
-      ? `${category.label} (${formatQ(props.structures?.louvainCommunities?.modularity)})`
+    const title = isCommunityCategory(category.key)
+      ? `${category.label} (${formatQ(props.structures?.[category.key]?.modularity)})`
       : category.label;
     return {
       ...category,
