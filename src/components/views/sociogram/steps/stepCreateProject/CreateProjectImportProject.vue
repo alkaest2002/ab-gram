@@ -64,8 +64,44 @@ function loadDemo() {
   </div>
   <div class="flex flex-wrap gap-2">
     <BaseClickButton button-variant="outline" @click="emit('sociogram-start-import-project')">
+      <template #icon>
+        <svg
+          class="size-4 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M12 3v12" />
+          <path d="m17 8-5-5-5 5" />
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        </svg>
+      </template>
       Importa progetto
     </BaseClickButton>
-    <BaseClickButton button-variant="outline" @click="loadDemo"> Dati demo </BaseClickButton>
+    <BaseClickButton button-variant="outline" @click="loadDemo">
+      <template #icon>
+        <svg
+          class="size-4 shrink-0"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <rect width="20" height="5" x="2" y="3" rx="1" />
+          <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+          <path d="M10 12h4" />
+        </svg>
+      </template>
+      Dati demo
+    </BaseClickButton>
   </div>
 </template>

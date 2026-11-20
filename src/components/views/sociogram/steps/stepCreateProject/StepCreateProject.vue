@@ -81,17 +81,16 @@ function startFromScratch(step) {
       role="note"
       aria-label="Avviso"
     >
-      <p class="eyebrow flex items-center gap-1 text-muted"><WarningIcon size="size-3" /> Avviso</p>
+      <p class="eyebrow flex items-center gap-1 text-muted">Avviso</p>
       <p class="mt-1.5 text-sm leading-relaxed text-muted">
-        I dati del sociogramma vengono salvati nella memoria RAM: al fine di evitare la perdita dei
-        dati, ti consigliamo di
+        I dati AB-Gram vengono salvati nella memoria RAM: per evitare di perderli, ti consigliamo di
         <span class="font-medium"
-          >non aggiornare la pagina mentre stai lavorando, né di usare i tasti back e forward del
-          browser</span
-        >. Potrai comunque "mettere in pausa" e riprendere un lavoro avviato e non concluso.
+          >non aggiornare la pagina e non usare i tasti Indietro e Avanti del browser</span
+        >, mentre lavori. Se necessario, puoi comunque mettere in pausa il progetto e riprenderlo in
+        un secondo momento.
       </p>
       <p class="mt-3 text-sm leading-relaxed text-muted">
-        L'app è stata testata con i seguenti browser:
+        L’app è stata testata sui seguenti browser per desktop::
 
         <a
           v-for="browser in browsers"
