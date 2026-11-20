@@ -5,34 +5,35 @@ third-party software. This file lists those dependencies, their copyright
 holders, and the full text of their licenses. The notices and license texts
 below must be retained in any copy or distribution of this software.
 
-Generated from the 213 packages installed in `node_modules` (direct and
+Generated from the 251 packages installed in `node_modules` (direct and
 transitive dependencies) by `pnpm generate:notices`. It is provided for
 informational purposes and is not legal advice.
 
-## MIT (193)
+## MIT (227)
 
 Packages:
 
+- `@alessandro-afloarei/graphology-communities-leiden` 1.1.1 — Guillaume Plique
 - `@babel/code-frame` 7.29.7 — The Babel Team
 - `@babel/compat-data` 7.29.7 — The Babel Team
-- `@babel/core` 7.29.7 — The Babel Team
-- `@babel/generator` 7.29.8 — The Babel Team
+- `@babel/core` 7.29.13 — The Babel Team
+- `@babel/generator` 7.29.14 — The Babel Team
 - `@babel/helper-annotate-as-pure` 7.29.7 — The Babel Team
-- `@babel/helper-compilation-targets` 7.29.7 — The Babel Team
-- `@babel/helper-create-class-features-plugin` 7.29.7 — The Babel Team
+- `@babel/helper-compilation-targets` 7.29.13 — The Babel Team
+- `@babel/helper-create-class-features-plugin` 7.29.13 — The Babel Team
 - `@babel/helper-globals` 7.29.7 — The Babel Team
-- `@babel/helper-member-expression-to-functions` 7.29.7 — The Babel Team
+- `@babel/helper-member-expression-to-functions` 7.29.14 — The Babel Team
 - `@babel/helper-module-imports` 7.29.7 — The Babel Team
-- `@babel/helper-module-transforms` 7.29.7 — The Babel Team
+- `@babel/helper-module-transforms` 7.29.14 — The Babel Team
 - `@babel/helper-optimise-call-expression` 7.29.7 — The Babel Team
 - `@babel/helper-plugin-utils` 7.29.7 — The Babel Team
 - `@babel/helper-replace-supers` 7.29.7 — The Babel Team
-- `@babel/helper-skip-transparent-expression-wrappers` 7.29.7 — The Babel Team
-- `@babel/helper-string-parser` 7.29.7 — The Babel Team
+- `@babel/helper-skip-transparent-expression-wrappers` 7.29.13 — The Babel Team
+- `@babel/helper-string-parser` 7.29.14 — The Babel Team
 - `@babel/helper-validator-identifier` 7.29.7 — The Babel Team
 - `@babel/helper-validator-option` 7.29.7 — The Babel Team
-- `@babel/helpers` 7.29.7 — The Babel Team
-- `@babel/parser` 7.29.9 — The Babel Team
+- `@babel/helpers` 7.29.14 — The Babel Team
+- `@babel/parser` 7.29.14 — The Babel Team
 - `@babel/plugin-proposal-decorators` 7.29.7 — The Babel Team
 - `@babel/plugin-syntax-decorators` 7.29.7 — The Babel Team
 - `@babel/plugin-syntax-import-attributes` 7.29.7 — The Babel Team
@@ -40,87 +41,110 @@ Packages:
 - `@babel/plugin-syntax-jsx` 7.29.7 — The Babel Team
 - `@babel/plugin-syntax-typescript` 7.29.7 — The Babel Team
 - `@babel/plugin-transform-typescript` 7.29.9 — The Babel Team
+- `@babel/runtime` 7.29.14 — The Babel Team
 - `@babel/template` 7.29.7 — The Babel Team
-- `@babel/traverse` 7.29.8 — The Babel Team
-- `@babel/types` 7.29.8 — The Babel Team
+- `@babel/traverse` 7.29.14 — The Babel Team
+- `@babel/types` 7.29.14 — The Babel Team
+- `@blazediff/core` 1.10.0 — Teimur Gasanov
 - `@jridgewell/gen-mapping` 0.3.13 — Justin Ridgewell
 - `@jridgewell/remapping` 2.3.5 — Justin Ridgewell
-- `@jridgewell/resolve-uri` 3.1.2 — Justin Ridgewell
+- `@jridgewell/resolve-uri` 3.1.3 — Justin Ridgewell
 - `@jridgewell/sourcemap-codec` 1.6.0 — Justin Ridgewell
 - `@jridgewell/trace-mapping` 0.3.31 — Justin Ridgewell
 - `@mdit-vue/plugin-component` 3.0.2 — meteorlxy
 - `@mdit-vue/plugin-frontmatter` 3.0.2 — meteorlxy
 - `@mdit-vue/types` 3.0.2 — meteorlxy
-- `@oxc-project/types` 0.154.0 — Boshen and oxc contributors
+- `@oxc-project/runtime` 0.159.0
+- `@oxc-project/types` 0.159.0 — Boshen and oxc contributors
+- `@oxfmt/binding-darwin-arm64` 0.79.0 — Boshen and oxc contributors
+- `@oxlint/binding-darwin-arm64` 1.94.0 — Boshen and oxc contributors
+- `@oxlint/plugins` 1.94.0 — Boshen and oxc contributors
 - `@polka/url` 1.0.0-next.29 — Luke Edwards
-- `@rolldown/binding-darwin-arm64` 1.2.14
-- `@rolldown/pluginutils` 1.0.1
-- `@tailwindcss/node` 4.3.4
-- `@tailwindcss/oxide` 4.3.4
-- `@tailwindcss/oxide-darwin-arm64` 4.3.4
-- `@tailwindcss/oxide-wasm32-wasi` 4.3.4
+- `@rolldown/pluginutils` 1.1.1
+- `@tailwindcss/node` 4.3.5
+- `@tailwindcss/oxide` 4.3.5
+- `@tailwindcss/oxide-darwin-arm64` 4.3.5
+- `@tailwindcss/oxide-wasm32-wasi` 4.3.5
 - `@tailwindcss/typography` 0.5.20
-- `@tailwindcss/vite` 4.3.4
+- `@tailwindcss/vite` 4.3.5
+- `@testing-library/dom` 10.4.2 — Kent C. Dodds
+- `@testing-library/user-event` 14.6.12 — Giorgio Polvara
+- `@types/aria-query` 5.0.4
 - `@types/chai` 5.2.3
 - `@types/deep-eql` 4.0.2
-- `@types/estree` 1.0.9
+- `@types/estree` 1.0.10
 - `@types/linkify-it` 5.0.0
 - `@types/markdown-it` 14.2.0
 - `@types/mdurl` 2.0.0
-- `@vitejs/plugin-vue` 6.0.10 — Evan You
+- `@vitejs/plugin-vue` 6.0.11 — Evan You
+- `@vitest/browser` 5.1.0
+- `@vitest/browser-preview` 5.1.0
 - `@vitest/mocker` 5.1.0
+- `@vitest/pretty-format` 5.1.0
+- `@vitest/snapshot` 5.1.0
 - `@vitest/spy` 5.1.0
+- `@vitest/ui` 5.1.0
+- `@vitest/utils` 5.1.0
+- `@voidzero-dev/vite-plus-core` 8.3.8000 — VoidZero Inc.
+- `@voidzero-dev/vite-plus-darwin-arm64` 1.7.0 — VoidZero Inc.
 - `@vue-macros/common` 3.1.4 — Kevin Deng
 - `@vue/babel-helper-vue-transform-on` 1.5.0 — Amour1688
 - `@vue/babel-plugin-jsx` 1.5.0 — Amour1688
 - `@vue/babel-plugin-resolve-type` 1.5.0 — 三咲智子 Kevin Deng
-- `@vue/compiler-core` 3.5.43 — Evan You
-- `@vue/compiler-dom` 3.5.43 — Evan You
-- `@vue/compiler-sfc` 3.5.43 — Evan You
-- `@vue/compiler-ssr` 3.5.43 — Evan You
+- `@vue/compiler-core` 3.5.45 — Evan You
+- `@vue/compiler-dom` 3.5.45 — Evan You
+- `@vue/compiler-sfc` 3.5.45 — Evan You
+- `@vue/compiler-ssr` 3.5.45 — Evan You
 - `@vue/devtools-api` 8.2.1 — webfansplz
 - `@vue/devtools-core` 8.2.1 — webfansplz
 - `@vue/devtools-kit` 8.2.1 — webfansplz
 - `@vue/devtools-shared` 8.2.1 — webfansplz
-- `@vue/reactivity` 3.5.44 — Evan You
-- `@vue/runtime-core` 3.5.44 — Evan You
-- `@vue/runtime-dom` 3.5.44 — Evan You
-- `@vue/server-renderer` 3.5.44 — Evan You
-- `@vue/shared` 3.5.43 — Evan You
+- `@vue/reactivity` 3.5.45 — Evan You
+- `@vue/runtime-core` 3.5.45 — Evan You
+- `@vue/runtime-dom` 3.5.45 — Evan You
+- `@vue/server-renderer` 3.5.45 — Evan You
+- `@vue/shared` 3.5.45 — Evan You
 - `@yomguithereal/helpers` 1.1.1 — Guillaume Plique
-- `acorn` 8.18.0
+- `@yuku-core/binding-darwin-arm64` 0.19.0
+- `@yuku-toolchain/types` 0.19.0
+- `acorn` 8.19.0
+- `ansi-regex` 5.0.1 — Sindre Sorhus
+- `ansi-styles` 5.2.0 — Sindre Sorhus
 - `argparse` 1.0.10
 - `assertion-error` 2.0.1 — Jake Luer
 - `ast-kit` 2.2.0 — Kevin Deng
 - `ast-walker-scope` 0.10.0 — Kevin Deng
 - `birpc` 2.9.0 — Anthony Fu
-- `browserslist` 4.29.1 — Andrey Sitnik
+- `browserslist` 4.29.6 — Andrey Sitnik
 - `bundle-name` 4.1.1 — Sindre Sorhus
 - `chai` 6.3.0 — Jake Luer
-- `chokidar` 5.0.0 — Paul Miller
+- `chokidar` 6.0.0 — Paul Miller
 - `confbox` 0.1.8
 - `convert-source-map` 2.0.0 — Thorsten Lorenz
 - `cssesc` 3.0.0 — Mathias Bynens
-- `csstype` 3.2.3 — Fredrik Nicol
+- `csstype` 3.2.4 — Fredrik Nicol
 - `debug` 4.4.3 — Josh Junon
 - `default-browser` 5.5.1 — Sindre Sorhus
 - `default-browser-id` 5.0.1 — Sindre Sorhus
 - `define-lazy-prop` 3.0.0 — Sindre Sorhus
-- `enhanced-resolve` 5.25.1 — Tobias Koppers @sokra
+- `dequal` 2.0.3 — Luke Edwards
+- `dom-accessibility-api` 0.5.16
+- `enhanced-resolve` 5.27.0 — Tobias Koppers @sokra
 - `error-stack-parser-es` 1.0.5
 - `es-module-lexer` 2.3.2 — Guy Bedford
 - `escalade` 3.2.0 — Luke Edwards
 - `estree-walker` 2.0.2 — Rich Harris
 - `events` 3.3.0 — Irakli Gozalishvili
-- `exsolve` 1.1.1
+- `exsolve` 1.2.0
 - `extend-shallow` 2.0.1 — Jon Schlinkert
 - `fdir` 6.5.0 — thecodrr
+- `fflate` 0.8.3 — Arjun Barrett
 - `fsevents` 2.3.3
 - `gensync` 1.0.0-beta.2 — Logan Smyth
 - `graphology` 0.26.0
 - `graphology-communities-louvain` 2.0.2
 - `graphology-components` 1.5.4 — Guillaume Plique
-- `graphology-indices` 0.17.0 — Guillaume Plique
+- `graphology-indices` 0.17.1 — Guillaume Plique
 - `graphology-layout` 0.6.1 — Guillaume Plique
 - `graphology-layout-forceatlas2` 0.10.1 — Guillaume Plique
 - `graphology-metrics` 2.4.2
@@ -144,68 +168,78 @@ Packages:
 - `kolorist` 1.8.0 — Marvin Hagemeister
 - `linkify-it` 5.0.2
 - `local-pkg` 1.2.1 — Anthony Fu
+- `lz-string` 1.5.0 — pieroxy
 - `magic-string` 0.30.21 — Rich Harris
 - `magic-string-ast` 1.0.3 — Kevin Deng
 - `markdown-exit` 1.3.0
-- `markdown-it` 14.3.2
+- `markdown-it` 14.3.3
 - `mdurl` 2.1.0
 - `mlly` 1.8.2
 - `mnemonist` 0.39.8 — Guillaume Plique
 - `mrmime` 2.0.1 — Luke Edwards
 - `ms` 2.1.3
 - `muggle-string` 0.4.1
-- `nanoid` 3.3.19 — Andrey Sitnik
-- `node-releases` 2.0.57 — Sergey Rubanov
-- `nostics` 1.3.0 — Anthony Fu
-- `numpy-ts` 1.7.0 — Nicolas Dupont
+- `nanoid` 3.3.20 — Andrey Sitnik
+- `node-releases` 2.0.65 — Sergey Rubanov
+- `nostics` 1.4.0 — Anthony Fu
+- `numpy-ts` 1.8.0 — Nicolas Dupont
 - `obliterator` 2.0.5 — Guillaume Plique
 - `obug` 2.2.1 — Kevin Deng
 - `ohash` 2.0.12
 - `open` 11.0.4 — Sindre Sorhus
+- `oxfmt` 0.79.0 — Boshen and oxc contributors
+- `oxlint` 1.94.0 — Boshen and oxc contributors
 - `pandemonium` 2.4.1 — Guillaume Plique
 - `pathe` 2.0.3
 - `perfect-debounce` 2.1.0
 - `picomatch` 4.0.7 — Jon Schlinkert
 - `pinia` 4.1.0 — Eduardo San Martin Morote
 - `pkg-types` 1.3.1
-- `postcss` 8.5.28 — Andrey Sitnik
+- `pngjs` 7.0.0
+- `postcss` 8.5.33 — Andrey Sitnik
 - `postcss-selector-parser` 6.0.10
-- `powershell-utils` 0.1.0 — Sindre Sorhus
+- `powershell-utils` 0.2.1 — Sindre Sorhus
+- `pretty-format` 27.5.1 — James Kyle
 - `punycode.js` 2.3.1 — Mathias Bynens
 - `quansync` 0.2.11 — Anthony Fu
+- `react-is` 17.0.2
 - `readdirp` 5.1.1 — Thorsten Lorenz
-- `rolldown` 1.2.14
 - `run-applescript` 7.1.0 — Sindre Sorhus
 - `scule` 1.3.0
 - `section-matter` 1.0.0 — Jon Schlinkert
 - `sirv` 3.0.2 — Luke Edwards
 - `std-env` 4.3.0
 - `strip-bom-string` 1.0.0 — Jon Schlinkert
-- `tailwindcss` 4.3.4
-- `tapable` 2.3.3 — Tobias Koppers @sokra
-- `tinybench` 6.2.2
+- `tailwindcss` 4.3.5
+- `tapable` 2.3.4 — Tobias Koppers @sokra
+- `tinybench` 6.2.3
 - `tinyexec` 1.3.1 — James Garbutt
 - `tinyglobby` 0.2.17 — Superchupu
+- `tinypool` 2.2.0
+- `tinyrainbow` 3.2.0
 - `totalist` 3.0.1 — Luke Edwards
 - `uc.micro` 2.1.0
 - `ufo` 1.6.4
-- `unplugin` 3.4.0
+- `unplugin` 3.7.0
 - `unplugin-utils` 0.3.2 — Kevin Deng
 - `unplugin-vue-markdown` 32.1.1 — Anthony Fu
-- `update-browserslist-db` 1.3.3 — Andrey Sitnik
+- `update-browserslist-db` 1.4.0 — Andrey Sitnik
 - `util-deprecate` 1.0.2 — Nathan Rajlich
-- `vite` 8.3.5 — Evan You
 - `vite-dev-rpc` 2.0.0 — Anthony Fu
 - `vite-hot-client` 2.2.0 — Anthony Fu
 - `vite-plugin-inspect` 11.4.1 — Anthony Fu
 - `vite-plugin-vue-devtools` 8.2.1 — webfansplz
 - `vite-plugin-vue-inspector` 6.0.0 — webfansplz
+- `vite-plus` 1.7.0 — VoidZero Inc.
 - `vitest` 5.1.0 — Anthony Fu
-- `vue` 3.5.44 — Evan You
-- `vue-router` 5.4.0 — Eduardo San Martin Morote
+- `vue` 3.5.45 — Evan You
+- `vue-router` 5.5.1 — Eduardo San Martin Morote
 - `webpack-virtual-modules` 0.6.2 — SysGears INC
 - `why-is-node-running` 3.2.1 — Mathias Buus
-- `wsl-utils` 1.0.0 — Sindre Sorhus
+- `ws` 8.23.0 — Einar Otto Stangvik
+- `wsl-utils` 1.0.1 — Sindre Sorhus
+- `yuku-core` 0.19.0
+- `yuku-parser` 0.19.0
 
 ### MIT license text
 
@@ -237,12 +271,12 @@ SOFTWARE.
 
 Packages:
 
-- `ansis` 4.4.0 — webdiscus
-- `electron-to-chromium` 1.5.439 — Kilian Valkhof
-- `graceful-fs` 4.2.11
+- `ansis` 4.5.0 — webdiscus
+- `electron-to-chromium` 1.5.489 — Kilian Valkhof
+- `flatted` 3.4.4 — Andrea Giammarchi
 - `lru-cache` 5.1.1 — Isaac Z. Schlueter
 - `picocolors` 1.1.1 — Alexey Raspopov
-- `semver` 6.3.1 — GitHub Inc.
+- `semver` 6.3.2 — GitHub Inc.
 - `yallist` 3.1.1 — Isaac Z. Schlueter
 
 ### ISC license text
@@ -265,15 +299,18 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-## Apache-2.0 (5)
+## Apache-2.0 (8)
 
 Packages:
 
 - `@mathjax/mathjax-newcm-font` 4.1.3
-- `baseline-browser-mapping` 2.11.26
+- `@tsrs/darwin-arm64` 7.1.0-beta.tsrs2
+- `aria-query` 5.3.0 — Jesse Beach
+- `baseline-browser-mapping` 2.11.38
 - `detect-libc` 2.1.2 — Lovell Fuller
 - `expect-type` 1.4.0
 - `mathjax` 4.1.3
+- `tsrs` 7.1.0-beta.tsrs2
 
 ### Apache-2.0 license text
 
@@ -496,7 +533,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 Packages:
 
-- `source-map-js` 1.2.1 — Valentin 7rulnik Semirulnik
+- `source-map-js` 1.2.2 — Valentin 7rulnik Semirulnik
 - `sprintf-js` 1.0.3 — Alexandru Marasteanu
 
 ### BSD-3-Clause license text
@@ -894,7 +931,7 @@ Full text: https://docs.python.org/3/license.html
 
 Packages:
 
-- `caniuse-lite` 1.0.30001812 — Ben Briggs
+- `caniuse-lite` 1.0.30001826 — Ben Briggs
 
 ### CC-BY-4.0 license text
 
@@ -906,3 +943,11 @@ share and adapt the material provided you give appropriate credit.
 
 Full text: https://creativecommons.org/licenses/by/4.0/legalcode
 ```
+
+## BlueOak-1.0.0 (1)
+
+Packages:
+
+- `graceful-fs` 4.2.12
+
+> Full license text not bundled by this generator. See the package's own LICENSE file.
