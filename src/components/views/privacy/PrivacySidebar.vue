@@ -16,22 +16,24 @@
 
 // --- State --------------
 const sections = [
-  { id: "titolare", label: "1 Titolare del trattamento" },
-  { id: "dati-trattati", label: "2 Dati trattati e finalità" },
-  { id: "base-giuridica", label: "3 Base giuridica" },
+  { id: "titolare", label: "1 Chi gestisce il sito e come contattarlo" },
+  { id: "dati-trattati", label: "2 Quali dati vengono utilizzati e perché" },
+  { id: "base-giuridica", label: "3 Su quali basi vengono trattati i dati" },
   {
     id: "servizi-terze-parti",
-    label: "4 Servizi di terze parti",
+    label: "4 Servizi esterni",
     children: [
-      { id: "cloudflare", label: "4.1 Cloudflare (hosting e CDN)" },
-      { id: "discord", label: "4.2 Discord (community)" },
+      { id: "cloudflare", label: "4.1 Cloudflare: distribuzione e sicurezza" },
+      { id: "discord", label: "4.2 Discord: community" },
+      { id: "stripe", label: "4.3 Stripe: donazioni" },
+      { id: "jsdelivr", label: "4.4 jsDelivr: formule nella documentazione" },
     ],
   },
   { id: "cookie", label: "5 Cookie" },
-  { id: "conservazione", label: "6 Conservazione dei dati" },
-  { id: "diritti-interessato", label: "7 Diritti dell'interessato" },
-  { id: "diritto-di-reclamo", label: "8 Diritto di reclamo" },
-  { id: "modifiche", label: "9 Modifiche alla presente informativa" },
+  { id: "conservazione", label: "6 Per quanto tempo restano i dati" },
+  { id: "diritti-interessato", label: "7 I tuoi diritti" },
+  { id: "diritto-di-reclamo", label: "8 Come presentare un reclamo" },
+  { id: "modifiche", label: "9 Aggiornamenti dell'informativa" },
 ];
 
 // --- Composables --------

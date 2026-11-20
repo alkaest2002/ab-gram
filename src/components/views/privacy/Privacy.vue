@@ -35,223 +35,385 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
       <PrivacySidebar />
     </aside>
 
-    <div class="min-w-0 flex-1 space-y-8">
+    <div class="min-w-0 flex-1 space-y-8 [&>section+section]:pt-2 [&_h3]:pt-5">
       <h1>GDPR e privacy</h1>
       <p>
-        La presente informativa descrive, ai sensi del Regolamento (UE) 2016/679 ("GDPR"), le
-        modalità di trattamento dei dati personali degli utenti che consultano questo sito. Ultimo
-        aggiornamento: 25 ottobre 2026.
+        Questa informativa spiega quali dati personali sono utilizzati quando visiti AB-Gram, usi
+        l'applicazione o contatti il gestore, secondo il Regolamento (UE) 2016/679 (GDPR). Ultimo
+        aggiornamento: <time datetime="2026-11-20">20 novembre 2026</time>.
+      </p>
+      <p>
+        In breve: i dati dei tuoi progetti vengono elaborati nel browser e non sono inviati al
+        gestore. La visita al sito comporta comunque il trattamento di alcuni dati tecnici da parte
+        di Cloudflare e, nella documentazione, di jsDelivr. Se scrivi un'email, accedi alla
+        community o fai una donazione, vengono utilizzati anche i dati necessari a queste attività,
+        come spiegato di seguito.
       </p>
 
       <section class="space-y-3">
-        <h2 id="titolare" class="scroll-mt-24">1 Titolare del trattamento</h2>
+        <h2 id="titolare" class="scroll-mt-24">1 Chi gestisce il sito e come contattarlo</h2>
         <p>
-          Il titolare del trattamento è il soggetto che gestisce il presente sito, contattabile
-          all'indirizzo di posta elettronica <a href="mailto:info@ab-gram.com">info@ab-gram.com</a>.
+          Il titolare del trattamento è il gestore di AB-Gram: è il soggetto che decide come e
+          perché utilizzare i dati relativi alla gestione del sito e alle richieste ricevute. Per
+          domande sulla privacy o per esercitare i tuoi diritti, puoi scrivere a
+          <a href="mailto:info@ab-gram.com">info@ab-gram.com</a>.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="dati-trattati" class="scroll-mt-24">2 Dati trattati e finalità</h2>
+        <h2 id="dati-trattati" class="scroll-mt-24">2 Quali dati vengono utilizzati e perché</h2>
+        <h3>Dati dei progetti</h3>
         <p>
-          Il sito non raccoglie, non trasmette e non conserva alcun dato personale. Non prevede
-          registrazioni, moduli inviati a un server, banche dati o sistemi di analisi. Qualunque
-          contenuto inserito dall'utente viene elaborato esclusivamente nel browser, nella memoria
-          del dispositivo, e viene perso alla chiusura o al ricaricamento della pagina.
+          AB-Gram permette di inserire o importare nomi o codici dei partecipanti, preferenze e
+          relazioni di gruppo, per creare sociogrammi e report. Questi contenuti e i risultati
+          dell'analisi vengono elaborati sul tuo dispositivo, nella memoria del browser. Non vengono
+          caricati su un server, né sono accessibili al gestore attraverso l'applicazione. Non serve
+          creare un account.
+        </p>
+        <p>
+          L'applicazione non salva automaticamente i progetti in un archivio online o nella memoria
+          permanente del browser. Se scarichi un progetto o un report, il file rimane invece sul tuo
+          dispositivo finché non lo elimini. Trovi maggiori dettagli sui tempi di conservazione al
+          punto 6.
+        </p>
+        <p>
+          Se utilizzi dati di altre persone, devi avere titolo per farlo e rispettare gli obblighi
+          applicabili, compresi quelli di informazione e sicurezza, anche quando i dati restano sul
+          tuo dispositivo. Questo vale anche per dati di studenti o minorenni. Quando possibile, usa
+          codici al posto dei nomi e inserisci solo le informazioni necessarie: un codice non rende
+          anonimi i dati se permette comunque di risalire a una persona. L'elaborazione locale non
+          sostituisce questi obblighi.
+        </p>
+
+        <h3>Dati di navigazione</h3>
+        <p>
+          Per mostrarti le pagine e proteggere il sito, l'infrastruttura di Cloudflare tratta dati
+          tecnici, tra cui l'indirizzo IP e le informazioni sulle richieste del browser. Questi dati
+          possono essere dati personali e sono distinti dai contenuti dei tuoi progetti. Nella
+          documentazione viene inoltre utilizzato jsDelivr per caricare il software che visualizza
+          le formule. I due servizi sono descritti ai punti 4.1 e 4.4.
+        </p>
+
+        <h3>Messaggi e richieste di assistenza</h3>
+        <p>
+          Se scrivi al gestore, vengono utilizzati il tuo indirizzo email, l'eventuale nome e il
+          contenuto del messaggio per risponderti e gestire la richiesta. Il collegamento email apre
+          il tuo programma di posta: il messaggio viene inviato solo se scegli di spedirlo. Non
+          allegare progetti, report o dati identificativi di altre persone se non sono necessari;
+          per segnalare un problema, preferisci esempi con dati fittizi.
+        </p>
+        <p>
+          Il gestore non usa i dati per pubblicità personalizzata o profilazione commerciale. I
+          calcoli dell'applicazione servono a produrre le analisi che richiedi: il gestore non usa i
+          risultati per prendere decisioni automatizzate sulle persone con effetti giuridici o
+          analogamente significativi. Chi utilizza i report deve valutarne contenuti e limiti prima
+          di prendere decisioni sui partecipanti.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="base-giuridica" class="scroll-mt-24">3 Base giuridica</h2>
+        <h2 id="base-giuridica" class="scroll-mt-24">3 Su quali basi vengono trattati i dati</h2>
+        <p>Il GDPR richiede un motivo giuridico per utilizzare dati personali. In questo caso:</p>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>
+            i dati tecnici necessari a distribuire e proteggere il sito, comprese le risorse della
+            documentazione, sono trattati per il legittimo interesse del gestore a offrire un
+            servizio sicuro e funzionante (art. 6, par. 1, lett. f);
+          </li>
+          <li>
+            i dati delle email sono trattati per il legittimo interesse a rispondere alle richieste
+            ricevute (art. 6, par. 1, lett. f) o, se la richiesta riguarda un contratto o misure
+            precontrattuali richieste da te, per queste finalità (lett. b);
+          </li>
+          <li>
+            gli eventuali dati ricevuti per gestire una donazione sono trattati per dare seguito al
+            relativo rapporto, quando necessario alla sua esecuzione (art. 6, par. 1, lett. b), e
+            per gli obblighi di legge applicabili, ad esempio contabili o fiscali (lett. c).
+          </li>
+        </ul>
         <p>
-          Poiché il sito non effettua alcun trattamento di dati personali per proprio conto, non è
-          necessaria una base giuridica specifica. Per gli eventuali trattamenti residui effettuati
-          dai fornitori indicati al punto successivo si rinvia alle rispettive informative.
+          I dati tecnici sono necessari per accedere al sito. Scrivere un'email, usare Discord o
+          fare una donazione è facoltativo: senza i dati necessari a queste attività non è possibile
+          rispondere alla richiesta o completare l'operazione, ma puoi comunque usare AB-Gram. Per i
+          dati dei partecipanti elaborati localmente, chi li utilizza deve individuare la base
+          giuridica adatta al proprio contesto.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="servizi-terze-parti" class="scroll-mt-24">4 Servizi di terze parti</h2>
-        <h3 id="cloudflare" class="scroll-mt-24">4.1 Cloudflare (hosting e CDN)</h3>
+        <h2 id="servizi-terze-parti" class="scroll-mt-24">4 Servizi esterni</h2>
+        <h3 id="cloudflare" class="scroll-mt-24">4.1 Cloudflare: distribuzione e sicurezza</h3>
         <p>
-          Il sito è ospitato e distribuito tramite Cloudflare, Inc. (hosting e rete di distribuzione
-          dei contenuti, CDN). Quando si visita il sito, la richiesta transita attraverso
-          l'infrastruttura di Cloudflare, che può trattare automaticamente alcuni dati tecnici di
-          navigazione, quali:
+          Il sito è ospitato e distribuito tramite Cloudflare, Inc. Le richieste del browser passano
+          attraverso la sua rete, che può trattare:
         </p>
         <ul class="list-disc space-y-1 pl-6">
           <li>l'indirizzo IP del dispositivo;</li>
           <li>
-            le informazioni contenute nella richiesta HTTP (ad esempio URL richiesto, tipo di
-            browser e sistema operativo, lingua, pagina di provenienza);
+            la pagina richiesta e le informazioni inviate dal browser, come tipo di browser, sistema
+            operativo, lingua e, se trasmessa, pagina di provenienza;
           </li>
-          <li>data e ora della richiesta e relativo esito;</li>
-          <li>
-            dati di connessione e di sicurezza (ad esempio informazioni sul protocollo TLS e segnali
-            utili a individuare traffico anomalo o malevolo).
-          </li>
+          <li>data, ora ed esito delle richieste;</li>
+          <li>dati di connessione e segnali utili a rilevare bot, attacchi o altri abusi.</li>
         </ul>
         <p>
-          Questi dati sono trattati al solo scopo di erogare il sito, garantirne la sicurezza e la
-          disponibilità (ad esempio protezione da attacchi DDoS e da traffico automatizzato) e
-          ottimizzarne le prestazioni tramite la memorizzazione temporanea dei contenuti (caching)
-          sui server più vicini all'utente. Il titolare non utilizza tali dati per identificare i
-          visitatori né per finalità di profilazione o marketing.
+          Questi dati servono a consegnare le pagine, renderle più veloci e mantenere il sito
+          disponibile e sicuro. Cloudflare può conservare copie temporanee dei contenuti del sito
+          sui propri server per velocizzarne il caricamento: questo non comporta l'invio dei
+          progetti elaborati nel browser.
         </p>
         <p>
-          Per questo trattamento Cloudflare agisce in qualità di responsabile del trattamento per
-          conto del titolare, sulla base di un accordo sul trattamento dei dati (DPA) ai sensi
-          dell'art. 28 GDPR. Per alcune attività necessarie al funzionamento e alla sicurezza della
-          propria rete globale, Cloudflare può trattare i dati tecnici anche in qualità di titolare
-          autonomo. La base giuridica del trattamento è il legittimo interesse a rendere il sito
-          disponibile, sicuro e funzionante (art. 6, par. 1, lett. f, GDPR).
+          Per i trattamenti svolti per conto del gestore, Cloudflare opera come responsabile del
+          trattamento secondo il proprio accordo sul trattamento dei dati (DPA), previsto dall'art.
+          28 GDPR. Per alcune finalità proprie, come la sicurezza della sua rete, può operare anche
+          come titolare autonomo.
         </p>
         <p>
-          Poiché la rete di Cloudflare è distribuita a livello mondiale, i dati tecnici possono
-          essere trattati anche in Paesi al di fuori dello Spazio economico europeo, tra cui gli
-          Stati Uniti. Tali trasferimenti avvengono sulla base delle garanzie previste dal GDPR,
-          come l'adesione al EU-U.S. Data Privacy Framework e le clausole contrattuali standard
-          approvate dalla Commissione europea. I tempi di conservazione dei log sono stabiliti da
-          Cloudflare e descritti nella sua documentazione.
-        </p>
-        <p>
-          Per maggiori informazioni si rimanda alla
+          La rete è globale: i dati tecnici possono essere trattati anche fuori dallo Spazio
+          economico europeo (SEE), inclusi gli Stati Uniti. Nel proprio DPA, Cloudflare descrive le
+          garanzie previste per i trasferimenti, tra cui il Data Privacy Framework UE-USA, quando
+          applicabile, e le clausole contrattuali standard approvate dalla Commissione europea.
+          Trovi i dettagli sui rispettivi ambiti di applicazione nella
           <a
             href="https://www.cloudflare.com/privacypolicy/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            informativa sulla privacy di Cloudflare
+            informativa privacy di Cloudflare
           </a>
-          e al
+          e nel suo
           <a
             href="https://www.cloudflare.com/cloudflare-customer-dpa/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Data Processing Addendum di Cloudflare </a
+            accordo sul trattamento dei dati (DPA)</a
           >.
         </p>
 
-        <h3 id="discord" class="scroll-mt-24">4.2 Discord (community)</h3>
+        <h3 id="discord" class="scroll-mt-24">4.2 Discord: community</h3>
         <p>
-          Il sito contiene un collegamento al server della community su Discord, servizio fornito da
-          Discord Inc. Il semplice accesso al sito non comporta alcuna comunicazione di dati a
-          Discord: il trattamento ha inizio solo se l'utente sceglie di seguire il collegamento e di
-          utilizzare la piattaforma.
+          Il sito contiene un collegamento alla community su Discord. Non integra una chat o un
+          widget Discord: visitare AB-Gram non invia dati a Discord. Se apri il collegamento, accedi
+          invece a un servizio esterno, il cui uso è facoltativo.
         </p>
         <p>
-          Una volta su Discord, il servizio può trattare, ad esempio, i dati dell'account (nome
-          utente, indirizzo email, immagine del profilo), l'indirizzo IP, le informazioni sul
-          dispositivo e sull'utilizzo del servizio, nonché i contenuti pubblicati dall'utente nel
-          server, che possono essere visibili agli altri membri. Discord agisce come titolare
-          autonomo del trattamento, secondo le proprie condizioni e la propria informativa. Il
-          titolare del presente sito non ha accesso ai dati di registrazione dell'account Discord
-          degli utenti e non determina le modalità con cui Discord li tratta.
+          Discord tratta i dati secondo la propria informativa, come titolare autonomo. Questi
+          possono includere nome utente, email, immagine del profilo, indirizzo IP, informazioni sul
+          dispositivo e sull'uso del servizio, oltre ai messaggi e ai file che condividi. I
+          contenuti pubblicati nella community possono essere visibili agli altri membri e ai
+          moderatori. Il gestore di AB-Gram non riceve i dati di registrazione del tuo account
+          tramite il sito.
         </p>
         <p>
-          Discord ha sede negli Stati Uniti: i dati possono quindi essere trasferiti e trattati al
-          di fuori dello Spazio economico europeo, sulla base delle garanzie indicate da Discord
-          nella propria informativa. L'utilizzo del servizio è inoltre soggetto ai requisiti di età
-          e alle condizioni d'uso di Discord. L'iscrizione alla community è facoltativa e non è
-          necessaria per consultare il sito.
-        </p>
-        <p>
-          Per maggiori informazioni, anche sull'esercizio dei diritti nei confronti di Discord, si
-          rimanda alla
+          Discord può trattare dati fuori dal SEE, anche negli Stati Uniti, con le garanzie
+          descritte nella propria informativa. Prima di usarlo, consulta la
           <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer">
-            informativa sulla privacy di Discord
+            informativa privacy di Discord
           </a>
-          e alle
+          e le
           <a href="https://discord.com/terms" target="_blank" rel="noopener noreferrer">
-            condizioni di servizio di Discord </a
+            condizioni di servizio</a
+          >, che indicano anche i requisiti di età. Non pubblicare dati identificativi dei
+          partecipanti o report riservati nella community.
+        </p>
+
+        <h3 id="stripe" class="scroll-mt-24">4.3 Stripe: donazioni</h3>
+        <p>
+          Se scegli di fare una donazione, il sito apre una pagina esterna di Stripe. AB-Gram non
+          contiene moduli di pagamento e non raccoglie i dati della carta attraverso l'applicazione.
+          Stripe tratta i dati necessari al pagamento, che possono includere nome, email,
+          informazioni sul metodo di pagamento, importo e dati tecnici, anche per prevenire frodi e
+          rispettare obblighi di legge.
+        </p>
+        <p>
+          Il beneficiario può ricevere informazioni sulla donazione, come importo, stato del
+          pagamento e dati del donatore, secondo le informazioni fornite e le impostazioni del
+          servizio. Questi dati sono distinti dai progetti di AB-Gram. I ruoli di Stripe, i tempi di
+          conservazione, gli eventuali trasferimenti fuori dal SEE e le relative garanzie sono
+          descritti nella
+          <a href="https://stripe.com/it/privacy" target="_blank" rel="noopener noreferrer">
+            informativa privacy di Stripe</a
+          >. La donazione non è necessaria per utilizzare il sito.
+        </p>
+
+        <h3 id="jsdelivr" class="scroll-mt-24">4.4 jsDelivr: formule nella documentazione</h3>
+        <p>
+          Quando apri la documentazione, il sito carica la libreria MathJax da jsDelivr, un servizio
+          esterno di distribuzione di file. La libreria serve a visualizzare le formule matematiche.
+          Il browser si collega a <code>cdn.jsdelivr.net</code> e comunica i dati tecnici necessari
+          alla richiesta, come indirizzo IP, file richiesto e informazioni inviate dal browser. Non
+          è necessario aprire un collegamento esterno: il caricamento avviene automaticamente nella
+          documentazione.
+        </p>
+        <p>
+          Il sito non invia i contenuti dei progetti a questo servizio. Per conoscere il gestore del
+          servizio, i destinatari dei dati, i tempi di conservazione e le informazioni sugli
+          eventuali trasferimenti internazionali, consulta la
+          <a
+            href="https://www.jsdelivr.com/terms/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            informativa privacy di jsDelivr</a
           >.
+        </p>
+
+        <h3>Altri collegamenti e destinatari</h3>
+        <p>
+          Il sito può contenere altri collegamenti esterni, ad esempio al codice sorgente su GitHub.
+          Quando apri un sito esterno, si applica la sua informativa privacy. I fornitori di posta
+          elettronica trattano i messaggi per recapitarli e gestire la corrispondenza. Nei casi
+          previsti dalla legge, i dati possono inoltre essere comunicati alle autorità competenti.
         </p>
       </section>
 
       <section class="space-y-3">
         <h2 id="cookie" class="scroll-mt-24">5 Cookie</h2>
         <p>
-          Il sito non utilizza cookie di profilazione né strumenti di analisi di terze parti e non
-          imposta alcun cookie per proprio conto.
+          I cookie sono piccoli file che un sito può salvare nel browser. AB-Gram non imposta cookie
+          applicativi, non usa cookie di profilazione pubblicitaria e non integra strumenti di
+          analisi del traffico di terze parti.
         </p>
         <p>
-          Tuttavia, Cloudflare (descritto al punto 4.1) può impostare alcuni cookie tecnici,
-          strettamente necessari, tramite la propria infrastruttura di hosting e CDN, al fine di
-          garantire la sicurezza, l'affidabilità e il corretto funzionamento del sito. Tali cookie
-          non vengono utilizzati per identificare i visitatori né per finalità di profilazione o
-          marketing e, in quanto strettamente necessari, non richiedono il consenso dell'utente ai
-          sensi della normativa applicabile.
+          Cloudflare può impostare cookie tecnici necessari alla sicurezza e al funzionamento del
+          sito, a seconda delle funzionalità attive e delle verifiche richieste durante la visita.
+          Tra quelli previsti dalla sua documentazione ci sono:
         </p>
-        <p>In particolare, possono essere impostati i seguenti cookie:</p>
         <ul class="list-disc space-y-1 pl-6">
           <li>
-            <code>__cf_bm</code>: utilizzato per distinguere gli utenti umani dai bot e proteggere
-            il sito da traffico automatizzato e malevolo;
+            <code>__cf_bm</code>: aiuta a distinguere le persone dai bot; scade dopo 30 minuti di
+            inattività continua;
           </li>
           <li>
-            <code>cf_clearance</code>: conserva la prova del superamento di una verifica di
-            sicurezza (challenge) e consente di non ripetere la verifica durante la sessione;
+            <code>cf_clearance</code>: memorizza l'esito delle verifiche di sicurezza, per evitare
+            di ripeterle finché la verifica resta valida; la durata dipende dalle impostazioni del
+            servizio;
           </li>
           <li>
-            <code>__cfruid</code>: cookie di sessione utilizzato dalle funzioni di limitazione della
-            velocità (rate limiting) di Cloudflare per applicare le impostazioni di sicurezza ai
-            singoli client;
+            <code>__cfruid</code> e <code>_cfuvid</code>: possono essere usati dalle funzioni che
+            limitano il numero di richieste e distinguono i visitatori, anche quando condividono lo
+            stesso indirizzo IP;
           </li>
           <li>
-            <code>__cflb</code>: utilizzato dalle funzioni di bilanciamento del carico (load
-            balancing) di Cloudflare per distribuire il traffico tra i server.
+            <code>__cflb</code>: mantiene le richieste sullo stesso server quando è attiva questa
+            funzione di bilanciamento del traffico; la durata configurabile va da pochi secondi a 24
+            ore.
           </li>
         </ul>
         <p>
-          La durata di questi cookie varia in base alla funzione (alcuni sono cookie di sessione e
-          vengono eliminati alla chiusura del browser) ed è determinata da Cloudflare. Per maggiori
-          dettagli si rimanda alla
+          Questo elenco descrive possibili cookie di Cloudflare: non significa che siano tutti
+          presenti durante ogni visita. Non sono usati dal gestore per pubblicità o per seguirti tra
+          siti diversi. I cookie strettamente necessari non richiedono il tuo consenso preventivo.
+          Puoi eliminarli o bloccarli dalle impostazioni del browser, ma alcune verifiche di
+          sicurezza o funzioni del sito potrebbero non funzionare.
+        </p>
+        <p>
+          Per le funzioni e le durate aggiornate, consulta la
           <a
             href="https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            documentazione di Cloudflare sui cookie </a
-          >.
+            documentazione sui cookie di Cloudflare</a
+          >. I servizi esterni, come Discord e Stripe, possono usare propri cookie quando accedi
+          alle loro pagine, secondo le rispettive informative.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="conservazione" class="scroll-mt-24">6 Conservazione dei dati</h2>
+        <h2 id="conservazione" class="scroll-mt-24">6 Per quanto tempo restano i dati</h2>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>
+            <strong>Progetti aperti nel browser:</strong> restano nella memoria dell'applicazione
+            durante l'uso. Ricaricare la pagina o chiudere la scheda normalmente fa perdere questi
+            dati; non esiste una copia sul server da recuperare.
+          </li>
+          <li>
+            <strong>File importati, scaricati o stampati:</strong> restano dove li hai salvati,
+            comprese eventuali copie o backup. Chiudere AB-Gram non li elimina. Sei tu a gestirne la
+            conservazione, la condivisione e la cancellazione.
+          </li>
+          <li>
+            <strong>Dati tecnici e cookie:</strong> per Cloudflare, i tempi dipendono dal servizio
+            utilizzato e dalle relative impostazioni; per jsDelivr valgono i criteri descritti nella
+            sua informativa. Non coincidono necessariamente con la durata della visita o del
+            progetto aperto.
+          </li>
+          <li>
+            <strong>Email:</strong> sono conservate per il tempo necessario a gestire la richiesta e
+            gli eventuali seguiti, o più a lungo quando serve per un obbligo di legge o per
+            accertare, esercitare o difendere un diritto.
+          </li>
+          <li>
+            <strong>Donazioni e servizi esterni:</strong> gli eventuali dati ricevuti dal
+            beneficiario sono conservati per gestire l'operazione e per i termini richiesti dagli
+            obblighi applicabili. Per i dati conservati da Stripe e Discord valgono anche i tempi e
+            i criteri indicati nelle loro informative.
+          </li>
+        </ul>
+      </section>
+
+      <section class="space-y-3">
+        <h2 id="diritti-interessato" class="scroll-mt-24">7 I tuoi diritti</h2>
+        <p>Nei casi e con i limiti previsti dagli articoli da 15 a 22 del GDPR, puoi:</p>
+        <ul class="list-disc space-y-1 pl-6">
+          <li>sapere se vengono trattati dati che ti riguardano e ottenerne una copia;</li>
+          <li>chiedere di correggere dati inesatti o completare quelli incompleti;</li>
+          <li>chiedere la cancellazione o la limitazione del trattamento;</li>
+          <li>
+            ricevere i dati in un formato utilizzabile e trasmetterli a un altro titolare, quando è
+            previsto il diritto alla portabilità;
+          </li>
+          <li>
+            opporti, per motivi legati alla tua situazione, ai trattamenti basati sul legittimo
+            interesse;
+          </li>
+          <li>
+            non essere sottoposto a decisioni basate solo su trattamenti automatizzati che producano
+            effetti giuridici o analogamente significativi, salvo le eccezioni di legge;
+          </li>
+          <li>
+            revocare un eventuale consenso in qualsiasi momento, senza pregiudicare la liceità del
+            trattamento svolto prima della revoca.
+          </li>
+        </ul>
         <p>
-          Poiché il sito non memorizza dati personali, non è previsto alcun periodo di
-          conservazione. I dati eventualmente elaborati nel browser hanno natura transitoria. La
-          chiusura del browser o il ricaricamento della pagina determina la cancellazione dei dati.
+          Per i trattamenti di competenza del gestore, scrivi a
+          <a href="mailto:info@ab-gram.com">info@ab-gram.com</a>. La risposta è di norma gratuita e
+          arriva entro un mese dalla richiesta. Nei casi previsti dal GDPR, il termine può essere
+          prorogato di altri due mesi: in tal caso riceverai una comunicazione entro il primo mese,
+          con i motivi della proroga. Se necessario, potranno essere chieste solo le informazioni
+          utili a verificare la tua identità.
+        </p>
+        <p>
+          Il gestore non può recuperare o cancellare a distanza i progetti e i file rimasti sul tuo
+          dispositivo. Se i tuoi dati sono stati inseriti da un'altra persona o da
+          un'organizzazione, rivolgiti a chi li utilizza. Per i trattamenti che i fornitori esterni
+          svolgono come titolari autonomi, puoi usare i contatti indicati nelle rispettive
+          informative. Per i trattamenti svolti per conto del gestore di AB-Gram, puoi invece
+          rivolgerti direttamente al gestore.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="diritti-interessato" class="scroll-mt-24">7 Diritti dell'interessato</h2>
+        <h2 id="diritto-di-reclamo" class="scroll-mt-24">8 Come presentare un reclamo</h2>
         <p>
-          Ai sensi degli articoli da 15 a 22 del GDPR, l'interessato ha il diritto di chiedere
-          l'accesso ai propri dati, la rettifica, la cancellazione, la limitazione del trattamento,
-          la portabilità e l'opposizione, nonché di non essere sottoposto a decisioni basate
-          unicamente su un trattamento automatizzato. Poiché il sito non tratta dati personali, tali
-          diritti possono essere esercitati, per quanto di competenza, nei confronti dei fornitori
-          di terze parti indicati al punto 4 o rivolgendosi al titolare per qualunque chiarimento.
+          Se ritieni che i tuoi dati siano trattati in violazione del GDPR, puoi presentare un
+          reclamo a un'autorità di controllo, in particolare nel Paese in cui vivi, lavori o dove
+          ritieni sia avvenuta la violazione. In Italia puoi rivolgerti al
+          <a href="https://www.garanteprivacy.it/" target="_blank" rel="noopener noreferrer">
+            Garante per la protezione dei dati personali</a
+          >. Non è necessario contattare prima il gestore per esercitare questo diritto.
         </p>
       </section>
 
       <section class="space-y-3">
-        <h2 id="diritto-di-reclamo" class="scroll-mt-24">8 Diritto di reclamo</h2>
+        <h2 id="modifiche" class="scroll-mt-24">9 Aggiornamenti dell'informativa</h2>
         <p>
-          L'interessato che ritenga che il trattamento dei propri dati avvenga in violazione del
-          GDPR ha il diritto di proporre reclamo all'autorità di controllo competente, che per
-          l'Italia è il Garante per la protezione dei dati personali.
-        </p>
-      </section>
-
-      <section class="space-y-3">
-        <h2 id="modifiche" class="scroll-mt-24">9 Modifiche alla presente informativa</h2>
-        <p>
-          La presente informativa può essere aggiornata nel tempo, ad esempio in seguito a modifiche
-          del sito o della normativa. Gli aggiornamenti saranno pubblicati su questa pagina.
+          Questa informativa può cambiare se cambiano il sito, i servizi utilizzati o le norme
+          applicabili. La versione aggiornata viene pubblicata su questa pagina, con la data
+          dell'ultima modifica.
         </p>
       </section>
     </div>
