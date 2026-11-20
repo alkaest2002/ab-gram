@@ -66,7 +66,7 @@ riguardano le direzioni dei legami, non necessariamente coppie distinte.
 
 Scompone la rete delle scelte in diadi simmetriche, clique, componenti
 debolmente connesse, componenti fortemente connesse, componenti fortemente
-connesse e reciproche, e comunità di Louvain.
+connesse e reciproche, e comunità di Louvain e di Leiden.
 
 ### 1.8 Pagine individuali dei membri
 
