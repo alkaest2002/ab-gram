@@ -17,6 +17,11 @@ const sectionIds = [
   "stripe",
   "jsdelivr",
   "cookie",
+  "cookie-ab-gram",
+  "cookie-cloudflare",
+  "cookie-discord",
+  "cookie-jsdelivr",
+  "cookie-stripe",
   "conservazione",
   "diritti-interessato",
   "diritto-di-reclamo",
@@ -49,6 +54,35 @@ describe("Privacy", () => {
     expect(targets.length).toBeGreaterThan(0);
     for (const target of targets) {
       expect(headings.filter(({ id }) => id === target)).toHaveLength(1);
+    }
+  });
+
+  it("groups all five cookie subsections under the cookie section and links them in the index", () => {
+    const cookieSection = html.match(/<h2\b[^>]*id="cookie"[^>]*>[\s\S]*?<\/section>/)?.[0];
+    expect(cookieSection).toBeDefined();
+
+    const cookieHeadings = Array.from(
+      cookieSection.matchAll(/<h3\b[^>]*id="([^"]+)"/g),
+      (match) => match[1],
+    );
+    expect(cookieHeadings).toEqual([
+      "cookie-ab-gram",
+      "cookie-cloudflare",
+      "cookie-discord",
+      "cookie-jsdelivr",
+      "cookie-stripe",
+    ]);
+    for (const id of cookieHeadings) {
+      expect(sidebar).toContain(`href="#${id}"`);
+    }
+
+    for (const url of [
+      "https://developers.cloudflare.com/fundamentals/reference/policies-compliances/cloudflare-cookies/",
+      "https://discord.com/privacy",
+      "https://www.jsdelivr.com/terms/privacy-policy",
+      "https://stripe.com/it/privacy",
+    ]) {
+      expect(cookieSection).toContain(`href="${url}"`);
     }
   });
 

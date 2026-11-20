@@ -37,17 +37,17 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 
     <div class="min-w-0 flex-1 space-y-8 [&>section+section]:pt-2 [&_h3]:pt-5">
       <h1>GDPR e privacy</h1>
-      <p>
+      <p class="text-sm text-muted">
         Questa informativa spiega quali dati personali sono utilizzati quando visiti AB-Gram, usi
         l'applicazione o contatti il gestore, secondo il Regolamento (UE) 2016/679 (GDPR). Ultimo
         aggiornamento: <time datetime="2026-11-20">20 novembre 2026</time>.
       </p>
       <p>
-        In breve: i dati dei tuoi progetti vengono elaborati nel browser e non sono inviati al
-        gestore. La visita al sito comporta comunque il trattamento di alcuni dati tecnici da parte
-        di Cloudflare e, nella documentazione, di jsDelivr. Se scrivi un'email, accedi alla
-        community o fai una donazione, vengono utilizzati anche i dati necessari a queste attività,
-        come spiegato di seguito.
+        <span class="font-semibold">In breve</span>: i dati dei tuoi progetti vengono elaborati nel
+        browser e non sono inviati al gestore. La visita al sito comporta comunque il trattamento di
+        alcuni dati tecnici da parte di Cloudflare e, nella documentazione, di jsDelivr. Se scrivi
+        un'email, accedi alla community o fai una donazione, vengono utilizzati anche i dati
+        necessari a queste attività, come spiegato di seguito.
       </p>
 
       <section class="space-y-3">
@@ -271,10 +271,29 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
       <section class="space-y-3">
         <h2 id="cookie" class="scroll-mt-24">5 Cookie</h2>
         <p>
-          I cookie sono piccoli file che un sito può salvare nel browser. AB-Gram non imposta cookie
-          applicativi, non usa cookie di profilazione pubblicitaria e non integra strumenti di
-          analisi del traffico di terze parti.
+          I cookie sono piccoli file salvati nel browser per ricordare informazioni o riconoscere
+          una visita. Alcuni sono necessari al funzionamento e alla sicurezza di un servizio; altri
+          servono, ad esempio, a misurarne l'uso o a personalizzare la pubblicità. Qui distinguiamo
+          i cookie del sito da quelli dei servizi esterni.
         </p>
+        <p>
+          Puoi controllare ed eliminare i cookie dalle impostazioni del browser. Bloccare quelli
+          necessari può impedire alcune funzioni o richiedere nuove verifiche di sicurezza. Per i
+          cookie facoltativi dei servizi esterni, usa anche i controlli messi a disposizione da
+          ciascun servizio: le preferenze espresse su una piattaforma non valgono automaticamente
+          per le altre.
+        </p>
+
+        <h3 id="cookie-ab-gram" class="scroll-mt-24">5.1 Sito AB-Gram</h3>
+        <p>
+          L'applicazione AB-Gram non imposta cookie propri, non usa cookie di profilazione
+          pubblicitaria e non integra strumenti di analisi del traffico di terze parti. I contenuti
+          dei progetti sono elaborati nella memoria del browser, non nei cookie. Questo non esclude
+          i cookie tecnici che possono essere impostati dall'infrastruttura Cloudflare, descritti di
+          seguito.
+        </p>
+
+        <h3 id="cookie-cloudflare" class="scroll-mt-24">5.2 Cloudflare</h3>
         <p>
           Cloudflare può impostare cookie tecnici necessari alla sicurezza e al funzionamento del
           sito, a seconda delle funzionalità attive e delle verifiche richieste durante la visita.
@@ -303,10 +322,9 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
         </ul>
         <p>
           Questo elenco descrive possibili cookie di Cloudflare: non significa che siano tutti
-          presenti durante ogni visita. Non sono usati dal gestore per pubblicità o per seguirti tra
-          siti diversi. I cookie strettamente necessari non richiedono il tuo consenso preventivo.
-          Puoi eliminarli o bloccarli dalle impostazioni del browser, ma alcune verifiche di
-          sicurezza o funzioni del sito potrebbero non funzionare.
+          presenti durante ogni visita. La loro presenza e durata dipendono dalle funzioni attive.
+          Non sono usati dal gestore per pubblicità o per seguirti tra siti diversi. I cookie
+          strettamente necessari non richiedono il tuo consenso preventivo.
         </p>
         <p>
           Per le funzioni e le durate aggiornate, consulta la
@@ -316,8 +334,62 @@ import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
             rel="noopener noreferrer"
           >
             documentazione sui cookie di Cloudflare</a
-          >. I servizi esterni, come Discord e Stripe, possono usare propri cookie quando accedi
-          alle loro pagine, secondo le rispettive informative.
+          >.
+        </p>
+
+        <h3 id="cookie-discord" class="scroll-mt-24">5.3 Discord</h3>
+        <p>
+          AB-Gram contiene solo un collegamento alla community: non incorpora chat o widget di
+          Discord. La semplice visita al sito non attiva cookie di Discord. Se scegli di aprire il
+          collegamento e accedere alla piattaforma, Discord può usare cookie e tecnologie simili
+          secondo le proprie regole e le tue preferenze.
+        </p>
+        <p>
+          Queste tecnologie possono servire al funzionamento del servizio, alla gestione
+          dell'accesso e della sicurezza, alle preferenze e ad altre finalità descritte da Discord.
+          Per conoscere categorie, durate e modalità di gestione del consenso, consulta la
+          <a href="https://discord.com/privacy" target="_blank" rel="noopener noreferrer">
+            informativa privacy di Discord</a
+          >, che rimanda anche alla sua informativa sui cookie. Puoi usare AB-Gram senza accedere a
+          Discord.
+        </p>
+
+        <h3 id="cookie-jsdelivr" class="scroll-mt-24">5.4 jsDelivr</h3>
+        <p>
+          Nella documentazione, AB-Gram carica automaticamente da jsDelivr la libreria MathJax per
+          visualizzare le formule. L'applicazione non usa cookie per questo caricamento e non
+          utilizza il CDN come strumento di profilazione o analisi dei visitatori.
+        </p>
+        <p>
+          Anche senza cookie, la richiesta al CDN comunica dati tecnici, come l'indirizzo IP e il
+          file richiesto. L'assenza di cookie non significa quindi assenza di trattamento di dati.
+          Per le informazioni sul servizio e sulle sue modalità di trattamento, consulta la
+          <a
+            href="https://www.jsdelivr.com/terms/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            informativa privacy di jsDelivr</a
+          >. Il trattamento dei dati tecnici è descritto anche al punto 4.4.
+        </p>
+
+        <h3 id="cookie-stripe" class="scroll-mt-24">5.5 Stripe</h3>
+        <p>
+          Il collegamento per le donazioni apre una pagina esterna di Stripe. AB-Gram non incorpora
+          moduli o script di pagamento e non attiva cookie di Stripe durante la semplice visita. I
+          cookie e le tecnologie di Stripe possono entrare in uso quando scegli di aprire la pagina
+          di donazione, anche se poi non completi il pagamento.
+        </p>
+        <p>
+          Stripe può usare queste tecnologie per consentire il pagamento, prevenire frodi, ricordare
+          preferenze e per altre finalità indicate nelle proprie informative. Non tutti i cookie
+          usati dai servizi esterni sono necessariamente tecnici: quelli facoltativi sono soggetti
+          alle scelte e alle regole sul consenso applicabili sulla piattaforma. Per finalità, durate
+          e controlli disponibili, consulta la
+          <a href="https://stripe.com/it/privacy" target="_blank" rel="noopener noreferrer">
+            informativa privacy di Stripe</a
+          >, che rimanda anche alla sua informativa sui cookie. Fare una donazione è facoltativo e
+          non è necessario per usare AB-Gram.
         </p>
       </section>
 

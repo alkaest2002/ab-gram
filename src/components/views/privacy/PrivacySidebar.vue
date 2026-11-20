@@ -29,7 +29,17 @@ const sections = [
       { id: "jsdelivr", label: "4.4 jsDelivr: formule nella documentazione" },
     ],
   },
-  { id: "cookie", label: "5 Cookie" },
+  {
+    id: "cookie",
+    label: "5 Cookie",
+    children: [
+      { id: "cookie-ab-gram", label: "5.1 Sito AB-Gram" },
+      { id: "cookie-cloudflare", label: "5.2 Cloudflare" },
+      { id: "cookie-discord", label: "5.3 Discord" },
+      { id: "cookie-jsdelivr", label: "5.4 jsDelivr" },
+      { id: "cookie-stripe", label: "5.5 Stripe" },
+    ],
+  },
   { id: "conservazione", label: "6 Per quanto tempo restano i dati" },
   { id: "diritti-interessato", label: "7 I tuoi diritti" },
   { id: "diritto-di-reclamo", label: "8 Come presentare un reclamo" },
