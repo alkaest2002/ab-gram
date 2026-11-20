@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 /**
- * Pure helpers for reading the individual metric objects rendered on a member's
- * report page. The metric objects share a columnar shape (see
+ * Shared analysis helpers, including accessors for the individual metric
+ * objects rendered on a member's report page. The metric objects share a columnar shape (see
  * `src/analysis/moreno/metrics/morenoMetrics.js` and
  * `src/analysis/sna/metrics/snaMetrics.js`): `ids` lists the row labels,
  * `metrics` the column labels, and `rawValuesById` / `rankedValuesById` /
@@ -100,4 +100,22 @@ export function formatValue(value) {
  */
 export function formatShare(value) {
   return `${Math.round(Number(value) * 100)}%`;
+}
+
+/**
+ * Deterministic PRNG (mulberry32), with the same contract as Math.random.
+ *
+ * @param {number} seed - The seed.
+ * @returns {() => number} A function returning a float in `[0, 1)`.
+ */
+export function mulberry32(seed) {
+  let a = seed >>> 0;
+
+  return function () {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }

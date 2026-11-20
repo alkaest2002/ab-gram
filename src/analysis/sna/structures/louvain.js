@@ -5,6 +5,7 @@ import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
 import * as np from "numpy-ts";
 
+import { mulberry32 } from "../../common/statsHelpers.js";
 import { filterBySize, sortStructures } from "./base.js";
 
 /**
@@ -51,24 +52,6 @@ function countMutualPairs(set, edges, n) {
     if (a < b && set.has(key(b, a, n))) count++;
   }
   return count;
-}
-
-/**
- * Deterministic PRNG (mulberry32), with the same contract as Math.random.
- *
- * @param {number} seed - The seed.
- * @returns {() => number} A function returning a float in `[0, 1)`.
- */
-function mulberry32(seed) {
-  let a = seed >>> 0;
-
-  return function () {
-    a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
 }
 
 /**
