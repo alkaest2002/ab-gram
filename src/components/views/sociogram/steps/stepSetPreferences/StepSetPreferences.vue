@@ -182,8 +182,9 @@ function handleWindowKeydown(event) {
   <section class="card space-y-6">
     <StepHeader>
       <template #eyebrow>Passaggio 3 di 4</template>
-      <template #title>Indica le scelte e i rifiuti di ogni membro del gruppo</template>
-      Seleziona una persona con i comandi del carosello, indica le sue scelte e i suoi rifiuti.
+      <template #title>Indica le scelte e i rifiuti</template>
+      Indica le scelte e i rifiuti di ciascun membro del gruppo, usa il carosello per navigare tra i
+      membri.
     </StepHeader>
 
     <div class="h-px w-full bg-line" aria-hidden="true"></div>
