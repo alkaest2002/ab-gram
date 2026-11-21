@@ -46,6 +46,7 @@ const repositories = {
 
 const dependencies = Object.entries(packageJson.dependencies ?? {}).map(([name, version]) => ({
   name,
+  label: name.replace(/^@[^/]+\//, "").replace(/^graphology-/, ""),
   version: stripRange(version),
   repository: repositories[name],
 }));
@@ -108,8 +109,11 @@ const dependencies = Object.entries(packageJson.dependencies ?? {}).map(([name, 
                 :key="pkg.name"
                 class="border-b border-line last:border-0"
               >
-                <td class="py-2 pr-4 font-mono text-sm whitespace-nowrap text-ink">
-                  {{ pkg.name }}
+                <td
+                  class="py-2 pr-4 font-mono text-sm whitespace-nowrap text-ink"
+                  :title="pkg.name"
+                >
+                  {{ pkg.label }}
                 </td>
                 <td class="py-2 pr-4 font-mono text-xs whitespace-nowrap text-muted">
                   {{ pkg.version }}
