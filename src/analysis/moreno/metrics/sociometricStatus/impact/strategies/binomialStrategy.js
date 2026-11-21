@@ -10,7 +10,8 @@ const ALPHA = 0.05;
 
 /**
  * Cumulative distribution function of Binomial(n, p), computed in log space to
- * avoid underflow for large n.
+ * avoid underflow for large n. The strategy needs deterministic tail
+ * probabilities; numpy-ts's binomial sampler returns random counts instead.
  *
  * @param {number} n - Number of trials.
  * @param {number} p - Success probability.
@@ -33,9 +34,10 @@ const binomialCdf = (n, p) => {
 };
 
 /**
- * Binomial (GB) strategy for groups of 5–35 members: exact two-sided binomial
- * test under the chance model. Limits are the counts whose tail probability
- * is <= alpha/2.
+ * Binomial (GB) strategy for groups of 5–35 members: an equal-tailed binomial
+ * rule under the chance model. The lower cutoff is the largest count k with
+ * P(X <= k) <= alpha/2, and the upper cutoff is the smallest count k with
+ * P(X >= k) <= alpha/2.
  *
  * @param {{ impact: import("numpy-ts").NDArray }} context - All impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
