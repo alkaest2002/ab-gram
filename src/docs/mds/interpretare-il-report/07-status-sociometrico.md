@@ -274,14 +274,15 @@ fuori di questo intervallo. Vale poi il **controllo di separazione** (§ 4.2).
 #### 4.2.4 Metodo di Jenks
 
 **Intuizione:** individuare i **raggruppamenti naturali** della distribuzione:
-le classi vengono scelte in modo da rendere **minima** la varianza interna a
-ogni classe (e, di conseguenza, massima quella tra classi). È il criterio dei
-_natural breaks_ di Jenks, qui adattato a **tre classi** (bassa, media, alta).
+il criterio dei _natural breaks_ di Jenks riduce la variabilità all'interno
+dei gruppi per individuare le classi di impatto **basso**, **medio** e **alto**.
 
 Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$,
-si cercano i due tagli che separano tre classi consecutive minimizzando la
-somma degli scarti quadratici dalle medie delle rispettive classi, detta $SDCM$. La bontà del partizionamento si
-misura con il **goodness of variance fit**
+si cercano i $k-1$ tagli che minimizzano la somma degli scarti quadratici dalle
+medie dei rispettivi gruppi, detta $SDCM$. Si usa $k=5$ se ci sono almeno
+cinque valori distinti, altrimenti $k=3$ se ce ne sono tre o quattro.
+La bontà del partizionamento, **prima di unire i gruppi**, si misura con il
+**goodness of variance fit**
 
 $$
 GVF = 1 - \frac{SDCM}{SDAM}
@@ -294,9 +295,11 @@ dove $SDAM$ è la somma degli scarti quadratici dalla media complessiva degli im
 - $GVF < 0{,}75$: la distribuzione è troppo "senza struttura" per giustificare
   una divisione.
 
-Se il partizionamento è accettato, le tre classi sono contigue e definite da
-due indici di taglio: la prima classe va da $x_0$ a $x_{i-1}$, la seconda da
-$x_i$ a $x_{j-1}$, la terza da $x_j$ a $x_{N-1}$ (con $1 \le i < j \le N-1$).
+Se il partizionamento è accettato, si conservano solo il primo e l'ultimo
+taglio. Con $k=5$, i gruppi $2$, $3$ e $4$ vengono uniti nella classe media;
+con $k=3$, le classi restano quelle del partizionamento. Indicando con $i$ e
+$j$ i due tagli conservati, la classe bassa va da $x_0$ a $x_{i-1}$, la media
+da $x_i$ a $x_{j-1}$ e l'alta da $x_j$ a $x_{N-1}$.
 Le soglie sono allora
 
 - $L = x_{i-1}$, cioè l'ultimo valore della **prima** classe (la più bassa);
@@ -586,7 +589,7 @@ che il numero assoluto di opinioni sia trascurabile.
 | Membri visibili per piccoli gruppi                        | $4 \le N \le 6$                                                                                                 |
 | Percentili per impatto basso / alto                       | $15$ / $85$                                                                                                     |
 | Controllo di separazione                                  | coda disattivata se la soglia coincide col valore adiacente                                                     |
-| Jenks: numero di classi                                   | $3$ (bassa, media, alta)                                                                                        |
+| Jenks: numero di gruppi iniziali                          | $5$ con almeno cinque valori distinti (si uniscono i gruppi 2–4); $3$ con tre o quattro valori distinti         |
 | Jenks: goodness of variance fit minima                    | $GVF \ge 0{,}75$                                                                                                |
 | Head/tail e inverted head/tail: quota massima             | $0{,}4$ (testa/coda sotto il $40\%$ dei valori)                                                                 |
 | Tukey: "inner fences"                                     | $Q_1 - 1 \cdot IQR$ / $Q_3 + 1 \cdot IQR$                                                                       |
@@ -679,7 +682,7 @@ ignorato: tutti proseguono.
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[2, 2, 2, 2, 3, 6, 6]$ con
 $N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
-- **Jenks.** Le classi $[2, 2, 2, 2]$, $[3]$ e $[6, 6]$
+- **Jenks.** Ci sono solo tre valori distinti, quindi si usa $k=3$. Le classi $[2, 2, 2, 2]$, $[3]$ e $[6, 6]$
   hanno varianza interna nulla: $SDCM = 0$, $SDAM = 150/7$ e
   $GVF = 1$. Le soglie sono $L = 2$ e $H = 6$.
 - **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
@@ -815,7 +818,7 @@ ignorato: tutti proseguono.
 **Passo 2 — Impatto.** Gli impatti, ordinati, sono $[1, 1, 1, 1, 2, 6, 6]$ con
 $N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
-- **Jenks.** Le classi $[1, 1, 1, 1]$, $[2]$ e $[6, 6]$
+- **Jenks.** Ci sono solo tre valori distinti, quindi si usa $k=3$. Le classi $[1, 1, 1, 1]$, $[2]$ e $[6, 6]$
   hanno varianza interna nulla: $SDCM = 0$, $SDAM = 236/7$ e
   $GVF = 1$. Le soglie sono $L = 1$ e $H = 6$.
 - **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
