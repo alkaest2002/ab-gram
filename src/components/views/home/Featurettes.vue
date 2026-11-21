@@ -57,7 +57,7 @@ const features = [
       >
         Un breve
         <span class="block">
-          <em>manifesto</em>{{ " " }}
+          <span>manifesto</span>{{ " " }}
           <span
             class="text-accent italic [text-shadow:0_0_0.35em_color-mix(in_oklab,currentColor_28%,transparent)]"
             >ideologico</span
@@ -72,7 +72,8 @@ const features = [
           <PiggyIcon
             v-if="feature.id === 'free'"
             size="size-18"
-            :stroke-width="1"
+            fill-class="fill-current"
+            stroke-class="stroke-none"
             class="text-ink"
           />
           <SmileyIcon

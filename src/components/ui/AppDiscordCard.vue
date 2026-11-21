@@ -50,7 +50,7 @@ const openDiscord = () => window.open(discordUrl, "_blank", "noopener,noreferrer
     <template #actions>
       <BaseClickButton :button-variant="buttonVariant" @click="openDiscord">
         <template #icon>
-          <DiscordIcon size="size-4" />
+          <DiscordIcon size="size-4" fill-class="fill-current" stroke-class="stroke-none" />
         </template>
         Apri il server Discord
       </BaseClickButton>

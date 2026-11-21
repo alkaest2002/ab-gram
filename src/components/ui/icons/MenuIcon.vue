@@ -8,11 +8,11 @@
 
 // --- Props --------------
 defineProps({
-  open: { type: Boolean, default: false },
   size: { type: String, default: "size-5" },
-  strokeWidth: { type: Number, default: 1.5 },
-  strokeClass: { type: String, default: "stroke-current" },
   fillClass: { type: String, default: "fill-none" },
+  strokeClass: { type: String, default: "stroke-current" },
+  strokeWidth: { type: Number, default: 1.5 },
+  open: { type: Boolean, default: false },
 });
 
 // --- Emits --------------

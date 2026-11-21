@@ -52,7 +52,7 @@ const currentYear = new Date().getFullYear();
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
         >
-          <GithubIcon />
+          <GithubIcon fill-class="fill-current" stroke-class="stroke-none" />
           GitHub
         </a>
 

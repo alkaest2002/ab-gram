@@ -9,7 +9,9 @@
 // --- Props --------------
 defineProps({
   size: { type: String, default: "size-5" },
-  fillClass: { type: String, default: "fill-current" },
+  fillClass: { type: String, default: "fill-none" },
+  strokeClass: { type: String, default: "stroke-current" },
+  strokeWidth: { type: Number, default: 1.5 },
 });
 
 // --- Emits --------------
@@ -34,8 +36,9 @@ defineProps({
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    :class="[size, fillClass]"
+    :class="[size, strokeClass, fillClass]"
     class="shrink-0"
+    :stroke-width="strokeWidth"
     viewBox="0 0 512 512"
   >
     <path
