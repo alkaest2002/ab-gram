@@ -19,21 +19,29 @@ const exhaustiveJenks = (values) => {
     const mean = group.reduce((sum, value) => sum + value, 0) / group.length;
     return group.reduce((sum, value) => sum + (value - mean) ** 2, 0);
   };
-  if (new Set(values).size < 3) return [NO_SPLIT];
+  const distinctCount = new Set(values).size;
+  if (distinctCount < 3) return [NO_SPLIT];
+  const k = distinctCount >= 5 ? 5 : 3;
   let best = Infinity;
   let breaks = [];
-  for (let high = 2; high < values.length; high++) {
-    for (let middle = 1; middle < high; middle++) {
-      const cost =
-        sse(values.slice(0, middle)) + sse(values.slice(middle, high)) + sse(values.slice(high));
-      if (cost < best - 1e-10) {
-        best = cost;
-        breaks = [[middle, high]];
-      } else if (Math.abs(cost - best) < 1e-10) {
-        breaks.push([middle, high]);
+  const visit = (starts, start, cost) => {
+    const remaining = k - starts.length - 1;
+    if (remaining > 0) {
+      for (let end = start + 1; end <= values.length - remaining; end++) {
+        visit([...starts, end], end, cost + sse(values.slice(start, end)));
       }
+      return;
     }
-  }
+    const total = cost + sse(values.slice(start));
+    const outer = [starts[0], start];
+    if (total < best - 1e-10) {
+      best = total;
+      breaks = [outer];
+    } else if (Math.abs(total - best) < 1e-10) {
+      breaks.push(outer);
+    }
+  };
+  visit([], 0, 0);
   if (1 - best / sse(values) < 0.75) return [NO_SPLIT];
   return breaks.map(([middle, high]) => ({
     low: values[middle - 1] === values[middle] ? -Infinity : values[middle - 1],
@@ -83,18 +91,20 @@ describe("Jenks partition strategy", () => {
   });
 
   it.each([
-    ["three tied clusters", [0, 0, 3, 3, 3, 8, 8], { low: 0, high: 8 }],
-    ["equal-cost optima prefer earlier breaks", [0, 1, 2, 3, 4, 5, 6], { low: 1, high: 4 }],
+    ["fallback with three distinct values", [0, 0, 3, 3, 3, 8, 8], { low: 0, high: 8 }],
+    ["fallback with four distinct values", [0, 0, 3, 3, 4, 8, 8], { low: 0, high: 8 }],
+    ["merge the middle three clusters", [0, 0, 2, 4, 6, 8, 8], { low: 0, high: 8 }],
+    ["equal-cost optima prefer earlier breaks", [0, 1, 2, 3, 4, 5, 6], { low: 0, high: 5 }],
     [
       "variance optimum differs from the two largest gaps",
       [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      { low: 2, high: 6 },
+      { low: 0, high: 7 },
     ],
   ])("handles %s", (_name, values, expected) => {
     expect(split(jenksStrategy, values)).toEqual(expected);
   });
 
-  it("matches exhaustive three-class partitions across small sorted integer distributions", () => {
+  it("matches exhaustive partitions across small sorted integer distributions", () => {
     const visit = (values, size, minimum) => {
       if (values.length === size) {
         expect(exhaustiveJenks(values), JSON.stringify(values)).toContainEqual(
@@ -102,7 +112,7 @@ describe("Jenks partition strategy", () => {
         );
         return;
       }
-      for (let value = minimum; value <= 4; value++) visit([...values, value], size, value);
+      for (let value = minimum; value <= 5; value++) visit([...values, value], size, value);
     };
     for (const size of [7, 8, 9]) visit([], size, 0);
   });

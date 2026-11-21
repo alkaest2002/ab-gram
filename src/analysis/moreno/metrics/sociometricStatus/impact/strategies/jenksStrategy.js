@@ -8,6 +8,8 @@ import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impac
 const MIN_MEMBERS = 7;
 const MAX_MEMBERS = 35;
 const MIN_GVF = 0.75;
+const PREFERRED_K = 5;
+const FALLBACK_K = 3;
 
 /**
  * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
@@ -63,9 +65,9 @@ const jenksBreaks = (sorted, k) => {
 };
 
 /**
- * Jenks natural breaks for 4–35 visible members (k = 3): cutoffs fall in the
- * widest gaps, gated by the goodness of variance fit (GVF = 1 - SDCM/SDAM) so
- * structureless data abstains.
+ * Fit five Jenks classes for 7–35 visible members, then merge classes 2–4.
+ * With only three or four distinct impacts, fit three classes instead.
+ * Goodness of variance fit (GVF = 1 - SDCM/SDAM) is checked before merging.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
@@ -78,21 +80,22 @@ export const jenksStrategy = ({ impactVisibleSorted }) => {
     return NO_SPLIT;
   }
 
-  // If there are less than 3 distinct impact values, abstain.
-  if (impactVisibleSorted.diff().not_equal(0).sum() < 2) return NO_SPLIT;
+  const distinctCount = impactVisibleSorted.diff().not_equal(0).sum() + 1;
+  if (distinctCount < FALLBACK_K) return NO_SPLIT;
+  const k = distinctCount >= PREFERRED_K ? PREFERRED_K : FALLBACK_K;
 
   const mean = impactVisibleSorted.mean();
   const sdam = impactVisibleSorted.subtract(mean).power(2).sum();
   if (sdam === 0) return NO_SPLIT;
 
   // ========================================================================
-  // FIND CLASSIFICATION BOUNDARIES — use three classes with sufficient fit.
+  // FIND CLASSIFICATION BOUNDARIES — check fit before merging.
   // ========================================================================
-  const { starts, sdcm } = jenksBreaks(impactVisibleSorted, 3);
+  const { starts, sdcm } = jenksBreaks(impactVisibleSorted, k);
   if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
   // ========================================================================
-  // SEPARATION CHECK — validate class 1 as low and class 3 as high.
+  // SEPARATION CHECK — keep only the outer breaks.
   // ========================================================================
-  return finalizeSplit(impactVisibleSorted, starts[0] - 1, starts[1]);
+  return finalizeSplit(impactVisibleSorted, starts[0] - 1, starts[k - 2]);
 };
