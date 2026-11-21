@@ -55,7 +55,7 @@ const steps = [
       <li
         v-for="(step, i) in steps"
         :key="step.title"
-        class="relative flex flex-col items-center rounded-lg border border-line bg-white px-6 pt-0 pb-3"
+        class="relative flex flex-col items-center rounded-lg bg-slate-100 px-6 pt-0 pb-3"
       >
         <component
           :is="step.icon"
