@@ -27,35 +27,29 @@ describe("impact strategy member ranges", () => {
     ["Jenks", jenksStrategy, 7, 35],
     ["head/tail", headTailStrategy, 7, 35],
     ["inverted head/tail", invertedHeadTailStrategy, 7, 35],
-    ["percentile", percentileStrategy, 20, 35],
-    ["Tukey", tukeyStrategy, 7, 35],
-    ["robust z-score", robustZScoreStrategy, 7, 35],
+    ["percentile", percentileStrategy, 15, 35],
+    ["Tukey", tukeyStrategy, 15, 35],
+    ["robust z-score", robustZScoreStrategy, 15, 35],
     ["binomial", binomialStrategy, 5, 35],
   ];
 
-  it.each(cases)("makes %s abstain outside %i..%i members", (_name, run, min, max) => {
+  it.each(cases)("makes %s abstain outside its supported member range", (_name, run, min, max) => {
     expect(run(contextWithSize(min - 1))).toBe(NO_SPLIT);
     expect(run(contextWithSize(max + 1))).toBe(NO_SPLIT);
   });
 });
 
 describe("Tukey strategy", () => {
+  // These middle values hold the quartiles at 4 and 6 when the endpoints change.
+  const center = [4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6];
   it.each([
-    ["isolates both tails", [0, 4, 5, 5, 5, 6, 10], { low: 0, high: 10 }],
-    ["excludes values on the fences", [2, 4, 5, 5, 5, 6, 8], { low: -Infinity, high: Infinity }],
-    ["isolates only the low tail", [0, 4, 5, 5, 5, 6, 8], { low: 0, high: Infinity }],
-    ["isolates only the high tail", [2, 4, 5, 5, 5, 6, 10], { low: -Infinity, high: 10 }],
-    [
-      "excludes fence values alongside outliers",
-      [0, 2, 4, 4, 5, 5, 5, 6, 6, 8, 10],
-      { low: 0, high: 10 },
-    ],
-    [
-      "uses the nearest outlier in each tail",
-      [0, 1, 4, 4, 5, 5, 5, 6, 6, 9, 10],
-      { low: 1, high: 9 },
-    ],
-    ["handles an even-sized group", [0, 4, 5, 5, 5, 5, 6, 10], { low: 0, high: 10 }],
+    ["isolates both tails at 15 members", [0, ...center, 10], { low: 0, high: 10 }],
+    ["excludes values on the fences", [2, ...center, 8], { low: -Infinity, high: Infinity }],
+    ["isolates only the low tail", [0, ...center, 8], { low: 0, high: Infinity }],
+    ["isolates only the high tail", [2, ...center, 10], { low: -Infinity, high: 10 }],
+    ["excludes fence values alongside outliers", [0, 2, ...center, 8, 10], { low: 0, high: 10 }],
+    ["uses the nearest outlier in each tail", [0, 1, ...center, 9, 10], { low: 1, high: 9 }],
+    ["handles an even-sized group", [0, 4, ...center, 10], { low: 0, high: 10 }],
     [
       "remains eligible at 35 members",
       [0, ...Array(16).fill(4), 5, ...Array(16).fill(6), 10],
@@ -66,8 +60,8 @@ describe("Tukey strategy", () => {
   });
 
   it.each([
-    ["constant values", [3, 3, 3, 3, 3, 3, 3]],
-    ["nonconstant values", [0, 5, 5, 5, 5, 5, 10]],
+    ["constant values", Array(15).fill(3)],
+    ["nonconstant values", [0, ...Array(13).fill(5), 10]],
   ])("abstains when the interquartile range is zero for %s", (_name, values) => {
     expect(tukeyStrategy({ impactVisibleSorted: np.array(values) })).toBe(NO_SPLIT);
   });

@@ -74,22 +74,35 @@ describe("binomial statistical impact strategy", () => {
 });
 
 describe("robust z-score statistical impact strategy", () => {
-  it.each([0, 6, 36])("abstains outside eligibility at %i visible members", (size) => {
-    expect(visibleSplit(robustZScoreStrategy, Array(size).fill(5))).toBe(NO_SPLIT);
+  it.each([0, 14, 36])("abstains outside eligibility at %i visible members", (size) => {
+    expect(
+      visibleSplit(
+        robustZScoreStrategy,
+        Array.from({ length: size }, (_, i) => i),
+      ),
+    ).toBe(NO_SPLIT);
   });
 
   it.each([
-    ["both tails at the minimum size", [0, 9, 10, 10, 10, 11, 20], { low: 0, high: 20 }],
-    ["only the low tail", [0, 9, 10, 10, 10, 11, 12], { low: 0, high: Infinity }],
-    ["only the high tail", [8, 9, 10, 10, 10, 11, 20], { low: -Infinity, high: 20 }],
-    ["constant positive values", Array(7).fill(5), NO_SPLIT],
-    ["all zero values", Array(7).fill(0), NO_SPLIT],
-    ["zero MAD with outliers", [0, 5, 5, 5, 5, 5, 10], { low: 0, high: 10 }],
-    ["positive MAD scaled above the floor", [0, 10, 12, 12, 12, 14, 24], { low: 0, high: 24 }],
-    ["even-sized median and MAD", [0, 4, 4, 5, 5, 6, 6, 10], { low: -Infinity, high: Infinity }],
+    ["both tails at the minimum size", [0, 9, ...Array(11).fill(10), 11, 20], { low: 0, high: 20 }],
+    ["only the low tail", [0, 9, ...Array(11).fill(10), 11, 12], { low: 0, high: Infinity }],
+    ["only the high tail", [8, 9, ...Array(11).fill(10), 11, 20], { low: -Infinity, high: 20 }],
+    ["constant positive values", Array(15).fill(5), NO_SPLIT],
+    ["all zero values", Array(15).fill(0), NO_SPLIT],
+    ["zero MAD with outliers", [0, ...Array(13).fill(5), 10], { low: 0, high: 10 }],
+    [
+      "positive MAD scaled above the floor",
+      [0, ...Array(6).fill(10), 12, ...Array(6).fill(14), 24],
+      { low: 0, high: 24 },
+    ],
+    [
+      "even-sized median and MAD",
+      [0, ...Array(6).fill(4), 5, 5, ...Array(6).fill(6), 10],
+      { low: -Infinity, high: Infinity },
+    ],
     [
       "nearest outliers including ties",
-      [0, 1, 1, ...Array(7).fill(5), 9, 9, 10],
+      [0, 1, 1, ...Array(9).fill(5), 9, 9, 10],
       { low: 1, high: 9 },
     ],
     ["maximum eligible size", [0, ...Array(33).fill(5), 10], { low: 0, high: 10 }],
@@ -102,27 +115,30 @@ describe("robust z-score statistical impact strategy", () => {
     const distance = 3.5 * 1.4826 * 0.5;
     const lowFence = median - distance;
     const highFence = median + distance;
-    const values = [lowFence - 1, lowFence, ...Array(7).fill(median), highFence, highFence + 1];
+    const values = [lowFence - 1, lowFence, ...Array(11).fill(median), highFence, highFence + 1];
     expect(visibleSplit(robustZScoreStrategy, values)).toEqual({
       low: lowFence - 1,
       high: highFence + 1,
     });
     expect(
-      visibleSplit(robustZScoreStrategy, [lowFence, ...Array(5).fill(median), highFence]),
+      visibleSplit(robustZScoreStrategy, [lowFence, ...Array(13).fill(median), highFence]),
     ).toEqual(NO_SPLIT);
   });
 
   it("floors a nonzero MAD smaller than 0.5", () => {
-    expect(visibleSplit(robustZScoreStrategy, [3, 4.75, 5, 5, 5, 5.25, 7])).toEqual(NO_SPLIT);
+    expect(
+      visibleSplit(robustZScoreStrategy, [3, ...Array(6).fill(4.75), 5, ...Array(6).fill(5.25), 7]),
+    ).toEqual(NO_SPLIT);
   });
 });
 
 describe("percentile statistical impact strategy", () => {
-  it.each([0, 10, 19, 36])("abstains outside eligibility at %i visible members", (size) => {
+  it.each([0, 10, 14, 36])("abstains outside eligibility at %i visible members", (size) => {
     expect(visibleSplit(percentileStrategy, Array(size).fill(5))).toBe(NO_SPLIT);
   });
 
   it.each([
+    [15, 2, 12],
     [20, 2, 17],
     [21, 3, 17],
     [35, 5, 29],

@@ -60,7 +60,7 @@ const thresholds = [
   ["inverted head/tail", [3, Infinity], [2, Infinity]],
   ["percentile", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["tukey", [-Infinity, Infinity], [-Infinity, Infinity]],
-  ["robust z-score", [-Infinity, 6], [-Infinity, 6]],
+  ["robust z-score", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["binomial (GB)", [0, Infinity], [-Infinity, 6]],
   ["small group", [-Infinity, Infinity], [-Infinity, Infinity]],
 ];

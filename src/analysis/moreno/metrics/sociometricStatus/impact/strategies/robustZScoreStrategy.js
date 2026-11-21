@@ -5,7 +5,7 @@ import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
 // Strategy parameters.
-const MIN_MEMBERS = 7;
+const MIN_MEMBERS = 15;
 const MAX_MEMBERS = 35;
 const Z_CUTOFF = 3.5; // robust z-score beyond which a value is an outlier
 const MAD_FLOOR = 0.5; // floor on the median absolute deviation
