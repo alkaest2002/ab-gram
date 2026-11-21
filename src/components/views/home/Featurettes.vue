@@ -57,11 +57,11 @@ const features = [
       >
         Un breve
         <span class="block">
-          <em
-            class="text-accent [text-shadow:0_0_0.35em_color-mix(in_oklab,currentColor_28%,transparent)]"
-            >manifesto</em
+          <em>manifesto</em>{{ " " }}
+          <span
+            class="text-accent italic [text-shadow:0_0_0.35em_color-mix(in_oklab,currentColor_28%,transparent)]"
+            >ideologico</span
           >
-          ideologico
         </span>
       </h2>
     </header>
@@ -89,7 +89,7 @@ const features = [
           />
         </span>
 
-        <h3 class="tracking-[-0.01em] text-xl text-ink">
+        <h3 class="mt-3 tracking-[-0.01em] text-xl text-ink">
           {{ feature.title }}
         </h3>
 
