@@ -56,7 +56,13 @@ const features = [
         class="mx-auto max-w-[22ch] font-display text-[clamp(2rem,5vw,3.5rem)] leading-[1.08] font-bold tracking-[-0.035em] text-balance text-ink"
       >
         Un breve
-        <span class="block"><em class="text-accent">manifesto</em> ideologico</span>
+        <span class="block">
+          <em
+            class="text-accent [text-shadow:0_0_0.35em_color-mix(in_oklab,currentColor_28%,transparent)]"
+            >manifesto</em
+          >
+          ideologico
+        </span>
       </h2>
     </header>
 

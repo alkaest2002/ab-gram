@@ -37,7 +37,13 @@
       class="mx-auto mt-6 max-w-[18ch] font-display text-[clamp(2.5rem,7vw,4.5rem)] leading-[1.04] font-bold tracking-[-0.04em] text-balance text-ink"
     >
       Analizza le
-      <em class="block">dinamiche dei <span class="text-accent">gruppi</span></em>
+      <em class="block">
+        dinamiche dei
+        <span
+          class="text-accent [text-shadow:0_0_0.35em_color-mix(in_oklab,currentColor_28%,transparent)]"
+          >gruppi</span
+        >
+      </em>
     </h1>
 
     <p class="mx-auto mt-8 max-w-[46ch] text-lg leading-relaxed sm:text-xl">
