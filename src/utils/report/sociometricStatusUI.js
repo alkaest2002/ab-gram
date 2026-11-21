@@ -38,7 +38,7 @@ export const STATUS_UI = Object.freeze({
     description: "non ha espresso/ricevuto opinioni.",
     tone: "muted",
     bar: "bg-muted",
-    text: "text-muted",
+    text: "text-warn",
   },
   1: {
     label: "Ignorato",
