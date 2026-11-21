@@ -40,8 +40,9 @@ const ISOLATED_NODE_COLOR = "#000000";
 // and a transparent marker ensures the arrowhead never shows either.
 const DIMMED_COLOR = "transparent";
 
-// Counter used to keep arrowhead marker ids unique when several plots are
-// embedded in the same document.
+// SVG marker IDs share the document namespace, but the report and regeneration
+// workers have separate module instances and counters.
+const markerNamespace = crypto.getRandomValues(new Uint32Array(4)).join("-");
 let markerCounter = 0;
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -329,8 +330,9 @@ const buildPlot = (graph, accentColor, config = {}) => {
   // or border, and no background rectangle is added. Its height is the sum of
   // the connected graph and the isolated plot (when present).
   const totalHeight = CANVAS_HEIGHT + isolatedPlot.height;
-  const accentMarkerId = `arrow-${markerCounter++}`;
-  const dimmedMarkerId = `arrow-${markerCounter++}`;
+  const markerId = `arrow-${markerNamespace}-${markerCounter++}`;
+  const accentMarkerId = `${markerId}-accent`;
+  const dimmedMarkerId = `${markerId}-dimmed`;
 
   /** @type {string[]} */
   const parts = [];

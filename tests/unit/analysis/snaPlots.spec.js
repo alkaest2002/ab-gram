@@ -89,6 +89,27 @@ describe("getSnaPlot", () => {
     expect(svg).toMatch(/data-dimmed-marker='[^']+'/);
   });
 
+  it("keeps marker references distinct across report and regeneration workers", async () => {
+    const members = [makeMember("a", ["b"], ["b"]), makeMember("b")];
+    const markerIds = [];
+    for (const [type, color] of [
+      ["likes", "#0000FF"],
+      ["dislikes", "#FF0000"],
+    ]) {
+      // A fresh module instance models each worker starting its own counter.
+      vi.resetModules();
+      const { getSnaPlot: buildWorkerPlot } = await import("@/analysis/sna/plots/snaPlots.js");
+      const [{ svg }] = buildWorkerPlot(createSnaNetwork(members, type), color);
+      const [, accent] = svg.match(/data-accent-marker='([^']+)'/);
+      const [, dimmed] = svg.match(/data-dimmed-marker='([^']+)'/);
+      expect(svg).toContain(`marker-end='url(#${accent})'`);
+      expect(svg).toMatch(new RegExp(`<marker id='${accent}'[^>]*><path[^>]*stroke='${color}'`));
+      expect(svg).toContain(`<marker id='${dimmed}'`);
+      markerIds.push(accent, dimmed);
+    }
+    expect(new Set(markerIds).size).toBe(4);
+  });
+
   it("declares both accent and dimmed arrowhead markers", () => {
     const members = [makeMember("a", ["b"]), makeMember("b")];
     const likesNetwork = createSnaNetwork(members, "likes");
