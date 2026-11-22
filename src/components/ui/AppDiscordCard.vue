@@ -42,7 +42,7 @@ const openDiscord = () => window.open(discordUrl, "_blank", "noopener,noreferrer
 <template>
   <BaseCard>
     <template #eyebrow>Comunità</template>
-    <template #title>Entra in Discord</template>
+    <template #title>Entra nella comunità Discord</template>
 
     Unisciti alla community su Discord per fare domande e restare aggiornato sul progetto.
 

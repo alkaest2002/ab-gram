@@ -42,7 +42,7 @@ const openBrochure = () => window.open(brochureUrl, "_blank", "noopener,noreferr
 <template>
   <BaseCard>
     <template #eyebrow>Segnala il progetto</template>
-    <template #title>Insegni in una scuola?</template>
+    <template #title>Insegni in una scuola pubblica?</template>
 
     Se questo progetto ti è stato utile, segnalalo al Ministero dell'Istruzione e del Merito.
 
