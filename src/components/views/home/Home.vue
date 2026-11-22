@@ -42,7 +42,7 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
       discord card is the dashed "isolated" one — the member nobody has
       chosen yet.
     -->
-  <div class="page home py-12 sm:py-16">
+  <div class="page home py-12 sm:py-16 max-w-212.5">
     <div class="flex flex-col items-center gap-16 text-center sm:gap-16">
       <!-- Hero -->
       <section class="w-full">

@@ -42,17 +42,16 @@ const openDiscord = () => window.open(discordUrl, "_blank", "noopener,noreferrer
 <template>
   <BaseCard>
     <template #eyebrow>Comunità</template>
-    <template #title>Entra nel server Discord</template>
+    <template #title>Entra in Discord</template>
 
-    Unisciti alla community su Discord per fare domande, condividere feedback e restare aggiornato
-    sul progetto.
+    Unisciti alla community su Discord per fare domande e restare aggiornato sul progetto.
 
     <template #actions>
       <BaseClickButton :button-variant="buttonVariant" @click="openDiscord">
         <template #icon>
           <DiscordIcon size="size-4" fill-class="fill-current" stroke-class="stroke-none" />
         </template>
-        Apri il server Discord
+        Apri Discord
       </BaseClickButton>
     </template>
   </BaseCard>

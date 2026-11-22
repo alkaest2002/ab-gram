@@ -46,7 +46,7 @@ const repositories = {
 
 const dependencies = Object.entries(packageJson.dependencies ?? {}).map(([name, version]) => ({
   name,
-  label: name.replace(/^@[^/]+\//, "").replace(/^graphology-/, ""),
+  label: name.replace(/^@[^/]+\//, ""),
   version: stripRange(version),
   repository: repositories[name],
 }));

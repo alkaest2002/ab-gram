@@ -6,7 +6,6 @@
 <script setup>
 // --- Imports ------------
 //   -- From components.
-import AppCopyLinkButton from "@/components/ui/AppCopyLinkButton.vue";
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import FileIcon from "@/components/ui/icons/FileIcon.vue";
@@ -43,12 +42,11 @@ const openBrochure = () => window.open(brochureUrl, "_blank", "noopener,noreferr
 <template>
   <BaseCard>
     <template #eyebrow>Segnala il progetto</template>
-    <template #title>Insegni in una scuola pubblica?</template>
+    <template #title>Insegni in una scuola?</template>
 
     Se questo progetto ti è stato utile, segnalalo al Ministero dell'Istruzione e del Merito.
 
     <template #actions>
-      <AppCopyLinkButton :button-variant="buttonVariant" />
       <BaseClickButton :button-variant="buttonVariant" @click="openBrochure">
         <template #icon>
           <FileIcon size="size-4" />
