@@ -105,8 +105,12 @@ const coreNumber = computed(() => {
           <span
             class="flex items-center justify-center gap-2 rounded bg-gray-200 px-[2mm] py-[.5mm]"
           >
-            <span class="text-[9pt] font-bold leading-none">{{ coreNumber.rank }}</span>
-            <span class="text-[7pt] leading-none text-muted">{{ coreNumber.maxRank }}</span>
+            <span class="text-[9pt] font-bold leading-none">{{
+              formatValue(coreNumber.rank)
+            }}</span>
+            <span class="text-[7pt] leading-none text-muted">{{
+              formatValue(coreNumber.maxRank)
+            }}</span>
           </span>
         </p>
       </section>

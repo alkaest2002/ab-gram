@@ -37,7 +37,7 @@ export function metricIndexOf(metrics, key) {
 }
 
 /**
- * Raw value at a member/metric cell, defaulting to 0 when the cell is missing.
+ * Raw value at a member/metric cell, returning NaN when the cell is missing.
  *
  * @param {{ rawValuesById?: number[][] } | null} metrics
  * @param {number} memberIndex
@@ -45,12 +45,12 @@ export function metricIndexOf(metrics, key) {
  * @returns {number}
  */
 export function readRaw(metrics, memberIndex, metricIndex) {
-  if (memberIndex < 0 || metricIndex < 0) return 0;
-  return metrics?.rawValuesById?.[memberIndex]?.[metricIndex] ?? 0;
+  if (memberIndex < 0 || metricIndex < 0) return NaN;
+  return metrics?.rawValuesById?.[memberIndex]?.[metricIndex] ?? NaN;
 }
 
 /**
- * Rank value at a member/metric cell, defaulting to 0 when the cell is missing.
+ * Rank value at a member/metric cell, returning NaN when the cell is missing.
  *
  * @param {{ rankedValuesById?: number[][] } | null} metrics
  * @param {number} memberIndex
@@ -58,13 +58,13 @@ export function readRaw(metrics, memberIndex, metricIndex) {
  * @returns {number}
  */
 export function readRank(metrics, memberIndex, metricIndex) {
-  if (memberIndex < 0 || metricIndex < 0) return 0;
-  return metrics?.rankedValuesById?.[memberIndex]?.[metricIndex] ?? 0;
+  if (memberIndex < 0 || metricIndex < 0) return NaN;
+  return metrics?.rankedValuesById?.[memberIndex]?.[metricIndex] ?? NaN;
 }
 
 /**
  * Highest dense rank for a metric: `rankedValuesByMetric[m]` is the rank column,
- * so its maximum is the denominator of the "rank / max rank" chip suffix.
+ * so its maximum is the denominator of the "rank / max rank" chip suffix. A missing or empty column yields NaN.
  *
  * @param {{ rankedValuesByMetric?: number[][] } | null} metrics
  * @param {number} metricIndex
@@ -72,7 +72,7 @@ export function readRank(metrics, memberIndex, metricIndex) {
  */
 export function readMaxRank(metrics, metricIndex) {
   const column = metrics?.rankedValuesByMetric?.[metricIndex] ?? [];
-  if (!column.length) return 0;
+  if (!column.length) return NaN;
   return Math.max(...column);
 }
 
@@ -86,7 +86,7 @@ export function readMaxRank(metrics, metricIndex) {
  */
 export function formatValue(value) {
   const num = Number(value);
-  if (!Number.isFinite(num)) return "0";
+  if (!Number.isFinite(num)) return "—";
   if (Number.isInteger(num)) return String(num);
   return String(Math.round(num * 100) / 100);
 }

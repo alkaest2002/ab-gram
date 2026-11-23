@@ -117,8 +117,12 @@ function buildChip(label, key, source) {
           </span>
           <span class="flex bg-gray-200 px-[2mm] py-[.5mm] rounded">
             <span class="flex grow justify-center items-center gap-2">
-              <span class="font-mono text-[9pt] font-bold leading-none">{{ chip.rank }}</span>
-              <span class="font-mono text-[7pt] leading-none text-muted">{{ chip.maxRank }}</span>
+              <span class="font-mono text-[9pt] font-bold leading-none">{{
+                formatValue(chip.rank)
+              }}</span>
+              <span class="font-mono text-[7pt] leading-none text-muted">{{
+                formatValue(chip.maxRank)
+              }}</span>
             </span>
           </span>
         </span>
