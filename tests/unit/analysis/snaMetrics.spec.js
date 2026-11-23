@@ -55,6 +55,19 @@ const INDIVIDUAL_COLUMNS = [
   "coreNumber",
 ];
 
+it("keeps non-convergent HITS scores unranked without affecting degree ranks", () => {
+  const graph = createSnaNetwork([makeMember("A", ["B"]), makeMember("B", ["A"])], "likes");
+  // Nearly equal edge weights make HITS exceed its iteration budget.
+  graph.setEdgeAttribute("A", "B", "weight", 1.001);
+  const result = getIndividualLevelMetrics(graph);
+  for (const key of ["hitsAuthority", "hitsHub"]) {
+    const column = result.metrics.indexOf(key);
+    expect(result.rawValuesByMetric[column]).toEqual([NaN, NaN]);
+    expect(result.rankedValuesByMetric[column]).toEqual([NaN, NaN]);
+  }
+  expect(result.rankedValuesByMetric[result.metrics.indexOf("degreeCentrality")]).toEqual([1, 1]);
+});
+
 describe("getGroupLevelMetrics", () => {
   it("computes every metric for a complete mutual triangle", () => {
     const likesNetwork = createSnaNetwork(

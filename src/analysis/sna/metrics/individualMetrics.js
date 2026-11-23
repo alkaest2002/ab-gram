@@ -115,8 +115,7 @@ export const computePageRank = (graph) => pagerank(graph);
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {{ authorities: Record<string, number>, hubs: Record<string, number> }}
  *   Authority and hub scores each sum to one on convergence. For an edgeless
- *   graph or when HITS fails to converge,
- *   every score is `0`.
+ *   graph every score is `0`; on non-convergence every score is `NaN`.
  */
 export const computeHits = (graph) => {
   const nodes = graph.nodes();
@@ -133,13 +132,11 @@ export const computeHits = (graph) => {
   try {
     return hits(graph);
   } catch (error) {
-    // HITS can also throw "failed to converge" on graphs with edges (e.g. with
-    // dangling nodes). Rather than aborting the whole report, mark every score
-    // as 0 to signal that the metric could not be computed.
+    if (error.message !== "graphology-metrics/centrality/hits: failed to converge.") throw error;
     console.error(error);
     return {
-      authorities: Object.fromEntries(nodes.map((node) => [node, 0])),
-      hubs: Object.fromEntries(nodes.map((node) => [node, 0])),
+      authorities: Object.fromEntries(nodes.map((node) => [node, NaN])),
+      hubs: Object.fromEntries(nodes.map((node) => [node, NaN])),
     };
   }
 };

@@ -21,11 +21,17 @@ const rankColumn = (column, higherRawScoreIsBetter) => {
   // strides, so copy first to make the column contiguous.
   const contiguousColumn = column.copy();
 
+  // A failed metric (all NaNs) has no ranks.
+  const allScoresAreNaN = contiguousColumn.tolist().every(Number.isNaN);
+  if (allScoresAreNaN) return np.full(contiguousColumn.shape, NaN, "float64");
+
   // Compute unique values and inverse indices for the column.
   const { values, inverse_indices } = np.unique_inverse(contiguousColumn);
 
   // Convert inverse indices to a NumPy array for easier manipulation.
-  const npValues = np.array(inverse_indices);
+  // apply_along_axis uses the first column's dtype for the whole result.
+  // Use floats so later failed columns can retain NaN rather than integer zero.
+  const npValues = np.array(inverse_indices, "float64");
 
   // With higher-is-better, the largest value maps to rank 1; otherwise the
   // smallest value does. Either way, ties share a rank.
