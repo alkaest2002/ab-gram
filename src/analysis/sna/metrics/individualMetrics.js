@@ -57,10 +57,11 @@ export const computeDegreeCentrality = (graph) => degree(graph);
  *
  * Formula:
  *
- *   $$ C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(i,j)} $$
+ *   $$ C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(j,i)} $$
  *
- * where `R_i` are the nodes reachable from `i` and `d(i,j)` is the shortest-path
- * distance.
+ * where `R_i` contains the other nodes that can reach `i` and `d(j,i)` is
+ * the shortest distance from `j` to `i`. An empty `R_i` yields zero;
+ * otherwise no adjustment for the fraction of reachable nodes is applied.
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {Record<string, number>} Node id -> closeness centrality.
@@ -72,10 +73,10 @@ export const computeClosenessCentrality = (graph) => closeness(graph);
  *
  * Formula:
  *
- *   $$ C_B(i) = \frac{\sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)} $$
+ *   $$ C_B(i) = \frac{\sum_{s,t \ne i,\;s \ne t,\;\sigma_{st}>0} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)} $$
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
- * @returns {Record<string, number>} Node id -> betweenness centrality.
+ * @returns {Record<string, number>} Node id -> normalized directed betweenness (zero for n < 3).
  */
 export const computeBetweennessCentrality = (graph) => betweenness(graph);
 
@@ -84,7 +85,7 @@ export const computeBetweennessCentrality = (graph) => betweenness(graph);
  *
  * Formula:
  *
- *   $$ PR(i) = \frac{1 - \alpha}{n} + \alpha \sum_{j \in \text{In}(i)} \frac{PR(j)}{d_{\text{out}}(j)},\quad \alpha = 0.85 $$
+ *   $$ PR(i) = \frac{1 - \alpha}{n} + \alpha \sum_{j \in \text{In}(i)} \frac{PR(j)}{d_{\text{out}}(j)} + \frac{\alpha}{n}\sum_{j:\,d_{\text{out}}(j)=0} PR(j),\quad \alpha = 0.85 $$
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {Record<string, number>} Node id -> PageRank score.
@@ -97,11 +98,12 @@ export const computePageRank = (graph) => pagerank(graph);
  *
  * Formula:
  *
- *   $$ a(i) = \sum_{j \in \text{In}(i)} h(j),\qquad h(i) = \sum_{j \in \text{Out}(i)} a(j) $$
+ *   $$ a(i) \propto \sum_{j \in \text{In}(i)} h(j),\qquad h(i) \propto \sum_{j \in \text{Out}(i)} a(j) $$
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {{ authorities: Record<string, number>, hubs: Record<string, number> }}
- *   The authority and hub scores keyed by node id. When HITS fails to converge,
+ *   Authority and hub scores each sum to one on convergence. For an edgeless
+ *   graph or when HITS fails to converge,
  *   every score is `0`.
  */
 export const computeHits = (graph) => {

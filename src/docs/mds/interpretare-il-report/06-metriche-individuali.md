@@ -293,14 +293,13 @@ un valore alto occupa una posizione di potenziale raccordo nella rete rilevata:
 non significa necessariamente che controlli le informazioni o che queste
 circolino seguendo le nomine. Nella formula, $\sigma_{st}$ è il numero di percorsi più brevi da $s$ a
 $t$, e $\sigma_{st}(i)$ è il numero di quelli che passano per $i$; il rapporto
-tra i due dice quale "quota" dei percorsi passa dal membro $i$. La condizione
-$s \neq i \neq t$ indica che si considerano solo coppie $s,t$ diverse da $i$.
-Si richiede anche $s \ne t$; le coppie senza percorso non contribuiscono.
+tra i due dice quale "quota" dei percorsi passa dal membro $i$. La somma considera solo coppie ordinate di membri distinti, entrambi diversi da $i$,
+per cui esiste un percorso da $s$ a $t$ ($\sigma_{st}>0$).
 Il denominatore $(n-1)(n-2)$ è il numero di coppie ordinate possibili e serve a
-riportare il risultato tra $0$ e $1$.
+riportare il risultato tra $0$ e $1$. Con meno di tre membri nessuno può fare da ponte e il valore è $0$.
 
 $$
-C_B(i) = \frac{\sum_{s \neq i \neq t} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)}
+C_B(i) = \frac{\sum_{s,t \ne i,\;s \ne t,\;\sigma_{st}>0} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)}
 $$
 
 ### 2.4 PageRank
