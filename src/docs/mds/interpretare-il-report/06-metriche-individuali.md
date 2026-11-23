@@ -9,7 +9,7 @@ gli altri. Si dividono in due famiglie:
 
 - gli **indici di Moreno**, che contano in modo semplice le scelte e i rifiuti
   dati e ricevuti da ogni persona;
-- le **centralità della social network analysis (SNA)**, cioè dell'"analisi
+- le **metriche della social network analysis (SNA)**, cioè dell'"analisi
   delle reti sociali", che descrivono diverse forme di posizione strutturale,
   in alcuni casi tenendo conto anche dei legami indiretti.
 
@@ -37,10 +37,13 @@ Per orientarsi nelle formule, basta ricordare che:
 - il prodotto $a_{ij} a_{ji}$ vale $1$ solo se $i$ sceglie $j$ **e** $j$ sceglie
   $i$, cioè se la scelta è **reciproca**.
 
-### 1.1 Scelte ricevute e date
+### 1.1 Preferenze: date (GP), ricevute (RP) e reciproche (MP)
 
-Sono i conteggi di base: quante opinioni, positive e negative, un membro riceve
-dagli altri e quante ne esprime verso gli altri.
+- **Scelte date positive** ($gp_i$): quante preferenze ha espresso.
+
+$$
+gp_i = \sum_{j} a_{ij}
+$$
 
 - **Scelte ricevute positive** ($rp_i$): quante preferenze ha ricevuto il
   membro $i$. Più è alto, più il membro è scelto dai compagni.
@@ -49,17 +52,14 @@ $$
 rp_i = \sum_{j} a_{ji}
 $$
 
-- **Scelte ricevute negative** ($rr_i$): quanti rifiuti ha ricevuto.
+- **Reciprocità positiva** ($mp_i$): quante preferenze del membro sono
+  ricambiate, cioè con quante persone c'è una scelta a vicenda.
 
 $$
-rr_i = \sum_{j} b_{ji}
+mp_i = \sum_{j} a_{ij} a_{ji}
 $$
 
-- **Scelte date positive** ($gp_i$): quante preferenze ha espresso.
-
-$$
-gp_i = \sum_{j} a_{ij}
-$$
+### 1.2 Rifiuti: dati (GR), ricevuti (RR) e reciproci (MR)
 
 - **Scelte date negative** ($gr_i$): quanti rifiuti ha espresso.
 
@@ -67,17 +67,10 @@ $$
 gr_i = \sum_{j} b_{ij}
 $$
 
-### 1.2 Scelte reciproche
-
-Contano i casi in cui una nomina trova riscontro in una nomina dello stesso
-segno nella direzione opposta. Non misurano direttamente sentimenti o intensità
-della relazione.
-
-- **Reciprocità positiva** ($mp_i$): quante preferenze del membro sono
-  ricambiate, cioè con quante persone c'è una scelta a vicenda.
+- **Scelte ricevute negative** ($rr_i$): quanti rifiuti ha ricevuto.
 
 $$
-mp_i = \sum_{j} a_{ij} a_{ji}
+rr_i = \sum_{j} b_{ji}
 $$
 
 - **Reciprocità negativa** ($mr_i$): quanti rifiuti del membro sono ricambiati,
@@ -87,7 +80,7 @@ $$
 mr_i = \sum_{j} b_{ij} b_{ji}
 $$
 
-### 1.3 Indici derivati
+### 1.3 Indici derivati (IM, BL, EI, OR, AI, II)
 
 Si ottengono combinando i conteggi precedenti con somme e differenze, per
 rispondere a domande più specifiche.
@@ -200,18 +193,15 @@ B =
 \end{pmatrix}
 $$
 
-Prendiamo il membro $1$. Le sue **scelte ricevute** si leggono sulla _colonna 1_
-di $A$: lo scelgono il membro $2$ e il membro $4$, quindi $rp_1 = 2$. Le sue
-**scelte date** si leggono sulla _riga 1_: sceglie il $2$ e il $3$, quindi
-$gp_1 = 2$. Ripetendo il conteggio per tutti si ottiene:
+Prendiamo il membro $1$. Sulla prima riga di $A$ leggiamo le sue due scelte date ($2$ e $3$): GP vale $2$. Sulla prima colonna leggiamo le due scelte ricevute ($2$ e $4$): anche RP vale $2$. Solo il membro $2$ compare in entrambi i conteggi, quindi MP vale $1$.
 
 | Metrica                         | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
 | ------------------------------- | :------: | :------: | :------: | :------: |
-| Scelte ricevute positive ($rp$) |    2     |    2     |    1     |    2     |
-| Scelte ricevute negative ($rr$) |    1     |    1     |    1     |    1     |
 | Scelte date positive ($gp$)     |    2     |    2     |    2     |    1     |
-| Scelte date negative ($gr$)     |    1     |    1     |    1     |    1     |
+| Scelte ricevute positive ($rp$) |    2     |    2     |    1     |    2     |
 | Reciprocità positiva ($mp$)     |    1     |    1     |    0     |    0     |
+| Scelte date negative ($gr$)     |    1     |    1     |    1     |    1     |
+| Scelte ricevute negative ($rr$) |    1     |    1     |    1     |    1     |
 | Reciprocità negativa ($mr$)     |    0     |    0     |    0     |    0     |
 | Impatto ($im$)                  |    3     |    3     |    2     |    3     |
 | Bilancio ($bl$)                 |    1     |    1     |    0     |    1     |
@@ -224,7 +214,7 @@ I membri $1$ e $2$ si distinguono per questi indici: sono gli unici ad avere una
 reciproca (si scelgono tra loro) e hanno i valori più alti di affiliazione e
 influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
 
-## 2 Centralità SNA
+## 2 Metriche SNA
 
 Le centralità misurano **quanto un nodo è importante nella rete del gruppo**.
 In questo contesto la rete è un **grafico diretto**: ogni membro è un _nodo_ (un
@@ -244,7 +234,7 @@ un singolo nodo avrebbe invece valore teorico $1$. L'intermediazione vale
 $0$ anche con due membri, perché non esistono coppie di altri nodi tra cui
 fare da intermediario; la sua formula normalizzata si applica per $n \ge 3$.
 
-### 2.1 Grado
+### 2.1 DG (grado entrante)
 
 La **centralità di grado** conta quanti legami ha il membro, rapportati al
 numero di altri membri ($n-1$). È la misura più
@@ -269,47 +259,7 @@ nel riquadro **DG** del report: è il numero di scelte ricevute dal membro,
 diviso per $n-1$, cioè $C_D^{\text{in}}(i) = rp_i/(n-1)$. Non è il conteggio
 grezzo delle scelte ricevute, né la centralità di grado uscente o totale.
 
-### 2.2 Vicinanza in entrata (CL) e in uscita (BD)
-
-La **centralità di vicinanza in entrata (CL)** misura quanto il membro è **vicino** agli altri,
-nella direzione dei legami **entranti**: l'implementazione considera quanti
-pochi passaggi servono agli altri per raggiungere $i$ seguendo le frecce.
-Nella formula, $R_i$ è l'insieme degli altri membri che possono raggiungere $i$,
-$|R_i|$ ne è il numero e $d(j,i)$ è la lunghezza del percorso più breve da $j$
-a $i$. La correzione di **Wasserman–Faust** moltiplica l'inverso della distanza
-media per la quota di altri membri che possono raggiungere $i$, anche indirettamente.
-Se tutti possono raggiungerlo, il valore non cambia; se nessuno può raggiungerlo, vale $0$.
-
-$$
-C_C(i) = \frac{|R_i|}{n-1} \cdot \frac{|R_i|}{\sum_{j \in R_i} d(j,i)}
-$$
-
-Per esempio, nella catena $A \to B \to C$, sia $B$ sia $C$ ricevono una scelta diretta (RP = 1).
-Solo $A$ può raggiungere $B$, in un passo: la vicinanza di $B$ è $1/2$.
-Entrambi gli altri membri raggiungono $C$, in due passi da $A$ e in uno da $B$: la vicinanza di $C$ è $2/3$.
-
-Per la **vicinanza in uscita (BD, broadcast)** la domanda si inverte: chi può raggiungere il membro $i$ seguendo le frecce, e in quanti passi? AB-Gram calcola la stessa CL sul grafo a frecce invertite. Sul grafo originale contano quindi le distanze da $i$ agli altri e la correzione di Wasserman–Faust usa la quota di altri membri raggiungibili da $i$.
-
-Nella stessa catena, $A$ raggiunge $B$ in un passo e $C$ in due, ma nessuno raggiunge $A$: per $A$ si ha **BD = $2/3$ e CL = $0$**. All'estremo opposto, $C$ non raggiunge nessuno: per $C$ si ha **BD = $0$ e CL = $2/3$**.
-
-### 2.3 Intermediazione
-
-La **centralità di intermediazione** misura quanto il membro **fa da ponte**:
-quante volte si trova sulla strada più breve tra due altri membri. Chi ha
-un valore alto occupa una posizione di potenziale raccordo nella rete rilevata:
-non significa necessariamente che controlli le informazioni o che queste
-circolino seguendo le nomine. Nella formula, $\sigma_{st}$ è il numero di percorsi più brevi da $s$ a
-$t$, e $\sigma_{st}(i)$ è il numero di quelli che passano per $i$; il rapporto
-tra i due dice quale "quota" dei percorsi passa dal membro $i$. La somma considera solo coppie ordinate di membri distinti, entrambi diversi da $i$,
-per cui esiste un percorso da $s$ a $t$ ($\sigma_{st}>0$).
-Il denominatore $(n-1)(n-2)$ è il numero di coppie ordinate possibili e serve a
-riportare il risultato tra $0$ e $1$. Con meno di tre membri nessuno può fare da ponte e il valore è $0$.
-
-$$
-C_B(i) = \frac{\sum_{s,t \ne i,\;s \ne t,\;\sigma_{st}>0} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)}
-$$
-
-### 2.4 PageRank
+### 2.2 PK (PageRank)
 
 Il **PageRank** (l'algoritmo ideato per ordinare le pagine web) dà importanza ai
 legami ricevuti **in base all'importanza di chi li esprime**: essere scelti da
@@ -333,7 +283,7 @@ Questa forma vale quando ogni nodo ha almeno un legame uscente. Se ci sono
 nodi senza uscite, l'implementazione redistribuisce uniformemente la loro massa:
 al secondo membro si aggiunge $\frac{\alpha}{n}\sum_{j:\,d_{\text{out}}(j)=0} PR(j)$.
 
-### 2.5 HITS
+### 2.3 HA e HU (autorità e hub HITS)
 
 **HITS** distingue **due ruoli complementari** che un membro può avere
 contemporaneamente:
@@ -355,9 +305,47 @@ $$
 a(i) \propto \sum_{j \in \text{In}(i)} h(j), \qquad h(i) \propto \sum_{j \in \text{Out}(i)} a(j)
 $$
 
-Se la rete non ha legami o HITS non converge, il programma restituisce tutti
-zeri: in quest'ultimo caso non sono punteggi interpretabili come assenza di
-centralità.
+Se la rete non ha legami, entrambi i punteggi valgono zero. Se HITS non converge, il report mostra **—** per valore e rango.
+
+### 2.4 BT (intermediazione)
+
+La **centralità di intermediazione** misura quanto il membro **fa da ponte**:
+quante volte si trova sulla strada più breve tra due altri membri. Chi ha
+un valore alto occupa una posizione di potenziale raccordo nella rete rilevata:
+non significa necessariamente che controlli le informazioni o che queste
+circolino seguendo le nomine. Nella formula, $\sigma_{st}$ è il numero di percorsi più brevi da $s$ a
+$t$, e $\sigma_{st}(i)$ è il numero di quelli che passano per $i$; il rapporto
+tra i due dice quale "quota" dei percorsi passa dal membro $i$. La somma considera solo coppie ordinate di membri distinti, entrambi diversi da $i$,
+per cui esiste un percorso da $s$ a $t$ ($\sigma_{st}>0$).
+Il denominatore $(n-1)(n-2)$ è il numero di coppie ordinate possibili e serve a
+riportare il risultato tra $0$ e $1$. Con meno di tre membri nessuno può fare da ponte e il valore è $0$.
+
+$$
+C_B(i) = \frac{\sum_{s,t \ne i,\;s \ne t,\;\sigma_{st}>0} \frac{\sigma_{st}(i)}{\sigma_{st}}}{(n-1)(n-2)}
+$$
+
+### 2.5 Vicinanza in entrata (CL) e in uscita (BD)
+
+La **centralità di vicinanza in entrata (CL)** misura quanto il membro è **vicino** agli altri,
+nella direzione dei legami **entranti**: l'implementazione considera quanti
+pochi passaggi servono agli altri per raggiungere $i$ seguendo le frecce.
+Nella formula, $R_i$ è l'insieme degli altri membri che possono raggiungere $i$,
+$|R_i|$ ne è il numero e $d(j,i)$ è la lunghezza del percorso più breve da $j$
+a $i$. La correzione di **Wasserman–Faust** moltiplica l'inverso della distanza
+media per la quota di altri membri che possono raggiungere $i$, anche indirettamente.
+Se tutti possono raggiungerlo, il valore non cambia; se nessuno può raggiungerlo, vale $0$.
+
+$$
+C_C(i) = \frac{|R_i|}{n-1} \cdot \frac{|R_i|}{\sum_{j \in R_i} d(j,i)}
+$$
+
+Per esempio, nella catena $A \to B \to C$, sia $B$ sia $C$ ricevono una scelta diretta (RP = 1).
+Solo $A$ può raggiungere $B$, in un passo: la vicinanza di $B$ è $1/2$.
+Entrambi gli altri membri raggiungono $C$, in due passi da $A$ e in uno da $B$: la vicinanza di $C$ è $2/3$.
+
+Per la **vicinanza in uscita (BD, broadcast)** la domanda si inverte: quali altri membri può raggiungere $i$ seguendo le frecce, e in quanti passi? AB-Gram calcola la stessa CL sul grafo a frecce invertite. Sul grafo originale contano quindi le distanze da $i$ agli altri e la correzione di Wasserman–Faust usa la quota di altri membri raggiungibili da $i$.
+
+Nella stessa catena, $A$ raggiunge $B$ in un passo e $C$ in due, ma nessuno raggiunge $A$: per $A$ si ha **BD = $2/3$ e CL = $0$**. All'estremo opposto, $C$ non raggiunge nessuno: per $C$ si ha **BD = $0$ e CL = $2/3$**.
 
 ### 2.6 CN (coreness)
 
@@ -373,43 +361,21 @@ Per esempio, con tre vicini e una sola coppia collegata, LC vale $1/3$. Se nessu
 
 Riprendiamo il gruppo di quattro membri di prima, usando solo la matrice delle
 scelte $A$ (le frecce sono: $1 \to 2$, $1 \to 3$, $2 \to 1$, $2 \to 4$,
-$3 \to 2$, $3 \to 4$, $4 \to 1$). Per il **grado**, i legami entranti di ciascun
-membro sono le scelte ricevute ($rp$) e quelli uscenti sono le scelte date
-($gp$); con $n - 1 = 3$ si ottiene:
+$3 \to 2$, $3 \to 4$, $4 \to 1$). La tabella segue l’ordine del report. Per PK, HA e HU sono riportati i valori dopo la convergenza, arrotondati a tre decimali.
 
-| Metrica                            |       Membro 1       |       Membro 2       |         Membro 3         |         Membro 4         |
-| ---------------------------------- | :------------------: | :------------------: | :----------------------: | :----------------------: |
-| Grado entrante ($C_D^{\text{in}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $1/3 \approx 0{,}33$   |   $2/3 \approx 0{,}67$   |
-| Grado uscente ($C_D^{\text{out}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $2/3 \approx 0{,}67$   |   $1/3 \approx 0{,}33$   |
-| Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/5 = 0{,}60$      |      $3/4 = 0{,}75$      |
-| Intermediazione ($C_B$)            |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
-| CN                                 |          3           |          3           |            3             |            3             |
-| LC                                 |          1           |          1           |            1             |            1             |
+| Metrica                   |       Membro 1       |       Membro 2       |         Membro 3         |         Membro 4         |
+| ------------------------- | :------------------: | :------------------: | :----------------------: | :----------------------: |
+| DG — Grado entrante       | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $1/3 \approx 0{,}33$   |   $2/3 \approx 0{,}67$   |
+| PK — PageRank             |        0,337         |        0,258         |          0,181           |          0,224           |
+| HA — Autorità HITS        |        0,227         |        0,305         |          0,121           |          0,347           |
+| HU — Hub HITS             |        0,227         |        0,305         |          0,347           |          0,121           |
+| BT — Intermediazione      |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
+| CL — Vicinanza in entrata |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/5 = 0{,}60$      |      $3/4 = 0{,}75$      |
+| BD — Vicinanza in uscita  |        $3/4$         |        $3/4$         |          $3/4$           |          $3/5$           |
+| CN                        |          3           |          3           |            3             |            3             |
+| LC                        |          1           |          1           |            1             |            1             |
 
 Qualche esempio di come si arriva ai numeri:
-
-- **Vicinanza del membro 3.** Il membro $1$ lo raggiunge in un passo;
-  il $2$ e il $4$ lo raggiungono in due passi, passando dal $1$. Quindi
-  $|R_3| = 3$ e la somma delle distanze entranti è $1 + 2 + 2 = 5$, da cui
-  $3/5$. È il valore più basso dell'esempio.
-- **Intermediazione del membro 1.** Il membro $1$ sta sull'unico percorso più
-  breve tra $2$ e $3$, tra $4$ e $2$ e tra $4$ e $3$: contribuisce con $3$ al
-  numeratore, che diviso per $(n-1)(n-2) = 6$ dà $0{,}50$. Il membro $1$ è
-  dunque il nodo con maggiore intermediazione in questa rete: ad esempio, il membro $4$ sceglie soltanto
-  lui, e tutte le sue strade verso gli altri passano da lì.
-- **CN.** Sommando scelte date e ricevute, i quattro membri hanno rispettivamente $4, 4, 3, 3$ legami: l’intero gruppo è quindi un nucleo di ordine $3$. Per ottenere un nucleo di ordine $4$ bisognerebbe escludere i membri $3$ e $4$. Resterebbero $1$ e $2$, con la sola scelta reciproca: due legami ciascuno, non quattro. La CN è dunque $3$ per tutti e quattro. A parità di punteggio condividono il rango $1$, che è anche il rango massimo.
-
-Per **PageRank** e **HITS** il calcolo è iterativo, quindi qui riportiamo i
-valori a cui si arriva dopo la convergenza, normalizzati in modo che la somma
-dei quattro membri sia $1$:
-
-| Metrica             | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
-| ------------------- | :------: | :------: | :------: | :------: |
-| PageRank ($PR$)     |  0,337   |  0,258   |  0,181   |  0,224   |
-| Autorità HITS ($a$) |  0,227   |  0,305   |  0,121   |  0,347   |
-| Hub HITS ($h$)      |  0,227   |  0,305   |  0,347   |  0,121   |
-
-Come si leggono questi numeri:
 
 - **PageRank.** Il membro $1$ ha il PageRank più alto: lo scelgono il $2$ e il $4$, e
   il $4$ ha _come unica scelta_ proprio il $1$, quindi gli cede tutta la propria
@@ -425,6 +391,16 @@ Come si leggono questi numeri:
   in entrambi i ruoli. Si noti la simmetria tra il $3$ e il $4$:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
   nel grafico i loro ruoli sono speculari.
+- **Intermediazione del membro 1.** Il membro $1$ sta sull'unico percorso più
+  breve tra $2$ e $3$, tra $4$ e $2$ e tra $4$ e $3$: contribuisce con $3$ al
+  numeratore, che diviso per $(n-1)(n-2) = 6$ dà $0{,}50$. Il membro $1$ è
+  dunque il nodo con maggiore intermediazione in questa rete: ad esempio, il membro $4$ sceglie soltanto
+  lui, e tutte le sue strade verso gli altri passano da lì.
+- **Vicinanza del membro 3.** Il membro $1$ lo raggiunge in un passo;
+  il $2$ e il $4$ lo raggiungono in due passi, passando dal $1$. Quindi
+  $|R_3| = 3$ e la somma delle distanze entranti è $1 + 2 + 2 = 5$, da cui
+  $3/5$. È il valore più basso dell'esempio.
+- **CN.** Sommando scelte date e ricevute, i quattro membri hanno rispettivamente $4, 4, 3, 3$ legami: l’intero gruppo è quindi un nucleo di ordine $3$. Per ottenere un nucleo di ordine $4$ bisognerebbe escludere i membri $3$ e $4$. Resterebbero $1$ e $2$, con la sola scelta reciproca: due legami ciascuno, non quattro. La CN è dunque $3$ per tutti e quattro. A parità di punteggio condividono il rango $1$, che è anche il rango massimo.
 
 ## 3 In sintesi: quale metrica scegliere?
 
@@ -450,13 +426,14 @@ intermedio** tra due altri. Anche con poche scelte ricevute può fare da ponte
 tra due sottogruppi. È un ruolo potenziale: il report registra nomine, non
 messaggi, e non dimostra che le informazioni seguano i percorsi più brevi.
 
-| Metrica SNA     | Domanda a cui risponde                          | Valore alto significa                                              |
-| --------------- | ----------------------------------------------- | ------------------------------------------------------------------ |
-| Grado           | Quanti legami ha?                               | È molto collegato (o molto scelto, se si guarda il grado entrante) |
-| Vicinanza       | Quanto è vicino a tutti gli altri?              | Molti membri lo raggiungono in pochi passaggi                      |
-| Intermediazione | Quanto fa da ponte tra gli altri?               | Molti percorsi più brevi passano da lui                            |
-| PageRank        | Chi lo sceglie ha a sua volta un PageRank alto? | Riceve contributi elevati secondo PageRank                         |
-| HITS (autorità) | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                             |
-| HITS (hub)      | Indica autorità con punteggi alti?              | Indica nodi con alta autorità HITS                                 |
-| CN              | A quale nucleo appartiene?                      | Nel nucleo ogni membro ha molti legami interni, dati o ricevuti    |
-| LC              | Quanto sono collegati tra loro i suoi vicini?   | Molte coppie di vicini sono unite da almeno una scelta             |
+| Metrica SNA              | Domanda a cui risponde                          | Valore alto significa                                           |
+| ------------------------ | ----------------------------------------------- | --------------------------------------------------------------- |
+| DG — Grado entrante      | Quante scelte riceve?                           | È scelto da molti membri                                        |
+| PK — PageRank            | Chi lo sceglie ha a sua volta un PageRank alto? | Riceve contributi elevati secondo PageRank                      |
+| HA — HITS (autorità)     | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                          |
+| HU — HITS (hub)          | Indica autorità con punteggi alti?              | Indica nodi con alta autorità HITS                              |
+| BT — Intermediazione     | Quanto fa da ponte tra gli altri?               | Molti percorsi più brevi passano da lui                         |
+| CL — Vicinanza           | Quanto è facile raggiungerlo?                   | Molti membri lo raggiungono in pochi passaggi                   |
+| BD — Vicinanza in uscita | Quanto facilmente raggiunge gli altri?          | Raggiunge molti membri in pochi passaggi                        |
+| CN                       | A quale nucleo appartiene?                      | Nel nucleo ogni membro ha molti legami interni, dati o ricevuti |
+| LC                       | Quanto sono collegati tra loro i suoi vicini?   | Molte coppie di vicini sono unite da almeno una scelta          |
