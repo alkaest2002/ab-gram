@@ -117,23 +117,24 @@ function compareStatus(a, b) {
 function buildCard(member) {
   const memberIndex = memberIndexIn(member.id, props.morenoMetrics);
   const statusIndex = metricIndexOf(props.morenoMetrics, "ss");
-  const statusCode =
-    memberIndex < 0 || statusIndex < 0
-      ? 99
-      : Number(readRaw(props.morenoMetrics, memberIndex, statusIndex));
-  const status = STATUS_UI[statusCode] ?? STATUS_UI[99];
+  const statusCode = readRaw(props.morenoMetrics, memberIndex, statusIndex);
+  const status = STATUS_UI[statusCode] ?? STATUS_UI["NaN"];
 
-  const bonus = Number(
-    readRaw(props.morenoMetrics, memberIndex, metricIndexOf(props.morenoMetrics, "bns")),
+  const bonus = readRaw(
+    props.morenoMetrics,
+    memberIndex,
+    metricIndexOf(props.morenoMetrics, "bns"),
   );
-  const malus = Number(
-    readRaw(props.morenoMetrics, memberIndex, metricIndexOf(props.morenoMetrics, "mls")),
+  const malus = readRaw(
+    props.morenoMetrics,
+    memberIndex,
+    metricIndexOf(props.morenoMetrics, "mls"),
   );
 
   const snaIndex = memberIndexIn(member.id, props.snaMetrics);
   const metrics = CENTRALITY_METRICS_COMFIG.map(({ label, key }) => {
     const metricIndex = metricIndexOf(props.snaMetrics, key);
-    const rank = Number(readRank(props.snaMetrics, snaIndex, metricIndex));
+    const rank = readRank(props.snaMetrics, snaIndex, metricIndex);
     return { label, active: rank === 1 || rank === 2 || rank === 3 };
   });
 

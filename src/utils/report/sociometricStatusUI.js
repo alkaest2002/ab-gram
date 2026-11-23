@@ -16,15 +16,15 @@
 /**
  * UI metadata keyed by Moreno sociometric status code.
  *
- * Codes `0`–`8` represent the analytic categories; `99` is the fallback for an
+ * Codes `0`–`8` represent the analytic categories; `NaN` denotes a missing or
  * unclassified result. Reports intentionally display `labelSoft` to frame each
  * result as an indicator rather than a definitive, potentially stigmatizing
  * judgment about a member.
  *
- * @type {Readonly<Record<number, SociometricStatusUI>>}
+ * @type {Readonly<Record<number | "NaN", SociometricStatusUI>>}
  */
 export const STATUS_UI = Object.freeze({
-  99: {
+  NaN: {
     label: "Non classificato",
     labelSoft: "Non classificato",
     description: "",

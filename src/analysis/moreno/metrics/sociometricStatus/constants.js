@@ -9,7 +9,7 @@ export const NO_SPLIT = Object.freeze({ low: -Infinity, high: Infinity });
 // SOCIOMETRIC STATUS CODES
 // ============================================================================
 export const SOCIOMETRIC_STATUS = Object.freeze({
-  UNCLASSIFIED: 99, //  sociometric status not assignable
+  UNCLASSIFIED: NaN, //  sociometric status not assignable
   ISOLATED: 0, //  no opinions received, none given
   IGNORED: 1, //  no opinions received, but gave opinions
   MARGINAL: 2, //  low impact

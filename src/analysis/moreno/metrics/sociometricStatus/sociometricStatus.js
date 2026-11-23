@@ -19,7 +19,7 @@ export { SOCIOMETRIC_STATUS } from "@/analysis/moreno/metrics/sociometricStatus/
  * @param {{ isolated: import("numpy-ts").NDArray, ignored: import("numpy-ts").NDArray }} visibilityClassification - Visibility classification.
  * @param {{ isLowImpact: import("numpy-ts").NDArray, isHighImpact: import("numpy-ts").NDArray, isAverageImpact: import("numpy-ts").NDArray }} impactClassification - Impact classification.
  * @param {{ isPositiveBalance: import("numpy-ts").NDArray, isNegativeBalance: import("numpy-ts").NDArray, isNeutralBalance: import("numpy-ts").NDArray }} balanceClassification - Balance classification.
- * @returns {import("numpy-ts").NDArray} Status codes (0-8, or 99 as safety default).
+ * @returns {import("numpy-ts").NDArray} Status codes (0-8, or NaN as safety default).
  */
 const assignStatus = (visibilityClassification, impactClassification, balanceClassification) => {
   const S = SOCIOMETRIC_STATUS;
@@ -59,7 +59,7 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
 // ============================================================================
 
 /**
- * Classify members into sociometric status (codes 0-8; 99 is a safety
+ * Classify members into sociometric status (codes 0-8; NaN is a safety
  * default that is unreachable for valid input).
  *
  * VISIBILITY (takes precedence over everything else)
