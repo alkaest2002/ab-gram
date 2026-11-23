@@ -85,7 +85,7 @@ const coreNumber = computed(() => {
       :dislikes-structures="props.dislikesStructures"
     />
 
-    <!-- Row 4: sociometric status and core number. -->
+    <!-- Row 4: sociometric status and coreness. -->
     <div class="flex items-start gap-[4mm]">
       <MemberStatsStatus
         class="flex-1"
@@ -96,7 +96,7 @@ const coreNumber = computed(() => {
         <h3
           class="mb-[2mm] border-b border-line pb-[0.5mm] font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
         >
-          L-CORE
+          CRN
         </h3>
         <p
           class="flex items-center justify-between gap-[5mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm] font-mono"

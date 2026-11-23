@@ -76,7 +76,7 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 - le metriche individuali;
 - le relazioni;
 - le strutture interne alla rete delle scelte;
-- lo status sociometrico e, al suo fianco, il **L-CORE** nella rete delle scelte, con il relativo rango.
+- lo status sociometrico e, al suo fianco, la **CRN** nella rete delle scelte, con il relativo rango.
 
 ### 1.9 Sintesi
 

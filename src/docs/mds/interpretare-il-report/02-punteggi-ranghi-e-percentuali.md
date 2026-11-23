@@ -118,7 +118,7 @@ compare in questa sezione). Per ogni tipo ci sono due numeri:
 
 ### 7.4 Strutture interne
 
-Mostra, per la rete delle scelte (prefisso `L-`), le otto categorie DYA, DYS,
+Mostra, per la rete delle scelte, le otto categorie DYA, DYS,
 CLQ, WCC, SCC, SCM, LVN (comunità di Louvain) e LDN (comunità di Leiden). Per
 ogni categoria ci sono due numeri:
 

@@ -27,14 +27,14 @@ const props = defineProps({
 // --- State --------------
 // SNA structure categories, each paired with the short label used on the page.
 const STRUCTURES_CONFIG = [
-  { key: "asymmetricDyads", label: "L-DYA" },
-  { key: "symmetricDyads", label: "L-DYS" },
-  { key: "cliques", label: "L-CLQ" },
-  { key: "weakComponents", label: "L-WCC" },
-  { key: "strongComponents", label: "L-SCC" },
-  { key: "strongComponentsWithReciprocalEdges", label: "L-SCM" },
-  { key: "louvainCommunities", label: "L-LVN" },
-  { key: "leidenCommunities", label: "L-LDN" },
+  { key: "asymmetricDyads", label: "DYA" },
+  { key: "symmetricDyads", label: "DYS" },
+  { key: "cliques", label: "CLQ" },
+  { key: "weakComponents", label: "WCC" },
+  { key: "strongComponents", label: "SCC" },
+  { key: "strongComponentsWithReciprocalEdges", label: "SCM" },
+  { key: "louvainCommunities", label: "LVN" },
+  { key: "leidenCommunities", label: "LDN" },
 ];
 
 // Each structure category exposes its `structures` list, where a structure is a

@@ -207,7 +207,7 @@ del report.
 
 ### 5.3 Nel report vedo sigle che non capisco
 
-Le pagine del report usano sigle brevi (ad esempio `RP`, `MP`, `L-CLQ`, `T1`)
+Le pagine del report usano sigle brevi (ad esempio `RP`, `MP`, `CLQ`, `T1`)
 per risparmiare spazio.
 
 **Soluzione**
