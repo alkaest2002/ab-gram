@@ -199,6 +199,9 @@ importers:
       graphology-components:
         specifier: ^1.5.4
         version: 1.5.4(graphology-types@0.24.8)
+      graphology-cores:
+        specifier: ^0.0.1
+        version: 0.0.1(graphology-operators@1.6.1(graphology-types@0.24.8))(graphology-types@0.24.8)
       graphology-layout:
         specifier: ^0.6.1
         version: 0.6.1(graphology-types@0.24.8)
@@ -1408,6 +1411,12 @@ packages:
   graphology-components@1.5.4:
     resolution: {integrity: sha512-O37vC226wgnN0C6FUWHNe4fbTzaF51CcQjwX3naId/QTzH/PkUtXaanCShj9ws5Vju+z4u3zvSeEZE84Bo9jlA==}
     peerDependencies:
+      graphology-types: '>=0.19.0'
+
+  graphology-cores@0.0.1:
+    resolution: {integrity: sha512-sr8inFDbDE98lxoSt1rkKh0OQzMEiTYayRrbiVrhihJBwK3eZ9riw2/M0cZrXvsgc/7Yu0jiU/xFVGSTaDSJRA==}
+    peerDependencies:
+      graphology-operators: ^1.6.0
       graphology-types: '>=0.19.0'
 
   graphology-indices@0.17.1:
@@ -2985,6 +2994,12 @@ snapshots:
   graphology-components@1.5.4(graphology-types@0.24.8):
     dependencies:
       graphology-indices: 0.17.1(graphology-types@0.24.8)
+      graphology-types: 0.24.8
+      graphology-utils: 2.5.2(graphology-types@0.24.8)
+
+  graphology-cores@0.0.1(graphology-operators@1.6.1(graphology-types@0.24.8))(graphology-types@0.24.8):
+    dependencies:
+      graphology-operators: 1.6.1(graphology-types@0.24.8)
       graphology-types: 0.24.8
       graphology-utils: 2.5.2(graphology-types@0.24.8)
 
