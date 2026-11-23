@@ -269,9 +269,9 @@ nel riquadro **DG** del report: è il numero di scelte ricevute dal membro,
 diviso per $n-1$, cioè $C_D^{\text{in}}(i) = rp_i/(n-1)$. Non è il conteggio
 grezzo delle scelte ricevute, né la centralità di grado uscente o totale.
 
-### 2.2 Vicinanza
+### 2.2 Vicinanza in entrata (CL) e in uscita (BD)
 
-La **centralità di vicinanza** misura quanto il membro è **vicino** agli altri,
+La **centralità di vicinanza in entrata (CL)** misura quanto il membro è **vicino** agli altri,
 nella direzione dei legami **entranti**: l'implementazione considera quanti
 pochi passaggi servono agli altri per raggiungere $i$ seguendo le frecce.
 Nella formula, $R_i$ è l'insieme degli altri membri che possono raggiungere $i$,
@@ -287,6 +287,10 @@ $$
 Per esempio, nella catena $A \to B \to C$, sia $B$ sia $C$ ricevono una scelta diretta (RP = 1).
 Solo $A$ può raggiungere $B$, in un passo: la vicinanza di $B$ è $1/2$.
 Entrambi gli altri membri raggiungono $C$, in due passi da $A$ e in uno da $B$: la vicinanza di $C$ è $2/3$.
+
+Per la **vicinanza in uscita (BD, broadcast)** la domanda si inverte: chi può raggiungere il membro $i$ seguendo le frecce, e in quanti passi? AB-Gram calcola la stessa CL sul grafo a frecce invertite. Sul grafo originale contano quindi le distanze da $i$ agli altri e la correzione di Wasserman–Faust usa la quota di altri membri raggiungibili da $i$.
+
+Nella stessa catena, $A$ raggiunge $B$ in un passo e $C$ in due, ma nessuno raggiunge $A$: per $A$ si ha **BD = $2/3$ e CL = $0$**. All'estremo opposto, $C$ non raggiunge nessuno: per $C$ si ha **BD = $0$ e CL = $2/3$**.
 
 ### 2.3 Intermediazione
 
@@ -415,7 +419,29 @@ Come si leggono questi numeri:
   i valori di autorità dell'uno coincidono con quelli di hub dell'altro, perché
   nel grafico i loro ruoli sono speculari.
 
-## 3 In sintesi
+## 3 In sintesi: quale metrica scegliere?
+
+**Parti dalla domanda, non dalla classifica.** Nell'esempio, i membri $1$ e $4$
+ricevono entrambi due scelte: sono alla pari per RP e per grado entrante (DG).
+Eppure il $1$ è primo per PageRank e il $4$ per autorità HITS. Non è una
+contraddizione: DG conta ogni scelta allo stesso modo; PageRank tiene conto
+anche di chi sceglie e di come ripartisce le proprie scelte; HITS distingue
+chi viene scelto dagli hub (autorità) da chi sceglie le autorità (hub).
+
+Per distinguere **vicinanza** e **intermediazione**, guarda gli estremi del
+percorso. Per CL il membro è la **destinazione**: conta quanti altri possono
+raggiungerlo e in quanti passaggi. La vicinanza può essere un buon indicatore del
+**potenziale di diffusione** di un messaggio: se ogni passaggio richiede circa lo
+stesso tempo, chi ha percorsi brevi verso molti membri può raggiungerli rapidamente.
+Conta però il verso: se il messaggio segue le frecce delle nomine, serve la vicinanza
+**in uscita (BD)**. Il CL entrante di AB-Gram descrive quel potenziale se il messaggio
+viaggia nel verso opposto, da chi è scelto a chi lo sceglie; se tutte le nomine
+sono reciproche, le due misure coincidono.
+
+Per BT, invece, il membro è un **passaggio
+intermedio** tra due altri. Anche con poche scelte ricevute può fare da ponte
+tra due sottogruppi. È un ruolo potenziale: il report registra nomine, non
+messaggi, e non dimostra che le informazioni seguano i percorsi più brevi.
 
 | Metrica SNA     | Domanda a cui risponde                          | Valore alto significa                                              |
 | --------------- | ----------------------------------------------- | ------------------------------------------------------------------ |

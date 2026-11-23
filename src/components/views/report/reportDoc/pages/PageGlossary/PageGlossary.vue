@@ -42,7 +42,8 @@ const GLOSSARY = [
   // Individual SNA metrics.
   { label: "CRN", extended: "Numero di coreness (rete delle scelte)" },
   { label: "DG", extended: "Centralità di grado (rete delle scelte)" },
-  { label: "CL", extended: "Centralità di vicinanza (rete delle scelte)" },
+  { label: "CL", extended: "Centralità di vicinanza in entrata (rete delle scelte)" },
+  { label: "BD", extended: "Centralità di vicinanza in uscita (rete delle scelte)" },
   { label: "BT", extended: "Centralità di intermediazione (rete delle scelte)" },
   { label: "PK", extended: "Centralità di PageRank (rete delle scelte)" },
   { label: "HA", extended: "HITS autorità (rete delle scelte)" },
@@ -94,10 +95,10 @@ const entries = [...GLOSSARY].sort((a, b) =>
         <div
           v-for="entry in entries"
           :key="entry.label"
-          class="flex items-center gap-[2mm] py-[1mm] border-b border-line last:border-b-0"
+          class="flex items-center gap-[2mm] py-[.7mm] border-b border-line last:border-b-0"
         >
           <dt
-            class="w-[16mm] shrink-0 whitespace-nowrap font-mono text-[9pt] font-semibold tracking-[0.06em] text-ink"
+            class="w-[8mm] shrink-0 whitespace-nowrap font-mono text-[9pt] font-semibold tracking-[0.06em] text-ink"
           >
             {{ entry.label }}
           </dt>

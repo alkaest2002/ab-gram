@@ -67,7 +67,7 @@ const coreNumber = computed(() => {
 </script>
 
 <template>
-  <div class="bottom-band flex flex-col gap-y-[4mm]">
+  <div class="bottom-band flex flex-col gap-y-[2mm]">
     <!-- Row 1: metrics. -->
     <MemberStatsMetrics
       :member-id="props.memberId"
@@ -86,13 +86,13 @@ const coreNumber = computed(() => {
     />
 
     <!-- Row 4: sociometric status and coreness. -->
-    <div class="flex items-start gap-[4mm]">
+    <div class="flex items-start gap-[4mm] mt-1">
       <MemberStatsStatus
         class="flex-1"
         :member-id="props.memberId"
         :moreno-metrics="props.morenoMetrics"
       />
-      <section v-if="coreNumber != null" class="mt-2 shrink-0">
+      <section v-if="coreNumber != null" class="shrink-0">
         <h3
           class="mb-[2mm] border-b border-line pb-[0.5mm] font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
         >

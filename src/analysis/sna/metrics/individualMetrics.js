@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
+import { reverse } from "graphology-operators";
 import { coreNumber } from "graphology-cores";
 import {
   degree,
@@ -67,6 +68,17 @@ export const computeDegreeCentrality = (graph) => degree(graph);
  * @returns {Record<string, number>} Node id -> closeness centrality.
  */
 export const computeClosenessCentrality = (graph) => closeness(graph, { wassermanFaust: true });
+
+/**
+ * Outbound (broadcast) closeness: how readily each node can reach others.
+ * Incoming paths in the reversed graph are outgoing paths in the original,
+ * so the same Wasserman–Faust correction applies without changing the input.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {Record<string, number>} Node id -> outbound closeness centrality.
+ */
+export const computeBroadcastClosenessCentrality = (graph) =>
+  computeClosenessCentrality(reverse(graph));
 
 /**
  * Betweenness centrality of every node.

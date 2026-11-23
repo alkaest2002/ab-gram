@@ -3,6 +3,7 @@
 
 import { describe, it, expect } from "vite-plus/test";
 
+import { computeBroadcastClosenessCentrality } from "@/analysis/sna/metrics/individualMetrics.js";
 import { createSnaNetwork } from "@/analysis/sna/snaBase.js";
 import {
   getGroupLevelMetrics,
@@ -10,6 +11,14 @@ import {
 } from "@/analysis/sna/metrics/snaMetrics.js";
 
 const makeMember = (id, likes = []) => ({ id, name: id, likes, dislikes: [] });
+
+it("computes broadcast closeness along outgoing paths with reach adjustment", () => {
+  const graph = createSnaNetwork(
+    [makeMember("A", ["B"]), makeMember("B", ["C"]), makeMember("C")],
+    "likes",
+  );
+  expect(computeBroadcastClosenessCentrality(graph)).toEqual({ A: 2 / 3, B: 1 / 2, C: 0 });
+});
 
 const GROUP_COLUMNS = [
   "numberOfNodes",
@@ -38,6 +47,7 @@ const INDIVIDUAL_COLUMNS = [
   "outDegreeCentrality",
   "degreeCentrality",
   "closenessCentrality",
+  "closenessBroadcastCentrality",
   "betweennessCentrality",
   "PageRank",
   "hitsAuthority",
@@ -119,6 +129,10 @@ describe("getIndividualLevelMetrics", () => {
     expect(result.metrics).toEqual(INDIVIDUAL_COLUMNS);
 
     const column = (name) => INDIVIDUAL_COLUMNS.indexOf(name);
+    expect(result.rawValuesByMetric[column("closenessCentrality")]).toEqual([1, 0, 0, 0]);
+    const broadcast = column("closenessBroadcastCentrality");
+    expect(result.rawValuesByMetric[broadcast]).toEqual([0, 1 / 3, 1 / 3, 1 / 3]);
+    expect(result.rankedValuesByMetric[broadcast]).toEqual([2, 1, 1, 1]);
     const inDegree = column("inDegreeCentrality");
     const outDegree = column("outDegreeCentrality");
     const degree = column("degreeCentrality");

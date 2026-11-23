@@ -30,7 +30,7 @@ const props = defineProps({
   // read the sociometric status code.
   morenoMetrics: { type: Object, default: () => ({}) },
   // Individual-level SNA metrics for the choice ("likes") network, used to
-  // read the six centrality ranks shown as dots.
+  // read the centrality ranks shown as dots.
   snaMetrics: { type: Object, default: () => ({}) },
 });
 
@@ -42,16 +42,17 @@ const props = defineProps({
 
 // --- State --------------
 
-// The six centrality indicators, in the fixed reading order used by the row.
+// The centrality indicators, in the fixed reading order used by the row.
 // They map the compact label to the real SNA metric key, matching the member
 // metrics page.
 const CENTRALITY_METRICS_COMFIG = [
   { label: "DG", key: "inDegreeCentrality" },
   { label: "PK", key: "PageRank" },
-  { label: "CL", key: "closenessCentrality" },
-  { label: "BT", key: "betweennessCentrality" },
   { label: "HA", key: "hitsAuthority" },
   { label: "HU", key: "hitsHub" },
+  { label: "BT", key: "betweennessCentrality" },
+  { label: "CL", key: "closenessCentrality" },
+  { label: "BD", key: "closenessBroadcastCentrality" },
 ];
 
 // Sortable columns for the summary list. Each maps a key to the label shown in
@@ -164,7 +165,7 @@ function buildCard(member) {
         <div class="flex h-full flex-col">
           <!-- On-screen sort controls (hidden in the printed report). -->
           <div
-            class="pb-[2.5mm] flex shrink-0 flex-wrap items-center gap-[1mm] border-b border-line justify-end"
+            class="pb-[2.5mm] flex shrink-0 flex-wrap items-center gap-[2mm] border-b border-line justify-end"
           >
             <span class="text-[8pt] font-medium uppercase tracking-[0.06em] text-muted">
               Ordina:

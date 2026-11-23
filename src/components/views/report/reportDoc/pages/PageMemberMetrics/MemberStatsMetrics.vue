@@ -57,11 +57,12 @@ const MORENO_METRICS_CONFIG = [
   [
     { label: "DG", key: "inDegreeCentrality", source: "sna" },
     { label: "PK", key: "PageRank", source: "sna" },
-    { label: "CL", key: "closenessCentrality", source: "sna" },
-    { label: "BT", key: "betweennessCentrality", source: "sna" },
     { label: "HA", key: "hitsAuthority", source: "sna" },
     { label: "HU", key: "hitsHub", source: "sna" },
+    { label: "BT", key: "betweennessCentrality", source: "sna" },
+    { label: "CL", key: "closenessCentrality", source: "sna" },
   ],
+  [{ label: "BD", key: "closenessBroadcastCentrality", source: "sna" }],
 ];
 
 // Metric chips grouped by row (Moreno indices then SNA centralities). Each row
@@ -100,11 +101,15 @@ function buildChip(label, key, source) {
     </header>
 
     <div class="flex flex-col gap-[1mm]">
-      <div v-for="(row, rowIndex) in metricChips" :key="rowIndex" class="flex gap-[1mm]">
+      <div
+        v-for="(row, rowIndex) in metricChips"
+        :key="rowIndex"
+        class="grid grid-cols-6 gap-[1mm]"
+      >
         <span
           v-for="chip in row"
           :key="chip.label"
-          class="flex flex-1 items-center justify-between gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
+          class="flex items-center justify-between gap-[1mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
         >
           <span class="flex min-w-0 items-center gap-[1mm]">
             <span class="font-mono text-[9pt] font-medium text-muted">{{ chip.label }}</span>
