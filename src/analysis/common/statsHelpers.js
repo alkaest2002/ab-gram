@@ -72,8 +72,8 @@ export function readRank(metrics, memberIndex, metricIndex) {
  */
 export function readMaxRank(metrics, metricIndex) {
   const column = metrics?.rankedValuesByMetric?.[metricIndex] ?? [];
-  if (!column.length) return NaN;
-  return Math.max(...column);
+  const ranks = column.filter(Number.isFinite);
+  return ranks.length ? Math.max(...ranks) : NaN;
 }
 
 /**

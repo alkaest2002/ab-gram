@@ -6,8 +6,7 @@ import * as np from "numpy-ts";
 /**
  * Rank a single 1-D column.
  *
- * `unique_inverse` returns the column's unique values sorted ascending and,
- * for each element, its 0-based index into that sorted list.
+ * Undefined scores remain unranked and do not consume a dense rank.
  *
  * @param {import("numpy-ts").NDArrayCore} column - 1-D array whose elements
  *   are ranked.
@@ -16,26 +15,16 @@ import * as np from "numpy-ts";
  * @returns {import("numpy-ts").NDArray} 1-based dense ranks for `column`.
  */
 const rankColumn = (column, higherRawScoreIsBetter) => {
-  // `apply_along_axis` hands this callback a strided view into the matrix.
-  // `unique_inverse` walks the underlying buffer contiguously and ignores
-  // strides, so copy first to make the column contiguous.
-  const contiguousColumn = column.copy();
-
-  // A failed metric (all NaNs) has no ranks.
-  const allScoresAreNaN = contiguousColumn.tolist().every(Number.isNaN);
-  if (allScoresAreNaN) return np.full(contiguousColumn.shape, NaN, "float64");
-
-  // Compute unique values and inverse indices for the column.
-  const { values, inverse_indices } = np.unique_inverse(contiguousColumn);
-
-  // Convert inverse indices to a NumPy array for easier manipulation.
-  // apply_along_axis uses the first column's dtype for the whole result.
-  // Use floats so later failed columns can retain NaN rather than integer zero.
-  const npValues = np.array(inverse_indices, "float64");
-
-  // With higher-is-better, the largest value maps to rank 1; otherwise the
-  // smallest value does. Either way, ties share a rank.
-  return higherRawScoreIsBetter ? npValues.negative().add(values.size) : npValues.add(1);
+  const columnScores = column.copy();
+  const missingScoreMask = columnScores.isnan();
+  const nonMissingScores = np.extract(missingScoreMask.logical_not(), columnScores);
+  const sortedUniqueScores = np.unique(nonMissingScores);
+  // One insertion index per original score; the index for NaN is not a rank.
+  const insertionIndices = sortedUniqueScores.searchsorted(columnScores).astype("float64");
+  const denseRanks = higherRawScoreIsBetter
+    ? insertionIndices.negative().add(sortedUniqueScores.size)
+    : insertionIndices.add(1);
+  return np.where(missingScoreMask, NaN, denseRanks);
 };
 
 /**
