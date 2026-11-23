@@ -9,15 +9,10 @@
 import { computed, ref } from "vue";
 
 //   -- From utils.
-import {
-  memberIndexIn,
-  metricIndexOf,
-  readRaw,
-  readRank,
-  formatValue,
-} from "@/analysis/common/statsHelpers";
+import { memberIndexIn, metricIndexOf, readRaw, readRank } from "@/analysis/common/statsHelpers";
 
 //   -- From relative.
+import SummaryRow from "./SummaryRow.vue";
 import BasePage from "../BasePage.vue";
 
 //   -- From utils.
@@ -184,51 +179,25 @@ function buildCard(member) {
           </div>
 
           <div
-            v-for="card in sortedCards"
-            :key="card.id"
-            class="flex items-center gap-[3mm] min-h-[6.6mm] border-b border-line"
-            :class="{ 'py-[1.5mm]': sortedCards.length < 25 }"
+            v-if="sortedCards.length"
+            class="grid grid-cols-[minmax(0,1fr)_17mm_36mm_max-content] items-center gap-[3mm] min-h-[5mm] border-b border-line text-[8pt] font-medium text-muteid py-2"
           >
-            <div class="flex flex-1 items-center gap-[1.5mm] min-w-0">
-              <span
-                class="inline-flex h-[4.6mm] min-w-[6mm] shrink-0 items-center justify-center px-[1mm] border border-ink rounded font-mono text-[7pt] font-semibold leading-none text-ink"
-                >{{ card.id }}</span
-              >
-              <span class="min-w-0 truncate text-[9pt] text-ink">{{ card.name }}</span>
-            </div>
-
-            <span
-              class="flex w-[30mm] shrink-0 items-center justify-between rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm]"
-            >
-              <span class="font-mono text-[8pt] font-medium text-muted">BNS/MLS</span>
-              <span class="font-mono text-[8pt] font-semibold leading-none"
-                >{{ formatValue(card.bonus) }}/{{ formatValue(card.malus) }}</span
-              >
-            </span>
-
-            <span
-              class="shrink-0 w-[36mm] leading-[1.15] font-medium text-[9pt]"
-              :class="card.statusClass"
-            >
-              {{ card.statusLabel }}
-            </span>
-
-            <div class="flex shrink-0 items-center gap-[3mm]">
-              <span
-                v-for="metric in card.metrics"
-                :key="metric.label"
-                class="inline-flex items-center gap-[1.2mm]"
-              >
-                <span class="font-mono text-[8pt] font-semibold leading-none text-ink">{{
-                  metric.label
-                }}</span>
-                <span
-                  class="h-[2.2mm] w-[2.2mm] shrink-0 rounded-full"
-                  :class="metric.active ? 'bg-accent' : 'bg-gray-300'"
-                ></span>
-              </span>
+            <span>Membro</span>
+            <span class="text-center font-mono">BNS/MLS</span>
+            <span>Status sociometrico</span>
+            <div class="grid grid-flow-col auto-cols-[6mm] place-items-center font-mono">
+              <span v-for="metric in CENTRALITY_METRICS_COMFIG" :key="metric.key">{{
+                metric.label
+              }}</span>
             </div>
           </div>
+
+          <SummaryRow
+            v-for="card in sortedCards"
+            :key="card.id"
+            :card="card"
+            :class="{ 'py-[1.5mm]': sortedCards.length < 25 }"
+          />
         </div>
       </section>
     </template>
