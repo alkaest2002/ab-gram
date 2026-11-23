@@ -9,7 +9,7 @@
 import BasePage from "../BasePage.vue";
 
 //   -- From composables.
-import { useBalancedColumns } from "@/composables/report/useBalancedColumns";
+import { useColumns } from "@/composables/report/useColumns";
 
 // --- Props --------------
 const props = defineProps({
@@ -26,7 +26,7 @@ const props = defineProps({
 const members = props.membersData?.members ?? [];
 
 // --- Composables --------
-const columns = useBalancedColumns(members);
+const columns = useColumns(members);
 
 // --- Computed -----------
 

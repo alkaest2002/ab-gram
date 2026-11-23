@@ -5,6 +5,8 @@
 
 <script setup>
 // --- Imports ------------
+import { useColumns } from "@/composables/report/useColumns";
+
 //   -- From relative.
 import BasePage from "../BasePage.vue";
 
@@ -38,7 +40,8 @@ const GLOSSARY = [
   { label: "AI", extended: "Indice di affiliazione" },
   { label: "II", extended: "Indice di influenza" },
 
-  // SNA individual centralities.
+  // Individual SNA metrics.
+  { label: "L-CORE", extended: "Core number nella rete delle scelte" },
   { label: "DG", extended: "Centralità di grado (inDegree)" },
   { label: "CL", extended: "Centralità di vicinanza" },
   { label: "BT", extended: "Centralità di intermediazione" },
@@ -53,7 +56,7 @@ const GLOSSARY = [
   { label: "L-CLQ", extended: "Clique (scelte)" },
   { label: "L-WCC", extended: "Componenti debolmente connesse (scelte)" },
   { label: "L-SCC", extended: "Componenti fortemente connesse (scelte)" },
-  { label: "L-SCM", extended: "Componenti fortemente connesse e reciproche (scelte)" },
+  { label: "L-SCM", extended: "Comp.ti fortemente connesse e reciproche (scelte)" },
   { label: "L-LVN", extended: "Comunità di Louvain (scelte)" },
   { label: "L-LDN", extended: "Comunità di Leiden (scelte)" },
 
@@ -72,6 +75,7 @@ const entries = [...GLOSSARY].sort((a, b) =>
 );
 
 // --- Composables --------
+const columns = useColumns(entries, [25]);
 
 // --- Computed -----------
 
@@ -89,22 +93,24 @@ const entries = [...GLOSSARY].sort((a, b) =>
     </template>
 
     <template #default>
-      <dl class="min-w-0">
-        <div
-          v-for="entry in entries"
-          :key="entry.label"
-          class="flex items-center gap-[2mm] py-[1mm] border-b border-line"
-        >
-          <dt
-            class="w-[12mm] shrink-0 font-mono text-[9pt] font-semibold tracking-[0.06em] text-ink"
+      <div class="flex gap-[6mm]">
+        <dl v-for="(column, index) in columns" :key="index" class="min-w-0 flex-1">
+          <div
+            v-for="entry in column"
+            :key="entry.label"
+            class="flex items-center gap-[2mm] py-[1mm] border-b border-line"
           >
-            {{ entry.label }}
-          </dt>
-          <dd class="min-w-0 text-[9pt] leading-[1.35] text-muted">
-            {{ entry.extended }}
-          </dd>
-        </div>
-      </dl>
+            <dt
+              class="w-[16mm] shrink-0 whitespace-nowrap font-mono text-[9pt] font-semibold tracking-[0.06em] text-ink"
+            >
+              {{ entry.label }}
+            </dt>
+            <dd class="min-w-0 text-[9pt] leading-[1.35] text-muted">
+              {{ entry.extended }}
+            </dd>
+          </div>
+        </dl>
+      </div>
     </template>
   </BasePage>
 </template>

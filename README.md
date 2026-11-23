@@ -21,7 +21,7 @@ From the collected data, AB-Gram produces:
   - _Individual:_ received/given positive and negative nominations, mutual positive and negative connections, impact, balance, expressivity, orientation, affiliation, influence, sociometric status, and order-weighted bonus/malus scores.
 - **Social network measures**, computed separately for the likes and dislikes graphs:
   - _Group:_ node, edge, and mutual-edge counts; in-/out-degree distribution summaries; density; centralization; reciprocity; and transitivity.
-  - _Individual:_ in-degree, out-degree, and degree centrality, closeness, betweenness, PageRank, and HITS (authority and hub).
+  - _Individual:_ in-degree, out-degree, and degree centrality, closeness, betweenness, PageRank, HITS (authority and hub), and core number (based on total in-degree plus out-degree; reported as **L-CORE** for the likes network).
   - _Structures:_ symmetric and asymmetric dyads, cliques, strongly connected components (plain and reciprocal-edge), weakly connected components, and Louvain and Leiden communities.
 - **Classified relationship edges** — seven edge types spanning healthy, potentially problematic, and problematic relationships (e.g. mutual like, one-sided dislike, mutual dislike).
 - **Ego plots** (Moreno) and **network plots** (ForceAtlas2) for visual inspection.

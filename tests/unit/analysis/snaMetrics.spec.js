@@ -42,6 +42,7 @@ const INDIVIDUAL_COLUMNS = [
   "PageRank",
   "hitsAuthority",
   "hitsHub",
+  "coreNumber",
 ];
 
 describe("getGroupLevelMetrics", () => {
@@ -146,6 +147,15 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(result.ids).toEqual(["a"]);
     expect(result.rawValuesById).toEqual([INDIVIDUAL_COLUMNS.map(() => 0)]);
+  });
+
+  it("counts reciprocal edges separately and peels leaves from the core", () => {
+    const graph = createSnaNetwork(
+      [makeMember("a", ["b"]), makeMember("b", ["a"]), makeMember("c", ["a"]), makeMember("d")],
+      "likes",
+    );
+    const result = getIndividualLevelMetrics(graph);
+    expect(result.rawValuesByMetric[result.metrics.indexOf("coreNumber")]).toEqual([2, 2, 1, 0]);
   });
 
   it("produces PageRank scores that sum to one", () => {

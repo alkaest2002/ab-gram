@@ -1,6 +1,7 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
+import { coreNumber } from "graphology-cores";
 import {
   degree,
   inDegree,
@@ -128,3 +129,12 @@ export const computeHits = (graph) => {
     };
   }
 };
+
+/**
+ * Highest k for which each node belongs to a subgraph with minimum total
+ * degree k. Both directions of a reciprocal nomination count.
+ *
+ * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
+ * @returns {Record<string, number>} Core number by node.
+ */
+export const computeCoreNumber = (graph) => coreNumber(graph);

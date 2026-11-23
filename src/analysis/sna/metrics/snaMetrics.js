@@ -32,6 +32,7 @@ import {
   computeBetweennessCentrality,
   computePageRank,
   computeHits,
+  computeCoreNumber,
 } from "./individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +134,7 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "PageRank",
   "hitsAuthority",
   "hitsHub",
+  "coreNumber",
 ];
 
 /**
@@ -170,6 +172,7 @@ const computeIndividualLevelMetrics = (graph) => {
     PageRank: computePageRank(graph),
     hitsAuthority: hitsResult.authorities,
     hitsHub: hitsResult.hubs,
+    coreNumber: computeCoreNumber(graph),
   };
 
   // Stack every metric as a column, keeping the numpy array until export.

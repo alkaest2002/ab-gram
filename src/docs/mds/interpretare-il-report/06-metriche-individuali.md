@@ -353,7 +353,11 @@ Se la rete non ha legami o HITS non converge, il programma restituisce tutti
 zeri: in quest'ultimo caso non sono punteggi interpretabili come assenza di
 centralità.
 
-### 2.6 Un esempio svolto
+### 2.6 L-CORE (core number)
+
+Nella sigla **L-CORE**, L sta per _likes_: si considera la rete delle scelte, non quella dei rifiuti. Il core number è il più alto valore di $k$ per cui il membro appartiene a un nucleo dove ciascuno ha almeno $k$ legami con gli altri membri del nucleo. Si contano solo le scelte date e ricevute **all’interno del nucleo**: una scelta reciproca vale due legami per ciascuno dei due membri. Un membro isolato ha L-CORE pari a $0$.
+
+### 2.7 Un esempio svolto
 
 Riprendiamo il gruppo di quattro membri di prima, usando solo la matrice delle
 scelte $A$ (le frecce sono: $1 \to 2$, $1 \to 3$, $2 \to 1$, $2 \to 4$,
@@ -367,6 +371,7 @@ membro sono le scelte ricevute ($rp$) e quelli uscenti sono le scelte date
 | Grado uscente ($C_D^{\text{out}}$) | $2/3 \approx 0{,}67$ | $2/3 \approx 0{,}67$ |   $2/3 \approx 0{,}67$   |   $1/3 \approx 0{,}33$   |
 | Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/5 = 0{,}60$      |      $3/4 = 0{,}75$      |
 | Intermediazione ($C_B$)            |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
+| L-CORE                             |          3           |          3           |            3             |            3             |
 
 Qualche esempio di come si arriva ai numeri:
 
@@ -379,6 +384,7 @@ Qualche esempio di come si arriva ai numeri:
   numeratore, che diviso per $(n-1)(n-2) = 6$ dà $0{,}50$. Il membro $1$ è
   dunque il nodo con maggiore intermediazione in questa rete: ad esempio, il membro $4$ sceglie soltanto
   lui, e tutte le sue strade verso gli altri passano da lì.
+- **L-CORE.** Sommando scelte date e ricevute, i quattro membri hanno rispettivamente $4, 4, 3, 3$ legami: l’intero gruppo è quindi un nucleo di ordine $3$. Per ottenere un nucleo di ordine $4$ bisognerebbe escludere i membri $3$ e $4$. Resterebbero $1$ e $2$, con la sola scelta reciproca: due legami ciascuno, non quattro. Il L-CORE è dunque $3$ per tutti e quattro. A parità di punteggio condividono il rango $1$, che è anche il rango massimo.
 
 Per **PageRank** e **HITS** il calcolo è iterativo, quindi qui riportiamo i
 valori a cui si arriva dopo la convergenza, normalizzati in modo che la somma
@@ -409,7 +415,7 @@ Come si leggono questi numeri:
 
 ## 3 In sintesi
 
-| Centralità      | Domanda a cui risponde                          | Valore alto significa                                              |
+| Metrica SNA     | Domanda a cui risponde                          | Valore alto significa                                              |
 | --------------- | ----------------------------------------------- | ------------------------------------------------------------------ |
 | Grado           | Quanti legami ha?                               | È molto collegato (o molto scelto, se si guarda il grado entrante) |
 | Vicinanza       | Quanto è vicino a tutti gli altri?              | È raggiungibile con pochi passaggi dai membri considerati          |
@@ -417,3 +423,4 @@ Come si leggono questi numeri:
 | PageRank        | Chi lo sceglie ha a sua volta un PageRank alto? | Riceve contributi elevati secondo PageRank                         |
 | HITS (autorità) | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                             |
 | HITS (hub)      | Indica autorità con punteggi alti?              | Indica nodi con alta autorità HITS                                 |
+| L-CORE          | A quale nucleo appartiene?                      | Nel nucleo ogni membro ha molti legami interni, dati o ricevuti    |
