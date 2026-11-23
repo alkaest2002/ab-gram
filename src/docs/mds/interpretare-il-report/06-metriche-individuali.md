@@ -363,7 +363,13 @@ centralità.
 
 La **CN** si calcola considerando la rete delle scelte, non quella dei rifiuti. La coreness è il più alto valore di $k$ per cui il membro appartiene a un nucleo dove ciascuno ha almeno $k$ legami con gli altri membri del nucleo. Si contano solo le scelte date e ricevute **all’interno del nucleo**: una scelta reciproca vale due legami per ciascuno dei due membri. Un membro isolato ha CN pari a $0$.
 
-### 2.7 Un esempio svolto
+### 2.7 LC (clustering locale)
+
+Il **clustering locale** indica quanto sono collegati tra loro i vicini di un membro nella rete delle scelte. Sono vicini sia i membri che lo scelgono sia quelli che lui sceglie. Con $k$ vicini distinti ci sono $k(k-1)/2$ coppie possibili: **LC** è la frazione di queste coppie unite da almeno una scelta, in qualunque direzione. Una scelta reciproca conta una sola volta.
+
+Per esempio, con tre vicini e una sola coppia collegata, LC vale $1/3$. Se nessuna coppia è collegata, vale $0$. Con meno di due vicini non ci sono coppie da confrontare: il report mostra **—** per il valore e per il rango, non uno zero.
+
+### 2.8 Un esempio svolto
 
 Riprendiamo il gruppo di quattro membri di prima, usando solo la matrice delle
 scelte $A$ (le frecce sono: $1 \to 2$, $1 \to 3$, $2 \to 1$, $2 \to 4$,
@@ -378,6 +384,7 @@ membro sono le scelte ricevute ($rp$) e quelli uscenti sono le scelte date
 | Vicinanza ($C_C$)                  |    $3/4 = 0{,}75$    |    $3/4 = 0{,}75$    |      $3/5 = 0{,}60$      |      $3/4 = 0{,}75$      |
 | Intermediazione ($C_B$)            |    $3/6 = 0{,}50$    | $1/6 \approx 0{,}17$ | $0{,}5/6 \approx 0{,}08$ | $0{,}5/6 \approx 0{,}08$ |
 | CN                                 |          3           |          3           |            3             |            3             |
+| LC                                 |          1           |          1           |            1             |            1             |
 
 Qualche esempio di come si arriva ai numeri:
 
@@ -452,3 +459,4 @@ messaggi, e non dimostra che le informazioni seguano i percorsi più brevi.
 | HITS (autorità) | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                             |
 | HITS (hub)      | Indica autorità con punteggi alti?              | Indica nodi con alta autorità HITS                                 |
 | CN              | A quale nucleo appartiene?                      | Nel nucleo ogni membro ha molti legami interni, dati o ricevuti    |
+| LC              | Quanto sono collegati tra loro i suoi vicini?   | Molte coppie di vicini sono unite da almeno una scelta             |

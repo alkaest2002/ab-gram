@@ -34,6 +34,7 @@ import {
   computePageRank,
   computeHits,
   computeCoreNumber,
+  computeLocalClustering,
 } from "./individualMetrics.js";
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -130,13 +131,14 @@ const INDIVIDUAL_LEVEL_METRIC_KEYS = [
   "inDegreeCentrality",
   "outDegreeCentrality",
   "degreeCentrality",
-  "closenessCentrality",
-  "closenessBroadcastCentrality",
-  "betweennessCentrality",
   "PageRank",
   "hitsAuthority",
   "hitsHub",
+  "betweennessCentrality",
+  "closenessCentrality",
+  "closenessBroadcastCentrality",
   "coreNumber",
+  "localClustering",
 ];
 
 /**
@@ -158,7 +160,10 @@ const computeIndividualLevelMetrics = (graph) => {
   // single-node (or empty) graph. Degenerate groups have no structural
   // centralities, so report a zero row per node (or no rows at all) instead.
   if (size < 2) {
-    return np.full([size, INDIVIDUAL_LEVEL_METRIC_KEYS.length], 0);
+    if (!size) return np.empty([0, INDIVIDUAL_LEVEL_METRIC_KEYS.length]);
+    return np.array([
+      INDIVIDUAL_LEVEL_METRIC_KEYS.map((key) => (key === "localClustering" ? NaN : 0)),
+    ]);
   }
 
   // HITS is computed once and split into its two scores (authority and hub).
@@ -169,13 +174,14 @@ const computeIndividualLevelMetrics = (graph) => {
     inDegreeCentrality: computeInDegreeCentrality(graph),
     outDegreeCentrality: computeOutDegreeCentrality(graph),
     degreeCentrality: computeDegreeCentrality(graph),
-    closenessCentrality: computeClosenessCentrality(graph),
-    closenessBroadcastCentrality: computeBroadcastClosenessCentrality(graph),
-    betweennessCentrality: computeBetweennessCentrality(graph),
     PageRank: computePageRank(graph),
     hitsAuthority: hitsResult.authorities,
     hitsHub: hitsResult.hubs,
+    betweennessCentrality: computeBetweennessCentrality(graph),
+    closenessCentrality: computeClosenessCentrality(graph),
+    closenessBroadcastCentrality: computeBroadcastClosenessCentrality(graph),
     coreNumber: computeCoreNumber(graph),
+    localClustering: computeLocalClustering(graph),
   };
 
   // Stack every metric as a column, keeping the numpy array until export.

@@ -41,6 +41,7 @@ const GLOSSARY = [
 
   // Individual SNA metrics.
   { label: "CN", extended: "Numero di coreness (rete delle scelte)" },
+  { label: "LC", extended: "Coefficiente di clustering locale (rete delle scelte)" },
   { label: "DG", extended: "Centralità di grado (rete delle scelte)" },
   { label: "CL", extended: "Centralità di vicinanza in entrata (rete delle scelte)" },
   { label: "BD", extended: "Centralità di vicinanza in uscita (rete delle scelte)" },

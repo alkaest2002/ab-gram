@@ -64,6 +64,7 @@ const MORENO_METRICS_CONFIG = [
   [
     { label: "BD", key: "closenessBroadcastCentrality", source: "sna" },
     { label: "CN", key: "coreNumber", source: "sna" },
+    { label: "LC", key: "localClustering", source: "sna" },
   ],
 ];
 

@@ -149,3 +149,34 @@ export const computeHits = (graph) => {
  * @returns {Record<string, number>} Core number by node.
  */
 export const computeCoreNumber = (graph) => coreNumber(graph);
+
+/**
+ * Local clustering coefficient of every node in the undirected projection.
+ * As in network transitivity, a reciprocal pair counts as a single tie.
+ *
+ * Formula:
+ *
+ *   $$ C(i) = \frac{2 T_i}{k_i(k_i - 1)} $$
+ *
+ * Here `k_i` counts distinct neighbors and `T_i` counts unordered pairs of
+ * those neighbors connected in either direction. Fewer than two neighbors
+ * yields NaN because there are no neighbor pairs.
+ *
+ * @param {import("graphology").DirectedGraph} graph - A loop-free preference graph.
+ * @returns {Record<string, number>} Node id -> local clustering coefficient in [0, 1], or NaN if undefined.
+ */
+export const computeLocalClustering = (graph) => {
+  const scores = Object.create(null);
+  graph.forEachNode((node) => {
+    const neighbors = graph.neighbors(node);
+    const k = neighbors.length;
+    let closed = 0;
+    for (let i = 0; i < k; i++) {
+      for (let j = i + 1; j < k; j++) {
+        if (graph.areNeighbors(neighbors[i], neighbors[j])) closed++;
+      }
+    }
+    scores[node] = k < 2 ? NaN : (2 * closed) / (k * (k - 1));
+  });
+  return scores;
+};
