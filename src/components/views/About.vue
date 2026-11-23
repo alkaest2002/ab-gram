@@ -26,30 +26,45 @@ import packageJson from "../../../package.json";
 const stripRange = (version) => version.replace(/^[\^~]/, "");
 
 // Public GitHub repositories for the runtime dependencies.
+
 const repositories = {
-  graphology: "https://github.com/graphology/graphology",
-  "graphology-communities-louvain": "https://github.com/graphology/graphology",
-  "@alessandro-afloarei/graphology-communities-leiden":
-    "https://github.com/alessandro-afloarei/graphology-communities-leiden",
-  "graphology-components": "https://github.com/graphology/graphology",
-  "graphology-layout": "https://github.com/graphology/graphology",
-  "graphology-layout-forceatlas2": "https://github.com/graphology/graphology",
-  "graphology-metrics": "https://github.com/graphology/graphology",
-  "graphology-operators": "https://github.com/graphology/graphology",
-  mathjax: "https://github.com/mathjax/MathJax",
-  "numpy-ts": "https://github.com/dupontcyborg/numpy-ts",
-  pinia: "https://github.com/vuejs/pinia",
-  "unplugin-vue-markdown": "https://github.com/unplugin/unplugin-vue-markdown",
-  vue: "https://github.com/vuejs/core",
-  "vue-router": "https://github.com/vuejs/router",
+  vueRelated: {
+    vue: "https://github.com/vuejs/core",
+    "vue-router": "https://github.com/vuejs/router",
+    pinia: "https://github.com/vuejs/pinia",
+    "unplugin-vue-markdown": "https://github.com/unplugin/unplugin-vue-markdown",
+  },
+  mathRelated: {
+    mathjax: "https://github.com/mathjax/MathJax",
+    "numpy-ts": "https://github.com/dupontcyborg/numpy-ts",
+  },
+  graphologyRelated: {
+    graphology: "https://github.com/graphology/graphology",
+    "@alessandro-afloarei/graphology-communities-leiden":
+      "https://github.com/alessandro-afloarei/graphology-communities-leiden",
+    "graphology-communities-louvain": "https://github.com/graphology/graphology",
+    "graphology-components": "https://github.com/graphology/graphology",
+    "graphology-cores": "https://github.com/graphology/graphology",
+    "graphology-layout": "https://github.com/graphology/graphology",
+    "graphology-layout-forceatlas2": "https://github.com/graphology/graphology",
+    "graphology-metrics": "https://github.com/graphology/graphology",
+    "graphology-operators": "https://github.com/graphology/graphology",
+  },
 };
 
-const dependencies = Object.entries(packageJson.dependencies ?? {}).map(([name, version]) => ({
-  name,
-  label: name.replace(/^@[^/]+\//, ""),
-  version: stripRange(version),
-  repository: repositories[name],
-}));
+const orderedRepositories = new Map(Object.values(repositories).flatMap(Object.entries));
+const names = new Set([
+  ...orderedRepositories.keys(),
+  ...Object.keys(packageJson.dependencies ?? {}),
+]);
+const dependencies = [...names]
+  .filter((name) => packageJson.dependencies?.[name])
+  .map((name) => ({
+    name,
+    label: name.replace(/^@[^/]+\//, ""),
+    version: stripRange(packageJson.dependencies[name]),
+    repository: orderedRepositories.get(name),
+  }));
 
 // --- Composables --------
 
