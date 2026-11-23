@@ -109,6 +109,7 @@ describe("report network examples: chapters 05/06", () => {
       outDegreeCentrality: [2 / 3, 2 / 3, 2 / 3, 1 / 3],
       degreeCentrality: [4 / 3, 4 / 3, 1, 1],
       coreNumber: [3, 3, 3, 3],
+      localClustering: [1, 1, 1, 1],
       closenessCentrality: [3 / 4, 3 / 4, 3 / 5, 3 / 4],
       betweennessCentrality: [3 / 6, 1 / 6, 0.5 / 6, 0.5 / 6],
     });

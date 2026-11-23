@@ -46,13 +46,14 @@ const INDIVIDUAL_COLUMNS = [
   "inDegreeCentrality",
   "outDegreeCentrality",
   "degreeCentrality",
-  "closenessCentrality",
-  "closenessBroadcastCentrality",
-  "betweennessCentrality",
   "PageRank",
   "hitsAuthority",
   "hitsHub",
+  "betweennessCentrality",
+  "closenessCentrality",
+  "closenessBroadcastCentrality",
   "coreNumber",
+  "localClustering",
 ];
 
 it("keeps non-convergent HITS scores unranked without affecting degree ranks", () => {
@@ -167,13 +168,15 @@ describe("getIndividualLevelMetrics", () => {
     expect(result.rankedValuesById.map((row) => row[inDegree])).toEqual([1, 2, 2, 2]);
   });
 
-  it("reports zero rows for a degenerate single-node graph", () => {
+  it("leaves local clustering undefined for a single-node graph", () => {
     const likesNetwork = createSnaNetwork([makeMember("a")], "likes");
 
     const result = getIndividualLevelMetrics(likesNetwork);
 
     expect(result.ids).toEqual(["a"]);
-    expect(result.rawValuesById).toEqual([INDIVIDUAL_COLUMNS.map(() => 0)]);
+    expect(result.rawValuesById).toEqual([
+      INDIVIDUAL_COLUMNS.map((key) => (key === "localClustering" ? NaN : 0)),
+    ]);
   });
 
   it("counts reciprocal edges separately and peels leaves from the core", () => {
@@ -198,4 +201,21 @@ describe("getIndividualLevelMetrics", () => {
 
     expect(total).toBeCloseTo(1, 6);
   });
+});
+
+it("ranks local clustering by the fraction of connected neighbor pairs", () => {
+  const graph = createSnaNetwork(
+    [
+      makeMember("a", ["b", "d"]),
+      makeMember("b", ["a", "c"]),
+      makeMember("c", ["a"]),
+      makeMember("d"),
+      makeMember("e"),
+    ],
+    "likes",
+  );
+  const result = getIndividualLevelMetrics(graph);
+  const column = result.metrics.indexOf("localClustering");
+  expect(result.rawValuesByMetric[column]).toEqual([1 / 3, 1, 1, NaN, NaN]);
+  expect(result.rankedValuesByMetric[column]).toEqual([2, 1, 1, NaN, NaN]);
 });

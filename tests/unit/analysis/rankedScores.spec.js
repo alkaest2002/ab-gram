@@ -33,6 +33,12 @@ describe("computeRankedScores", () => {
     ]);
   });
 
+  it("skips NaNs without breaking ties in either rank direction", () => {
+    const scores = np.array([NaN, 0, 4, NaN, 0]);
+    expect(computeRankedScores(scores).tolist()).toEqual([NaN, 2, 1, NaN, 2]);
+    expect(computeRankedScores(scores, false).tolist()).toEqual([NaN, 1, 2, NaN, 1]);
+  });
+
   it("assigns the same rank to tied values", () => {
     const result = computeRankedScores(np.array([10, 10, 20]));
 
