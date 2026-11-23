@@ -63,7 +63,7 @@ const MORENO_METRICS_CONFIG = [
   ],
   [
     { label: "BD", key: "closenessBroadcastCentrality", source: "sna" },
-    { label: "CRN", key: "coreNumber", source: "sna" },
+    { label: "CN", key: "coreNumber", source: "sna" },
   ],
 ];
 

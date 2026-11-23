@@ -73,10 +73,10 @@ connesse e reciproche, e comunità di Louvain e di Leiden.
 Per ogni membro viene generata una pagina dedicata, che contiene:
 
 - il grafico ego;
-- le metriche individuali;
+- le metriche individuali, inclusa la **CN** (coreness) nella rete delle scelte, con il relativo rango;
 - le relazioni;
 - le strutture interne alla rete delle scelte;
-- lo status sociometrico e, al suo fianco, la **CRN** nella rete delle scelte, con il relativo rango.
+- lo status sociometrico.
 
 ### 1.9 Sintesi
 

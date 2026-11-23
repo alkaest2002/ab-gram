@@ -40,7 +40,7 @@ const GLOSSARY = [
   { label: "II", extended: "Indice di influenza: RP + MP" },
 
   // Individual SNA metrics.
-  { label: "CRN", extended: "Numero di coreness (rete delle scelte)" },
+  { label: "CN", extended: "Numero di coreness (rete delle scelte)" },
   { label: "DG", extended: "Centralità di grado (rete delle scelte)" },
   { label: "CL", extended: "Centralità di vicinanza in entrata (rete delle scelte)" },
   { label: "BD", extended: "Centralità di vicinanza in uscita (rete delle scelte)" },
