@@ -57,16 +57,16 @@ export const computeDegreeCentrality = (graph) => degree(graph);
  *
  * Formula:
  *
- *   $$ C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(j,i)} $$
+ *   $$ C_C(i) = \frac{|R_i|}{n-1} \cdot \frac{|R_i|}{\sum_{j \in R_i} d(j,i)} $$
  *
  * where `R_i` contains the other nodes that can reach `i` and `d(j,i)` is
- * the shortest distance from `j` to `i`. An empty `R_i` yields zero;
- * otherwise no adjustment for the fraction of reachable nodes is applied.
+ * the shortest distance from `j` to `i`. The Wasserman–Faust factor is the
+ * fraction of other nodes that can reach `i`. An empty `R_i` yields zero.
  *
  * @param {import("graphology").DirectedGraph} graph - The graph to analyse.
  * @returns {Record<string, number>} Node id -> closeness centrality.
  */
-export const computeClosenessCentrality = (graph) => closeness(graph);
+export const computeClosenessCentrality = (graph) => closeness(graph, { wassermanFaust: true });
 
 /**
  * Betweenness centrality of every node.

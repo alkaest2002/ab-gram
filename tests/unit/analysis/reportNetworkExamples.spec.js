@@ -114,6 +114,13 @@ describe("report network examples: chapters 05/06", () => {
     });
   });
 
+  it("scales incoming closeness by the fraction of other members who can reach the node", () => {
+    const members = [makeMember("A", ["B"]), makeMember("B", ["C"]), makeMember("C", [])];
+    const result = getSnaIndividualMetrics(createSnaNetwork(members, "likes"));
+    expect(result.ids).toEqual(["A", "B", "C"]);
+    expect(columns(result).closenessCentrality).toEqual([0, 1 / 2, 2 / 3]);
+  });
+
   it("reproduces PageRank and HITS to the documented three decimal places", () => {
     const values = columns(getSnaIndividualMetrics(createSnaNetwork(fourMembers, "likes")));
     const expected = {

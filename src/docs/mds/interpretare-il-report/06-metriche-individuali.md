@@ -276,14 +276,17 @@ nella direzione dei legami **entranti**: l'implementazione considera quanti
 pochi passaggi servono agli altri per raggiungere $i$ seguendo le frecce.
 Nella formula, $R_i$ è l'insieme degli altri membri che possono raggiungere $i$,
 $|R_i|$ ne è il numero e $d(j,i)$ è la lunghezza del percorso più breve da $j$
-a $i$. Il calcolo esclude i membri che non possono raggiungerlo e non applica
-una correzione per la quota di membri che possono raggiungerlo: un valore alto può quindi
-riguardare anche un sottoinsieme piccolo. Se nessun altro membro raggiunge $i$,
-il programma restituisce $0$.
+a $i$. La correzione di **Wasserman–Faust** moltiplica l'inverso della distanza
+media per la quota di altri membri che possono raggiungere $i$, anche indirettamente.
+Se tutti possono raggiungerlo, il valore non cambia; se nessuno può raggiungerlo, vale $0$.
 
 $$
-C_C(i) = \frac{|R_i|}{\sum_{j \in R_i} d(j,i)}
+C_C(i) = \frac{|R_i|}{n-1} \cdot \frac{|R_i|}{\sum_{j \in R_i} d(j,i)}
 $$
+
+Per esempio, nella catena $A \to B \to C$, sia $B$ sia $C$ ricevono una scelta diretta (RP = 1).
+Solo $A$ può raggiungere $B$, in un passo: la vicinanza di $B$ è $1/2$.
+Entrambi gli altri membri raggiungono $C$, in due passi da $A$ e in uno da $B$: la vicinanza di $C$ è $2/3$.
 
 ### 2.3 Intermediazione
 
@@ -417,7 +420,7 @@ Come si leggono questi numeri:
 | Metrica SNA     | Domanda a cui risponde                          | Valore alto significa                                              |
 | --------------- | ----------------------------------------------- | ------------------------------------------------------------------ |
 | Grado           | Quanti legami ha?                               | È molto collegato (o molto scelto, se si guarda il grado entrante) |
-| Vicinanza       | Quanto è vicino a tutti gli altri?              | È raggiungibile con pochi passaggi dai membri considerati          |
+| Vicinanza       | Quanto è vicino a tutti gli altri?              | Molti membri lo raggiungono in pochi passaggi                      |
 | Intermediazione | Quanto fa da ponte tra gli altri?               | Molti percorsi più brevi passano da lui                            |
 | PageRank        | Chi lo sceglie ha a sua volta un PageRank alto? | Riceve contributi elevati secondo PageRank                         |
 | HITS (autorità) | Riceve legami da hub con punteggi alti?         | Riceve legami da hub con punteggi alti                             |
