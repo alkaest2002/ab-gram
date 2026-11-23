@@ -34,8 +34,7 @@ const props = defineProps({
 
 // --- State --------------
 // The metric chips are listed in a fixed reading order (not the dataframe column
-// order). The first twelve are Moreno's individual sociometric indices, the last
-// six the SNA centrality block. Each entry maps a short label to the real metric
+// order). Moreno indices come first, followed by SNA metrics. Each entry maps a short label to the real metric
 // key so a chip can read "gp 10 (1/10)" while the data is keyed "gp"/"PageRank".
 const MORENO_METRICS_CONFIG = [
   [
@@ -62,7 +61,10 @@ const MORENO_METRICS_CONFIG = [
     { label: "BT", key: "betweennessCentrality", source: "sna" },
     { label: "CL", key: "closenessCentrality", source: "sna" },
   ],
-  [{ label: "BD", key: "closenessBroadcastCentrality", source: "sna" }],
+  [
+    { label: "BD", key: "closenessBroadcastCentrality", source: "sna" },
+    { label: "CRN", key: "coreNumber", source: "sna" },
+  ],
 ];
 
 // Metric chips grouped by row (Moreno indices then SNA centralities). Each row

@@ -5,15 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-import { computed } from "vue";
-import {
-  formatValue,
-  memberIndexIn,
-  metricIndexOf,
-  readRank,
-  readMaxRank,
-} from "@/analysis/common/statsHelpers";
-
 //   -- From components.
 import MemberStatsMetrics from "./MemberStatsMetrics.vue";
 import MemberStatsEdges from "./MemberStatsEdges.vue";
@@ -50,15 +41,6 @@ const props = defineProps({
 // --- Composables --------
 
 // --- Computed -----------
-const coreNumber = computed(() => {
-  const metrics = props.snaMetrics;
-  const row = memberIndexIn(props.memberId, metrics);
-  const column = metricIndexOf(metrics, "coreNumber");
-  const raw = metrics?.rawValuesById?.[row]?.[column];
-  if (raw == null) return null;
-  return { raw, rank: readRank(metrics, row, column), maxRank: readMaxRank(metrics, column) };
-});
-
 // --- Watchers -----------
 
 // --- Lifecycle ----------
@@ -85,36 +67,12 @@ const coreNumber = computed(() => {
       :dislikes-structures="props.dislikesStructures"
     />
 
-    <!-- Row 4: sociometric status and coreness. -->
-    <div class="flex items-start gap-[4mm] mt-1">
-      <MemberStatsStatus
-        class="flex-1"
-        :member-id="props.memberId"
-        :moreno-metrics="props.morenoMetrics"
-      />
-      <section v-if="coreNumber != null" class="shrink-0">
-        <h3
-          class="mb-[2mm] border-b border-line pb-[0.5mm] font-mono text-[9pt] font-bold uppercase tracking-[0.08em]"
-        >
-          CRN
-        </h3>
-        <p
-          class="flex items-center justify-between gap-[5mm] rounded border border-line bg-canvas px-[1.25mm] py-[0.6mm] font-mono"
-        >
-          <span class="text-[7.5pt] font-semibold">{{ formatValue(coreNumber.raw) }}</span>
-          <span
-            class="flex items-center justify-center gap-2 rounded bg-gray-200 px-[2mm] py-[.5mm]"
-          >
-            <span class="text-[9pt] font-bold leading-none">{{
-              formatValue(coreNumber.rank)
-            }}</span>
-            <span class="text-[7pt] leading-none text-muted">{{
-              formatValue(coreNumber.maxRank)
-            }}</span>
-          </span>
-        </p>
-      </section>
-    </div>
+    <!-- Row 4: sociometric status. -->
+    <MemberStatsStatus
+      class="mt-1"
+      :member-id="props.memberId"
+      :moreno-metrics="props.morenoMetrics"
+    />
   </div>
 </template>
 
