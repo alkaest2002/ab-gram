@@ -31,7 +31,7 @@ function accentedLetters(value) {
 
 /**
  * Whether `needle` occurs as an ordered subsequence of `haystack` — the case
- * where "cln" should find "Pierpaolo Calanna" — and, if so, how far apart its
+ * where "sf" should find "Emma Sofia" — and, if so, how far apart its
  * letters are.
  * @param {string} needle
  * @param {string} haystack
