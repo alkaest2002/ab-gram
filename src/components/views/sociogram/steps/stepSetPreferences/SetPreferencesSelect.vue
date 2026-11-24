@@ -98,7 +98,9 @@ const selectedCountLabel = computed(() => {
 
 // --- Methods ------------
 function onSearchArrow(event) {
-  if (query.value !== "") event.stopPropagation();
+  if (event.isComposing || event.currentTarget.value !== "") {
+    event.stopPropagation();
+  }
 }
 
 function onSearchEnter(event) {
