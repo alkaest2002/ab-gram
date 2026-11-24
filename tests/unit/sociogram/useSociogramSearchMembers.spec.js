@@ -67,6 +67,35 @@ describe("useSociogramSearchMembers", () => {
     expect(filteredMembers.value).toEqual([]);
   });
 
+  it.each([
+    ["E\u0301lodie", "ÉLODIE"],
+    ["Élodie", "e\u0301lodie"],
+    ["E\u1ab0lodie", "e\u1ab0lodie"],
+    ["Νίκος", "νικος"],
+  ])("matches member %s with query %s", (name, term) => {
+    const { query, filteredMembers } = setup([{ id: "match", name }, ...DEFAULT_MEMBERS]);
+    query.value = term;
+    expect(ids(filteredMembers)).toEqual(["match"]);
+  });
+
+  it("does not penalize an accented initial when ranking matches", () => {
+    const { query, filteredMembers } = setup([
+      { id: "long", name: "Eliana" },
+      { id: "short", name: "Élia" },
+    ]);
+    query.value = "eli";
+    expect(ids(filteredMembers)).toEqual(["short", "long"]);
+  });
+
+  it("returns no results for à until a name contains that specific accent", () => {
+    const { membersRef, query, filteredMembers } = setup([{ id: "other", name: "Ágata" }]);
+    query.value = "à";
+    expect(ids(filteredMembers)).toEqual([]);
+
+    membersRef.value.push({ id: "match", name: "A\u0300gata" });
+    expect(ids(filteredMembers)).toEqual(["match"]);
+  });
+
   it("matches case-insensitively", () => {
     const { query, filteredMembers } = setup();
 
@@ -75,7 +104,7 @@ describe("useSociogramSearchMembers", () => {
     expect(ids(filteredMembers)).toEqual(["alice", "pierpaolo"]);
   });
 
-  it("strips diacritics from both the query and member names", () => {
+  it("accepts a plain spelling for an accented member name", () => {
     const { query, filteredMembers } = setup([
       { id: "andre", name: "André" },
       { id: "jose", name: "José" },
@@ -97,12 +126,12 @@ describe("useSociogramSearchMembers", () => {
     expect(ids(filteredMembers)).toEqual(["jose"]);
   });
 
-  it("matches an unaccented member name against an accented query", () => {
+  it("requires the accent when the query explicitly includes it", () => {
     const { query, filteredMembers } = setup([{ id: "jose", name: "Jose" }]);
 
     query.value = "José";
 
-    expect(ids(filteredMembers)).toEqual(["jose"]);
+    expect(ids(filteredMembers)).toEqual([]);
   });
 
   it("finds members by an ordered subsequence of their name", () => {

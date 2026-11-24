@@ -13,11 +13,20 @@ import { computed, ref } from "vue";
 function normalizeForSearch(value) {
   return String(value ?? "")
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\p{M}/gu, "")
     .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, " ")
-    .replace(/\s+/g, " ")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
     .trim();
+}
+
+// Keep each explicitly accented letter together: à must not match a or á.
+function accentedLetters(value) {
+  return (
+    value
+      .toLowerCase()
+      .normalize("NFD")
+      .match(/\p{L}\p{M}+/gu) ?? []
+  );
 }
 
 /**
@@ -49,7 +58,7 @@ function subsequenceInfo(needle, haystack) {
 
 /**
  * Count how many times each character appears in a string.
- * @param {string} value
+ * @param {Iterable<string>} value
  * @returns {Map<string, number>}
  */
 function charCounts(value) {
@@ -213,8 +222,8 @@ export function useSociogramSearchMembers(members) {
       return {
         member,
         normalized,
+        accents: charCounts(accentedLetters(member.name)),
         charCounts: charCounts(normalized), // Pre-compute character counts
-        alphabetical: member.name.toLowerCase(), // Pre-compute alphabetical
       };
     });
   });
@@ -224,6 +233,7 @@ export function useSociogramSearchMembers(members) {
     if (!term) return members.value;
 
     const normalizedTerm = normalizeForSearch(term);
+    const requiredAccents = charCounts(accentedLetters(term));
 
     // Single-pass scoring, filtering, and sorting
     const scored = normalizedCache.value
@@ -234,6 +244,9 @@ export function useSociogramSearchMembers(members) {
         (results, entry) => {
           // Initial check: exclude names that do not contain every query
           // character before running the scoring mechanism.
+          for (const [letter, count] of requiredAccents) {
+            if ((entry.accents.get(letter) ?? 0) < count) return results;
+          }
           if (!hasAllCharacters(normalizedTerm, entry.charCounts)) {
             return results;
           }
@@ -256,7 +269,7 @@ export function useSociogramSearchMembers(members) {
             primaryScore +
             (isExactMatch ? -1000 : 0) + // Strong bonus for exact matches
             nameLengthPenalty + // Slight bonus for shorter names
-            entry.alphabetical.charCodeAt(0) / 10000; // Minimal alphabetical factor
+            entry.normalized.charCodeAt(0) / 10000; // Minimal alphabetical factor
 
           results.push({
             member: entry.member,
