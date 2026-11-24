@@ -9,7 +9,7 @@ import { defineStore } from "pinia";
  */
 export const useAppStore = defineStore("app", () => {
   /** @type {import("vue").Ref<string>} Version embedded in generated reports. */
-  const appVersion = ref("1.0");
+  const appVersion = ref("1.1");
 
   /** @type {import("vue").Ref<string[] | null>} Validation details shown by notification views. */
   const notifyData = ref(null);

@@ -55,8 +55,8 @@ const GLOSSARY = [
   { label: "DYS", extended: "Diadi simmetriche (rete delle scelte)" },
   { label: "CLQ", extended: "Clique (rete delle scelte)" },
   { label: "WCC", extended: "Componenti debolmente connesse (rete delle scelte)" },
-  { label: "SCC", extended: "Componentifortemente connesse (rete delle scelte)" },
-  { label: "SCM", extended: "Componentiforte connesse e reciproche (rete delle scelte)" },
+  { label: "SCC", extended: "Componenti fortemente connesse (rete delle scelte)" },
+  { label: "SCM", extended: "Componenti fortemente connesse e reciproche (rete delle scelte)" },
   { label: "LVN", extended: "Comunità di Louvain (rete delle scelte)" },
   { label: "LDN", extended: "Comunità di Leiden (rete delle scelte)" },
 

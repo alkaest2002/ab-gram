@@ -73,8 +73,8 @@ connesse e reciproche, e comunità di Louvain e di Leiden.
 Per ogni membro viene generata una pagina dedicata, che contiene:
 
 - il grafico ego;
-- le metriche individuali, tra cui la coreness (**CN**) e il clustering locale (**LC**) nella rete delle scelte, con il relativo rango;
-- le relazioni;
+- le metriche individuali di centralità;
+- i tipi di relazioni;
 - le strutture interne alla rete delle scelte;
 - lo status sociometrico.
 
@@ -82,9 +82,9 @@ Per ogni membro viene generata una pagina dedicata, che contiene:
 
 Riepiloga tutti i membri in un unico elenco compatto: per ciascuno mostra
 l'identificativo, il nome, il bonus e il malus (`BNS/MLS`), lo status
-sociometrico e sei indicatori di centralità (`DG`, `PK`, `CL`, `BT`, `HA`,
-`HU`) segnalati da un puntino. Il puntino è blu quando il membro rientra tra i
-primi tre per quel punteggio, altrimenti è grigio.
+sociometrico e sette indicatori di centralità (`DG`, `PK`, `HA`, `HU`, `BT`,
+`CL`, `BD`) segnalati da un puntino. Il puntino è blu quando il membro rientra tra i
+primi tre ranghi per quel punteggio, altrimenti è grigio.
 
 ### 1.10 Glossario
 
@@ -102,6 +102,13 @@ esteso.
    d'occhio.
 4. **Chiarisci i termini.** Ricorri al glossario ogni volta che incontri una
    sigla poco chiara.
+
+Per confrontare report nel tempo, controlla la versione a piè di pagina o il campo
+`appVersion` nel JSON. Nella versione 1.1, CL misura la vicinanza in entrata e BD
+quella in uscita. La sola etichetta 1.0 non identifica con certezza il calcolo di CL:
+per un confronto omogeneo, rigenera i report dai dati originali con la stessa versione.
+Nel JSON, l’ordine delle metriche SNA può cambiare: cerca il nome della metrica
+nell’elenco `metrics` della rispettiva sezione e usa il suo indice per leggere i valori.
 
 Ricorda che il report ha finalità descrittive: i risultati vanno letti come
 una fotografia delle risposte raccolte nel gruppo, non come una diagnosi.

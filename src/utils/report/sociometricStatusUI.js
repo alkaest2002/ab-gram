@@ -51,7 +51,7 @@ export const STATUS_UI = Object.freeze({
   2: {
     label: "Marginale",
     labelSoft: "Indizi di marginalità",
-    description: "basso impatto con bilancio inifluente.",
+    description: "basso impatto con bilancio ininfluente.",
     tone: "muted",
     bar: "bg-muted",
     text: "text-muted",

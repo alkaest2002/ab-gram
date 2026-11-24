@@ -7,7 +7,7 @@ Il report presenta i risultati con tre tipi di valori:
 
 - **Punteggio grezzo** — il valore della metrica prima della sua presentazione
   come rango o percentuale. Può essere un conteggio (numero di membri, di scelte, di
-  rifiuti) oppure un indice compreso tra 0 e 1 (come le centralità SNA).
+  rifiuti), un indice intero o un valore decimale.
 - **Rango** — la posizione del membro nella classifica del gruppo per una certa
   metrica, scritta nella forma `rango / rango massimo`. Il valore più alto
   riceve il rango 1; a pari merito i membri condividono lo stesso rango.
@@ -83,13 +83,17 @@ documentazione dedicata ai grafici.
 
 ### 7.2 Metriche
 
-Mostra tre righe di sei riquadri: i primi dodici sono gli **indici di Moreno**
-(GP, RP, MP, GR, RR, MR, IM, BL, EI, OR, AI, II), gli ultimi sei le
-**centralità SNA** (DG, CL, BT, PK, HA, HU). Ogni riquadro contiene:
+Le prime due righe mostrano i dodici **indici di Moreno** (GP, RP, MP, GR, RR, MR;
+IM, BL, EI, OR, AI, II). Seguono le **metriche SNA**: DG, PK, HA, HU, BT e CL
+nella terza riga; BD, CN e LC nella quarta. Ogni riquadro contiene:
 
-- il **punteggio grezzo**: un numero intero per gli indici di Moreno, un
-  decimale tra 0 e 1 (arrotondato a due cifre) per le centralità SNA;
-- il **rango**, nella forma `rango/rango massimo`.
+- il **punteggio grezzo**: intero per gli indici di Moreno e per CN, arrotondato
+  a due decimali per le altre metriche SNA;
+- il **rango** e il **rango massimo**.
+
+Il trattino **—** al posto del valore e del rango non indica zero: LC non è
+definito se il membro ha meno di due vicini; HA e HU non sono disponibili se
+l’algoritmo HITS non converge.
 
 Il rango indica la posizione del membro nella classifica del gruppo per quella
 metrica: il valore più alto riceve il rango 1, e a pari merito due membri
