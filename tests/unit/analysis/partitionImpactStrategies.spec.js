@@ -4,6 +4,7 @@
 import { describe, expect, it } from "vite-plus/test";
 import * as np from "numpy-ts";
 
+import { classifyImpactByVote } from "@/analysis/moreno/metrics/sociometricStatus/impact/classify.js";
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import { jenksStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/jenksStrategy.js";
 import { largestGapStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/largestGapStrategy.js";
@@ -94,14 +95,31 @@ describe("Jenks partition strategy", () => {
     ["fallback with three distinct values", [0, 0, 3, 3, 3, 8, 8], { low: 0, high: 8 }],
     ["fallback with four distinct values", [0, 0, 3, 3, 4, 8, 8], { low: 0, high: 8 }],
     ["merge the middle three clusters", [0, 0, 2, 4, 6, 8, 8], { low: 0, high: 8 }],
-    ["equal-cost optima prefer earlier breaks", [0, 1, 2, 3, 4, 5, 6], { low: 0, high: 5 }],
+    [
+      "equal-cost optima prefer broader high, then broader low",
+      [0, 1, 2, 3, 4, 5, 6],
+      { low: 1, high: 5 },
+    ],
+    ["broader high wins a conflict with broader low", [0, 1, 2, 2, 3, 4, 5], { low: 0, high: 4 }],
     [
       "variance optimum differs from the two largest gaps",
       [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      { low: 0, high: 7 },
+      { low: 1, high: 7 },
     ],
   ])("handles %s", (_name, values, expected) => {
     expect(split(jenksStrategy, values)).toEqual(expected);
+  });
+
+  it("prefers the broader high class on a numerical tie, making both 9s high in the vote", () => {
+    const values = [2, 3, 5, 5, 5, 6, 7, 8, 9, 9, 10];
+    expect(split(jenksStrategy, values)).toEqual({ low: 3, high: 9 });
+    const impact = np.array(values);
+    const { isHighImpact } = classifyImpactByVote(impact, impact);
+    expect(Array.from(isHighImpact.tolist(), Boolean).slice(8, 10)).toEqual([true, true]);
+  });
+
+  it("keeps a singleton high class when it fits better", () => {
+    expect(split(jenksStrategy, [2, 3, 5, 5, 5, 6, 7, 8, 9, 9, 20]).high).toBe(20);
   });
 
   it("matches exhaustive partitions across small sorted integer distributions", () => {

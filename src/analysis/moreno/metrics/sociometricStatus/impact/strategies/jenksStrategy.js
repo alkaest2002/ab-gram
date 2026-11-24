@@ -39,13 +39,28 @@ const jenksBreaks = (sorted, k) => {
   // back[c][j]: start index of the last class in that optimum.
   const cost = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => Infinity));
   const back = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => 0));
+  const lowSize = Array.from({ length: k + 1 }, () => Array(n).fill(0));
   for (let j = 0; j < n; j++) cost[1][j] = sse(0, j);
 
   for (let c = 2; c <= k; c++) {
     for (let j = c - 1; j < n; j++) {
+      const finalBoundary = c === k && j === n - 1;
+      // SSE subtracts quantities that can be much larger than the residual error.
+      // Scale machine epsilon by the prefix sum of squares, not by the residual:
+      // mathematically equal fits can differ by roundoff at that larger scale.
+      const tolerance = Number.EPSILON * s2[j + 1];
       for (let i = c - 1; i <= j; i++) {
         const total = cost[c - 1][i - 1] + sse(i, j);
-        if (total < cost[c][j]) {
+        const firstSize = c === 2 ? i : lowSize[c - 1][i - 1];
+        const best = cost[c][j];
+        // A cost reduction larger than the tolerance always wins. Within the
+        // tolerance, treat either sign of the difference as a tie: prefixes
+        // favor more low members, while the final boundary keeps the earliest i
+        // (most high members), with its prefix tie already resolved.
+        const preferLow =
+          !finalBoundary && Math.abs(total - best) <= tolerance && firstSize > lowSize[c][j];
+        if (total < best - tolerance || preferLow) {
+          lowSize[c][j] = firstSize;
           cost[c][j] = total;
           back[c][j] = i;
         }
