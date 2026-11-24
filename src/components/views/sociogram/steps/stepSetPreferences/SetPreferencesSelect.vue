@@ -97,6 +97,14 @@ const selectedCountLabel = computed(() => {
 // --- Lifecycle ----------
 
 // --- Methods ------------
+function onSearchEnter(event) {
+  // Let the IME confirm the text without selecting a member.
+  if (event.isComposing) return;
+
+  event.preventDefault();
+  toggleFiltered();
+}
+
 function isChecked(member) {
   return selected.value.has(member.id);
 }
@@ -125,7 +133,7 @@ function clearQuery() {
       class="w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink transition-colors outline-none focus:border-accent"
       placeholder="Cerca un nome…"
       :aria-label="`Cerca tra i membri per ${label}`"
-      @keydown.enter.prevent="toggleFiltered"
+      @keydown.enter="onSearchEnter"
       @keydown.esc="clearQuery"
     />
 
