@@ -37,18 +37,13 @@ export function useSociogramPreferencesSelection({ query, filteredMembers, model
   }
 
   function toggleFiltered() {
-    // Only act on an explicit, non-empty query; an empty (or whitespace)
-    // query means "show everyone", so Enter would otherwise toggle the first
-    // member of the roster without a deliberate search.
     if (query.value.trim() === "") return;
 
-    // Toggle only the top result. Adding one member at a time keeps the
-    // preference list in the order the user builds it, which several
-    // metrics (e.g. bonus/malus) rely on.
-    const first = filteredMembers.value[0];
-    if (!first) return;
+    if (filteredMembers.value.length === 0) return;
 
-    toggle(first);
+    // Enter toggles one match at a time so the user controls preference order.
+    toggle(filteredMembers.value[0]);
+
     query.value = "";
   }
 
