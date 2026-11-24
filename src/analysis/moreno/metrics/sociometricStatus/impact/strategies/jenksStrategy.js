@@ -13,8 +13,9 @@ const FALLBACK_K = 3;
 /**
  * Partition sorted values into k nonempty, contiguous classes by minimizing
  * the sum of squared deviations from each class mean (O(k * n^2) time).
- * For fits tied within roundoff tolerance, prefer more members in the last
- * class, then more in the first.
+ * At each prefix, keep the earlier start of its last class when costs tie
+ * within roundoff tolerance. For the full input this favors a broader high
+ * class; there is no separate preference for a broader low class.
  *
  * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) values.
  * @param {number} k - Number of classes.
@@ -37,19 +38,16 @@ const jenksBreaks = (sorted, k) => {
     return s2[j + 1] - s2[i] - (sum * sum) / (j - i + 1);
   };
 
-  // For c classes covering indices 0..j, cost stores the selected fit's SSE,
-  // back records where its last class starts, and lowSize carries the size of
-  // its first class so later splits can resolve ties without backtracking.
+  // For c classes covering indices 0..j, cost[c][j] stores the selected fit's
+  // SSE and back[c][j] records the start index of its last class.
   const cost = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => Infinity));
   const back = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => 0));
-  const lowSize = Array.from({ length: k + 1 }, () => Array(n).fill(0));
 
   // With one class there is no split: the whole prefix shares one mean.
   for (let j = 0; j < n; j++) cost[1][j] = sse(0, j);
 
   for (let c = 2; c <= k; c++) {
     for (let j = c - 1; j < n; j++) {
-      const finalBoundary = c === k && j === n - 1;
       // SSE subtracts quantities that can be much larger than the residual error.
       // Scale machine epsilon by the prefix sum of squares, not by the residual:
       // mathematically equal fits can differ by roundoff at that larger scale.
@@ -58,16 +56,10 @@ const jenksBreaks = (sorted, k) => {
       // supply at least one member to each of the other c - 1 classes.
       for (let i = c - 1; i <= j; i++) {
         const total = cost[c - 1][i - 1] + sse(i, j);
-        const firstSize = c === 2 ? i : lowSize[c - 1][i - 1];
         const best = cost[c][j];
-        // A cost reduction larger than the tolerance always wins. Within the
-        // tolerance, treat either sign of the difference as a tie: prefixes
-        // favor more low members, while the final boundary keeps the earliest i
-        // (most high members), with its prefix tie already resolved.
-        const preferLow =
-          !finalBoundary && Math.abs(total - best) <= tolerance && firstSize > lowSize[c][j];
-        if (total < best - tolerance || preferLow) {
-          lowSize[c][j] = firstSize;
+        // Replace the current split only for an improvement beyond roundoff.
+        // Since i increases, a tie keeps the earlier split (more members in i..j).
+        if (total < best - tolerance) {
           cost[c][j] = total;
           back[c][j] = i;
         }
