@@ -55,6 +55,10 @@ const jenksBreaks = (sorted, k) => {
       // Try each start i for the last class. The preceding i values must
       // supply at least one member to each of the other c - 1 classes.
       for (let i = c - 1; i <= j; i++) {
+        // Equal values must stay in the same class.
+        if (sorted.get([i]) === sorted.get([i - 1])) {
+          continue;
+        }
         const total = cost[c - 1][i - 1] + sse(i, j);
         const best = cost[c][j];
         // Replace the current split only for an improvement beyond roundoff.
