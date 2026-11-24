@@ -12,6 +12,7 @@ import {
   watch,
   onActivated,
   onDeactivated,
+  onMounted,
   onBeforeUnmount,
   useTemplateRef,
 } from "vue";
@@ -106,7 +107,11 @@ watch(
 // Keyboard shortcuts live on `window` and must only be active while this step
 // is shown. The component is kept alive, so bind on activation and unbind on
 // deactivation/unmount to avoid leaking the listener onto other steps.
-onActivated(() => window.addEventListener("keydown", handleWindowKeydown));
+onMounted(() => likesRef.value?.focus());
+onActivated(() => {
+  window.addEventListener("keydown", handleWindowKeydown);
+  likesRef.value?.focus();
+});
 onDeactivated(() => window.removeEventListener("keydown", handleWindowKeydown));
 onBeforeUnmount(() => window.removeEventListener("keydown", handleWindowKeydown));
 
@@ -132,48 +137,36 @@ function writableMemberField(field, fallback, onSet) {
 function carouselGoPreviousMember() {
   if (carouselCanGoPreviousMember.value) {
     currentIndex.value--;
-    likesRef.value?.$el?.querySelector("input")?.focus();
+    likesRef.value?.focus();
   }
 }
 
 function carouselGoNextMember() {
   if (carouselCanGoNextMember.value) {
     currentIndex.value++;
-    likesRef.value?.$el?.querySelector("input")?.focus();
+    likesRef.value?.focus();
   }
-}
-
-function likesInput() {
-  return likesRef.value?.$el?.querySelector("input");
-}
-
-function dislikesInput() {
-  return dislikesRef.value?.$el?.querySelector("input");
 }
 
 // Global keyboard shortcuts: Tab cycles focus between the two preference
 // search fields, and the left/right arrows move the carousel between members.
 // Every other key (including Enter/Escape in the search fields) is ignored.
 function handleWindowKeydown(event) {
-  if (event.key === "Tab") {
-    event.preventDefault();
-    if (document.activeElement === likesInput()) {
-      dislikesInput()?.focus();
-    } else {
-      likesInput()?.focus();
+  switch (event.key) {
+    case "Tab": {
+      event.preventDefault();
+      const nextSelect = likesRef.value?.isFocused() ? dislikesRef.value : likesRef.value;
+      nextSelect?.focus();
+      break;
     }
-    return;
-  }
-
-  if (event.key === "ArrowLeft") {
-    event.preventDefault();
-    carouselGoPreviousMember();
-    return;
-  }
-
-  if (event.key === "ArrowRight") {
-    event.preventDefault();
-    carouselGoNextMember();
+    case "ArrowLeft":
+      event.preventDefault();
+      carouselGoPreviousMember();
+      break;
+    case "ArrowRight":
+      event.preventDefault();
+      carouselGoNextMember();
+      break;
   }
 }
 </script>

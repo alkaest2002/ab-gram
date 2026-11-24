@@ -6,7 +6,7 @@
 <script setup>
 // --- Imports ------------
 //   -- From vue.
-import { computed, toRef } from "vue";
+import { computed, toRef, useTemplateRef } from "vue";
 
 //   -- From components.
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
@@ -66,6 +66,9 @@ const selectableMembers = computed(() =>
   props.members.filter((member) => member.id !== props.selfId),
 );
 
+// Ref to input field
+const inputEl = useTemplateRef("input");
+
 // --- Composables --------
 // Search state and the ranked result list, shared via the search composable.
 const { query, filteredMembers } = useSociogramSearchMembers(selectableMembers);
@@ -124,6 +127,16 @@ function isConflicting(member) {
 function clearQuery() {
   query.value = "";
 }
+
+function focus() {
+  inputEl.value?.focus();
+}
+
+function isFocused() {
+  return document.activeElement === inputEl.value;
+}
+
+defineExpose({ focus, isFocused });
 </script>
 
 <template>
@@ -134,6 +147,7 @@ function clearQuery() {
     </div>
 
     <input
+      ref="input"
       v-model="query"
       type="text"
       class="w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink transition-colors outline-none focus:border-accent"
