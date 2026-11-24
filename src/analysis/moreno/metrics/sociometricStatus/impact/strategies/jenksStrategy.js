@@ -4,7 +4,6 @@
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
 import { finalizeSplit } from "@/analysis/moreno/metrics/sociometricStatus/impact/helpers.js";
 
-// Strategy parameters.
 const MIN_MEMBERS = 7;
 const MAX_MEMBERS = 35;
 const MIN_GVF = 0.75;
@@ -12,7 +11,10 @@ const PREFERRED_K = 5;
 const FALLBACK_K = 3;
 
 /**
- * Fisher-Jenks optimal 1-D clustering (exact DP, O(k * n^2)).
+ * Partition sorted values into k nonempty, contiguous classes by minimizing
+ * the sum of squared deviations from each class mean (O(k * n^2) time).
+ * For fits tied within roundoff tolerance, prefer more members in the last
+ * class, then more in the first.
  *
  * @param {import("numpy-ts").NDArray} sorted - Sorted (ascending) values.
  * @param {number} k - Number of classes.
@@ -35,11 +37,14 @@ const jenksBreaks = (sorted, k) => {
     return s2[j + 1] - s2[i] - (sum * sum) / (j - i + 1);
   };
 
-  // cost[c][j]: min SSE of splitting sorted[0..j] into c classes.
-  // back[c][j]: start index of the last class in that optimum.
+  // For c classes covering indices 0..j, cost stores the selected fit's SSE,
+  // back records where its last class starts, and lowSize carries the size of
+  // its first class so later splits can resolve ties without backtracking.
   const cost = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => Infinity));
   const back = Array.from({ length: k + 1 }, () => Array.from({ length: n }, () => 0));
   const lowSize = Array.from({ length: k + 1 }, () => Array(n).fill(0));
+
+  // With one class there is no split: the whole prefix shares one mean.
   for (let j = 0; j < n; j++) cost[1][j] = sse(0, j);
 
   for (let c = 2; c <= k; c++) {
@@ -49,6 +54,8 @@ const jenksBreaks = (sorted, k) => {
       // Scale machine epsilon by the prefix sum of squares, not by the residual:
       // mathematically equal fits can differ by roundoff at that larger scale.
       const tolerance = Number.EPSILON * s2[j + 1];
+      // Try each start i for the last class. The preceding i values must
+      // supply at least one member to each of the other c - 1 classes.
       for (let i = c - 1; i <= j; i++) {
         const total = cost[c - 1][i - 1] + sse(i, j);
         const firstSize = c === 2 ? i : lowSize[c - 1][i - 1];
@@ -68,6 +75,7 @@ const jenksBreaks = (sorted, k) => {
     }
   }
 
+  // Trace the selected splits from right to left; callers need ascending indices.
   /** @type {number[]} */
   const starts = [];
   let j = n - 1;
@@ -103,14 +111,12 @@ export const jenksStrategy = ({ impactVisibleSorted }) => {
   const sdam = impactVisibleSorted.subtract(mean).power(2).sum();
   if (sdam === 0) return NO_SPLIT;
 
-  // ========================================================================
-  // FIND CLASSIFICATION BOUNDARIES — check fit before merging.
-  // ========================================================================
+  // GVF measures the fraction of total variation explained by the original
+  // k classes, not by the three impact groups reported after merging.
   const { starts, sdcm } = jenksBreaks(impactVisibleSorted, k);
   if (1 - sdcm / sdam < MIN_GVF) return NO_SPLIT;
 
-  // ========================================================================
-  // SEPARATION CHECK — keep only the outer breaks.
-  // ========================================================================
+  // Cutoffs are inclusive: low ends just before the second class starts;
+  // high begins at the start of the last class. All intervening classes merge.
   return finalizeSplit(impactVisibleSorted, starts[0] - 1, starts[k - 2]);
 };
