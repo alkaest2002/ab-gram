@@ -3,6 +3,9 @@
 
 import { nextTick, onMounted } from "vue";
 
+// MathJax CDN URL for the loader script.
+const MATHJAX_SRC = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js";
+
 /**
  * Lazily injects the MathJax loader script the first time typesetting is
  * actually needed, so non-docs routes never download it.
@@ -12,19 +15,7 @@ import { nextTick, onMounted } from "vue";
  * and adds `startup.promise`. That is the signal we use to detect "already
  * loaded" so we never inject twice.
  */
-const MATHJAX_SRC = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js";
 let injected = false;
-
-/** Ensure the MathJax loader has been requested at most once. */
-function ensureMathJax() {
-  if (injected || window.MathJax?.startup?.promise) return;
-  injected = true;
-
-  const script = document.createElement("script");
-  script.src = MATHJAX_SRC;
-  script.async = true;
-  document.head.appendChild(script);
-}
 
 /**
  * Shared wait for MathJax startup or the loader fallback.
@@ -39,6 +30,18 @@ function ensureMathJax() {
 /** @type {Promise<boolean> | null} */
 let readyPromise = null;
 
+/** Ensure the MathJax loader has been requested at most once. */
+function ensureMathJax() {
+  // If the loader has already been injected or the library is already loaded, do nothing.
+  if (injected || window.MathJax?.startup?.promise) return;
+  injected = true;
+  // Add the loader script to the document head.
+  const script = document.createElement("script");
+  script.src = MATHJAX_SRC;
+  script.async = true;
+  document.head.appendChild(script);
+}
+
 /**
  * Share one deadline for loader discovery and startup. A rejection or timeout
  * skips this typeset attempt; a later call can retry if the loader recovers.
@@ -51,23 +54,24 @@ function mathjaxReady(timeoutMs = 10000) {
 
   readyPromise = new Promise((resolve) => {
     let settled = false;
+    const poll = setInterval(attach, 50);
+    const deadline = setTimeout(() => finish(false), timeoutMs);
 
-    /** Stop both timers and notify all waiters; a failed attempt can be retried. */
+    /** @param {boolean} ready Whether startup completed successfully before the deadline. */
     function finish(ready) {
-      // Startup can settle after the timeout; don't clear a newer retry's promise.
+      // A late startup result must not clear a newer retry's promise.
       if (settled) return;
       settled = true;
-      if (!ready) readyPromise = null;
       clearInterval(poll);
       clearTimeout(deadline);
+      if (!ready) readyPromise = null;
       resolve(ready);
     }
 
-    /** If the loader has exposed its startup promise, wait for it; otherwise let polling continue. */
+    /** Once the loader exposes its promise, stop polling but keep the deadline. */
     async function attach() {
       const startup = window.MathJax?.startup?.promise;
       if (!startup) return;
-      // We found the loader. Stop polling, but keep the deadline while startup runs.
       clearInterval(poll);
       try {
         await startup;
@@ -76,9 +80,6 @@ function mathjaxReady(timeoutMs = 10000) {
         finish(false);
       }
     }
-
-    const poll = setInterval(attach, 50);
-    const deadline = setTimeout(() => finish(false), timeoutMs);
     // Check now rather than waiting for the first poll. Callers await readyPromise,
     // not this probe; attach handles startup rejection itself.
     void attach();
