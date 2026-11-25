@@ -94,7 +94,7 @@ describe("report network examples: chapters 05/06", () => {
       or: [1, 1, 1, 0],
       ai: [2, 2, 1, 1],
       ii: [3, 3, 1, 2],
-      ss: [7, 7, 7, 7],
+      ss: [7, 7, 2, 7],
       bns: [70, 70, 34, 68],
       mls: [35, 35, 35, 35],
     });

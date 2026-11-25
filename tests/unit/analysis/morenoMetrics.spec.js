@@ -228,18 +228,15 @@ describe("getIndividualLevelMetrics", () => {
       members.map((member, i) => [member.name, result.rawValuesById[i][statusColumn]]),
     );
 
-    // Single-sided strategies now abstain on members they don't flag, so the
-    // 2/3 impact gap separates low (marginal) from high (popular) with no
-    // average band left over.
     const S = SOCIOMETRIC_STATUS;
     expect(statusByName).toEqual({
-      Anna: S.POPULAR,
-      Milo: S.POPULAR,
-      Carla: S.POPULAR,
-      Dino: S.MARGINAL,
+      Anna: S.APPRECIATED,
+      Milo: S.APPRECIATED,
+      Carla: S.APPRECIATED,
+      Dino: S.APPRECIATED,
       Elsa: S.CONTROVERSIAL,
-      Franco: S.MARGINAL,
-      Gina: S.MARGINAL,
+      Franco: S.DISLIKED,
+      Gina: S.APPRECIATED,
       Hugo: S.MARGINAL,
       Irene: S.IGNORED,
       Juri: S.IGNORED,
@@ -249,11 +246,8 @@ describe("getIndividualLevelMetrics", () => {
   });
 
   it("classifies the likes-only example by the vote of the splitting strategies", () => {
-    // Received likes [5, 5, 2, 3, 2, 2]: largest gap proposes low <= 2 and
-    // high >= 5, while small-group flags only the smaller high tail (5).
-    // Jenks, both head/tail strategies, percentile, Tukey and robust z-score
-    // are ineligible at six visible members; binomial abstains. The resulting
-    // vote keeps 5 high, 2 low and 3 average.
+    // Largest gap abstains: its low/average/high counts would be 3/1/2.
+    // Small-group flags only the two members with 5 likes, leaving four average.
     const members = [
       { id: "1", likes: ["2", "3", "4", "5", "6"], dislikes: [] },
       { id: "2", likes: ["1", "3", "4", "5", "6"], dislikes: [] },
@@ -275,10 +269,10 @@ describe("getIndividualLevelMetrics", () => {
     expect(result.rawValuesById.map((row) => row[statusColumn])).toEqual([
       SOCIOMETRIC_STATUS.POPULAR,
       SOCIOMETRIC_STATUS.POPULAR,
-      SOCIOMETRIC_STATUS.MARGINAL,
       SOCIOMETRIC_STATUS.APPRECIATED,
-      SOCIOMETRIC_STATUS.MARGINAL,
-      SOCIOMETRIC_STATUS.MARGINAL,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
+      SOCIOMETRIC_STATUS.APPRECIATED,
     ]);
   });
 

@@ -24,7 +24,7 @@ const examples = [
       rr: zeros,
       gp: [6, 6, 3, 2, 2, 2, 2],
       gr: zeros,
-      ss: [4, 4, 2, 2, 2, 2, 2],
+      ss: [4, 4, 3, 3, 3, 3, 3],
       bns: [210, 205, 68, 99, 64, 62, 60],
       mls: zeros,
     },
@@ -45,7 +45,7 @@ const examples = [
       rr: [1, 1, 1, 6, 6, 2, 1],
       gp: zeros,
       gr: [4, 3, 3, 2, 2, 2, 2],
-      ss: [2, 2, 2, 6, 6, 2, 2],
+      ss: [5, 5, 5, 6, 6, 5, 5],
       bns: zeros,
       mls: [34, 33, 33, 210, 205, 67, 32],
     },
@@ -54,10 +54,10 @@ const examples = [
 
 // Expected [low, high] cutoffs for the likes and dislikes examples, respectively.
 const thresholds = [
-  ["jenks", [2, 6], [1, 6]],
+  ["jenks", [-Infinity, 6], [-Infinity, 6]],
   ["largest gap", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["head/tail", [-Infinity, 6], [-Infinity, 6]],
-  ["inverted head/tail", [3, Infinity], [2, Infinity]],
+  ["inverted head/tail", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["percentile", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["tukey", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["robust z-score", [-Infinity, Infinity], [-Infinity, Infinity]],
