@@ -20,10 +20,10 @@ Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio 
 
 Sintesi del procedimento:
 
-1. **Conteggio delle opinioni espresse e ricevute.** Il primo passo è contare il numero di scelte/rifiuti espressi e ricevuti. Se un membro non è stato scelto/rifiutato dagli altri, il suo status è già definito: _isolato_ se lui stesso non ha espresso alcuna opinione, _ignorato_ se ne ha espresse. Invece, per chi ha ricevuto almeno una scelta o un rifiuto, il procedimento prosegue.
+1. **Conteggio delle opinioni.** Il primo passo è contare il numero di scelte/rifiuti espressi e ricevuti. Se un membro non è stato scelto/rifiutato dagli altri, il suo status è già definito: _isolato_ se lui stesso non ha espresso alcuna opinione, _ignorato_ se ne ha espresse. Invece, per chi ha ricevuto almeno una scelta o un rifiuto, il procedimento prosegue.
 2. **Classificazione dell’impatto.** Per ogni membro si calcola il totale delle opinioni ricevute, sommando preferenze e rifiuti. Questo totale viene poi valutato da nove strategie di classificazione, ciascuna avente un criterio e regole proprie. Ogni strategia assegna al membro un impatto basso, medio o alto, oppure si astiene se non riesce a decidersi.
 3. **Classificazione del bilancio.** Il bilancio indica se un membro riceve più consensi o più rifiuti. Si parla di bilancio positivo se prevalgono le scelte, negativo se prevalgono i rifiuti. Un bilancio neutro indica un numero simile di scelte e rifiuti.
-4. **Incrocio tra impatto e bilancio.** L'assegnazione dello status sociomentrico scaturisce dall'incrocio di impatto e bilancio secondo la tabella del punto 2.
+4. **Incrocio tra impatto e bilancio.** L'assegnazione dello status sociomentrico scaturisce dall'incrocio tra impatto e bilancio secondo la tabella del punto 2.
 
 ## 2 Le categorie sociometriche
 
