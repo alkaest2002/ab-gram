@@ -36,39 +36,42 @@ function ensureMathJax() {
  * has run. We poll for it once and then wait on that promise. The result is
  * memoized so every caller shares a single poll.
  */
-/** @type {Promise<void> | null} */
+/** @type {Promise<boolean> | null} */
 let readyPromise = null;
 
 /**
- * If the startup promise already exists on the first call, wait without a
- * timeout. Otherwise poll for it and resolve on startup or timeout, whichever
- * comes first. A timeout does not imply MathJax is ready.
+ * Share one deadline for loader discovery and startup. A rejection or timeout
+ * skips this typeset attempt; a later call can retry if the loader recovers.
  *
  * @param {number} [timeoutMs=10000]
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} Whether startup completed before the deadline.
  */
 function mathjaxReady(timeoutMs = 10000) {
   if (readyPromise) return readyPromise;
 
   readyPromise = new Promise((resolve) => {
-    const attach = () => {
-      const startup = window.MathJax?.startup;
-      if (!startup?.promise) return false;
-      startup.promise.then(resolve);
-      return true;
-    };
-
-    if (attach()) return;
-
-    const poll = setInterval(() => {
-      if (attach()) clearInterval(poll);
-    }, 50);
-
-    // Fallback so callers never hang if the loader fails to run.
-    setTimeout(() => {
+    function finish(ready) {
       clearInterval(poll);
-      resolve();
-    }, timeoutMs);
+      clearTimeout(deadline);
+      resolve(ready);
+    }
+
+    function attach() {
+      const startup = window.MathJax?.startup?.promise;
+      if (!startup) return;
+      clearInterval(poll);
+      startup.then(
+        () => finish(true),
+        () => finish(false),
+      );
+    }
+
+    const poll = setInterval(attach, 50);
+    const deadline = setTimeout(() => finish(false), timeoutMs);
+    attach();
+  }).then((ready) => {
+    if (!ready) readyPromise = null;
+    return ready;
   });
 
   return readyPromise;
@@ -107,7 +110,7 @@ export function useMathjax(containerRef) {
   /** Re-typeset the current container after MathJax and Vue are ready. */
   async function typeset() {
     ensureMathJax();
-    await mathjaxReady();
+    if (!(await mathjaxReady())) return;
     await nextTick();
 
     if (containerRef.value && window.MathJax?.typesetPromise) {
