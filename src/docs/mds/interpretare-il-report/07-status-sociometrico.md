@@ -53,20 +53,27 @@ il codice è associato.
 La categoria dipende dal **livello di impatto** (basso, medio, alto) e dal **bilancio** (positivo, negativo, neutro). Le prime due righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
 classificato solo in base al fatto che ne abbia espresse (ignorato) o meno (isolato).
 
-### 2.1 Gli otto metodi per classificare l'impatto
+### 2.1 Classificare l'impatto
 
-Tra i membri che hanno ricevuto almeno un’opinione, otto metodi cercano di distinguere chi ne ha ricevute poche o molte rispetto agli altri:
+Il report confronta ogni membro che ha ricevuto almeno un'opinione con gli altri membri visibili, in base al numero di opinioni ricevute, e lo assegna a una delle tre fasce seguenti:
 
-- **Percentili**: individua le due fasce estreme della graduatoria per numero di opinioni ricevute.
-- **Largest gap**: divide la graduatoria nei punti in cui i due salti sono maggiori.
-- **Robust z-score**: segnala i valori molto lontani dalla mediana rispetto alla dispersione tipica.
-- **Jenks**: cerca tre gruppi con valori simili al loro interno.
-- **Head/tail breaks**: usa medie successive per individuare gli impatti alti.
-- **Inverted head/tail breaks**: applica lo stesso principio agli impatti bassi.
-- **Tukey**: segnala i valori che superano i limiti calcolati dai quartili.
-- **Piccoli gruppi**: con quattro membri visibili, cerca un salto netto che separi una minoranza dagli altri.
+- **Impatto basso**: il membro ha ricevuto poche opinioni rispetto agli altri.
+- **Impatto alto**: il membro ha ricevuto molte opinioni rispetto agli altri.
+- **Impatto medio**: il numero di opinioni non rientra in nessuna delle due fasce estreme.
 
-La classe di impatto deriva dal voto dei metodi che non si astengono (§ 4.2).
+Le otto strategie di classificazione usano criteri diversi per individuare le fasce.
+Alcune cercano di indivduare tutte e tre le fasce, altre soltanto quella alta o quella bassa:
+
+- **Percentili**: cerca di individuare tre fasce (bilaterale).
+- **Largest gap**: cerca di individuare tre fasce (bilaterale).
+- **Robust z-score**: cerca di individuare tre fasce (bilaterale).
+- **Jenks**: cerca di individuare tre fasce (bilaterale).
+- **Head/tail breaks**: cerca di individuare solo la fascia alta (unilaterale).
+- **Inverted head/tail breaks**:cerca di individuare solo la fascia bassa (unilaterale).
+- **Tukey**: cerca di individuar tre fasce (bilaterale).
+- **small groups**: cerca di individuare solo una fascia, alta o bassa (unilaterale).
+
+La classificaizone finale di impatto scaturisce da un meccanismo di votazione (§ 4.2).
 
 ## 3 I dati in ingresso
 
@@ -86,112 +93,102 @@ L'algoritmo riceve quattro valori per ogni membro:
 
 L’assegnazione procede in quattro passi: si verifica la visibilità, si classifica l’impatto, si valuta il bilancio e si assegna la categoria. Non tutti i membri attraversano tutti i passi: per chi non ha ricevuto opinioni basta il primo.
 
-### 4.1 Passo 1 — Visibilità: isolato e ignorato
+### 4.1 Visibilità: isolato e ignorato
 
 Questo passo ha **la precedenza su tutto il resto**. Si guarda soltanto se il
 membro ha ricevuto opinioni ($n_i > 0$) e se ne ha espresse
 ($\mathrm{espressività}_i > 0$):
 
-- **isolato** (0): nessuna opinione ricevuta **e** nessuna espressa
-  ($n_i = 0$ e $\mathrm{espressività}_i = 0$);
-- **ignorato** (1): nessuna opinione ricevuta **ma** qualcuna espressa
-  ($n_i = 0$ e $\mathrm{espressività}_i > 0$).
+- **isolato**: $n_i = 0$ e $\mathrm{espressività}_i = 0$;
+- **ignorato**: $n_i = 0$ e $\mathrm{espressività}_i > 0$.
 
-L’assenza di opinioni va interpretata con cautela: prima di trarne conclusioni sulle relazioni nel gruppo, occorre escludere mancate risposte o dati incompleti. Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegue al passo successivo.
+L’assenza di opinioni va interpretata con cautela: prima di trarne conclusioni sulle relazioni nel gruppo, occorre escludere mancate risposte o dati incompleti.
 
-### 4.2 Passo 2 — Classificazione dell'impatto
+Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegue al passo successivo.
 
-Le otto strategie non cercano tutte la stessa cosa. Una strategia **bilaterale** cerca sia gli impatti bassi sia quelli alti; una strategia **unilaterale** cerca una sola delle due fasce estreme (o _code_). Cercare una fascia non significa necessariamente trovarla: anche un metodo ammesso in base alla numerosità può astenersi.
+### 4.2 Classificazione dell'impatto
 
-Nelle schede che seguono, $N$ indica il numero di membri **visibili**, cioè di quanti hanno ricevuto almeno un’opinione. Tutti gli otto metodi confrontano soltanto gli impatti dei membri visibili. Le lettere $L$ e $H$ indicano rispettivamente la soglia bassa e quella alta.
+Le otto strategie di classificazione non perseguono tutte lo stesso obiettivo. Una strategia bilaterale punta a isolare sia gli impatti bassi sia quelli alti; una strategia unilaterale si concentra su una sola delle due fasce estreme (o code). In entrambi i casi viene attribuito alla fascia intermedia tutto ciò che non rientra nelle fasce individuate. Cercare una fascia, però, non garantisce di trovarla: un metodo può comunque astenersi.
 
-Le schede spiegano **come si propongono** le soglie. Il § 4.2.9 descrive **come si controllano**; i §§ 4.2.10–4.2.11 spiegano come le soglie definitive diventano voti e come si decide la classe di ciascun membro.
+le schede che seguono, presentano in forma sintetica i meccanismi di funzionamento delle 8 strategie di classificazione dell'impatto.
 
-#### 4.2.1 Metodo dei percentili
+#### 4.2.1 Percentili
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$15 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>bilaterale: propone due code di pari numerosità nominale; possono restare attive entrambe, una sola o nessuna</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>individuare le posizioni <strong>relativamente basse e alte</strong> nel gruppo</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si pone $r = \lceil 0{,}15N \rceil$. Il simbolo $\lceil\cdot\rceil$ indica l'arrotondamento all'intero superiore.</li><li>Il programma usa quindi il rango più vicino per la coda bassa e lo stesso rango contato dall'alto per la coda alta, <strong>senza interpolazione</strong>.</li><li>Non è la stessa convenzione dei quartili dei gradi descritti nelle metriche di gruppo; la soglia alta può inoltre differire dall'usuale percentile all'$85\%$ calcolato contando dal basso.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> $L = x_{r-1}$.</li><li><strong>Alto:</strong> $H = x_{N-r}$.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>individuare le posizioni <strong>relativamente basse e alte</strong> nel gruppo</li><li>bilaterale: propone due code di pari numerosità nominale; possono restare attive entrambe, una sola o nessuna</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si pone $r = \lceil 0{,}15N \rceil$. Il simbolo $\lceil\cdot\rceil$ indica l'arrotondamento all'intero superiore.</li><li>Il programma usa quindi il rango più vicino per la coda bassa e lo stesso rango contato dall'alto per la coda alta, <strong>senza interpolazione</strong>.</li><li>Non è la stessa convenzione dei quartili dei gradi descritti nelle metriche di gruppo; la soglia alta può inoltre differire dall'usuale percentile all'$85\%$ calcolato contando dal basso.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L = x_{r-1}$.</li><li><strong>Alto:</strong> $H = x_{N-r}$.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 15.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Esempio:</strong> Le soglie individuano nominalmente il $15\%$ inferiore e superiore: con $N = 20$ corrispondono a tre persone per coda, prima del controllo di separazione e degli effetti delle parità.</li><li><strong>Limiti:</strong> La scelta del $15$° e dell'$85$° percentile è <strong>euristica</strong>: descrive posizioni relative, non rappresenta una soglia di significatività statistica e non garantisce la presenza di gruppi nettamente separati né la stabilità delle classificazioni rispetto a piccole variazioni nelle nomine.</li><li><strong>Riferimenti:</strong> Per i controlli comuni si veda il § 4.2.9; per l’applicazione delle soglie, il § 4.2.10.</li></ul></td></tr>
 </table>
 
-#### 4.2.2 Metodo largest gap
+#### 4.2.2 Largest gap
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$4 \le N \le 6$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>bilaterale con due salti selezionati; se si usa un solo salto, può segnalare soltanto il lato meno numeroso. Anche con due salti proposti può restare una sola coda o nessuna</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>dividere la distribuzione in corrispondenza dei <strong>due salti più grandi</strong> tra impatti consecutivi. Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_{i+1} - x_i$ per $i = 0, \dots, N-2$; i due salti più ampi individuano le due separazioni tra coda bassa, fascia media e coda alta</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li><strong>Due salti distinguibili dagli altri:</strong> si usano entrambi, anche se hanno la stessa ampiezza. Le parità tra salti non selezionati non contano.</li><li><strong>Secondo e terzo salto di pari ampiezza:</strong> si usa soltanto il salto massimo e si segnala il lato meno numeroso.</li><li><strong>Nessuna scelta univoca nel caso precedente:</strong> se il massimo non è unico o separa due lati ugualmente numerosi, il metodo si astiene.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td>Con due salti di indici $c_1 &lt; c_2$:<ul><li><strong>Basso:</strong> $L = x_{c_1}$, l'ultimo valore della coda bassa.</li><li><strong>Alto:</strong> $H = x_{c_2 + 1}$, il primo valore della coda alta.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>dividere la distribuzione in corrispondenza dei <strong>due salti più grandi</strong> tra impatti consecutivi. Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_{i+1} - x_i$ per $i = 0, \dots, N-2$; i due salti più ampi individuano le due separazioni tra coda bassa, fascia media e coda alta</li><li>bilaterale con due salti selezionati; se si usa un solo salto, può segnalare soltanto il lato meno numeroso. Anche con due salti proposti può restare una sola coda o nessuna</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li><strong>Due salti distinguibili dagli altri:</strong> si usano entrambi, anche se hanno la stessa ampiezza. Le parità tra salti non selezionati non contano.</li><li><strong>Secondo e terzo salto di pari ampiezza:</strong> si usa soltanto il salto massimo e si segnala il lato meno numeroso.</li><li><strong>Nessuna scelta univoca nel caso precedente:</strong> se il massimo non è unico o separa due lati ugualmente numerosi, il metodo si astiene.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li>Con due salti di indici $c_1 &lt; c_2$:<ul><li><strong>Basso:</strong> $L = x_{c_1}$, l'ultimo valore della coda bassa.</li><li><strong>Alto:</strong> $H = x_{c_2 + 1}$, il primo valore della coda alta.</li></ul></li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 4 o più di 6.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Esempi:</strong> Per esempio, con impatti visibili $[1, 3, 5, 7, 9, 11]$ tutti i salti valgono $2$ e il metodo si astiene. Si astiene anche con $[1, 3, 8, 10]$: il salto massimo vale $5$, ma divide i quattro membri in due gruppi uguali. Con $[1, 5, 5, 9]$, invece, i due salti massimi di ampiezza $4$ sono univocamente individuati: le soglie sono $L = 1$ e $H = 9$.</li></ul></td></tr>
 </table>
 
-#### 4.2.3 Metodo robust z-score
+#### 4.2.3 Robust z-score
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$15 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>bilaterale: cerca anomalie in entrambe le direzioni; può segnalare una sola coda o nessuna</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>un impatto è insolito se è lontano dalla <strong>mediana</strong> rispetto a quanto se ne discostano di solito gli altri impatti. Per misurare questo scostamento tipico si usa la <strong>deviazione assoluta mediana</strong> (MAD). Il criterio è poco sensibile ai valori estremi, ma non è sempre preferibile agli altri metodi</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Calcolare la mediana $m$ degli impatti visibili e $MAD = \max\bigl(\text{mediana}(\lvert x_i-m\rvert),\ 0{,}5\bigr)$. Il minimo evita la divisione per zero.</li><li>Con $z_i = \frac{x_i-m}{1{,}4826\cdot MAD}$, sono anomali i valori con $\lvert z_i\rvert > 3{,}5$.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> $L = \max\{x_i : x_i &lt; F_L\}$.</li><li><strong>Alto:</strong> $H = \min\{x_i : x_i > F_H\}$. Se non ci sono valori sotto il recinto basso si pone $L = -\infty$; se non ce ne sono sopra il recinto alto si pone $H = +\infty$.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>un impatto è insolito se è lontano dalla <strong>mediana</strong> rispetto a quanto se ne discostano di solito gli altri impatti. Per misurare questo scostamento tipico si usa la <strong>deviazione assoluta mediana</strong> (MAD). Il criterio è poco sensibile ai valori estremi, ma non è sempre preferibile agli altri metodi</li><li>bilaterale: cerca anomalie in entrambe le direzioni; può segnalare una sola coda o nessuna</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Calcolare la mediana $m$ degli impatti visibili e $MAD = \max\bigl(\text{mediana}(\lvert x_i-m\rvert),\ 0{,}5\bigr)$. Il minimo evita la divisione per zero.</li><li>Con $z_i = \frac{x_i-m}{1{,}4826\cdot MAD}$, sono anomali i valori con $\lvert z_i\rvert > 3{,}5$.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L = \max\{x_i : x_i &lt; F_L\}$.</li><li><strong>Alto:</strong> $H = \min\{x_i : x_i > F_H\}$. Se non ci sono valori sotto il recinto basso si pone $L = -\infty$; se non ce ne sono sopra il recinto alto si pone $H = +\infty$.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 15.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Recinti:</strong> <strong>Basso:</strong> $F_L = m - 3{,}5 \cdot 1{,}4826 \cdot MAD$. <strong>Alto:</strong> $F_H = m + 3{,}5 \cdot 1{,}4826 \cdot MAD$.</li></ul></td></tr>
 </table>
 
-#### 4.2.4 Metodo di Jenks
+#### 4.2.4 Fisher-Jenks Natural Breaks
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$7 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>bilaterale: propone le due classi estreme; possono restare attive entrambe, una sola o nessuna</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>individuare i <strong>raggruppamenti naturali</strong> della distribuzione: il criterio dei <em>natural breaks</em> di Jenks riduce la variabilità all'interno dei gruppi per individuare le classi di impatto <strong>basso</strong>, <strong>medio</strong> e <strong>alto</strong></td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, si cercano i $k-1$ tagli che minimizzano la somma degli scarti quadratici dalle medie dei rispettivi gruppi, detta $SDCM$.</li><li>Si usa $k=5$ se ci sono almeno cinque valori distinti, altrimenti $k=3$ se ce ne sono tre o quattro.</li><li><strong>Prima di unire i gruppi</strong>, si misura la quota di variabilità spiegata dalla suddivisione con l'indice <strong>goodness of variance fit</strong> $GVF = 1 - \frac{SDCM}{SDAM}$, dove $SDAM$ è la somma degli scarti quadratici dalla media complessiva degli impatti.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> $L = x_{i-1}$, cioè l'ultimo valore della <strong>prima</strong> classe (la più bassa).</li><li><strong>Alto:</strong> $H = x_{j}$, cioè il primo valore della <strong>terza</strong> classe (la più alta).</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>individuare i <strong>raggruppamenti naturali</strong> della distribuzione: il criterio dei <em>natural breaks</em> di Jenks riduce la variabilità all'interno dei gruppi per individuare le classi di impatto <strong>basso</strong>, <strong>medio</strong> e <strong>alto</strong></li><li>bilaterale: propone le due classi estreme; possono restare attive entrambe, una sola o nessuna</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Sugli impatti dei membri visibili, ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, si cercano i $k-1$ tagli che minimizzano la somma degli scarti quadratici dalle medie dei rispettivi gruppi, detta $SDCM$.</li><li>Si usa $k=5$ se ci sono almeno cinque valori distinti, altrimenti $k=3$ se ce ne sono tre o quattro.</li><li><strong>Prima di unire i gruppi</strong>, si misura la quota di variabilità spiegata dalla suddivisione con l'indice <strong>goodness of variance fit</strong> $GVF = 1 - \frac{SDCM}{SDAM}$, dove $SDAM$ è la somma degli scarti quadratici dalla media complessiva degli impatti.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L = x_{i-1}$, cioè l'ultimo valore della <strong>prima</strong> classe (la più bassa).</li><li><strong>Alto:</strong> $H = x_{j}$, cioè il primo valore della <strong>terza</strong> classe (la più alta).</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 7.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> <strong>Meno di $3$ valori distinti:</strong> Non si possono formare tre classi. <strong>$GVF &lt; 0{,}75$:</strong> La suddivisione spiega una quota insufficiente della variabilità degli impatti.</li><li><strong>Classi:</strong> Se il partizionamento è accettato, si conservano solo il primo e l'ultimo taglio. Con $k=5$, i gruppi $2$, $3$ e $4$ vengono uniti nella classe media; con $k=3$, le classi restano quelle del partizionamento. Indicando con $i$ e $j$ i due tagli conservati, la classe bassa va da $x_0$ a $x_{i-1}$, la media da $x_i$ a $x_{j-1}$ e l'alta da $x_j$ a $x_{N-1}$.</li></ul></td></tr>
 </table>
 
-#### 4.2.5 Metodo head/tail breaks
+#### 4.2.5 Head/tail breaks
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$7 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>unilaterale alto: può segnalare solo la testa finale, mai gli impatti bassi</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>nelle distribuzioni <strong>a coda pesante</strong> pochi valori molto alti si staccano nettamente dalla massa dei valori piccoli. Il metodo <em>head/tail breaks</em> separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla "coda" (il resto)</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Si calcola la media dei valori correnti: è il punto di taglio.</li><li>La <em>testa</em> comprende i valori <strong>maggiori della media</strong>.</li><li>Se la testa comprende almeno il $40\%$ dei valori del passo corrente, il metodo si ferma. Altrimenti ripete il calcolo solo sulla testa.</li><li>Se tutti i valori rimasti sono uguali, non si eseguono altri tagli.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> $L = -\infty$: il lato basso non viene <strong>mai</strong> segnalato.</li><li><strong>Alto:</strong> $H$ = il primo valore dell'<strong>ultima</strong> classe (la più alta), cioè la "testa" finale.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>nelle distribuzioni <strong>a coda pesante</strong> pochi valori molto alti si staccano nettamente dalla massa dei valori piccoli. Il metodo <em>head/tail breaks</em> separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla "coda" (il resto)</li><li>unilaterale alto: può segnalare solo la testa finale, mai gli impatti bassi</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Si calcola la media dei valori correnti: è il punto di taglio.</li><li>La <em>testa</em> comprende i valori <strong>maggiori della media</strong>.</li><li>Se la testa comprende almeno il $40\%$ dei valori del passo corrente, il metodo si ferma. Altrimenti ripete il calcolo solo sulla testa.</li><li>Se tutti i valori rimasti sono uguali, non si eseguono altri tagli.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L = -\infty$: il lato basso non viene <strong>mai</strong> segnalato.</li><li><strong>Alto:</strong> $H$ = il primo valore dell'<strong>ultima</strong> classe (la più alta), cioè la "testa" finale.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 7.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> Se non produce alcun taglio (valori tutti uguali), il metodo si astiene.</li></ul></td></tr>
 </table>
 
-#### 4.2.6 Metodo inverted head/tail breaks
+#### 4.2.6 Inverted head/tail breaks
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$7 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>unilaterale basso: può segnalare solo la coda finale, mai gli impatti alti</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>è l'immagine speculare del metodo <em>head/tail</em>: nelle distribuzioni con una <strong>coda rada verso il basso</strong>, pochi valori molto bassi si staccano nettamente dalla massa dei valori più alti. Il metodo separa ricorsivamente la "coda" (la minoranza di valori piccoli) dal resto</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Si calcola la media dei valori correnti: è il punto di taglio.</li><li>La <em>coda</em> comprende i valori <strong>minori della media</strong>.</li><li>Se la coda comprende almeno il $40\%$ dei valori del passo corrente, il metodo si ferma. Altrimenti ripete il calcolo solo sulla coda.</li><li>Se tutti i valori rimasti sono uguali, non si eseguono altri tagli.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> $L$ = il valore più alto della <strong>coda finale</strong> (l'ultima classe, la più bassa).</li><li><strong>Alto:</strong> $H = +\infty$: il lato alto non viene <strong>mai</strong> segnalato.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>è l'immagine speculare del metodo <em>head/tail</em>: nelle distribuzioni con una <strong>coda rada verso il basso</strong>, pochi valori molto bassi si staccano nettamente dalla massa dei valori più alti. Il metodo separa ricorsivamente la "coda" (la minoranza di valori piccoli) dal resto</li><li>unilaterale basso: può segnalare solo la coda finale, mai gli impatti alti</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Si calcola la media dei valori correnti: è il punto di taglio.</li><li>La <em>coda</em> comprende i valori <strong>minori della media</strong>.</li><li>Se la coda comprende almeno il $40\%$ dei valori del passo corrente, il metodo si ferma. Altrimenti ripete il calcolo solo sulla coda.</li><li>Se tutti i valori rimasti sono uguali, non si eseguono altri tagli.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L$ = il valore più alto della <strong>coda finale</strong> (l'ultima classe, la più bassa).</li><li><strong>Alto:</strong> $H = +\infty$: il lato alto non viene <strong>mai</strong> segnalato.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 7.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> Se non produce alcun taglio (valori tutti uguali), il metodo si astiene.</li></ul></td></tr>
 </table>
 
-#### 4.2.7 Metodo di Tukey
+#### 4.2.7 Tukey Fences
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$15 \le N \le 35$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>bilaterale: cerca valori oltre entrambi i recinti; può segnalare una sola coda o nessuna</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>una variante del criterio di Tukey per i <strong>valori anomali</strong>, basata sui quartili. Il programma usa un moltiplicatore $1$, non il consueto $1{,}5$ degli <em>inner fences</em> del box plot. Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si individuano i quartili contando lo stesso numero di posizioni dai due estremi. Si usano quindi valori osservati, senza interpolazione.</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Calcolare $Q_1 = x_{\lceil 0{,}25N \rceil - 1}, Q_3 = x_{N - \lceil 0{,}25N \rceil}$.</li><li>Calcolare lo scarto interquartile $IQR = Q_3 - Q_1$.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Basso:</strong> il massimo valore osservato strettamente sotto il recinto basso.</li><li><strong>Alto:</strong> il minimo valore osservato strettamente sopra il recinto alto. Un lato senza valori oltre il recinto viene disattivato.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>una variante del criterio di Tukey per i <strong>valori anomali</strong>, basata sui quartili. Il programma usa un moltiplicatore $1$, non il consueto $1{,}5$ degli <em>inner fences</em> del box plot. Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si individuano i quartili contando lo stesso numero di posizioni dai due estremi. Si usano quindi valori osservati, senza interpolazione.</li><li>bilaterale: cerca valori oltre entrambi i recinti; può segnalare una sola coda o nessuna</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Calcolare $Q_1 = x_{\lceil 0{,}25N \rceil - 1}, Q_3 = x_{N - \lceil 0{,}25N \rceil}$.</li><li>Calcolare lo scarto interquartile $IQR = Q_3 - Q_1$.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> il massimo valore osservato strettamente sotto il recinto basso.</li><li><strong>Alto:</strong> il minimo valore osservato strettamente sopra il recinto alto. Un lato senza valori oltre il recinto viene disattivato.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 15.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Recinti:</strong> $Q_1 - 1 \cdot IQR$, $Q_3 + 1 \cdot IQR$.</li><li><strong>Astensione:</strong> Il metodo si astiene se $IQR = 0$.</li><li><strong>Confronto:</strong> Con moltiplicatore $1$ il criterio è meno restrittivo della versione usuale con $1{,}5$.</li></ul></td></tr>
 </table>
 
-#### 4.2.8 Metodo dei piccoli gruppi
+#### 4.2.8 Small groups
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:font-normal">
-  <tr><th scope="row">Numerosità</th><td>$4 \le N \le 6$ membri visibili</td></tr>
-  <tr><th scope="row">Comportamento</th><td>unilaterale se le code hanno numerosità diversa; bilaterale se hanno pari numerosità</td></tr>
-  <tr><th scope="row">Funzionamento</th><td>il metodo cerca il <strong>salto più grande</strong> tra impatti consecutivi. Se il salto soddisfa i criteri di ampiezza e dominanza, il metodo segnala solo il gruppo meno numeroso. A parità di numerosità, propone il gruppo a sinistra come basso e quello a destra come alto, senza fascia media</td></tr>
-  <tr><th scope="row">Come si procede</th><td><ul><li>Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, i salti tra valori consecutivi sono $g_i = x_i - x_{i-1}$ per $i = 1, \dots, N-1$.</li><li>Siano $g_{\max}$ il salto più grande e $g_2$ il secondo per grandezza; sia inoltre $R = x_{N-1} - x_0$ l'escursione totale.</li><li>Se il salto è dominante, sia $k$ l'indice del valore <strong>sopra</strong> il salto massimo (il salto è tra $x_{k-1}$ e $x_k$).</li><li>Se più salti massimi hanno la stessa ampiezza, viene scelto il <strong>primo</strong> nella sequenza ordinata, diversamente dalla regola di astensione del metodo largest gap.</li></ul></td></tr>
-  <tr><th scope="row">Soglie proposte</th><td><ul><li><strong>Coda bassa più piccola:</strong> $L = x_{k-1}$ e $H = +\infty$.</li><li><strong>Coda alta più piccola:</strong> $L = -\infty$ e $H = x_k$.</li><li><strong>Code di pari numerosità:</strong> $L = x_{k-1}$ e $H = x_k$.</li></ul></td></tr>
+  <tr><th scope="row">Funzionamento</th><td><ul><li>il metodo cerca il <strong>salto più grande</strong> tra impatti consecutivi. Se il salto soddisfa i criteri di ampiezza e dominanza, il metodo segnala solo il gruppo meno numeroso. A parità di numerosità, propone il gruppo a sinistra come basso e quello a destra come alto, senza fascia media</li><li>unilaterale se le code hanno numerosità diversa; bilaterale se hanno pari numerosità</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$, i salti tra valori consecutivi sono $g_i = x_i - x_{i-1}$ per $i = 1, \dots, N-1$.</li><li>Siano $g_{\max}$ il salto più grande e $g_2$ il secondo per grandezza; sia inoltre $R = x_{N-1} - x_0$ l'escursione totale.</li><li>Se il salto è dominante, sia $k$ l'indice del valore <strong>sopra</strong> il salto massimo (il salto è tra $x_{k-1}$ e $x_k$).</li><li>Se più salti massimi hanno la stessa ampiezza, viene scelto il <strong>primo</strong> nella sequenza ordinata, diversamente dalla regola di astensione del metodo largest gap.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Coda bassa più piccola:</strong> $L = x_{k-1}$ e $H = +\infty$.</li><li><strong>Coda alta più piccola:</strong> $L = -\infty$ e $H = x_k$.</li><li><strong>Code di pari numerosità:</strong> $L = x_{k-1}$ e $H = x_k$.</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 4 o più di 6.</li></ul></td></tr>
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> <strong>Impatti tutti uguali:</strong> $g_{\max} = 0$. <strong>Salto troppo piccolo:</strong> $g_{\max} &lt; 2$. <strong>Salto non dominante:</strong> $g_{\max} &lt; 1{,}5 \cdot g_2$ <strong>e</strong> $g_{\max} &lt; 0{,}5 \cdot R$.</li><li><strong>Esempi:</strong> Per esempio, con $[1, 1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e il metodo si astiene sui tre $1$; con $[1, 3, 3, 3]$ viene segnalato solo l'$1$ come impatto basso e il metodo si astiene sui tre $3$. Con $[1, 1, 5, 5]$ il salto divide il gruppo in due metà: entrambi gli $1$ sono bassi ed entrambi i $5$ sono alti.</li></ul></td></tr>
 </table>
 
@@ -259,7 +256,7 @@ un solo criterio di soglia. Non garantisce però maggiore accuratezza: i metodi
 lavorano sugli stessi dati, possono produrre risultati correlati e non hanno
 una probabilità nota di individuare una classificazione «corretta».
 
-### 4.3 Passo 3 — Classificazione del bilancio
+### 4.3 Classificazione del bilancio
 
 Per classificare il bilancio non basta confrontare il numero di scelte ($rp$)
 con quello dei rifiuti ($rr$). Si usa un **rapporto di soglia variabile**:
@@ -295,7 +292,7 @@ sempre bilancio positivo, e viceversa per chi riceve solo rifiuti; il bilancio
 neutro compare solo quando scelte e rifiuti sono abbastanza vicini da non
 superare la soglia.
 
-### 4.4 Passo 4 — Assegnazione finale: l'albero di decisione
+### 4.4 Assegnazione finale: l'albero di decisione
 
 L'ultimo passo combina i risultati dei tre precedenti. Per ogni membro si
 esaminano le condizioni nell'ordine indicato in tabella e si assegna la
@@ -415,20 +412,20 @@ $N = 7$. Calcoliamo le soglie proposte dagli otto metodi.
   Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 15$ il metodo non è ammesso e si astiene.
 - **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
-- **Piccoli gruppi.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
+- **small groups.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 
 Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
 | Metodo             | Etichette                                         |
 | ------------------ | ------------------------------------------------- |
 | Jenks              | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
-| largest gap        | _si astiene_                                      |
-| head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
-| inverted head/tail | _si astiene_                                      |
-| percentili         | _si astiene_                                      |
+| Largest gap        | _si astiene_                                      |
+| Head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
+| Inverted head/tail | _si astiene_                                      |
+| Percentili         | _si astiene_                                      |
 | Tukey              | _si astiene_                                      |
-| robust z-score     | _si astiene_                                      |
-| piccoli gruppi     | _si astiene_                                      |
+| Robust z-score     | _si astiene_                                      |
+| Small groups       | _si astiene_                                      |
 | **Voto**           | **alto, alto, medio, medio, medio, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
@@ -527,7 +524,7 @@ $N = 7$. Calcoliamo le soglie proposte dagli otto metodi.
   Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 15$ il metodo non è ammesso e si astiene.
 - **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
-- **Piccoli gruppi.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
+- **small groups.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 
 Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
@@ -540,7 +537,7 @@ Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 | percentili         | _si astiene_                                      |
 | Tukey              | _si astiene_                                      |
 | robust z-score     | _si astiene_                                      |
-| piccoli gruppi     | _si astiene_                                      |
+| small groups       | _si astiene_                                      |
 | **Voto**           | **medio, medio, medio, alto, alto, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
