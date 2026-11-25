@@ -43,8 +43,8 @@ function ensureMathJax() {
 }
 
 /**
- * Share one deadline for loader discovery and startup. A rejection or timeout
- * skips this typeset attempt; a later call can retry if the loader recovers.
+ * Share one startup wait across callers. Retry loader discovery once on timeout,
+ * but stop immediately if startup rejects.
  *
  * @param {number} [timeoutMs=10000]
  * @returns {Promise<boolean>} Whether startup completed before the deadline.
@@ -54,8 +54,12 @@ function mathjaxReady(timeoutMs = 10000) {
 
   readyPromise = new Promise((resolve) => {
     let settled = false;
+    let observedStartup;
     const poll = setInterval(attach, 50);
-    const deadline = setTimeout(() => finish(false), timeoutMs);
+    let deadline = setTimeout(() => {
+      deadline = setTimeout(() => finish(false), timeoutMs);
+      void attach();
+    }, timeoutMs);
 
     /** @param {boolean} ready Whether startup completed successfully before the deadline. */
     function finish(ready) {
@@ -71,12 +75,15 @@ function mathjaxReady(timeoutMs = 10000) {
     /** Once the loader exposes its promise, stop polling but keep the deadline. */
     async function attach() {
       const startup = window.MathJax?.startup?.promise;
-      if (!startup) return;
+      if (!startup || startup === observedStartup) return;
+      observedStartup = startup;
       clearInterval(poll);
       try {
         await startup;
-        finish(true);
-      } catch {
+        if (startup === observedStartup) finish(true);
+      } catch (error) {
+        if (settled || startup !== observedStartup) return;
+        console.warn("MathJax startup failed:", error);
         finish(false);
       }
     }
