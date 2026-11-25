@@ -12,36 +12,46 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-it("skips typesetting when existing startup stalls and retries after recovery", async () => {
-  vi.useFakeTimers();
-  const mathjax = { startup: { promise: new Promise(() => {}) }, typesetPromise: vi.fn() };
-  vi.stubGlobal("window", { MathJax: mathjax });
+function mockLoader() {
+  const script = { remove: vi.fn() };
+  const appendChild = vi.fn();
+  vi.stubGlobal("document", { createElement: () => script, head: { appendChild } });
+  vi.stubGlobal("window", { MathJax: { startup: {} } });
+  return { script, appendChild };
+}
+
+it("shares one download and waits for startup before typesetting", async () => {
   const { useMathjax } = await import("@/composables/docs/useMathjax");
-  const container = {};
-  const { typeset } = useMathjax({ value: container });
-
-  const pending = typeset();
-  await vi.advanceTimersByTimeAsync(20000);
-  await pending;
-  expect(mathjax.typesetPromise).not.toHaveBeenCalled();
-
-  mathjax.startup.promise = Promise.resolve();
-  await typeset();
-  expect(mathjax.typesetPromise).toHaveBeenCalledWith([container]);
-  expect(vi.getTimerCount()).toBe(0);
+  const { script, appendChild } = mockLoader();
+  const { typeset } = useMathjax({ value: {} });
+  expect(appendChild).not.toHaveBeenCalled();
+  const pending = [typeset(), typeset()];
+  expect(appendChild).toHaveBeenCalledOnce();
+  const startup = Promise.withResolvers();
+  window.MathJax = { startup, typesetPromise: vi.fn() };
+  script.onload();
+  await Promise.resolve();
+  expect(window.MathJax.typesetPromise).not.toHaveBeenCalled();
+  startup.resolve();
+  await Promise.all(pending);
+  expect(window.MathJax.typesetPromise).toHaveBeenCalledTimes(2);
 });
 
-it("typesets without navigation when startup recovers at the first timeout", async () => {
-  vi.useFakeTimers();
-  const mathjax = { startup: { promise: new Promise(() => {}) }, typesetPromise: vi.fn() };
-  vi.stubGlobal("window", { MathJax: mathjax });
+it("allows another download after a script error", async () => {
   const { useMathjax } = await import("@/composables/docs/useMathjax");
-  const pending = useMathjax({ value: {} }).typeset();
-  mathjax.startup.promise = Promise.resolve();
-  await vi.advanceTimersByTimeAsync(10000);
-  await pending;
-  expect(mathjax.typesetPromise).toHaveBeenCalledOnce();
-  expect(vi.getTimerCount()).toBe(0);
+  const { script, appendChild } = mockLoader();
+  vi.spyOn(console, "warn").mockImplementation(() => {});
+  const { typeset } = useMathjax({ value: {} });
+  const first = typeset();
+  script.onerror();
+  await first;
+  expect(script.remove).toHaveBeenCalledOnce();
+  const second = typeset();
+  expect(appendChild).toHaveBeenCalledTimes(2);
+  window.MathJax = { startup: { promise: Promise.resolve() }, typesetPromise: vi.fn() };
+  script.onload();
+  await second;
+  expect(window.MathJax.typesetPromise).toHaveBeenCalledOnce();
 });
 
 it("logs startup rejection and stops without waiting for a timeout", async () => {

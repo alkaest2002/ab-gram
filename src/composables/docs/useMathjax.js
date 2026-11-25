@@ -6,93 +6,33 @@ import { nextTick, onMounted } from "vue";
 // MathJax CDN URL for the loader script.
 const MATHJAX_SRC = "https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js";
 
-/**
- * Lazily injects the MathJax loader script the first time typesetting is
- * actually needed, so non-docs routes never download it.
- *
- * `window.MathJax` starts as the config object from index.html (which has a
- * `startup` block but no `startup.promise`); the loaded library replaces it
- * and adds `startup.promise`. That is the signal we use to detect "already
- * loaded" so we never inject twice.
- */
-let injected = false;
-
-/**
- * Shared wait for MathJax startup or the loader fallback.
- *
- * `MathJax.startup.promise` is the promise resolved when `pageReady()` is
- * done (MathJax runs its startup typesetting, then resolves). The `MathJax`
- * global starts as a plain config object and is replaced by the loaded
- * library asynchronously, so `startup.promise` doesn't exist until the loader
- * has run. We poll for it once and then wait on that promise. The result is
- * memoized so every caller shares a single poll.
- */
-/** @type {Promise<boolean> | null} */
+/** @type {Promise<boolean> | null} Shared by all docs pages. */
 let readyPromise = null;
 
-/** Ensure the MathJax loader has been requested at most once. */
-function ensureMathJax() {
-  // If the loader has already been injected or the library is already loaded, do nothing.
-  if (injected || window.MathJax?.startup?.promise) return;
-  injected = true;
-  // Add the loader script to the document head.
-  const script = document.createElement("script");
-  script.src = MATHJAX_SRC;
-  script.async = true;
-  document.head.appendChild(script);
-}
-
-/**
- * Share one startup wait across callers. Retry loader discovery once on timeout,
- * but stop immediately if startup rejects.
- *
- * @param {number} [timeoutMs=10000]
- * @returns {Promise<boolean>} Whether startup completed before the deadline.
- */
-function mathjaxReady(timeoutMs = 10000) {
-  if (readyPromise) return readyPromise;
-
-  readyPromise = new Promise((resolve) => {
-    let settled = false;
-    let observedStartup;
-    const poll = setInterval(attach, 50);
-    let deadline = setTimeout(() => {
-      deadline = setTimeout(() => finish(false), timeoutMs);
-      void attach();
-    }, timeoutMs);
-
-    /** @param {boolean} ready Whether startup completed successfully before the deadline. */
-    function finish(ready) {
-      // A late startup result must not clear a newer retry's promise.
-      if (settled) return;
-      settled = true;
-      clearInterval(poll);
-      clearTimeout(deadline);
-      if (!ready) readyPromise = null;
-      resolve(ready);
+/** Load MathJax on demand, then wait for its own startup work. */
+async function loadMathJax() {
+  try {
+    if (!window.MathJax?.startup?.promise) {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = MATHJAX_SRC;
+        script.onload = resolve;
+        script.onerror = () => {
+          script.remove();
+          reject(new Error("MathJax script failed to load"));
+        };
+        document.head.appendChild(script);
+      });
     }
-
-    /** Once the loader exposes its promise, stop polling but keep the deadline. */
-    async function attach() {
-      const startup = window.MathJax?.startup?.promise;
-      if (!startup || startup === observedStartup) return;
-      observedStartup = startup;
-      clearInterval(poll);
-      try {
-        await startup;
-        if (startup === observedStartup) finish(true);
-      } catch (error) {
-        if (settled || startup !== observedStartup) return;
-        console.warn("MathJax startup failed:", error);
-        finish(false);
-      }
-    }
-    // Check now rather than waiting for the first poll. Callers await readyPromise,
-    // not this probe; attach handles startup rejection itself.
-    void attach();
-  });
-
-  return readyPromise;
+    const startup = window.MathJax?.startup?.promise;
+    if (!startup) throw new Error("MathJax loader did not initialize startup");
+    await startup;
+    return true;
+  } catch (error) {
+    console.warn("MathJax startup failed:", error);
+    readyPromise = null;
+    return false;
+  }
 }
 
 /**
@@ -127,8 +67,8 @@ export function useMathjax(containerRef) {
 
   /** Re-typeset the current container after MathJax and Vue are ready. */
   async function typeset() {
-    ensureMathJax();
-    if (!(await mathjaxReady())) return;
+    readyPromise ??= loadMathJax();
+    if (!(await readyPromise)) return;
     await nextTick();
 
     if (containerRef.value && window.MathJax?.typesetPromise) {
