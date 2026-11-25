@@ -16,14 +16,14 @@ Per interpretare lo status è utile distinguere due aspetti: l’**impatto** ind
 
 Facciamo un esempio: una persona riceve quattro opinioni. Sono tante o poche? Se quasi tutti gli altri ne ricevono una, quattro sembrano tante; se quasi tutti ne ricevono dieci, le stesse quattro sembrano poche. È questo confronto con il gruppo che ci interessa quando parliamo di **impatto**. Per ora non importa se le quattro opinioni siano scelte o rifiuti.
 
-Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Anziché affidarsi a una sola regola, il report usa **nove strategie di classificazione**. Possiamo pensarle come **nove votanti**: ciascuno legge gli stessi numeri secondo la propria regola e il report combina i loro voti per classificare l’impatto. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
+Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Il report dispone di **nove metodi**, ma ne usa solo alcuni, a seconda di quanti membri hanno ricevuto almeno un’opinione (i **membri visibili**). Per ciascuno di loro, ogni metodo applicabile può votare per un impatto basso, medio o alto, oppure astenersi. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
 
 Sintesi del procedimento:
 
 1. **Conteggio delle opinioni.** Il primo passo è contare il numero di scelte/rifiuti espressi e ricevuti. Se un membro non è stato scelto/rifiutato dagli altri, il suo status è già definito: _isolato_ se lui stesso non ha espresso alcuna opinione, _ignorato_ se ne ha espresse. Invece, per chi ha ricevuto almeno una scelta o un rifiuto, il procedimento prosegue.
-2. **Classificazione dell’impatto.** Per ogni membro si calcola il totale delle opinioni ricevute, sommando preferenze e rifiuti. Questo totale viene poi valutato da nove strategie di classificazione, ciascuna avente un criterio e regole proprie. Ogni strategia assegna al membro un impatto basso, medio o alto, oppure si astiene se non riesce a decidersi.
-3. **Classificazione del bilancio.** Il bilancio indica se un membro riceve più consensi o più rifiuti. Si parla di bilancio positivo se prevalgono le scelte, negativo se prevalgono i rifiuti. Un bilancio neutro indica un numero simile di scelte e rifiuti.
-4. **Incrocio tra impatto e bilancio.** L'assegnazione dello status sociomentrico scaturisce dall'incrocio tra impatto e bilancio secondo la tabella del punto 2.
+2. **Classificazione dell’impatto.** I metodi applicabili confrontano il totale delle opinioni ricevute da ciascun membro visibile con quelli degli altri membri visibili. Il report combina i voti per assegnare la fascia di impatto. Se nessun metodo vota per quel membro, il suo impatto è medio.
+3. **Classificazione del bilancio.** Il bilancio è positivo se prevalgono nettamente le scelte, negativo se prevalgono nettamente i rifiuti, neutro negli altri casi. Non basta una maggioranza numerica: per esempio, con due scelte e un rifiuto il bilancio resta neutro.
+4. **Incrocio tra impatto e bilancio.** Per i membri visibili, la tabella del §2 mostra quale status sociometrico corrisponde a ciascuna combinazione di impatto e bilancio.
 
 ## 2 Le categorie sociometriche
 
@@ -54,9 +54,11 @@ il codice è associato.
 La categoria dipende dal **livello di impatto** (basso, medio, alto) e dal **bilancio** (positivo, negativo, neutro). Le prime due righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
 classificato solo in base al fatto che ne abbia espresse (ignorato) o meno (isolato).
 
+Se vuoi interpretare una dicitura del report, puoi fermarti a questa tabella. Per capire come viene assegnato lo status, prosegui con il §3; per seguire il calcolo su un gruppo di sette membri, vai al §6.
+
 ## 3 I dati in ingresso
 
-L'algoritmo di assegnazione dello status sociomentrico riceve quattro valori per ogni membro:
+L'algoritmo di assegnazione dello status sociometrico riceve quattro valori per ogni membro:
 
 - $rp_i$: **scelte ricevute**;
 - $rr_i$: **rifiuti ricevuti**;
@@ -98,7 +100,7 @@ Il report confronta ogni membro che ha ricevuto almeno un'opinione con gli altri
 Le nove strategie si distinguono per il numero di membri visibili a cui si applicano:
 
 - **4–6:** Largest gap, Majority Baseline e Small groups.
-- **7–35:** Fisher-Jenks Natrual Breaks, Head/Tail Breaks e Inverted Head/Tail Breaks.
+- **7–35:** Fisher-Jenks Natural Breaks, Head/Tail Breaks e Inverted Head/Tail Breaks.
 - **15–35:** Percentili, Robust Z-Score e Tukey Fences.
 
 La classificazione finale dell’impatto dipende dai voti espressi (§ 4.2.7).
