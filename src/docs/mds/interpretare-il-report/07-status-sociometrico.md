@@ -14,15 +14,17 @@ Per interpretare lo status è utile distinguere due aspetti: l’**impatto** ind
 
 ## 1 In sintesi: dalle risposte allo status
 
-Per seguire l’intero percorso, basta distinguere **quante opinioni** riceve un membro da **quali opinioni** riceve.
+Una persona riceve quattro opinioni: sono tante o poche? Se quasi tutti gli altri ne ricevono una, quattro sembrano tante; se quasi tutti ne ricevono dieci, le stesse quattro sembrano poche. È questo confronto con il gruppo che ci interessa quando parliamo di **impatto**. Per ora non importa se le quattro opinioni sono preferenze o rifiuti.
+
+Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Anziché affidarsi a una sola regola, il report usa **otto strategie di classificazione**. Possiamo pensarle come **otto votanti**: ciascuno legge gli stessi numeri secondo la propria regola e il report combina i loro voti per classificare l’impatto. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
 
 1. **Conteggio delle opinioni espresse e ricevute.** Se il membro non ne ha ricevuta nessuna, lo status è già definito: _isolato_ se non ne ha neppure espresse, _ignorato_ se ne ha espresse. Per chi ha ricevuto almeno una preferenza o un rifiuto, il calcolo prosegue.
-2. **Classificazione dell’impatto.** Preferenze e rifiuti ricevuti contano allo stesso modo. I metodi esaminano i dati e, per ciascun membro, votano per un impatto basso, medio o alto, oppure si astengono.
+2. **Classificazione dell’impatto.** Per ogni membro si sommano le preferenze e i rifiuti ricevuti. Tra gli otto votanti, uno guarda alla posizione del totale nella graduatoria del gruppo, un altro ai salti tra un conteggio e il successivo. Per ciascun membro, ogni votante può indicare un impatto **basso**, **medio** o **alto**, oppure astenersi.
 3. **Classificazione del bilancio.** Si confrontano le preferenze e i rifiuti ricevuti. Il bilancio è **positivo** se prevalgono nettamente le preferenze, **negativo** se prevalgono nettamente i rifiuti e **neutro** se non emerge una prevalenza chiara. Neutro, quindi, non significa necessariamente che i due conteggi siano uguali.
 4. **Incrocio tra impatto e bilancio.** Con un impatto **basso**, la categoria è sempre _marginale_. Con un impatto **medio**, un bilancio positivo corrisponde ad _apprezzato_, uno negativo a _malvisto_ e uno neutro ad _ambivalente_. Con un impatto **alto**, le tre categorie corrispondenti sono _popolare_, _rifiutato_ e _controverso_.
-5. **Si presenta il risultato nel report.** La tabella seguente affianca a ogni categoria la dicitura che si legge nel report: per esempio, _rifiutato_ compare come _segnali di rifiuto_. Bonus e malus, descritti nel § 6, non modificano lo status.
+5. **Presentazione del risultato nel report.** La tabella seguente affianca a ogni categoria la dicitura che si legge nel report: per esempio, _rifiutato_ compare come _segnali di rifiuto_. Bonus e malus, descritti nel § 6, non modificano lo status.
 
-## 2 Le nove categorie
+## 2 Le categorie sociometriche
 
 Ogni codice corrisponde a una categoria ben precisa. La tabella mostra sia la
 **categoria tecnica** usata dall'algoritmo, sia la **formulazione usata nel
@@ -48,10 +50,8 @@ un punteggio o una gravità crescente. Due codici vicini non sono più simili tr
 loro di due codici lontani; ciò che conta è esclusivamente la categoria a cui
 il codice è associato.
 
-La categoria dipende dal **livello di impatto** (basso, medio, alto) e, per i
-livelli medio e alto, dal **bilancio** (positivo, negativo, neutro). Le prime due
-righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
-classificato solo in base al fatto che ne abbia espresse o meno.
+La categoria dipende dal **livello di impatto** (basso, medio, alto) e dal **bilancio** (positivo, negativo, neutro). Le prime due righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
+classificato solo in base al fatto che ne abbia espresse (ignorato) o meno (isolato).
 
 ### 2.1 Gli otto metodi per classificare l'impatto
 
