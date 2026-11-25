@@ -12,11 +12,18 @@ const MIN_GAP = 2; // A candidate gap must be at least this many received opinio
 // Dominance of the candidate gap relative to its competition.
 const RUNNER_UP_FACTOR = 1.5; // Largest gap must be >= this × the runner-up gap.
 const SPREAD_FACTOR = 0.5; // ...or >= this fraction of the group's spread.
+
 /**
- * Small-group strategy for exactly 4 visible members: find the largest gap
- * between consecutive sorted impacts and flag only the smaller side of that
- * gap as the outlier tail. The bulk stays average-impact so its balance can
- * still decide status.
+ * For 4–6 visible members, consider the widest gap between adjacent sorted
+ * impacts. If several gaps tie for widest, use the leftmost one. The gap must
+ * be at least 2 received opinions wide and either at least 1.5 times the
+ * runner-up gap or at least half the full impact range. Return NO_SPLIT if
+ * the group size or gap does not qualify.
+ *
+ * If fewer members lie to the left of the gap, set only the low cutoff
+ * (high = Infinity). If fewer lie to the right, set only the high cutoff
+ * (low = -Infinity). If the counts are equal, set both cutoffs: the left
+ * group is low and the right group is high, with no average group.
  *
  * @param {{ impactVisibleSorted: import("numpy-ts").NDArray }} context - Sorted visible impacts.
  * @returns {{ low: number, high: number }} Proposed cutoffs, or NO_SPLIT.
