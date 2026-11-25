@@ -14,7 +14,7 @@ Per interpretare lo status è utile distinguere due aspetti: l’**impatto** ind
 
 ## 1 In sintesi: dalle risposte allo status
 
-Una persona riceve quattro opinioni: sono tante o poche? Se quasi tutti gli altri ne ricevono una, quattro sembrano tante; se quasi tutti ne ricevono dieci, le stesse quattro sembrano poche. È questo confronto con il gruppo che ci interessa quando parliamo di **impatto**. Per ora non importa se le quattro opinioni sono preferenze o rifiuti.
+Una persona riceve quattro opinioni: sono tante o poche? Se quasi tutti gli altri ne ricevono una, quattro sembrano tante; se quasi tutti ne ricevono dieci, le stesse quattro sembrano poche. È questo confronto con il gruppo che ci interessa quando parliamo di **impatto**. Per ora non importa se le quattro opinioni siano scelte o rifiuti.
 
 Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Anziché affidarsi a una sola regola, il report usa **otto strategie di classificazione**. Possiamo pensarle come **otto votanti**: ciascuno legge gli stessi numeri secondo la propria regola e il report combina i loro voti per classificare l’impatto. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
 
