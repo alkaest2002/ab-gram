@@ -61,7 +61,6 @@ const thresholds = [
   ["percentile", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["tukey", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["robust z-score", [-Infinity, Infinity], [-Infinity, Infinity]],
-  ["binomial (GB)", [0, Infinity], [-Infinity, 6]],
   ["small group", [-Infinity, Infinity], [-Infinity, Infinity]],
 ];
 
@@ -88,7 +87,7 @@ describe.each(examples)(
           metric,
         ).toEqual(values);
       }
-      expect(result.impactThresholds).toHaveLength(9);
+      expect(result.impactThresholds).toHaveLength(thresholds.length);
     });
 
     it.each(thresholds)("reproduces the %s threshold pair", (strategy, likes, dislikes) => {

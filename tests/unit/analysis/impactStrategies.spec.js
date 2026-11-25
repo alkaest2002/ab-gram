@@ -5,7 +5,6 @@ import { describe, expect, it } from "vite-plus/test";
 import * as np from "numpy-ts";
 
 import { NO_SPLIT } from "@/analysis/moreno/metrics/sociometricStatus/constants.js";
-import { binomialStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/binomialStrategy.js";
 import { headTailStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/headTailStrategy.js";
 import { invertedHeadTailStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/invertedHeadTailStrategy.js";
 import { jenksStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/jenksStrategy.js";
@@ -30,7 +29,6 @@ describe("impact strategy member ranges", () => {
     ["percentile", percentileStrategy, 15, 35],
     ["Tukey", tukeyStrategy, 15, 35],
     ["robust z-score", robustZScoreStrategy, 15, 35],
-    ["binomial", binomialStrategy, 5, 35],
   ];
 
   it.each(cases)("makes %s abstain outside its supported member range", (_name, run, min, max) => {

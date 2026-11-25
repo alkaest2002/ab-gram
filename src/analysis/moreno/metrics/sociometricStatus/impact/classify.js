@@ -100,7 +100,7 @@ const countVotes = (booleanArrays) =>
  * }}
  */
 export const classifyImpactByVote = (impact, impactVisibleSorted) => {
-  const context = { impact, impactVisibleSorted };
+  const context = { impactVisibleSorted };
 
   // Compute every strategy's proposed cutoffs (keyed by name) so they can be
   // reported in full, including the strategies that abstain from the vote.

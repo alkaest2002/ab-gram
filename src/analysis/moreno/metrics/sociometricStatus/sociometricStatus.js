@@ -73,7 +73,7 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  * p% and top p% always hold the same number of members. A tail whose
  * boundary value is not separated from its neighbour by at least one vote is
  * switched off (infinite bound) rather than kept.
- * Nine strategies each propose { low, high } cutoffs:
+ * Eight strategies each propose { low, high } cutoffs:
  * - Jenks (4..35 visible): Fisher-Jenks natural breaks into exactly three
  *   classes, gated by goodness of variance fit (GVF >= 0.75) and at least
  *   three distinct values.
@@ -89,8 +89,6 @@ const assignStatus = (visibilityClassification, impactClassification, balanceCla
  *   value exactly on a fence is not an outlier; abstains when IQR is zero.
  * - Robust z-score (7..35 visible): flags values beyond median +/-
  *   3.5 * 1.4826 * MAD (MAD floored at 0.5).
- * - Binomial (GB; 5..35 total members): exact two-sided Binomial(N-1, p)
- *   limits at alpha = 0.05, where p is the network's opinion density.
  * - Small group (exactly 4 visible): flags only the smaller side of the
  *   largest gap as the outlier tail when that gap is dominant.
  * For every supported visible group size from 4 through 35, at least three

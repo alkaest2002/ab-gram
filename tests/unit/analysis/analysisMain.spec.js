@@ -49,7 +49,7 @@ describe("getSociogramAnalysis", () => {
 
     // Research exposes the impact thresholds every strategy proposed.
     expect(result.research).toHaveProperty("sociometricStatus");
-    expect(result.research.sociometricStatus.impactThresholds).toHaveLength(9);
+    expect(result.research.sociometricStatus.impactThresholds).toHaveLength(8);
     expect(result.research.sociometricStatus.impactThresholds[0]).toEqual(
       expect.objectContaining({
         strategy: expect.any(String),

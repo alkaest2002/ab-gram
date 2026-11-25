@@ -8,7 +8,6 @@ import { invertedHeadTailStrategy } from "@/analysis/moreno/metrics/sociometricS
 import { percentileStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/percentileStrategy.js";
 import { tukeyStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/tukeyStrategy.js";
 import { robustZScoreStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/robustZScoreStrategy.js";
-import { binomialStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/binomialStrategy.js";
 import { smallGroupStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/smallGroupStrategy.js";
 
 export const IMPACT_STRATEGIES = [
@@ -19,6 +18,5 @@ export const IMPACT_STRATEGIES = [
   { name: "percentile", run: percentileStrategy },
   { name: "tukey", run: tukeyStrategy },
   { name: "robust z-score", run: robustZScoreStrategy },
-  { name: "binomial (GB)", run: binomialStrategy },
   { name: "small group", run: smallGroupStrategy },
 ];
