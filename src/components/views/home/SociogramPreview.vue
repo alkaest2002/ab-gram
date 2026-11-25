@@ -40,11 +40,11 @@
           viewBox="0 -4 560 400"
           class="graph-svg"
           role="img"
-          aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre preferenze ed è al
+          aria-label="Sociogramma di un gruppo di dieci persone. Emma riceve tre scelte ed è al
             centro del grafico; Milo e Emma, Elsa e Fabio formano due coppie reciproche. Anna e
             Milo si rifiutano a vicenda, Dario rifiuta Gina, Gina rifiuta Iris ed Elsa rifiuta Luca.
             Iris, Luca e Marta scelgono senza essere scelti: Iris e Luca ricevono un rifiuto, Marta
-            non riceve né preferenze né rifiuti."
+            non riceve né scelte né rifiuti."
         >
           <defs>
             <marker

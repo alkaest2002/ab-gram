@@ -59,7 +59,7 @@ Senza staccare le mani dalla tastiera puoi svolgere l'intera compilazione:
 
 Spunta la casella corrispondente:
 
-- **Non ha espresso preferenze**;
+- **Non ha espresso scelte**;
 - **Non ha espresso rifiuti**.
 
 Ogni casella è alternativa al proprio elenco, non all’altra casella: selezionare una persona

@@ -37,22 +37,22 @@ Per orientarsi nelle formule, basta ricordare che:
 - il prodotto $a_{ij} a_{ji}$ vale $1$ solo se $i$ sceglie $j$ **e** $j$ sceglie
   $i$, cioè se la scelta è **reciproca**.
 
-### 1.1 Preferenze: date (GP), ricevute (RP) e reciproche (MP)
+### 1.1 scelte: date (GP), ricevute (RP) e reciproche (MP)
 
-- **Scelte date positive** ($gp_i$): quante preferenze ha espresso.
+- **Scelte date positive** ($gp_i$): quante scelte ha espresso.
 
 $$
 gp_i = \sum_{j} a_{ij}
 $$
 
-- **Scelte ricevute positive** ($rp_i$): quante preferenze ha ricevuto il
+- **Scelte ricevute positive** ($rp_i$): quante scelte ha ricevuto il
   membro $i$. Più è alto, più il membro è scelto dai compagni.
 
 $$
 rp_i = \sum_{j} a_{ji}
 $$
 
-- **Reciprocità positiva** ($mp_i$): quante preferenze del membro sono
+- **Reciprocità positiva** ($mp_i$): quante scelte del membro sono
   ricambiate, cioè con quante persone c'è una scelta a vicenda.
 
 $$
@@ -93,8 +93,8 @@ $$
 im_i = rp_i + rr_i
 $$
 
-- **Bilancio** ($bl_i$): la differenza tra preferenze e rifiuti ricevuti. È
-  positivo se riceve più preferenze che rifiuti, negativo nel caso opposto.
+- **Bilancio** ($bl_i$): la differenza tra scelte e rifiuti ricevuti. È
+  positivo se riceve più scelte che rifiuti, negativo nel caso opposto.
 
 $$
 bl_i = rp_i - rr_i
@@ -107,7 +107,7 @@ $$
 ei_i = gp_i + gr_i
 $$
 
-- **Orientamento** ($or_i$): la differenza tra preferenze e rifiuti espressi. È
+- **Orientamento** ($or_i$): la differenza tra scelte e rifiuti espressi. È
   positivo se il membro tende a scegliere più che a rifiutare, negativo se
   accade il contrario.
 
@@ -123,7 +123,7 @@ $$
 ai_i = bl_i + or_i
 $$
 
-- **Influenza** ($ii_i$): preferenze ricevute più preferenze reciproche. Le
+- **Influenza** ($ii_i$): scelte ricevute più scelte reciproche. Le
   scelte ricambiate "pesano" quindi il doppio: è una scelta di costruzione
   dell'indice, non una prova di solidità del legame o di influenza effettiva.
 
@@ -135,7 +135,7 @@ $$
 
 Lo **status sociometrico** ($ss_i$) è una categoria descrittiva: classifica
 ogni membro in una di **nove categorie**, combinando due informazioni già viste,
-l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra preferenze e
+l'impatto ricevuto (quanto il membro è visibile) e il bilancio tra scelte e
 rifiuti (se prevalgono gli uni o le altre). Le categorie, con il relativo
 codice e la dizione mostrata nel report, sono:
 
@@ -162,7 +162,7 @@ attribuirgli un giudizio sociale definitivo e potenzialmente stigmatizzante.
 Le categorie non formano una graduatoria. «Isolato» indica assenza di nomine
 sia ricevute sia espresse; «ignorato» indica assenza di nomine ricevute, ma
 presenza di nomine espresse. Per gli altri membri contano il livello relativo
-dell'impatto e una regola di prevalenza tra preferenze e rifiuti. Il bilancio
+dell'impatto e una regola di prevalenza tra scelte e rifiuti. Il bilancio
 «neutro» usato per lo status non coincide necessariamente con $bl_i = 0$.
 
 La regola che assegna il codice è più complessa delle formule viste finora,

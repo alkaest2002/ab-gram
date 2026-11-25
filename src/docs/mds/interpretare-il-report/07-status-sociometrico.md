@@ -10,7 +10,7 @@ order: 7
 
 Lo **status sociometrico** ($ss_i$) descrive la posizione di un membro nel gruppo al momento della rilevazione. È una **categoria**, non un punteggio: dipende dal gruppo, dalla domanda posta e dalle risposte raccolte. Non è una diagnosi né una caratteristica stabile della persona.
 
-Per interpretare lo status è utile distinguere due aspetti: l’**impatto** indica quante opinioni il membro ha ricevuto, contando insieme preferenze e rifiuti; il **bilancio** indica se prevalgono le preferenze, i rifiuti o nessuno dei due. Un impatto alto, quindi, non significa necessariamente che il membro sia apprezzato.
+Per interpretare lo status è utile distinguere due aspetti: l’**impatto** indica quante opinioni il membro ha ricevuto, contando insieme scelte e rifiuti; il **bilancio** indica se prevalgono le scelte , i rifiuti o nessuno dei due. Un impatto alto, quindi, non significa necessariamente che il membro sia apprezzato.
 
 ## 1 In sintesi: dalle risposte allo status
 
@@ -19,8 +19,8 @@ Una persona riceve quattro opinioni: sono tante o poche? Se quasi tutti gli altr
 Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Anziché affidarsi a una sola regola, il report usa **otto strategie di classificazione**. Possiamo pensarle come **otto votanti**: ciascuno legge gli stessi numeri secondo la propria regola e il report combina i loro voti per classificare l’impatto. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
 
 1. **Conteggio delle opinioni espresse e ricevute.** Se il membro non ne ha ricevuta nessuna, lo status è già definito: _isolato_ se non ne ha neppure espresse, _ignorato_ se ne ha espresse. Per chi ha ricevuto almeno una preferenza o un rifiuto, il calcolo prosegue.
-2. **Classificazione dell’impatto.** Per ogni membro si sommano le preferenze e i rifiuti ricevuti. Tra gli otto votanti, uno guarda alla posizione del totale nella graduatoria del gruppo, un altro ai salti tra un conteggio e il successivo. Per ciascun membro, ogni votante può indicare un impatto **basso**, **medio** o **alto**, oppure astenersi.
-3. **Classificazione del bilancio.** Con poche opinioni ricevute, una preferenza o un rifiuto in più pesa molto: per parlare di prevalenza, il report richiede uno squilibrio netto. Fino a 3 opinioni, un conteggio deve superare il doppio dell’altro. Da lì, ogni opinione in più abbassa un poco la soglia: a 15 opinioni basta superare una volta e mezza l’altro conteggio e da quel punto il criterio non cambia più. Se superano la soglia le preferenze, il bilancio è **positivo**; se la superano i rifiuti, è **negativo**. Altrimenti è **neutro**, anche quando i conteggi sono diversi.
+2. **Classificazione dell’impatto.** Per ogni membro si sommano le scelte e i rifiuti ricevuti. Tra gli otto votanti, uno guarda alla posizione del totale nella graduatoria del gruppo, un altro ai salti tra un conteggio e il successivo. Per ciascun membro, ogni votante può indicare un impatto **basso**, **medio** o **alto**, oppure astenersi.
+3. **Classificazione del bilancio.** Con poche opinioni ricevute, una preferenza o un rifiuto in più pesa molto: per parlare di prevalenza, il report richiede uno squilibrio netto. Fino a 3 opinioni, un conteggio deve superare il doppio dell’altro. Da lì, ogni opinione in più abbassa un poco la soglia: a 15 opinioni basta superare una volta e mezza l’altro conteggio e da quel punto il criterio non cambia più. Se superano la soglia le scelte , il bilancio è **positivo**; se la superano i rifiuti, è **negativo**. Altrimenti è **neutro**, anche quando i conteggi sono diversi.
 4. **Incrocio tra impatto e bilancio.** Con un impatto **basso**, la categoria è sempre _marginale_. Con un impatto **medio**, un bilancio positivo corrisponde ad _apprezzato_, uno negativo a _malvisto_ e uno neutro ad _ambivalente_. Con un impatto **alto**, le tre categorie corrispondenti sono _popolare_, _rifiutato_ e _controverso_.
 5. **Presentazione del risultato nel report.** La tabella seguente affianca a ogni categoria la dicitura che si legge nel report: per esempio, _rifiutato_ compare come _segnali di rifiuto_. Bonus e malus, descritti nel § 6, non modificano lo status.
 
@@ -72,7 +72,7 @@ La classe di impatto deriva dal voto dei metodi che non si astengono (§ 4.2).
 
 L'algoritmo riceve quattro valori per ogni membro:
 
-- $rp_i$: **preferenze ricevute**;
+- $rp_i$: **scelte ricevute**;
 - $rr_i$: **rifiuti ricevuti**;
 - $\mathrm{espressività}_i = gp_i + gr_i$: opinioni **espresse** in totale;
 - $n_i = rp_i + rr_i$: **impatto**, cioè opinioni **ricevute** in totale.
@@ -417,7 +417,7 @@ una probabilità nota di individuare una classificazione «corretta».
 
 ### 4.3 Passo 3 — Classificazione del bilancio
 
-Per classificare il bilancio non basta confrontare il numero di preferenze ($rp$)
+Per classificare il bilancio non basta confrontare il numero di scelte ($rp$)
 con quello dei rifiuti ($rr$). Si usa un **rapporto di soglia variabile**:
 quando un membro riceve poche opinioni, il criterio di prevalenza è più severo. La logica è: poche opinioni ricevute $\Rightarrow$ meno certezza
 $\Rightarrow$ serve uno squilibrio più netto per parlare di prevalenza.
@@ -434,7 +434,7 @@ In pratica:
 - dalla quarta alla quindicesima opinione, la soglia scende ogni volta dello stesso passo: il calo complessivo di $0{,}5$ è ripartito sulle **12 opinioni aggiuntive** che portano il totale da 3 a 15. A 9 opinioni la soglia è $1{,}75$; a 12 è ancora $1{,}625$;
 - a 15 opinioni la soglia raggiunge $1{,}5$ e resta a quel valore anche se il totale aumenta.
 
-Per esempio, con 2 preferenze e 1 rifiuto il bilancio è **neutro**: le preferenze sono esattamente il doppio dei rifiuti, ma devono essere _più_ del doppio. Con 6 preferenze e 3 rifiuti la proporzione è identica, ma le opinioni sono 9: il rapporto di 2 supera la soglia di $1{,}75$ e il bilancio è **positivo**.
+Per esempio, con 2 scelte e 1 rifiuto il bilancio è **neutro**: le scelte sono esattamente il doppio dei rifiuti, ma devono essere _più_ del doppio. Con 6 scelte e 3 rifiuti la proporzione è identica, ma le opinioni sono 9: il rapporto di 2 supera la soglia di $1{,}75$ e il bilancio è **positivo**.
 
 A questo punto il bilancio è:
 
@@ -446,9 +446,9 @@ Questa classe di bilancio non è il semplice segno dell'indice $bl_i = rp_i - rr
 può risultare neutra anche se i due conteggi sono diversi. È una regola
 operativa, non un test di significatività.
 
-Per i membri visibili, due conseguenze utili da ricordare: chi riceve solo preferenze ($rr_i = 0$) ha
+Per i membri visibili, due conseguenze utili da ricordare: chi riceve solo scelte ($rr_i = 0$) ha
 sempre bilancio positivo, e viceversa per chi riceve solo rifiuti; il bilancio
-neutro compare solo quando preferenze e rifiuti sono abbastanza vicini da non
+neutro compare solo quando scelte e rifiuti sono abbastanza vicini da non
 superare la soglia.
 
 ### 4.4 Passo 4 — Assegnazione finale: l'albero di decisione
@@ -529,7 +529,7 @@ che scelgono $i$ e $R_i$ è l'insieme dei membri che lo rifiutano. Il termine
 $M - p_j(i) + 1$ vale $M$ quando $i$ è indicato per primo e diminuisce di $1$
 per ogni posizione successiva.
 
-- Un **bonus alto** ($bns_i$) può dipendere da molte preferenze ricevute,
+- Un **bonus alto** ($bns_i$) può dipendere da molte scelte ricevute,
   da posizioni iniziali nelle liste o da entrambe le cose.
 - Un **malus alto** ($mls_i$) può dipendere da molti rifiuti ricevuti,
   da posizioni iniziali nelle liste o da entrambe le cose.

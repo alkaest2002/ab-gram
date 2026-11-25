@@ -127,7 +127,7 @@ espresso scelte o rifiuti.
 **Soluzione**
 
 - Per le **scelte**, inserisci almeno una scelta oppure spunta
-  _«Non ha espresso preferenze»_.
+  _«Non ha espresso scelte»_.
 - Per i **rifiuti**, inserisci almeno un rifiuto oppure spunta
   _«Non ha espresso rifiuti»_.
 - Controlla la barra di avanzamento: indica quanti membri restano da completare.

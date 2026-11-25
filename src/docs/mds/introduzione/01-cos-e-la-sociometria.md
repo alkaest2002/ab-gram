@@ -67,7 +67,7 @@ Anna sceglie Bea, Bea rifiuta Carlo e Carlo sceglie Anna. La diagonale è esclus
 nel questionario non si indicano scelte o rifiuti verso se stessi.
 
 **L'assenza di una scelta non equivale a un rifiuto.** Una persona non indicata
-potrebbe semplicemente non rientrare tra le preferenze espresse, soprattutto
+potrebbe semplicemente non rientrare tra le scelte espresse, soprattutto
 se il questionario limita il numero di risposte.
 
 Per analizzare separatamente i due tipi di relazione, la tabella può essere

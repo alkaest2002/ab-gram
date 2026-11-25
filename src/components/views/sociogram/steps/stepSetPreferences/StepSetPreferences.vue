@@ -236,7 +236,7 @@ function handleWindowKeydown(event) {
               <strong>{{ currentMember?.name }}</strong>
               non ha espresso scelte, spunta questa casella di controllo.
             </template>
-            <template #checkboxLabel> Non ha espresso preferenze. </template>
+            <template #checkboxLabel> Non ha espresso scelte. </template>
           </SetPreferencesNoPreferences>
           <SetPreferencesNoPreferences v-model="currentNoDislikes" tone="dislikes">
             <template #description>
