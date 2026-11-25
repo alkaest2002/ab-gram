@@ -12,7 +12,7 @@ import { computed } from "vue";
 import { useRoute, RouterView } from "vue-router";
 
 //   -- From components.
-import AppContentTransition from "@/components/ui/AppContentTransition.vue";
+import AppTransitionContent from "@/components/ui/AppTransitionContent.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";
 import ReportLayout from "@/components/layouts/ReportLayout.vue";
@@ -48,9 +48,9 @@ const layout = computed(() => layouts[route.meta.layout] ?? DefaultLayout);
 <template>
   <component :is="layout">
     <RouterView v-slot="{ Component }">
-      <AppContentTransition appear>
+      <AppTransitionContent appear>
         <component :is="Component" />
-      </AppContentTransition>
+      </AppTransitionContent>
     </RouterView>
   </component>
 </template>

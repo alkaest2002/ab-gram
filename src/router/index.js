@@ -59,7 +59,7 @@ const scrollBehavior = (to, from, savedPosition) => {
   if (savedPosition) {
     return savedPosition;
   }
-  // Wait for the 200ms route fade-in (AppContentTransition) so the jump to
+  // Wait for the 200ms route fade-in (AppTransitionContent) so the jump to
   // top lands on the incoming page instead of flashing the outgoing one.
   return new Promise((resolve) => setTimeout(() => resolve({ top: 0, behavior: "smooth" }), 200));
 };

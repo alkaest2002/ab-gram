@@ -12,7 +12,7 @@ import { onBeforeUnmount, ref, watch } from "vue";
 import { onBeforeRouteUpdate, RouterView, useRoute } from "vue-router";
 
 //   -- From components.
-import AppContentTransition from "@/components/ui/AppContentTransition.vue";
+import AppTransitionContent from "@/components/ui/AppTransitionContent.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
 
@@ -64,9 +64,9 @@ onBeforeUnmount(clear);
       <article ref="articleRef" class="prose prose-neutral max-w-none prose-headings:scroll-mt-20">
         <h1>{{ route.meta.title }}</h1>
         <RouterView v-slot="{ Component }">
-          <AppContentTransition>
+          <AppTransitionContent>
             <component :is="Component" />
-          </AppContentTransition>
+          </AppTransitionContent>
         </RouterView>
       </article>
 
