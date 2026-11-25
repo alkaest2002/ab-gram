@@ -10,6 +10,8 @@ import { tukeyStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impac
 import { robustZScoreStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/robustZScoreStrategy.js";
 import { smallGroupStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/smallGroupStrategy.js";
 
+import { majorityBaselineStrategy } from "@/analysis/moreno/metrics/sociometricStatus/impact/strategies/majorityBaselineStrategy.js";
+
 export const IMPACT_STRATEGIES = [
   { name: "jenks", run: jenksStrategy },
   { name: "largest gap", run: largestGapStrategy },
@@ -19,4 +21,5 @@ export const IMPACT_STRATEGIES = [
   { name: "tukey", run: tukeyStrategy },
   { name: "robust z-score", run: robustZScoreStrategy },
   { name: "small group", run: smallGroupStrategy },
+  { name: "majority baseline", run: majorityBaselineStrategy },
 ];

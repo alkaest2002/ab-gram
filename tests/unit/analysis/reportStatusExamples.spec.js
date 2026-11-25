@@ -62,6 +62,7 @@ const thresholds = [
   ["tukey", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["robust z-score", [-Infinity, Infinity], [-Infinity, Infinity]],
   ["small group", [-Infinity, Infinity], [-Infinity, Infinity]],
+  ["majority baseline", [-Infinity, Infinity], [-Infinity, Infinity]],
 ];
 
 describe.each(examples)(
