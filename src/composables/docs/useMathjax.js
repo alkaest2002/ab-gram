@@ -50,28 +50,38 @@ function mathjaxReady(timeoutMs = 10000) {
   if (readyPromise) return readyPromise;
 
   readyPromise = new Promise((resolve) => {
+    let settled = false;
+
+    /** Stop both timers and notify all waiters; a failed attempt can be retried. */
     function finish(ready) {
+      // Startup can settle after the timeout; don't clear a newer retry's promise.
+      if (settled) return;
+      settled = true;
+      if (!ready) readyPromise = null;
       clearInterval(poll);
       clearTimeout(deadline);
       resolve(ready);
     }
 
-    function attach() {
+    /** If the loader has exposed its startup promise, wait for it; otherwise let polling continue. */
+    async function attach() {
       const startup = window.MathJax?.startup?.promise;
       if (!startup) return;
+      // We found the loader. Stop polling, but keep the deadline while startup runs.
       clearInterval(poll);
-      startup.then(
-        () => finish(true),
-        () => finish(false),
-      );
+      try {
+        await startup;
+        finish(true);
+      } catch {
+        finish(false);
+      }
     }
 
     const poll = setInterval(attach, 50);
     const deadline = setTimeout(() => finish(false), timeoutMs);
-    attach();
-  }).then((ready) => {
-    if (!ready) readyPromise = null;
-    return ready;
+    // Check now rather than waiting for the first poll. Callers await readyPromise,
+    // not this probe; attach handles startup rejection itself.
+    void attach();
   });
 
   return readyPromise;
