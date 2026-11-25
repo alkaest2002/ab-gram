@@ -165,6 +165,8 @@ anche gli isolati e gli ignorati, la lunga coda di zeri abbasserebbe le soglie
 e, nelle reti poco dense, la categoria "marginale" rischierebbe di non essere
 mai raggiunta.
 
+Dopo il controllo di separazione, una divisione basata sulla distribuzione è valida solo se la fascia media contiene **più membri di ciascuna coda attiva**. Se questa condizione manca e una sola coda è attiva, il metodo si astiene. Con due code attive si può invece unire una coda alla fascia media, purché la nuova fascia media sia più numerosa della coda rimasta. Se entrambe le fusioni sono ammissibili, si sceglie quella con il costo di Ward minore, cioè quella che aumenta meno la somma degli scarti quadratici interni alle fasce. A parità di costo, o se nessuna fusione è ammissibile, il metodo si astiene.
+
 **Pochissimi membri visibili.** Se i membri visibili sono **meno di quattro**,
 non c'è abbastanza varietà per distinguere tre classi: la votazione viene
 saltata e tutti i membri visibili restano a impatto medio. Da $4$ a $35$ membri
@@ -215,15 +217,13 @@ $x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_{i+1} - x_i$ per
 $i = 0, \dots, N-2$; i due salti più ampi individuano le due separazioni
 tra coda bassa, fascia media e coda alta.
 
-Il metodo **si astiene quando la scelta dei due salti è ambigua**: il
-secondo salto più ampio ha la stessa ampiezza del terzo. Sono invece ammessi
+Se il secondo salto più ampio è pari al terzo, si usa solo il salto massimo e si segnala la coda più piccola. Se il massimo non è unico o i due lati hanno uguale numerosità, il metodo si astiene. Sono invece ammessi
 due salti massimi uguali, purché entrambi siano strettamente più ampi di
 tutti gli altri; le parità tra salti non selezionati non impediscono il voto.
 
 Per esempio, con impatti visibili $[1, 3, 5, 7, 9, 11]$ tutti i salti valgono
 $2$ e il metodo si astiene. Si astiene anche con $[1, 3, 8, 10]$: il salto
-massimo vale $5$, ma non è possibile scegliere univocamente il secondo tra i
-due salti di ampiezza $2$. Con $[1, 5, 5, 9]$, invece, i due salti massimi di
+massimo vale $5$, ma divide i quattro membri in due gruppi uguali. Con $[1, 5, 5, 9]$, invece, i due salti massimi di
 ampiezza $4$ sono univocamente individuati: le soglie sono $L = 1$ e $H = 9$.
 
 Il metodo è ammesso con **da $4$ a $6$ membri visibili** e si astiene al di
@@ -268,7 +268,7 @@ $$
 Se non ci sono valori sotto il recinto basso si pone $L = -\infty$; se non
 ce ne sono sopra il recinto alto si pone $H = +\infty$.
 
-Il metodo è ammesso con **da $7$ a $35$ membri visibili** e si astiene al di
+Il metodo è ammesso con **da $15$ a $35$ membri visibili** e si astiene al di
 fuori di questo intervallo. Vale poi il **controllo di separazione** (§ 4.2).
 
 #### 4.2.4 Metodo di Jenks
@@ -372,7 +372,7 @@ Detto $IQR = Q_3 - Q_1$ lo scarto interquartile, i recinti usati sono
 - recinto basso: $Q_1 - 1 \cdot IQR$;
 - recinto alto: $Q_3 + 1 \cdot IQR$.
 
-Il metodo è ammesso con **da $7$ a $35$ membri visibili**; si astiene al di
+Il metodo è ammesso con **da $15$ a $35$ membri visibili**; si astiene al di
 fuori di questo intervallo oppure se $IQR = 0$. Le soglie effettive sono il massimo valore osservato strettamente sotto il
 recinto basso e il minimo valore strettamente sopra quello alto; un lato
 senza valori oltre il recinto viene disattivato. Con moltiplicatore $1$ il
@@ -441,8 +441,7 @@ più piccola:
 
 - coda **bassa** più piccola $\Rightarrow$ $L = x_{k-1}$ e $H = +\infty$;
 - coda **alta** più piccola $\Rightarrow$ $L = -\infty$ e $H = x_k$;
-- code **uguali** (possibile con $N = 4$, due contro due, o $N = 6$, tre contro tre) $\Rightarrow$
-  $L = x_{k-1}$ e $H = x_k$.
+- code **uguali** (possibile con $N = 4$, due contro due, o $N = 6$, tre contro tre): il metodo si astiene.
 
 Per esempio, con $[1, 1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e
 il metodo si astiene sui tre $1$; con $[1, 3, 3, 3]$ viene segnalato solo l'$1$
@@ -583,7 +582,7 @@ che il numero assoluto di opinioni sia trascurabile.
 | Comitato minimo per $4 \le N \le 35$                      | almeno $2$ metodi ammessi in base alla numerosità                                                               |
 | Membri visibili per percentili                            | $20 \le N \le 35$                                                                                               |
 | Membri visibili per Jenks, head/tail e inverted head/tail | $7 \le N \le 35$                                                                                                |
-| Membri visibili per Tukey e robust z-score                | $7 \le N \le 35$                                                                                                |
+| Membri visibili per Tukey e robust z-score                | $15 \le N \le 35$                                                                                               |
 | Membri del gruppo per binomiale                           | $5 \le n \le 35$                                                                                                |
 | Membri visibili per largest gap                           | $4 \le N \le 6$                                                                                                 |
 | Membri visibili per piccoli gruppi                        | $4 \le N \le 6$                                                                                                 |
@@ -684,22 +683,16 @@ $N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
 - **Jenks.** Ci sono solo tre valori distinti, quindi si usa $k=3$. Le classi $[2, 2, 2, 2]$, $[3]$ e $[6, 6]$
   hanno varianza interna nulla: $SDCM = 0$, $SDAM = 150/7$ e
-  $GVF = 1$. Le soglie sono $L = 2$ e $H = 6$.
+  $GVF = 1$. Solo unendo la fascia media alla coda bassa si ottiene una maggioranza: cinque membri contro i due della coda alta. Restano quindi $L = -\infty$ e $H = 6$.
 - **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 - **Head/tail.** La media è $23/7 \approx 3{,}286$. La testa $[6, 6]$
   contiene $2/7 < 0{,}4$ dei membri; alla successiva iterazione i valori sono
   uguali e non si producono altri tagli. Quindi $L = -\infty$ e $H = 6$.
 - **Inverted head/tail.** Alla stessa media, la coda è $[2, 2, 2, 2, 3]$:
   contiene $5/7 \ge 0{,}4$ dei membri, quindi la ricorsione si arresta subito.
-  Le soglie sono $L = 3$ e $H = +\infty$.
+  Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 20$ il metodo non è ammesso e si astiene.
-- **Tukey.** I quartili sono $Q_1 = 2$ e $Q_3 = 6$, quindi
-  $IQR = 4$ e i recinti sono $-2$ e $10$. Nessun valore è
-  strettamente oltre i recinti: **nessuna divisione**.
-- **Robust z-score.** La mediana è $2$ e la MAD grezza è $0$, portata
-  al minimo $0{,}5$. I recinti sono $2 \pm 2{,}59455$, cioè
-  $-0{,}59455$ e $4{,}59455$. Solo i due $6$ superano il recinto alto:
-  $L = -\infty$ e $H = 6$.
+- **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
 - **Binomiale.** Le opinioni totali sono $23$, quindi $p = 23/42$
   e $X \sim \text{Binomiale}(6;\ 23/42)$. Si ha
   $P(X \le 0) \approx 0{,}00857 \le 0{,}025$, mentre
@@ -713,42 +706,34 @@ Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
 | Metodo             | Etichette                                         |
 | ------------------ | ------------------------------------------------- |
-| Jenks              | $+1, +1, -1, 0, -1, -1, -1$                       |
+| Jenks              | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
 | largest gap        | _si astiene_                                      |
 | head/tail          | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
-| inverted head/tail | $\cdot, \cdot, -1, -1, -1, -1, -1$                |
+| inverted head/tail | _si astiene_                                      |
 | percentili         | _si astiene_                                      |
 | Tukey              | _si astiene_                                      |
-| robust z-score     | $+1, +1, \cdot, \cdot, \cdot, \cdot, \cdot$       |
+| robust z-score     | _si astiene_                                      |
 | binomiale          | _si astiene_                                      |
 | piccoli gruppi     | _si astiene_                                      |
-| **Voto**           | **alto, alto, basso, basso, basso, basso, basso** |
+| **Voto**           | **alto, alto, medio, medio, medio, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
-I membri $1$ e $2$ ricevono tre voti per alto e nessun voto contrario.
-I quattro membri con impatto $2$ ricevono due voti per basso (Jenks e
-inverted head/tail). Il membro $4$ riceve un voto per medio da Jenks e
-uno per basso da inverted head/tail: nello spareggio prevale **basso**.
-Ne risulta:
-
-- impatto basso: membri $3$, $4$, $5$, $6$, $7$;
-- impatto alto: membri $1$ e $2$;
-- nessun membro a impatto medio.
+I membri $1$ e $2$ ricevono due voti per alto, da Jenks e da head/tail. Gli altri cinque non ricevono voti e restano a impatto medio.
 
 **Passo 3 — Bilancio.** Non ci sono rifiuti ($rr = 0$), quindi il bilancio è
 sempre positivo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso        | Status    | Codice |
-| ------ | --------------- | --------- | ------ |
-| 1      | alto + positivo | popolare  | 4      |
-| 2      | alto + positivo | popolare  | 4      |
-| 3      | basso           | marginale | 2      |
-| 4      | basso           | marginale | 2      |
-| 5      | basso           | marginale | 2      |
-| 6      | basso           | marginale | 2      |
-| 7      | basso           | marginale | 2      |
+| Membro | Percorso         | Status     | Codice |
+| ------ | ---------------- | ---------- | ------ |
+| 1      | alto + positivo  | popolare   | 4      |
+| 2      | alto + positivo  | popolare   | 4      |
+| 3      | medio + positivo | apprezzato | 3      |
+| 4      | medio + positivo | apprezzato | 3      |
+| 5      | medio + positivo | apprezzato | 3      |
+| 6      | medio + positivo | apprezzato | 3      |
+| 7      | medio + positivo | apprezzato | 3      |
 
 I membri $1$ e $2$ finiscono entrambi nella categoria **popolare**:
 ricevono lo stesso numero di scelte ($6$). Per distinguerli serve guardare
@@ -767,15 +752,15 @@ $M - p_j(i) + 1$. Calcoliamo il bonus dei due membri **popolari**:
 Non essendoci rifiuti, il malus è $0$ per tutti. Ripetendo per gli altri si
 ottiene:
 
-| Membro | Status    | $bns_i$ | $mls_i$ |
-| ------ | --------- | ------- | ------- |
-| 1      | popolare  | 210     | 0       |
-| 2      | popolare  | 205     | 0       |
-| 3      | marginale | 68      | 0       |
-| 4      | marginale | 99      | 0       |
-| 5      | marginale | 64      | 0       |
-| 6      | marginale | 62      | 0       |
-| 7      | marginale | 60      | 0       |
+| Membro | Status     | $bns_i$ | $mls_i$ |
+| ------ | ---------- | ------- | ------- |
+| 1      | popolare   | 210     | 0       |
+| 2      | popolare   | 205     | 0       |
+| 3      | apprezzato | 68      | 0       |
+| 4      | apprezzato | 99      | 0       |
+| 5      | apprezzato | 64      | 0       |
+| 6      | apprezzato | 62      | 0       |
+| 7      | apprezzato | 60      | 0       |
 
 Il membro $1$ ha un bonus più alto del membro $2$ ($210$ contro $205$):
 è stato scelto **prima** nelle sequenze altrui. A parità di conteggio e di
@@ -820,22 +805,16 @@ $N = n = 7$. Calcoliamo le soglie proposte dai nove metodi.
 
 - **Jenks.** Ci sono solo tre valori distinti, quindi si usa $k=3$. Le classi $[1, 1, 1, 1]$, $[2]$ e $[6, 6]$
   hanno varianza interna nulla: $SDCM = 0$, $SDAM = 236/7$ e
-  $GVF = 1$. Le soglie sono $L = 1$ e $H = 6$.
+  $GVF = 1$. Solo unendo la fascia media alla coda bassa si ottiene una maggioranza: cinque membri contro i due della coda alta. Restano quindi $L = -\infty$ e $H = 6$.
 - **Largest gap.** Con $N = 7 > 6$ il metodo non è ammesso e si astiene.
 - **Head/tail.** La media è $18/7 \approx 2{,}571$. La testa $[6, 6]$
   contiene $2/7 < 0{,}4$ dei membri; alla successiva iterazione i valori sono
   uguali e non si producono altri tagli. Quindi $L = -\infty$ e $H = 6$.
 - **Inverted head/tail.** Alla stessa media, la coda è $[1, 1, 1, 1, 2]$:
   contiene $5/7 \ge 0{,}4$ dei membri, quindi la ricorsione si arresta subito.
-  Le soglie sono $L = 2$ e $H = +\infty$.
+  Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 20$ il metodo non è ammesso e si astiene.
-- **Tukey.** I quartili sono $Q_1 = 1$ e $Q_3 = 6$, quindi
-  $IQR = 5$ e i recinti sono $-4$ e $11$. Nessun valore è
-  strettamente oltre i recinti: **nessuna divisione**.
-- **Robust z-score.** La mediana è $1$ e la MAD grezza è $0$, portata
-  al minimo $0{,}5$. I recinti sono $1 \pm 2{,}59455$, cioè
-  $-1{,}59455$ e $3{,}59455$. Solo i due $6$ superano il recinto alto:
-  $L = -\infty$ e $H = 6$.
+- **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
 - **Binomiale.** Le opinioni totali sono $18$, quindi $p = 18/42 = 3/7$
   e $X \sim \text{Binomiale}(6;\ 3/7)$. Si ha
   $P(X \le 0) \approx 0{,}03482 > 0{,}025$: il lato basso è disattivato.
@@ -847,42 +826,34 @@ Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
 | Metodo             | Etichette                                         |
 | ------------------ | ------------------------------------------------- |
-| Jenks              | $-1, -1, -1, +1, +1, 0, -1$                       |
+| Jenks              | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
 | largest gap        | _si astiene_                                      |
 | head/tail          | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
-| inverted head/tail | $-1, -1, -1, \cdot, \cdot, -1, -1$                |
+| inverted head/tail | _si astiene_                                      |
 | percentili         | _si astiene_                                      |
 | Tukey              | _si astiene_                                      |
-| robust z-score     | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
+| robust z-score     | _si astiene_                                      |
 | binomiale          | $\cdot, \cdot, \cdot, +1, +1, \cdot, \cdot$       |
 | piccoli gruppi     | _si astiene_                                      |
-| **Voto**           | **basso, basso, basso, alto, alto, basso, basso** |
+| **Voto**           | **medio, medio, medio, alto, alto, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
-I membri $4$ e $5$ ricevono quattro voti per alto e nessun voto contrario.
-I quattro membri con impatto $1$ ricevono due voti per basso (Jenks e
-inverted head/tail). Il membro $6$ riceve un voto per medio da Jenks e
-uno per basso da inverted head/tail: nello spareggio prevale **basso**.
-Ne risulta:
-
-- impatto basso: membri $1$, $2$, $3$, $6$, $7$;
-- impatto alto: membri $4$ e $5$;
-- nessun membro a impatto medio.
+I membri $4$ e $5$ ricevono tre voti per alto, da Jenks, da head/tail e dal binomiale. Gli altri cinque non ricevono voti e restano a impatto medio.
 
 **Passo 3 — Bilancio.** Non ci sono scelte ($rp = 0$), quindi il bilancio è
 sempre negativo.
 
 **Passo 4 — Assegnazione.**
 
-| Membro | Percorso        | Status    | Codice |
-| ------ | --------------- | --------- | ------ |
-| 1      | basso           | marginale | 2      |
-| 2      | basso           | marginale | 2      |
-| 3      | basso           | marginale | 2      |
-| 4      | alto + negativo | rifiutato | 6      |
-| 5      | alto + negativo | rifiutato | 6      |
-| 6      | basso           | marginale | 2      |
-| 7      | basso           | marginale | 2      |
+| Membro | Percorso         | Status    | Codice |
+| ------ | ---------------- | --------- | ------ |
+| 1      | medio + negativo | malvisto  | 5      |
+| 2      | medio + negativo | malvisto  | 5      |
+| 3      | medio + negativo | malvisto  | 5      |
+| 4      | alto + negativo  | rifiutato | 6      |
+| 5      | alto + negativo  | rifiutato | 6      |
+| 6      | medio + negativo | malvisto  | 5      |
+| 7      | medio + negativo | malvisto  | 5      |
 
 I membri $4$ e $5$ finiscono entrambi nella categoria **rifiutato**:
 ricevono lo stesso numero di rifiuti ($6$). Per distinguerli serve guardare
@@ -903,13 +874,13 @@ ottiene:
 
 | Membro | Status    | $bns_i$ | $mls_i$ |
 | ------ | --------- | ------- | ------- |
-| 1      | marginale | 0       | 34      |
-| 2      | marginale | 0       | 33      |
-| 3      | marginale | 0       | 33      |
+| 1      | malvisto  | 0       | 34      |
+| 2      | malvisto  | 0       | 33      |
+| 3      | malvisto  | 0       | 33      |
 | 4      | rifiutato | 0       | 210     |
 | 5      | rifiutato | 0       | 205     |
-| 6      | marginale | 0       | 67      |
-| 7      | marginale | 0       | 32      |
+| 6      | malvisto  | 0       | 67      |
+| 7      | malvisto  | 0       | 32      |
 
 Il membro $4$ ha un malus più alto del membro $5$ ($210$ contro $205$):
 è stato rifiutato **prima** nelle sequenze altrui. A parità di conteggio e di

@@ -213,6 +213,9 @@ Prendiamo il membro $1$. Sulla prima riga di $A$ leggiamo le sue due scelte date
 I membri $1$ e $2$ si distinguono per questi indici: sono gli unici ad avere una scelta
 reciproca (si scelgono tra loro) e hanno i valori più alti di affiliazione e
 influenza. Il membro $3$ è invece il meno scelto e con il bilancio più basso.
+Con gli impatti ordinati $[2, 3, 3, 3]$, largest gap individua una sola coda bassa:
+il membro $3$ è marginale (codice $2$). Gli altri tre restano nella fascia media
+e hanno status ambivalente (codice $7$).
 
 ## 2 Metriche SNA
 
