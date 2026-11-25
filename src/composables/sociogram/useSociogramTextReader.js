@@ -24,16 +24,16 @@ export const ALLOWED_MIME_TYPES = ["text/plain"];
  * that many characters (safely handling multi-byte UTF-8). Both limits are
  * optional: pass `null` to leave them uncapped.
  *
- * The browser stays responsive because reading stops once a limit is reached
- * (the stream is then cancelled) and each awaited `reader.read()` yields
- * to the event loop between chunks, so only a small slice is processed at a time.
+ * Only the byte and line-count limits stop reading early. The line-length
+ * limit truncates retained text without stopping the stream. Inspect
+ * `readError.value` after awaiting `readFile()` for validation or read errors.
  *
  * @param {File | Blob | null} textFileToRead
  * @param {object} [options={}] Configuration options
  * @param {number} [options.maxFileSize=DEFAULT_MAX_FILE_SIZE] Max bytes read from the file. Must be > 0 and <= MAX_FILE_SIZE_LIMIT.
  * @param {number | null} [options.maxLines=null] Max lines returned, or `null` for no limit. Must be <= MAX_LINES_LIMIT.
  * @param {number | null} [options.maxLineLength=null] Max characters kept per line, or `null` for no limit. Must be <= MAX_LINE_LENGTH_LIMIT.
- * @param {boolean} [options.validateMimeType=true] If true, reject files that don't match ALLOWED_MIME_TYPES.
+ * @param {boolean} [options.validateMimeType=true] Check nonempty MIME types against `allowedMimeTypes`; files with no type are accepted.
  * @param {string[]} [options.allowedMimeTypes=ALLOWED_MIME_TYPES] Custom list of allowed MIME types.
  * @returns {{
  *   lines: import('vue').Ref<string[]>,

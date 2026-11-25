@@ -203,8 +203,8 @@ function scoreNormalizedName(normalizedName, normalizedTerm, nameCharCounts) {
  * the scoring helper's edit-distance fallback therefore does not broaden the
  * public result set to substitutions or missing characters.
  *
- * Character counts and alphabetical keys are precomputed, and candidates are
- * scored and filtered in a single pass.
+ * Unaccented query letters match accented names, but explicitly accented
+ * letters must occur with the same accent and multiplicity in the name.
  *
  * @param {import('vue').Ref<Array<{ id: string, name: string }>>} members
  * @returns {{

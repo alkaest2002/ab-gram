@@ -12,8 +12,8 @@ import {
 /**
  * Validate a decoded, parsed sociogram archive snapshot for import.
  *
- * Thin composable over the rules in `archiveValidation`. The public shape
- * ({ isValid, errors, data }) stays stable — the import step relies on it.
+ * Returns the original snapshot as `data` on success, or `null` with distinct
+ * error messages in discovery order on failure.
  *
  * @param {boolean} [dataIsComplete=false] Apply the completeness rules on top
  *   of the default structural checks.
@@ -25,8 +25,9 @@ import {
  */
 export function useSociogramValidateData(dataIsComplete = false) {
   /**
-   * Validate a decoded, parsed snapshot, collecting every error the rules can
-   * report instead of stopping at the first failure.
+   * Report the first snapshot error and the first error for each member when
+   * `members` is an array. Only if those checks pass, report the first
+   * cross-member error.
    *
    * @param {unknown} parsed
    * @returns {{ isValid: boolean, errors: string[], data: object | null }}

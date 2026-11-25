@@ -27,8 +27,7 @@ function ensureMathJax() {
 }
 
 /**
- * Shared promise that resolves once MathJax has finished loading and its
- * startup sequence has completed.
+ * Shared wait for MathJax startup or the loader fallback.
  *
  * `MathJax.startup.promise` is the promise resolved when `pageReady()` is
  * done (MathJax runs its startup typesetting, then resolves). The `MathJax`
@@ -41,7 +40,9 @@ function ensureMathJax() {
 let readyPromise = null;
 
 /**
- * Wait for MathJax startup, falling back after a timeout if loading fails.
+ * If the startup promise already exists on the first call, wait without a
+ * timeout. Otherwise poll for it and resolve on startup or timeout, whichever
+ * comes first. A timeout does not imply MathJax is ready.
  *
  * @param {number} [timeoutMs=10000]
  * @returns {Promise<void>}

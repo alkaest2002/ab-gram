@@ -4,8 +4,7 @@
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
 /**
- * Open/closed state of a collapsible overlay, with closing via Esc and body
- * scroll locking while open.
+ * Open/closed state of a collapsible overlay, with Escape-to-close and optional body scroll locking.
  *
  * @param {boolean} [initialValue=false]
  * @param {{
@@ -14,8 +13,8 @@ import { onBeforeUnmount, onMounted, ref, watch } from "vue";
  * }} [options]
  *   `canClose` is checked before closing (including via Esc); when it returns
  *   `false`, `close()` and `toggle()` leave the panel open. `lockScroll` toggles
- *   the `overflow-hidden` class on `<body>` while open and removes it on close
- *   and unmount (defaults to `true`).
+ *   the `overflow-hidden` class on `<body>` when `isOpen` changes and removes it
+ *   on unmount (defaults to `true`). Starting open does not apply the class.
  * @returns {{
  *   isOpen: import("vue").Ref<boolean>,
  *   open: () => void,

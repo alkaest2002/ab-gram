@@ -10,7 +10,8 @@ import { watchEffect } from "vue";
  * `data-node="<id>"` and every edge with `data-source="<id>"`. This
  * composable watches a reactive `dimmedNodes` set and flips the `.is-dimmed`
  * class on the matching elements, plus swaps `marker-end` URLs so arrowheads
- * follow suit. No SVG is rebuilt — only classes and attributes are toggled.
+ * follow suit. When any nodes are dimmed, existing edges and connected nodes
+ * are reordered for paint order. The SVG is not rebuilt.
  *
  * The effect uses `flush: 'post'` so it runs *after* Vue has patched the DOM,
  * guaranteeing that the `v-html` content is present when we query it.
