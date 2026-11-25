@@ -10,19 +10,20 @@ order: 7
 
 Lo **status sociometrico** ($ss_i$) descrive la posizione di un membro nel gruppo al momento della rilevazione. È una **categoria**, non un punteggio: dipende dal gruppo, dalla domanda posta e dalle risposte raccolte. Non è una diagnosi né una caratteristica stabile della persona.
 
-Per interpretare lo status è utile distinguere due aspetti: l’**impatto** indica quante opinioni il membro ha ricevuto, contando insieme scelte e rifiuti; il **bilancio** indica se prevalgono le scelte, i rifiuti o nessuno dei due. Un impatto alto, quindi, non significa necessariamente che il membro sia apprezzato.
+Per interpretare lo status è utile distinguere due aspetti: l’**impatto** indica quante opinioni il membro ha ricevuto, contando insieme scelte e rifiuti; il **bilancio** indica se prevalgono le scelte, i rifiuti o nessuno dei due.
 
-## 1 In sintesi: dalle risposte allo status
+## 1 Dalle risposte allo status
 
 Facciamo un esempio: una persona riceve quattro opinioni. Sono tante o poche? Se quasi tutti gli altri ne ricevono una, quattro sembrano tante; se quasi tutti ne ricevono dieci, le stesse quattro sembrano poche. È questo confronto con il gruppo che ci interessa quando parliamo di **impatto**. Per ora non importa se le quattro opinioni siano scelte o rifiuti.
 
 Come si decide, allora, dove finisce un impatto basso e dove comincia uno medio o alto? Anziché affidarsi a una sola regola, il report usa **nove strategie di classificazione**. Possiamo pensarle come **nove votanti**: ciascuno legge gli stessi numeri secondo la propria regola e il report combina i loro voti per classificare l’impatto. Solo dopo si guarda al **bilancio**: di quelle quattro opinioni, quante sono scelte e quante rifiuti?
 
-1. **Conteggio delle opinioni espresse e ricevute.** Se il membro non ne ha ricevuta nessuna, lo status è già definito: _isolato_ se non ne ha neppure espresse, _ignorato_ se ne ha espresse. Per chi ha ricevuto almeno una preferenza o un rifiuto, il calcolo prosegue.
-2. **Classificazione dell’impatto.** Per ogni membro si sommano le scelte e i rifiuti ricevuti. Tra i nove votanti, uno guarda alla posizione del totale nella graduatoria del gruppo, un altro ai salti tra un conteggio e il successivo. Per ciascun membro, ogni votante può indicare un impatto **basso**, **medio** o **alto**, oppure astenersi.
-3. **Classificazione del bilancio.** Con poche opinioni ricevute, una preferenza o un rifiuto in più pesa molto: per parlare di prevalenza, il report richiede uno squilibrio netto. Fino a 3 opinioni, un conteggio deve superare il doppio dell’altro. Da lì, ogni opinione in più abbassa un poco la soglia: a 15 opinioni basta superare una volta e mezza l’altro conteggio e da quel punto il criterio non cambia più. Se superano la soglia le scelte , il bilancio è **positivo**; se la superano i rifiuti, è **negativo**. Altrimenti è **neutro**, anche quando i conteggi sono diversi.
-4. **Incrocio tra impatto e bilancio.** Con un impatto **basso**, la categoria è sempre _marginale_. Con un impatto **medio**, un bilancio positivo corrisponde ad _apprezzato_, uno negativo a _malvisto_ e uno neutro ad _ambivalente_. Con un impatto **alto**, le tre categorie corrispondenti sono _popolare_, _rifiutato_ e _controverso_.
-5. **Presentazione del risultato nel report.** La tabella seguente affianca a ogni categoria la dicitura che si legge nel report: per esempio, _rifiutato_ compare come _segnali di rifiuto_. Bonus e malus, descritti nel § 5, non modificano lo status.
+Sintesi del procedimento:
+
+1. **Conteggio delle opinioni espresse e ricevute.** Il primo passo è contare il numero di scelte/rifiuti espressi e ricevuti. Se un membro non è stato scelto/rifiutato dagli altri, il suo status è già definito: _isolato_ se lui stesso non ha espresso alcuna opinione, _ignorato_ se ne ha espresse. Invece, per chi ha ricevuto almeno una scelta o un rifiuto, il procedimento prosegue.
+2. **Classificazione dell’impatto.** Per ogni membro si calcola il totale delle opinioni ricevute, sommando preferenze e rifiuti. Questo totale viene poi valutato da nove strategie di classificazione, ciascuna avente un criterio e regole proprie. Ogni strategia assegna al membro un impatto basso, medio o alto, oppure si astiene se non riesce a decidersi.
+3. **Classificazione del bilancio.** Il bilancio indica se un membro riceve più consensi o più rifiuti. Si parla di bilancio positivo se prevalgono le scelte, negativo se prevalgono i rifiuti. Un bilancio neutro indica un numero simile di scelte e rifiuti.
+4. **Incrocio tra impatto e bilancio.** L'assegnazione dello status sociomentrico scaturisce dall'incrocio di impatto e bilancio secondo la tabella del punto 2.
 
 ## 2 Le categorie sociometriche
 
@@ -53,25 +54,9 @@ il codice è associato.
 La categoria dipende dal **livello di impatto** (basso, medio, alto) e dal **bilancio** (positivo, negativo, neutro). Le prime due righe sono un caso a parte: un membro che **non riceve alcuna opinione** è
 classificato solo in base al fatto che ne abbia espresse (ignorato) o meno (isolato).
 
-### 2.1 Classificare l'impatto
-
-Il report confronta ogni membro che ha ricevuto almeno un'opinione con gli altri membri visibili, in base al numero di opinioni ricevute, e lo assegna a una delle tre fasce seguenti:
-
-- **Impatto basso**: il membro ha ricevuto poche opinioni rispetto agli altri.
-- **Impatto alto**: il membro ha ricevuto molte opinioni rispetto agli altri.
-- **Impatto medio**: il numero di opinioni non rientra in nessuna delle due fasce estreme.
-
-Le nove strategie si distinguono per il numero di membri visibili a cui si applicano:
-
-- **4–6:** Largest gap, Majority Baseline e Small groups.
-- **7–35:** Fisher-Jenks Natrual Breaks, Head/Tail Breaks e Inverted Head/Tail Breaks.
-- **15–35:** Percentili, Robust Z-Score e Tukey Fences.
-
-La classificazione finale dell’impatto dipende dai voti espressi (§ 4.7).
-
 ## 3 I dati in ingresso
 
-L'algoritmo riceve quattro valori per ogni membro:
+L'algoritmo di assegnazione dello status sociomentrico riceve quattro valori per ogni membro:
 
 - $rp_i$: **scelte ricevute**;
 - $rr_i$: **rifiuti ricevuti**;
@@ -100,9 +85,27 @@ L’assenza di opinioni va interpretata con cautela: prima di trarne conclusioni
 
 Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegue al passo successivo.
 
-### 4.2 Classificazione per 4–6 membri visibili
+### 4.2 Classificazione dell'impatto
 
-#### 4.2.1 Largest gap
+#### 4.2.1 Classificare l'impatto
+
+Il report confronta ogni membro che ha ricevuto almeno un'opinione con gli altri membri visibili, in base al numero di opinioni ricevute, e lo assegna a una delle tre fasce seguenti:
+
+- **Impatto basso**: il membro ha ricevuto poche opinioni rispetto agli altri.
+- **Impatto alto**: il membro ha ricevuto molte opinioni rispetto agli altri.
+- **Impatto medio**: il numero di opinioni non rientra in nessuna delle due fasce estreme.
+
+Le nove strategie si distinguono per il numero di membri visibili a cui si applicano:
+
+- **4–6:** Largest gap, Majority Baseline e Small groups.
+- **7–35:** Fisher-Jenks Natrual Breaks, Head/Tail Breaks e Inverted Head/Tail Breaks.
+- **15–35:** Percentili, Robust Z-Score e Tukey Fences.
+
+La classificazione finale dell’impatto dipende dai voti espressi (§ 4.2.7).
+
+#### 4.2.2 Classificazione per 4–6 membri visibili
+
+##### 4.2.2.1 LARGEST GAP
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>dividere la distribuzione in corrispondenza dei <strong>due salti più grandi</strong> tra impatti consecutivi. Sugli impatti visibili ordinati $x_0 \le x_1 \le \dots \le x_{N-1}$ i salti sono $g_i = x_{i+1} - x_i$ per $i = 0, \dots, N-2$; i due salti più ampi individuano le due separazioni tra coda bassa, fascia media e coda alta</li><li>bilaterale con due salti selezionati; se si usa un solo salto, può segnalare soltanto il lato meno numeroso. Anche con due salti proposti può restare una sola coda o nessuna</li></ul></td></tr>
@@ -112,7 +115,17 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Esempi:</strong> Per esempio, con impatti visibili $[1, 3, 5, 7, 9, 11]$ tutti i salti valgono $2$ e il metodo si astiene. Si astiene anche con $[1, 3, 8, 10]$: il salto massimo vale $5$, ma divide i quattro membri in due gruppi uguali. Con $[1, 5, 5, 9]$, invece, i due salti massimi di ampiezza $4$ sono univocamente individuati: le soglie sono $L = 1$ e $H = 9$.</li></ul></td></tr>
 </table>
 
-#### 4.2.2 Small groups
+##### 4.2.2.2 MAJORITY BASELINE
+
+<table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
+  <tr><th scope="row">Intuizione</th><td><ul><li>Il riferimento è il punteggio di impatto condiviso da <strong>più della metà</strong> dei membri visibili.</li><li>Il metodo valuta separatamente la coda bassa e quella alta.</li></ul></td></tr>
+  <tr><th scope="row">Calcolo</th><td><ul><li>Si confronta ogni punteggio con il riferimento: uno scarto di <strong>almeno due opinioni</strong> verso il basso o verso l’alto rende il punteggio candidato alla rispettiva coda.</li></ul></td></tr>
+  <tr><th scope="row">Soglie</th><td><ul><li><strong>Bassa:</strong> $L$ è il maggiore dei punteggi candidati alla coda bassa.</li><li><strong>Alta:</strong> $H$ è il minore dei punteggi candidati alla coda alta.</li><li>Un lato senza candidati resta disattivato. Le soglie proposte passano al controllo comune (§ 4.2.5).</li></ul></td></tr>
+  <tr><th scope="row">Astensione</th><td><ul><li>Il metodo si astiene se i membri visibili sono meno di 4 o più di 6, se manca una maggioranza stretta o se nessun punteggio si discosta dal riferimento di almeno due opinioni.</li></ul></td></tr>
+  <tr><th scope="row">Note</th><td><ul><li><strong>Esempio:</strong> con impatti $[1, 3, 3, 3, 5]$, tre membri su cinque hanno impatto $3$. Le soglie $L = 1$ e $H = 5$ superano il controllo: la fascia media contiene tre membri, contro uno in ciascuna coda.</li></ul></td></tr>
+</table>
+
+##### 4.2.2.3 SMALL GROUPS
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>il metodo cerca il <strong>salto più grande</strong> tra impatti consecutivi. Se il salto soddisfa i criteri di ampiezza e dominanza, il metodo segnala solo il gruppo meno numeroso. A parità di numerosità, propone il gruppo a sinistra come basso e quello a destra come alto, senza fascia media</li><li>unilaterale se le code hanno numerosità diversa; bilaterale se hanno pari numerosità</li></ul></td></tr>
@@ -122,19 +135,9 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> <strong>Impatti tutti uguali:</strong> $g_{\max} = 0$. <strong>Salto troppo piccolo:</strong> $g_{\max} &lt; 2$. <strong>Salto non dominante:</strong> $g_{\max} &lt; 1{,}5 \cdot g_2$ <strong>e</strong> $g_{\max} &lt; 0{,}5 \cdot R$.</li><li><strong>Esempi:</strong> Per esempio, con $[1, 1, 1, 3]$ viene segnalato solo il $3$ come impatto alto e il metodo si astiene sui tre $1$; con $[1, 3, 3, 3]$ viene segnalato solo l'$1$ come impatto basso e il metodo si astiene sui tre $3$. Con $[1, 1, 5, 5]$ il salto divide il gruppo in due metà: entrambi gli $1$ sono bassi ed entrambi i $5$ sono alti.</li></ul></td></tr>
 </table>
 
-#### 4.2.3 Majority Baseline
+#### 4.2.3 Strategie per 7–35 membri visibili
 
-<table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
-  <tr><th scope="row">Intuizione</th><td><ul><li>Il riferimento è il punteggio di impatto condiviso da <strong>più della metà</strong> dei membri visibili.</li><li>Il metodo valuta separatamente la coda bassa e quella alta.</li></ul></td></tr>
-  <tr><th scope="row">Calcolo</th><td><ul><li>Si confronta ogni punteggio con il riferimento: uno scarto di <strong>almeno due opinioni</strong> verso il basso o verso l’alto rende il punteggio candidato alla rispettiva coda.</li></ul></td></tr>
-  <tr><th scope="row">Soglie</th><td><ul><li><strong>Bassa:</strong> $L$ è il maggiore dei punteggi candidati alla coda bassa.</li><li><strong>Alta:</strong> $H$ è il minore dei punteggi candidati alla coda alta.</li><li>Un lato senza candidati resta disattivato. Le soglie proposte passano al controllo comune (§ 4.5).</li></ul></td></tr>
-  <tr><th scope="row">Astensione</th><td><ul><li>Il metodo si astiene se i membri visibili sono meno di 4 o più di 6, se manca una maggioranza stretta o se nessun punteggio si discosta dal riferimento di almeno due opinioni.</li></ul></td></tr>
-  <tr><th scope="row">Note</th><td><ul><li><strong>Esempio:</strong> con impatti $[1, 3, 3, 3, 5]$, tre membri su cinque hanno impatto $3$. Le soglie $L = 1$ e $H = 5$ superano il controllo: la fascia media contiene tre membri, contro uno in ciascuna coda.</li></ul></td></tr>
-</table>
-
-### 4.3 Strategie per 7–35 membri visibili
-
-#### 4.3.1 Fisher-Jenks Natural Breaks
+##### 4.2.3.1 FISHER-JENKS NATURAL BREAKS
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>individuare i <strong>raggruppamenti naturali</strong> della distribuzione: il criterio dei <em>natural breaks</em> di Jenks riduce la variabilità all'interno dei gruppi per individuare le classi di impatto <strong>basso</strong>, <strong>medio</strong> e <strong>alto</strong></li><li>bilaterale: propone le due classi estreme; possono restare attive entrambe, una sola o nessuna</li></ul></td></tr>
@@ -144,7 +147,7 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> <strong>Meno di $3$ valori distinti:</strong> Non si possono formare tre classi. <strong>$GVF &lt; 0{,}75$:</strong> La suddivisione spiega una quota insufficiente della variabilità degli impatti.</li><li><strong>Classi:</strong> Se il partizionamento è accettato, si conservano solo il primo e l'ultimo taglio. Con $k=5$, i gruppi $2$, $3$ e $4$ vengono uniti nella classe media; con $k=3$, le classi restano quelle del partizionamento. Indicando con $i$ e $j$ i due tagli conservati, la classe bassa va da $x_0$ a $x_{i-1}$, la media da $x_i$ a $x_{j-1}$ e l'alta da $x_j$ a $x_{N-1}$.</li></ul></td></tr>
 </table>
 
-#### 4.3.2 Head/tail breaks
+##### 4.2.3.2 HEAD/TAIL BREAKS
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>nelle distribuzioni <strong>a coda pesante</strong> pochi valori molto alti si staccano nettamente dalla massa dei valori piccoli. Il metodo <em>head/tail breaks</em> separa ricorsivamente la "testa" (la minoranza di valori grandi) dalla "coda" (il resto)</li><li>unilaterale alto: può segnalare solo la testa finale, mai gli impatti bassi</li></ul></td></tr>
@@ -154,7 +157,7 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> Se non produce alcun taglio (valori tutti uguali), il metodo si astiene.</li></ul></td></tr>
 </table>
 
-#### 4.3.3 Inverted head/tail breaks
+##### 4.2.3.3 INVERTED HEAD/TAIL BREAKS
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>è l'immagine speculare del metodo <em>head/tail</em>: nelle distribuzioni con una <strong>coda rada verso il basso</strong>, pochi valori molto bassi si staccano nettamente dalla massa dei valori più alti. Il metodo separa ricorsivamente la "coda" (la minoranza di valori piccoli) dal resto</li><li>unilaterale basso: può segnalare solo la coda finale, mai gli impatti alti</li></ul></td></tr>
@@ -164,19 +167,19 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Astensione:</strong> Se non produce alcun taglio (valori tutti uguali), il metodo si astiene.</li></ul></td></tr>
 </table>
 
-### 4.4 Strategie per 15–35 membri visibili
+#### 4.2.4 Strategie per 15–35 membri visibili
 
-#### 4.4.1 Percentili
+##### 4.2.4.1 PERCENTILI
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>individuare le posizioni <strong>relativamente basse e alte</strong> nel gruppo</li><li>bilaterale: propone due code di pari numerosità nominale; possono restare attive entrambe, una sola o nessuna</li></ul></td></tr>
   <tr><th scope="row">Calcolo</th><td><ul><li>Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si pone $r = \lceil 0{,}15N \rceil$. Il simbolo $\lceil\cdot\rceil$ indica l'arrotondamento all'intero superiore.</li><li>Il programma usa quindi il rango più vicino per la coda bassa e lo stesso rango contato dall'alto per la coda alta, <strong>senza interpolazione</strong>.</li><li>Non è la stessa convenzione dei quartili dei gradi descritti nelle metriche di gruppo; la soglia alta può inoltre differire dall'usuale percentile all'$85\%$ calcolato contando dal basso.</li></ul></td></tr>
   <tr><th scope="row">Soglie</th><td><ul><li><strong>Basso:</strong> $L = x_{r-1}$.</li><li><strong>Alto:</strong> $H = x_{N-r}$.</li></ul></td></tr>
   <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 15.</li></ul></td></tr>
-  <tr><th scope="row">Note</th><td><ul><li><strong>Esempio:</strong> Le soglie individuano nominalmente il $15\%$ inferiore e superiore: con $N = 20$ corrispondono a tre persone per coda, prima del controllo di separazione e degli effetti delle parità.</li><li><strong>Limiti:</strong> La scelta del $15$° e dell'$85$° percentile è <strong>euristica</strong>: descrive posizioni relative, non rappresenta una soglia di significatività statistica e non garantisce la presenza di gruppi nettamente separati né la stabilità delle classificazioni rispetto a piccole variazioni nelle nomine.</li><li><strong>Riferimenti:</strong> Per i controlli comuni si veda il § 4.5; per l’applicazione delle soglie, il § 4.6.</li></ul></td></tr>
+  <tr><th scope="row">Note</th><td><ul><li><strong>Esempio:</strong> Le soglie individuano nominalmente il $15\%$ inferiore e superiore: con $N = 20$ corrispondono a tre persone per coda, prima del controllo di separazione e degli effetti delle parità.</li><li><strong>Limiti:</strong> La scelta del $15$° e dell'$85$° percentile è <strong>euristica</strong>: descrive posizioni relative, non rappresenta una soglia di significatività statistica e non garantisce la presenza di gruppi nettamente separati né la stabilità delle classificazioni rispetto a piccole variazioni nelle nomine.</li><li><strong>Riferimenti:</strong> Per i controlli comuni si veda il § 4.2.5; per l’applicazione delle soglie, il § 4.2.6.</li></ul></td></tr>
 </table>
 
-#### 4.4.2 Robust z-score
+##### 4.2.4.2 ROBUST Z-SCORE
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>un impatto è insolito se è lontano dalla <strong>mediana</strong> rispetto a quanto se ne discostano di solito gli altri impatti. Per misurare questo scostamento tipico si usa la <strong>deviazione assoluta mediana</strong> (MAD). Il criterio è poco sensibile ai valori estremi, ma non è sempre preferibile agli altri metodi</li><li>bilaterale: cerca anomalie in entrambe le direzioni; può segnalare una sola coda o nessuna</li></ul></td></tr>
@@ -185,7 +188,7 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Astensione</th><td><ul><li>Quando i membri visibili sono meno di 15 o più di 35.</li></ul></td></tr>
 </table>
 
-#### 4.4.3 Tukey Fences
+##### 4.2.4.3 TUKEY FENCES
 
 <table class="mb-12 border-y border-neutral-300 [&_th]:px-2 [&_th]:py-1 [&_th]:font-normal">
   <tr><th scope="row">Intuizione</th><td><ul><li>una variante del criterio di Tukey per i <strong>valori anomali</strong>, basata sui quartili. Il programma usa un moltiplicatore $1$, non il consueto $1{,}5$ degli <em>inner fences</em> del box plot. Sugli impatti visibili ordinati $x_0 \le \dots \le x_{N-1}$, si individuano i quartili contando lo stesso numero di posizioni dai due estremi. Si usano quindi valori osservati, senza interpolazione.</li><li>bilaterale: cerca valori oltre entrambi i recinti; può segnalare una sola coda o nessuna</li></ul></td></tr>
@@ -195,7 +198,7 @@ Per chi ha ricevuto almeno un’opinione ($n_i > 0$), la classificazione prosegu
   <tr><th scope="row">Note</th><td><ul><li><strong>Confronto:</strong> Con moltiplicatore $1$ il criterio è meno restrittivo della versione usuale con $1{,}5$.</li></ul></td></tr>
 </table>
 
-### 4.5 Controllo finale delle soglie proposte
+#### 4.2.5 Controllo finale delle soglie proposte
 
 Questo controllo si applica a tutti i nove metodi.
 
@@ -205,7 +208,7 @@ Questo controllo si applica a tutti i nove metodi.
 
 Dopo una fusione resta una sola soglia: il metodo voterà soltanto per la coda che ha mantenuto, non per i membri della fascia accorpata.
 
-### 4.6 Applicazione delle soglie di ciascun metodo
+#### 4.2.6 Applicazione delle soglie di ciascun metodo
 
 Ogni metodo applica le **proprie** soglie ai membri con $n_i > 0$ (gli altri
 sono già stati classificati al Passo 1):
@@ -224,7 +227,7 @@ parità attraversa il confine di rango scelto, il controllo di separazione
 disattiva quella coda, anziché ampliarla. Se un membro risultasse sia basso
 sia alto, prevale sempre "basso".
 
-### 4.7 La votazione tra i metodi
+#### 4.2.7 La votazione tra i metodi
 
 **Intuizione:** nessun metodo è sempre migliore degli altri. Per ogni membro,
 ciascun metodo esprime un voto oppure si astiene. Prevale la classe con il
@@ -237,8 +240,8 @@ ciascun metodo esprime un voto oppure si astiene. Prevale la classe con il
    disattivato) il metodo **si astiene** e non esprime alcun voto. Se un valore
    soddisfa entrambe le condizioni, prevale "basso".
 2. Per ogni numerosità supportata ($4 \le N \le 35$), almeno tre metodi sono
-   ammessi in base alla numerosità: con $N = 4$ sono largest gap, small groups e
-   `majorityBaselineStrategy`.
+   ammessi in base alla numerosità: con $N = 4$ sono largest gap, `majorityBaselineStrategy` e
+   small groups.
    Un metodo ammesso che **non individua alcuna divisione** ($L = -\infty$, $H = +\infty$) **si astiene del tutto**: non
    partecipa al voto. Se _tutti_ i metodi si astengono, non c'è alcuna divisione
    e tutti restano a impatto medio.
@@ -259,7 +262,7 @@ un solo criterio di soglia. Non garantisce però maggiore accuratezza: i metodi
 lavorano sugli stessi dati, possono produrre risultati correlati e non hanno
 una probabilità nota di individuare una classificazione «corretta».
 
-### 4.8 Classificazione del bilancio
+### 4.3 Classificazione del bilancio
 
 Per classificare il bilancio non basta confrontare il numero di scelte ($rp$)
 con quello dei rifiuti ($rr$). Si usa un **rapporto di soglia variabile**:
@@ -295,7 +298,7 @@ sempre bilancio positivo, e viceversa per chi riceve solo rifiuti; il bilancio
 neutro compare solo quando scelte e rifiuti sono abbastanza vicini da non
 superare la soglia.
 
-### 4.9 Assegnazione finale: l'albero di decisione
+### 4.4 Assegnazione finale: l'albero di decisione
 
 L'ultimo passo combina i risultati dei tre precedenti. Per ogni membro si
 esaminano le condizioni nell'ordine indicato in tabella e si assegna la
@@ -415,7 +418,7 @@ $N = 7$. Calcoliamo le soglie proposte dai nove metodi.
   Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 15$ il metodo non è ammesso e si astiene.
 - **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
-- **Small groups e `majorityBaselineStrategy`.** Entrambi si applicano solo con 4–6 membri visibili: con $N = 7$ si astengono.
+- **`majorityBaselineStrategy` e Small groups.** Entrambi si applicano solo con 4–6 membri visibili: con $N = 7$ si astengono.
 
 Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
@@ -428,8 +431,8 @@ Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 | Percentili                 | _si astiene_                                      |
 | Tukey                      | _si astiene_                                      |
 | Robust z-score             | _si astiene_                                      |
-| Small groups               | _si astiene_                                      |
 | `majorityBaselineStrategy` | _si astiene_                                      |
+| Small groups               | _si astiene_                                      |
 | **Voto**                   | **alto, alto, medio, medio, medio, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
@@ -528,7 +531,7 @@ $N = 7$. Calcoliamo le soglie proposte dai nove metodi.
   Restano solo due membri nella fascia media contro cinque nella coda bassa: il metodo si astiene.
 - **Percentili.** Con $N = 7 < 15$ il metodo non è ammesso e si astiene.
 - **Tukey e robust z-score.** Con soli sette membri visibili entrambi si astengono: ne servono almeno quindici.
-- **Small groups e `majorityBaselineStrategy`.** Entrambi si applicano solo con 4–6 membri visibili: con $N = 7$ si astengono.
+- **`majorityBaselineStrategy` e Small groups.** Entrambi si applicano solo con 4–6 membri visibili: con $N = 7$ si astengono.
 
 Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 
@@ -541,8 +544,8 @@ Etichettando i sette membri in ordine di membro (basso/medio/alto) si ottiene:
 | percentili                 | _si astiene_                                      |
 | Tukey                      | _si astiene_                                      |
 | robust z-score             | _si astiene_                                      |
-| small groups               | _si astiene_                                      |
 | `majorityBaselineStrategy` | _si astiene_                                      |
+| small groups               | _si astiene_                                      |
 | **Voto**                   | **medio, medio, medio, alto, alto, medio, medio** |
 
 Nella tabella, $\cdot$ indica un membro su cui il metodo si astiene (non vota).
