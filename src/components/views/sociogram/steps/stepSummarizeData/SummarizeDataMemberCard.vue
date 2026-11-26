@@ -46,11 +46,11 @@ defineEmits(["sociogram-edit-member"]);
     @keydown.space.prevent="$emit('sociogram-edit-member', member.id)"
   >
     <span
-      class="absolute top-4 right-4 inline-flex h-7 items-center gap-1.5 rounded-md bg-ink/5 px-2 font-mono text-[11px] font-medium text-muted"
+      class="absolute top-4 right-4 inline-flex h-7 items-center gap-1.5 rounded-md bg-ink/5 px-2 font-mono text-[12px] font-medium text-muted"
       aria-hidden="true"
     >
       <span class="text-muted/70">ID</span>
-      <span class="text-ink">{{ member.id }}</span>
+      <span class="text-ink font-bold">{{ member.id }}</span>
     </span>
 
     <div class="flex min-h-8 items-center gap-2.5 pr-18">
