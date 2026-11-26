@@ -33,17 +33,8 @@ const emit = defineEmits(["stop-generating-report"]);
   <div role="status" class="flex w-full max-w-xl flex-col items-center gap-6 text-center">
     <!-- Spinner: a single thin ring with a subtle accent sweep. -->
     <div
-      class="size-12 shrink-0 animate-spin rounded-full motion-reduce:animate-none"
+      class="size-12 shrink-0 animate-spin rounded-full bg-[conic-gradient(transparent,var(--color-accent))] mask-[radial-gradient(closest-side,transparent_calc(100%-3px),black_0)] motion-reduce:animate-none"
       aria-hidden="true"
-      style="
-        background: conic-gradient(from 0deg, transparent, var(--color-accent));
-        -webkit-mask: radial-gradient(
-          closest-side,
-          transparent calc(100% - 3px),
-          #000 calc(100% - 3px)
-        );
-        mask: radial-gradient(closest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
-      "
     ></div>
 
     <div class="space-y-3">
