@@ -50,6 +50,21 @@ onBeforeUnmount(() => {
 // --- Methods ------------
 function startGeneration() {
   worker = createReportWorker();
+
+  // Worker lifecycle: a script load or execution failure is not a reply.
+  worker.onerror = (event) => {
+    console.error("Report worker failed:", {
+      message: event.message,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno,
+      error: event.error,
+    });
+    stopWorker();
+    failGeneration();
+  };
+
+  // Worker → main thread: the reply contains either the analysis or a reported error.
   worker.onmessage = (event) => {
     const { data } = event;
     stopWorker();
@@ -64,30 +79,19 @@ function startGeneration() {
     router.replace({ name: "reportGenerated" });
   };
 
-  worker.onerror = (event) => {
-    console.error("Report worker failed:", {
-      message: event.message,
-      filename: event.filename,
-      lineno: event.lineno,
-      colno: event.colno,
-      error: event.error,
-    });
-    stopWorker();
-    failGeneration(event);
-  };
-
+  // Worker → main thread: a message that cannot be deserialized is not a reply.
   worker.onmessageerror = (event) => {
-    console.error("Report worker message error:", event);
+    console.error("Main thread could not deserialize the report worker's reply:", event);
     stopWorker();
-    failGeneration(event);
+    failGeneration();
   };
 
-  // Hand the worker a plain, non-reactive snapshot of the sociogram members.
+  // Main thread → worker: send a plain snapshot, not Vue's reactive members.
   const members = JSON.parse(JSON.stringify(sociogramStore.members));
   worker.postMessage({ members });
 }
 
-function failGeneration(error) {
+function failGeneration() {
   reportStore.setStatus("error");
   router.replace({ name: "reportError", query: { to: "/sociogram" } });
 }
