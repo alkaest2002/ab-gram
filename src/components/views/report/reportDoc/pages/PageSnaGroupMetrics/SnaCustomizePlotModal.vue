@@ -54,23 +54,19 @@ const activeTab = ref("emphasize");
 // --- Composables --------
 // Own the open/closed state locally. The `canClose` guard keeps the dialog
 // locked while a regeneration is running so it force-closes cleanly on success.
-const {
-  isOpen: snaPlotModalIsOpen,
-  open: snaPlotModalOpen,
-  close: snaPlotModalClose,
-} = useDisclosure(false, {
+const plotModal = useDisclosure(false, {
   canClose: () => !props.snaPlotIsRegenerating,
 });
 
 // Force-close bypasses the guard: the parent calls it after a successful
 // regeneration, where the `snaPlotIsRegenerating` prop may still read as `true` in the
 // same tick the worker finishes.
-const snaPlotModalForceClose = () => (snaPlotModalIsOpen.value = false);
+const snaPlotModalForceClose = () => (plotModal.isOpen.value = false);
 
 // --- Watchers -----------
 // Start each open on the first tab, so a previous session's selection never
 // leaks into a new dialog. Both tab drafts reset when their tabs remount.
-watch(snaPlotModalIsOpen, (isOpen) => {
+watch(plotModal.isOpen, (isOpen) => {
   if (isOpen) {
     activeTab.value = "emphasize";
   }
@@ -79,7 +75,7 @@ watch(snaPlotModalIsOpen, (isOpen) => {
 // Notify the parent when the dialog actually closes, so it can reset its
 // transient error state. `isOpen` only flips to false after `canClose` passes,
 // so this never fires for a blocked close.
-watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
+watch(plotModal.isOpen, (isOpen, wasOpen) => {
   if (wasOpen && !isOpen) emit("sna-plot-close-modal");
 });
 
@@ -91,7 +87,7 @@ watch(snaPlotModalIsOpen, (isOpen, wasOpen) => {
 // wait for before closing.
 const regenerateEmphasis = (filter) => {
   emit("sna-plot-regenerate-emphasis", filter);
-  snaPlotModalClose();
+  plotModal.close();
 };
 
 // Ask the parent to regenerate with the submitted layout settings. The dialog
@@ -101,7 +97,7 @@ const regenerateLayout = (layoutConfig) => {
 };
 
 // Expose the open/close methods to the parent.
-defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
+defineExpose({ snaPlotModalOpen: plotModal.open, snaPlotModalForceClose });
 </script>
 
 <template>
@@ -109,9 +105,9 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
          report page that would otherwise clip it. -->
   <Teleport to="body">
     <div
-      v-if="snaPlotModalIsOpen"
+      v-if="plotModal.isOpen.value"
       class="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4 print:hidden"
-      @click.self="snaPlotModalClose"
+      @click.self="plotModal.close"
     >
       <div
         class="relative flex h-90 w-full max-w-lg flex-col overflow-hidden rounded-xl border border-line bg-canvas p-6 shadow-xl"
@@ -126,7 +122,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
           aria-label="Chiudi"
           title="Chiudi"
           :disabled="snaPlotIsRegenerating"
-          @click="snaPlotModalClose"
+          @click="plotModal.close"
         >
           <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path
@@ -181,7 +177,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
           :sna-plot-is-regenerating="snaPlotIsRegenerating"
           :sna-plot-node-info="snaPlotNodeInfo"
           @sna-plot-regenerate-emphasis="regenerateEmphasis"
-          @sna-plot-close-modal="snaPlotModalClose"
+          @sna-plot-close-modal="plotModal.close"
         />
 
         <!-- ── Layout tab ─────────────────────────────────────────── -->
@@ -191,7 +187,7 @@ defineExpose({ snaPlotModalOpen, snaPlotModalForceClose });
           :sna-plot-is-regenerating="snaPlotIsRegenerating"
           :sna-plot-regeneration-error="snaPlotRegenerationError"
           @sna-plot-regenerate-layout="regenerateLayout"
-          @sna-plot-close-modal="snaPlotModalClose"
+          @sna-plot-close-modal="plotModal.close"
         />
       </div>
     </div>

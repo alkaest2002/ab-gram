@@ -36,14 +36,14 @@ const navIcons = {
 };
 
 // --- Composables --------
-const { isOpen, close, toggle } = useDisclosure();
+const navMenu = useDisclosure();
 const { navItems } = useNavItems("header");
 
 // --- Computed -----------
 
 // --- Watchers -----------
 // Navigating closes the collapsed menu.
-watch(() => route.fullPath, close);
+watch(() => route.fullPath, navMenu.close);
 
 // --- Methods ------------
 // A header item is active on its own route and on any child route.
@@ -62,18 +62,18 @@ const isActive = (path) => route.path === path || route.path.startsWith(`${path}
 
       <button
         class="relative z-50 rounded-md p-2 text-ink transition-colors hover:bg-ink/5 sm:hidden"
-        :aria-expanded="isOpen"
+        :aria-expanded="navMenu.isOpen.value"
         aria-controls="main-nav"
-        :aria-label="isOpen ? 'Chiudi il menu' : 'Apri il menu'"
-        @click="toggle"
+        :aria-label="navMenu.isOpen.value ? 'Chiudi il menu' : 'Apri il menu'"
+        @click="navMenu.toggle"
       >
-        <MenuIcon :open="isOpen" />
+        <MenuIcon :open="navMenu.isOpen.value" />
       </button>
 
       <nav
         id="main-nav"
         class="invisible fixed inset-x-3 top-(--header-h) z-40 flex origin-top flex-col gap-0.5 overflow-y-auto rounded-2xl border border-line bg-canvas/95 p-2 opacity-0 backdrop-blur-md transition-[opacity,translate,scale] duration-200 ease-out max-h-[calc(100dvh-var(--header-h)-0.75rem)] [box-shadow:0_18px_40px_-18px_color-mix(in_oklab,var(--color-ink)_35%,transparent)] -translate-y-2 scale-[0.98] data-[open=true]:visible data-[open=true]:translate-y-0 data-[open=true]:scale-100 data-[open=true]:opacity-100 sm:static sm:inset-auto sm:z-auto sm:w-auto sm:max-h-none sm:flex-row sm:items-center sm:gap-1 sm:overflow-visible sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:opacity-100 sm:shadow-none sm:backdrop-blur-none sm:visible sm:translate-y-0 sm:scale-100"
-        :data-open="isOpen"
+        :data-open="navMenu.isOpen.value"
         aria-label="Navigazione principale"
       >
         <RouterLink
@@ -92,9 +92,9 @@ const isActive = (path) => route.path === path || route.path.startsWith(`${path}
     <!-- Clickable backdrop: closes the panel when tapped outside. -->
     <div
       class="invisible fixed inset-0 z-30 bg-ink/25 opacity-0 backdrop-blur-sm transition-opacity duration-200 sm:hidden data-[open=true]:visible data-[open=true]:opacity-100"
-      :data-open="isOpen"
+      :data-open="navMenu.isOpen.value"
       aria-hidden="true"
-      @click="close"
+      @click="navMenu.close"
     />
   </header>
 </template>

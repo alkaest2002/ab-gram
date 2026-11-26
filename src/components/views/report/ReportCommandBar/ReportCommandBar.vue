@@ -36,7 +36,7 @@ const mapButton = useTemplateRef("mapButton");
 
 // --- Composables --------
 const { downloadJson } = useDownload();
-const { isOpen, toggle, close } = useDisclosure(false, { lockScroll: false });
+const reportMap = useDisclosure(false, { lockScroll: false });
 
 // --- Computed -----------
 
@@ -48,7 +48,7 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", dismissOutside
 
 // --- Methods ------------
 function dismissOutside(event) {
-  if (isOpen.value && !mapAnchor.value.contains(event.target)) close();
+  if (reportMap.isOpen.value && !mapAnchor.value.contains(event.target)) reportMap.close();
 }
 
 function goBack() {
@@ -94,8 +94,8 @@ function downloadReport() {
         aria-label="Indice del report"
         title="Indice del report"
         aria-controls="report-toc"
-        :aria-expanded="isOpen"
-        @click="toggle"
+        :aria-expanded="reportMap.isOpen.value"
+        @click="reportMap.toggle"
       >
         <svg
           class="size-7 text-white"
@@ -109,7 +109,11 @@ function downloadReport() {
           <circle cx="12" cy="10" r="2.5" />
         </svg>
       </button>
-      <CommandBarMap v-if="isOpen" :members-data="reportData.membersData" @select="close" />
+      <CommandBarMap
+        v-if="reportMap.isOpen.value"
+        :members-data="reportData.membersData"
+        @select="reportMap.close"
+      />
     </div>
     <button
       type="button"
