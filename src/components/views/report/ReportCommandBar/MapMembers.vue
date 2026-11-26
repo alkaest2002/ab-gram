@@ -12,6 +12,22 @@ defineProps({ members: { type: Array, required: true } });
 
 // --- Emits --------------
 const emit = defineEmits(["select", "back"]);
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- State --------------
+
+// --- Composables --------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>

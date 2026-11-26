@@ -16,8 +16,12 @@ const props = defineProps({
 // --- Emits --------------
 const emit = defineEmits(["select", "show-members"]);
 
-// --- Computed -----------
-const allSections = computed(() => [
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- State --------------
+const allSections = [
   { label: "Nominativi", hash: "#listOfMembers" },
   { label: "Preferenze", hash: "#listOfPreferences" },
   { label: "Network scelte", hash: "#likesNetwork" },
@@ -25,8 +29,11 @@ const allSections = computed(() => [
   { label: "Membri", hash: null },
   { label: "Sommario", hash: "#summary" },
   { label: "Glossario", hash: "#glossary" },
-]);
+];
 
+// --- Composables --------
+
+// --- Computed -----------
 const visibleSection = computed(() => {
   return allSections.value.filter((section) =>
     section.hash !== "#dislikesNetwork"
@@ -36,6 +43,12 @@ const visibleSection = computed(() => {
         : true,
   );
 });
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>
