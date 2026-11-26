@@ -34,7 +34,7 @@ const allSections = [
 // --- Composables --------
 
 // --- Computed -----------
-const visibleSection = computed(() => {
+const visibleSections = computed(() => {
   return allSections.filter(
     (section) => section.hash !== "#dislikesNetwork" || !props.membersData.allMembersHaveNoDislikes,
   );
@@ -49,7 +49,7 @@ const visibleSection = computed(() => {
 
 <template>
   <ul>
-    <li v-for="section in visibleSection" :key="section.label" class="text-xs text-white">
+    <li v-for="section in visibleSections" :key="section.label" class="text-xs text-white">
       <RouterLink
         v-if="section.hash"
         :to="{ hash: section.hash }"
