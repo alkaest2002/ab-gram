@@ -50,7 +50,7 @@
             <marker
               id="tip-choice"
               viewBox="0 0 10 10"
-              refX="9"
+              refX="10"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -61,7 +61,7 @@
             <marker
               id="tip-mutual"
               viewBox="0 0 10 10"
-              refX="9"
+              refX="10"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -72,7 +72,7 @@
             <marker
               id="tip-reject"
               viewBox="0 0 10 10"
-              refX="9"
+              refX="10"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -82,50 +82,51 @@
             </marker>
           </defs>
 
+          <!-- Each endpoint is one outer radius (r + 0.7) toward the curve's control point. -->
           <!-- Preferences -->
           <g class="edge edge-choice" marker-end="url(#tip-choice)">
             <!-- Anna → Emma -->
-            <path d="M131.1 137.1 Q186.9 168.1 236.8 177.7" />
+            <path d="M127.335 134.976 Q186.9 168.1 247.888 179.826" />
             <!-- Dario → Emma -->
-            <path d="M425.6 127.9 Q362.9 139.9 318.5 164.6" />
+            <path d="M429.78 127.041 Q362.9 139.9 308.578 170.108" />
             <!-- Milo → Dario -->
-            <path d="M310.6 62.9 Q374.1 73.1 423.4 102.5" />
+            <path d="M306.363 62.23 Q374.1 73.1 433.075 108.312" />
             <!-- Emma → Gina -->
-            <path d="M312.3 204 Q362.9 232.1 418.7 242.8" />
+            <path d="M308.578 201.892 Q362.9 232.1 429.78 244.959" />
             <!-- Gina → Fabio -->
-            <path d="M429.4 265.9 Q374.1 298.9 317.5 308" />
+            <path d="M433.075 263.688 Q374.1 298.9 306.363 309.77" />
             <!-- Elsa → Anna -->
-            <path d="M99.1 219.4 Q93.8 186 98 159.5" />
+            <path d="M99.798 223.633 Q93.8 186 99.798 148.367" />
             <!-- Iris → Gina -->
-            <path d="M499.5 315 Q490.4 291.7 480.2 279.3" />
+            <path d="M510 317.3 Q510 281 479.156 263.293" />
             <!-- Luca → Fabio -->
-            <path d="M72 337 Q163 320 254 317" />
+            <path d="M72.593 342.293 Q166 351 254.604 322.243" />
             <!-- Marta → Milo -->
-            <path d="M64 49 Q159 46 254 57" />
+            <path d="M64.581 45.582 Q162 36 253.752 53.106" />
           </g>
 
           <!-- Mutual pairs -->
           <g class="edge edge-mutual" marker-start="url(#tip-mutual)" marker-end="url(#tip-mutual)">
             <!-- Milo ↔ Emma -->
-            <path d="M275.2 95.7 Q271.8 122 274.4 142.4" />
+            <path d="M276.607 84.484 Q271.8 122 275.844 153.565" />
             <!-- Elsa ↔ Fabio -->
-            <path d="M136.6 269.5 Q185.9 298.9 242.5 308" />
+            <path d="M130.418 253.871 Q185.9 262 256.631 301.086" />
           </g>
 
           <!-- Rejections -->
           <g class="edge edge-reject" marker-end="url(#tip-reject)">
             <!-- Dario ⇢ Gina -->
-            <path d="M460.9 152.6 Q466.2 186 462 212.5" />
+            <path d="M460.202 148.367 Q466.2 186 460.202 223.633" />
             <!-- Gina ⇢ Iris -->
-            <path d="M467.3 278.9 Q475.6 300.3 487.1 314.2" />
+            <path d="M456 276.7 Q456 310 488.751 329.408" />
             <!-- Elsa ⇢ Luca -->
-            <path d="M90 272 Q80 300 61 320" />
+            <path d="M92.446 274.071 Q80 300 63.43 320.713" />
           </g>
 
           <!-- Mutual rejections -->
           <g class="edge edge-reject" marker-start="url(#tip-reject)" marker-end="url(#tip-reject)">
             <!-- Anna ⇠⇢ Milo -->
-            <path d="M136.6 102.5 Q185.9 73.1 242.5 64" />
+            <path d="M130.418 118.129 Q185.9 110 256.631 70.914" />
           </g>
 
           <g class="nodes">
@@ -252,15 +253,12 @@
 .edge path {
   fill: none;
   stroke-width: 1.8;
-  stroke-linecap: round;
+  stroke-linecap: butt;
 }
 
-.edge-choice path {
-  stroke: color-mix(in oklab, var(--color-accent) 65%, transparent);
-}
-
+.edge-choice path,
 .edge-mutual path {
-  stroke: color-mix(in oklab, var(--color-accent) 65%, transparent);
+  stroke: var(--color-accent);
 }
 
 .edge-reject path {
@@ -268,12 +266,9 @@
   stroke-dasharray: 5 5;
 }
 
-.tip-choice {
-  fill: color-mix(in oklab, var(--color-accent) 65%, transparent);
-}
-
+.tip-choice,
 .tip-mutual {
-  fill: color-mix(in oklab, var(--color-accent) 65%, transparent);
+  fill: var(--color-accent);
 }
 
 .tip-reject {
