@@ -5,6 +5,7 @@
 
 <script setup>
 // --- Imports ------------
+import { useId } from "vue";
 
 // --- Props --------------
 defineProps({
@@ -21,6 +22,7 @@ defineProps({
 // --- Stores -------------
 
 // --- State --------------
+const markerId = useId();
 
 // --- Composables --------
 
@@ -43,6 +45,30 @@ defineProps({
     stroke-linejoin="round"
     aria-hidden="true"
   >
+    <defs>
+      <marker
+        :id="`${markerId}-choice`"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="4.5"
+        markerHeight="4.5"
+        orient="auto-start-reverse"
+      >
+        <path d="M0 0 L10 5 L0 10 Z" fill="var(--color-accent)" stroke="none" />
+      </marker>
+      <marker
+        :id="`${markerId}-reject`"
+        viewBox="0 0 10 10"
+        refX="8"
+        refY="5"
+        markerWidth="4.5"
+        markerHeight="4.5"
+        orient="auto-start-reverse"
+      >
+        <path d="M0 0 L10 5 L0 10 Z" fill="var(--color-reject)" stroke="none" />
+      </marker>
+    </defs>
     <g transform="translate(48 10)" class="text-ink">
       <circle r="9" />
       <g transform="scale(1.25)" fill="currentColor" stroke="none">
@@ -64,10 +90,18 @@ defineProps({
         <path d="M-5 4.5a5 4 0 0 1 10 0Z" />
       </g>
     </g>
-    <path class="text-accent" d="M34.87 30.43 43.13 17.57 m-5.54 2.65 5.54-2.65.16 6.14" />
-    <g class="text-reject">
-      <path d="M52.87 17.57 61.13 30.43" stroke-dasharray="2.5 3" />
-      <path d="m55.59 27.78 5.54 2.65.16-6.14" />
-    </g>
+    <path
+      d="M35.25 29.84 41.8 19.64"
+      stroke="var(--color-accent)"
+      stroke-linecap="butt"
+      :marker-end="`url(#${markerId}-choice)`"
+    />
+    <path
+      d="M53.25 18.16 59.8 28.36"
+      stroke="var(--color-reject)"
+      stroke-dasharray="2.5 3"
+      stroke-linecap="butt"
+      :marker-end="`url(#${markerId}-reject)`"
+    />
   </svg>
 </template>
