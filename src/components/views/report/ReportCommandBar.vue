@@ -5,6 +5,7 @@
 
 <script setup>
 // --- Imports ------------
+// -- from vue
 import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
 
 //   -- From vue-router.

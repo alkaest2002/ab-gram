@@ -4,28 +4,56 @@
 -->
 
 <script setup>
+// --- Imports ------------
+//   -- From vue.
 import { computed } from "vue";
+
+//   -- From vue-router.
 import { RouterLink } from "vue-router";
 
+// --- Props --------------
 const props = defineProps({
   membersData: { type: Object, required: true },
 });
 
+// --- Emits --------------
 const emit = defineEmits(["select"]);
-const sections = computed(() => {
-  const links = [
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- State --------------
+
+// --- Composables --------
+
+// --- Computed -----------
+const allSections = computed(() => {
+  const firstMember = props.membersData.members?.[0];
+  return [
     { label: "Nominativi", hash: "#listOfMembers" },
     { label: "Preferenze", hash: "#listOfPreferences" },
     { label: "Network scelte", hash: "#likesNetwork" },
+    {
+      label: "Network rifiuti",
+      hash: "#dislikesNetwork",
+      hidden: props.membersData.allMembersHaveNoDislikes,
+    },
+    { label: "Membri", hash: firstMember ? `#member${firstMember.id}` : null },
+    { label: "Sommario", hash: "#summary" },
+    { label: "Glossario", hash: "#glossary" },
   ];
-  if (!props.membersData.allMembersHaveNoDislikes) {
-    links.push({ label: "Network rifiuti", hash: "#dislikesNetwork" });
-  }
-  const firstMember = props.membersData.members?.[0];
-  if (firstMember) links.push({ label: "Membri", hash: `#member${firstMember.id}` });
-  links.push({ label: "Sommario", hash: "#summary" }, { label: "Glossario", hash: "#glossary" });
-  return links;
 });
+
+const visibleSection = computed(() =>
+  allSections.value.filter((section) => section.hash && !section.hidden),
+);
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>
@@ -35,7 +63,7 @@ const sections = computed(() => {
     class="toc-dropup w-32 overflow-y-auto rounded-2xl p-1.5 font-medium shadow-lg print:hidden"
   >
     <ul>
-      <li v-for="section in sections" :key="section.hash" class="text-xs text-white">
+      <li v-for="section in visibleSection" :key="section.hash" class="text-xs text-white">
         <RouterLink
           :to="{ hash: section.hash }"
           class="block rounded-xl px-2 py-1 hover:bg-white/10 focus-visible:bg-white/15 focus-visible:outline-white"
