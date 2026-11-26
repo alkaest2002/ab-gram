@@ -31,6 +31,8 @@ const router = useRouter();
 // --- Stores -------------
 
 // --- State --------------
+const commandButtonClass =
+  "inline-flex size-11 items-center justify-center rounded-full bg-(--command-surface) shadow-lg backdrop-blur-md";
 const mapAnchor = useTemplateRef("mapAnchor");
 const mapButton = useTemplateRef("mapButton");
 
@@ -74,12 +76,12 @@ function downloadReport() {
 
 <template>
   <nav
-    class="fixed inset-x-0 bottom-0 z-30 flex justify-center gap-1 px-6 pb-6 print:hidden"
+    class="fixed inset-x-0 bottom-0 z-30 flex justify-center gap-1 px-6 pb-6 [--command-surface:#323232] print:hidden"
     aria-label="Comandi del report"
   >
     <button
       type="button"
-      class="cmd-btn"
+      :class="commandButtonClass"
       aria-label="Torna al sociogramma"
       title="Torna al sociogramma"
       @click="goBack"
@@ -90,7 +92,7 @@ function downloadReport() {
       <button
         ref="mapButton"
         type="button"
-        class="cmd-btn"
+        :class="commandButtonClass"
         aria-label="Indice del report"
         title="Indice del report"
         aria-controls="report-toc"
@@ -117,56 +119,21 @@ function downloadReport() {
     </div>
     <button
       type="button"
-      class="cmd-btn"
+      :class="commandButtonClass"
       aria-label="Genera PDF"
       title="Genera PDF"
       @click="printReport"
     >
-      <span class="cmd-label">PDF</span>
+      <span class="text-xs leading-none font-semibold tracking-[0.02em] text-white">PDF</span>
     </button>
     <button
       type="button"
-      class="cmd-btn"
+      :class="commandButtonClass"
       aria-label="Scarica JSON"
       title="Scarica JSON"
       @click="downloadReport"
     >
-      <span class="cmd-label">JSON</span>
+      <span class="text-xs leading-none font-semibold tracking-[0.02em] text-white">JSON</span>
     </button>
   </nav>
 </template>
-
-<style scoped>
-nav {
-  --command-surface: rgb(50 50 50);
-}
-
-.cmd-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 9999px;
-  background-color: var(--command-surface);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  transition: background-color 150ms ease;
-}
-
-.cmd-btn:hover,
-.cmd-btn:focus-visible {
-  background-color: var(--command-surface);
-}
-
-.cmd-label {
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
-</style>

@@ -35,12 +35,8 @@ const allSections = [
 
 // --- Computed -----------
 const visibleSection = computed(() => {
-  return allSections.value.filter((section) =>
-    section.hash !== "#dislikesNetwork"
-      ? true
-      : props.membersData.allMembersHaveNoDislikes
-        ? false
-        : true,
+  return allSections.filter(
+    (section) => section.hash !== "#dislikesNetwork" || !props.membersData.allMembersHaveNoDislikes,
   );
 });
 

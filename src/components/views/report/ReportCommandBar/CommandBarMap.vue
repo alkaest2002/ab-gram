@@ -47,7 +47,7 @@ async function switchView(toMembers) {
     ref="panel"
     :aria-label="showingMembers ? 'Membri' : 'Indice del report'"
     :class="showingMembers ? 'w-48' : 'w-32'"
-    class="toc-dropup overflow-y-auto rounded-2xl p-1.5 font-medium shadow-lg print:hidden"
+    class="absolute bottom-full left-1/2 mb-2 max-h-[calc(100dvh_-_5.25rem)] -translate-x-1/2 overflow-y-auto rounded-2xl bg-(--command-surface) p-1.5 font-medium shadow-lg print:hidden"
   >
     <MapMembers
       v-if="showingMembers"
@@ -63,14 +63,3 @@ async function switchView(toMembers) {
     />
   </nav>
 </template>
-
-<style scoped>
-.toc-dropup {
-  position: absolute;
-  bottom: calc(100% + 0.5rem);
-  left: 50%;
-  transform: translateX(-50%);
-  max-height: calc(100dvh - 5.25rem);
-  background: var(--command-surface);
-}
-</style>
