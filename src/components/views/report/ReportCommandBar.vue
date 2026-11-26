@@ -5,13 +5,17 @@
 
 <script setup>
 // --- Imports ------------
+import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
+
 //   -- From vue-router.
 import { useRouter } from "vue-router";
 
 //   -- From components.
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
+import ReportCommandBarTOC from "./ReportCommandBarTOC.vue";
 
 //   -- From composables.
+import { useDisclosure } from "@/composables/useDisclosure";
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------
@@ -30,17 +34,26 @@ const router = useRouter();
 // --- Stores -------------
 
 // --- State --------------
+const tocAnchor = useTemplateRef("tocAnchor");
+const tocButton = useTemplateRef("tocButton");
 
 // --- Composables --------
 const { downloadJson } = useDownload();
+const { isOpen, toggle, close } = useDisclosure(false, { lockScroll: false });
 
 // --- Computed -----------
 
 // --- Watchers -----------
 
 // --- Lifecycle ----------
+onMounted(() => document.addEventListener("pointerdown", dismissOutside));
+onBeforeUnmount(() => document.removeEventListener("pointerdown", dismissOutside));
 
 // --- Methods ------------
+function dismissOutside(event) {
+  if (isOpen.value && !tocAnchor.value.contains(event.target)) close();
+}
+
 function goBack() {
   router.replace({ name: "sociogram" });
 }
@@ -76,6 +89,31 @@ function downloadReport() {
     >
       <ArrowLeftIcon :size="'size-7'" :stroke-class="'stroke-white'" />
     </button>
+    <div ref="tocAnchor" class="relative flex" @keydown.esc="tocButton.focus()">
+      <button
+        ref="tocButton"
+        type="button"
+        class="cmd-btn"
+        aria-label="Indice del report"
+        title="Indice del report"
+        aria-controls="report-toc"
+        :aria-expanded="isOpen"
+        @click="toggle"
+      >
+        <svg
+          class="size-7 text-white"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          aria-hidden="true"
+        >
+          <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" stroke-linejoin="round" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+      </button>
+      <ReportCommandBarTOC v-show="isOpen" :members-data="reportData.membersData" @select="close" />
+    </div>
     <button
       type="button"
       class="cmd-btn"
@@ -98,6 +136,10 @@ function downloadReport() {
 </template>
 
 <style scoped>
+nav {
+  --command-surface: rgb(50 50 50);
+}
+
 .cmd-btn {
   display: inline-flex;
   align-items: center;
@@ -105,7 +147,7 @@ function downloadReport() {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 9999px;
-  background-color: rgb(50 50 50);
+  background-color: var(--command-surface);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow:
@@ -116,7 +158,7 @@ function downloadReport() {
 
 .cmd-btn:hover,
 .cmd-btn:focus-visible {
-  background-color: rgb(50 50 50);
+  background-color: var(--command-surface);
 }
 
 .cmd-label {
