@@ -25,15 +25,15 @@
  */
 export const STATUS_UI = Object.freeze({
   NaN: {
-    label: "Non classificato",
-    labelSoft: "Non classificato",
+    label: "Non classificato/a",
+    labelSoft: "Non classificato/a",
     description: "",
     tone: "muted",
     bar: "bg-muted",
     text: "text-muted",
   },
   0: {
-    label: "Isolato",
+    label: "Isolato/a",
     labelSoft: "Segnali di isolamento",
     description: "non ha espresso/ricevuto opinioni.",
     tone: "muted",
@@ -41,7 +41,7 @@ export const STATUS_UI = Object.freeze({
     text: "text-warn",
   },
   1: {
-    label: "Ignorato",
+    label: "Ignorato/a",
     labelSoft: "Riscontro assente",
     description: "ha espresso opinioni, ma non ha ricevuto alcuna risposta.",
     tone: "muted",
@@ -57,8 +57,8 @@ export const STATUS_UI = Object.freeze({
     text: "text-muted",
   },
   3: {
-    label: "Apprezzato",
-    labelSoft: "Apprezzato",
+    label: "Apprezzato/a",
+    labelSoft: "Apprezzato/a",
     description: "impatto medio con bilancio positivo.",
     tone: "accent",
     bar: "bg-accent",
@@ -73,7 +73,7 @@ export const STATUS_UI = Object.freeze({
     text: "text-accent",
   },
   5: {
-    label: "Malvisto",
+    label: "Malvisto/a",
     labelSoft: "Note di disapprovazione",
     description: "impatto medio con bilancio negativo.",
     tone: "reject",
@@ -81,7 +81,7 @@ export const STATUS_UI = Object.freeze({
     text: "text-reject",
   },
   6: {
-    label: "Rifiutato",
+    label: "Rifiutato/a",
     labelSoft: "Segnali di rifiuto",
     description: "impatto alto con bilancio negativo.",
     tone: "reject",
@@ -97,7 +97,7 @@ export const STATUS_UI = Object.freeze({
     text: "text-warn",
   },
   8: {
-    label: "Controverso",
+    label: "Controverso/a",
     labelSoft: "Accoglienza dibattuta",
     description: "impatto alto con bilancio neutro.",
     tone: "warn",
