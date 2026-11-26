@@ -44,7 +44,7 @@ const sizes = {
     <span
       aria-hidden="true"
       :class="sizes[size]"
-      class="shrink-0 animate-spin rounded-full bg-[conic-gradient(transparent,#555)] mask-[radial-gradient(closest-side,transparent_calc(100%_-_2px),black_calc(100%_-_2px))] motion-reduce:[animation-duration:2s]"
+      class="shrink-0 animate-spin rounded-full bg-[conic-gradient(transparent,#555)] mask-[radial-gradient(closest-side,transparent_calc(100%-2px),black_calc(100%-2px))] motion-reduce:[animation-duration:2s]"
     ></span>
     <slot><span class="sr-only">Caricamento in corso…</span></slot>
   </div>
