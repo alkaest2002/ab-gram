@@ -5,18 +5,14 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { onBeforeUnmount, ref, watch } from "vue";
 
-//   -- From vue-router.
 import { onBeforeRouteUpdate, RouterView, useRoute } from "vue-router";
 
-//   -- From components.
 import AppTransitionContent from "@/components/ui/AppTransitionContent.vue";
 import DocsSidebar from "@/components/views/docs/DocsSidebar.vue";
 import DocsPager from "@/components/views/docs/DocsPager.vue";
 
-//   -- From composables.
 import { usePrevNext } from "@/composables/docs/usePrevNext";
 import { useMathjax } from "@/composables/docs/useMathjax";
 

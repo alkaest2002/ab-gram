@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From utils.
 import { formatShare } from "@/analysis/common/statsHelpers";
 
 // --- Props --------------

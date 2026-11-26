@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From utils.
 import { memberIndexIn, metricIndexOf, readRaw, formatValue } from "@/analysis/common/statsHelpers";
 import { STATUS_UI } from "@/utils/report/sociometricStatusUI";
 

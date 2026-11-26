@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, reactive } from "vue";
 
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------

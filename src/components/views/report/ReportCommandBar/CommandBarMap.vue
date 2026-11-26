@@ -5,10 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { nextTick, ref, useTemplateRef } from "vue";
-
-//   -- From components.
 import MapTOC from "./MapTOC.vue";
 import MapMembers from "./MapMembers.vue";
 

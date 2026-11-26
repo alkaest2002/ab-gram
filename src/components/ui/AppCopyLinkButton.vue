@@ -5,12 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import CheckIcon from "@/components/ui/icons/CheckIcon.vue";
 import CopyIcon from "@/components/ui/icons/CopyIcon.vue";
 
-//   -- From composables.
 import { useCopyLink } from "@/composables/useCopyLink";
 
 // --- Props --------------

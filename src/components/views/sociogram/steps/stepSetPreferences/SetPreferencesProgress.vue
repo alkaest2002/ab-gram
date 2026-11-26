@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From utils.
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------

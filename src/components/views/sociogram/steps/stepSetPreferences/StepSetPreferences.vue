@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import {
   computed,
   ref,
@@ -17,13 +16,10 @@ import {
   useTemplateRef,
 } from "vue";
 
-//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import SetPreferencesCarousel from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesCarousel.vue";
@@ -31,10 +27,8 @@ import SetPreferencesSelect from "@/components/views/sociogram/steps/stepSetPref
 import SetPreferencesProgress from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesProgress.vue";
 import SetPreferencesNoPreferences from "@/components/views/sociogram/steps/stepSetPreferences/SetPreferencesNoPreferences.vue";
 
-//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
-//   -- From utils.
 import { isMemberComplete } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------

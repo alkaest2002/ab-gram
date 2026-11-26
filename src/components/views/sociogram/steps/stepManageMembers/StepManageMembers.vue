@@ -5,26 +5,19 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 
-//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
-//   -- From utils.
 import { getMembersNameIssues } from "@/utils/sociogram/memberHelpers";
 
-//   -- From relative.
 import LoadMembersListEditor from "./LoadMembersListEditor.vue";
 
 // --- Props --------------

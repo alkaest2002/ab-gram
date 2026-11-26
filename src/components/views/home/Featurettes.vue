@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import PiggyIcon from "@/components/ui/icons/PiggyIcon.vue";
 import SmileyIcon from "@/components/ui/icons/SmileyIcon.vue";
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";

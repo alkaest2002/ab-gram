@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import DiscordCard from "@/components/ui/AppDiscordCard.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
 import Hero from "@/components/views/home/Hero.vue";

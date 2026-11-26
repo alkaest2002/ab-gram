@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue-router.
 import { RouterLink } from "vue-router";
 
-//   -- From components.
 import ShieldIcon from "@/components/ui/icons/ShieldIcon.vue";
 import GithubIcon from "@/components/ui/icons/GithubIcon.vue";
 

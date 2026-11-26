@@ -5,17 +5,13 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, ref } from "vue";
 
-//   -- From utils.
 import { memberIndexIn, metricIndexOf, readRaw, readRank } from "@/analysis/common/statsHelpers";
 
-//   -- From relative.
 import SummaryRow from "./SummaryRow.vue";
 import BasePage from "../BasePage.vue";
 
-//   -- From utils.
 import { STATUS_UI } from "@/utils/report/sociometricStatusUI";
 
 // --- Props --------------

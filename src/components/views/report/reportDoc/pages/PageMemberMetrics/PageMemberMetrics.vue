@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From relative.
 import BasePage from "../BasePage.vue";
 import MemberEgoPlot from "./MemberEgoPlot.vue";
 import MemberStats from "./MemberStats.vue";

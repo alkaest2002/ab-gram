@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import FileIcon from "@/components/ui/icons/FileIcon.vue";

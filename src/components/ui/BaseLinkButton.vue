@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From vue-router.
 import { RouterLink } from "vue-router";
 
 // --- Props --------------

@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From relative.
 import BasePage from "../BasePage.vue";
 
-//   -- From composables.
 import { useColumns } from "@/composables/report/useColumns";
 
 // --- Props --------------

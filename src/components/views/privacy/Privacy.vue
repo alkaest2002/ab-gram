@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import PrivacySidebar from "@/components/views/privacy/PrivacySidebar.vue";
 
 // --- Props --------------

@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
 // --- Props --------------

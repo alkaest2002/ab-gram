@@ -5,20 +5,16 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { watch } from "vue";
 
-//   -- From vue-router.
 import { RouterLink, useRoute } from "vue-router";
 
-//   -- From components.
 import AppLogo from "@/components/ui/AppLogo.vue";
 import MenuIcon from "@/components/ui/icons/MenuIcon.vue";
 import NavAppIcon from "@/components/ui/icons/NavAppIcon.vue";
 import NavDocsIcon from "@/components/ui/icons/NavDocsIcon.vue";
 import NavAboutIcon from "@/components/ui/icons/NavAboutIcon.vue";
 
-//   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useNavItems } from "@/composables/useNavItems";
 

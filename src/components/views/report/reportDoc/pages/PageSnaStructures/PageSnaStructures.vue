@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From relative.
 import BasePage from "../BasePage.vue";
 
 // --- Props --------------

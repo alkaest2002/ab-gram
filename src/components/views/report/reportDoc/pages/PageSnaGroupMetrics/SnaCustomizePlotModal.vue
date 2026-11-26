@@ -5,13 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { ref, watch } from "vue";
 
-//   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
 
-//   -- From relative.
 import SnaCustomizeEmphasisTab from "./SnaCustomizeEmphasisTab.vue";
 import SnaCustomizeLayoutTab from "./SnaCustomizeLayoutTab.vue";
 

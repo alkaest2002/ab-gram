@@ -5,13 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, toRef, useTemplateRef } from "vue";
 
-//   -- From components.
 import WarningIcon from "@/components/ui/icons/WarningIcon.vue";
 
-//   -- From composables.
 import { useSociogramSearchMembers } from "@/composables/sociogram/useSociogramSearchMembers";
 import { useSociogramPreferencesSelection } from "@/composables/sociogram/useSociogramSelectPreferences";
 

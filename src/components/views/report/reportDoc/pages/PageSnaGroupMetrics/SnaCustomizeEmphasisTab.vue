@@ -5,13 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, reactive } from "vue";
 
-//   -- From composables.
 import { cloneEmphasisFilter, resolveDimmedNodes } from "@/composables/report/useNodeEmphasis";
 
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseToggle from "@/components/ui/BaseToggle.vue";
 

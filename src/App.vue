@@ -5,13 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed } from "vue";
 
-//   -- From vue-router.
 import { useRoute, RouterView } from "vue-router";
 
-//   -- From components.
 import AppTransitionContent from "@/components/ui/AppTransitionContent.vue";
 import DefaultLayout from "@/components/layouts/DefaultLayout.vue";
 import EmptyLayout from "@/components/layouts/EmptyLayout.vue";

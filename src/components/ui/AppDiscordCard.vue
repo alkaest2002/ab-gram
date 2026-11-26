@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import DiscordIcon from "@/components/ui/icons/DiscordIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";

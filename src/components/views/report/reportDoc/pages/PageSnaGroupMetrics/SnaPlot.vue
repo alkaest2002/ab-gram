@@ -5,15 +5,12 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, reactive, ref } from "vue";
 
-//   -- From composables.
 import { useNodeEmphasis } from "@/composables/report/useNodeEmphasis";
 import { useSnaPlotWorker } from "@/composables/report/useSnaPlotWorker";
 import { useSvgEmphasis } from "@/composables/report/useSvgEmphasis";
 
-//   -- From relative.
 import SnaCustomizePlotModal from "./SnaCustomizePlotModal.vue";
 
 // --- Props --------------

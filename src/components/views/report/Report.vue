@@ -5,20 +5,15 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { onBeforeMount, onBeforeUnmount } from "vue";
 
-//   -- From vue-router.
 import { useRouter } from "vue-router";
 
-//   -- From stores.
 import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components.
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 
-//   -- From utils.
 import { createReportWorker } from "@/workers/workerHelpers";
 
 // --- Props --------------

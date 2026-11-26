@@ -5,17 +5,13 @@
 
 <script setup>
 // --- Imports ------------
-// -- from vue
 import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
 
-//   -- From vue-router.
 import { useRouter } from "vue-router";
 
-//   -- From components.
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
 import CommandBarMap from "./CommandBarMap.vue";
 
-//   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useDownload } from "@/composables/useDownload";
 

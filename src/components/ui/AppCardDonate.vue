@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import HeartIcon from "@/components/ui/icons/HeartIcon.vue";
 import BaseCard from "@/components/ui/BaseCard.vue";
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";

@@ -5,25 +5,19 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, toRaw } from "vue";
 
-//   -- From vue-router.
 import { useRouter } from "vue-router";
 
-//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 import { useAppStore } from "@/stores/app";
 
-//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import SummarizeDataMemberCard from "@/components/views/sociogram/steps/stepSummarizeData/SummarizeDataMemberCard.vue";
 
-//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 import { useSociogramValidateData } from "@/composables/sociogram/useSociogramValidateData";
 

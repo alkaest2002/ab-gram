@@ -5,10 +5,8 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From components.
 import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 
-//   -- From composables.
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------

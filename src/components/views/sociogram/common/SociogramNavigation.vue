@@ -5,14 +5,11 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseTooltip from "@/components/ui/BaseTooltip.vue";
 
-//   -- From composables.
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------

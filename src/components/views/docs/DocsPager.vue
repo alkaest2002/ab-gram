@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue-router.
 import { RouterLink } from "vue-router";
 
 // --- Props --------------

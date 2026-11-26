@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From relative.
 import BasePage from "../BasePage.vue";
 import SnaPlot from "./SnaPlot.vue";
 import SnaMetrics from "./SnaMetrics.vue";

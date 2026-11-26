@@ -5,13 +5,10 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { ref } from "vue";
 
-//   -- From components.
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
-//   -- From composables.
 import {
   useSociogramTextReader,
   DEFAULT_MAX_FILE_SIZE,

@@ -5,26 +5,20 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { computed, ref } from "vue";
 
-//   -- From pinia.
 import { storeToRefs } from "pinia";
 
-//   -- From stores.
 import { useSociogramStore } from "@/stores/sociogram";
 
-//   -- From components.
 import StepHeader from "@/components/views/sociogram/common/StepHeader.vue";
 import SociogramNavigation from "@/components/views/sociogram/common/SociogramNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/sociogram/common/FileReadResult.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/sociogram/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
 
-//   -- From composables.
 import { useSociogramNavigation } from "@/composables/sociogram/useSociogramNavigation";
 
-//   -- From utils.
 import { buildMembers, normalizeNames, orderNames } from "@/utils/sociogram/memberHelpers";
 
 // --- Props --------------

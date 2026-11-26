@@ -5,7 +5,6 @@
 
 <script setup>
 // --- Imports ------------
-//   -- From vue.
 import { onActivated, onDeactivated, ref } from "vue";
 
 // --- Props --------------
