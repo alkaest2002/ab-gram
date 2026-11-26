@@ -40,7 +40,7 @@ const columns = useColumns(members);
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">Elenco dei {{ members.length }} membri</h2>
+      <h2 id="listOfMembers" class="text-[16pt]">Elenco dei {{ members.length }} membri</h2>
     </template>
 
     <template #default>

@@ -92,7 +92,7 @@ const categories = computed(() => {
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">{{ pageTitle }}</h2>
+      <h2 id="snaStructures" class="text-[16pt]">{{ pageTitle }}</h2>
     </template>
 
     <template #default>

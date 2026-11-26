@@ -52,7 +52,7 @@ const props = defineProps({
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt] truncate">
+      <h2 :id="`member${props.member.id}`" class="text-[16pt] truncate">
         <span class="text-muted">Membro {{ props.member.id }} |</span>
         {{ props.member.name }}
       </h2>

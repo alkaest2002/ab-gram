@@ -88,7 +88,7 @@ const entries = [...GLOSSARY].sort((a, b) =>
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">Glossario</h2>
+      <h2 id="glossary" class="text-[16pt]">Glossario</h2>
     </template>
 
     <template #default>

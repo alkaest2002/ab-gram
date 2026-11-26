@@ -56,7 +56,7 @@ const accentColor = props.snaPlot?.accentColor ?? config.accentColor;
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">{{ config.pageTitle }}</h2>
+      <h2 :id="`${props.typeOfSna}Network`" class="text-[16pt]">{{ config.pageTitle }}</h2>
     </template>
 
     <template #default>

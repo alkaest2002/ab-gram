@@ -153,7 +153,7 @@ function buildCard(member) {
 <template>
   <BasePage>
     <template #pageTitle>
-      <h2 class="text-[16pt]">Sintesi</h2>
+      <h2 id="summary" class="text-[16pt]">Sintesi</h2>
     </template>
 
     <template #default>
