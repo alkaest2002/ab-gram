@@ -3,12 +3,15 @@
 
 import * as np from "numpy-ts";
 
-/** Edge types where `A -> B` and `B -> A` describe the same relationship. */
-/** @type {Set<string>} */
+/**
+ * Types counted once per unordered pair and credited to both members in `memberInEdges`,
+ * even if only one direction appears in the type's edge list.
+ * @type {Set<string>}
+ */
 const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
 
 /**
- * Compute, for every member, the share of their edges that belong to each type.
+ * Count edges credited to each member by type and compute each type's share.
  *
  * A directed edge is attributed to its choosing member (`A`); a symmetric edge
  * (mutual like / mutual dislike) is attributed to both members. Symmetric
@@ -18,8 +21,9 @@ const SYMMETRIC_TYPES = new Set(["typeI", "typeIV"]);
  * @param {string[]} memberIds
  * @param {Record<string, string[][]>} edgeTypes - Edge lists keyed by type name.
  * @returns {Record<string, Record<string, {cnt: number, pct: number}>>}
- *   `result[memberId][edgeType]`, containing the edge count and its share of the
- *   member's total edges. Shares sum to 1, or are all 0 for a member with no edges.
+ *   `result[memberId][edgeType].cnt` is the count credited to the member in that type.
+ *   `pct` is `cnt` divided by the sum of the member's counts across all types,
+ *   or 0 if that sum is 0. An edge credited in two types contributes to both counts.
  */
 const computeMemberInEdges = (memberIds, edgeTypes) => {
   const typeNames = Object.keys(edgeTypes);
@@ -53,8 +57,7 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
     }
   }
 
-  // Convert counts into the share of the member's total edges, keeping every
-  // value in [0, 1]. A member with no edges keeps 0 rather than dividing by 0.
+  // Normalize by the sum of category counts, not the number of distinct edges.
   for (const counts of Object.values(result)) {
     const total = typeNames.reduce((sum, type) => sum + counts[type], 0);
     for (const type of typeNames) {
@@ -69,7 +72,7 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
 };
 
 /**
- * Classify every directed preference edge into one of seven types.
+ * Classify each non-self directed preference edge into one or two of seven types.
  *
  * An edge runs from the choosing member `A` (row `i`) to the chosen member `B`
  * (column `j`). Each edge is returned as a `[aId, bId]` pair of member ids,
@@ -94,11 +97,10 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
  *   memberInEdges: Record<string, Record<string, {cnt: number, pct: number}>>
  * }}
  *   Seven edge lists, each holding `[aId, bId]` member-id pairs, plus
- *   `memberInEdges`: for every member id, the share (in `[0, 1]`) of that
- *   member's total edges that are of each type
- *   (`memberInEdges[memberId].typeI`, ...). Directed edges are attributed to
- *   their choosing member (`A`); mutual types (`typeI` and `typeIV`) count each
- *   unordered pair once and attribute it to both members.
+ *   `memberInEdges[memberId][type]`: the count credited in that type (`cnt`) and
+ *   its share of the member's counts across all types (`pct`, or 0 if none).
+ *   `typeI` and `typeIV` credit both members once per unordered pair within the
+ *   type; all other types credit only the choosing member (`A`).
  *
  *   The seven types are:
  *   - `typeI`   mutual like
@@ -109,8 +111,10 @@ const computeMemberInEdges = (memberIds, edgeTypes) => {
  *   - `typeVI`  `A` dislikes `B`, `B` likes `A`
  *   - `typeVII` `A` both likes and dislikes `B`
  *
- *   An edge may appear in more than one list (e.g. when `B` both likes and
- *   dislikes `A`), but never twice within the same list.
+ *   The only overlaps occur when `B` both likes and dislikes `A`: a like-only
+ *   `A -> B` matches `typeI` and `typeV`; a dislike-only `A -> B` matches
+ *   `typeIV` and `typeVI`. If `A` both likes and dislikes `B`, `A -> B` matches
+ *   only `typeVII`, regardless of `B`'s preference.
  */
 export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
   const and = np.logical_and;
@@ -121,10 +125,8 @@ export const getEdgeTypes = (adjLikes, adjDislikes, memberIds) => {
   const dislikesOnly = and(adjDislikes, not(adjLikes)); // A dislikes B, does not like B
   const both = and(adjLikes, adjDislikes); // A likes and dislikes B
 
-  // Reverse (B -> A) preference, read through the transpose. A "both" reverse
-  // feeling (B likes AND dislikes A) counts as both a like and a dislike, so the
-  // same edge may land in two different types (e.g. II and V) — but never twice
-  // within one type.
+  // Read B -> A through the transpose. Unlike the forward masks, likesBack
+  // and dislikesBack can both be true for the same edge.
   const likesBack = adjLikes.T; // B likes A
   const dislikesBack = adjDislikes.T; // B dislikes A
   const noneBack = and(not(likesBack), not(dislikesBack)); // B neither likes nor dislikes A
