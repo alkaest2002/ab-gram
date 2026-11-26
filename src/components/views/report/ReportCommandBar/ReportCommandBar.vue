@@ -13,7 +13,7 @@ import { useRouter } from "vue-router";
 
 //   -- From components.
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
-import ReportCommandBarTOC from "./ReportCommandBarTOC.vue";
+import CommandBarMap from "./CommandBarMap.vue";
 
 //   -- From composables.
 import { useDisclosure } from "@/composables/useDisclosure";
@@ -35,8 +35,8 @@ const router = useRouter();
 // --- Stores -------------
 
 // --- State --------------
-const tocAnchor = useTemplateRef("tocAnchor");
-const tocButton = useTemplateRef("tocButton");
+const mapAnchor = useTemplateRef("mapAnchor");
+const mapButton = useTemplateRef("mapButton");
 
 // --- Composables --------
 const { downloadJson } = useDownload();
@@ -52,7 +52,7 @@ onBeforeUnmount(() => document.removeEventListener("pointerdown", dismissOutside
 
 // --- Methods ------------
 function dismissOutside(event) {
-  if (isOpen.value && !tocAnchor.value.contains(event.target)) close();
+  if (isOpen.value && !mapAnchor.value.contains(event.target)) close();
 }
 
 function goBack() {
@@ -90,9 +90,9 @@ function downloadReport() {
     >
       <ArrowLeftIcon :size="'size-7'" :stroke-class="'stroke-white'" />
     </button>
-    <div ref="tocAnchor" class="relative flex" @keydown.esc="tocButton.focus()">
+    <div ref="mapAnchor" class="relative flex" @keydown.esc="mapButton.focus()">
       <button
-        ref="tocButton"
+        ref="mapButton"
         type="button"
         class="cmd-btn"
         aria-label="Indice del report"
@@ -113,7 +113,7 @@ function downloadReport() {
           <circle cx="12" cy="10" r="2.5" />
         </svg>
       </button>
-      <ReportCommandBarTOC v-show="isOpen" :members-data="reportData.membersData" @select="close" />
+      <CommandBarMap v-if="isOpen" :members-data="reportData.membersData" @select="close" />
     </div>
     <button
       type="button"

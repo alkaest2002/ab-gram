@@ -17,7 +17,7 @@ import { useReportStore } from "@/stores/report";
 import { useSociogramStore } from "@/stores/sociogram";
 
 //   -- From components.
-import ReportCommandBar from "@/components/views/report/ReportCommandBar.vue";
+import ReportCommandBar from "@/components/views/report/ReportCommandBar/ReportCommandBar.vue";
 import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
 import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
