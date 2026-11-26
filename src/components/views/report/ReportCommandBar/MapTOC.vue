@@ -21,17 +21,21 @@ const allSections = computed(() => [
   { label: "Nominativi", hash: "#listOfMembers" },
   { label: "Preferenze", hash: "#listOfPreferences" },
   { label: "Network scelte", hash: "#likesNetwork" },
-  {
-    label: "Network rifiuti",
-    hash: "#dislikesNetwork",
-    hidden: props.membersData.allMembersHaveNoDislikes,
-  },
-  { label: "Membri", hidden: !props.membersData.members?.length },
+  { label: "Network rifiuti", hash: "#dislikesNetwork" },
+  { label: "Membri", hash: null },
   { label: "Sommario", hash: "#summary" },
   { label: "Glossario", hash: "#glossary" },
 ]);
 
-const visibleSection = computed(() => allSections.value.filter((section) => !section.hidden));
+const visibleSection = computed(() => {
+  return allSections.value.filter((section) =>
+    section.hash !== "#dislikesNetwork"
+      ? true
+      : props.membersData.allMembersHaveNoDislikes
+        ? false
+        : true,
+  );
+});
 </script>
 
 <template>
