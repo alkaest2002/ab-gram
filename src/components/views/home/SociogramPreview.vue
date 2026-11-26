@@ -50,7 +50,7 @@
             <marker
               id="tip-choice"
               viewBox="0 0 10 10"
-              refX="10"
+              refX="8"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -61,7 +61,7 @@
             <marker
               id="tip-mutual"
               viewBox="0 0 10 10"
-              refX="10"
+              refX="8"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -72,7 +72,7 @@
             <marker
               id="tip-reject"
               viewBox="0 0 10 10"
-              refX="10"
+              refX="8"
               refY="5"
               markerWidth="5.5"
               markerHeight="5.5"
@@ -82,51 +82,51 @@
             </marker>
           </defs>
 
-          <!-- Each endpoint is one outer radius (r + 0.7) toward the curve's control point. -->
+          <!-- Marker tips sit just before node outlines; shafts end inside the arrowheads. -->
           <!-- Preferences -->
           <g class="edge edge-choice" marker-end="url(#tip-choice)">
             <!-- Anna → Emma -->
-            <path d="M127.335 134.976 Q186.9 168.1 247.888 179.826" />
+            <path d="M127.335 134.976 Q186.9 168.1 245.453 179.358" />
             <!-- Dario → Emma -->
-            <path d="M429.78 127.041 Q362.9 139.9 308.578 170.108" />
+            <path d="M429.78 127.041 Q362.9 139.9 310.745 168.903" />
             <!-- Milo → Dario -->
-            <path d="M306.363 62.23 Q374.1 73.1 433.075 108.312" />
+            <path d="M306.363 62.23 Q374.1 73.1 430.946 107.041" />
             <!-- Emma → Gina -->
-            <path d="M308.578 201.892 Q362.9 232.1 429.78 244.959" />
+            <path d="M308.578 201.892 Q362.9 232.1 427.345 244.491" />
             <!-- Gina → Fabio -->
-            <path d="M433.075 263.688 Q374.1 298.9 306.363 309.77" />
+            <path d="M433.075 263.688 Q374.1 298.9 308.812 309.377" />
             <!-- Elsa → Anna -->
-            <path d="M99.798 223.633 Q93.8 186 99.798 148.367" />
+            <path d="M99.798 223.633 Q93.8 186 99.407 150.816" />
             <!-- Iris → Gina -->
-            <path d="M510 317.3 Q510 281 479.156 263.293" />
+            <path d="M510 317.3 Q510 281 481.307 264.528" />
             <!-- Luca → Fabio -->
-            <path d="M72.593 342.293 Q166 351 254.604 322.243" />
+            <path d="M72.593 342.293 Q166 351 252.245 323.008" />
             <!-- Marta → Milo -->
-            <path d="M64.581 45.582 Q162 36 253.752 53.106" />
+            <path d="M64.581 45.582 Q162 36 251.314 52.651" />
           </g>
 
           <!-- Mutual pairs -->
           <g class="edge edge-mutual" marker-start="url(#tip-mutual)" marker-end="url(#tip-mutual)">
             <!-- Milo ↔ Emma -->
-            <path d="M276.607 84.484 Q271.8 122 275.844 153.565" />
+            <path d="M276.291 86.944 Q271.8 122 275.528 151.105" />
             <!-- Elsa ↔ Fabio -->
-            <path d="M130.418 253.871 Q185.9 262 256.631 301.086" />
+            <path d="M132.872 254.23 Q185.9 262 254.46 299.886" />
           </g>
 
           <!-- Rejections -->
           <g class="edge edge-reject" marker-end="url(#tip-reject)">
             <!-- Dario ⇢ Gina -->
-            <path d="M460.202 148.367 Q466.2 186 460.202 223.633" />
+            <path d="M460.202 148.367 Q466.2 186 460.593 221.184" />
             <!-- Gina ⇢ Iris -->
-            <path d="M456 276.7 Q456 310 488.751 329.408" />
+            <path d="M456 276.7 Q456 310 486.618 328.144" />
             <!-- Elsa ⇢ Luca -->
-            <path d="M92.446 274.071 Q80 300 63.43 320.713" />
+            <path d="M92.446 274.071 Q80 300 64.979 318.777" />
           </g>
 
           <!-- Mutual rejections -->
           <g class="edge edge-reject" marker-start="url(#tip-reject)" marker-end="url(#tip-reject)">
             <!-- Anna ⇠⇢ Milo -->
-            <path d="M130.418 118.129 Q185.9 110 256.631 70.914" />
+            <path d="M132.872 117.77 Q185.9 110 254.46 72.114" />
           </g>
 
           <g class="nodes">
