@@ -23,11 +23,11 @@ const emit = defineEmits(["select", "show-members"]);
 // --- State --------------
 const allSections = [
   { label: "Nominativi", hash: "#listOfMembers" },
-  { label: "Preferenze", hash: "#listOfPreferences" },
-  { label: "Network scelte", hash: "#likesNetwork" },
-  { label: "Network rifiuti", hash: "#dislikesNetwork" },
+  { label: "Scelte e rifiuti", hash: "#listOfPreferences" },
+  { label: "Rete delle scelte", hash: "#likesNetwork" },
+  { label: "Rete dei rifiuti", hash: "#dislikesNetwork" },
   { label: "Membri", hash: null },
-  { label: "Sommario", hash: "#summary" },
+  { label: "Sintesi", hash: "#summary" },
   { label: "Glossario", hash: "#glossary" },
 ];
 
