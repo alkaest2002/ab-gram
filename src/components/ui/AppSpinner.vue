@@ -4,12 +4,9 @@
 -->
 
 <script setup>
-const sizes = {
-  sm: "size-5",
-  md: "size-10",
-  lg: "size-12",
-};
+// --- Imports ------------
 
+// --- Props --------------
 defineProps({
   size: {
     type: String,
@@ -17,6 +14,29 @@ defineProps({
     validator: (value) => ["sm", "md", "lg"].includes(value),
   },
 });
+
+// --- Emits --------------
+
+// --- Routers ------------
+
+// --- Stores -------------
+
+// --- State --------------
+const sizes = {
+  sm: "size-5",
+  md: "size-10",
+  lg: "size-12",
+};
+
+// --- Composables --------
+
+// --- Computed -----------
+
+// --- Watchers -----------
+
+// --- Lifecycle ----------
+
+// --- Methods ------------
 </script>
 
 <template>
