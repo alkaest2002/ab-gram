@@ -132,67 +132,67 @@
             <g transform="translate(104 122)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">A</text>
-              <text class="name" y="-39">Anna</text>
+              <text class="name name-above" y="-26">Anna</text>
             </g>
 
             <g transform="translate(280 58)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">B</text>
-              <text class="name" y="-39">Milo</text>
+              <text class="name name-above" y="-26">Milo</text>
             </g>
 
             <!-- The star of the group: filled, a bit larger. -->
             <g class="is-star" transform="translate(280 186)">
               <circle class="dot" r="32" />
               <text class="initial" dy="0.34em">C</text>
-              <text class="name" y="50">Emma</text>
+              <text class="name name-below" y="32">Emma</text>
             </g>
 
             <g transform="translate(456 122)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">D</text>
-              <text class="name" y="-39">Dario</text>
+              <text class="name name-above" y="-26">Dario</text>
             </g>
 
             <!-- Name to the side, like Gina's: Fabio's arrow comes in from below. -->
             <g transform="translate(104 250)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">E</text>
-              <text class="name name-before" x="-36" dy="0.34em">Elsa</text>
+              <text class="name name-before" x="-26" dy="0.34em">Elsa</text>
             </g>
 
             <g transform="translate(280 314)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">F</text>
-              <text class="name" y="41">Fabio</text>
+              <text class="name name-below" y="26">Fabio</text>
             </g>
 
             <!-- Name to the side: arcs pass below and above. -->
             <g transform="translate(456 250)">
               <circle class="dot" r="26" />
               <text class="initial" dy="0.34em">G</text>
-              <text class="name name-side" x="36" dy="0.34em">Gina</text>
+              <text class="name name-side" x="26" dy="0.34em">Gina</text>
             </g>
 
             <!-- The isolated one: dashed outline, outside the group's ring. -->
             <g transform="translate(510 342)">
               <circle class="dot" r="24" />
               <text class="initial" dy="0.34em">I</text>
-              <text class="name" y="39">Iris</text>
+              <text class="name name-below" y="24">Iris</text>
             </g>
 
             <!-- Isolated and rejected: Luca chooses Fabio, Elsa rejects him. -->
             <g transform="translate(48 340)">
               <circle class="dot" r="24" />
               <text class="initial" dy="0.34em">L</text>
-              <text class="name" y="39">Luca</text>
+              <text class="name name-below" y="24">Luca</text>
             </g>
 
             <!-- Isolated and ignored: Marta chooses Milo, nobody chooses her. -->
             <g class="is-alone" transform="translate(40 48)">
               <circle class="dot" r="24" />
               <text class="initial" dy="0.34em">M</text>
-              <text class="name" y="-39">Marta</text>
+              <text class="name name-above" y="-24">Marta</text>
             </g>
           </g>
         </svg>
@@ -315,6 +315,7 @@
 
 /* White halo around the name: keeps it readable even where an arc passes. */
 .name {
+  --name-gap: 10px;
   font-family: var(--font-sans);
   font-size: 15px;
   text-anchor: middle;
@@ -324,11 +325,22 @@
   paint-order: stroke;
 }
 
+.name-above {
+  transform: translateY(calc(-1 * var(--name-gap)));
+}
+
+.name-below {
+  /* SVG positions text by its baseline; clear the node with the top of the capitals. */
+  transform: translateY(calc(var(--name-gap) + 1cap));
+}
+
 .name-side {
   text-anchor: start;
+  transform: translateX(var(--name-gap));
 }
 
 .name-before {
   text-anchor: end;
+  transform: translateX(calc(-1 * var(--name-gap)));
 }
 </style>
