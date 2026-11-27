@@ -228,25 +228,31 @@ export function MemberShouldHaveValidDislikes(member) {
 }
 
 /**
- * Require the no-likes declaration to be boolean.
+ * Require a boolean no-likes declaration consistent with the recorded choices.
  * @param {Partial<GroupMember>} member
  * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveANoLikesFlag(member) {
-  return typeof member.noLikes === "boolean"
-    ? null
-    : 'La spunta "nessuna scelta" di un membro del gruppo non è valida.';
+  if (typeof member.noLikes !== "boolean") {
+    return 'La spunta "nessuna scelta" di un membro del gruppo non è valida.';
+  }
+  return member.noLikes && member.likes?.length > 0
+    ? 'La spunta "nessuna scelta" non è compatibile con le scelte espresse.'
+    : null;
 }
 
 /**
- * Require the no-dislikes declaration to be boolean.
+ * Require a boolean no-dislikes declaration consistent with the recorded rejections.
  * @param {Partial<GroupMember>} member
  * @returns {ValidationResult} Error message, or `null` when valid.
  */
 export function MemberShouldHaveANoDislikesFlag(member) {
-  return typeof member.noDislikes === "boolean"
-    ? null
-    : 'La spunta "nessun rifiuto" di un membro del gruppo non è valida.';
+  if (typeof member.noDislikes !== "boolean") {
+    return 'La spunta "nessun rifiuto" di un membro del gruppo non è valida.';
+  }
+  return member.noDislikes && member.dislikes?.length > 0
+    ? 'La spunta "nessun rifiuto" non è compatibile con i rifiuti espressi.'
+    : null;
 }
 
 /**
