@@ -1,0 +1,547 @@
+[
+  {
+    "id": "moreno.cohesion",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Fraction of all possible unordered member pairs that like each other.",
+    "comparisonMetrics": ["moreno.conflict", "moreno.cohesionTypeII"],
+    "tentativePsychologicalMeaning": "Higher values suggest mutual liking spans more of the group."
+  },
+  {
+    "id": "moreno.cohesionTypeII",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Fraction of directed likes that are reciprocated.",
+    "comparisonMetrics": ["moreno.cohesion", "moreno.conflictTypeII", "moreno.positiveReciprocity"],
+    "tentativePsychologicalMeaning": "A high value suggests that expressed liking is often returned."
+  },
+  {
+    "id": "moreno.conflict",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Fraction of all possible unordered member pairs that dislike each other.",
+    "comparisonMetrics": ["moreno.cohesion", "moreno.conflictTypeII"],
+    "tentativePsychologicalMeaning": "Higher values suggest mutual dislike spans more of the group."
+  },
+  {
+    "id": "moreno.conflictTypeII",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Fraction of directed dislikes that are reciprocated.",
+    "comparisonMetrics": ["moreno.conflict", "moreno.cohesionTypeII", "moreno.negativeReciprocity"],
+    "tentativePsychologicalMeaning": "A high value suggests that expressed dislike is often returned."
+  },
+  {
+    "id": "moreno.positiveReciprocity",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Mutual like pairs per directed like, counting each mutual pair once.",
+    "comparisonMetrics": ["moreno.negativeReciprocity", "moreno.cohesionTypeII"],
+    "tentativePsychologicalMeaning": "Higher values suggest that members often return the liking expressed by their peers."
+  },
+  {
+    "id": "moreno.negativeReciprocity",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Mutual dislike pairs per directed dislike, counting each mutual pair once.",
+    "comparisonMetrics": ["moreno.positiveReciprocity", "moreno.conflictTypeII"],
+    "tentativePsychologicalMeaning": "Higher values suggest that members often return the dislike expressed by their peers."
+  },
+  {
+    "id": "moreno.rp",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of likes received.",
+    "comparisonMetrics": ["moreno.rr", "moreno.gp", "moreno.bns"],
+    "tentativePsychologicalMeaning": "More likes may suggest broader acceptance among the peers who responded."
+  },
+  {
+    "id": "moreno.rr",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of dislikes received.",
+    "comparisonMetrics": ["moreno.rp", "moreno.gr", "moreno.mls"],
+    "tentativePsychologicalMeaning": "More dislikes may suggest difficulty finding acceptance among these peers."
+  },
+  {
+    "id": "moreno.gp",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of likes given.",
+    "comparisonMetrics": ["moreno.gr", "moreno.rp"],
+    "tentativePsychologicalMeaning": "Naming more liked peers may suggest a broader circle of positive regard."
+  },
+  {
+    "id": "moreno.gr",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of dislikes given.",
+    "comparisonMetrics": ["moreno.gp", "moreno.rr"],
+    "tentativePsychologicalMeaning": "Naming more disliked peers may suggest more reported friction or greater willingness to express it."
+  },
+  {
+    "id": "moreno.mp",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of peers with whom the member shares a mutual like.",
+    "comparisonMetrics": ["moreno.mr", "moreno.rp", "moreno.gp"],
+    "tentativePsychologicalMeaning": "More mutual likes suggest more potential sources of companionship."
+  },
+  {
+    "id": "moreno.mr",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of peers with whom the member shares a mutual dislike.",
+    "comparisonMetrics": ["moreno.mp", "moreno.rr", "moreno.gr"],
+    "tentativePsychologicalMeaning": "More mutual dislikes suggest more relationships in which both parties report friction."
+  },
+  {
+    "id": "moreno.im",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Impact: total likes and dislikes received (rp + rr).",
+    "comparisonMetrics": ["moreno.rp", "moreno.rr", "moreno.ei"],
+    "tentativePsychologicalMeaning": "A high impact score suggests the member stands out to peers, whether favorably, unfavorably, or both."
+  },
+  {
+    "id": "moreno.bl",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Balance: likes received minus dislikes received (rp - rr).",
+    "comparisonMetrics": ["moreno.rp", "moreno.rr", "moreno.or"],
+    "tentativePsychologicalMeaning": "Positive scores indicate that likes predominate; negative scores indicate that dislikes predominate."
+  },
+  {
+    "id": "moreno.ei",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Expressivity: total likes and dislikes given (gp + gr).",
+    "comparisonMetrics": ["moreno.gp", "moreno.gr", "moreno.im"],
+    "tentativePsychologicalMeaning": "May reflect how broadly a member expressed preferences in this task."
+  },
+  {
+    "id": "moreno.or",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Orientation: likes given minus dislikes given (gp - gr).",
+    "comparisonMetrics": ["moreno.gp", "moreno.gr", "moreno.bl"],
+    "tentativePsychologicalMeaning": "May suggest whether the member emphasized liking or disliking when naming peers."
+  },
+  {
+    "id": "moreno.ai",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Affiliation: sum of received balance and given orientation (bl + or).",
+    "comparisonMetrics": ["moreno.bl", "moreno.or"],
+    "tentativePsychologicalMeaning": "May suggest an overall positive or negative tilt across preferences given and received."
+  },
+  {
+    "id": "moreno.ii",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Influence: likes received plus mutual like partners (rp + mp).",
+    "comparisonMetrics": ["moreno.rp", "moreno.mp"],
+    "tentativePsychologicalMeaning": "May suggest a favorable position supported by mutual liking."
+  },
+  {
+    "id": "moreno.ss",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Sociometric status category based on visibility, relative impact among visible members, and the balance of likes and dislikes received.",
+    "comparisonMetrics": ["moreno.im", "moreno.ei", "moreno.rp", "moreno.rr"],
+    "tentativePsychologicalMeaning": "Summarizes how visible the member is to peers and whether the attention they receive is mostly positive, negative, or mixed."
+  },
+  {
+    "id": "moreno.bns",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Bonus: sum of received like weights, each equal to the maximum theoretical member count minus the zero-based position in the chooser’s list.",
+    "comparisonMetrics": ["moreno.rp", "moreno.mls"],
+    "tentativePsychologicalMeaning": "Higher scores suggest the member appears frequently or early in peers’ lists of liked members."
+  },
+  {
+    "id": "moreno.mls",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Malus: sum of received dislike weights, each equal to the maximum theoretical member count minus the zero-based position in the chooser’s list.",
+    "comparisonMetrics": ["moreno.rr", "moreno.bns"],
+    "tentativePsychologicalMeaning": "Higher scores suggest the member appears frequently or early in peers’ lists of disliked members."
+  },
+  {
+    "id": "moreno.impactThresholds",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Low and high impact cutoffs proposed by each participating classification strategy for the group’s visible members.",
+    "comparisonMetrics": ["moreno.im", "moreno.ss"],
+    "tentativePsychologicalMeaning": "Sets group-specific benchmarks for distinguishing lower and higher levels of peer attention among visible members."
+  },
+  {
+    "id": "moreno.morenoEgoGraphs",
+    "type": "plot",
+    "scope": "member",
+    "measures": "SVG centered on each member. Rings separate mutual likes, other direct likes, two-hop likes paths, longer likes paths, and difficult-to-reach peers. Peers the member dislikes go on the outer ring even if reachable. Direction markers distinguish incoming and outgoing nominations.",
+    "comparisonMetrics": [
+      "moreno.mp",
+      "moreno.gp",
+      "moreno.gr",
+      "moreno.rp",
+      "moreno.rr",
+      "moreno.mr"
+    ]
+  },
+  {
+    "id": "sna.numberOfNodes",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Number of members in the group.",
+    "comparisonMetrics": ["sna.numberOfEdges", "sna.networkDensity"],
+    "tentativePsychologicalMeaning": "Group size sets the opportunity to nominate or be nominated."
+  },
+  {
+    "id": "sna.numberOfEdges",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Number of directed preference edges.",
+    "comparisonMetrics": ["sna.numberOfMutualEdges", "sna.networkDensity"],
+    "tentativePsychologicalMeaning": "More nominations may reflect more widely expressed liking or dislike."
+  },
+  {
+    "id": "sna.numberOfMutualEdges",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Number of directed edges whose reverse edge exists.",
+    "comparisonMetrics": ["sna.numberOfEdges", "sna.networkReciprocity"],
+    "tentativePsychologicalMeaning": "More returned nominations suggest more instances of shared liking or shared dislike."
+  },
+  {
+    "id": "sna.minOutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Minimum out-degree across members.",
+    "comparisonMetrics": ["sna.minInDegree", "sna.Q1OutDegree"],
+    "tentativePsychologicalMeaning": "A low minimum may flag a member who expressed few preferences of this kind."
+  },
+  {
+    "id": "sna.Q1OutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "First quartile (Q1) of out-degrees.",
+    "comparisonMetrics": ["sna.Q1InDegree", "sna.Q3OutDegree"],
+    "tentativePsychologicalMeaning": "Describes how broadly the less active nominators expressed liking or dislike."
+  },
+  {
+    "id": "sna.medianOutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Median out-degree across members.",
+    "comparisonMetrics": ["sna.medianInDegree", "sna.IQROutDegree"],
+    "tentativePsychologicalMeaning": "Suggests how broadly a typical member expressed liking or dislike in this setting."
+  },
+  {
+    "id": "sna.Q3OutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Third quartile (Q3) of out-degrees.",
+    "comparisonMetrics": ["sna.Q3InDegree", "sna.Q1OutDegree"],
+    "tentativePsychologicalMeaning": "Shows how broadly relatively active nominators expressed preferences."
+  },
+  {
+    "id": "sna.maxOutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Maximum out-degree across members.",
+    "comparisonMetrics": ["sna.maxInDegree", "sna.Q3OutDegree"],
+    "tentativePsychologicalMeaning": "A high maximum may flag unusually broad expression of liking or dislike by one respondent."
+  },
+  {
+    "id": "sna.IQROutDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Interquartile range of out-degrees.",
+    "comparisonMetrics": ["sna.IQRInDegree", "sna.Q1OutDegree", "sna.Q3OutDegree"],
+    "tentativePsychologicalMeaning": "A wider middle range suggests members differed in how broadly they expressed preferences."
+  },
+  {
+    "id": "sna.minInDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Minimum in-degree across members.",
+    "comparisonMetrics": ["sna.minOutDegree", "sna.Q1InDegree"],
+    "tentativePsychologicalMeaning": "A low minimum may flag someone seldom named in this network."
+  },
+  {
+    "id": "sna.Q1InDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "First quartile (Q1) of in-degrees.",
+    "comparisonMetrics": ["sna.Q1OutDegree", "sna.Q3InDegree"],
+    "tentativePsychologicalMeaning": "Indicates how much favorable or unfavorable attention reached members near the less-nominated end of the group."
+  },
+  {
+    "id": "sna.medianInDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Median in-degree across members.",
+    "comparisonMetrics": ["sna.medianOutDegree", "sna.IQRInDegree"],
+    "tentativePsychologicalMeaning": "Suggests how widely a typical member was liked or disliked by responding peers."
+  },
+  {
+    "id": "sna.Q3InDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Third quartile (Q3) of in-degrees.",
+    "comparisonMetrics": ["sna.Q3OutDegree", "sna.Q1InDegree"],
+    "tentativePsychologicalMeaning": "Indicates the breadth of favorable or unfavorable attention received by relatively often-named members."
+  },
+  {
+    "id": "sna.maxInDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Maximum in-degree across members.",
+    "comparisonMetrics": ["sna.maxOutDegree", "sna.Q3InDegree"],
+    "tentativePsychologicalMeaning": "A high maximum may identify concentrated acceptance or negative attention toward one member."
+  },
+  {
+    "id": "sna.IQRInDegree",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Interquartile range of in-degrees.",
+    "comparisonMetrics": ["sna.IQROutDegree", "sna.Q1InDegree", "sna.Q3InDegree"],
+    "tentativePsychologicalMeaning": "A wider middle range suggests uneven receipt of favorable or unfavorable attention even among members away from the extremes."
+  },
+  {
+    "id": "sna.networkDensity",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Proportion of possible edges that exist.",
+    "comparisonMetrics": ["sna.numberOfNodes", "sna.numberOfEdges"],
+    "tentativePsychologicalMeaning": "Greater density suggests liking or dislike was expressed across more of the available relationships."
+  },
+  {
+    "id": "sna.networkCentralization",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Concentration of in-degree around the top node.",
+    "comparisonMetrics": ["sna.maxInDegree", "sna.medianInDegree"],
+    "tentativePsychologicalMeaning": "A high value suggests favorable or unfavorable attention centers on a standout member rather than being evenly distributed."
+  },
+  {
+    "id": "sna.networkReciprocity",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Proportion of edges that are reciprocated.",
+    "comparisonMetrics": ["sna.numberOfMutualEdges", "sna.numberOfEdges"],
+    "tentativePsychologicalMeaning": "Higher reciprocity suggests greater agreement within pairs about liking or dislike."
+  },
+  {
+    "id": "sna.networkTransitivity",
+    "type": "metric",
+    "scope": "group",
+    "measures": "Global clustering coefficient.",
+    "comparisonMetrics": ["sna.localClustering", "sna.networkDensity"],
+    "tentativePsychologicalMeaning": "Higher transitivity suggests preferences cluster in peer circles."
+  },
+  {
+    "id": "sna.inDegreeCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Incoming nominations relative to the number of other members.",
+    "comparisonMetrics": ["sna.outDegreeCentrality", "sna.PageRank"],
+    "tentativePsychologicalMeaning": "May indicate the breadth of acceptance or negative attention a member receives relative to the available peers."
+  },
+  {
+    "id": "sna.outDegreeCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Outgoing nominations relative to the number of other members.",
+    "comparisonMetrics": ["sna.inDegreeCentrality", "sna.degreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate how broadly a member expressed liking or dislike relative to their opportunities to nominate."
+  },
+  {
+    "id": "sna.degreeCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Incoming and outgoing nominations combined, relative to the number of other members.",
+    "comparisonMetrics": ["sna.inDegreeCentrality", "sna.outDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate extensive involvement in reported preference ties."
+  },
+  {
+    "id": "sna.PageRank",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Prominence from incoming nominations, accounting for the prominence and outgoing ties of each nominator.",
+    "comparisonMetrics": ["sna.inDegreeCentrality", "sna.hitsAuthority"],
+    "tentativePsychologicalMeaning": "May indicate prominence among peers who are themselves prominent nomination targets."
+  },
+  {
+    "id": "sna.hitsAuthority",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Strength as a recipient of nominations from high-scoring hubs.",
+    "comparisonMetrics": ["sna.hitsHub", "sna.inDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate that a member draws attention from peers who also name other prominent targets."
+  },
+  {
+    "id": "sna.hitsHub",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Strength as a nominator of high-scoring authorities.",
+    "comparisonMetrics": ["sna.hitsAuthority", "sna.outDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate that a member names peers who are also frequent targets of other strong hubs."
+  },
+  {
+    "id": "sna.betweennessCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Normalized share of directed shortest paths between other members that pass through this member.",
+    "comparisonMetrics": ["sna.closenessCentrality", "sna.degreeCentrality"],
+    "tentativePsychologicalMeaning": "May flag a potential bridge between peer circles."
+  },
+  {
+    "id": "sna.closenessCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Inverse mean distance from members who can reach this member, scaled by their fraction of all other members.",
+    "comparisonMetrics": ["sna.closenessBroadcastCentrality", "sna.inDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate that many peers are only a few nomination steps from this member."
+  },
+  {
+    "id": "sna.closenessBroadcastCentrality",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Inverse mean distance to members this member can reach, scaled by their fraction of all other members.",
+    "comparisonMetrics": ["sna.closenessCentrality", "sna.outDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate broad outward reach through short nomination chains."
+  },
+  {
+    "id": "sna.coreNumber",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Highest minimum total degree of a subgraph containing this member; reciprocal ties count in both directions.",
+    "comparisonMetrics": ["sna.degreeCentrality", "sna.localClustering"],
+    "tentativePsychologicalMeaning": "Higher values suggest the member belongs to a densely connected core of the selected preference network."
+  },
+  {
+    "id": "sna.localClustering",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Fraction of pairs of this member’s neighbors that are connected in the undirected projection.",
+    "comparisonMetrics": ["sna.networkTransitivity", "sna.coreNumber"],
+    "tentativePsychologicalMeaning": "May suggest that the peers around this member also form ties among themselves."
+  },
+  {
+    "id": "sna.snaLikesPlots",
+    "type": "plot",
+    "scope": "group",
+    "measures": "Shows who nominates whom in the likes network: arrows indicate one-way nominations, thick lines indicate mutual nominations, and isolated members appear separately.",
+    "comparisonMetrics": [
+      "sna.numberOfNodes",
+      "sna.numberOfEdges",
+      "sna.numberOfMutualEdges",
+      "sna.networkReciprocity"
+    ]
+  },
+  {
+    "id": "sna.snaDislikesPlots",
+    "type": "plot",
+    "scope": "group",
+    "measures": "Shows who nominates whom in the dislikes network: arrows indicate one-way nominations, thick lines indicate mutual nominations, and isolated members appear separately.",
+    "comparisonMetrics": [
+      "sna.numberOfNodes",
+      "sna.numberOfEdges",
+      "sna.numberOfMutualEdges",
+      "sna.networkReciprocity"
+    ]
+  },
+  {
+    "id": "structures.asymmetricDyads",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists each one-way tie between distinct members as a source-target pair. The reverse tie must be absent.",
+    "comparisonMetrics": ["structures.symmetricDyads"]
+  },
+  {
+    "id": "structures.symmetricDyads",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists each pair of distinct members who choose one another, reporting the pair once rather than once per direction.",
+    "comparisonMetrics": ["structures.asymmetricDyads"]
+  },
+  {
+    "id": "structures.cliques",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists maximal groups of at least three members in which every pair has a direct tie in at least one direction. Cliques can overlap.",
+    "comparisonMetrics": ["structures.weakComponents"]
+  },
+  {
+    "id": "structures.strongComponentsWithReciprocalEdges",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists maximal groups of at least three members connected by paths of reciprocal ties. Members need not all choose one another directly.",
+    "comparisonMetrics": ["structures.strongComponents", "structures.symmetricDyads"]
+  },
+  {
+    "id": "structures.strongComponents",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists maximal groups of at least three members in which each member can reach every other by following directed ties. The return path may use different ties.",
+    "comparisonMetrics": [
+      "structures.strongComponentsWithReciprocalEdges",
+      "structures.weakComponents"
+    ]
+  },
+  {
+    "id": "structures.weakComponents",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Lists maximal groups of at least three members in which every pair is connected by a path when tie direction is ignored.",
+    "comparisonMetrics": ["structures.strongComponents", "structures.cliques"]
+  },
+  {
+    "id": "structures.louvainCommunities",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Reports groups of at least three from the Louvain run with the highest directed modularity. The modularity score describes the full partition, including groups omitted from the list. An edgeless graph returns singleton groups and modularity zero.",
+    "comparisonMetrics": ["structures.leidenCommunities"]
+  },
+  {
+    "id": "structures.leidenCommunities",
+    "type": "structure",
+    "scope": "structure",
+    "measures": "Reports groups of at least three from the Leiden run with the highest modularity on the undirected projection. The modularity score describes the full partition, not just the listed groups. An edgeless graph returns singleton groups and modularity zero.",
+    "comparisonMetrics": ["structures.louvainCommunities"]
+  },
+  {
+    "id": "sna.nodeInfo.inDegree",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Number of incoming edges for this member in the selected likes or dislikes graph.",
+    "comparisonMetrics": ["sna.inDegreeCentrality"],
+    "tentativePsychologicalMeaning": "May indicate how widely this member was noticed favorably or unfavorably by respondents."
+  },
+  {
+    "id": "sna.nodeInfo.hasMutualEdge",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Whether this member has at least one reciprocated nomination in the selected graph.",
+    "comparisonMetrics": ["sna.numberOfMutualEdges", "sna.nodeInfo.inDegree"],
+    "tentativePsychologicalMeaning": "Signals at least one instance of shared liking or shared dislike."
+  },
+  {
+    "id": "edges.memberInEdges.cnt",
+    "type": "metric",
+    "scope": "member",
+    "measures": "Counts by relationship type (I:mutual like; II:like with no return nomination; III:dislike with no return nomination; IV:mutual dislike; V:like returned by a dislike; VI:dislike returned by a like; VII:both like and dislike sent to the same peer). Types I and IV credit both members once per unordered pair; other types credit only the sender. A sender making both nominations is classified only as VII; an ambivalent response can credit two types.",
+    "comparisonMetrics": ["edges.memberInEdges.pct", "moreno.mp", "moreno.mr"],
+    "tentativePsychologicalMeaning": "May suggest which relationship patterns recur for this member, such as mutual liking or mismatched preferences."
+  },
+  {
+    "id": "edges.memberInEdges.pct",
+    "type": "metric",
+    "scope": "member",
+    "measures": "For each of the seven types, its credited count divided by the sum of this member’s credited counts, not distinct edges. Zero when there are no credits.",
+    "comparisonMetrics": ["edges.memberInEdges.cnt"],
+    "tentativePsychologicalMeaning": "May suggest which patterns predominate among this member’s credited ties."
+  }
+]
