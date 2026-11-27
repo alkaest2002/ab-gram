@@ -9,14 +9,11 @@ import { ref } from "vue";
 
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 
-import {
-  useSociogramTextReader,
-  DEFAULT_MAX_FILE_SIZE,
-} from "@/composables/sociogram/useSociogramTextReader";
+import { useGroupTextReader, DEFAULT_MAX_FILE_SIZE } from "@/composables/groups/useGroupTextReader";
 
 // --- Props --------------
 const props = defineProps({
-  /** Maximum bytes read from the file (see `useSociogramTextReader`). */
+  /** Maximum bytes read from the file (see `useGroupTextReader`). */
   maxFileSize: { type: Number, default: DEFAULT_MAX_FILE_SIZE },
   /** Maximum lines read from the file, or `null` for no limit. */
   maxLines: { type: Number, default: null },
@@ -38,7 +35,7 @@ const fileName = ref(null);
 // --- Composables --------
 // Streams the file instead of loading it all at once, so a huge file is never
 // held fully in memory — the byte ceiling is the safety limit.
-const { lines, readError, isReadingFile, readFile } = useSociogramTextReader(null, {
+const { lines, readError, isReadingFile, readFile } = useGroupTextReader(null, {
   maxFileSize: props.maxFileSize,
   maxLines: props.maxLines,
   maxLineLength: props.maxLineLength,

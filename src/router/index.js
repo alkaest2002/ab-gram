@@ -4,7 +4,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import homeRoutes from "@/router/routes/home";
-import sociogramRoutes from "@/router/routes/sociogram";
+import groupRoutes from "@/router/routes/group";
 import reportRoutes from "@/router/routes/report";
 import notifyRoutes from "@/router/routes/notify";
 import docsRoutes from "@/router/routes/docs";
@@ -34,7 +34,7 @@ const HEADER_OFFSET = 88;
  */
 export const routes = [
   homeRoutes,
-  sociogramRoutes,
+  groupRoutes,
   reportRoutes,
   notifyRoutes,
   docsRoutes,

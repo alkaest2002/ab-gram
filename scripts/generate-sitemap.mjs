@@ -32,10 +32,10 @@ const staticRoutes = [
     source: "../src/components/views/home/Home.vue",
   },
   {
-    path: "/sociogram",
+    path: "/group",
     changefreq: "weekly",
     priority: "0.9",
-    source: "../src/components/views/sociogram/Sociogram.vue",
+    source: "../src/components/views/group/Group.vue",
   },
   {
     path: "/docs",

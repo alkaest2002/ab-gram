@@ -51,7 +51,7 @@ const instantiate = (WorkerCtor, label) => {
 };
 
 /**
- * Create and instantiate the report worker (full sociogram analysis).
+ * Create and instantiate the report worker (full group analysis).
  *
  * @returns {Worker} A new Worker instance.
  * @throws {Error} If worker instantiation fails.

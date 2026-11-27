@@ -32,9 +32,9 @@ const notifyRoute = {
       },
     },
     {
-      path: "sociogram-validation-error",
-      name: "sociogramValidationError",
-      component: () => import("@/components/views/notify/SociogramDataValidationError.vue"),
+      path: "group-validation-error",
+      name: "groupValidationError",
+      component: () => import("@/components/views/notify/GroupDataValidationError.vue"),
       meta: {
         title: "Errore di Validazione",
         inMenu: false,

@@ -45,7 +45,7 @@ const clone = (members) =>
   }));
 
 /**
- * An 8-member sociogram with a popular star, a few average members, a
+ * An 8-member group with a popular star, a few average members, a
  * disliked member, and ignored/isolated members.
  *
  * @returns {Member[]}
@@ -55,7 +55,7 @@ export function getSmallGroupMembers() {
 }
 
 /**
- * A 12-member sociogram with a wider spread of positive and negative opinion.
+ * A 12-member group with a wider spread of positive and negative opinion.
  *
  * @returns {Member[]}
  */

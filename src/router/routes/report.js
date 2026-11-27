@@ -1,13 +1,13 @@
 // Copyright (c) 2026 Pierpaolo Calanna
 // SPDX-License-Identifier: MIT
 
-import { useSociogramStore } from "@/stores/sociogram";
+import { useGroupStore } from "@/stores/group";
 import { useReportStore } from "@/stores/report";
 
 /**
- * Report-generation routes guarded by sociogram and report lifecycle state.
+ * Report-generation routes guarded by group and report lifecycle state.
  *
- * Entering any report route requires a completed sociogram. The generated
+ * Entering any report route requires a completed group. The generated
  * report child adds a second guard so it cannot be opened before analysis has
  * completed successfully.
  *
@@ -16,17 +16,15 @@ import { useReportStore } from "@/stores/report";
 const reportRoute = {
   path: "/report",
   beforeEnter() {
-    const sociogramStore = useSociogramStore();
+    const groupStore = useGroupStore();
 
-    if (sociogramStore.membersStatus === "completed") {
+    if (groupStore.membersStatus === "completed") {
       return true;
     }
 
     return {
       name:
-        sociogramStore.membersStatus === "empty"
-          ? "reportNoDataError"
-          : "reportIncompleteDataError",
+        groupStore.membersStatus === "empty" ? "reportNoDataError" : "reportIncompleteDataError",
     };
   },
   meta: {

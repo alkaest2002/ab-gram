@@ -37,7 +37,7 @@ function computeNodeInfo(graph) {
 }
 
 /**
- * Run the full sociogram analysis over a set of members.
+ * Run the full group analysis over a set of members.
  *
  * This is the entry point that combines every analysis step into a single
  * result. It builds the likes/dislikes adjacency matrices, classifies each
@@ -63,9 +63,9 @@ function computeNodeInfo(graph) {
  *   snaLikesNetwork: object,
  *   snaDislikesNetwork: object,
  *   research: object,
- * }} The combined sociogram analysis results.
+ * }} The combined group analysis results.
  */
-export const getSociogramAnalysis = (members) => {
+export const getGroupAnalysis = (members) => {
   // Map each member id to its row/column position in the adjacency matrices.
   const memberIndices = getMemberIndices(members);
 

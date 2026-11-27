@@ -54,7 +54,7 @@ function dismissOutside(event) {
 }
 
 function goBack() {
-  router.replace({ name: "sociogram" });
+  router.replace({ name: "group" });
 }
 
 function printReport() {

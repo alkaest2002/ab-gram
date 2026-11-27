@@ -4,8 +4,8 @@ order: 2
 ---
 
 <script setup>
-    import { useSociogramStore } from "@/stores/sociogram";
-    const store = useSociogramStore()
+    import { useGroupStore } from "@/stores/group";
+    const store = useGroupStore()
 </script>
 
 Quando apri AB-Gram ti trovi davanti alla schermata iniziale, che propone due

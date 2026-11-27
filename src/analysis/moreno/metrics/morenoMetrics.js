@@ -3,7 +3,7 @@
 
 import * as np from "numpy-ts";
 import { computeRankedScores } from "@/analysis/common/rankedScores";
-import { MAX_MEMBERS_COUNT } from "@/utils/sociogram/validationHelpers.js";
+import { MAX_MEMBERS_COUNT } from "@/utils/group/validationHelpers.js";
 import {
   computeCohesion,
   computeCohesionTypeII,

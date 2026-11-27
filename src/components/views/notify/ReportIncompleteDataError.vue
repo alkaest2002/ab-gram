@@ -29,7 +29,7 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
 </script>
 
 <template>
-  <BaseNotify to="/sociogram" replace>
+  <BaseNotify to="/group" replace>
     <template #title> Dati incompleti </template>
     <template #text>
       Completa l'inserimento dei dati nel sociogramma prima di generare il report.

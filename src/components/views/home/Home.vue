@@ -8,8 +8,8 @@
 import DiscordCard from "@/components/ui/AppDiscordCard.vue";
 import EduCard from "@/components/ui/AppCardEdu.vue";
 import Hero from "@/components/views/home/Hero.vue";
-import SociogramPreview from "@/components/views/home/SociogramPreview.vue";
-import SociogramSteps from "@/components/views/home/SociogramSteps.vue";
+import GroupPreview from "@/components/views/home/GroupPreview.vue";
+import GroupSteps from "@/components/views/home/GroupSteps.vue";
 import Featurettes from "@/components/views/home/Featurettes.vue";
 
 // --- Props --------------
@@ -35,7 +35,7 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
 
 <template>
   <!--
-      The page is laid out as a vertical sociogram running down the centre:
+      The page is laid out as a vertical group running down the centre:
       numbered nodes (circles styled like the members of the graph) joined by
       directed edges. The call to action is the filled "star" node and the
       discord card is the dashed "isolated" one — the member nobody has
@@ -48,14 +48,14 @@ import Featurettes from "@/components/views/home/Featurettes.vue";
         <Hero />
       </section>
 
-      <!-- Sociogram -->
+      <!-- Group -->
       <section class="w-full max-w-212.5">
-        <SociogramPreview />
+        <GroupPreview />
       </section>
 
-      <!-- Sociogram Steps -->
+      <!-- Group Steps -->
       <section class="w-full max-w-212.5">
-        <SociogramSteps />
+        <GroupSteps />
       </section>
 
       <!-- featurettes -->

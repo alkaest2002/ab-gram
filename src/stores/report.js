@@ -5,7 +5,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 
 /** @typedef {"idle" | "generating" | "generated" | "error"} ReportStatus */
-/** @typedef {ReturnType<typeof import("@/analysis/analysisMain.js").getSociogramAnalysis>} SociogramAnalysis */
+/** @typedef {ReturnType<typeof import("@/analysis/analysisMain.js").getGroupAnalysis>} GroupAnalysis */
 /** @typedef {{typeOfPreference: "likes" | "dislikes", accentColor: string, svg: string}} SnaPlot */
 /** @typedef {{ strategy: string, thresholds: { low: number, high: number } }} ImpactThreshold */
 /** @typedef {{ sociometricStatus?: { impactThresholds?: ImpactThreshold[] } }} Research */
@@ -81,7 +81,7 @@ export const useReportStore = defineStore("report", () => {
    * Replace all stored analysis sections with a newly generated result.
    *
    * Missing sections fall back to their initial empty representation.
-   * @param {Partial<SociogramAnalysis>} value - Result produced by `getSociogramAnalysis`.
+   * @param {Partial<GroupAnalysis>} value - Result produced by `getGroupAnalysis`.
    * @returns {void}
    */
   function setAnalysis(value) {

@@ -15,7 +15,7 @@ vi.mock("@/analysis/sna/plots/snaPlots.js", () => ({
   ],
 }));
 
-import { getSociogramAnalysis } from "@/analysis/analysisMain.js";
+import { getGroupAnalysis } from "@/analysis/analysisMain.js";
 import { getHogwartsMembers } from "../../fixtures/hogwarts.js";
 
 const makeMember = (id, likes = [], dislikes = []) => ({
@@ -25,9 +25,9 @@ const makeMember = (id, likes = [], dislikes = []) => ({
   dislikes,
 });
 
-describe("getSociogramAnalysis", () => {
+describe("getGroupAnalysis", () => {
   it("combines every analysis step over the Hogwarts roster", () => {
-    const result = getSociogramAnalysis(getHogwartsMembers());
+    const result = getGroupAnalysis(getHogwartsMembers());
 
     expect(result).toHaveProperty("edgeTypes");
     expect(result).toHaveProperty("morenoGroupLevelMetrics");
@@ -115,7 +115,7 @@ describe("getSociogramAnalysis", () => {
   it("classifies the mutual like between the two members", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
-    const { edgeTypes } = getSociogramAnalysis(members);
+    const { edgeTypes } = getGroupAnalysis(members);
 
     expect(edgeTypes.typeI).toEqual(
       expect.arrayContaining([
@@ -128,7 +128,7 @@ describe("getSociogramAnalysis", () => {
   it("computes Moreno group metrics for a mutual-like group", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
-    const { morenoGroupLevelMetrics } = getSociogramAnalysis(members);
+    const { morenoGroupLevelMetrics } = getGroupAnalysis(members);
 
     expect(morenoGroupLevelMetrics.metrics).toEqual([
       "cohesion",
@@ -158,7 +158,7 @@ describe("getSociogramAnalysis", () => {
   it("computes SNA group metrics for the likes graph", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
-    const { snaLikesGroupLevelMetrics } = getSociogramAnalysis(members);
+    const { snaLikesGroupLevelMetrics } = getGroupAnalysis(members);
 
     expect(snaLikesGroupLevelMetrics.ids).toEqual(["likes"]);
     expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([
@@ -176,7 +176,7 @@ describe("getSociogramAnalysis", () => {
       snaDislikesPlots,
       snaLikesNetwork,
       snaDislikesNetwork,
-    } = getSociogramAnalysis(members);
+    } = getGroupAnalysis(members);
 
     expect(snaDislikesGroupLevelMetrics).toEqual({});
     expect(snaDislikesStructures).toEqual({});
@@ -201,7 +201,7 @@ describe("getSociogramAnalysis", () => {
       snaDislikesStructures,
       snaDislikesIndividualLevelMetric,
       snaDislikesPlots,
-    } = getSociogramAnalysis(members);
+    } = getGroupAnalysis(members);
 
     // The likes graph is empty, so only the node count is populated.
     expect(snaLikesGroupLevelMetrics.rawValuesById[0]).toEqual([
@@ -232,7 +232,7 @@ describe("getSociogramAnalysis", () => {
   it("returns both directed networks with correct preference types", () => {
     const members = [makeMember("a", ["b"], ["b"]), makeMember("b", ["a"], ["a"])];
 
-    const { snaLikesNetwork, snaDislikesNetwork } = getSociogramAnalysis(members);
+    const { snaLikesNetwork, snaDislikesNetwork } = getGroupAnalysis(members);
 
     expect(snaLikesNetwork.getAttribute("typeOfPreference")).toBe("likes");
     expect(snaLikesNetwork.order).toBe(2);
@@ -250,7 +250,7 @@ describe("getSociogramAnalysis", () => {
   it("produces a likes plot with the blue accent color", () => {
     const members = [makeMember("a", ["b"]), makeMember("b", ["a"])];
 
-    const { snaLikesPlots } = getSociogramAnalysis(members);
+    const { snaLikesPlots } = getGroupAnalysis(members);
 
     expect(snaLikesPlots).toHaveLength(1);
     expect(snaLikesPlots[0].typeOfPreference).toBe("likes");
@@ -260,7 +260,7 @@ describe("getSociogramAnalysis", () => {
   it("always produces a likes plot, even when the likes graph is empty", () => {
     const members = [makeMember("a", [], ["b"]), makeMember("b", [], ["a"])];
 
-    const { snaLikesPlots } = getSociogramAnalysis(members);
+    const { snaLikesPlots } = getGroupAnalysis(members);
 
     expect(snaLikesPlots).toHaveLength(1);
     expect(snaLikesPlots[0].typeOfPreference).toBe("likes");

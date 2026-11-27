@@ -4,8 +4,8 @@ order: 7
 ---
 
 <script setup>
-    import { useSociogramStore } from "@/stores/sociogram";
-    const store = useSociogramStore()
+    import { useGroupStore } from "@/stores/group";
+    const store = useGroupStore()
 </script>
 
 Lo **status sociometrico** ($ss_i$) descrive la posizione di un membro nel gruppo al momento della rilevazione. È una **categoria**, non un punteggio: dipende dal gruppo, dalla domanda posta e dalle risposte raccolte. Non è una diagnosi né una caratteristica stabile della persona.

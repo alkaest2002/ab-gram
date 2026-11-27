@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia";
 
 import { useAppStore } from "@/stores/app";
 import { useReportStore } from "@/stores/report";
-import { useSociogramStore } from "@/stores/sociogram";
+import { useGroupStore } from "@/stores/group";
 
 import ReportCommandBar from "@/components/views/report/ReportCommandBar/ReportCommandBar.vue";
 import ReportDoc from "@/components/views/report/reportDoc/ReportDoc.vue";
@@ -25,7 +25,7 @@ import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/repor
 
 // --- Stores -------------
 const reportStore = useReportStore();
-const sociogramStore = useSociogramStore();
+const groupStore = useGroupStore();
 const { appVersion } = storeToRefs(useAppStore());
 
 // --- State --------------
@@ -37,8 +37,8 @@ provide(APP_VERSION_KEY, appVersion);
 const reportData = computed(() => ({
   appVersion: appVersion.value,
   membersData: {
-    allMembersHaveNoDislikes: sociogramStore.allMembersHaveNoDislikes,
-    ...sociogramStore.$state,
+    allMembersHaveNoDislikes: groupStore.allMembersHaveNoDislikes,
+    ...groupStore.$state,
   },
   analysisData: reportStore.$state,
 }));

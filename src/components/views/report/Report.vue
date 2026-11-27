@@ -10,7 +10,7 @@ import { onBeforeMount, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 
 import { useReportStore } from "@/stores/report";
-import { useSociogramStore } from "@/stores/sociogram";
+import { useGroupStore } from "@/stores/group";
 
 import ReportLoading from "@/components/views/report/ReportLoading.vue";
 
@@ -25,7 +25,7 @@ const router = useRouter();
 
 // --- Stores -------------
 const reportStore = useReportStore();
-const sociogramStore = useSociogramStore();
+const groupStore = useGroupStore();
 
 // --- State --------------
 /** @type {Worker | null} Active report generation worker. */
@@ -87,19 +87,19 @@ function startGeneration() {
   };
 
   // Main thread → worker: send a plain snapshot, not Vue's reactive members.
-  const members = JSON.parse(JSON.stringify(sociogramStore.members));
+  const members = JSON.parse(JSON.stringify(groupStore.members));
   worker.postMessage({ members });
 }
 
 function failGeneration() {
   reportStore.setStatus("error");
-  router.replace({ name: "reportError", query: { to: "/sociogram" } });
+  router.replace({ name: "reportError", query: { to: "/group" } });
 }
 
 function stopGeneration() {
   stopWorker();
   reportStore.setStatus("idle");
-  router.replace({ name: "reportStopped", query: { to: "/sociogram" } });
+  router.replace({ name: "reportStopped", query: { to: "/group" } });
 }
 
 function stopWorker() {

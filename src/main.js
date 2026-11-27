@@ -21,7 +21,7 @@ await router.isReady();
 app.mount("#app");
 
 // 2. Define the exact route paths you want to prioritize
-const PRIORITY_PATHS = ["/sociogram", "/docs", "/about"];
+const PRIORITY_PATHS = ["/group", "/docs", "/about"];
 
 /**
  * Safely triggers the dynamic import function for a route component.

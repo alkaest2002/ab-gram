@@ -4,8 +4,8 @@ order: 1
 ---
 
 <script setup>
-    import { useSociogramStore } from "@/stores/sociogram";
-    const store = useSociogramStore()
+    import { useGroupStore } from "@/stores/group";
+    const store = useGroupStore()
 </script>
 
 Questa pagina raccoglie i problemi più frequenti, organizzati secondo i quattro

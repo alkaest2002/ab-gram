@@ -30,7 +30,7 @@ const route = useRoute();
 // --- State --------------
 // Each menu entry maps to its hand-drawn icon (see src/components/ui/icons/).
 const navIcons = {
-  sociogram: NavAppIcon,
+  group: NavAppIcon,
   docs: NavDocsIcon,
   about: NavAboutIcon,
 };
