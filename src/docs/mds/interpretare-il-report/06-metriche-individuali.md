@@ -198,10 +198,10 @@ Prendiamo il membro $1$. Sulla prima riga di $A$ leggiamo le sue due scelte date
 | Metrica                         | Membro 1 | Membro 2 | Membro 3 | Membro 4 |
 | ------------------------------- | :------: | :------: | :------: | :------: |
 | Scelte date positive ($gp$)     |    2     |    2     |    2     |    1     |
-| Scelte ricevute positive ($rp$) |    2     |    2     |    1     |    2     |
-| Reciprocità positiva ($mp$)     |    1     |    1     |    0     |    0     |
 | Scelte date negative ($gr$)     |    1     |    1     |    1     |    1     |
+| Scelte ricevute positive ($rp$) |    2     |    2     |    1     |    2     |
 | Scelte ricevute negative ($rr$) |    1     |    1     |    1     |    1     |
+| Reciprocità positiva ($mp$)     |    1     |    1     |    0     |    0     |
 | Reciprocità negativa ($mr$)     |    0     |    0     |    0     |    0     |
 | Impatto ($im$)                  |    3     |    3     |    2     |    3     |
 | Bilancio ($bl$)                 |    1     |    1     |    0     |    1     |

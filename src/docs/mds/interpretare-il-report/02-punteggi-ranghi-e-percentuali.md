@@ -83,7 +83,7 @@ documentazione dedicata ai grafici.
 
 ### 7.2 Metriche
 
-Le prime due righe mostrano i dodici **indici di Moreno** (GP, RP, MP, GR, RR, MR;
+Le prime due righe mostrano i dodici **indici di Moreno** (GP, GR, RP, RR, MP, MR;
 IM, BL, EI, OR, AI, II). Seguono le **metriche SNA**: DG, PK, HA, HU, BT e CL
 nella terza riga; BD, CN e LC nella quarta. Ogni riquadro contiene:
 
