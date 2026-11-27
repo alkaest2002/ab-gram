@@ -32,8 +32,8 @@ import BaseNotify from "@/components/views/notify/BaseNotify.vue";
   <BaseNotify to="/group" replace>
     <template #title> Dati incompleti </template>
     <template #text>
-      Completa l'inserimento dei dati nel sociogramma prima di generare il report.
+      Completa l'inserimento dei dati del gruppo prima di generare il report.
     </template>
-    <template #buttonLabel> Torna al sociogramma </template>
+    <template #buttonLabel> Torna all'app </template>
   </BaseNotify>
 </template>
