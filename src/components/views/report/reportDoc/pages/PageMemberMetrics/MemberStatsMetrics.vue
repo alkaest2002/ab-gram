@@ -38,10 +38,10 @@ const props = defineProps({
 const MORENO_METRICS_CONFIG = [
   [
     { label: "GP", key: "gp", source: "moreno" },
-    { label: "RP", key: "rp", source: "moreno" },
-    { label: "MP", key: "mp", source: "moreno" },
     { label: "GR", key: "gr", source: "moreno" },
+    { label: "RP", key: "rp", source: "moreno" },
     { label: "RR", key: "rr", source: "moreno" },
+    { label: "MP", key: "mp", source: "moreno" },
     { label: "MR", key: "mr", source: "moreno" },
   ],
   [
