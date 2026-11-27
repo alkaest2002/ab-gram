@@ -19,7 +19,7 @@ describe("store exports", () => {
     const report = useReportStore();
     const initial = [app.exportStore(), group.exportStore(), report.exportStore()];
 
-    app.appVersion = "changed";
+    app.version = "changed";
     app.setNotifyData(["error"]);
     group.addMember();
     report.setStatus("generated");
@@ -35,7 +35,7 @@ describe("store exports", () => {
     const store = useAppStore();
     store.setNotifyData(["error"]);
     const snapshot = store.exportStore();
-    expect(snapshot).toEqual({ appVersion: store.appVersion, notifyData: ["error"] });
+    expect(snapshot).toEqual({ version: store.version, notifyData: ["error"] });
     snapshot.notifyData.push("another error");
     expect(store.notifyData).toEqual(["error"]);
   });

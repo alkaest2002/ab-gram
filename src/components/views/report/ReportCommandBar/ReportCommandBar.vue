@@ -9,15 +9,14 @@ import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
 
 import { useRouter } from "vue-router";
 
-import { useAppStore } from "@/stores/app";
 import { useGroupStore } from "@/stores/group";
-import { useReportStore } from "@/stores/report";
 
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
 import CommandBarMap from "./CommandBarMap.vue";
 
 import { useDisclosure } from "@/composables/useDisclosure";
 import { useDownload } from "@/composables/useDownload";
+import { useExport } from "@/composables/useExport";
 
 // --- Props --------------
 defineProps({
@@ -33,9 +32,7 @@ defineProps({
 const router = useRouter();
 
 // --- Stores -------------
-const appStore = useAppStore();
 const groupStore = useGroupStore();
-const reportStore = useReportStore();
 
 // --- State --------------
 const commandButtonClass =
@@ -45,6 +42,7 @@ const mapButton = useTemplateRef("mapButton");
 
 // --- Composables --------
 const { downloadJson } = useDownload();
+const { exportStores } = useExport();
 const reportMap = useDisclosure(false, { lockScroll: false });
 
 // --- Computed -----------
@@ -68,24 +66,13 @@ function printReport() {
   window.print();
 }
 
-function redactReportData(reportData) {
-  return JSON.parse(
-    JSON.stringify(reportData, (key, value) =>
-      key === "name" || key === "memberName" ? "[REDACTED]" : value,
-    ),
-  );
-}
-
 function downloadReport() {
-  const reportData = {
-    appVersion: appStore.exportStore().appVersion,
-    group: {
-      allMembersHaveNoDislikes: groupStore.allMembersHaveNoDislikes,
-      ...groupStore.exportStore(),
-    },
-    report: reportStore.exportStore(),
-  };
-  downloadJson(redactReportData(reportData), "report-data", "application/json", true, false);
+  const reportData = exportStores([
+    { store: "app", includeProps: ["version"] },
+    { store: "group", redactProps: ["name", "memberName"] },
+    { store: "report", redactProps: ["name", "memberName"] },
+  ]);
+  downloadJson(reportData, "report-data", "application/json", true, false);
 }
 </script>
 

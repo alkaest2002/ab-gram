@@ -26,7 +26,7 @@ import { APP_VERSION_KEY } from "@/components/views/report/reportDoc/pages/repor
 // --- Stores -------------
 const reportStore = useReportStore();
 const groupStore = useGroupStore();
-const { appVersion } = storeToRefs(useAppStore());
+const { version: appVersion } = storeToRefs(useAppStore());
 
 // --- State --------------
 provide(APP_VERSION_KEY, appVersion);

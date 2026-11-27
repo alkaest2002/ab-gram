@@ -144,6 +144,7 @@ export const useGroupStore = defineStore("group", () => {
         likes: [...member.likes],
         dislikes: [...member.dislikes],
       })),
+      allMembersHaveNoDislikes: allMembersHaveNoDislikes.value,
     };
   }
 

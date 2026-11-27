@@ -5,12 +5,12 @@
 
 <script setup>
 // --- Imports ------------
-import { useGroupStore } from "@/stores/group";
 
 import BaseClickButton from "@/components/ui/BaseClickButton.vue";
 import BaseTooltip from "@/components/ui/BaseTooltip.vue";
 
 import { useDownload } from "@/composables/useDownload";
+import { useExport } from "@/composables/useExport";
 
 // --- Props --------------
 defineProps({
@@ -35,12 +35,12 @@ defineEmits([
 // --- Routers ------------
 
 // --- Stores -------------
-const groupStore = useGroupStore();
 
 // --- State --------------
 
 // --- Composables --------
 const { downloadJson } = useDownload();
+const { exportStores } = useExport();
 
 // --- Computed -----------
 
@@ -50,7 +50,7 @@ const { downloadJson } = useDownload();
 
 // --- Methods ------------
 const handleDownload = () => {
-  const jsonData = groupStore.exportStore(false);
+  const { group: jsonData } = exportStores([{ store: "group" }]);
   downloadJson(jsonData, "group-data", "text/encoded", true, true);
 };
 </script>
