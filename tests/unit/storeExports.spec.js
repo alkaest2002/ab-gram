@@ -56,7 +56,7 @@ describe("store exports", () => {
 
   it("exports detached report data and serializes graphs", () => {
     const store = useReportStore();
-    const graph = new DirectedGraph();
+    const graph = new DirectedGraph({ allowSelfLoops: false });
     graph.addNode("1", { name: "Alice" });
     store.snaLikesNetwork = graph;
     store.snaLikesPlots = [{ typeOfPreference: "likes", accentColor: "red", svg: "plot" }];

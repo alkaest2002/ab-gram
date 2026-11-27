@@ -18,7 +18,7 @@ import { filterBySize, forEachMutualEdge, sortStructures } from "./base.js";
  * @returns {{ structures: string[][] }} The components, each as a list of member ids.
  */
 export const computeStrongComponentsWithReciprocalEdges = (graph) => {
-  const reciprocal = new DirectedGraph();
+  const reciprocal = new DirectedGraph({ allowSelfLoops: false });
 
   graph.forEachNode((node) => reciprocal.addNode(node));
 

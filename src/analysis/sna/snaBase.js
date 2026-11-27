@@ -47,8 +47,8 @@ function addMemberNodes(graph, members) {
  *   are the members and whose edges connect each member to the members they link to
  */
 export const createSnaNetwork = (members, typeOfPreference) => {
-  // Create directed network.
-  const network = new DirectedGraph();
+  // Create directed network, setting the allowSelfLoops option to false.
+  const network = new DirectedGraph({ allowSelfLoops: false });
 
   // Tag the network with its preference type so consumers (metrics, structures,
   // plots) can report which of "likes"/"dislikes" it represents.
