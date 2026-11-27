@@ -130,6 +130,21 @@ describe("useGroupValidateData (default)", () => {
     );
   });
 
+  it.each([
+    ["likes", "noLikes", 'La spunta "nessuna scelta" non è compatibile con le scelte espresse.'],
+    [
+      "dislikes",
+      "noDislikes",
+      'La spunta "nessun rifiuto" non è compatibile con i rifiuti espressi.',
+    ],
+  ])("rejects nonempty %s when %s is true", (list, flag, error) => {
+    const snapshot = getHogwartsSnapshot();
+    snapshot.members[0][list] = [snapshot.members[1].id];
+    snapshot.members[0][flag] = true;
+
+    expectInvalid(validate(snapshot), error);
+  });
+
   it("rejects a member with a non-boolean noLikes flag", () => {
     const snapshot = getHogwartsSnapshot();
     snapshot.members[0].noLikes = "yes";
