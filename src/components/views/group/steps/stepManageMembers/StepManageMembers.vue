@@ -42,7 +42,7 @@ const { goToStep, restart } = useGroupNavigation(emit);
 const nameIssues = computed(() => getMembersNameIssues(members.value));
 const canGoNext = computed(
   () =>
-    membersCount.value >= groupStore.minMembersCount &&
+    groupStore.hasEnoughMembers &&
     nameIssues.value.emptyNamesCount === 0 &&
     nameIssues.value.duplicateNamesCount === 0,
 );
