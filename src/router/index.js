@@ -53,11 +53,11 @@ export const routes = [
  * @type {import("vue-router").RouterScrollBehavior}
  */
 const scrollBehavior = (to, from, savedPosition) => {
-  if (to.hash) {
-    return { el: to.hash, top: HEADER_OFFSET, behavior: "smooth" };
-  }
   if (savedPosition) {
     return savedPosition;
+  }
+  if (to.hash) {
+    return { el: to.hash, top: HEADER_OFFSET, behavior: "smooth" };
   }
   // Wait for the 200ms route fade-in (AppTransitionContent) so the jump to
   // top lands on the incoming page instead of flashing the outgoing one.
@@ -80,6 +80,8 @@ function updateDocumentTitle(to) {
   document.title = to.meta.title ? `${SITE_NAME} · ${to.meta.title}` : SITE_NAME;
 }
 
-router.afterEach(updateDocumentTitle);
+router.afterEach((to, _from, failure) => {
+  if (!failure) updateDocumentTitle(to);
+});
 
 export default router;
