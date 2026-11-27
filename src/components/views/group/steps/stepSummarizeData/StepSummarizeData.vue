@@ -15,7 +15,7 @@ import { useGroupStore } from "@/stores/group";
 import { useAppStore } from "@/stores/app";
 
 import StepHeader from "@/components/views/group/common/StepHeader.vue";
-import GroupNavigation from "@/components/views/group/common/GroupNavigation.vue";
+import StepsNavigation from "@/components/views/group/common/stepsNavigation.vue";
 import SummarizeDataMemberCard from "@/components/views/group/steps/stepSummarizeData/SummarizeDataMemberCard.vue";
 
 import { useGroupNavigation } from "@/composables/groups/useGroupNavigation";
@@ -99,7 +99,7 @@ function goNext() {
     </section>
   </section>
 
-  <GroupNavigation
+  <StepsNavigation
     :show-previous="true"
     :show-next="true"
     :show-restart="true"

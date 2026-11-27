@@ -12,7 +12,7 @@ import { storeToRefs } from "pinia";
 import { useGroupStore } from "@/stores/group";
 
 import StepHeader from "@/components/views/group/common/StepHeader.vue";
-import GroupNavigation from "@/components/views/group/common/GroupNavigation.vue";
+import StepsNavigation from "@/components/views/group/common/stepsNavigation.vue";
 
 import { useGroupNavigation } from "@/composables/groups/useGroupNavigation";
 
@@ -73,7 +73,7 @@ const canGoNext = computed(
     />
   </section>
 
-  <GroupNavigation
+  <StepsNavigation
     :enable-previous="true"
     :enable-next="canGoNext"
     :enable-archive="canGoNext"

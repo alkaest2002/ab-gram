@@ -21,7 +21,7 @@ import { storeToRefs } from "pinia";
 import { useGroupStore } from "@/stores/group";
 
 import StepHeader from "@/components/views/group/common/StepHeader.vue";
-import GroupNavigation from "@/components/views/group/common/GroupNavigation.vue";
+import StepsNavigation from "@/components/views/group/common/stepsNavigation.vue";
 import SetPreferencesCarousel from "@/components/views/group/steps/stepSetPreferences/SetPreferencesCarousel.vue";
 import SetPreferencesSelect from "@/components/views/group/steps/stepSetPreferences/SetPreferencesSelect.vue";
 import SetPreferencesProgress from "@/components/views/group/steps/stepSetPreferences/SetPreferencesProgress.vue";
@@ -260,7 +260,7 @@ function handleWindowKeydown(event) {
     </div>
   </section>
 
-  <GroupNavigation
+  <StepsNavigation
     :enable-previous="true"
     :enable-next="canGoNext"
     :enable-restart="true"

@@ -12,7 +12,7 @@ import { storeToRefs } from "pinia";
 import { useGroupStore } from "@/stores/group";
 
 import StepHeader from "@/components/views/group/common/StepHeader.vue";
-import GroupNavigation from "@/components/views/group/common/GroupNavigation.vue";
+import StepsNavigation from "@/components/views/group/common/stepsNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/group/common/FileReadResult.vue";
 import LoadMembersOrderNamesRadioGroup from "@/components/views/group/steps/stepLoadMembers/LoadMembersOrderNamesRadioGroup.vue";
@@ -113,7 +113,7 @@ function onFileReadError({ message }) {
     </FileReadResult>
   </section>
 
-  <GroupNavigation
+  <StepsNavigation
     :enable-previous="true"
     :enable-next="hasLoaded"
     :enable-archive="hasLoaded"

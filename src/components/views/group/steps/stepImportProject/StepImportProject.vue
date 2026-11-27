@@ -10,7 +10,7 @@ import { computed, ref } from "vue";
 import { useGroupStore } from "@/stores/group";
 
 import StepHeader from "@/components/views/group/common/StepHeader.vue";
-import GroupNavigation from "@/components/views/group/common/GroupNavigation.vue";
+import StepsNavigation from "@/components/views/group/common/stepsNavigation.vue";
 import BaseTextFileReader from "@/components/ui/BaseTextFileReader.vue";
 import FileReadResult from "@/components/views/group/common/FileReadResult.vue";
 
@@ -120,7 +120,7 @@ function onFileReadError({ message }) {
     </FileReadResult>
   </section>
 
-  <GroupNavigation
+  <StepsNavigation
     :enable-previous="true"
     :enable-next="hasImported"
     :enable-archive="hasImported"
