@@ -68,9 +68,9 @@ function printReport() {
 
 function downloadReport() {
   const reportData = exportStores([
-    { store: "app", includeProps: ["version"] },
-    { store: "group", redactProps: ["name", "memberName"] },
-    { store: "report", redactProps: ["name", "memberName"] },
+    { store: "app", includeProps: [".version"] },
+    { store: "group", redactProps: [".. | .name", ".. | .memberName"] },
+    { store: "report", redactProps: [".. | .name", ".. | .memberName"] },
   ]);
   downloadJson(reportData, "report-data", "application/json", true, false);
 }
