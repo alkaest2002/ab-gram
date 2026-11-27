@@ -5,7 +5,7 @@
 
 <script setup>
 // --- Imports ------------
-import { computed, provide } from "vue";
+import { computed, onUnmounted, provide } from "vue";
 
 import { storeToRefs } from "pinia";
 
@@ -46,6 +46,7 @@ const reportData = computed(() => ({
 // --- Watchers -----------
 
 // --- Lifecycle ----------
+onUnmounted(() => reportStore.resetStore());
 
 // --- Methods ------------
 function handleRegenerateSnaPlot(plot) {
