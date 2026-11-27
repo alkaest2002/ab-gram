@@ -117,8 +117,34 @@ export const useReportStore = defineStore("report", () => {
     }
   }
 
+  /** Return a detached JSON-compatible snapshot, including serialized networks. */
+  function exportStore() {
+    return JSON.parse(
+      JSON.stringify({
+        status: status.value,
+        edgeTypes: edgeTypes.value,
+        morenoGroupLevelMetrics: morenoGroupLevelMetrics.value,
+        morenoIndividualLevelMetrics: morenoIndividualLevelMetrics.value,
+        morenoEgoGraphs: morenoEgoGraphs.value,
+        snaLikesGroupLevelMetrics: snaLikesGroupLevelMetrics.value,
+        snaLikesIndividualLevelMetric: snaLikesIndividualLevelMetric.value,
+        snaLikesStructures: snaLikesStructures.value,
+        snaLikesPlots: snaLikesPlots.value,
+        snaDislikesGroupLevelMetrics: snaDislikesGroupLevelMetrics.value,
+        snaDislikesIndividualLevelMetric: snaDislikesIndividualLevelMetric.value,
+        snaDislikesStructures: snaDislikesStructures.value,
+        snaDislikesPlots: snaDislikesPlots.value,
+        snaLikesNodeInfo: snaLikesNodeInfo.value,
+        snaDislikesNodeInfo: snaDislikesNodeInfo.value,
+        snaLikesNetwork: snaLikesNetwork.value,
+        snaDislikesNetwork: snaDislikesNetwork.value,
+        research: research.value,
+      }),
+    );
+  }
+
   /** Reset report status and all analysis sections to their initial state. @returns {void} */
-  function reset() {
+  function resetStore() {
     status.value = "idle";
     edgeTypes.value = {};
     morenoGroupLevelMetrics.value = {};
@@ -161,6 +187,7 @@ export const useReportStore = defineStore("report", () => {
     setStatus,
     setAnalysis,
     setSnaPlot,
-    reset,
+    exportStore,
+    resetStore,
   };
 });

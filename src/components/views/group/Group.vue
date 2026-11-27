@@ -65,7 +65,7 @@ const stepProps = computed(() => {
 const stepListeners = computed(() => {
   const listeners = {
     "group-go-to-step": changeComponent,
-    "group-restart-app": groupStore.resetMembers,
+    "group-restart-app": groupStore.resetStore,
   };
 
   if (currentComponentName.value === "summarizeData") {

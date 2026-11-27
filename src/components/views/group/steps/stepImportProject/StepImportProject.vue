@@ -76,7 +76,7 @@ function onFileRead({ lines }) {
 
     // Replace the store state with the validated snapshot: reset first, then
     // copy each known state key out of the loaded json.
-    groupStore.resetMembers();
+    groupStore.resetStore();
     for (const key of Object.keys(groupStore.$state)) {
       if (key in result.data) {
         groupStore.$state[key] = result.data[key];

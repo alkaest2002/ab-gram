@@ -47,7 +47,7 @@ const { goToStep } = useGroupNavigation(emit);
  * @param {string} step
  */
 function startFromScratch(step) {
-  groupStore.resetMembers();
+  groupStore.resetStore();
   goToStep(step);
 }
 </script>

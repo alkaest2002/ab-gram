@@ -9,6 +9,10 @@ import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
 
 import { useRouter } from "vue-router";
 
+import { useAppStore } from "@/stores/app";
+import { useGroupStore } from "@/stores/group";
+import { useReportStore } from "@/stores/report";
+
 import ArrowLeftIcon from "@/components/ui/icons/ArrowLeftIcon.vue";
 import CommandBarMap from "./CommandBarMap.vue";
 
@@ -16,7 +20,7 @@ import { useDisclosure } from "@/composables/useDisclosure";
 import { useDownload } from "@/composables/useDownload";
 
 // --- Props --------------
-const props = defineProps({
+defineProps({
   reportData: {
     type: Object,
     required: true,
@@ -29,6 +33,9 @@ const props = defineProps({
 const router = useRouter();
 
 // --- Stores -------------
+const appStore = useAppStore();
+const groupStore = useGroupStore();
+const reportStore = useReportStore();
 
 // --- State --------------
 const commandButtonClass =
@@ -70,7 +77,15 @@ function redactReportData(reportData) {
 }
 
 function downloadReport() {
-  downloadJson(redactReportData(props.reportData), "report-data", "application/json", true, false);
+  const reportData = {
+    appVersion: appStore.exportStore().appVersion,
+    group: {
+      allMembersHaveNoDislikes: groupStore.allMembersHaveNoDislikes,
+      ...groupStore.exportStore(),
+    },
+    report: reportStore.exportStore(),
+  };
+  downloadJson(redactReportData(reportData), "report-data", "application/json", true, false);
 }
 </script>
 

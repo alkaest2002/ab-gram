@@ -130,8 +130,25 @@ export const useGroupStore = defineStore("group", () => {
       }
     });
   }
+
+  /**
+   * Return a detached snapshot of the group.
+   * @param {boolean} [redact=true] - Replace member names in the snapshot.
+   * @returns {{ members: Member[] }}
+   */
+  function exportStore(redact = true) {
+    return {
+      members: members.value.map((member) => ({
+        ...member,
+        name: redact ? "[REDACTED]" : member.name,
+        likes: [...member.likes],
+        dislikes: [...member.dislikes],
+      })),
+    };
+  }
+
   /** Clear all loaded members. @returns {void} */
-  function resetMembers() {
+  function resetStore() {
     members.value = [];
   }
 
@@ -147,6 +164,7 @@ export const useGroupStore = defineStore("group", () => {
     addMember,
     updateMember,
     removeMember,
-    resetMembers,
+    exportStore,
+    resetStore,
   };
 });

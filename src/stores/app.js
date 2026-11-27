@@ -8,8 +8,10 @@ import { defineStore } from "pinia";
  * Application-wide metadata and transient notification payloads.
  */
 export const useAppStore = defineStore("app", () => {
+  const initialAppVersion = "1.1";
+
   /** @type {import("vue").Ref<string>} Version embedded in generated reports. */
-  const appVersion = ref("1.1");
+  const appVersion = ref(initialAppVersion);
 
   /** @type {import("vue").Ref<string[] | null>} Validation details shown by notification views. */
   const notifyData = ref(null);
@@ -23,10 +25,21 @@ export const useAppStore = defineStore("app", () => {
     notifyData.value = data;
   }
 
+  /** Return a detached plain-data snapshot of the store. */
+  function exportStore() {
+    return { appVersion: appVersion.value, notifyData: notifyData.value?.slice() ?? null };
+  }
+
   /** Clear the transient notification payload. @returns {void} */
   function resetNotifyData() {
     notifyData.value = null;
   }
 
-  return { appVersion, notifyData, setNotifyData, resetNotifyData };
+  /** Reset application state to its initial values. @returns {void} */
+  function resetStore() {
+    appVersion.value = initialAppVersion;
+    resetNotifyData();
+  }
+
+  return { appVersion, notifyData, setNotifyData, exportStore, resetNotifyData, resetStore };
 });

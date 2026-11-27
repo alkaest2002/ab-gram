@@ -50,7 +50,7 @@ const { downloadJson } = useDownload();
 
 // --- Methods ------------
 const handleDownload = () => {
-  const jsonData = groupStore.$state;
+  const jsonData = groupStore.exportStore(false);
   downloadJson(jsonData, "group-data", "text/encoded", true, true);
 };
 </script>
