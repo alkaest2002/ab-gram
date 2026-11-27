@@ -71,21 +71,21 @@ const markerId = useId();
     </defs>
     <g transform="translate(48 10)" class="text-ink">
       <circle r="9" />
-      <g transform="scale(1.25)" fill="currentColor" stroke="none">
+      <g transform="scale(1.05)" fill="currentColor" stroke="none">
         <circle cy="-2.5" r="2.5" />
         <path d="M-5 4.5a5 4 0 0 1 10 0Z" />
       </g>
     </g>
     <g transform="translate(30 38)" class="text-ink">
       <circle r="9" />
-      <g transform="scale(1.25)" fill="currentColor" stroke="none">
+      <g transform="scale(1.05)" fill="currentColor" stroke="none">
         <circle cy="-2.5" r="2.5" />
         <path d="M-5 4.5a5 4 0 0 1 10 0Z" />
       </g>
     </g>
     <g transform="translate(66 38)" class="text-ink">
       <circle r="9" />
-      <g transform="scale(1.25)" fill="currentColor" stroke="none">
+      <g transform="scale(1.05)" fill="currentColor" stroke="none">
         <circle cy="-2.5" r="2.5" />
         <path d="M-5 4.5a5 4 0 0 1 10 0Z" />
       </g>
