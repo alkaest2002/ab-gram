@@ -43,10 +43,12 @@ export const useGroupStore = defineStore("group", () => {
   /** @type {import("vue").ComputedRef<number>} Number of loaded members. */
   const membersCount = computed(() => members.value.length);
 
+  const hasEnoughMembers = computed(() => membersCount.value >= minMembersCount);
+
   /** @type {import("vue").ComputedRef<"empty" | "completed" | "partially-loaded">} Completion status derived from the loaded members. */
   const membersStatus = computed(() => {
     if (membersCount.value === 0) return "empty";
-    if (members.value.every(isMemberComplete)) return "completed";
+    if (hasEnoughMembers.value && members.value.every(isMemberComplete)) return "completed";
     return "partially-loaded";
   });
 
@@ -156,6 +158,7 @@ export const useGroupStore = defineStore("group", () => {
   return {
     members,
     membersCount,
+    hasEnoughMembers,
     membersStatus,
     minMembersCount,
     maxMembersCount,
