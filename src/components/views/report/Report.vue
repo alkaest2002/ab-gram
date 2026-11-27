@@ -40,12 +40,16 @@ let worker = null;
 // --- Lifecycle ----------
 onBeforeMount(() => {
   reportStore.setStatus("generating");
-  startGeneration();
+  try {
+    startGeneration();
+  } catch (error) {
+    console.error("Could not start report generation:", error);
+    stopWorker();
+    failGeneration();
+  }
 });
 
-onBeforeUnmount(() => {
-  stopWorker();
-});
+onBeforeUnmount(cancelGeneration);
 
 // --- Methods ------------
 function startGeneration() {
@@ -96,14 +100,19 @@ function failGeneration() {
   router.replace({ name: "reportError", query: { to: "/group" } });
 }
 
-function stopGeneration() {
+function cancelGeneration() {
   stopWorker();
-  reportStore.setStatus("idle");
+  if (reportStore.status === "generating") reportStore.setStatus("idle");
+}
+
+function stopGeneration() {
+  cancelGeneration();
   router.replace({ name: "reportStopped", query: { to: "/group" } });
 }
 
 function stopWorker() {
   if (worker) {
+    worker.onmessage = worker.onerror = worker.onmessageerror = null;
     worker.terminate();
     worker = null;
   }
