@@ -69,8 +69,14 @@ function printReport() {
 function downloadReport() {
   const reportData = exportStores([
     { store: "app", includeProps: [".version"] },
-    { store: "group", redactProps: [".. | .name", ".. | .memberName"] },
-    { store: "report", redactProps: [".. | .name", ".. | .memberName"] },
+    { store: "group", redactProps: [".members[].name"] },
+    {
+      store: "report",
+      redactProps: [
+        ".snaLikesNetwork.nodes[].attributes.memberName",
+        ".snaDislikesNetwork.nodes[].attributes.memberName",
+      ],
+    },
   ]);
   downloadJson(reportData, "report-data", "application/json", true, false);
 }
