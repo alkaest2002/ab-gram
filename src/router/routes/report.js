@@ -15,6 +15,7 @@ import { useReportStore } from "@/stores/report";
  */
 const reportRoute = {
   path: "/report",
+  redirect: { name: "reportGenerating" },
   beforeEnter() {
     const groupStore = useGroupStore();
 
@@ -34,9 +35,9 @@ const reportRoute = {
   },
   children: [
     {
-      path: "",
-      name: "report",
-      component: () => import("@/components/views/report/Report.vue"),
+      path: "generating",
+      name: "reportGenerating",
+      component: () => import("@/components/views/report/ReportGenerating.vue"),
       meta: {
         title: "Report",
         inMenu: false,
@@ -55,7 +56,7 @@ const reportRoute = {
           return true;
         }
 
-        return { name: "report" };
+        return { name: "reportGenerating" };
       },
       meta: {
         title: "Report",

@@ -70,7 +70,7 @@ function goNext() {
     router.push({ name: "groupValidationError" });
     return;
   }
-  router.replace({ name: "report" });
+  router.replace({ name: "reportGenerating" });
 }
 </script>
 
