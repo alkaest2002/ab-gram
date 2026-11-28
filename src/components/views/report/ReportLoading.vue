@@ -32,7 +32,7 @@ const emit = defineEmits(["stop-generating-report"]);
 
 <template>
   <div class="flex w-full max-w-xl flex-col items-center gap-6 text-center">
-    <AppSpinner>
+    <AppSpinner size="xl">
       <div class="space-y-3">
         <p class="font-mono text-xs font-medium tracking-[0.14em] uppercase text-muted">Report</p>
         <h2 class="text-3xl">Generazione in corso</h2>

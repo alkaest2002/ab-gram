@@ -11,7 +11,7 @@ defineProps({
   size: {
     type: String,
     default: "md",
-    validator: (value) => ["sm", "md", "lg"].includes(value),
+    validator: (value) => ["sm", "md", "lg", "xl"].includes(value),
   },
 });
 
@@ -26,6 +26,7 @@ const sizes = {
   sm: "size-5",
   md: "size-10",
   lg: "size-12",
+  xl: "size-18",
 };
 
 // --- Composables --------
