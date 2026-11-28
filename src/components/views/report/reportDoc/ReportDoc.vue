@@ -15,6 +15,7 @@ import PageSnaStructures from "@/components/views/report/reportDoc/pages/PageSna
 import PageEdgeTypes from "@/components/views/report/reportDoc/pages/PageEdgeTypes/PageEdgeTypes.vue";
 import PageMemberMetrics from "@/components/views/report/reportDoc/pages/PageMemberMetrics/PageMemberMetrics.vue";
 import PageSummary from "@/components/views/report/reportDoc/pages/PageSummary/PageSummary.vue";
+import PageRankDistribution from "./pages/PageRankDistribution/PageRankDistribution.vue";
 import PageGlossary from "@/components/views/report/reportDoc/pages/PageGlossary/PageGlossary.vue";
 import { REPORT_PAGES_KEY } from "@/components/views/report/reportDoc/pages/reportPages.js";
 
@@ -109,6 +110,10 @@ const members = computed(() => props.reportData?.membersData?.members ?? []);
     />
     <PageSummary
       :members-data="reportData.membersData"
+      :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
+      :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
+    />
+    <PageRankDistribution
       :moreno-metrics="reportData.analysisData?.morenoIndividualLevelMetrics ?? {}"
       :sna-metrics="reportData.analysisData?.snaLikesIndividualLevelMetric ?? {}"
     />

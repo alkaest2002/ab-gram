@@ -28,6 +28,7 @@ const allSections = [
   { label: "Rete dei rifiuti", hash: "#dislikesNetwork" },
   { label: "Membri", hash: null },
   { label: "Sintesi", hash: "#summary" },
+  { label: "Dist.ne ranghi", hash: "#rankDistribution" },
   { label: "Glossario", hash: "#glossary" },
 ];
 

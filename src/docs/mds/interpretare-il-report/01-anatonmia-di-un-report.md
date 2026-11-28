@@ -23,6 +23,7 @@ Le pagine si susseguono in quest'ordine:
 - Strutture interne alla rete delle scelte
 - Pagine individuali dei membri
 - Sintesi
+- Distribuzione dei ranghi
 - Glossario
 
 > La rete dei rifiuti compare solo quando almeno un membro ha espresso un rifiuto. In
@@ -86,7 +87,24 @@ sociometrico e sette indicatori di centralità (`DG`, `PK`, `HA`, `HU`, `BT`,
 `CL`, `BD`) segnalati da un puntino. Il puntino è blu quando il membro rientra tra i
 primi tre ranghi per quel punteggio, altrimenti è grigio.
 
-### 1.10 Glossario
+### 1.10 Distribuzione dei ranghi
+
+Ogni riga corrisponde a una metrica individuale. I cerchi mostrano i ranghi in
+ordine crescente, una sola volta ciascuno: se quattro membri sono al rango 2,
+compare un solo cerchio con il numero **2**. Il numero indica quindi il rango,
+non il numero di membri.
+
+Il grigio indica **quanti membri condividono quel rango**: un cerchio bianco
+con bordo indica un solo membro; i cerchi diventano più scuri al crescere del
+conteggio. La scala è comune alle righe e si basa sul conteggio più alto della
+pagina: la stessa tonalità indica lo stesso numero di membri, anche per metriche
+diverse. Nel report a schermo, passa il puntatore su un cerchio per leggere il
+conteggio esatto.
+
+Il trattino (`-`), se presente, compare per ultimo e raggruppa i membri senza
+un rango disponibile per quella metrica. Non indica l’ultimo posto.
+
+### 1.11 Glossario
 
 Chiude il report con le sigle utilizzate nelle pagine e il loro significato
 esteso.
