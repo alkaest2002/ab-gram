@@ -28,7 +28,7 @@
 </script>
 
 <template>
-  <main class="grid min-h-dvh place-items-center px-6 [&>*]:col-start-1 [&>*]:row-start-1">
+  <main class="grid min-h-dvh place-items-center px-6 *:col-start-1 *:row-start-1">
     <slot />
   </main>
 </template>
